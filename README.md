@@ -11,6 +11,9 @@ This repository will serve as a home for announcements of Managed Kubernetes on 
 
 * **November 9, 2017** - [AKS West US2 service outage](annoucements/service_outage_2017-11-09.md)
 
+* **November 12, 2017** - East US added to public preview
+
+
 ## Code of conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
