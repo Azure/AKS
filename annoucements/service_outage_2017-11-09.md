@@ -18,6 +18,6 @@ In case you get a "the subscription is not registered for the resource type mana
 
 `az provider register --namespace Microsoft.ContainerService`
 
-Customers are recommended to delete existing clusters in West US 2 and deploy to East US region as a workaround for the issue. Due to overwhelming demand, we also have no capacity in the UK West region. We are working on enabling additional regions as soon as possible. This thread will be updated with more updates. 
+Customers are recommended to delete existing clusters in West US 2 and deploy to East US region as a workaround for the issue. We are working on enabling additional regions as soon as possible. This thread will be updated with more updates. 
 
 Thanks for your patience.
