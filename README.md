@@ -13,6 +13,8 @@ This repository will serve as a home for announcements of Managed Kubernetes on 
 
 * **November 12, 2017** - East US added to public preview
 
+* **November 14, 2017** - West Europe added to public preview
+
 
 ## Code of conduct
 
