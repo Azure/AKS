@@ -21,3 +21,11 @@ In case you get a "the subscription is not registered for the resource type mana
 Customers are recommended to delete existing clusters in West US 2 and deploy to East US region as a workaround for the issue. We are working on enabling additional regions as soon as possible. This thread will be updated with more updates. 
 
 Thanks for your patience.
+
+
+### Update 14th Nov 2017
+
+AKS clusters can now also be deployed in the West Europe region in addition to East US.
+
+
+
