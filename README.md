@@ -17,6 +17,8 @@ This repository will serve as a home for announcements of Managed Kubernetes on 
 
 * **November 16, 2017** - Central US added to public preview
 
+* **January, 11, 2018** - Canada Central and Canada East added to public preview
+
 
 ## Code of conduct
 
