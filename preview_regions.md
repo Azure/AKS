@@ -5,7 +5,9 @@ AKS is now available in the following regions under a feature flag:
 3. Central US (centralus)
 4. West US 2 (westus2), not accepting new AKS clusters
 5. UK West (ukwest), not accepting new AKS clusters
+6. Canada Central (canadacentral)
+7. Canada East (canadaeast)
 
-See the previous [AKS preview announcement](https://azure.microsoft.com/en-us/blog/introducing-azure-container-service-aks-managed-kubernetes-and-azure-container-registry-geo-replication/) for more details.
+** Note **
 
-AKS will continue to expand to other Azure regions as capacity becomes available.
+West Europe is low on capacity as of Thursday Feb 14, 2018. Expect to build out additional infrastructure ~Feb 16. Please try another location in the meantime.
