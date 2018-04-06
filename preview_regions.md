@@ -10,4 +10,4 @@ AKS is now available in the following regions under a feature flag:
 
 ** Note **
 
-West Europe is low on capacity as of Thursday Feb 14, 2018. Please try another location (see list above) in the meantime.
+West Europe is low on capacity as of Friday April 6, 2018. Please try another location (see list above) in the meantime.
