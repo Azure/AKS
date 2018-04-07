@@ -10,4 +10,4 @@ AKS is now available in the following regions under a feature flag:
 
 ** Note **
 
-#### West Europe is low on capacity as of Friday April 6, 2018. Please try another location (see list above) in the meantime.
+#### West Europe is up as of 04/07. Please note that we are seeing clsuter create times around 30 mins.
