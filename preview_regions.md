@@ -10,4 +10,4 @@ AKS is now available in the following regions under a feature flag:
 
 ** Note **
 
-#### West Europe is up as of 04/07. Please note that we are seeing clsuter create times around 30 mins.
+#### West Europe is up as of 04/07. Please note that we are seeing cluster create times around 30 mins.
