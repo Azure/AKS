@@ -1,7 +1,23 @@
 
-This example respository contains two ARM templates which demonstrate new functionality in AKS to use an existing VNet with custom ip addressing.
+This example respository contains two ARM templates which demonstrate new functionality in AKS to use an existing VNet with custom IP addressing and Azure CNI for IP address allocation.
 
-These examples are for demonstration purposes only, and do not represent a "blessed configuration".
+## Address ranges
+
+The IP address plan used for this cluster consists of a VNET, a Subnet (VNET-Local) reserved for other resources, and a Subnet (AKS-Nodes) reserved for AKS agent nodes and Pods.
+
+| Address Range | First address | Last address | Address count | Description |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| 172.15.0.0/16 | 172.15.0.1 | 172.14.255.254 | 65534 | Address range for the entire VNet. |
+| 172.15.0.0/22 | 172.15.0.1 | 172.15.3.254 | 1022 | Address range set aside for other resources, not used in this template. For example purposes only. |
+| 172.15.4.0/22 | 172.15.4.1 | 172.15.7.254 | 1022 | Address range set aside for AKS agent nodes and Pods. |
+| 172.15.8.0/22 | 172.15.8.1 | 172.15.11.254 | 1022 | Address range set aside for Kubernetes Services. |
+
+## Static IPs
+
+| Address | Description |
+| ------- | ----------- |
+| 172.16.0.1/24 | IP address and netmask (CIDR notation) for the Docker bridge address. |
+| 172.15.8.2 | IP address reserved from the Kubernets Service range used for DNS. |
 
 ## Environment
 
