@@ -19,7 +19,7 @@ This repository will serve as a home for announcements of Managed Kubernetes on 
 
 * **January, 11, 2018** - Canada Central and Canada East added to public preview
 
-* **April 26, 2018** - Starting 930 PM PST, AKS creates might be failing due to a strorage issue. We are currently investigating.
+* **April 26, 2018** - Starting 930 PM PST, AKS creates might be failing due to a storage issue. We are currently investigating.
 
 
 ## Code of conduct
