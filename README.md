@@ -19,9 +19,6 @@ This repository will serve as a home for announcements of Managed Kubernetes on 
 
 * **January, 11, 2018** - Canada Central and Canada East added to public preview
 
-* **April 26, 2018** - Starting 930 PM PST, AKS creates might be failing due to a storage issue. We are currently investigating.
-
-
 ## Code of conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
