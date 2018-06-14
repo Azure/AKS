@@ -1,4 +1,4 @@
-# Microsoft Managed Kubernetes (AKS)
+# Microsoft Kubernetes Service (AKS)
 
 ## Overview
 
