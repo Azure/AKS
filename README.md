@@ -5,6 +5,8 @@
 This repository will serve as a home for announcements of Managed Kubernetes on Azure (AKS) and communicating new features and [known issues](https://github.com/Azure/AKS/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Aknown-issue) of the service.
 
 ## Announcements
+* **June 13, 2018** - [AKS General Availability announced](https://azure.microsoft.com/en-us/blog/azure-kubernetes-service-aks-ga-new-regions-new-features-new-productivity/)
+
 * **October 24, 2017** - [AKS Public Preview announced](https://azure.microsoft.com/en-us/blog/introducing-azure-container-service-aks-managed-kubernetes-and-azure-container-registry-geo-replication/)
 
 * **October 25, 2017** - [AKS Public Preview region availability](preview_regions.md)
