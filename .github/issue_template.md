@@ -13,3 +13,18 @@ cluster name, and region.
 Security issues should be reported to secure@microsoft.com and not via this public issue tracker.
 
 -->
+
+**What happened**:
+
+**What you expected to happen**:
+
+**How to reproduce it (as minimally and precisely as possible)**:
+
+
+**Anything else we need to know?**:
+
+**Environment**:
+- Kubernetes version (use `kubectl version`):
+- Size of cluster (how many worker nodes are in the cluster?)
+- General description of workloads in the cluster (e.g. HTTP microservices, Java app, Ruby on Rails, machine learning, etc.)
+- Others:
