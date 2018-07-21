@@ -7,8 +7,6 @@ This repository will serve as a home for announcements of Managed Kubernetes on 
 ## Announcements
 * **October 24, 2017** - [AKS Public Preview announced](https://azure.microsoft.com/en-us/blog/introducing-azure-container-service-aks-managed-kubernetes-and-azure-container-registry-geo-replication/)
 
-* **October 25, 2017** - [AKS Public Preview region availability](preview_regions.md)
-
 * **November 9, 2017** - [AKS West US2 service outage](annoucements/service_outage_2017-11-09.md)
 
 * **November 12, 2017** - East US added to public preview
