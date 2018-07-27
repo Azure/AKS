@@ -19,6 +19,8 @@ This repository will serve as a home for announcements of Managed Kubernetes on 
 
 * **January, 11, 2018** - Canada Central and Canada East added to public preview
 
+* **June, 13, 2018** - [GA announcement](https://azure.microsoft.com/en-us/blog/azure-kubernetes-service-aks-ga-new-regions-new-features-new-productivity/) with new regions: Australia East, UK South, West US, West US 2, and North Europe. Support for RBAC+AD integration.
+
 ## Code of conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
