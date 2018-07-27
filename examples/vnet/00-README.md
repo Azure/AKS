@@ -65,7 +65,7 @@ az group deployment create -n 01-aks-vnet -g ${AKS_VNET_RG} --template-file 01-a
 ## Grant AKS cluster Service Princpal access to VNET RG
 
 ```
-az role assignment create --role=Contributor --scope=/subscriptions/resourceGroups/${AKS_VNET_RG} --assignee ${SPN_CLIENT_ID}
+az role assignment create --role=Contributor --scope=/subscriptions/${AKS_SUB}/resourceGroups/${AKS_VNET_RG} --assignee ${SPN_CLIENT_ID}
 ```
 
 ## Create AKS cluster
