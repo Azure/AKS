@@ -1,25 +1,13 @@
-# Microsoft Managed Kubernetes (AKS)
+# Azure Kubernetes Service Issues (AKS)
 
 ## Overview
 
-This repository will serve as a home for announcements of Managed Kubernetes on Azure (AKS) and communicating new features and [known issues](https://github.com/Azure/AKS/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3Aknown-issue) of the service.
+This repo is intended for tracking issues with the Azure Kubernetes Service (AKS). It is monitored by the AKS product team, but support is provided on a best-effort basis. For direct customer support, please take a look at the [Azure Support options](https://azure.microsoft.com/support/options/). Note that the following channels are also monitored and should be used as suggested:
 
-## Announcements
-* **June 14, 2018** - [AKS is now GA](https://azure.microsoft.com/en-us/blog/azure-kubernetes-service-aks-ga-new-regions-new-features-new-productivity/)
-
-* **October 24, 2017** - [AKS Public Preview announced](https://azure.microsoft.com/en-us/blog/introducing-azure-container-service-aks-managed-kubernetes-and-azure-container-registry-geo-replication/)
-
-* **November 9, 2017** - [AKS West US2 service outage](annoucements/service_outage_2017-11-09.md)
-
-* **November 12, 2017** - East US added to public preview
-
-* **November 14, 2017** - West Europe added to public preview
-
-* **November 16, 2017** - Central US added to public preview
-
-* **January, 11, 2018** - Canada Central and Canada East added to public preview
-
-* **June, 13, 2018** - [GA announcement](https://azure.microsoft.com/en-us/blog/azure-kubernetes-service-aks-ga-new-regions-new-features-new-productivity/) with new regions: Australia East, UK South, West US, West US 2, and North Europe. Support for RBAC+AD integration.
+- Feature requests: [AKS Feedback Forum](https://aka.ms/aks/feedback)
+- Questions: [azure-kubernetes tag on Stack Overflow](https://stackoverflow.com/questions/tagged/azure-kubernetes)
+- Issues with the OSS ACS-Engine project: [ACS-Engine repo](https://github.com/azure/acs-engine)
+- Updates about the service, including new features and new Azure regions: [AKS feed in Azure Updates](https://azure.microsoft.com/updates/?product=kubernetes-service)
 
 ## Code of conduct
 
