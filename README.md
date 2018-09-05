@@ -8,6 +8,7 @@ This repo is intended for tracking issues with the Azure Kubernetes Service (AKS
 - Questions: [azure-kubernetes tag on Stack Overflow](https://stackoverflow.com/questions/tagged/azure-kubernetes)
 - Issues with the OSS ACS-Engine project: [ACS-Engine repo](https://github.com/azure/acs-engine)
 - Updates about the service, including new features and new Azure regions: [AKS feed in Azure Updates](https://azure.microsoft.com/updates/?product=kubernetes-service)
+- Azure Community On Kubernetes Slack: [Sig-Azure Channel](http://slack.k8s.io)
 
 ## Code of conduct
 
