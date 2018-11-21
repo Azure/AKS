@@ -24,7 +24,7 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-Now, when you create a new cluster or scale/upgrade an existing one, you will get a Moby image containing Docker API version 1.38 instead of Docker engine.
+Now, when you create a new cluster or scale/upgrade an existing one, you will get a Moby image instead of Docker engine.
 
 ## Associated projects
 
