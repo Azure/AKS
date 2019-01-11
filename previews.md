@@ -8,14 +8,14 @@ The purpose of this page is to capture these features and associated projects in
 
 ## Preview features
 
-### Moby as AKS container runtime
+### Kubernetes Audit Log
 
-Currently, AKS supports a fairly old version of the Docker engine (v1.13). Due to licensing restrictions introduced with the release of Docker CE, we plan to adopt Moby (the OSS project that Docker is built from) as the container runtime in AKS.
+The [Kubernetes audit log](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/) provides a detailed account of security-relevant events that have occurred in the cluster. You can enable it for your subscription by turning on the **AKSAuditLog** feature flag.
 
-To switch to Moby for your subscription, turn on the feature flag as follows:
+First, register the feature flag:
 
 ```
-az feature register --name MobyImage --namespace Microsoft.ContainerService
+az feature register --name AKSAuditLog --namespace Microsoft.ContainerService
 ```
 
 Then refresh your registration of the AKS resource provider:
@@ -24,7 +24,9 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-Now, when you create a new cluster or scale/upgrade an existing one, you will get a Moby image instead of Docker engine.
+Once you've done this, you will see a new **kube-audit** log source in the diagnostic settings for your cluster, as described in [this doc](https://docs.microsoft.com/azure/aks/view-master-logs).
+
+**Please note:** AKS will only capture audit logs for clusters which are created or upgraded after the feature flag is enabled.
 
 ## Associated projects
 
