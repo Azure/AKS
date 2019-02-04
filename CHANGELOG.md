@@ -11,8 +11,8 @@
   * If you are using configmaps or other tools for kube-dns modifications, you will need to be modify them to be CoreDNS compatible.
 * Users may now self update/rotate Security Principal credentials using the [Azure CLI]
 * Additional non-user facing stability and reliability service enhancements
-* *Features Released to Preview*
-  * *Note*: Features in preview are considered beta/non-production ready and unsupported. Please do not enable these features on production AKS clusters.
+* **New Features in Preview**
+  * **Note**: Features in preview are considered beta/non-production ready and unsupported. Please do not enable these features on production AKS clusters.
   * [Cluster Autoscaler / Virtual machine Scale Sets][2]
   * [Kubernetes Audit Log][3]
   * Network Policies/Network Security Policies
