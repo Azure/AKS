@@ -11,16 +11,13 @@
   * If you are using configmaps or other tools for kube-dns modifications, you will need to be modify them to be CoreDNS compatible.
 * Users may now self update/rotate Security Principal credentials using the [Azure CLI]
 * Additional non-user facing stability and reliability service enhancements
-
-*Features Released to Preview*
-
-*Note*: Features in preview are considered beta/non-production ready and unsupported. Please do not enable these features on production AKS clusters.
-
-* [Cluster Autoscaler / Virtual machine Scale Sets][2]
-* [Kubernetes Audit Log][3]
-* Network Policies/Network Security Policies
-  * This means you can not use `calico` as a valid entry in addition to `azure` when creating clusters using Advanced Networking
-  * There is a known issue when using Network Policies/calico that prevents `exec` into the cluster containers which will be fixed in the next release
+* *Features Released to Preview*
+  *Note*: Features in preview are considered beta/non-production ready and unsupported. Please do not enable these features on production AKS clusters.
+  * [Cluster Autoscaler / Virtual machine Scale Sets][2]
+  * [Kubernetes Audit Log][3]
+  * Network Policies/Network Security Policies
+    * This means you can not use `calico` as a valid entry in addition to `azure` when creating clusters using Advanced Networking
+    * There is a known issue when using Network Policies/calico that prevents `exec` into the cluster containers which will be fixed in the next release
 
 For all product / feature previews including related projects, see [this document][5].
 
