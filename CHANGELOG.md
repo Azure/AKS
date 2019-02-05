@@ -7,8 +7,9 @@
 * [Kubernetes 1.12.4 GA Release][1]
   * With the release of 1.12.4 *Kubernetes 1.8 support has been removed*, you will need to upgrade to at least 1.9.x
 * CoreDNS support GA release
-  * Conversion from kube-dns to CoreDNS completed, CoreDNS is the default for all new AKS clusters.
-  * If you are using configmaps or other tools for kube-dns modifications, you will need to be modify them to be CoreDNS compatible.
+  * Conversion from kube-dns to CoreDNS completed, CoreDNS is the default for all new 1.12.4+ AKS clusters.
+  * If you are using configmaps or other tools for kube-dns modifications, you will need to be adjust them to be CoreDNS compatible.
+    * Please note, the CoreDNS add-on is set to `reconcile` which means modifications to the deployments will be discarded and alterations must   be managed differently.
 * Users may now self update/rotate Security Principal credentials using the [Azure CLI]
 * Additional non-user facing stability and reliability service enhancements
 * **New Features in Preview**
@@ -16,7 +17,7 @@
   * [Cluster Autoscaler / Virtual machine Scale Sets][2]
   * [Kubernetes Audit Log][3]
   * Network Policies/Network Security Policies
-    * This means you can not use `calico` as a valid entry in addition to `azure` when creating clusters using Advanced Networking
+    * This means you can now use `calico` as a valid entry in addition to `azure` when creating clusters using Advanced Networking
     * There is a known issue when using Network Policies/calico that prevents `exec` into the cluster containers which will be fixed in the next release
   * For all product / feature previews including related projects, see [this document][5].
 
