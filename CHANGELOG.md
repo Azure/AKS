@@ -10,6 +10,8 @@
   * Conversion from kube-dns to CoreDNS completed, CoreDNS is the default for all new 1.12.4+ AKS clusters.
   * If you are using configmaps or other tools for kube-dns modifications, you will need to be adjust them to be CoreDNS compatible.
     * Please note, the CoreDNS add-on is set to `reconcile` which means modifications to the deployments will be discarded and alterations must   be managed differently.
+* The kube-dns/coredns autoscaler(s) have been enabled, this should resolve the DNS timeout and other issues related to DNS queries overloading kube-dns.
+  * In order to get the dns-autoscaler, you must perform an AKS cluster upgrade to a later supported release (cluster prior to 1.12 will continue to get kube-dns, but with autoscale)
 * Users may now self update/rotate Security Principal credentials using the [Azure CLI]
 * Additional non-user facing stability and reliability service enhancements
 * **New Features in Preview**
