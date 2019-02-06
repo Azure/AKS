@@ -11,7 +11,7 @@
   * If you are using configmaps or other tools for kube-dns modifications, you will need to be adjust them to be CoreDNS compatible.
     * The CoreDNS add-on is set to `reconcile` which means modifications to the deployments will be discarded.
     * We have identified two issues with this release that will be resolved in a hot fix begining rollout this week:
-      * https://github.com/Azure/AKS/issues/811 (kube-dns onfig map not compatible with CoreDNS)
+      * https://github.com/Azure/AKS/issues/811 (kube-dns config map not compatible with CoreDNS)
       * https://github.com/Azure/AKS/issues/812 (kube-dns/coreDNS autoscaler conflicts)
 * Kube-dns (pre 1.12) / CoreDNS (1.12+) autoscaler(s) are enabled by default, this should resolve the DNS timeout and other issues related to DNS queries overloading kube-dns.
   * In order to get the dns-autoscaler, you must perform an **AKS cluster upgrade** to a later supported release (clusters prior to 1.12 will continue to get kube-dns, with kube-dns autoscale)
