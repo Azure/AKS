@@ -2,7 +2,7 @@
 
 ## Releases
 
-### Release 01-31-19
+### Release 2019-01-31
 
 * [Kubernetes 1.12.4 GA Release][1]
   * With the release of 1.12.4 *Kubernetes 1.8 support has been removed*, you will need to upgrade to at least 1.9.x
