@@ -15,7 +15,7 @@ The purpose of this page is to capture these features and associated projects in
 You can opt into the preview by registering the feature flag:
 
 ```
-az feature register -n NetworkPolicy --namespace Microsoft.ContainerService
+az feature register -n EnableNetworkPolicy --namespace Microsoft.ContainerService
 ```
 
 Then refresh your registration of the AKS resource provider:
