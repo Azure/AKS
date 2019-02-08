@@ -2,6 +2,50 @@
 
 ## Releases
 
+### Release 2019-02-07 - Hotfix Release
+
+This hotfix release fixes the root-cause of several bugs / regressions introduced in the 2019-01-31 release. This release does not add new features, functionality or other improvements. 
+
+**Hotfix releases follow an accelerated rollout schedule - this release should be in all regions within 24-48 hours barring unforeseen issues**
+
+* Fix for the API regression introduced by removing the Get Access Profile API call. 
+  * Note: This call is planned to be deprecated, however we will issue advance communications and provide the required logging/warnings on the API call to reflect it's deprecating status.
+  * Resolves [Issue 809](https://github.com/Azure/AKS/issues/809) 
+* Fix for CoreDNS / kube-dns autoscaler conflict(s) leading to both running in the same cluster post-upgrade
+  * Resolves [Issue 812](https://github.com/Azure/AKS/issues/812)
+* Fix to enable the CoreDNS customization / compatibility with kube-dns config maps
+  * Resolves [Issue 811](https://github.com/Azure/AKS/issues/811)
+  * Note: customization of Kube-dns via the config map method was technically unsupported, however the AKS team understands the need and has created a compatible work around (formatting of the customizations has changed however). Please see the example/notes below for usage.
+
+## Using the new CoreDNS configuration for DNS configuration.
+
+With kube-dns, there was an undocumented feature where it supported two config maps allowing users to perform DNS overrides/stub domains, and other customizations. With the conversion to CoreDNS, this functionality was lost - CoreDNS only supports a single config map. With the hotfix above, AKS now has a work around to meet the same level of customization.
+
+You can see the pre-CoreDNS conversion customization instructions [here][7]
+
+Here is the equivalent ConfigMap for CoreDNS:
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  azurestack.server: |
+    azurestack.local:53 {
+        errors
+        cache 30
+        proxy . 172.16.0.4
+    }
+```
+
+After create the config map, you will need to delete the CoreDNS deployment to force-load the new config.
+```
+kubectl -n kube-system delete po -l k8s-app=kube-dns
+```
+
+
 ### Release 2019-01-31
 
 * [Kubernetes 1.12.4 GA Release][1]
@@ -31,3 +75,5 @@
 [3]: https://github.com/Azure/AKS/blob/master/previews.md#kubernetes-audit-log
 [5]: https://github.com/Azure/AKS/blob/master/previews.md
 [6]: https://docs.microsoft.com/azure/aks/update-credentials
+[7]: https://www.danielstechblog.io/using-custom-dns-server-for-domain-specific-name-resolution-with-azure-kubernetes-service/
+
