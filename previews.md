@@ -8,6 +8,24 @@ The purpose of this page is to capture these features and associated projects in
 
 ## Preview features
 
+### Kubernetes Network Policy
+
+[Network policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/) enables network segmentation of a Kubernetes cluster. Network policy uses a plugin model, with different providers implementing the core Kubernetes API. In AKS, we two plugins: a native `azure` solution and the open-source `calico` project.
+
+You can opt into the preview by registering the feature flag:
+
+```
+az feature register -n NetworkPolicy --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
+To create a cluster with network policy enabled, use the `--network-policy` switch in `az aks create` and specify the network policy plugin you would like to use, `azure` or `calico`. Note that both require the `azure` network plugin.
+
 ### Kubernetes Audit Log
 
 The [Kubernetes audit log](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/) provides a detailed account of security-relevant events that have occurred in the cluster. You can enable it for your subscription by turning on the **AKSAuditLog** feature flag.
