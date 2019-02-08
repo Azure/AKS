@@ -10,7 +10,7 @@ The purpose of this page is to capture these features and associated projects in
 
 ### Kubernetes Network Policy
 
-[Network policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/) enables network segmentation of a Kubernetes cluster. Network policy uses a plugin model, with different providers implementing the core Kubernetes API. In AKS, we two plugins: a native `azure` solution and the open-source `calico` project.
+[Network policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/) enables network segmentation of a Kubernetes cluster. Network policy uses a plugin model, with different providers implementing the core Kubernetes API. In AKS, we offer two plugins: a native `azure` solution and the open-source `calico` project.
 
 You can opt into the preview by registering the feature flag:
 
