@@ -2,15 +2,48 @@
 
 ## Releases
 
+### Release 2019-02-12 - Hotfix Release
+
+**Hotfix releases follow an accelerated rollout schedule - this release should be in all regions by 12am PST 2019-02-12**
+
+* Kubernetes 1.12.5, 1.11.7, 1.10.12, 1.9.11 released (1.8 is deprecated, please upgrade to 1.9.x or higher)
+* This release mitigates CVE-2019-5736 for Azure Kubernetes Service (see below).
+    * Please note that GPU-based nodes do not support the new container runtime yet. We will provide another service update once a fix is available for those nodes.
+
+**CVE-2019-5736 notes and mitigation**
+Microsoft has built a new version of the Moby container runtime that includes the OCI update to address this vulnerability. In order to consume the updated container runtime release, you will need to **upgrade your Kubernetes cluster**. 
+
+Any upgrade will suffice as it will ensure that all existing nodes are removed and replaced with new nodes that include the patched runtime. You can see the upgrade paths/versions available to you by running the following command with the Azure CLI:
+
+```
+az aks get-upgrades -n myClusterName -g myResourceGroup
+```
+
+To upgrade to a given version, run the following command:
+
+```
+az aks upgrade -n myClusterName -g myResourceGroup -k <new Kubernetes version>
+```
+
+You can also upgrade from the Azure portal.
+
+When the upgrade is complete, you can verify that you are patched by running the following command:
+
+```
+kubectl get nodes -o wide
+```
+
+If all of the nodes list **docker://3.0.4** in the Container Runtime column, you have successfully upgraded to the new release.
+
 ### Release 2019-02-07 - Hotfix Release
 
 This hotfix release fixes the root-cause of several bugs / regressions introduced in the 2019-01-31 release. This release does not add new features, functionality or other improvements. 
 
 **Hotfix releases follow an accelerated rollout schedule - this release should be in all regions within 24-48 hours barring unforeseen issues**
 
-* Fix for the API regression introduced by removing the Get Access Profile API call. 
+* Fix for the API regression introduced by removing the Get Access Profile API call.
   * Note: This call is planned to be deprecated, however we will issue advance communications and provide the required logging/warnings on the API call to reflect it's deprecating status.
-  * Resolves [Issue 809](https://github.com/Azure/AKS/issues/809) 
+  * Resolves [Issue 809](https://github.com/Azure/AKS/issues/809)
 * Fix for CoreDNS / kube-dns autoscaler conflict(s) leading to both running in the same cluster post-upgrade
   * Resolves [Issue 812](https://github.com/Azure/AKS/issues/812)
 * Fix to enable the CoreDNS customization / compatibility with kube-dns config maps
