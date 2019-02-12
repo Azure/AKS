@@ -4,7 +4,7 @@
 
 ### Release 2019-02-12 - Hotfix Release
 
-**Hotfix releases follow an accelerated rollout schedule - this release should be in all regions by 12am PST 2019-02-12**
+**Hotfix releases follow an accelerated rollout schedule - this release should be in all regions by 12am PST 2019-02-13**
 
 * Kubernetes 1.12.5, 1.11.7, 1.10.12, 1.9.11 released (1.8 is deprecated, please upgrade to 1.9.x or higher)
 * This release mitigates CVE-2019-5736 for Azure Kubernetes Service (see below).
