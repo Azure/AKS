@@ -10,7 +10,7 @@
 * This release mitigates CVE-2019-5736 for Azure Kubernetes Service (see below).
     * Please note that GPU-based nodes do not support the new container runtime yet. We will provide another service update once a fix is available for those nodes.
 
-**CVE-2019-5736 notes and mitigation
+**CVE-2019-5736 notes and mitigation**
 Microsoft has built a new version of the Moby container runtime that includes the OCI update to address this vulnerability. In order to consume the updated container runtime release, you will need to **upgrade your Kubernetes cluster**. 
 
 Any upgrade will suffice as it will ensure that all existing nodes are removed and replaced with new nodes that include the patched runtime. You can see the upgrade paths/versions available to you by running the following command with the Azure CLI:
