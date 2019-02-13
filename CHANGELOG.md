@@ -6,7 +6,7 @@
 
 **Hotfix releases follow an accelerated rollout schedule - this release should be in all regions by 12am PST 2019-02-13**
 
-* Kubernetes 1.12.5, 1.11.7, 1.10.12, 1.9.11 released (1.8 is deprecated, please upgrade to 1.9.x or higher)
+* Kubernetes 1.12.5, 1.11.7
 * This release mitigates CVE-2019-5736 for Azure Kubernetes Service (see below).
     * Please note that GPU-based nodes do not support the new container runtime yet. We will provide another service update once a fix is available for those nodes.
 
