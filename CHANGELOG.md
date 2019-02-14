@@ -14,9 +14,11 @@ If that is not possible and you must remain on 1.9.x/1.10.x, you can perform the
 
 Once this is complete, all nodes should reflect the new Moby runtime version.
 
-We apologize for the confusion and are working to improve this process.
+We apologize for the confusion, and we recognize that this process is not ideal and we have future plans to enable an upgrade strategy that decouples system components like the container runtime from the Kubernetes version.
 
 Note: All newly created 1.9, 1.10, 1.11 and 1.12 clusters will have the new Moby runtime and will not need to be upgraded to get the patch.
+
+
 
 ### Release 2019-02-12 - Hotfix Release
 
