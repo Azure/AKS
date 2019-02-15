@@ -2,6 +2,22 @@
 
 ## Releases
 
+### Release 2019-02-12 - Hotfix Release (UPDATE)
+
+At this time, all regions now have the CVE hotfix release. The simplest way to consume it is to perform a Kubernetes version upgrade, which will cordon, drain, and replace all nodes with a new base image that includes the patched version of Moby. In conjunction with this release, we have enabled new patch versions for Kubernetes 1.11 and 1.12. However, as there are no new patch versions available for Kubernetes versions 1.9 and 1.10, customers are recommended to move forward to a later minor release.
+
+If that is not possible and you must remain on 1.9.x/1.10.x, you can perform the following steps to get the patched runtime:
+
+1. Scale *up* your existing 1.9/1.10 cluster - add an equal number of nodes to your existing worker count.
+2. After scale-up completes, pick a single node and using the kubectl command, cordon the old node, drain all traffic from it, and then delete it.
+3. Repeat step 2 for each worker in your cluster, until only the new nodes remain.
+
+Once this is complete, all nodes should reflect the new Moby runtime version.
+
+We apologize for the confusion and are working to improve this process.
+
+Note: All newly created 1.9, 1.10, 1.11 and 1.12 clusters will have the new Moby runtime and will not need to be upgraded to get the patch.
+
 ### Release 2019-02-12 - Hotfix Release
 
 **Hotfix releases follow an accelerated rollout schedule - this release should be in all regions by 12am PST 2019-02-13**
