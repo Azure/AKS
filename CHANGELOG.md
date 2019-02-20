@@ -1,6 +1,14 @@
 # Azure Kubernetes Service Changelog
 
-## Releases
+## Releases 2019-02-19
+
+* Fixed a bug in cluster location/region validation has been resolved.
+  * Previously, if you passed in a location/region with a trailing unicode non-breaking space (U+00A0) would cause failures on CRUD operations or cause other non-parseable characters to be displayed.
+* Fixed a bug where if the dnsService IP conflicts with the apiServer IP address(es) creates or updates would fail after the fact.
+  * Addresses are now checked to ensure no overlap or conflict at CRUD operation time.
+* The Australia Southeast region is now GA
+* Fixed a bug when using the new Service Principal rotation/update command on cluster nodes using the Azure CLI would fail
+  * Specifically, there was a missing dependency (e.g. `jq is missing`) on the nodes, all new nodes should now contain the `jq` utility.
 
 ### Release 2019-02-12 - Hotfix Release (UPDATE)
 
