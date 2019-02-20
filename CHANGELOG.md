@@ -26,8 +26,6 @@ We apologize for the confusion, and we recognize that this process is not ideal 
 
 Note: All newly created 1.9, 1.10, 1.11 and 1.12 clusters will have the new Moby runtime and will not need to be upgraded to get the patch.
 
-
-
 ### Release 2019-02-12 - Hotfix Release
 
 **Hotfix releases follow an accelerated rollout schedule - this release should be in all regions by 12am PST 2019-02-13**
