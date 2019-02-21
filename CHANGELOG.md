@@ -1,6 +1,14 @@
 # Azure Kubernetes Service Changelog
 
-## Releases
+## Releases 2019-02-19
+
+* Fixed a bug in cluster location/region validation has been resolved.
+  * Previously, if you passed in a location/region with a trailing unicode non-breaking space (U+00A0) would cause failures on CRUD operations or cause other non-parseable characters to be displayed.
+* Fixed a bug where if the dnsService IP conflicts with the apiServer IP address(es) creates or updates would fail after the fact.
+  * Addresses are now checked to ensure no overlap or conflict at CRUD operation time.
+* The Australia Southeast region is now GA
+* Fixed a bug when using the new Service Principal rotation/update command on cluster nodes using the Azure CLI would fail
+  * Specifically, there was a missing dependency (e.g. `jq is missing`) on the nodes, all new nodes should now contain the `jq` utility.
 
 ### Release 2019-02-12 - Hotfix Release (UPDATE)
 
@@ -14,7 +22,7 @@ If that is not possible and you must remain on 1.9.x/1.10.x, you can perform the
 
 Once this is complete, all nodes should reflect the new Moby runtime version.
 
-We apologize for the confusion and are working to improve this process.
+We apologize for the confusion, and we recognize that this process is not ideal and we have future plans to enable an upgrade strategy that decouples system components like the container runtime from the Kubernetes version.
 
 Note: All newly created 1.9, 1.10, 1.11 and 1.12 clusters will have the new Moby runtime and will not need to be upgraded to get the patch.
 
