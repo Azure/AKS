@@ -1,6 +1,18 @@
 # Azure Kubernetes Service Changelog
 
-## Releases 2019-02-19
+## Release 2019-03-01
+
+* New kubernetes versions released for CVE-2019-1002100 mitigation
+	* Kubernetes 1.12.6
+	* Kubernetes 1.11.8
+	* Customers should upgrade to the latest 1.11 and 1.12 releases.
+	* Kubernetes versions prior to 1.11 must upgrade to 1.11/1.12 for the fix.
+		* Announcement here: https://groups.google.com/forum/#!msg/kubernetes-announce/vmUUNkYfG9g/B9rHFrqLCAAJ
+* A security bug with the Kubernetes dashboard and overly permissive service account access has been fixed
+* The France Central region is now GA for all customers
+* Bug fixes and performance improvements
+
+## Release 2019-02-19
 
 * Fixed a bug in cluster location/region validation has been resolved.
   * Previously, if you passed in a location/region with a trailing unicode non-breaking space (U+00A0) would cause failures on CRUD operations or cause other non-parseable characters to be displayed.
