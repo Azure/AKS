@@ -2,6 +2,8 @@
 
 ## Release 2019-03-01
 
+**This release is currently rolling out to all regions**
+
 * New kubernetes versions released for CVE-2019-1002100 mitigation
 	* Kubernetes 1.12.6
 	* Kubernetes 1.11.8
