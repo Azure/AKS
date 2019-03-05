@@ -2,6 +2,8 @@
 
 ## Release 2019-03-01
 
+*Associated [AKS-Engine version 0.31.2](https://github.com/Azure/aks-engine/releases/tag/v0.31.2).*
+
 * New kubernetes versions released for CVE-2019-1002100 mitigation
 	* Kubernetes 1.12.6
 	* Kubernetes 1.11.8
@@ -40,6 +42,8 @@ Note: All newly created 1.9, 1.10, 1.11 and 1.12 clusters will have the new Moby
 
 ### Release 2019-02-12 - Hotfix Release
 
+*Associated [AKS-Engine version 0.30.1](https://github.com/Azure/aks-engine/releases/tag/v0.30.1).*
+
 **Hotfix releases follow an accelerated rollout schedule - this release should be in all regions by 12am PST 2019-02-13**
 
 * Kubernetes 1.12.5, 1.11.7
@@ -72,6 +76,8 @@ kubectl get nodes -o wide
 If all of the nodes list **docker://3.0.4** in the Container Runtime column, you have successfully upgraded to the new release.
 
 ### Release 2019-02-07 - Hotfix Release
+
+*Associated [AKS-Engine version 0.29.1](https://github.com/Azure/aks-engine/releases/tag/v0.29.1).*
 
 This hotfix release fixes the root-cause of several bugs / regressions introduced in the 2019-01-31 release. This release does not add new features, functionality or other improvements. 
 
@@ -116,6 +122,8 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
 
 
 ### Release 2019-01-31
+
+*Associated [AKS-Engine version 0.28.1](https://github.com/Azure/aks-engine/releases/tag/v0.28.1).*
 
 * [Kubernetes 1.12.4 GA Release][1]
   * With the release of 1.12.4 *Kubernetes 1.8 support has been removed*, you will need to upgrade to at least 1.9.x
