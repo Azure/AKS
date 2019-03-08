@@ -1,5 +1,20 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-03-07
+
+* OMS Agent has been updated to 3.0.0-4 for newly built or upgraded clusters
+
+* Bug Fixes:
+	* If a user exceeds quota during a scale operation, the Azure CLI will now correctly display a "Quota exceeded" vs "deployment not found"
+	* All AKS CRUD (put) operations now validate and confirm user subscriptions have the needed quota to perform the operation. If a user does not, an error is correctly shown and the operation will not take effect.
+	* All AKS issued Kubernetes SSL certificates have had weak cipher support removed, all certificates should now pass security audits for BEAST and other vulnerabilities.
+		* If you are using older clients that do not support TLS 1.2 you will need to upgrade those clients and associated SSL libraries to securely connect.
+	* Clusters that enter a failed state due to upgrade issues will now allow users to re-attempt to upgrade or will throw an error message with instructions to the user.
+	* Clusters that are in the process of upgrading or in failed upgrade state will attempt to re-execute the upgrade or throw an obvious error message.
+* The preview feature for Calico/Network Security Policies has been updated to repair a bug where ip-forwarding was not enabled by default.
+* The `cachingmode: ReadOnly` flag was not always being correctly applied to the managed premium storage class, this has been resolved.
+
+
 ## Release 2019-03-01
 
 * New kubernetes versions released for CVE-2019-1002100 mitigation
