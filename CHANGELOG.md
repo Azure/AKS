@@ -2,7 +2,8 @@
 
 ## Release 2019-03-07
 
-* OMS Agent has been updated to 3.0.0-4 for newly built or upgraded clusters
+* The Azure Monitor for containers Agent has been updated to 3.0.0-4 for newly built or upgraded clusters
+* The Azure CLI now properly defaults to N-1 for Kubernetes versions, for example N is the current latest (1.12) release - the CLI will correctly pick 1.11.x. When 1.13 is released, the default will move to 1.12.
 
 * Bug Fixes:
 	* If a user exceeds quota during a scale operation, the Azure CLI will now correctly display a "Quota exceeded" vs "deployment not found"
