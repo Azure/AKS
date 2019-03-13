@@ -1,10 +1,12 @@
 # AKS Preview Features and Related Projects
 
-At any given time, there can be multiple early stage features available in AKS behind a *feature flag*, along with a set of related projects available elsewhere on GitHub that you may wish deploy manually on the service. 
+At any given time, there can be multiple early stage features available in AKS behind a *feature flag*, along with a set of related projects available elsewhere on GitHub that you may wish deploy manually on the service.
 
 In most cases, these features and associated projects will eventually make their way into AKS, or at least be supported as 1st class extensions. But before they get there, we need sufficient usage from early adopters to validate their usefulness and quality.
 
 The purpose of this page is to capture these features and associated projects in a single place.
+
+**Note**: AKS Preview features are self-service, opt-in. They are provided to gather feedback and bugs from our community. However, they are not supported by Azure technical support until they exit preview and graduate to general availability. If you encounter issues with preview features, please file issues on this GitHub repo with the name of the preview feature in the bug title.
 
 ## Preview features
 
@@ -48,7 +50,7 @@ Once you've done this, you will see a new **kube-audit** log source in the diagn
 
 ## Associated projects
 
-Please note that while the following projects have been validated to work with recent AKS clusters, they are not yet officially supported by Azure CSS. If you run into issues, please file them in the corresponding GitHub repo.
+Please note that while the following projects have been validated to work with recent AKS clusters, they are not yet officially supported by Azure technical support. If you run into issues, please file them in the corresponding GitHub repo.
 
 ### AAD Pod Identity
 
