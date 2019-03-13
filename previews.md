@@ -10,7 +10,17 @@ The purpose of this page is to capture these features and associated projects in
 
 ## Getting Started
 
-In order to use / opt into preview features, you will need to use the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and ensure it is up to date with the latest release. 
+In order to use / opt into preview features, you will need to use the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and ensure it is up to date with the latest release. Once that is complete, you must install the `aks-preview` extension via:
+
+```
+az extension add --name aks-preview
+```
+
+**Warning**: Installing the preview extension will update the CLI to use the **latest** extensions and API. Please do not enable this for production clusters. In order to uninstall the extension, you can do the following:
+
+```
+az extension remove --name aks-preview
+```
 
 
 ## Preview features
