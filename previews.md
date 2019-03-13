@@ -16,7 +16,7 @@ In order to use / opt into preview features, you will need to use the [Azure CLI
 az extension add --name aks-preview
 ```
 
-**Warning**: Installing the preview extension will update the CLI to use the **latest** extensions and API. Please do not enable this for production clusters. In order to uninstall the extension, you can do the following:
+**Warning**: Installing the preview extension will update the CLI to use the **latest** extensions and properties. Please do not enable this for production clusters. In order to uninstall the extension, you can do the following:
 
 ```
 az extension remove --name aks-preview
@@ -40,7 +40,7 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-To create a cluster with network policy enabled, use the `--network-policy` switch in `az aks create` and specify the network policy plugin you would like to use, `azure` or `calico`. Note that both require the `azure` network plugin.
+To create a cluster with VMSS enabled, use the `--enable-vmss` switch in `az aks create`.
 
 
 ### Kubernetes Network Policy
