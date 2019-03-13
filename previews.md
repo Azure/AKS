@@ -6,9 +6,32 @@ In most cases, these features and associated projects will eventually make their
 
 The purpose of this page is to capture these features and associated projects in a single place.
 
-**Note**: AKS Preview features are self-service, opt-in. They are provided to gather feedback and bugs from our community. However, they are not supported by Azure technical support until they exit preview and graduate to general availability. If you encounter issues with preview features, please file issues on this GitHub repo with the name of the preview feature in the bug title.
+**Note**: AKS Preview features are self-service, opt-in. They are provided to gather feedback and bugs from our community. However, they are not supported by Azure technical support and adding these to existing clusters will render the clusters as unsupported until the feature exits preview and graduate to general availability. If you encounter issues with preview features, please file issues on this GitHub repo with the name of the preview feature in the bug title.
+
+## Getting Started
+
+In order to use / opt into preview features, you will need to use the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and ensure it is up to date with the latest release. 
+
 
 ## Preview features
+
+### Virtual Machine Scale Sets (VMSS)
+
+
+You can opt into the preview by registering the feature flag:
+
+```
+az feature register -n VMSSPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
+To create a cluster with network policy enabled, use the `--network-policy` switch in `az aks create` and specify the network policy plugin you would like to use, `azure` or `calico`. Note that both require the `azure` network plugin.
+
 
 ### Kubernetes Network Policy
 
