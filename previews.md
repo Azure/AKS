@@ -27,6 +27,7 @@ az extension remove --name aks-preview
 
 ### Virtual Machine Scale Sets (VMSS)
 
+Azure virtual machine scale sets let you create and manage a group of identical, load balanced VMs. The number of VM instances can automatically increase or decrease in response to demand or a defined schedule. Scale sets provide high availability to your applications, and allow you to centrally manage, configure, and update a large number of VMs. With virtual machine scale sets, you can build large-scale services for areas such as compute, big data, and container workloads.
 
 You can opt into the preview by registering the feature flag:
 
