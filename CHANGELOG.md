@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-03-14
+
+*This release is actively rolling out to all regions*
+
+* Bug fixes
+  * AKS will now begin preserving node labels users apply to clusters during upgrades. 
+    * Note: Labels will not be applied to new nodes added during a scale up operation.
+  * AKS now properly validates the Service Principal / Azure Active Directory (AAD) credentials 
+    * This prevents invalid, expired or otherwise broken credentials being inserted and causing cluster issues.
+
+New Features / Changes:
+
+* Users can now enable/disable the Kubernetes Dashboard via the deployed addon-manager
+  * Note: When the Kubernetes Dashboard is disabled, the `az aks browse` command will fail
+  * To enable the dashboard: `az aks <...> --enable-addons kube-dashboard`
+  * To disable: `az aks <...> disable-addons --addons kube-dashboard`
+* Behavioral Changes
+  * AKS is now pre-validating MC_* resource group locks before any CRUD operation, avoiding the cluster enter Failed state.
+  * Scale up/down calls now return a correct error ('Bad Request') when users delete underlying virtual machines during the scale operation.
+  * Performance Improvement: caching is now set to read only for data disks
+  * The Nvidia driver has been updated to 410.79 for N series cluster configurations
+
 ## Release 2019-03-07
 
 * The Azure Monitor for containers Agent has been updated to 3.0.0-4 for newly built or upgraded clusters
