@@ -11,7 +11,6 @@
 	* All AKS issued Kubernetes SSL certificates have had weak cipher support removed, all certificates should now pass security audits for BEAST and other vulnerabilities.
 		* If you are using older clients that do not support TLS 1.2 you will need to upgrade those clients and associated SSL libraries to securely connect.
                 * Note that only Kubernetes 1.10 and above support the new certificates, additionally existing certificates will not be updated as this would revoke all user access. To get the updated certificates you will need to create a new AKS cluster.
-	* Clusters that enter a failed state due to upgrade issues will now allow users to re-attempt to upgrade or will throw an error message with instructions to the user.
 	* Clusters that are in the process of upgrading or in failed upgrade state will attempt to re-execute the upgrade or throw an obvious error message.
 * The preview feature for Calico/Network Security Policies has been updated to repair a bug where ip-forwarding was not enabled by default.
 * The `cachingmode: ReadOnly` flag was not always being correctly applied to the managed premium storage class, this has been resolved.
