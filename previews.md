@@ -25,9 +25,9 @@ az extension remove --name aks-preview
 
 ## Preview features
 
-### Virtual Machine Scale Sets (VMSS)
+### Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler
 
-Azure virtual machine scale sets let you create and manage a group of identical, load balanced VMs. The number of VM instances can automatically increase or decrease in response to demand or a defined schedule. Scale sets provide high availability to your applications, and allow you to centrally manage, configure, and update a large number of VMs. With virtual machine scale sets, you can build large-scale services for areas such as compute, big data, and container workloads.
+[Azure virtual machine scale sets](https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview) let you create and manage a group of identical, load balanced VMs. VMSS usage is commonly used in conjunction with the [cluster autoscaler](https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler). Both of these are in active preview and can be used today. ([Documentation here](https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler)).
 
 You can opt into the preview by registering the feature flag:
 
