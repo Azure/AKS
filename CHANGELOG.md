@@ -1,5 +1,36 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-03-21
+
+*This release is actively rolling out to all regions*
+
+* The Central India region is now GA
+
+* Known Issues
+  * Unable to disable addons on deployed clusters
+    * AKS Engineering is diagnosing an issue around existing/deployed clusters being unable to disable Kubernetes addons within the addon-manager. When we have identified and repaired the issue we will roll out the required hot fix to all regions.
+    * This impacts all addons including monitoring, http application routing, etc.
+
+* Bug fixes
+  * AKS will now begin preserving node labels & annotations users apply to clusters during upgrades.
+    * Note: labels & annotations will not be applied to new nodes added during a scale up operation.
+  * AKS now properly validates the Service Principal / Azure Active Directory (AAD) credentials
+    * This prevents invalid, expired or otherwise broken credentials being inserted and causing cluster issues.
+  * Clusters that enter a failed state due to upgrade issues will now allow users to re-attempt to upgrade or will throw an error message with instructions to the user.
+  * Fixed an issue with cloud-init and the walinuxagent resulting in `failed state` VMs/worker nodes
+  * The `tenant-id` is now correctly defaulted if not passed in for AAD enabled clusters.
+
+* Behavioral Changes
+  * AKS is now pre-validating MC_* resource group locks before any CRUD operation, avoiding the cluster enter Failed state.
+  * Scale up/down calls now return a correct error ('Bad Request') when users delete underlying virtual machines during the scale operation.
+  * Performance Improvement: caching is now set to read only for data disks
+  * The Nvidia driver has been updated to 410.79 for N series cluster configurations
+  * The default worker node disk size has been increased to 100GB
+    * This resolves customer reported issues with large numbers (and large sizes) of Docker images triggering out of disk issues and possible workload eviction. 
+  * The Kubernetes controller manager `terminated-pod-gc-threshold` has been lowered to 6000 (previously 12500)
+    * This will help system performance for customers running large number of Jobs (finished pods)
+  * The Azure Monitor for Container agent has been updated to the 2019-03 release
+
 ## Release 2019-03-07
 
 * The Azure Monitor for containers Agent has been updated to 3.0.0-4 for newly built or upgraded clusters
