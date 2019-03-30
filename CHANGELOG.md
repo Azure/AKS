@@ -1,15 +1,20 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-03-21
+## Release 2019-03-29
 
 *This release is actively rolling out to all regions*
 
-* The Central India region is now GA
+* The following regions are now GA: SouthCentralUS, KoreaCentral, KoreaSouth
 
-* Known Issues
-  * Unable to disable addons on deployed clusters
-    * AKS Engineering is diagnosing an issue around existing/deployed clusters being unable to disable Kubernetes addons within the addon-manager. When we have identified and repaired the issue we will roll out the required hot fix to all regions.
-    * This impacts all addons including monitoring, http application routing, etc.
+* Bug fixes
+  * Fixed an issue which prevented Kubernetes addons from being disabled.
+  
+* Behavioral Changes
+  * AKS will now block subsequent PUT requests (with a status code 409 - Conflict) while an ongoing operation is being performed.
+
+## Release 2019-03-21
+
+* The Central India region is now GA
 
 * Bug fixes
   * AKS will now begin preserving node labels & annotations users apply to clusters during upgrades.
