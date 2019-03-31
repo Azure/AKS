@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-03-29
+## Release 2019-03-29 (Hotfix)
 
 *This release is actively rolling out to all regions*
 
