@@ -4,7 +4,7 @@
 
 *This release is actively rolling out to all regions*
 
-* The following regions are now GA: SouthCentralUS, KoreaCentral, KoreaSouth
+* The following regions are now GA: South Central US, Korea Central and Korea South
 
 * Bug fixes
   * Fixed an issue which prevented Kubernetes addons from being disabled.
