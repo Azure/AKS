@@ -4,7 +4,8 @@ This issue tracker is a best-effort forum for users and customers to suggest fea
 
 If you are experiencing a service disruption when creating, upgrading, scaling, or deleting your cluster,
 please open a support request with Azure support. Be sure to include your subscription id, resource group,
-cluster name, and region.
+cluster name, and region. This information should __NOT__ be included in this issue due to its potential
+sensitivity.
 
 -->
 
