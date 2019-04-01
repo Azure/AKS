@@ -35,7 +35,8 @@
   * The Kubernetes controller manager `terminated-pod-gc-threshold` has been lowered to 6000 (previously 12500)
     * This will help system performance for customers running large number of Jobs (finished pods)
   * The Azure Monitor for Container agent has been updated to the 2019-03 release
-
+  * The "View Kubernetes Dashboard" has been removed from the Azure Portal
+    * Note that this button did not expose/add functionality, it only linked to the existing instructions for using the Kubernetes dashboard found here: https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard
 ## Release 2019-03-07
 
 * The Azure Monitor for containers Agent has been updated to 3.0.0-4 for newly built or upgraded clusters
