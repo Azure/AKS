@@ -1,5 +1,7 @@
 # AKS Preview Features and Related Projects
 
+**Please be aware, enabling preview features takes effect at the Azure subscription level. Do not install preview features on production subscription as it can change default API behavior impacting regular operations.**
+
 At any given time, there can be multiple early stage features available in AKS behind a *feature flag*, along with a set of related projects available elsewhere on GitHub that you may wish deploy manually on the service.
 
 In most cases, these features and associated projects will eventually make their way into AKS, or at least be supported as 1st class extensions. But before they get there, we need sufficient usage from early adopters to validate their usefulness and quality.
@@ -16,7 +18,7 @@ In order to use / opt into preview features, you will need to use the [Azure CLI
 az extension add --name aks-preview
 ```
 
-**Warning**: Installing the preview extension will update the CLI to use the **latest** extensions and properties. Please do not enable this for production clusters. In order to uninstall the extension, you can do the following:
+**Warning**: Installing the preview extension will update the CLI to use the **latest** extensions and properties. Please do not enable this for production clusters & subscriptions. In order to uninstall the extension, you can do the following:
 
 ```
 az extension remove --name aks-preview
