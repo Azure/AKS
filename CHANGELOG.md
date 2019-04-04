@@ -1,8 +1,16 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-03-29 (Hotfix)
+## Release 2019-04-04 - Hotfix (CVE-2019-1002101 mitigation)
+**This release is currently rolling out to all regions**
 
-*This release is actively rolling out to all regions*
+* New kubernetes versions released for CVE-2019-1002101  mitigation
+	* Kubernetes 1.12.7
+	* Kubernetes 1.11.9
+	* Customers should upgrade to the latest 1.11 and 1.12 releases.
+	* Kubernetes versions prior to 1.11 must upgrade to 1.11/1.12 for the fix.
+
+
+## Release 2019-03-29 (Hotfix)
 
 * The following regions are now GA: South Central US, Korea Central and Korea South
 
