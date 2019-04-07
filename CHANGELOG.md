@@ -3,7 +3,7 @@
 ## Release 2019-04-04 - Hotfix (CVE-2019-9946 mitigation)
 **This release is currently rolling out to all regions**
 
-* New kubernetes versions released for CVE-2019-1002101  mitigation
+* New kubernetes versions released for CVE-2019-9946 mitigation
 	* Kubernetes 1.12.7
 	* Kubernetes 1.11.9
 	* Customers should upgrade to the latest 1.11 and 1.12 releases.
