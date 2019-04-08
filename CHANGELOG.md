@@ -2,11 +2,15 @@
 
 ## Release 2019-04-04 - Hotfix (CVE mitigation)
 
-* New kubernetes versions released to AKS for CVE-2019-9946 & CVE-2018-100210 mitigations
-	* Kubernetes 1.12.7
-	* Kubernetes 1.11.9
-	* Customers should upgrade to the latest 1.11 and 1.12 releases.
-	* Kubernetes versions prior to 1.11 must upgrade to 1.11/1.12 for the fix.
+* New kubernetes versions released with multiple CVE mitigations
+  * Kubernetes 1.12.7
+    * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#changelog-since-v1126
+  * Kubernetes 1.11.9
+    * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#changelog-since-v1118
+* Customers should upgrade to the latest 1.11 and 1.12 releases.
+* Kubernetes versions prior to 1.11 must upgrade to 1.11/1.12 for the fix.
+
+
 
 
 ## Release 2019-03-29 (Hotfix)
