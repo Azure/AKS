@@ -1,9 +1,8 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-04-04 - Hotfix (CVE-2019-9946 mitigation)
-**This release is currently rolling out to all regions**
+## Release 2019-04-04 - Hotfix (CVE mitigation)
 
-* New kubernetes versions released for CVE-2019-9946 mitigation
+* New kubernetes versions released to AKS for CVE-2019-9946 & CVE-2018-100210 mitigations
 	* Kubernetes 1.12.7
 	* Kubernetes 1.11.9
 	* Customers should upgrade to the latest 1.11 and 1.12 releases.
