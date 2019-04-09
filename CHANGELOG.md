@@ -1,5 +1,16 @@
 # Azure Kubernetes Service Changelog
 
+# Release 2019-04-08 (Hotfix)
+
+This release fixes one AKS product regression and an issue identified with the Azure Jenkins plugin.
+
+* A regression when using ARM templates to issue AKS cluster update(s) (such as configuration changes) that also impacted the Azure Portal has been fixed.
+  * Users do not need to perform any actions / upgrades for this fix.
+* An issue when using the Azure Container Jenkins plugin with AKS has been mitigated.
+  * This issue caused errors and failures when using the Jenkins plugin - the bug triggered by a new AKS API version but was related to a latent issue in the plugin's API detection behavior.
+  * An updated Jenkins plugin has been published: https://github.com/jenkinsci/azure-acs-plugin/issues/16
+  * https://github.com/jenkinsci/azure-acs-plugin/releases/tag/azure-acs-0.2.4
+
 ## Release 2019-04-04 - Hotfix (CVE mitigation)
 
 * Bug fixes
@@ -19,7 +30,7 @@
 
 * Bug fixes
   * Fixed an issue which prevented Kubernetes addons from being disabled.
-  
+
 * Behavioral Changes
   * AKS will now block subsequent PUT requests (with a status code 409 - Conflict) while an ongoing operation is being performed.
 
@@ -42,7 +53,7 @@
   * Performance Improvement: caching is now set to read only for data disks
   * The Nvidia driver has been updated to 410.79 for N series cluster configurations
   * The default worker node disk size has been increased to 100GB
-    * This resolves customer reported issues with large numbers (and large sizes) of Docker images triggering out of disk issues and possible workload eviction. 
+    * This resolves customer reported issues with large numbers (and large sizes) of Docker images triggering out of disk issues and possible workload eviction.
   * The Kubernetes controller manager `terminated-pod-gc-threshold` has been lowered to 6000 (previously 12500)
     * This will help system performance for customers running large number of Jobs (finished pods)
   * The Azure Monitor for Container agent has been updated to the 2019-03 release
@@ -111,7 +122,7 @@ Note: All newly created 1.9, 1.10, 1.11 and 1.12 clusters will have the new Moby
     * Please note that GPU-based nodes do not support the new container runtime yet. We will provide another service update once a fix is available for those nodes.
 
 **CVE-2019-5736 notes and mitigation**
-Microsoft has built a new version of the Moby container runtime that includes the OCI update to address this vulnerability. In order to consume the updated container runtime release, you will need to **upgrade your Kubernetes cluster**. 
+Microsoft has built a new version of the Moby container runtime that includes the OCI update to address this vulnerability. In order to consume the updated container runtime release, you will need to **upgrade your Kubernetes cluster**.
 
 Any upgrade will suffice as it will ensure that all existing nodes are removed and replaced with new nodes that include the patched runtime. You can see the upgrade paths/versions available to you by running the following command with the Azure CLI:
 
@@ -137,7 +148,7 @@ If all of the nodes list **docker://3.0.4** in the Container Runtime column, you
 
 ### Release 2019-02-07 - Hotfix Release
 
-This hotfix release fixes the root-cause of several bugs / regressions introduced in the 2019-01-31 release. This release does not add new features, functionality or other improvements. 
+This hotfix release fixes the root-cause of several bugs / regressions introduced in the 2019-01-31 release. This release does not add new features, functionality or other improvements.
 
 **Hotfix releases follow an accelerated rollout schedule - this release should be in all regions within 24-48 hours barring unforeseen issues**
 
@@ -209,4 +220,3 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
 [5]: https://github.com/Azure/AKS/blob/master/previews.md
 [6]: https://docs.microsoft.com/azure/aks/update-credentials
 [7]: https://www.danielstechblog.io/using-custom-dns-server-for-domain-specific-name-resolution-with-azure-kubernetes-service/
-
