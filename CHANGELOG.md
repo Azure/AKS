@@ -2,6 +2,8 @@
 
 # Release 04-01-2019
 
+*This release is rolling out to all regions*
+
 * Bug Fixes
   * Resolved an issue preventing some users from leveraging the Live Container Logs feature (due to a 401 unauthorized).
   * Resolved an issue where users could get "Failed to get list of supported orchestrators" during upgrade calls.
