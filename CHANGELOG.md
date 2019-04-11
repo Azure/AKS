@@ -1,5 +1,19 @@
 # Azure Kubernetes Service Changelog
 
+# Release 04-01-2019
+
+* Bug Fixes
+  * Resolved an issue preventing some users from leveraging the Live Container Logs feature (due to a 401 unauthorized).
+  * Resolved an issue where users could get "Failed to get list of supported orchestrators" during upgrade calls.
+  * Resolved an issue where users using custom subnets/routes/networking with AKS where IP ranges match the cluster/service or node IPs could result in an inability to `exec`, get cluster logs (`kubectl get logs`) or otherwise pass required health checks.
+  * An issue where a user running `az aks get-credentials` while a cluster is in creation resulting in an unclear error ('Could not find role name') has been resolved.
+
+* Behavioral Changes
+  * `priorityClassName: system-node-critical` has been added to kube-system pods.
+    * This only applies clusters running Kubernetes 1.11 and above
+    * This resolves an issue users had applying Kubernetes taints could result in kube-system pods not being able to be scheduled on the cluster.
+  * Users leveraging the Kubernetes audit log preview feature will now see events properly marked / attributed to Microsoft/AKS for all automated AKS actions/remediation & repair calls.
+
 # Release 2019-04-08 (Hotfix)
 
 This release fixes one AKS product regression and an issue identified with the Azure Jenkins plugin.
@@ -14,12 +28,12 @@ This release fixes one AKS product regression and an issue identified with the A
 ## Release 2019-04-04 - Hotfix (CVE mitigation)
 
 * Bug fixes
-    * New kubernetes versions released with multiple CVE mitigations
-        * Kubernetes 1.12.7
-            * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#changelog-since-v1126
-        * Kubernetes 1.11.9
-          * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#changelog-since-v1118
-        * Customers should upgrade to the latest 1.11 and 1.12 releases.
+  * New kubernetes versions released with multiple CVE mitigations
+    * Kubernetes 1.12.7
+      * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#changelog-since-v1126
+    * Kubernetes 1.11.9
+      * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#changelog-since-v1118
+    * Customers should upgrade to the latest 1.11 and 1.12 releases.
         * Kubernetes versions prior to 1.11 must upgrade to 1.11/1.12 for the fix.
 * Component updates
   * Updated included AKS-Engine version to 0.33.2
