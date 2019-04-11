@@ -11,9 +11,6 @@
   * An issue where a user running `az aks get-credentials` while a cluster is in creation resulting in an unclear error ('Could not find role name') has been resolved.
 
 * Behavioral Changes
-  * `priorityClassName: system-node-critical` has been added to kube-system pods.
-    * This only applies clusters running Kubernetes 1.11 and above
-    * This resolves an issue users had applying Kubernetes taints could result in kube-system pods not being able to be scheduled on the cluster.
   * Users leveraging the Kubernetes audit log preview feature will now see events properly marked / attributed to Microsoft/AKS for all automated AKS actions/remediation & repair calls.
 
 # Release 2019-04-08 (Hotfix)
