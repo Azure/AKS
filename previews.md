@@ -44,26 +44,6 @@ az extension remove --name aks-preview
 
 ## Preview features
 
-### Multiple Availability Zones (Multi-Az)
-
-To provide a higher level of availability to your applications, AKS clusters
-can be distributed across availability zones. These zones are physically
-separate data centers within a given region. When the cluster components are
-distributed across multiple zones, your AKS cluster is able to tolerate a
-failure in one of those zones. Your applications and management operations
-continue to be available even if one entire data center has a problem.
-
-You can opt-into the Multi-AZ functionality by installing (see above) the
-AKS preview extension for the Azure CLI and performing a cluster create command
-with `--node-zones`:
-
-```
-az aks create ... --node-zones (Allowed values: 1 2 3)
-```
-
-Where `--node-zones` is a space-separated list of availability zones where
-agent nodes will be placed.
-
 ### Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler
 
 [Azure virtual machine scale sets][6] let you create and manage a group of
