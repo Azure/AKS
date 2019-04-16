@@ -10,8 +10,6 @@
   * Resolved an issue where users using custom subnets/routes/networking with AKS where IP ranges match the cluster/service or node IPs could result in an inability to `exec`, get cluster logs (`kubectl get logs`) or otherwise pass required health checks.
   * An issue where a user running `az aks get-credentials` while a cluster is in creation resulting in an unclear error ('Could not find role name') has been resolved.
 
-* Behavioral Changes
-  * Users leveraging the Kubernetes audit log preview feature will now see events properly marked / attributed to Microsoft/AKS for all automated AKS actions/remediation & repair calls.
 
 # Release 2019-04-08 (Hotfix)
 
