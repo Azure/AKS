@@ -165,7 +165,7 @@ Azure Jenkins plugin.
   * Specifically, there was a missing dependency (e.g. `jq is missing`) on the
     nodes, all new nodes should now contain the `jq` utility.
 
-### Release 2019-02-12 - Hotfix Release (UPDATE)
+## Release 2019-02-12 - Hotfix Release (UPDATE)
 
 At this time, all regions now have the CVE hotfix release. The simplest way to
 consume it is to perform a Kubernetes version upgrade, which will cordon, drain,
@@ -237,7 +237,7 @@ kubectl get nodes -o wide
 If all of the nodes list **docker://3.0.4** in the Container Runtime column,
 you have successfully upgraded to the new release.
 
-### Release 2019-02-07 - Hotfix Release
+## Release 2019-02-07 - Hotfix Release
 
 This hotfix release fixes the root-cause of several bugs / regressions
 introduced in the 2019-01-31 release. This release does not add new features,
@@ -263,7 +263,7 @@ be in all regions within 24-48 hours barring unforeseen issues**
     compatible work around (formatting of the customizations has changed
     however). Please see the example/notes below for usage.
 
-## Using the new CoreDNS configuration for DNS configuration.
+### Using the new CoreDNS configuration for DNS configuration.
 
 With kube-dns, there was an undocumented feature where it supported two config
 maps allowing users to perform DNS overrides/stub domains, and other
@@ -298,7 +298,7 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
 ```
 
 
-### Release 2019-01-31
+## Release 2019-01-31
 
 * [Kubernetes 1.12.4 GA Release][1]
   * With the release of 1.12.4 *Kubernetes 1.8 support has been removed*, you
