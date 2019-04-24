@@ -1,12 +1,12 @@
 # Azure Kubernetes Service Changelog
 
-## Release 04-15-2019
+## Release 2019-04-15
 
 * Kubernetes 1.13 is GA
 * **The Kubernetes 1.9.x releases are now deprecated.** All clusters
   on version 1.9 must be upgraded to a later release (1.10, 1.11, 1.12, 1.13)
-  within **30 days**. Clusters still on 1.9.x after 30 days will no longer be
-  supported.
+  within **30 days**. Clusters still on 1.9.x after 30 days (2019-05-25)
+  will no longer be supported.
   * During the deprecation period, 1.9.x will contiue to appear in the available
     versions list. Once deprecation is completed 1.9 will be removed.
 
@@ -68,7 +68,7 @@
 * Component Updates
   * AKS-Engine has been updates to v0.33.4
 
-## Release 04-01-2019
+## Release 2019-04-01
 
 * Bug Fixes
   * Resolved an issue preventing some users from leveraging the Live Container
