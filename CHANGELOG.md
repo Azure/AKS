@@ -1,8 +1,74 @@
 # Azure Kubernetes Service Changelog
 
-## Release 04-01-2019
+## Release 04-15-2019
 
-*This release is rolling out to all regions*
+* Kubernetes 1.13 is GA
+* **The Kubernetes 1.9.x releases are now deprecated.** All clusters
+  on version 1.9 must be upgraded to a later release (1.10, 1.11, 1.12, 1.13)
+  within **30 days**. Clusters still on 1.9.x after 30 days will no longer be
+  supported.
+  * During the deprecation period, 1.9.x will contiue to appear in the available
+    versions list. Once deprecation is completed 1.9 will be removed.
+
+* (Region) North Central US is now available
+* (Region) Japan West is now available
+
+* New Features
+  * Customers may now provide custom Resource Group names.
+    * This means that users are no longer locked into the MC_* resource name
+      group. On cluster creation you may pass in a custom RG and AKS will
+      inherit that RG, permissions and attach AKS resources to the customer
+      provided resource group.
+    * Currently, you must pass in a new RG (resource group) must be new, and
+      can not be a pre-existing RG. We are working on support for pre-existing
+      RGs.
+    * This change requires newly provisioned clusters, existing clusters can
+      not be migrated to support this new capability. Cluster migration across
+      subscriptions and RGs is not currently supported.
+  * AKS now properly associates the existing route tables when passing in
+    custom VNET for Kubenet/Basic Networking.
+
+* Bug fixes
+  * An issue where two delete operations could be issued against a cluster
+    simultaneously resulting in an unknown and unrecoverable state has been
+    resolved.
+  * An issue where users could create a new AKS cluster and set the `maxPods`
+    value too low has been resolved.
+    * Users have reported cluster crashes, unavailability and other issues
+      when changing this setting. As AKS is a managed service, we provide
+      sidecars and pods we deploy and manage as part of the cluster. However
+      users could define a maxPods value lower than the value required for the
+      managed pods to run (eg 30), AKS now calculates the minimum number of
+      pods via: `maxPods or maxPods * vm_count > managed add-on pods`
+
+* Behavioral Changes
+  * AKS cluster creation now properly pre-checks the assigned service CIDR
+    range to block against possible conflicts with the dns-service CIDR.
+    * As an example, a user could use 10.2.0.1/24 instead of 10.2.0.0/24 which
+      would lead to IP conflicts. This is now validated/checked and if there is
+      a conflict, a clear error is returned.
+  * AKS now correctly blocks/validates users who accidentally attempt an
+    upgrade to a previous release (eg downgrade).
+  * AKS now validate all CRUD operations to confirm the requested action will
+    not fail due to IP Address/subnet exhaustion. If a call is made that would
+    exceed available addresses, the service correctly returns an error.
+  * The amount of memory allocated to the Kubernetes Dashboard has been
+    increased to 500Mi for customers with large numbers of nodes/jobs/objects.
+  * Small VM SKUs (such as Standard F1, and A2) that do not have enough RAM to
+    support the Kubernetes control plane components have been removed from the
+    list of available VMs users can use when creating AKS clusters.
+
+* Preview Features
+  * A bug where Calico pods would not start after a 1.11 to 1.12 upgrade has
+    been resolved.
+  * When using network policies and Calico, AKS now properly uses Azure CNI for
+    all routing vs defaulting to using Calico the routing plugin.
+  * Calico has been updated to v3.5.0
+
+* Component Updates
+  * AKS-Engine has been updates to v0.33.4
+
+## Release 04-01-2019
 
 * Bug Fixes
   * Resolved an issue preventing some users from leveraging the Live Container
