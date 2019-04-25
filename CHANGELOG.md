@@ -114,6 +114,7 @@ Azure Jenkins plugin.
 
 * Component updates
   * Updated included AKS-Engine version to 0.33.2
+    * See: https://github.com/Azure/aks-engine/releases/tag/v0.33.4 for details
 
 ## Release 2019-03-29 (Hotfix)
 
