@@ -1,5 +1,46 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-04-22
+
+*This release is rolling out to all regions*
+
+* Kubernetes 1.14 is now in Preview
+  * Do not use this for production clusters. This version is for early adopters
+    and advanced users to test and validate.
+  * Accessing the Kubernetes 1.14 release requires the `aks-preview` CLI
+    extension to be installed.
+
+* New Features
+  * Users are no longer forced to create / pre-provision subnets when using
+    Advanced networking. Instead, if you choose advanced networking and do not
+    supply a subnet, AKS will create one on your behalf.
+
+* Bug fixes
+  * An issue where AKS / the Azure CLI would ignore the `--network-plugin=azure`
+    option silently and create clusters with Kubenet has been resolved.
+    * Specifically, there was a bug in the cluster creation workflow where users
+      would specific `--network-plugin=azure` with Azure CNI / Advanced Networking
+      but miss passing in the additional options (eg '--pod-cidr, --service-cidr,
+      etc). If this occured, the service would fall-back and create the cluster
+      with Kubenet instead.
+
+* Preview Features
+  * Kubernetes 1.14 is now in Preview
+  * An issue with Network Policy and Calico where cluster creation could
+    fail/time out and pods would enter a crashloop has been fixed.
+    * https://github.com/Azure/AKS/issues/905
+    * Note, in order to get the fix properly applied, you should create a new
+      cluster based on this release, or upgrade your existing cluster and then
+      run the following clean up command after the upgrade is complete:
+
+```
+kubectl delete -f https://github.com/Azure/aks-engine/raw/master/docs/topics/calico-3.3.1-cleanup-after-upgrade.yaml
+```
+
+* Component Updates
+  * Azure Monitoring for Containers has been updated to the 2019-04-23 release
+    * For more information, please see: https://github.com/Microsoft/docker-provider/tree/ci_feature_prod#04232019--
+
 ## Release 2019-04-15
 
 * Kubernetes 1.13 is GA
