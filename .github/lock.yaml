@@ -1,5 +1,5 @@
 # Number of days of inactivity before a closed issue or pull request is locked
-daysUntilLock: 180
+daysUntilLock: 365
 
 # Skip issues and pull requests created before a given timestamp. Timestamp must
 # follow ISO 8601 (`YYYY-MM-DD`). Set to `false` to disable
