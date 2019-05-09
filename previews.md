@@ -208,5 +208,4 @@ https://github.com/Azure/application-gateway-kubernetes-ingress
 [7]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
 
 [api server]: https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges
-[windows]: https://docs.microsoft.com/en-us/azure/aks/windows-container-cli
 [nodepool]: https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools
