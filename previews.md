@@ -17,13 +17,11 @@ The purpose of this page is to capture these features and associated projects
 in a single place.
 
 **Note**: AKS Preview features are self-service, opt-in. They are provided to
-gather feedback and bugs from our community. Features in public preview are fall
-under 'best effort' support as these features are in preview and not meant for
-production and are supported by the AKS technical support teams during business
-hours only. For additional information please see:
-
-* [AKS Support Policies](https://docs.microsoft.com/en-us/azure/aks/support-policies)
-* [Azure Support FAQ](https://azure.microsoft.com/en-us/support/faq/)
+gather feedback and bugs from our community. However, they are not supported by
+Azure technical support and adding these to existing clusters will render the
+clusters as unsupported until the feature exits preview and graduate to general
+availability. If you encounter issues with preview features, please file issues
+on this GitHub repo with the name of the preview feature in the bug title.
 
 ## Getting Started
 
@@ -45,6 +43,57 @@ az extension remove --name aks-preview
 ```
 
 ## Preview features
+
+### Locked down cluster egress
+
+By default, AKS clusters have unrestricted outbound (egress) internet access.
+This level of network access allows nodes and services you run to access
+external resources as needed. If you wish to restrict egress traffic, a
+limited number of ports and addresses must be accessible to maintain healthy
+cluster maintenance tasks.
+
+```
+az feature register -n AKSLockingDownEgressPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
+### Multiple Node Pools
+
+Multiple Node Pool support is now in public preview. You can see the
+[preview documentation][nodepool] for instructions and limitations.
+
+```
+az feature register -n MultiAgentpoolPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
+### Secure access to the API server using authorized IP address ranges
+
+This feature allows users to restrict what IP addresses have access to the
+Kubernetes API endpoint for clusters. Please see details and limitations
+in the [preview documentation][api server].
+
+You can opt into the preview by registering the feature flag:
+
+```
+az feature register -n APIServerSecurityPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
 
 ### Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler
 
@@ -157,3 +206,7 @@ https://github.com/Azure/application-gateway-kubernetes-ingress
 [5]: https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler
 [6]: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview
 [7]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
+
+[api server]: https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges
+[windows]: https://docs.microsoft.com/en-us/azure/aks/windows-container-cli
+[nodepool]: https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools
