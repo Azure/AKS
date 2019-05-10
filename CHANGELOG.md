@@ -2,6 +2,11 @@
 
 ## Release 2019-05-06
 
+* New Features
+  * Kubernetes Network Policies are GA
+    * See https://docs.microsoft.com/en-us/azure/aks/use-network-policies
+      for documentation.
+
 * Bug Fixes
   * An issues customers reported with CoreDNS entering CrashLoopBackoff has
     been fixed. This was related to the upstream move to `klog`
