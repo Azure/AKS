@@ -44,6 +44,57 @@ az extension remove --name aks-preview
 
 ## Preview features
 
+### Locked down cluster egress
+
+By default, AKS clusters have unrestricted outbound (egress) internet access.
+This level of network access allows nodes and services you run to access
+external resources as needed. If you wish to restrict egress traffic, a
+limited number of ports and addresses must be accessible to maintain healthy
+cluster maintenance tasks.
+
+```
+az feature register -n AKSLockingDownEgressPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
+### Multiple Node Pools
+
+Multiple Node Pool support is now in public preview. You can see the
+[preview documentation][nodepool] for instructions and limitations.
+
+```
+az feature register -n MultiAgentpoolPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
+### Secure access to the API server using authorized IP address ranges
+
+This feature allows users to restrict what IP addresses have access to the
+Kubernetes API endpoint for clusters. Please see details and limitations
+in the [preview documentation][api server].
+
+You can opt into the preview by registering the feature flag:
+
+```
+az feature register -n APIServerSecurityPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
 ### Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler
 
 [Azure virtual machine scale sets][6] let you create and manage a group of
@@ -155,3 +206,6 @@ https://github.com/Azure/application-gateway-kubernetes-ingress
 [5]: https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler
 [6]: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview
 [7]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
+
+[api server]: https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges
+[nodepool]: https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools

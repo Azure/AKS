@@ -1,8 +1,30 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-04-22
+## Release 2019-05-06
 
-*This release is rolling out to all regions*
+* Bug Fixes
+  * An issues customers reported with CoreDNS entering CrashLoopBackoff has
+    been fixed. This was related to the upstream move to `klog`
+    * https://github.com/coredns/coredns/pull/2529
+  * An issue where AKS managed pods (within kube-system) did not have the correct
+    tolerations preventing them from being scheduled when customers use
+    taints/tolerations has been fixed.
+  * An issue with kube-dns crashing on specific config map override scenarios
+    as seen in https://github.com/Azure/acs-engine/issues/3534 has been
+    resolved by updating to the latest upstream kube-dns release.
+  * An issue where customers could experience longer than normal create times
+    for clusters tied to a blocking wait on heapster pods has been resolved.
+* Preview Features
+  * New features in public preview:
+    * Secure access to the API server using authorized IP address ranges
+    * Locked down egress traffic
+      * This feature allows users to limit / whitelist the hosts used by AKS
+        clusters.
+    * Multiple Node Pools
+    * For all previews, please see the [previews][previews] document for opt-in
+      instructions and documentation links.
+
+## Release 2019-04-22
 
 * Kubernetes 1.14 is now in Preview
   * Do not use this for production clusters. This version is for early adopters
@@ -452,3 +474,6 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
 [5]: https://github.com/Azure/AKS/blob/master/previews.md
 [6]: https://docs.microsoft.com/azure/aks/update-credentials
 [7]: https://www.danielstechblog.io/using-custom-dns-server-for-domain-specific-name-resolution-with-azure-kubernetes-service/
+
+
+[previews]: https://github.com/Azure/AKS/blob/master/previews.md
