@@ -119,26 +119,7 @@ To create a cluster with VMSS enabled, use the `--enable-vmss` switch in `az aks
 
 ### Kubernetes Network Policy
 
-[Network policy][4] enables network segmentation of a Kubernetes cluster.
-Network policy uses a plugin model, with different providers implementing the
-core Kubernetes API. In AKS, we offer two plugins: a native `azure` solution
-and the open-source `calico` project.
-
-You can opt into the preview by registering the feature flag:
-
-```
-az feature register -n EnableNetworkPolicy --namespace Microsoft.ContainerService
-```
-
-Then refresh your registration of the AKS resource provider:
-
-```
-az provider register -n Microsoft.ContainerService
-```
-
-To create a cluster with network policy enabled, use the `--network-policy`
-switch in `az aks create` and specify the network policy plugin you would like
-to use, `azure` or `calico`. Note that both require the `azure` network plugin.
+Kubernetes network policies is now GA, please see: https://docs.microsoft.com/en-us/azure/aks/use-network-policies
 
 ### Kubernetes Audit Log
 
