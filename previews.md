@@ -16,13 +16,14 @@ their usefulness and quality.
 The purpose of this page is to capture these features and associated projects
 in a single place.
 
-
 **Note**: AKS Preview features are self-service, opt-in. They are provided to
-gather feedback and bugs from our community. However, they are not supported by
-Azure technical support and adding these to existing clusters will render the
-clusters as unsupported until the feature exits preview and graduate to general
-availability. If you encounter issues with preview features, please file issues
-on this GitHub repo with the name of the preview feature in the bug title.
+gather feedback and bugs from our community. Features in public preview are fall
+under 'best effort' support as these features are in preview and not meant for
+production and are supported by the AKS technical support teams during business
+hours only. For additional information please see:
+
+* [AKS Support Policies](https://docs.microsoft.com/en-us/azure/aks/support-policies)
+* [Azure Support FAQ](https://azure.microsoft.com/en-us/support/faq/)
 
 ## Getting Started
 
