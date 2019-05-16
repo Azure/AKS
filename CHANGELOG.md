@@ -9,7 +9,7 @@
       may now have multiple AKS clusters on a subnet.
     * If the subnet provided to AKS has NSGs, those NSGs will be preserved and
       used.
-      * **Warning**: NSGs must respect: https://aks.ms/aksegress or the
+      * **Warning**: NSGs must respect: https://aka.ms/aksegress or the
       cluster might not come up or work properly.
     * Note: Shared subnet support is not supported with VMSS (in preview)
 * Bug Fixes
