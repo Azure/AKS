@@ -11,6 +11,7 @@
       used.
       * **Warning**: NSGs must respect: https://aks.ms/aksegress or the
       cluster might not come up or work properly.
+    * Note: Shared subnet support is not supported with VMSS (in preview)
 * Bug Fixes
   * A bug that blocked Azure CNI users from setting maxPods above 110 (maximum
     of 250) and that blocked existing clusters from scaling up when the value
