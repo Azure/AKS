@@ -1,5 +1,24 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-05-13
+
+* New Features
+  * Shared Subnets are now supported with Azure CNI.
+    * Users may bring / provide their own subnets to AKS clusters
+    * Subnets are no longer restricted to a single subnet per AKS cluster, users
+      may now have multiple AKS clusters on a subnet.
+    * If the subnet provided to AKS has NSGs, those NSGs will be preserved and
+      used.
+      * **Warning**: NSGs must respect: https://aks.ms/aksegress or the
+      cluster might not come up or work properly.
+* Bug Fixes
+  * A bug that blocked Azure CNI users from setting maxPods above 110 (maximum
+    of 250) and that blocked existing clusters from scaling up when the value
+    was over 110 for CNI has been fixed.
+  * A validation bug blocking long DNS names used by customers has been fixed.
+    For restrictions on DNS/Cluster names, please see
+    https://aka.ms/aks-naming-rules
+
 ## Release 2019-05-06
 
 * New Features
