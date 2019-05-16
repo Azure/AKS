@@ -113,8 +113,9 @@ kubectl delete -f https://github.com/Azure/aks-engine/raw/master/docs/topics/cal
     * This change requires newly provisioned clusters, existing clusters can
       not be migrated to support this new capability. Cluster migration across
       subscriptions and RGs is not currently supported.
-  * AKS now properly associates the existing route tables when passing in
-    custom VNET for Kubenet/Basic Networking.
+  *  AKS now properly associates existing route tables created by AKS when 
+      passing in custom VNET for Kubenet/Basic Networking. *This does not 
+      support User Defined / Custom routes (UDRs)*.
 
 * Bug fixes
   * An issue where two delete operations could be issued against a cluster
