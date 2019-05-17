@@ -10,6 +10,8 @@
       or raised as a Sev C support request. Support requests and issues for
       preview features do not have an SLA / SLO and are best-effort only.
   * **Do not enable preview featured on production subscriptions or clusters.**
+  * For all previews, please see the [previews][previews] document for opt-in
+    instructions and documentation links.
 
 * Bug fixes
   * An issue impacting Java workloads where pods running Java workloads would
@@ -20,9 +22,6 @@
 
 * Component Updates
   * AKS-Engine has been updates to v0.35.1
-
-Q: Why did the Clydesdale give the pony a glass of water?
-A: Because he was a little horse!
 
 ## Release 2019-05-13
 
