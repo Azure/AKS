@@ -46,6 +46,27 @@ az extension remove --name aks-preview
 
 ## Preview features
 
+### Windows worker nodes
+
+This preview feature allows customers to add Windows Server node to their
+clusters for use with common Windows or .NET workloads. Please note that
+this feature will enabled multiple node pools as a dependency, and AKS clusters
+will always contains a Linux node pool as the first node pool. This first
+Linux-based node pool can't be deleted unless the AKS cluster itself is deleted.
+
+Please see the [documentation][8] for additional information including setup
+and known limitations.
+
+```
+az feature register -n WindowsPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
 ### Locked down cluster egress
 
 By default, AKS clusters have unrestricted outbound (egress) internet access.
@@ -189,6 +210,7 @@ https://github.com/Azure/application-gateway-kubernetes-ingress
 [5]: https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler
 [6]: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview
 [7]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
+[8]: https://docs.microsoft.com/en-us/azure/aks/windows-container-cli
 
 [api server]: https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges
 [nodepool]: https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools

@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-05-17 (Announcement)
+
+* Window node support for AKS is now in Public Preview
+  * Blog post: https://aka.ms/aks/windows
+  * Support and documentation:
+    * Documentation: https://aka.ms/aks/windowsdocs
+    * Issues may be filed on this Github repository (https://github.com/Azure/AKS)
+      or raised as a Sev C support request. Support requests and issues for
+      preview features do not have an SLA / SLO and are best-effort only.
+  * **Do not enable preview featured on production subscriptions or clusters.**
+
+* Bug fixes
+  * An issue impacting Java workloads where pods running Java workloads would
+    consume all available node resources instead of the defined pod resource
+    limits defined by the user has been resolved.
+    * https://bugs.openjdk.java.net/browse/JDK-8217766
+    * AKS-Engine PR for fix: https://github.com/Azure/aks-engine/pull/1095
+
+* Component Updates
+  * AKS-Engine has been updates to v0.35.1
+
+Q: Why did the Clydesdale give the pony a glass of water?
+A: Because he was a little horse!
+
 ## Release 2019-05-13
 
 * New Features
@@ -113,8 +137,8 @@ kubectl delete -f https://github.com/Azure/aks-engine/raw/master/docs/topics/cal
     * This change requires newly provisioned clusters, existing clusters can
       not be migrated to support this new capability. Cluster migration across
       subscriptions and RGs is not currently supported.
-  *  AKS now properly associates existing route tables created by AKS when 
-      passing in custom VNET for Kubenet/Basic Networking. *This does not 
+  *  AKS now properly associates existing route tables created by AKS when
+      passing in custom VNET for Kubenet/Basic Networking. *This does not
       support User Defined / Custom routes (UDRs)*.
 
 * Bug fixes
