@@ -1,5 +1,31 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-05-20
+
+* Behavioral Changes
+  * The 192.0.2.0/24 IP block is now reserved for AKS use. Clusters created in
+    a VNet that overlaps with this block will fail pre-flight validation.
+* Bug Fixes
+  * An issue where users running old AKS clusters attempting to upgrade would
+    get a failed upgrade with an Internal Server Error has been fixed.
+  * An issue where Kubernetes 1.14.0 would not show in the Azure Portal or AKS
+    Preview CLI with the 'Preview' or 'isPreview' tag has been resolved.
+  * An issue where customers would get excessive log entries due to missing
+    Heapster rbac permissions has been fixed.
+    * https://github.com/Azure/AKS/issues/520
+  * An issue where AKS clusters could end up with missing DNS entries resulting
+    in DNS resolution errors or crashes within CoreDNS has been resolved.
+
+* Preview Features
+  * A bug where the AKS node count could be out of sync with the VMSS node count
+    has been resolved.
+  * There is a known issue with the cluster autoscaler preview and multiple
+    agent pools. The current autoscaler in preview is not compatible with
+    multiple agent pools, and could not be disabled. We have fixed the issue
+    that blocked disabling the autoscaler. A fix for mutliple agent pools and
+    the cluster autoscaler is in development.
+
+
 ## Release 2019-05-17 (Announcement)
 
 * Window node support for AKS is now in Public Preview
