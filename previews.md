@@ -46,7 +46,15 @@ az extension remove --name aks-preview
 
 ## Preview features
 
-### Windows worker nodes
+* [Windows Worker Nodes](#windows)
+* [Locked down cluster egress](#egress)
+* [Multiple Node Pools](#nodepools)
+* [Secure access to the API server using authorized IP address ranges](#apideny)
+* [Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler](#vmss)
+* [Kubernetes Audit Log](#noauditforu)
+* [Kubernetes Pod Security Policies](#psp)
+
+### Windows worker nodes <a name="windows"></a>
 
 This preview feature allows customers to add Windows Server node to their
 clusters for use with common Windows or .NET workloads. Please note that
@@ -67,7 +75,7 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-### Locked down cluster egress
+### Locked down cluster egress <a name="egress"></a>
 
 By default, AKS clusters have unrestricted outbound (egress) internet access.
 This level of network access allows nodes and services you run to access
@@ -85,7 +93,7 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-### Multiple Node Pools
+### Multiple Node Pools  <a name="nodepools"></a>
 
 Multiple Node Pool support is now in public preview. You can see the
 [preview documentation][nodepool] for instructions and limitations.
@@ -100,7 +108,7 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-### Secure access to the API server using authorized IP address ranges
+### Secure access to the API server using authorized IP address ranges  <a name="apideny"></a>
 
 This feature allows users to restrict what IP addresses have access to the
 Kubernetes API endpoint for clusters. Please see details and limitations
@@ -118,7 +126,7 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-### Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler
+### Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler <a name="vmss"></a>
 
 [Azure virtual machine scale sets][6] let you create and manage a group of
 identical, load balanced VMs. VMSS usage is commonly used in conjunction with
@@ -139,12 +147,7 @@ az provider register -n Microsoft.ContainerService
 
 To create a cluster with VMSS enabled, use the `--enable-vmss` switch in `az aks create`.
 
-
-### Kubernetes Network Policy
-
-Kubernetes network policies is now GA, please see: https://docs.microsoft.com/en-us/azure/aks/use-network-policies
-
-### Kubernetes Audit Log
+### Kubernetes Audit Log <a name="noauditforu"></a>
 
 The [Kubernetes audit log][3] provides a detailed account of security-relevant
 events that have occurred in the cluster. You can enable it for your
@@ -167,6 +170,25 @@ diagnostic settings for your cluster, as described in [this doc][2].
 
 **Please note:** AKS will only capture audit logs for clusters which are
  created or upgraded after the feature flag is enabled.
+
+## Kubernetes Pod Security Policies <a name="psp"></a>
+
+To improve the security of your AKS cluster, you can limit what pods can be
+scheduled. Pods that request resources you don't allow can't run in the AKS
+cluster. You define this access using [pod security policies][9].
+
+First, register the feature flag:
+
+```
+az feature register --name PodSecurityPolicyPreview --namespace Microsoft.ContainerService
+```
+
+Then refresh your registration of the AKS resource provider:
+
+```
+az provider register -n Microsoft.ContainerService
+```
+
 
 ## Associated projects
 
@@ -211,6 +233,7 @@ https://github.com/Azure/application-gateway-kubernetes-ingress
 [6]: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview
 [7]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
 [8]: https://docs.microsoft.com/en-us/azure/aks/windows-container-cli
+[9]: https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies
 
 [api server]: https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges
 [nodepool]: https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools
