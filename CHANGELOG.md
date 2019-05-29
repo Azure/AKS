@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-05-20
+## Release 2019-05-28
 
 * New Features
   * AKS is now available in both China East 2 / China North 2 Azure Regions.
