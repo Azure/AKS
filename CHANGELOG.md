@@ -1,5 +1,21 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-05-28
+
+* New Features
+  * AKS is now available in both China East 2 / China North 2 Azure Regions.
+  * AKS is now available in South Africa North
+  * The L and M series Virtual Machines are now supported
+
+* Component Updates
+  * AKS-Engine has been updated to version 0.35.3
+  * CoreDNS has been upgraded from 1.2.2 to version 1.2.6
+
+* Preview Features
+  * A bug where users could not deleted an agent pool containing VMSS nodes if
+    the VMSS node creation fails has been fixed.
+
+
 ## Release 2019-05-20
 
 * Behavioral Changes
