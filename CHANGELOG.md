@@ -1,5 +1,25 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-05-10
+ 
+* New Features
+* Bug Fixes
+  * Kubernetes taints and tolerations are now supported in all AKS regions.
+    * Taints & Tolerations are preserved for current cluster nodes and
+      through upgrades, however they are _not_ preserved through scale (up,
+      down) operations.
+* Behavioral Changes
+* Preview Features
+  * A bug that prevented the cluster autoscaler from correctly functioning with
+    multiple nodepool clusters has been fixed.
+  * A bug preventing the cluster autoscaler from working with nodepool enabled
+    clusters (one or more nodepools) has been fixed.
+  * A bug where the NSG would not be reset as needed during a nodepool create
+    request has been fixed.
+  *
+* Component Updates
+  * AKS-Engine has been updated to v0.35.4
+
 ## Release 2019-05-28
 
 * New Features
