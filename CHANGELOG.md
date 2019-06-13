@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-05-10
+## Release 2019-06-10
  
 * Bug Fixes
   * Kubernetes taints and tolerations are now supported in all AKS regions.
