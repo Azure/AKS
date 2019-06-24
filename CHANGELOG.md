@@ -1,7 +1,23 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-06-18
+
+* Behavioral Changes
+  * **Important: Change in UDR and subnet behavior**
+    * When using Kubenet with a custom subnet, AKS now checks if there is an
+      existing associated route table.
+    * If that is the case AKS will NOT attach the kubenet RT/Routes automatically
+      and they should be added manually to the existing RT.
+    * If no Route Table exists AKS will automatically attach the kubenet RT/Routes.
+
+* Preview Features
+  * A bug where users could not scale VMSS based clusters after disabling the
+   cluster autoscaler has been fixed.
+  * A missing CRD for calico-enabled clusters (#1042) has been fixed.
+
+
 ## Release 2019-06-10
- 
+
 * Bug Fixes
   * Kubernetes taints and tolerations are now supported in all AKS regions.
     * Taints & Tolerations are preserved for current cluster nodes and
@@ -9,13 +25,13 @@
       down) operations.
 
 * Preview Features
-  * A bug that prevented cluster agent pool deletions due to VMSS creation 
+  * A bug that prevented cluster agent pool deletions due to VMSS creation
     failures has been fixed.
   * A bug preventing the cluster autoscaler from working with nodepool enabled
     clusters (one or more nodepools) has been fixed.
   * A bug where the NSG would not be reset as needed during a nodepool create
     request has been fixed.
-    
+
 * Component Updates
   * AKS-Engine has been updated to v0.35.4
 
