@@ -46,6 +46,7 @@ az extension remove --name aks-preview
 
 ## Preview features
 
+* [Standard Load Balancers](#slb)
 * [Windows Worker Nodes](#windows)
 * [Locked down cluster egress](#egress)
 * [Multiple Node Pools](#nodepools)
@@ -53,6 +54,23 @@ az extension remove --name aks-preview
 * [Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler](#vmss)
 * [Kubernetes Audit Log](#noauditforu)
 * [Kubernetes Pod Security Policies](#psp)
+
+### Standard Load Balancers <a name="slb"></a>
+
+This has been a long awaited feature which enables selection of the SKU type
+offered by Azure Load Balancer to be used with your AKS cluster, a full table
+of comparisons between the two is linked below.
+
+This is a create time property that can be set on new clusters created with the
+2019-06-01 API and forward. Support is available via preview CLI module as well
+which is captured in below documentation.
+
+* [Basic vs Standard Loadbalancers](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview#skus)
+* [Using Azure SLB with AKS](https://docs.microsoft.com/en-us/azure/aks/load-balancer-standard)
+* [AKS API Definition](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1585)
+
+Behavioral differences and deployment instructions are outlined in the official
+documentation below.
 
 ### Windows worker nodes <a name="windows"></a>
 

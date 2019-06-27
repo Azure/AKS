@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-06-24
+
+* New Features
+  * Tags on the resource group / passed in during cluster creation are now
+    propagated to all child resources within the cluster.
+* Bug Fixes
+  * Fixed an issue that could result in a failed service principal update and
+    AKS cluster creation.
+  * Fixed an issue where deploying AKS clusters using ARM templates without a
+    defined Service Principal would incorrectly pass validation.
+* Behavioral Changes
+* Preview Features
+  * Azure Standard load balancer support is now in public preview.
+    * This has been a long awaited feature which enables selection of the SKU
+      type offered by Azure Load Balancer to be used with your AKS cluster. Please see
+      [AKS previews][previews] for additional information.
+
+
+  * For all previews, please see the [previews][previews] document for opt-in
+    instructions and documentation links.
+* Component Updates
+  * The Azure Monitor for Container agent has been updated to the 2019-06-14 release
+    * Please see the [release notes](https://github.com/Microsoft/docker-provider/tree/ci_feature_prod#06142019--).
+
 ## Release 2019-06-18
 
 * Behavioral Changes
