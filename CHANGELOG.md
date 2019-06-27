@@ -10,14 +10,11 @@
     AKS cluster creation.
   * Fixed an issue where deploying AKS clusters using ARM templates without a
     defined Service Principal would incorrectly pass validation.
-* Behavioral Changes
 * Preview Features
   * Azure Standard load balancer support is now in public preview.
     * This has been a long awaited feature which enables selection of the SKU
       type offered by Azure Load Balancer to be used with your AKS cluster. Please see
       [AKS previews][previews] for additional information.
-
-
   * For all previews, please see the [previews][previews] document for opt-in
     instructions and documentation links.
 * Component Updates
