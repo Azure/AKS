@@ -2,9 +2,6 @@
 
 ## Release 2019-06-24
 
-* New Features
-  * Tags on the resource group / passed in during cluster creation (RG tags) are now 
-    persisted onto the MC resource group (they are not applied to all child resources aka VMs/network/storage)
 * Bug Fixes
   * Fixed an issue that could result in a failed service principal update and
     AKS cluster creation.
