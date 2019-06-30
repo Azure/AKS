@@ -49,6 +49,9 @@
     clusters (one or more nodepools) has been fixed.
   * A bug where the NSG would not be reset as needed during a nodepool create
     request has been fixed.
+    
+* Behavioral Changes
+  * AKS removed all weak CBC suite ciphers for API server. More info: https://blog.qualys.com/technology/2019/04/22/zombie-poodle-and-goldendoodle-vulnerabilities
 
 * Component Updates
   * AKS-Engine has been updated to v0.35.4
