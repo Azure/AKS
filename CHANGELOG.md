@@ -1,5 +1,36 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-07-01
+
+* Bug Fixes
+  * Fixed an issue with `az aks update-credentials` where the command would 
+    not take special characters and nodes would get incorrect values.  
+    Note that double quote `"` , backslash `\`, ampersand `&`, and angle quotations `<>` 
+    are still NOT allowed to be used as password characters.
+  * Fixed an issue with update-credentials where the command would not work for VMSS clusters 
+    with more than 10 instances.
+  * AKS now has validation to check for Resource Locks when performing Scale and Upgrade operations.
+  * Fixed an issue where GPU nodes could fail to install the GPU driver due to ongoing 
+    background apt operations.
+  * Adjusted the timeout value for Service Principal update based on the number of nodes in the 
+    cluster, to accommodate larger clusters.
+* New Features
+  * AKS now supports OS disk sizes of up to 2048GiB.
+  * Persistent Tags
+    * Custom tags can now be passed to AKS and will persisted onto the MC infrastructure Resource Group.
+      Note: They will NOT be applied to all child resources in that RG, aka VMs, VNets, disks, etc.
+* Preview Features
+  * Windows Node Pools
+    * AKS updated Windows default image to latest windows patch release.
+  * API server authorized IP ranges
+    * The max number of API server authorized IP ranges has now increased to 100. 
+* Component Updates
+  * [AKS-Engine has been updated to v0.35.6](https://github.com/Azure/aks-engine/releases/tag/v0.35.6)
+    * This change includes a new AKS VHD with the Linux Kernel CVE fixes. See more:
+      https://github.com/Azure/AKS/issues/
+    * This new VHD also fixes broken IPv6 support for the host. 
+
+
 ## Release 2019-06-24
 
 * Bug Fixes
