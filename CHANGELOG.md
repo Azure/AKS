@@ -16,6 +16,10 @@
     cluster, to accommodate larger clusters.
 * New Features
   * AKS now supports OS disk sizes of up to 2048GiB.
+  * Persistent Tags
+    * Custom tags can now be passed to AKS and will persisted onto the MC infrastructure Resource Group.
+      Note: They will NOT be applied to all child resources in that RG, aka VMs, VNets, disks, etc.
+
 
 * Preview Features
   * Windows Node Pools
