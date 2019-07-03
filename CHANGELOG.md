@@ -19,8 +19,6 @@
   * Persistent Tags
     * Custom tags can now be passed to AKS and will persisted onto the MC infrastructure Resource Group.
       Note: They will NOT be applied to all child resources in that RG, aka VMs, VNets, disks, etc.
-
-
 * Preview Features
   * Windows Node Pools
     * AKS updated Windows default image to latest windows patch release.
