@@ -4,16 +4,16 @@
 
 * Bug Fixes
   * Fixed an issue with `az aks update-credentials` where the command would 
-    not take special caracters and nodes would get incorrect values.  
+    not take special characters and nodes would get incorrect values.  
     Note that double quote `"` , backslash `\`, ampersand `&`, and angle quotations `<>` 
     are still NOT allowed to be used as password characters.
   * Fixed an issue with update-credentials where the command would not work for VMSS clusters 
     with more than 10 instances.
   * AKS now has validation to check for Resource Locks when performing Scale and Upgrade operations.
-  * Fixed an issue where GPU nodes could failt to install the GPU driver due to ongoing 
+  * Fixed an issue where GPU nodes could fail to install the GPU driver due to ongoing 
     background apt operations.
   * Adjusted the timeout value for Service Principal update based on the number of nodes in the 
-    cluster, to accomodate larger clusters.
+    cluster, to accommodate larger clusters.
 * New Features
   * AKS now supports OS disk sizes of up to 2048GiB.
 
