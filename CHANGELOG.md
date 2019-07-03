@@ -16,12 +16,10 @@
     cluster, to accomodate larger clusters.
 * New Features
   * AKS now supports OS disk sizes of up to 2048GiB.
-  * Persistent Tags
-    * Custom tags can now be passed during AKS creation and will be passed and persisted onto the MC infrastructure Resource Group.
-      Note: They will NOT be applied to all child resources in that RG, aka VMs, VNets, disks, etc.
+
 * Preview Features
   * Windows Node Pools
-    * AKS updated Windows default image to Jun 2019 to address a DNS issue for windows agent pools.
+    * AKS updated Windows default image to latest windows patch release.
   * API server authorized IP ranges
     * The max number of API server authorized IP ranges has now increased to 100. 
 * Component Updates
