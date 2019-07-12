@@ -1,18 +1,46 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-07-08
+
+* New Features
+  * Kubernetes versions 1.11.10 and 1.13.7 have been added. Customers
+    are encouraged to upgrade.
+    * For information on how AKS handles Kubernetes version support see:
+      [Supported Kubernetes versions in Azure](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions))
+  * The `az aks update-credentials` command now supports Azure tenant migration of your
+AKS cluster. Follow the instructions in [Choose to update or create a service principal][8] and then execute the `Update AKS cluster with new credentials` command passing in the `--tenant-id` argument.
+* Behavioral Changes
+  * All new clusters now have --protect-kernel-defaults enabled.
+    * See: https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
+* Preview Features
+  * Kubernetes 1.14.3 is now available for preview users.
+  * Azure availability zone support is now in public preview.
+    * This feature enables customers to distribute their AKS clusters across
+      availability zones providing a higher level of availability.
+    * Please see [AKS previews][previews] for additional information.
+  * For all previews, please see the [previews][previews] document for opt-in
+    instructions and documentation links.
+* Component Updates
+  * aks-engine has been updated to version 0.37.5
+    * https://github.com/Azure/aks-engine/releases/tag/v0.37.5
+  * Azure CNI has been updated to version 1.0.22
+  * Moby has been updated to 3.0.5 from 3.0.4
+    * Note that this version number is Azure specific, the Moby project does not
+      have official releases / release numbers.
+
 ## Release 2019-07-01
 
 * Bug Fixes
-  * Fixed an issue with `az aks update-credentials` where the command would 
-    not take special characters and nodes would get incorrect values.  
-    Note that double quote `"` , backslash `\`, ampersand `&`, and angle quotations `<>` 
+  * Fixed an issue with `az aks update-credentials` where the command would
+    not take special characters and nodes would get incorrect values.
+    Note that double quote `"` , backslash `\`, ampersand `&`, and angle quotations `<>`
     are still NOT allowed to be used as password characters.
-  * Fixed an issue with update-credentials where the command would not work for VMSS clusters 
+  * Fixed an issue with update-credentials where the command would not work for VMSS clusters
     with more than 10 instances.
   * AKS now has validation to check for Resource Locks when performing Scale and Upgrade operations.
-  * Fixed an issue where GPU nodes could fail to install the GPU driver due to ongoing 
+  * Fixed an issue where GPU nodes could fail to install the GPU driver due to ongoing
     background apt operations.
-  * Adjusted the timeout value for Service Principal update based on the number of nodes in the 
+  * Adjusted the timeout value for Service Principal update based on the number of nodes in the
     cluster, to accommodate larger clusters.
 * New Features
   * AKS now supports OS disk sizes of up to 2048GiB.
@@ -23,12 +51,12 @@
   * Windows Node Pools
     * AKS updated Windows default image to latest windows patch release.
   * API server authorized IP ranges
-    * The max number of API server authorized IP ranges has now increased to 100. 
+    * The max number of API server authorized IP ranges has now increased to 100.
 * Component Updates
   * [AKS-Engine has been updated to v0.35.6](https://github.com/Azure/aks-engine/releases/tag/v0.35.6)
     * This change includes a new AKS VHD with the Linux Kernel CVE fixes. See more:
       https://github.com/Azure/AKS/issues/
-    * This new VHD also fixes broken IPv6 support for the host. 
+    * This new VHD also fixes broken IPv6 support for the host.
 
 
 ## Release 2019-06-24
@@ -80,7 +108,7 @@
     clusters (one or more nodepools) has been fixed.
   * A bug where the NSG would not be reset as needed during a nodepool create
     request has been fixed.
-    
+
 * Behavioral Changes
   * AKS removed all weak CBC suite ciphers for API server. More info: https://blog.qualys.com/technology/2019/04/22/zombie-poodle-and-goldendoodle-vulnerabilities
 
@@ -651,6 +679,6 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
 [5]: https://github.com/Azure/AKS/blob/master/previews.md
 [6]: https://docs.microsoft.com/azure/aks/update-credentials
 [7]: https://www.danielstechblog.io/using-custom-dns-server-for-domain-specific-name-resolution-with-azure-kubernetes-service/
-
+[8]: https://docs.microsoft.com/en-us/azure/aks/update-credentials
 
 [previews]: https://github.com/Azure/AKS/blob/master/previews.md
