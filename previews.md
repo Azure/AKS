@@ -46,6 +46,7 @@ az extension remove --name aks-preview
 
 ## Preview features
 
+* [Availability Zones](#zones)
 * [Standard Load Balancers](#slb)
 * [Windows Worker Nodes](#windows)
 * [Locked down cluster egress](#egress)
@@ -54,6 +55,16 @@ az extension remove --name aks-preview
 * [Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler](#vmss)
 * [Kubernetes Audit Log](#noauditforu)
 * [Kubernetes Pod Security Policies](#psp)
+
+### Availability zones <a name="zones"></a>
+
+This feature enables customers to distribute their AKS clusters across
+availability zones providing a higher level of availability.
+
+Getting started:
+* [AKS availability zones documentation](https://aka.ms/aks/zones)
+* [About availability zones on Azure](https://docs.microsoft.com/en-us/azure/availability-zones/az-overview)
+* [Swagger reference (2019-06-01)](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1399)
 
 ### Standard Load Balancers <a name="slb"></a>
 
