@@ -1,5 +1,40 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-07-15
+
+**Important behavioral change**: All AKS clusters are being updated to pull all
+needed container images for cluster operations from Azure Container Registry,
+this means if you have custom allow/deny lists, port filtering, etc you will
+need to update your network configuration to allow ACR.
+
+[Please see the documentation](https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic#required-ports-and-addresses-for-aks-clusters) for more
+information including all required AKS cluster ports and URLs
+
+
+* New Features
+  * Support for the M, NC_promo and DS_v3 Azure Compute VM SKUs has been added.
+* Bug Fixes
+  * Fixed an issue with clusters created in Canada and Australia regions between
+    2019-07-09 and 2019-07-10 as well as US region clusters created on 2019-07-10
+    where customers would receive `error: Changing property
+    'platformFaultDomainCount' is not allowed` errors.
+
+* Behavioral Changes
+  * The error message returned to users when attempting to create clusters with
+    an unsupported Kubernetes version in that region has been fixed.
+  * Noted above, AKS has moved all container images required by AKS clusters for
+    cluster CRUD operations have been moved to Azure Container Registry. This
+    means that customers must update allow/deny rules and ports. See:
+    [Required ports and addresses for AKS clusters](https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic#required-ports-and-addresses-for-aks-clusters)
+* Preview Features
+  * Fixed a VMSS cluster upgrade failure that would return: `Changing property
+    'type' is not allowed.`
+  * An issue where `az aks nodepool list` would return the incorrect node count
+    has been resolved.
+* Component Updates
+  * The Azure Monitor for Container agent has been updated to the 2019-07-09 release
+    * Please see the [release notes](https://github.com/Microsoft/docker-provider/tree/ci_feature_prod#07092019--).
+
 ## Release 2019-07-08
 
 * New Features
