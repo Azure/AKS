@@ -2,6 +2,8 @@
 
 ## Release 2019-07-15
 
+**This release is currently being rolled out to all regions**
+
 **Important behavioral change**: All AKS clusters are being updated to pull all
 needed container images for cluster operations from Azure Container Registry,
 this means if you have custom allow/deny lists, port filtering, etc you will
