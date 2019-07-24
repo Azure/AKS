@@ -179,26 +179,10 @@ To create a cluster with VMSS enabled, use the `--enable-vmss` switch in `az aks
 ### Kubernetes Audit Log <a name="noauditforu"></a>
 
 The [Kubernetes audit log][3] provides a detailed account of security-relevant
-events that have occurred in the cluster. You can enable it for your
-subscription by turning on the **AKSAuditLog** feature flag.
+events that have occurred in the cluster.
 
-First, register the feature flag:
-
-```
-az feature register --name AKSAuditLog --namespace Microsoft.ContainerService
-```
-
-Then refresh your registration of the AKS resource provider:
-
-```
-az provider register -n Microsoft.ContainerService
-```
-
-Once you've done this, you will see a new **kube-audit** log source in the
-diagnostic settings for your cluster, as described in [this doc][2].
-
-**Please note:** AKS will only capture audit logs for clusters which are
- created or upgraded after the feature flag is enabled.
+Kubernetes audit log support is GA, the documentation for enabling it
+on AKS clusters is here: https://docs.microsoft.com/en-us/azure/aks/view-master-logs
 
 ## Kubernetes Pod Security Policies <a name="psp"></a>
 
