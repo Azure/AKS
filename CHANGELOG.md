@@ -1,8 +1,19 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-07-15
+## Release 2019-07-22
 
 **This release is currently being rolled out to all regions**
+
+* Preview Features
+  * An issue where New Windows node pools in existing cluster would not get
+    updated Windows versions has been fixed.
+  * TCP reset has been set for all new clusters using the SLB preview.
+  * An issue where AKS would trigger a scale operation requested on a previously
+    deleted VMSS cluster has been fixed.
+* Component Updates
+  * AKS-Engine has been updated to v0.38.3
+
+## Release 2019-07-15
 
 **Important behavioral change**: All AKS clusters are being updated to pull all
 needed container images for cluster operations from Azure Container Registry,
