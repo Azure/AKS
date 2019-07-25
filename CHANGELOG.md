@@ -4,10 +4,6 @@
 
 **This release is currently being rolled out to all regions**
 
-* New Features
-  * Support for the [Kubernetes audit log](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/)
-    is now GA. Please see the documentation for more information.
-
 * Preview Features
   * An issue where New Windows node pools in existing cluster would not get
     updated Windows versions has been fixed.
