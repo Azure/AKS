@@ -14,8 +14,8 @@
     and re-applied during upgrade causing `pthread_create() failed (11: Resource
     temporarily unavailable)` pod start failures was fixed.
     * See https://github.com/Azure/aks-engine/pull/1623 for more information
+    
 * Preview Features
-
   * AKS is now in **Public Preview** in the Azure Government (Fairfax, VA)
     region. Please note the following:
     * Azure Portal support for AKS is in progress, for now customers must use the
@@ -31,6 +31,7 @@
     provide an IP address already in use by another SLB.
   * An issue that prevented customers from using normal cluster operations
     on multiple node pool clusters with a single VMSS pool has been fixed.
+    
 * Component Updates
   * AKS-Engine has been updated to v0.38.4
     * https://github.com/Azure/aks-engine/releases/tag/v0.38.4
