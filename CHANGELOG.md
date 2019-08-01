@@ -1,8 +1,41 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-07-22
+## Release 2019-07-29
 
-**This release is currently being rolled out to all regions**
+**This release is rolling out to all regions*
+
+* New Features
+  * Customers may now create multiple AKS clusters using ARM templates
+    regardless of what region the clusters are located in.
+* Bug Fixes
+  * AKS has resolved the issue(s) with missing metrics in the default
+    metrics blade.
+  * An issue where the `--pod-max-pids` was set to 100 (maximum) for clusters
+    and re-applied during upgrade causing `pthread_create() failed (11: Resource
+    temporarily unavailable)` pod start failures was fixed.
+    * See https://github.com/Azure/aks-engine/pull/1623 for more information
+* Preview Features
+
+  * AKS is now in **Public Preview** in the Azure Government (Fairfax, VA)
+    region. Please note the following:
+    * Azure Portal support for AKS is in progress, for now customers must use the
+      Azure CLI for all cluster operations currently.
+    * AKS preview features are not supported in Azure Government currently and will
+      be supported when those features are GA.
+  * Fixed an issue where a delete request for a locked VMSS node would get an
+    incorrect and unclear `InternalError` failure - the error message and error
+    code have both been fixed.
+  * Fixed an issue with egress filtering where managed AKS pods
+    would incorrectly use the IP address to connect instead of the FQDN.
+  * Fixed an issue with the SLB preview where AKS allowed the customer to
+    provide an IP address already in use by another SLB.
+  * An issue that prevented customers from using normal cluster operations
+    on multiple node pool clusters with a single VMSS pool has been fixed.
+* Component Updates
+  * AKS-Engine has been updated to v0.38.4
+    * https://github.com/Azure/aks-engine/releases/tag/v0.38.4
+
+## Release 2019-07-22
 
 * Preview Features
   * An issue where New Windows node pools in existing cluster would not get
