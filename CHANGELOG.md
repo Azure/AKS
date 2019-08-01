@@ -2,7 +2,7 @@
 
 ## Release 2019-07-29
 
-**This release is rolling out to all regions*
+**This release is rolling out to all regions**
 
 * New Features
   * Customers may now create multiple AKS clusters using ARM templates
