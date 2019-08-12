@@ -1,8 +1,35 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-07-29
+# Release 2019-08-05
 
 **This release is rolling out to all regions**
+
+**Please Note**: This release includes new Kubernetes versions 1.13.9 &
+1.14.5 (GA today) these include the fixes for CVEs CVE-2019-11247 and
+CVE-2019-11249. Please see our [customer guidance](GH LINK TO PINNED)
+
+* New Features
+  * Kubernetes 1.14 is now GA (1.14.5)
+    * As of Monday August 12th (2019-08-12) customers running Kubernetes 1.10.x
+      have 60 days (2019-10-14) to upgrade to a supported release. Please see
+      [AKS supported versions document][1] for more information.
+  * [Kubernetes Audit log](https://docs.microsoft.com/en-us/azure/aks/view-master-logs)
+    support is now GA.
+* Bug Fixes
+  * Fixed an issue where creating a cluster with a custom subnet would return an
+    HTTP error 500 vs 400 when the subnet could not be found.
+* Behavioral Changes
+* Preview Features
+  * Fixed an issue where customers could not create a new node pool with AZs
+    even if they were already using SLBs.
+  * Fixed an issue where VMSS cluster commands could return the incorrect node
+    count.
+* Component Updates
+  * aks-engine has been updated to v0.38.6
+    * https://github.com/Azure/aks-engine/releases/tag/v0.38.6
+
+
+## Release 2019-07-29
 
 * New Features
   * Customers may now create multiple AKS clusters using ARM templates
@@ -14,7 +41,7 @@
     and re-applied during upgrade causing `pthread_create() failed (11: Resource
     temporarily unavailable)` pod start failures was fixed.
     * See https://github.com/Azure/aks-engine/pull/1623 for more information
-    
+
 * Preview Features
   * AKS is now in **Public Preview** in the Azure Government (Fairfax, VA)
     region. Please note the following:
@@ -31,7 +58,7 @@
     provide an IP address already in use by another SLB.
   * An issue that prevented customers from using normal cluster operations
     on multiple node pool clusters with a single VMSS pool has been fixed.
-    
+
 * Component Updates
   * AKS-Engine has been updated to v0.38.4
     * https://github.com/Azure/aks-engine/releases/tag/v0.38.4
