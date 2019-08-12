@@ -6,7 +6,7 @@
 
 **Please Note**: This release includes new Kubernetes versions 1.13.9 &
 1.14.5 (GA today) these include the fixes for CVEs CVE-2019-11247 and
-CVE-2019-11249. Please see our [customer guidance](GH LINK TO PINNED)
+CVE-2019-11249. Please see our [customer guidance](https://github.com/Azure/AKS/issues/1145)
 
 * New Features
   * Kubernetes 1.14 is now GA (1.14.5)
