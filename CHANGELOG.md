@@ -1,6 +1,23 @@
 # Azure Kubernetes Service Changelog
 
-# Release 2019-08-05
+## Release 2019-08-12
+
+**This release is rolling out to all regions**
+
+* Bug Fixes
+  * Several bug fixes for AKS NodePool creation and other CRUD operations.
+  * Fixed audit log bug on older < 1.9.0 clusters.
+    * **Important: this was a best effort fix since these cluster versions are out of support. Please upgrade to a currently supported version**
+    * For information on how AKS handles Kubernetes version support see:
+      [Supported Kubernetes versions in Azure](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions)
+  * Improved error messaging for VM size errors, including actions to take.
+  * Fixed for PUT request bug that caused an unexpected API restart.
+  
+* Behavioral Changes
+  * AKS has released an API update, documentation available here: [https://docs.microsoft.com/en-us/rest/api/aks/managedclusters](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters)
+    * **Important:** With this API update there are changes to the API whitelisting API. This is now under [ManagedClusterAPIServerAccessProfile](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/createorupdate#managedclusterapiserveraccessprofile), where previously it was a top level property.
+
+## Release 2019-08-05
 
 **This release is rolling out to all regions**
 
