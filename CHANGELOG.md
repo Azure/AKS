@@ -42,8 +42,8 @@ CVE-2019-11249. Please see our [customer guidance](https://github.com/Azure/AKS/
   * Fixed an issue where VMSS cluster commands could return the incorrect node
     count.
 * Component Updates
-  * aks-engine has been updated to v0.38.6
-    * https://github.com/Azure/aks-engine/releases/tag/v0.38.6
+  * aks-engine has been updated to v0.38.7
+    * https://github.com/Azure/aks-engine/releases/tag/v0.38.7
 
 
 ## Release 2019-07-29
