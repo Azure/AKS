@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+
+## Release 2019-08-19 (Hotfix)
+
+**This release is rolling out to all regions**
+
+**Please Note**: This release includes new Kubernetes versions 1.13.10 &
+1.14.6 these include the fixes for CVEs CVE-2019-9512 and
+CVE-2019-9514. Please see our [customer guidance](https://github.com/Azure/AKS/issues/1159)
+
+* Bug Fixes
+  * New kubernetes versions released to fix CVE-2019-9512 and CVE-2019-9514
+    * Kubernetes 1.14.6
+    * Kubernetes 1.13.10
+  * Fixed Azure Network Policy bug with multiple labels under a matchLabels selector.
+  * Fix for CNI lock timeout issue caused due to race condition in starting telemetry process.
+  * Fixed issue creating AKS clusters using supported Promo SKUs
+* Component Updates
+  * aks-engine has been updated to v0.38.8
+    * https://github.com/Azure/aks-engine/releases/tag/v0.38.8
+  * Azure CNI has been updated to v1.0.25
+
+
 ## Release 2019-08-12
 
 **This release is rolling out to all regions**
