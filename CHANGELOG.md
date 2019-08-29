@@ -35,7 +35,7 @@
     * SLB enables bringing your own IP address to be used, you will be able to define these with new parameters.
     * The capability to use an SLB without any public IP assigned is on the roadmap plan.
     * You may still provision a basic load balancer by specifying "basic" for the "loadbalancersku" property at cluster create time.
-    * Read more at <https://aka.ms/aks/slb.>
+    * Read more at <https://aka.ms/aks/slb>
 * Component Updates
   * aks-engine has been updated to v0.39.2
     * <https://github.com/Azure/aks-engine/releases/tag/v0.39.2>
