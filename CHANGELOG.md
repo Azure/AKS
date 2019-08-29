@@ -1,6 +1,46 @@
 # Azure Kubernetes Service Changelog
 
 
+## Release 2019-08-26
+
+**This release is rolling out to all regions**
+
+* Features
+  * New VM SKUs added
+    * Add support for the following VM SKUs:
+      * Standard_B12ms, Standard_B16ms, Standard_B20ms, Standard_D48_v3, Standard_D48s_v3, Standard_E48_v3, Standard_E48s_v3, Standard_F48s_v2, Standard_L48s_v2, Standard_M208ms_v2, Standard_M208s_v2
+  * Kubernetes Dashboard now supports token login and is using https. Old behavior using Service Account is still supported **Note: You need to update your CLI to keep using az aks browse with https**
+    * For more info please check: <https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard>
+  * Added prometheus annotation to coredns to facilitate metric port discovery
+    * For more info please check: <https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-agent-config#overview-of-configurable-prometheus-scraping-settings>
+* Bug Fixes
+  * Fixed bug with older 1.8 clusters that was preventing clusters from upgrading.
+    * **Important: this was a best effort fix since these cluster versions are out of support. Please upgrade to a currently supported version**
+    * For information on how AKS handles Kubernetes version support see:
+      [Supported Kubernetes versions in Azure](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions)
+  * Removed the default restricted Pod Security Policy to solve race condition with containers not seeing the user in their config. This policy can be applied by customers.
+  * Fixed a bug with kube-proxy, ip-masq-agent and kube-svc-redirect where in certain scenarios they could try to access iptables at the same time.
+* Preview Features
+  * CLI extension updated for new Standard Load Balancer (SLB) and VM Scale Set (VMSS) Parameters:
+    * `--vm-set-type` Agent pool vm set type. VirtualMachineScaleSets or AvailabilitySet.
+    * `--load-balancer-sku` - Azure Load Balancer SKU selection for your cluster. Basic or Standard.
+    * `--load-balancer-outbound-ip-prefixes` - Comma-separated public IP prefix resource IDs for load balancer outbound connection. Valid for Standard SKU load balancer cluster only.
+    * `--load-balancer-outbound-ips` - Comma-separated public IP resource IDs for load balancer outbound connection. Valid for Standard SKU load balancer cluster only.
+    * `--load-balancer-managed-outbound-ip-count` - Desired number of automatically created and managed outbound IPs for load balancer outbound connection. Valid for Standard SKU load balancer cluster only.
+* Behavioral Changes
+  * Starting from 2019-09-10, the **preview CLI extension** will default new cluster creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM Availability Sets and Basic Load Balancers (VMAS/BLB).
+  * Starting from 2019-10-22 the official CLI and Azure Portal will default new cluster creates to VMSS/SLB instead of VMAS/BLB.
+  * These client defaults changes are important to be aware of due to:
+    * SLB will automatically assign a public IP to enable egress. This is a requirement placed by Azure Standard Load Balancers, to learn more about Standard vs. Basic, read [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-standard-overview).
+    * SLB enables bringing your own IP address to be used, you will be able to define these with new parameters.
+    * The capability to use an SLB without any public IP assigned is on the roadmap plan.
+    * You may still provision a basic load balancer by specifying "basic" for the "loadbalancersku" property at cluster create time.
+    * Read more at <https://aka.ms/aks/slb.>
+* Component Updates
+  * aks-engine has been updated to v0.39.2
+    * <https://github.com/Azure/aks-engine/releases/tag/v0.39.2>
+  * Azure Monitor for Containers Agent updated to 2019-08-22 release: <https://github.com/microsoft/Docker-Provider/releases>
+
 ## Release 2019-08-19 (Hotfix)
 
 **This release is rolling out to all regions**

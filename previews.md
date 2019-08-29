@@ -47,7 +47,7 @@ az extension remove --name aks-preview
 ## Preview features
 
 * [Availability Zones](#zones)
-* [Standard Load Balancers](#slb)
+* [Standard Load Balancers](#standard-load-balancers)
 * [Windows Worker Nodes](#windows)
 * [Locked down cluster egress](#egress)
 * [Multiple Node Pools](#nodepools)
@@ -66,7 +66,7 @@ Getting started:
 * [About availability zones on Azure](https://docs.microsoft.com/en-us/azure/availability-zones/az-overview)
 * [Swagger reference (2019-06-01)](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1399)
 
-### Standard Load Balancers <a name="slb"></a>
+### Standard Load Balancers
 
 This has been a long awaited feature which enables selection of the SKU type
 offered by Azure Load Balancer to be used with your AKS cluster, a full table
@@ -76,7 +76,7 @@ This is a create time property that can be set on new clusters created with the
 2019-06-01 API and forward. Support is available via preview CLI module as well
 which is captured in below documentation.
 
-* [Basic vs Standard Loadbalancers](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview#skus)
+* [Basic vs Standard Load Balancers](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview#skus)
 * [Using Azure SLB with AKS](https://docs.microsoft.com/en-us/azure/aks/load-balancer-standard)
 * [AKS API Definition](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1585)
 
@@ -174,7 +174,13 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-To create a cluster with VMSS enabled, use the `--enable-vmss` switch in `az aks create`.
+To create a VMSS backed cluster run:
+
+```bash
+
+az aks create -n <CLUSTER_NAME> -g <CLUSTER_RG> --vm-set-type VirtualMachineScaleSets
+
+```
 
 ### Kubernetes Audit Log <a name="noauditforu"></a>
 
