@@ -6,11 +6,6 @@
 **This release is rolling out to all regions**
 
 * Features
-  * New VM SKUs added
-    * Add support for the following VM SKUs:
-      * Standard_B12ms, Standard_B16ms, Standard_B20ms, Standard_D48_v3, Standard_D48s_v3, Standard_E48_v3, Standard_E48s_v3, Standard_F48s_v2, Standard_L48s_v2, Standard_M208ms_v2, Standard_M208s_v2
-  * Kubernetes Dashboard now supports token login and is using https. Old behavior using Service Account is still supported **Note: You need to update your CLI to keep using az aks browse with https**
-    * For more info please check: <https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard>
   * Added prometheus annotation to coredns to facilitate metric port discovery
     * For more info please check: <https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-agent-config#overview-of-configurable-prometheus-scraping-settings>
 * Bug Fixes
