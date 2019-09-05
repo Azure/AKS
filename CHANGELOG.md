@@ -1,5 +1,25 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-09-02
+
+**This release is rolling out to all regions**
+
+* Preview Features
+  * Kubernetes 1.15 is now in Preview (1.15.3)
+
+* Bug Fixes
+  * A bug where kube-svc-redirect would crash due to an invalid bash line has been fixed.
+  * A recent Kubernetes dashboard change to enable self-signed certs has been reverted due to browser issues.
+  * A bug where the OMSAgent pod would fail scheduling on a user tainted node has been fixed with proper toleration on the OMSAgent pod.
+  * A preview bug allowing more than 8 node pools to be created has been fixed to enforce a max of 8 node pools per cluster.
+  * A preview bug that would change the primary node pool when adding a new node pool has been fixed.
+
+* Behavioral Changes
+  * Review the planned changes for new cluster creation defaults referenced in [Release 2019-08-26](https://github.com/Azure/AKS/releases/tag/2019-08-26)
+
+* Component Updates
+  * aks-engine has been updated to v0.40.0
+    * https://github.com/Azure/aks-engine/releases/tag/v0.40.0
 
 ## Release 2019-08-26
 
