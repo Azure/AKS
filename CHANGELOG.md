@@ -6,7 +6,7 @@
 
 **Service Updates**
 * AKS Kubernetes 1.10 support will end-of-lifed on Oct 25, 2019
-* AKS Kubernetes 1.11 & 1.1 support will end-of-lifed on Oct 25, 2019
+* AKS Kubernetes 1.11 & 1.12 support will end-of-lifed on Oct 25, 2019
 Add 1.10 deprecation notice
 Add 1.11/1.12 comms note
 
@@ -29,8 +29,6 @@ Add 1.11/1.12 comms note
     Standard_D48s_v3, Standard_E48_v3, Standard_E48s_v3, Standard_F48s_v2,
     Standard_L48s_v2, Standard_M208ms_v2, Standard_M208s_v2
 * Bug Fixes
-  * CCP Fall back is not working as expected. This is because we updated CCP
-    to turn on useCCPPool flag based on the toggle. But we did not refresh the useCCPPool flag after the change. So the flag is still false even though toggle changed it to true.
   * Fixed an issue where cluster upgrade could be blocked when the "managedBy"
     property is missing from the node resource group.
   * Fixed an issue where ingress controller network policy would block all
@@ -45,7 +43,7 @@ Add 1.11/1.12 comms note
     different versions for multiple nodepools.
   * Fixed an issue where the incorrect node count would be returned or fail to
     update when using multiple node pools
-* Component Updates
+
 
 ## Release 2019-09-02
 
