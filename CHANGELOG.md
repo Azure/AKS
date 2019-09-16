@@ -1,8 +1,53 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-09-02
+## Release 2019-09-09
 
 **This release is rolling out to all regions**
+
+**Service Updates**
+* AKS Kubernetes 1.10 support will end-of-lifed on Oct 25, 2019
+* AKS Kubernetes 1.11 & 1.1 support will end-of-lifed on Oct 25, 2019
+Add 1.10 deprecation notice
+Add 1.11/1.12 comms note
+
+
+* New Features
+  * VMSS backed AKS clusters are now GA
+    * VMSS is the underlying compute resource type which enables features such
+      as cluster autoscaler, but is a separate feature.
+    * See https://docs.microsoft.com/azure/virtual-machine-scale-sets/overview
+      and https://docs.microsoft.com/azure/aks/cluster-autoscaler
+      for more information.
+    * **NOTE**: Official support in the Azure CLI for AKS+VMSS will be released
+      on 2019-09-24 (version 2.0.74 https://github.com/Azure/azure-cli/milestone/73)
+  * Standard Load Balancer support (SLB) is now GA
+    * See https://docs.microsoft.com/azure/aks/load-balancer-standard
+      for documentation.
+    * **NOTE**: Official support in the Azure CLI for AKS+SLB will be released
+      on 2019-09-24 (version 2.0.74 https://github.com/Azure/azure-cli/milestone/73)
+  * Support for the following VM SKUs is now released: Standard_D48_v3,
+    Standard_D48s_v3, Standard_E48_v3, Standard_E48s_v3, Standard_F48s_v2,
+    Standard_L48s_v2, Standard_M208ms_v2, Standard_M208s_v2
+* Bug Fixes
+  * CCP Fall back is not working as expected. This is because we updated CCP
+    to turn on useCCPPool flag based on the toggle. But we did not refresh the useCCPPool flag after the change. So the flag is still false even though toggle changed it to true.
+  * Fixed an issue where cluster upgrade could be blocked when the "managedBy"
+    property is missing from the node resource group.
+  * Fixed an issue where ingress controller network policy would block all
+    egress traffic when assigned to pods (using label selectors).
+* Behavioral Changes
+  * Review the planned changes for new cluster creation defaults referenced in
+    [Release 2019-08-26](https://github.com/Azure/AKS/releases/tag/2019-08-26)
+* Preview Features
+  * Fixed an issue where multiple nodepool clusters would use the incorrect
+    version(s) and block upgrades.
+  * Fixed an issue where AKS would incorrectly allow customers to specify
+    different versions for multiple nodepools.
+  * Fixed an issue where the incorrect node count would be returned or fail to
+    update when using multiple node pools
+* Component Updates
+
+## Release 2019-09-02
 
 * Preview Features
   * Kubernetes 1.15 is now in Preview (1.15.3)
@@ -89,7 +134,7 @@ CVE-2019-9514. Please see our [customer guidance](https://github.com/Azure/AKS/i
       [Supported Kubernetes versions in Azure](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions)
   * Improved error messaging for VM size errors, including actions to take.
   * Fixed for PUT request bug that caused an unexpected API restart.
-  
+
 * Behavioral Changes
   * AKS has released an API update, documentation available here: [https://docs.microsoft.com/en-us/rest/api/aks/managedclusters](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters)
     * **Important:** With this API update there are changes to the API whitelisting API. This is now under [ManagedClusterAPIServerAccessProfile](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/createorupdate#managedclusterapiserveraccessprofile), where previously it was a top level property.
