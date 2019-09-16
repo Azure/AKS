@@ -6,9 +6,10 @@
 
 **Service Updates**
 * AKS Kubernetes 1.10 support will end-of-lifed on Oct 25, 2019
-* AKS Kubernetes 1.11 & 1.12 support will end-of-lifed on Oct 25, 2019
-Add 1.10 deprecation notice
-Add 1.11/1.12 comms note
+  * https://azure.microsoft.com/en-us/updates/kubernetes-1-10-x-end-of-life-upgrade-by-oct-25-2019/
+* AKS Kubernetes 1.11 & 1.12 support will be end-of-lifed on Oct 25, 2019
+  * Kubernetes 1.15 support on AKS will go GA in Oct 2019
+  * Post with additional information will be linked.
 
 
 * New Features
