@@ -4,7 +4,7 @@
 
 **This release is rolling out to all regions**
 
-**Service Updates**
+### Service Updates
 
 * The announced updates to default new clusters to VMSS/SLB configurations is
   under way, if you are using the `aks-preview` Azure CLI extension,
@@ -19,6 +19,8 @@
     collect logs into an Azure Blob storage account to help them analyze and
     identify potential problems.
   * For more information please see: https://aka.ms/AKSPeriscope
+
+### Release Notes
 
 * New Features
   * AKS now GA in the Azure US Gov Virginia region.
