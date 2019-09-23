@@ -4,7 +4,7 @@
 
 **This release is rolling out to all regions**
 
-** Service Updates**
+**Service Updates**
 
 * The announced updates to default new clusters to VMSS/SLB configurations is
   under way, if you are using the `aks-preview` Azure CLI extension,
