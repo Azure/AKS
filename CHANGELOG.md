@@ -1,16 +1,42 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-09-09
+## Release 2019-09-16
 
 **This release is rolling out to all regions**
 
-**Service Updates**
+** Service Updates**
+* As announced, the migration to VMSS/SLB AKS clusters by default is under way,
+  if you are using the `aks-preview` Azure CLI extension, all clusters created
+  are now defaulted to VMSS/SLB.
 * AKS Kubernetes 1.10 support will end-of-lifed on Oct 25, 2019
-  * https://azure.microsoft.com/en-us/updates/kubernetes-1-10-x-end-of-life-upgrade-by-oct-25-2019/
-* AKS Kubernetes 1.11 & 1.12 support will be end-of-lifed on Dec 9th, 2019
-  * Kubernetes 1.15 support on AKS will go GA in Oct 2019
-  * Post with additional information will be linked.
+* AKS Kubernetes 1.11 & 1.12 support will end-of-lifed on Dec 9, 2019
+* New Documentation additions:
+  * [Authenticate with Azure Container Registry from AKS](https://docs.microsoft.com/en-us/azure/aks/cluster-container-registry-integration)
+  * [Security hardening in AKS virtual machine hosts](https://docs.microsoft.com/en-us/azure/aks/security-hardened-vm-host-image)
 
+* New Features
+  * Control egress traffic for cluster nodes in AKS is now GA
+    * This feature allows you to restrict outbound network communication for
+      you cluster as required for compliance or other secure use-cases.
+    * https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic
+* Known Issues:
+  * Clusters that do not have PSPs enabled upgrading to Kubernetes 1.15 will fail
+    * https://github.com/Azure/AKS/issues/1220
+* Bug Fixes
+  * An issue where excessively logs (eg node/status patch events) were being
+    emitted to the audit logs stream and stored. Customer should now see
+    greatly reduced audit log volume
+
+## Release 2019-09-09
+
+**Service Updates**
+
+* AKS Kubernetes 1.10 support will end-of-lifed on Oct 25, 2019
+  * Please see: https://azure.microsoft.com/en-us/updates/kubernetes-1-10-x-end-of-life-upgrade-by-oct-25-2019/
+* AKS Kubernetes 1.11 & 1.12 support will end-of-lifed on Dec 9, 2019
+  * Note that AKS Kuberrnetes 1.15 support is in public preview, on Dec 9, 2019
+    the supported *minor* Kubernetes versions will be 1.13, 1.14, 1.15
+  * Azure Updates blog post with additional details will be published this week
 
 * New Features
   * VMSS backed AKS clusters are now GA
@@ -30,6 +56,8 @@
     Standard_D48s_v3, Standard_E48_v3, Standard_E48s_v3, Standard_F48s_v2,
     Standard_L48s_v2, Standard_M208ms_v2, Standard_M208s_v2
 * Bug Fixes
+  * CCP Fall back is not working as expected. This is because we updated CCP
+    to turn on useCCPPool flag based on the toggle. But we did not refresh the useCCPPool flag after the change. So the flag is still false even though toggle changed it to true.
   * Fixed an issue where cluster upgrade could be blocked when the "managedBy"
     property is missing from the node resource group.
   * Fixed an issue where ingress controller network policy would block all
