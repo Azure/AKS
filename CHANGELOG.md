@@ -5,7 +5,7 @@
 **This release is rolling out to all regions**
 
 ** Service Updates**
-* As announced, the migration to VMSS/SLB AKS clusters by default is under way,
+* As announced the migration to VMSS/SLB AKS clusters by default is under way,
   if you are using the `aks-preview` Azure CLI extension, all clusters created
   are now defaulted to VMSS/SLB.
 * AKS Kubernetes 1.10 support will end-of-lifed on Oct 25, 2019
@@ -13,9 +13,19 @@
 * New Documentation additions:
   * [Authenticate with Azure Container Registry from AKS](https://docs.microsoft.com/en-us/azure/aks/cluster-container-registry-integration)
   * [Security hardening in AKS virtual machine hosts](https://docs.microsoft.com/en-us/azure/aks/security-hardened-vm-host-image)
+* The AKS team is pleased to announce the new `aks-periscope` tool.
+  * `aks-periscope` is a tool deployed via a Kubernetes Daemonset for customers
+    to use in order to diagnose their cluster issues
+    that are caused by incorrect configuration of the cluster/environment
+    (such as networking or permission issues). This tool will allows AKS
+    customers to run initial diagnostics and collect logs that helps them
+    identify the underlying problems.
+  * For more information please see: https://aka.ms/AKSPeriscope
 
 * New Features
-  * Control egress traffic for cluster nodes in AKS is now GA
+  * AKS now GA in the Azure US Gov Virginia region.
+    * https://azure.microsoft.com/en-us/updates/azure-kubernetes-service-is-now-available-in-azure-government/
+  * Control of egress traffic for cluster nodes in AKS is now GA
     * This feature allows you to restrict outbound network communication for
       you cluster as required for compliance or other secure use-cases.
     * https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic
@@ -26,6 +36,12 @@
   * An issue where excessively logs (eg node/status patch events) were being
     emitted to the audit logs stream and stored. Customer should now see
     greatly reduced audit log volume
+* Preview Features
+  * The `--control-plane-only` flag has been added to the `aks-preview` extension - this command
+    will force the upgrade of the customers control plane without simultaneously
+    upgrading the other nodepools. This functionality is only supported for
+    multi-pool clusters.
+    * See: https://github.com/Azure/azure-cli-extensions/blob/master/src/aks-preview/HISTORY.md
 
 ## Release 2019-09-09
 
