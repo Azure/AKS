@@ -1,5 +1,38 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-09-23
+
+**This release is rolling out to all regions**
+
+### Service Updates
+
+* Azure CLI 2.0.74 released with key AKS changes
+  * https://github.com/Azure/azure-cli/releases/tag/azure-cli-2.0.74
+  * Added `--load-balancer-sku` parameter to aks create command, which allows for
+    creating AKS cluster with SLB
+  * Added `--load-balancer-managed-outbound-ip-count`,
+    `--load-balancer-outbound-ips` and `--load-balancer-outbound-ip-prefixes`
+    parameters to aks `[create|update]` commands, which allow for updating load
+    balancer profile of an AKS cluster with SLB
+  * Added `--vm-set-type` parameter to aks create command, which allows to
+    specify vm types of an AKS Cluster (vmas or vmss)
+
+### Release Notes
+* Bug Fixes
+  * Fixed an issue where the node pool count rendered in the portal would be incorrect when not using the multiple node pools feature.
+  * Fixed an issue to ensure a cluster upgrade will upgrade both the control plane and agent pools for clusters using VMSS, but not multiple agent pools.
+  * Resolved an issue with cluster upgrades that could remove existing
+    diagnostics settings and data erroneously.
+  * Fixed an issue where AKS was not validating user defined taint formats per agent pool resulting in
+    failures at cluster creation time.
+* Behavioral Changes
+  * Increased the reserved CPU cores for kubelets to scale proportionally to cores available on the kubelet's host node. Read more about [AKS resource reservation here](https://docs.microsoft.com/en-us/azure/aks/concepts-clusters-workloads#resource-reservations).
+* Preview Features
+  * Fixed an issue where AKS was not enforcing the minimum Kubernetes version
+    required at additional agent pool creation time when using the multiple node pools feature.
+  * Fixed an issue where creating new agent pools will overwrite the route
+    table and customers would lose their route table rules. Fixes issue [#1212](https://github.com/Azure/AKS/issues/1212).
+
 ## Release 2019-09-16
 
 **This release is rolling out to all regions**
