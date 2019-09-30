@@ -48,7 +48,6 @@ az extension remove --name aks-preview
 
 * [Availability Zones](#zones)
 * [Windows Worker Nodes](#windows)
-* [Locked down cluster egress](#egress)
 * [Multiple Node Pools](#nodepools)
 * [Secure access to the API server using authorized IP address ranges](#apideny)
 * [Cluster Autoscaler](#ca)
@@ -89,23 +88,6 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-### Locked down cluster egress <a name="egress"></a>
-
-By default, AKS clusters have unrestricted outbound (egress) internet access.
-This level of network access allows nodes and services you run to access
-external resources as needed. If you wish to restrict egress traffic, a
-limited number of ports and addresses must be accessible to maintain healthy
-cluster maintenance tasks.
-
-```
-az feature register -n AKSLockingDownEgressPreview --namespace Microsoft.ContainerService
-```
-
-Then refresh your registration of the AKS resource provider:
-
-```
-az provider register -n Microsoft.ContainerService
-```
 
 ### Multiple Node Pools  <a name="nodepools"></a>
 
