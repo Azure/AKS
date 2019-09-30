@@ -49,11 +49,9 @@ az extension remove --name aks-preview
 * [Availability Zones](#zones)
 * [Standard Load Balancers](#standard-load-balancers)
 * [Windows Worker Nodes](#windows)
-* [Locked down cluster egress](#egress)
 * [Multiple Node Pools](#nodepools)
 * [Secure access to the API server using authorized IP address ranges](#apideny)
 * [Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler](#vmss)
-* [Kubernetes Audit Log](#noauditforu)
 * [Kubernetes Pod Security Policies](#psp)
 
 ### Availability zones <a name="zones"></a>
@@ -104,23 +102,6 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-### Locked down cluster egress <a name="egress"></a>
-
-By default, AKS clusters have unrestricted outbound (egress) internet access.
-This level of network access allows nodes and services you run to access
-external resources as needed. If you wish to restrict egress traffic, a
-limited number of ports and addresses must be accessible to maintain healthy
-cluster maintenance tasks.
-
-```
-az feature register -n AKSLockingDownEgressPreview --namespace Microsoft.ContainerService
-```
-
-Then refresh your registration of the AKS resource provider:
-
-```
-az provider register -n Microsoft.ContainerService
-```
 
 ### Multiple Node Pools  <a name="nodepools"></a>
 
@@ -182,13 +163,6 @@ az aks create -n <CLUSTER_NAME> -g <CLUSTER_RG> --vm-set-type VirtualMachineScal
 
 ```
 
-### Kubernetes Audit Log <a name="noauditforu"></a>
-
-The [Kubernetes audit log][3] provides a detailed account of security-relevant
-events that have occurred in the cluster.
-
-Kubernetes audit log support is GA, the documentation for enabling it
-on AKS clusters is here: https://docs.microsoft.com/en-us/azure/aks/view-master-logs
 
 ## Kubernetes Pod Security Policies <a name="psp"></a>
 
