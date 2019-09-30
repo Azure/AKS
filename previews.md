@@ -148,9 +148,9 @@ az provider register -n Microsoft.ContainerService
 
 ### Azure Policy Add On <a name="azpolicy"></a>
 
-This feature enables application of rules in Azure Policy to be applied to Kubernetes resoureces in AKS.
+Azure Policy integrates with the Azure Kubernetes Service (AKS) to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. By extending use of GateKeeper, an admission controller webhook for Open Policy Agent (OPA), Azure Policy makes it possible to manage and report on the compliance state of your Azure resources and AKS clusters from one place.
 
-This feature is in preview and requires enablement by the Azure team to use. Read more here: https://docs.microsoft.com/en-us/azure/governance/policy/concepts/rego-for-aks
+This feature is in preview and requires enablement by the Azure team to use. Read more here: https://docs.microsoft.com/en-us/azure/governance/policy/concepts/rego-for-aks?toc=/azure/aks/toc.json
 
 ### (GA) Kubernetes Audit Log <a name="noauditforu"></a>
 
