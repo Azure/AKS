@@ -47,14 +47,16 @@ az extension remove --name aks-preview
 ## Preview features
 
 * [Availability Zones](#zones)
-* [Standard Load Balancers](#standard-load-balancers)
 * [Windows Worker Nodes](#windows)
 * [Locked down cluster egress](#egress)
 * [Multiple Node Pools](#nodepools)
 * [Secure access to the API server using authorized IP address ranges](#apideny)
-* [Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler](#vmss)
-* [Kubernetes Audit Log](#noauditforu)
+* [Cluster Autoscaler](#ca)
 * [Kubernetes Pod Security Policies](#psp)
+* [Azure Policy Add-On](#azpolicy)
+* [(GA) Kubernetes Audit Log](#noauditforu)
+* [(GA) Standard Load Balancers](#slb)
+* [(GA) Virtual Machine Scale Sets](#vmss)
 
 ### Availability zones <a name="zones"></a>
 
@@ -64,24 +66,7 @@ availability zones providing a higher level of availability.
 Getting started:
 * [AKS availability zones documentation](https://aka.ms/aks/zones)
 * [About availability zones on Azure](https://docs.microsoft.com/en-us/azure/availability-zones/az-overview)
-* [Swagger reference (2019-06-01)](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1399)
-
-### Standard Load Balancers
-
-This has been a long awaited feature which enables selection of the SKU type
-offered by Azure Load Balancer to be used with your AKS cluster, a full table
-of comparisons between the two is linked below.
-
-This is a create time property that can be set on new clusters created with the
-2019-06-01 API and forward. Support is available via preview CLI module as well
-which is captured in below documentation.
-
-* [Basic vs Standard Load Balancers](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview#skus)
-* [Using Azure SLB with AKS](https://docs.microsoft.com/en-us/azure/aks/load-balancer-standard)
-* [AKS API Definition](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1585)
-
-Behavioral differences and deployment instructions are outlined in the official
-documentation below.
+* [Example Swagger reference (2019-06-01)](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1399)
 
 ### Windows worker nodes <a name="windows"></a>
 
@@ -155,40 +140,11 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
-### Virtual Machine Scale Sets (VMSS) / Cluster Autoscaler <a name="vmss"></a>
+### Cluster Autoscaler <a name="ca"></a>
 
-[Azure virtual machine scale sets][6] let you create and manage a group of
-identical, load balanced VMs. VMSS usage is commonly used in conjunction with
-the [cluster autoscaler][5]. Both of these are in active preview and can be
-used today.
+The [cluster autoscaler][5] enables automatic creation of new nodes to back your AKS cluster in the event of needing more compute resources. The scaling rules are based off of the queue of pending pods, as described in the [open source project](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) the feature uses. Use of cluster autoscaler requires use of [VMSS clusters](#vmss).
 
-You can opt into the preview by registering the feature flag:
-
-```
-az feature register -n VMSSPreview --namespace Microsoft.ContainerService
-```
-
-Then refresh your registration of the AKS resource provider:
-
-```
-az provider register -n Microsoft.ContainerService
-```
-
-To create a VMSS backed cluster run:
-
-```bash
-
-az aks create -n <CLUSTER_NAME> -g <CLUSTER_RG> --vm-set-type VirtualMachineScaleSets
-
-```
-
-### Kubernetes Audit Log <a name="noauditforu"></a>
-
-The [Kubernetes audit log][3] provides a detailed account of security-relevant
-events that have occurred in the cluster.
-
-Kubernetes audit log support is GA, the documentation for enabling it
-on AKS clusters is here: https://docs.microsoft.com/en-us/azure/aks/view-master-logs
+Learn more about this feature here: https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler#create-an-aks-cluster-and-enable-the-cluster-autoscaler 
 
 ## Kubernetes Pod Security Policies <a name="psp"></a>
 
@@ -208,13 +164,47 @@ Then refresh your registration of the AKS resource provider:
 az provider register -n Microsoft.ContainerService
 ```
 
+### Azure Policy Add On <a name="azpolicy"></a>
+
+This feature enables application of rules in Azure Policy to be applied to Kubernetes resoureces in AKS.
+
+This feature is in preview and requires enablement by the Azure team to use. Read more here: https://docs.microsoft.com/en-us/azure/governance/policy/concepts/rego-for-aks
+
+### (GA) Kubernetes Audit Log <a name="noauditforu"></a>
+
+The [Kubernetes audit log][3] provides a detailed account of security-relevant
+events that have occurred in the cluster.
+
+Kubernetes audit log support is GA, the documentation for enabling it
+on AKS clusters is here: https://docs.microsoft.com/en-us/azure/aks/view-master-logs
+
+### (GA) Standard Load Balancers <a name="slb"></a>
+
+This feature enables selection of the SKU type
+offered by Azure Load Balancer to be used with your AKS cluster, a full table
+of comparisons between the two is linked below.
+
+This is a create time property that can be set on new clusters created with the
+2019-06-01 API and forward.
+
+* [Basic vs Standard Load Balancers](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview#skus)
+* [Using Azure SLB with AKS](https://docs.microsoft.com/en-us/azure/aks/load-balancer-standard)
+* [AKS API Definition](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1585)
+
+Behavioral differences and deployment instructions are outlined in the official
+documentation below.
+
+### (GA) Virtual Machine Scale Sets (VMSS) <a name="vmss"></a>
+
+[Azure virtual machine scale sets][6] let you create and manage a group of
+identical, load balanced VMs. This feature enables virtual machine scale sets to be used as the backing compute object for an AKS cluster. The other option is VM availability sets.
 
 ## Associated projects
 
 Please note that while the following projects have been validated to work with
 recent AKS clusters, they are not yet officially supported by Azure technical
 support. If you run into issues, please file them in the corresponding GitHub
-repository.
+repository. These must be installed by the user from the below open source projects.
 
 ### AAD Pod Identity
 
