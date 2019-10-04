@@ -6,10 +6,9 @@
 
 ### Service Updates
 
-* With the official 2019-11-04 Azure CLI release, the AKS extension
-  will default new cluster creates to VM Scale-Sets and Standard Load
-  Balancers (VMSS/SLB) instead of VM Availability Sets and Basic Load Balancers
-  (VMAS/BLB).
+* With the official 2019-11-04 Azure CLI release, AKS will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB).
 * Support for node pool taints and public ip assignment per node with AKS will
   be available in Azure CLI extension v0.4.17
 * AKS Availability Zone support has been expanded to the following regions:
@@ -23,7 +22,9 @@
 ### Release Notes
 
 * New Features
-  * Managed Identity (MSI) support is now in public preview.
+  * Customer may use NetworkPolicies with Azure CNI and Kubenet based clusters:
+    * https://docs.microsoft.com/en-us/azure/aks/use-network-policies
+  * Managed Identity (MSI) support is now in *public preview*.
     * https://docs.microsoft.com/en-us/azure/aks/use-managed-identity
 * Bug Fixes
   * Fix a bug where the removal of an outbound rule from standard load balancer
