@@ -1,8 +1,52 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2019-09-23
+## Release 2019-09-30
 
 **This release is rolling out to all regions**
+
+### Service Updates
+
+* With the official 2019-11-04 Azure CLI release, AKS will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB).
+* Support for node pool taints and public ip assignment per node with AKS will
+  be available in Azure CLI extension v0.4.17
+* AKS Availability Zone support has been expanded to the following regions:
+  * Japan East
+  * UK South
+  * France Central
+  * East US
+  * Central US
+  * Australia East
+
+### Release Notes
+
+* New Features
+  * Customer may use NetworkPolicies with Azure CNI and Kubenet based clusters:
+    * https://docs.microsoft.com/en-us/azure/aks/use-network-policies
+  * Managed Identity (MSI) support is now in *public preview*.
+    * https://docs.microsoft.com/en-us/azure/aks/use-managed-identity
+* Bug Fixes
+  * Fix a bug where the removal of an outbound rule from standard load balancer
+    in the AKS node resource group could cause the failure of subsequent
+    cluster operations.
+  * Fixed the issue impacting GPU enabled clusters being unable to install the
+    required NVidia drivers.
+  * Fixed an issue where customers could encounter a CSE (custom script
+    extension) error 99 during operations.
+  * Fixed an issue with the Azure Portal cluster metrics multiplying the metric
+    count based on the viewed window of time. Moving forward the default for
+    these metrics will be correctly set to average() as opposed to sum().
+    * For customers with metrics already enabled and in-use in portal, the sum()
+      type will continue to be supported.
+* Component Updates
+  * AKS-Engine has been updated to v0.40.1
+* Preview Features
+  * Fixed an issue where nodes provisioned by cluster autoscaler would be
+    de-provisioned when resetting or updating AAD credentials.
+
+## Release 2019-09-23
+
 
 ### Service Updates
 
