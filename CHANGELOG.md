@@ -1,5 +1,33 @@
 # Azure Kubernetes Service Changelog
 
+
+## Release 2019-10-07
+
+**This release is rolling out to all regions**
+
+### Service Updates
+
+* With the official 2019-11-04 Azure CLI release, AKS will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB).
+* From 2019-10-14 AKS Portal will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB). Users can still explicitly
+  choose VMAS and BLB.
+
+### Release Notes
+
+* Behavioral Changes
+  * Improved process and speed of upgrade to reduce impact to pods during the process
+* Bug Fixes
+  * Fixed a bug where kubelet reserved values where applied only to primary node pool. Now correctly applied to all nodepools if using multiple nodepools.
+  * Added additional service principal validation on Upgrade.
+  * Prevented multiple concurrent provisioning operations.
+* New Features
+  * Kubernetes versions 1.15.4, 1.14.7 and 1.13.11 have been added.
+Component Updates
+  * AKS-Engine has been updated to v0.41.4
+
 ## Release 2019-09-30
 
 **This release is rolling out to all regions**
