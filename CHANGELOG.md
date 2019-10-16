@@ -13,6 +13,7 @@
   creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
   Availability Sets and Basic Load Balancers (VMAS/BLB). Users can still explicitly
   choose VMAS and BLB.
+* From 2019-11-04 the CLI extension will have a new parameter --zones to replace --node-zones, which specifies the zones to be used by the cluster nodes.
 
 ### Release Notes
 
