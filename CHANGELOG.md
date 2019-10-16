@@ -1,5 +1,32 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-10-14
+
+**This release is rolling out to all regions**
+
+### Service Updates
+
+* With the official 2019-11-04 Azure CLI release, AKS will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB).
+* From 2019-10-14 AKS Portal will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB). Users can still explicitly
+  choose VMAS and BLB.
+
+### Release Notes
+
+* Bug Fixes
+  * Fixed a bug where nodepool API would not accept and handle empty fields correctly, "", "{}", "{"properties":{}}".
+  * Fixed a bug with http application routing addon where portal would lowercase all addon names and the input was not accepted.
+  * Upgrade operation will not fail when manual changes have been applied to the SinglePlacementGroup property on underlying VMSS.
+  * Fixed bug where customers trying to enable pod security policy without providing k8s version in the request would encounter failure (500 internal error).
+  * Fixed bug where NPM pods would consume an excessive amount of memory.
+* Preview Features
+  * Updated windows image to the latest version.
+* Component Updates
+  * Updated Azure Network Policy (NPM) version to v1.0.28
+  * Azure Monitor for Containers Agent updated to 2019-10-11 release: <https://github.com/microsoft/Docker-Provider/releases>
 
 ## Release 2019-10-07
 
@@ -25,7 +52,7 @@
   * Prevented multiple concurrent provisioning operations.
 * New Features
   * Kubernetes versions 1.15.4, 1.14.7 and 1.13.11 have been added.
-Component Updates
+* Component Updates
   * AKS-Engine has been updated to v0.41.4
 
 ## Release 2019-09-30
