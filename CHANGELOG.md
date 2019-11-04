@@ -1,5 +1,49 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-10-28
+
+**This release is rolling out to all regions**
+
+### Service Updates
+* With the official 2019-11-04 Azure CLI release, AKS will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB).
+* From 2019-10-14 AKS Portal will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB). Users can still explicitly
+  choose VMAS and BLB.
+* From 2019-11-04 the CLI extension will have a new parameter --zones to replace --node-zones, which specifies the zones to be used by the cluster nodes.
+
+### Release Notes
+
+* New Features
+  * Multiple Nodepools backed AKS clusters are now Generally Available (GA)
+  https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools
+  * Cluster Autoscaler is now Generally Available (GA)
+  https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler
+  * Availability Zones are now Generally Available (GA)
+  https://docs.microsoft.com/en-us/azure/aks/availability-zones
+  * AKS API server Authorized IP Ranges is now Generally Available (GA)
+  https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-rangesa
+  * Kubernetes versions 1.15.5, 1.14.8 and 1.13.12 have been added.
+    * These versions have new API call logic that helps users with many AKS clusters in the same subscription to incur is less throttling.
+    * These versions have security fixes for [CVE-2019-11253](https://github.com/Azure/AKS/issues/1262)
+  * The minimum `--max-pods` value has been altered from **30 per node to 30 per Nodepool**. Each node will have a hard **minimum of 10 pods**
+  the user can specify, but this value can only be used if the total pods across all nodes on the nodepool accrue to 30+.
+* Bug Fixes
+  * Added additional validation to nodepool operations to check for enough address space. If there is no address space left for a scale/upgrade operation,
+  the operation will not start and give a descriptive error message.
+  * Fixed bug with Nodepool operations and `az aks update-credentials` to reflect on the agentpool state.
+  * Fixed bug on Nodepool operations when using incorrect SKUs to have more descriptive error.
+  * Added validation to block `az aks update-credentials` if nodepool is not ready to avoid conflicts.
+  * Node count on the Nodepool is ignored when user has autoscaling enabled. (Manual scale with autoscaler enabled is not allowed)
+  * Fixed bug where some clusters would still receive an older Moby version (3.0.6). Current version is 3.0.7
+* Preview Features
+  * Windows docker runtime updated to 19.03.2
+* Component updates
+  * Moby has been updated to v3.0.7
+  * AKS-Engine has been updated to v0.41.5
+
 ## Release 2019-10-14
 
 **This release is rolling out to all regions**
