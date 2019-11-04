@@ -18,13 +18,13 @@
 
 * New Features
   * Multiple Nodepools backed AKS clusters are now Generally Available (GA)
-  https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools
+    * https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools
   * Cluster Autoscaler is now Generally Available (GA)
-  https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler
+    * https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler
   * Availability Zones are now Generally Available (GA)
-  https://docs.microsoft.com/en-us/azure/aks/availability-zones
+    * https://docs.microsoft.com/en-us/azure/aks/availability-zones
   * AKS API server Authorized IP Ranges is now Generally Available (GA)
-  https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-rangesa
+    * https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-rangesa
   * Kubernetes versions 1.15.5, 1.14.8 and 1.13.12 have been added.
     * These versions have new API call logic that helps users with many AKS clusters in the same subscription to incur is less throttling.
     * These versions have security fixes for [CVE-2019-11253](https://github.com/Azure/AKS/issues/1262)
