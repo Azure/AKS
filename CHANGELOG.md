@@ -28,8 +28,7 @@
   * Kubernetes versions 1.15.5, 1.14.8 and 1.13.12 have been added.
     * These versions have new API call logic that helps users with many AKS clusters in the same subscription to incur is less throttling.
     * These versions have security fixes for [CVE-2019-11253](https://github.com/Azure/AKS/issues/1262)
-  * The minimum `--max-pods` value has been altered from **30 per node to 30 per Nodepool**. Each node will have a hard **minimum of 10 pods**
-  the user can specify, but this value can only be used if the total pods across all nodes on the nodepool accrue to 30+.
+  * The minimum `--max-pods` value has been altered from **30 per node to 30 per Nodepool**. Each node will have a hard **minimum of 10 pods** the user can specify, but this value can only be used if the total pods across all nodes on the nodepool accrue to 30+.
 * Bug Fixes
   * Added additional validation to nodepool operations to check for enough address space. If there is no address space left for a scale/upgrade operation,
   the operation will not start and give a descriptive error message.
