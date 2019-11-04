@@ -46,26 +46,16 @@ az extension remove --name aks-preview
 
 ## Preview features
 
-* [Availability Zones](#zones)
 * [Windows Worker Nodes](#windows)
-* [Multiple Node Pools](#nodepools)
-* [Secure access to the API server using authorized IP address ranges](#apideny)
-* [Cluster Autoscaler](#ca)
 * [Kubernetes Pod Security Policies](#psp)
 * [Azure Policy Add-On](#azpolicy)
+* [(GA) Availability Zones](#zones)
+* [(GA) Multiple Node Pools](#nodepools)
+* [(GA) Secure access to the API server using authorized IP address ranges](#apideny)
+* [(GA) Cluster Autoscaler](#ca)
 * [(GA) Kubernetes Audit Log](#noauditforu)
 * [(GA) Standard Load Balancers](#slb)
 * [(GA) Virtual Machine Scale Sets](#vmss)
-
-### Availability zones <a name="zones"></a>
-
-This feature enables customers to distribute their AKS clusters across
-availability zones providing a higher level of availability.
-
-Getting started:
-* [AKS availability zones documentation](https://aka.ms/aks/zones)
-* [About availability zones on Azure](https://docs.microsoft.com/en-us/azure/availability-zones/az-overview)
-* [Example Swagger reference (2019-06-01)](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1399)
 
 ### Windows worker nodes <a name="windows"></a>
 
@@ -87,46 +77,6 @@ Then refresh your registration of the AKS resource provider:
 ```
 az provider register -n Microsoft.ContainerService
 ```
-
-
-### Multiple Node Pools  <a name="nodepools"></a>
-
-Multiple Node Pool support is now in public preview. You can see the
-[preview documentation][nodepool] for instructions and limitations.
-
-```
-az feature register -n MultiAgentpoolPreview --namespace Microsoft.ContainerService
-```
-
-Then refresh your registration of the AKS resource provider:
-
-```
-az provider register -n Microsoft.ContainerService
-```
-
-### Secure access to the API server using authorized IP address ranges  <a name="apideny"></a>
-
-This feature allows users to restrict what IP addresses have access to the
-Kubernetes API endpoint for clusters. Please see details and limitations
-in the [preview documentation][api server].
-
-You can opt into the preview by registering the feature flag:
-
-```
-az feature register -n APIServerSecurityPreview --namespace Microsoft.ContainerService
-```
-
-Then refresh your registration of the AKS resource provider:
-
-```
-az provider register -n Microsoft.ContainerService
-```
-
-### Cluster Autoscaler <a name="ca"></a>
-
-The [cluster autoscaler][5] enables automatic creation of new nodes to back your AKS cluster in the event of needing more compute resources. The scaling rules are based off of the queue of pending pods, as described in the [open source project](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) the feature uses. Use of cluster autoscaler requires use of [VMSS clusters](#vmss).
-
-Learn more about this feature here: https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler#create-an-aks-cluster-and-enable-the-cluster-autoscaler 
 
 ## Kubernetes Pod Security Policies <a name="psp"></a>
 
@@ -151,6 +101,32 @@ az provider register -n Microsoft.ContainerService
 Azure Policy integrates with the Azure Kubernetes Service (AKS) to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. By extending use of GateKeeper, an admission controller webhook for Open Policy Agent (OPA), Azure Policy makes it possible to manage and report on the compliance state of your Azure resources and AKS clusters from one place.
 
 This feature is in preview and requires enablement by the Azure team to use. Read more here: https://docs.microsoft.com/en-us/azure/governance/policy/concepts/rego-for-aks?toc=/azure/aks/toc.json
+
+### (GA) Availability zones <a name="zones"></a>
+
+This feature enables customers to distribute their AKS clusters across
+availability zones providing a higher level of availability.
+
+Getting started:
+* [AKS availability zones documentation](https://aka.ms/aks/zones)
+* [About availability zones on Azure](https://docs.microsoft.com/en-us/azure/availability-zones/az-overview)
+* [Example Swagger reference (2019-06-01)](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-06-01/managedClusters.json#L1399)
+
+### (GA) Multiple Node Pools  <a name="nodepools"></a>
+
+Multiple Node Pool support is now in GA. You can see the
+[documentation][nodepool] for instructions.
+
+### (GA) Secure access to the API server using authorized IP address ranges  <a name="apideny"></a>
+
+This feature allows users to restrict what IP addresses have access to the
+Kubernetes API endpoint for clusters. Please see details in the [documentation][api server].
+
+### (GA) Cluster Autoscaler <a name="ca"></a>
+
+The [cluster autoscaler][5] enables automatic creation of new nodes to back your AKS cluster in the event of needing more compute resources. The scaling rules are based off of the queue of pending pods, as described in the [open source project](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) the feature uses. Use of cluster autoscaler requires use of [VMSS clusters](#vmss).
+
+Learn more about this feature here: https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler#create-an-aks-cluster-and-enable-the-cluster-autoscaler 
 
 ### (GA) Kubernetes Audit Log <a name="noauditforu"></a>
 
