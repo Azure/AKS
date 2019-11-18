@@ -1,17 +1,59 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-11-11
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* With the official 2019-11-04 Azure CLI release (v2.0.76), AKS has defaulted new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB). Users can still explicitly
+  choose VMAS and BLB.
+* From 2019-10-14 AKS Portal has defaulted new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB).
+* From 2019-11-04 the CLI extension has a new parameter --zones to replace --node-zones, which specifies the zones to be used by the cluster nodes.
+
+### Release Notes
+
+* New Features
+  * AKS has created a new default role clusterMonitoringUser to simplify the Azure Monitor Live metrics onboard experience so that moving forward users don't need to explicitly grant those permissions.
+  This user will have ‘GET’ and ‘LIST’ permissions to  ‘POD/LOGS’, ‘EVENTS’, 'DEPLOYMENTS', 'PODS', 'REPLICASETS' and 'NODES'.
+  * Support for new regions:
+    * Germany North
+    * Germany West Central
+    * UAE North
+    * Switzerland North
+    * Switzerland West
+  * On-Demand Certificate Rotation is now Generally Available: <https://docs.microsoft.com/en-us/azure/aks/certificate-rotation>
+* Bug Fixes
+  * Fixed bug with MC_ infra resource group not being created/propagated quickly enough and triggering ResourceGroupNotFound errors.
+  * Fixed missing cloud provider role binding: <https://github.com/Azure/AKS/issues/1104>
+  * Fixed nodepool bug where a PUT would be accepted while the pool was being deleted.
+  * Correctly assign the cluster-admin clusterrolebinding to the clusterAdmin user in all cases.
+  * Fixed several upstream bugs with attach/detach in VMSS:
+    * <https://github.com/kubernetes/kubernetes/pull/85158>
+    * <https://github.com/kubernetes/kubernetes/pull/83685>
+    * <https://github.com/kubernetes/kubernetes/pull/84917>
+    * AKS is rolling this changes in automatically and users do not need to upgrade.
+  * Fixed a bug upgrading Basic LB clusters that were using the preview of API Authorized Ranges feature, only supported in GA with Standard LB.
+* Behavior Changes
+  * Add priorityClass for calico-node and ensure calico-node tolerates all NoSchedule taints. This ensures calico-node will still be scheduled to all nodes even when users have added other node taints.
+
 ## Release 2019-10-28
 
 **This release is rolling out to all regions**
 
 ### Service Updates
+
 * With the official 2019-11-04 Azure CLI release, AKS will default new cluster
-  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
-  Availability Sets and Basic Load Balancers (VMAS/BLB).
-* From 2019-10-14 AKS Portal will default new cluster
   creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
   Availability Sets and Basic Load Balancers (VMAS/BLB). Users can still explicitly
   choose VMAS and BLB.
+* From 2019-10-14 AKS Portal will default new cluster
+  creates to VM Scale-Sets and Standard Load Balancers (VMSS/SLB) instead of VM
+  Availability Sets and Basic Load Balancers (VMAS/BLB).
 * From 2019-11-04 the CLI extension will have a new parameter --zones to replace --node-zones, which specifies the zones to be used by the cluster nodes.
 
 ### Release Notes
@@ -24,7 +66,7 @@
   * Availability Zones are now Generally Available (GA)
     * https://docs.microsoft.com/en-us/azure/aks/availability-zones
   * AKS API server Authorized IP Ranges is now Generally Available (GA)
-    * https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-rangesa
+    * https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges
   * Kubernetes versions 1.15.5, 1.14.8 and 1.13.12 have been added.
     * These versions have new API call logic that helps users with many AKS clusters in the same subscription to incur is less throttling.
     * These versions have security fixes for [CVE-2019-11253](https://github.com/Azure/AKS/issues/1262)
