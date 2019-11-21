@@ -22,7 +22,7 @@
 * Behavior Changes
   * Added a label `control-plane=true` to the `kube-system` namespace
 * Component updates
-  * Metrics server has been updated to v3.5
+  * Metrics server has been updated to v0.3.5
   * AKS-Engine has been updated to [v0.43.0](https://github.com/Azure/aks-engine/releases/tag/v0.43.0)
 
 ## Release 2019-11-11
