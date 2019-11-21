@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-11-18
+
+**This release is rolling out to all regions**
+
+### Release Notes
+
+* New Features
+  * Announcing AKS Diagnostics in Public Preview
+    * Hopefully, most of the time your AKS clusters are running happily and healthily. However, when things go wrong, we want to make sure that our AKS customers are empowered to easily and quickly figure out what’s wrong and the next steps for mitigation or deeper investigation.
+    * AKS Diagnostics is a guided and interactive experience in the Azure Portal that helps you diagnose and solve potential issues with your AKS cluster, such as identity and security management, node issues, CRUD operations and more. Detectors in AKS Diagnostics intelligently find issues and observations as well as recommend next steps. This feature comes configured completely out-of-the-box and is free for all our AKS customers.
+    * Get started and learn more here: https://aka.ms/aks/diagnostics
+  * Support for new regions:
+    * Norway East
+    * Norway West
+* Bug Fixes
+  * Fixed enforcement to require patch versions of node pools must be equal to or within 2 patch versions less than the control plane.
+  * Fixed error messages incorrectly stating a version was not supported to return proper errors detailing what validation was failed.
+  * Added retries to retrieve a managed resource group. Errors can be returned with `ResourceGroupNotFound` due to slow Azure Resource Manager (ARM) data replication when AKS tries to place new managed resources into the managed resource group.
+* Behavior Changes
+  * Added a label `control-plane=true` to the `kube-system` namespace
+* Component updates
+  * Metrics server has been updated to v0.3.5
+  * AKS-Engine has been updated to [v0.43.0](https://github.com/Azure/aks-engine/releases/tag/v0.43.0)
+
 ## Release 2019-11-11
 
 **This release is rolling out to all regions**
