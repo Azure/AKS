@@ -15,7 +15,6 @@
     * Norway East
     * Norway West
 * Bug Fixes
-  * Fixed an issue where certain cluster configurations did not auto-register Network, Compute, and Storage providers for the user.
   * Fixed enforcement to require patch versions of node pools must be equal to or within 2 patch versions less than the control plane.
   * Fixed error messages incorrectly stating a version was not supported to return proper errors detailing what validation was failed.
   * Added retries to retrieve a managed resource group. Errors can be returned with `ResourceGroupNotFound` due to slow Azure Resource Manager (ARM) data replication when AKS tries to place new managed resources into the managed resource group.
