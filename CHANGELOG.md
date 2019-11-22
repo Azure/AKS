@@ -21,7 +21,6 @@
 * Behavior Changes
   * Added a label `control-plane=true` to the `kube-system` namespace
 * Component updates
-  * Metrics server has been updated to v0.3.5
   * AKS-Engine has been updated to [v0.43.0](https://github.com/Azure/aks-engine/releases/tag/v0.43.0)
 
 ## Release 2019-11-11
@@ -64,6 +63,8 @@
   * Fixed a bug upgrading Basic LB clusters that were using the preview of API Authorized Ranges feature, only supported in GA with Standard LB.
 * Behavior Changes
   * Add priorityClass for calico-node and ensure calico-node tolerates all NoSchedule taints. This ensures calico-node will still be scheduled to all nodes even when users have added other node taints.
+* Component updates
+  * Metrics server has been updated to v0.3.5
 
 ## Release 2019-10-28
 
