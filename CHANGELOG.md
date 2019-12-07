@@ -1,5 +1,23 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-12-02
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS is updating supported versions as announced in this [service update](https://azure.microsoft.com/updates/azure-kubernetes-service-will-be-retiring-support-for-kubernetes-versions-1-11-and-1-12/) and [AKS issue](https://github.com/Azure/AKS/issues/1235) to move from the "N-3" to "N-2" window. Starting December 9th, 2019 AKS will remove support for anything older than K8s 1.13 and scope the active support window to K8s 1.13, 1.14, and 1.15.
+* K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). When AKS supports this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16 when it is available in AKS.
+
+### Release Notes
+
+* Bug Fixes
+  * Fixed cases of failed cluster creations due to an "Unregistering" or "NotRegistered" state for a subscription's access to NRP or CRP.
+  * Added AKS validation that service principal secrets may not exceed 190 bytes.
+* Behavior Changes
+  * Fixed a bug where outbound IP creation for Standard Load Balancer did not retry when receiving internal server error from Network Resource Provider.
+  * Improved validation of agent pool operations to only validate agent pool count when cluster autoscaler is turned off. When cluster autoscaler is turned on the minCount and maxCount set are used for count validations.
+
 ## Release 2019-11-18
 
 **This release is rolling out to all regions**
