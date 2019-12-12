@@ -35,8 +35,8 @@
   * Azure-npm has been updated to 1.0.30. Changes include:
     * **IMPORTANT BEHAVIOR CHANGE:** Azure npm as part of version 1.0.30 will no longer exclude the kube-system namespace from network policies. If a dependency was taken on this, ensure updates are made for connections to/from the kube-system namespace.
     * Give precedence to drop rules in IPBlock
-    * Remove telemetry buffer from NPM (sidecar remains until AKS-E changes get merged and vendored into AKS-RP)
-    * Write logs to stdout (and file) so that we may see logs using 'kubectl logs...'
+    * Remove telemetry buffer from NPM
+    * Write logs to stdout (and file) so that we may see logs using 'kubectl logs'
     * Remove kube-system chain
     * Add drop entries in corresponding chain for specific policies (i.e. non ALLOW-ALL* entries)
     * Full details in [npm PR](https://github.com/Azure/azure-container-networking/commit/61ccd6f38728aac2f3edf3fa7dc904b540714135).
