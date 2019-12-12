@@ -1,5 +1,47 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2019-12-09
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS has updated supported versions as announced in this [service update](https://azure.microsoft.com/updates/azure-kubernetes-service-will-be-retiring-support-for-kubernetes-versions-1-11-and-1-12/) and [AKS issue](https://github.com/Azure/AKS/issues/1235) to move from the "N-3" to "N-2" window. Starting December 9th, 2019 AKS has removed support for anything older than K8s 1.13 and scoped the active support window to K8s 1.13, 1.14, and 1.15.
+* K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). When AKS supports this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16 when it is available in AKS.
+
+### Release Notes
+
+* New Features
+  * AKS support of Private Clusters is now in preview. With Azure Private Link in AKS, customers can interact with the Kubernetes API server as a private endpoint in their virtual network, ensuring that all Kubernetes management operations remain completely isolated. Read the announcement [here](https://docs.microsoft.com/azure/aks/private-clusters).
+    * Available in the following regions during preview.
+           * Australiaeast​
+           * Canadacentral​
+           * Westus2​
+           * Westus​
+           * Eastus2​
+           * Northeurope​
+           * Westeurope
+  * Kubernetes version 1.15 is now Generally Available. As part of the planned supported versions change mentioned above, 1.11 and 1.12 are no longer supported on AKS. If you are on those versions please upgrade your clusters to return within support.
+  * Added support for new VM SKUs.
+    * Standard_ND40s_v3 preview
+    * Standard_ND40rs_v2 preview
+    * Standard_Da v4 family
+    * Standard_Ea v4 family
+  * Azure Advisor integration with AKS now supports notification of upcoming service principal expiration.
+  * Azure Monitor Custom Metrics now supports France Central, Japan East, and Australia East.
+* Component updates
+  * OMS agent has been updated to ciprod12042019
+    * OMS agent add-on has increased CPU limits to 1 core and memory limits to 750Mi to support higher scale clusters.
+  * Azure-npm has been updated to 1.0.30. Changes include:
+    * **IMPORTANT BEHAVIOR CHANGE:** Azure npm as part of version 1.0.30 will no longer exclude the kube-system namespace from network policies. If a dependency was taken on this, ensure updates are made for connections to/from the kube-system namespace.
+    * Give precedence to drop rules in IPBlock
+    * Remove telemetry buffer from NPM (sidecar remains until AKS-E changes get merged and vendored into AKS-RP)
+    * Write logs to stdout (and file) so that we may see logs using 'kubectl logs...'
+    * Remove kube-system chain
+    * Add drop entries in corresponding chain for specific policies (i.e. non ALLOW-ALL* entries)
+    * Full details in [npm PR](https://github.com/Azure/azure-container-networking/commit/61ccd6f38728aac2f3edf3fa7dc904b540714135).
+  * Virtual Nodes has been updated to use Virtual-Kubelet v1.1.0.1
+
 ## Release 2019-12-02
 
 **This release is rolling out to all regions**
