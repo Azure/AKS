@@ -14,13 +14,13 @@
 * New Features
   * AKS support of Private Clusters is now in preview. With Azure Private Link in AKS, customers can interact with the Kubernetes API server as a private endpoint in their virtual network, ensuring that all Kubernetes management operations remain completely isolated. Read the announcement [here](https://docs.microsoft.com/azure/aks/private-clusters).
     * Available in the following regions during preview.
-           * Australiaeast​
-           * Canadacentral​
-           * Westus2​
-           * Westus​
-           * Eastus2​
-           * Northeurope​
-           * Westeurope
+      * Australiaeast​
+      * Canadacentral​
+      * Westus2​
+      * Westus​
+      * Eastus2​
+      * Northeurope​
+      * Westeurope
   * Kubernetes version 1.15 is now Generally Available. As part of the planned supported versions change mentioned above, 1.11 and 1.12 are no longer supported on AKS. If you are on those versions please upgrade your clusters to return within support.
   * Added support for new VM SKUs.
     * Standard_ND40s_v3 preview
