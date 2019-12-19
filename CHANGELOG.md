@@ -32,6 +32,7 @@
 * Component updates
   * OMS agent has been updated to ciprod12042019
     * OMS agent add-on has increased CPU limits to 1 core and memory limits to 750Mi to support higher scale clusters.
+    * <https://github.com/microsoft/Docker-Provider/releases>
   * Azure-npm has been updated to 1.0.30. Changes include:
     * **IMPORTANT BEHAVIOR CHANGE:** Azure npm as part of version 1.0.30 will no longer exclude the kube-system namespace from network policies. If a dependency was taken on this, ensure updates are made for connections to/from the kube-system namespace.
     * Give precedence to drop rules in IPBlock
