@@ -747,7 +747,7 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
   * There is a known issue with the cluster autoscaler preview and multiple
     agent pools. The current autoscaler in preview is not compatible with
     multiple agent pools, and could not be disabled. We have fixed the issue
-    that blocked disabling the autoscaler. A fix for mutliple agent pools and
+    that blocked disabling the autoscaler. A fix for multiple agent pools and
     the cluster autoscaler is in development.
 
 
