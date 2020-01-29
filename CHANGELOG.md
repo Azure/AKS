@@ -31,7 +31,7 @@
   * Fixed bug where Accelerated Networking would be disabled after an upgrade.
   * Fixed issue while retrying to create the SLB default egress IP.
   * Fixed bug where DS3_v2 would be Network Accelerated despite supporting it.
-  * Fixed several issues where under specific conditions users could see Azure API throttling on their subscriptions. - GH LINK
+  * Fixed several issues where under specific conditions users could see Azure API throttling on their subscriptions. - <https://github.com/Azure/AKS/issues/1413>
   * Fixed bug with `az aks reset-credentials --reset-aad` that would require manual intervention to complete.
 * Component Updates
   * Updated to Moby 3.0.8 - <https://github.com/Azure/moby/releases/tag/3.0.8>
