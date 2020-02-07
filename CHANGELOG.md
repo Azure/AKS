@@ -1,6 +1,27 @@
 # Azure Kubernetes Service Changelog
 
 
+## Release 2020-02-03
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). When AKS supports this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16 when it is available in AKS.
+* CoreDNS has been updated to v1.6.6. This change can affect users using the deprecated Proxy plugin which is no longer supported. Users should replace that with the Forward Plugin.
+<https://github.com/Azure/AKS/issues/1304>
+* With the introduction of Kubernetes v1.16 on the last release that marked the start of the deprecation for v1.13 in AKS. 1.13 is scheduled to be retired on February 28th.
+
+### Release Notes
+
+* New Features
+  * AKS now supports specifying the Outbound Port and Idle Timeout properties on the Azure SLB. https://aka.ms/aks/slb-ports
+* Bug Fixes
+  * Fixed a bug that caused a billing extension error.
+* Preview features
+  * AKS now supports specifying Outbound type to define if the cluster should egress through the Standard Load Balancer (SLB) or a custom UDR (that sends egress traffic through a custom FW, on-prem gateway, etc.) Egress requirements are still the same, wherever the traffic egresses from. <https://aka.ms/aks/egress>
+
+
 ## Release 2020-01-27
 
 **This release is rolling out to all regions**
