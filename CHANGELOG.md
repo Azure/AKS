@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+# Release 2020-02-17
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). When AKS supports this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16 when it is available in AKS.
+* With the introduction of Kubernetes v1.16 on the last release that marked the start of the deprecation for v1.13 in AKS. 1.13 is scheduled to be retired on February 28th.
+
+### Release Notes
+* New Features
+  * AKS Cluster AutoScaler now supports configuring the autoscaler profile parameters. <https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler#using-the-autoscaler-profile>
+* Bug Fixes
+  * Fixed bug when upgrading Virtual Machine Availability Set (VMAS) clusters that would trigger a PutNicOperation cancelled
+  * Fixed bug causing throttling when using Internal Load Balancer
+* Preview Features
+  * AKS now supports adding tags and labels to nodepools
+    * <https://github.com/Azure/AKS/issues/1088>
+    * <https://github.com/Azure/AKS/issues/1344>
+* Component Updates
+  * AKS VHD image updated to [aks-ubuntu-1604-202002_202002.12](vhd-notes/aks-ubuntu/aks-ubuntu-1604-202002_202002.12.txt)
+
 # Release 2020-02-10
 
 **This release is rolling out to all regions**
@@ -45,7 +67,7 @@
   * AKS now supports specifying Outbound type to define if the cluster should egress through the Standard Load Balancer (SLB) or a custom UDR (that sends egress traffic through a custom FW, on-prem gateway, etc.) Egress requirements are still the same, wherever the traffic egresses from. <https://aka.ms/aks/egress>
 * Behavioral Changes
   * The private cluster FQDN format has changed from *guid.<region>.azmk8s.io to *guid.privatelink.<region>.azmk8s.io
-
+    
 
 ## Release 2020-01-27
 
