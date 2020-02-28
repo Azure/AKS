@@ -1,5 +1,23 @@
 # Azure Kubernetes Service Changelog
 
+# Release 2020-02-24
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). When AKS supports this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16 when it is available in AKS.
+* With the introduction of Kubernetes v1.16 on the last release that marked the start of the deprecation for v1.13 in AKS. 1.13 is scheduled to be retired on February 28th.
+
+### Release Notes
+
+* Features
+  * AKS not supports [Service Account Token Volume Projection](https://github.com/Azure/AKS/issues/1208)
+* Preview Features
+  * AKS now supports [Azure Spot NodePools](https://docs.microsoft.com/en-us/azure/aks/spot-node-pool)
+* Bug Fixes
+  * Fixed bug on Windows Nodepools preview where vnetCidrs were sometimes not set correctly on Windows nodepools resulting in wrong NAT exceptions on Windows nodes.
+
 # Release 2020-02-17
 
 **This release is rolling out to all regions**
@@ -10,6 +28,7 @@
 * With the introduction of Kubernetes v1.16 on the last release that marked the start of the deprecation for v1.13 in AKS. 1.13 is scheduled to be retired on February 28th.
 
 ### Release Notes
+
 * New Features
   * AKS Cluster AutoScaler now supports configuring the autoscaler profile parameters. <https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler#using-the-autoscaler-profile>
 * Bug Fixes
