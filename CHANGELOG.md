@@ -12,7 +12,7 @@
 ### Release Notes
 
 * Features
-  * AKS not supports [Service Account Token Volume Projection](https://github.com/Azure/AKS/issues/1208)
+  * AKS now supports [Service Account Token Volume Projection](https://github.com/Azure/AKS/issues/1208)
 * Preview Features
   * AKS now supports [Azure Spot NodePools](https://docs.microsoft.com/en-us/azure/aks/spot-node-pool)
 * Bug Fixes
