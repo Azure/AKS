@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-# Release 2020-02-24
+# Release 2020-03-02
 
 **This release is rolling out to all regions**
 
