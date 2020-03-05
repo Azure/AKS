@@ -7,6 +7,22 @@
 ### Important Service Updates
 
 * K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). When AKS supports this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16 when it is available in AKS.
+* 1.16 will GA on the week of March 9th and you will no longer be able to create 1.13.x based clusters or nodepools.
+
+### Release Notes
+
+* Features
+  * Added balance-similar-node-groups as an additional parameter users can configure for AKS Managed Cluster Autoscaler (CA)
+* Behavioral Changes
+  * For enhanced security AKS has removed CHACHA from API server accepted tls cipher suites.
+
+# Release 2020-02-24
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). When AKS supports this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16 when it is available in AKS.
 * With the introduction of Kubernetes v1.16 on the last release that marked the start of the deprecation for v1.13 in AKS. 1.13 is scheduled to be retired on February 28th.
 
 ### Release Notes
@@ -155,7 +171,7 @@
 
 * New Features
   * Announcing AKS Diagnostics in Public Preview
-    * Hopefully, most of the time your AKS clusters are running happily and healthily. However, when things go wrong, we want to make sure that our AKS customers are empowered to easily and quickly figure out what’s wrong and the next steps for mitigation or deeper investigation.
+    * Hopefully, most of the time your AKS clusters are running happily and healthily. However, when things go wrong, we want to make sure that our AKS customers are empowered to easily and quickly figure out what's wrong and the next steps for mitigation or deeper investigation.
     * AKS Diagnostics is a guided and interactive experience in the Azure Portal that helps you diagnose and solve potential issues with your AKS cluster, such as identity and security management, node issues, CRUD operations and more. Detectors in AKS Diagnostics intelligently find issues and observations as well as recommend next steps. This feature comes configured completely out-of-the-box and is free for all our AKS customers.
     * Get started and learn more here: https://aka.ms/aks/diagnostics
   * Support for new regions:
@@ -189,7 +205,7 @@
 
 * New Features
   * AKS has created a new default role clusterMonitoringUser to simplify the Azure Monitor Live metrics onboard experience so that moving forward users don't need to explicitly grant those permissions.
-  This user will have ‘GET’ and ‘LIST’ permissions to  ‘POD/LOGS’, ‘EVENTS’, 'DEPLOYMENTS', 'PODS', 'REPLICASETS' and 'NODES'.
+  This user will have 'GET' and 'LIST' permissions to  'POD/LOGS', 'EVENTS', 'DEPLOYMENTS', 'PODS', 'REPLICASETS' and 'NODES'.
   * Support for new regions:
     * Germany North
     * Germany West Central
