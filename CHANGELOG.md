@@ -1,5 +1,46 @@
 # Azure Kubernetes Service Changelog
 
+# Release 2020-03-09
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). If you plan to upgrade to this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16.
+* AKS API version 2020-04-01 will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+
+### Release Notes
+* Features
+  * Kubernetes version 1.16 is now Generally Available (GA) on AKS. (1.13 is being retired as previously communicated).
+  * New Kubernetes patch versions available, v1.15.10, v1.16.7.
+* Preview features
+  * New Kubernetes patch versions (v1.17.3) are available for v1.17 preview.
+  * AKS will now generate a default Windows username and password when creating a cluster (similarly as with ssh keys for Linux nodes). Customers can then add Windows pools to any newly created cluster without the need to have explicitly specified this parameters at create time. Customers can also reset this username and password at any time if they need it.
+    * Note that, as before, You can only add Windows nodepools to clusters using VMSS and AzureCNI.
+  * AKS now supports a new AKS base image based of Ubuntu 18.04 LTS.
+    * You can test it by following:
+        ```bash
+        # Install or update the extension
+        az extension add --name aks-preview
+        # Register the preview feature flag
+        az feature register --name UseCustomizedUbuntuPreview --namespace Microsoft.ContainerService
+        # Create 18.04 based cluster
+        az aks create -g <CLUSTER RG> -n <CLUSTER NAME> --aks-custom-headers CustomizedUbuntu=aks-ubuntu-1804
+        ```
+    * If you want to continue to create 16.04 GA clusters, just omit the -aks-custom-headers.
+* Behavioral Changes
+  * To ensure user is correctly configuring OutboundType: UDR feature AKS now validates not only if a Route Table is present but also if it contains a default route from 0.0.0.0/0 to allow egress through an appliance, FW, on-prem GW, etc. More details how to correctly configure this feature can be found here: <https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype>.
+  * AKS enforces password expiration as part of CIS compliance but excludes the linux admin account that is using public key auth only. All accounts created using password will be subject to this enforcement.
+    * As usual, with the GA of 1.16 the AKS default version follows n-1 and is now 1.15
+    * As per https://github.com/Azure/AKS/issues/1304 AKS will now upgrade the rest of the fleet to CoreDNS 1.6.6 after upgrading only non-Proxy users on [Release 2020-01-27](#release-2020-01-27).
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu:1604:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.03.05.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu:1804:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.03.05.txt).
+  * Updated to Moby 3.0.10 - <https://github.com/Azure/moby/releases/tag/3.0.10>.
+  * Updated Azure CNI plugin version for Linux to 1.0.33 and Azure CNI plugin version for Windows 1.0.30 - <https://github.com/Azure/azure-container-networking/releases>.
+  * External DNS image was updated to v0.6.0.
+
 # Release 2020-03-02
 
 **This release is rolling out to all regions**
