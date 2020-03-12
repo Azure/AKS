@@ -11,6 +11,7 @@
 * AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
 
 ### Release Notes
+
 * Features
   * Kubernetes version 1.16 is now Generally Available (GA) on AKS. (1.13 is being retired as previously communicated).
   * New Kubernetes patch versions available, v1.15.10, v1.16.7.
@@ -20,6 +21,7 @@
     * Note that, as before, You can only add Windows nodepools to clusters using VMSS and AzureCNI.
   * AKS now supports a new AKS base image based of Ubuntu 18.04 LTS.
     * You can test it by following:
+    
         ```bash
         # Install or update the extension
         az extension add --name aks-preview
@@ -28,6 +30,7 @@
         # Create 18.04 based cluster
         az aks create -g <CLUSTER RG> -n <CLUSTER NAME> --aks-custom-headers CustomizedUbuntu=aks-ubuntu-1804
         ```
+        
     * If you want to continue to create 16.04 GA clusters, just omit the -aks-custom-headers.
 * Behavioral Changes
   * To ensure user is correctly configuring OutboundType: UDR feature AKS now validates not only if a Route Table is present but also if it contains a default route from 0.0.0.0/0 to allow egress through an appliance, FW, on-prem GW, etc. More details how to correctly configure this feature can be found here: <https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype>.
