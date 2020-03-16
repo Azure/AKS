@@ -43,6 +43,7 @@
   * Updated to Moby 3.0.10 - <https://github.com/Azure/moby/releases/tag/3.0.10>.
   * Updated Azure CNI plugin version for Linux to 1.0.33 and Azure CNI plugin version for Windows 1.0.30 - <https://github.com/Azure/azure-container-networking/releases>.
   * External DNS image was updated to v0.6.0.
+  * (Added 03/16/2020) AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.973.200213](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.973.200213.txt)
 
 # Release 2020-03-02
 
