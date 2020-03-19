@@ -1,6 +1,31 @@
 # Azure Kubernetes Service Changelog
 
-# Release 2020-03-09
+## Release 2020-03-16
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* As previously announced we have retired support for Kubernetes 1.13 releases.
+* AKS API version 2020-04-01 will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+
+### Release Notes
+
+* Features
+  * An update to AAD integration (AADv2) is in public preview. Code has been rolled out; documents and cli extension to be published in the week of 23rd March.
+  * AKS now exposes the balance-similar-node-groups setting on cluster autoscaler, which enables evenly balanced numbers of auto-scaled nodes across nodepools.
+  * AKS has added 2 new built-in storage classes for Azure Files Standard (azurefile) and Azure Files Premium (azurefile-premium).
+  * AKS Clusters using Managed Identity are now Generally Available (GA) and will no longer need a service principal.
+* Behavioral Changes
+  * The default azure disk storage class configuration has been changed from `Standard_LRS` to `StandardSSD_LRS`, and `allowVolumeExpansion` has been set to true.
+  * Event deletion from the cluster will be audited to increase threat detection.
+* Bug Fixes
+  * A change in how swap nodes (used during upgrade of VMSS) are deleted from the cluster to increase reliability.
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1075.200227](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1075.200227.txt).
+
+## Release 2020-03-09
 
 **This release is rolling out to all regions**
 
@@ -45,7 +70,7 @@
   * External DNS image was updated to v0.6.0.
   * (Added 03/16/2020) AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.973.200213](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.973.200213.txt)
 
-# Release 2020-03-02
+## Release 2020-03-02
 
 **This release is rolling out to all regions**
 
@@ -61,7 +86,7 @@
 * Behavioral Changes
   * For enhanced security AKS has removed CHACHA from API server accepted tls cipher suites.
 
-# Release 2020-02-24
+## Release 2020-02-24
 
 **This release is rolling out to all regions**
 
@@ -79,7 +104,7 @@
 * Bug Fixes
   * Fixed bug on Windows Nodepools preview where vnetCidrs were sometimes not set correctly on Windows nodepools resulting in wrong NAT exceptions on Windows nodes.
 
-# Release 2020-02-17
+## Release 2020-02-17
 
 **This release is rolling out to all regions**
 
@@ -102,7 +127,7 @@
 * Component Updates
   * AKS VHD image updated to [aks-ubuntu-1604-202002_202002.12](vhd-notes/aks-ubuntu/aks-ubuntu-1604-202002_202002.12.txt)
 
-# Release 2020-02-10
+## Release 2020-02-10
 
 **This release is rolling out to all regions**
 
