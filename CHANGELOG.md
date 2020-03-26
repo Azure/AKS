@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-03-23
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* **Two security issues were discovered in Kubernetes that could lead to a recoverable denial of service.**
+  * CVE-2020-8551 affects the kubelet, and has been rated Medium ([CVSS:3.0/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L](https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L)).
+  * CVE-2020-8552 affects the API server, and has also been rated Medium ([CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L](https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L)).
+  * **Am I vulnerable?** 
+    * Only in cases where the attacker can make authorized resource requests to un-patched API server or kubelets.
+    * Also AKS auto restarts apiserver and kubelet in the event of an OOM error which further limits exposure.
+  * **How can I get the latest patched API and kubelet and fix this vulnerability?**
+    * Upgrade to kubernetes versions v1.16.7 or v1.15.10. Or AKS preview versions v1.17.3
+
+### Release Notes
+
+* Bug fixes
+  * Fixed bug that caused an error while updating existing AAD cluster with the new 2020-03-01 API
+* Preview Features
+  * Updated Azure Policy addon preview to use Gatekeeper v3 on new and updated addons.
+    See more at <https://docs.microsoft.com/en-us/azure/governance/policy/concepts/rego-for-aks>
+* Behavioral changes
+  * All AKS Standard LBs will now have TCP Reset flag set to true.
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.03.11](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.03.11.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.03.11](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.03.11.txt).
+
 ## Release 2020-03-16
 
 **This release is rolling out to all regions**
