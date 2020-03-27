@@ -59,39 +59,13 @@ az provider register --namespace Microsoft.ContainerService
 
 ## Preview features
 
-Reference the [project roadmap](https://github.com/Azure/AKS/projects/1#column-5273286) for a list of features currently in preview. Each feature issue will have links to related technical documentation.
+Reference the [AKS project roadmap](https://github.com/Azure/AKS/projects/1#column-5273286) for a list of features currently in preview. Each feature issue will have links to related technical documentation.
 
 ## Associated projects
 
 > **NOTE:** The following projects have been validated to work with
 recent AKS clusters, but **they are not** officially supported by Azure technical
 support. If you run into issues with a given project, file issues in the corresponding GitHub
-project. These must be manually installed by the user from the below open source projects.
+project. These must be manually installed by the user from the below open source projects. Read more on [support for open source projects from Azure](https://github.com/Azure/container-compute-upstream/blob/master/README.md#support).
 
-### AAD Pod Identity
-
-The AAD Pod Identity project enables you to provide Azure identities to pods
-running in your Kubernetes cluster. This allows individual applications running
-in Kubernetes to have their own rights to interact with Azure resources and to
-easily authentication tokens representing those rights, avoiding the need to
-share a single identity across the cluster or inject applications with service
-principals.
-
-http://github.com/azure/aad-pod-identity.
-
-### KeyVault FlexVol
-
-The KeyVault FlexVol project enables Kubernetes pods to mount Azure KeyVault
-stores as flex volumes, providing access to application-specific secrets, keys,
-and certs natively within Kubernetes.
-
-https://github.com/Azure/kubernetes-keyvault-flexvol
-
-### Azure Application Gateway Ingress Controller
-
-The App Gateway ingress controller enables the use of the
-[Azure Application Gateway service][1] as a layer 7 load balancer in front of
-Kubernetes services, providing a fully managed alternative to running something
-like Nginx directly inside the cluster.
-
-https://github.com/Azure/application-gateway-kubernetes-ingress
+Reference the [Azure Compute Upstream list of projects](https://github.com/Azure/container-compute-upstream/blob/master/README.md#project-list) for a list of associated projects which can be self-installed on to an AKS cluster.

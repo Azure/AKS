@@ -11,12 +11,9 @@ of a specific cluster configuration (see [Bug Guidance](#bugs) below). To receiv
 > **IMPORTANT**: For official customer support with response-time SLAs please see
 [Azure Support options][1] and [AKS Support Policies][2]. 
 
-Do not file issues for AKS-Engine, ACI, or other services on
+Do not file issues for AKS-Engine, Virtual-Kubelet, Azure Container Instances, or services on
 this repository unless it is related to that feature/service and functionality
-with AKS. For other tools, products and services see:
-
-* [AKS-Engine repo](https://github.com/Azure/aks-engine)
-* [Virtual Kubelet](https://github.com/virtual-kubelet/virtual-kubelet)
+with AKS. For other tools, products and services see the [Upstream Azure Compute projects page](https://github.com/Azure/container-compute-upstream/blob/master/README.md#project-list).
 
 ## Important links
 
