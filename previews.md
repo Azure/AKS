@@ -1,6 +1,6 @@
 # AKS Preview Features and Related Projects
 
-> [!WARNING] Preview features are enabled at the Azure
+> **WARNING:** Preview features are enabled at the Azure
 subscription level. Do not install preview features on production subscription
 as it can change default API behavior impacting regular operations.
 
@@ -23,8 +23,10 @@ hours only. For additional information please see:
 
 ## Getting Started
 
+### Install Azure CLI
 In order to use / opt into preview features via command line, you will need to install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
 
+### Install aks-preview module
 In addition to the core installation, ou will need to install the `aks-preview` module to use preview features and ensure it is up to date with the latest release.
 You can install the `aks-preview` extension by running:
 
@@ -42,13 +44,26 @@ In order to uninstall the extension, run:
 az extension remove --name aks-preview
 ```
 
+### Register specific features
+To use AKS preview features, first enable a feature flag on your subscription. To register a feature flag, use the [az feature register][az-feature-register] command as shown in the following example:
+
+```
+az feature register --name <INSERT_FEATURE_NAME> --namespace Microsoft.ContainerService
+```
+
+Next, refresh the registration of the *Microsoft.ContainerService* resource provider using the `az provider register` command:
+
+```azurecli-interactive
+az provider register --namespace Microsoft.ContainerService
+```
+
 ## Preview features
 
-Reference the [project roadmap](https://github.com/Azure/AKS/projects/1#column-5273286) for features currently in preview.
+Reference the [project roadmap](https://github.com/Azure/AKS/projects/1#column-5273286) for a list of features currently in preview. Each feature issue will have links to related technical documentation.
 
 ## Associated projects
 
-> [!NOTE] The following projects have been validated to work with
+> **NOTE:** The following projects have been validated to work with
 recent AKS clusters, but **they are not** officially supported by Azure technical
 support. If you run into issues with a given project, file issues in the corresponding GitHub
 project. These must be manually installed by the user from the below open source projects.

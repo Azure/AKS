@@ -8,7 +8,7 @@ Service (AKS). This repository is monitored by the AKS product team in order to 
 Support through issues on this repository is provided on a **best-effort basis** for issues that are reproducible outside
 of a specific cluster configuration (see [Bug Guidance](#bugs) below). To receive urgent support you must file a support request through official Azure support channels as urgent support is explicitly out of scope of this repository's objectives.
 
-> [!IMPORTANT] For official customer support with response-time SLAs please see
+> **IMPORTANT**: For official customer support with response-time SLAs please see
 [Azure Support options][1] and [AKS Support Policies][2]. 
 
 Do not file issues for AKS-Engine, ACI, or other services on
@@ -32,7 +32,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Bug Reports <a name="bugs"></a>
 
-> [!IMPORTANT] An inability to meet the below requirements for bug reports are subject to being closed by maintainers and routed to official Azure support channels to provide the proper support experience to resolve user issues.
+> **IMPORTANT**: An inability to meet the below requirements for bug reports are subject to being closed by maintainers and routed to official Azure support channels to provide the proper support experience to resolve user issues.
 
 Bug reports filed on this repository should follow the default issue template
 that is shown when opening a new issue. At a bare minimum, issues reported on
