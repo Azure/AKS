@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-03-30
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+
+### Release Notes
+
+* Features
+  * New VM SKUs are now supported: Standard_NV12_Promo; Standard_NV12s_v3; Standard_NV24_Promo; Standard_NV24s_v3; Standard_NV48s_v3.
+* Bug fixes
+  * Added validation to block cluster creation if user specifies a subnet that is delegated
+  * Fixed bug caused by apmz package being installed from https://upstreamartifacts.blob.core.windows.net, which is not in the AKS required endpoint egress list.
+  * CoreDNS memory *limit* increased to 500M and assigned *Guaranteed* QoS class.
+  * Fixed a bug with Cluster Proportional Autoscaler (CPA) version on 1.16. This bug is solved on version 1.7.1 which is now the version being used in AKS.
+  * Fixed bug passing the correct nodepool at validation time on UDR OutboundType preview feature.
+  * Patched bug where nodepool was not correctly added to internal SLB backend address pool: https://github.com/kubernetes/kubernetes/issues/89336
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.03.24.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.03.24.txt).
+
+
 ## Release 2020-03-23
 
 **This release is rolling out to all regions**

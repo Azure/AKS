@@ -99,53 +99,54 @@ Docker images pre-pulled:
   - mcr.microsoft.com/oss/calico/typha:v3.5.0
   - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.3.0
   - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.3.0_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.7.1
   - mcr.microsoft.com/k8s/flexvolume/keyvault-flexvolume:v0.0.13
   - mcr.microsoft.com/k8s/flexvolume/blobfuse-flexvolume:1.0.8
   - mcr.microsoft.com/oss/kubernetes/ip-masq-agent:v2.0.0_v0.0.5
   - nginx:1.13.12-alpine
   - mcr.microsoft.com/k8s/kms/keyvault:v0.0.9
   - busybox
--r-xr--r-- 1 root root      2237 Mar 11 07:45 /usr/local/bin/health-monitor.sh
--rwxr-xr-x 1 root root  35384960 Mar 11 07:48 /usr/local/bin/bpftrace
--rwxr-xr-x 1 root root  25700016 Mar 11 07:50 /usr/local/bin/img
--rwxr-xr-x 1 root root 150500800 Mar 11 07:56 /usr/local/bin/kubelet-1.17.0
--rwxr-xr-x 1 root root  59359708 Mar 11 07:56 /usr/local/bin/kubectl-1.17.0
--rwxr-xr-x 1 root root 203537368 Mar 11 07:57 /usr/local/bin/kubelet-1.16.6
--rwxr-xr-x 1 root root 203537368 Mar 11 07:57 /usr/local/bin/kubectl-1.16.6
--rwxr-xr-x 1 root root 264524976 Mar 11 07:57 /usr/local/bin/kubelet-1.16.4
--rwxr-xr-x 1 root root 264524976 Mar 11 07:57 /usr/local/bin/kubectl-1.16.4
--rwxr-xr-x 1 root root 212357872 Mar 11 07:58 /usr/local/bin/kubelet-1.16.1
--rwxr-xr-x 1 root root 212357872 Mar 11 07:58 /usr/local/bin/kubectl-1.16.1
--rwxr-xr-x 1 root root 248154872 Mar 11 07:59 /usr/local/bin/kubelet-1.12.8
--rwxr-xr-x 1 root root 248154872 Mar 11 07:59 /usr/local/bin/kubectl-1.12.8
--rwxr-xr-x 1 root root 178003696 Mar 11 08:00 /usr/local/bin/kubelet-1.13.10
--rwxr-xr-x 1 root root 178003696 Mar 11 08:00 /usr/local/bin/kubectl-1.13.10
--rwxr-xr-x 1 root root 178015984 Mar 11 08:00 /usr/local/bin/kubelet-1.13.11
--rwxr-xr-x 1 root root 178015984 Mar 11 08:00 /usr/local/bin/kubectl-1.13.11
--rwxr-xr-x 1 root root 177774288 Mar 11 08:01 /usr/local/bin/kubelet-1.13.12
--rwxr-xr-x 1 root root 177774288 Mar 11 08:01 /usr/local/bin/kubectl-1.13.12
--rwxr-xr-x 1 root root 211306608 Mar 11 08:02 /usr/local/bin/kubelet-1.14.6
--rwxr-xr-x 1 root root 211306608 Mar 11 08:02 /usr/local/bin/kubectl-1.14.6
--rwxr-xr-x 1 root root 211351664 Mar 11 08:02 /usr/local/bin/kubelet-1.14.7
--rwxr-xr-x 1 root root 211351664 Mar 11 08:02 /usr/local/bin/kubectl-1.14.7
--rwxr-xr-x 1 root root 211122224 Mar 11 08:03 /usr/local/bin/kubelet-1.14.8
--rwxr-xr-x 1 root root 211122224 Mar 11 08:03 /usr/local/bin/kubectl-1.14.8
--rwxr-xr-x 1 root root 200681104 Mar 11 08:03 /usr/local/bin/kubelet-1.15.3
--rwxr-xr-x 1 root root 200681104 Mar 11 08:03 /usr/local/bin/kubectl-1.15.3
--rwxr-xr-x 1 root root 200722064 Mar 11 08:04 /usr/local/bin/kubelet-1.15.4
--rwxr-xr-x 1 root root 200722064 Mar 11 08:04 /usr/local/bin/kubectl-1.15.4
--rwxr-xr-x 1 root root 250240456 Mar 11 08:05 /usr/local/bin/kubelet-1.15.5
--rwxr-xr-x 1 root root 250240456 Mar 11 08:05 /usr/local/bin/kubectl-1.15.5
--rwxr-xr-x 1 root root 250266640 Mar 11 08:05 /usr/local/bin/kubelet-1.15.7
--rwxr-xr-x 1 root root 250266640 Mar 11 08:05 /usr/local/bin/kubectl-1.15.7
--rwxr-xr-x 1 root root 250304808 Mar 11 08:06 /usr/local/bin/kubelet-1.15.10
--rwxr-xr-x 1 root root 250304808 Mar 11 08:06 /usr/local/bin/kubectl-1.15.10
--rwxr-xr-x 1 root root 212345584 Mar 11 08:06 /usr/local/bin/kubelet-1.16.0
--rwxr-xr-x 1 root root 212345584 Mar 11 08:06 /usr/local/bin/kubectl-1.16.0
--rwxr-xr-x 1 root root 203596720 Mar 11 08:07 /usr/local/bin/kubelet-1.16.7
--rwxr-xr-x 1 root root 203596720 Mar 11 08:07 /usr/local/bin/kubectl-1.16.7
--rwxr-xr-x 1 root root 150566112 Mar 11 08:08 /usr/local/bin/kubelet-1.17.3
--rwxr-xr-x 1 root root  59364111 Mar 11 08:08 /usr/local/bin/kubectl-1.17.3
+-r-xr--r-- 1 root root      2237 Mar 24 00:14 /usr/local/bin/health-monitor.sh
+-rwxr-xr-x 1 root root  35384960 Mar 24 00:20 /usr/local/bin/bpftrace
+-rwxr-xr-x 1 root root  25700016 Mar 24 00:22 /usr/local/bin/img
+-rwxr-xr-x 1 root root 150500800 Mar 24 00:29 /usr/local/bin/kubelet-1.17.0
+-rwxr-xr-x 1 root root  59359708 Mar 24 00:29 /usr/local/bin/kubectl-1.17.0
+-rwxr-xr-x 1 root root 203537368 Mar 24 00:29 /usr/local/bin/kubelet-1.16.6
+-rwxr-xr-x 1 root root 203537368 Mar 24 00:29 /usr/local/bin/kubectl-1.16.6
+-rwxr-xr-x 1 root root 264524976 Mar 24 00:30 /usr/local/bin/kubelet-1.16.4
+-rwxr-xr-x 1 root root 264524976 Mar 24 00:30 /usr/local/bin/kubectl-1.16.4
+-rwxr-xr-x 1 root root 212357872 Mar 24 00:30 /usr/local/bin/kubelet-1.16.1
+-rwxr-xr-x 1 root root 212357872 Mar 24 00:30 /usr/local/bin/kubectl-1.16.1
+-rwxr-xr-x 1 root root 248154872 Mar 24 00:31 /usr/local/bin/kubelet-1.12.8
+-rwxr-xr-x 1 root root 248154872 Mar 24 00:31 /usr/local/bin/kubectl-1.12.8
+-rwxr-xr-x 1 root root 178003696 Mar 24 00:32 /usr/local/bin/kubelet-1.13.10
+-rwxr-xr-x 1 root root 178003696 Mar 24 00:32 /usr/local/bin/kubectl-1.13.10
+-rwxr-xr-x 1 root root 178015984 Mar 24 00:33 /usr/local/bin/kubelet-1.13.11
+-rwxr-xr-x 1 root root 178015984 Mar 24 00:33 /usr/local/bin/kubectl-1.13.11
+-rwxr-xr-x 1 root root 177774288 Mar 24 00:34 /usr/local/bin/kubelet-1.13.12
+-rwxr-xr-x 1 root root 177774288 Mar 24 00:34 /usr/local/bin/kubectl-1.13.12
+-rwxr-xr-x 1 root root 211306608 Mar 24 00:34 /usr/local/bin/kubelet-1.14.6
+-rwxr-xr-x 1 root root 211306608 Mar 24 00:34 /usr/local/bin/kubectl-1.14.6
+-rwxr-xr-x 1 root root 211351664 Mar 24 00:35 /usr/local/bin/kubelet-1.14.7
+-rwxr-xr-x 1 root root 211351664 Mar 24 00:35 /usr/local/bin/kubectl-1.14.7
+-rwxr-xr-x 1 root root 211122224 Mar 24 00:35 /usr/local/bin/kubelet-1.14.8
+-rwxr-xr-x 1 root root 211122224 Mar 24 00:35 /usr/local/bin/kubectl-1.14.8
+-rwxr-xr-x 1 root root 200681104 Mar 24 00:36 /usr/local/bin/kubelet-1.15.3
+-rwxr-xr-x 1 root root 200681104 Mar 24 00:36 /usr/local/bin/kubectl-1.15.3
+-rwxr-xr-x 1 root root 200722064 Mar 24 00:36 /usr/local/bin/kubelet-1.15.4
+-rwxr-xr-x 1 root root 200722064 Mar 24 00:36 /usr/local/bin/kubectl-1.15.4
+-rwxr-xr-x 1 root root 250240456 Mar 24 00:37 /usr/local/bin/kubelet-1.15.5
+-rwxr-xr-x 1 root root 250240456 Mar 24 00:37 /usr/local/bin/kubectl-1.15.5
+-rwxr-xr-x 1 root root 250266640 Mar 24 00:38 /usr/local/bin/kubelet-1.15.7
+-rwxr-xr-x 1 root root 250266640 Mar 24 00:38 /usr/local/bin/kubectl-1.15.7
+-rwxr-xr-x 1 root root 250304808 Mar 24 00:38 /usr/local/bin/kubelet-1.15.10
+-rwxr-xr-x 1 root root 250304808 Mar 24 00:38 /usr/local/bin/kubectl-1.15.10
+-rwxr-xr-x 1 root root 212345584 Mar 24 00:39 /usr/local/bin/kubelet-1.16.0
+-rwxr-xr-x 1 root root 212345584 Mar 24 00:39 /usr/local/bin/kubectl-1.16.0
+-rwxr-xr-x 1 root root 203596720 Mar 24 00:39 /usr/local/bin/kubelet-1.16.7
+-rwxr-xr-x 1 root root 203596720 Mar 24 00:39 /usr/local/bin/kubectl-1.16.7
+-rwxr-xr-x 1 root root 150566112 Mar 24 00:40 /usr/local/bin/kubelet-1.17.3
+-rwxr-xr-x 1 root root  59364111 Mar 24 00:40 /usr/local/bin/kubectl-1.17.3
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.12.8_v0.0.5
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.13.10_v0.0.5
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.13.11_v0.0.5
@@ -178,4 +179,4 @@ Docker images pre-pulled:
   - quay.io/k8scsi/livenessprobe:v1.1.0
   - k8s.gcr.io/node-problem-detector:v0.8.0
 Using kernel:
-Linux version 4.15.0-1071-azure (buildd@lgw01-amd64-031) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)) #76-Ubuntu SMP Wed Feb 12 03:02:44 UTC 2020
+Linux version 5.0.0-1032-azure (buildd@lcy01-amd64-016) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #34-Ubuntu SMP Mon Feb 10 19:37:25 UTC 2020
