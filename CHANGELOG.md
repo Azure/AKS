@@ -12,7 +12,7 @@
 ### Release Notes
 
 * Features
-  * New VM SKUs are now supported: Standard_NV12_Promo; Standard_NV12s_v3; Standard_NV24_Promo; Standard_NV24s_v3; Standard_NV48s_v3.
+  * New VM GPU SKUs are now supported: Standard_NV12_Promo; Standard_NV12s_v3; Standard_NV24_Promo; Standard_NV24s_v3; Standard_NV48s_v3.
 * Bug fixes
   * Added validation to block cluster creation if user specifies a subnet that is delegated
   * Fixed bug caused by apmz package being installed from https://upstreamartifacts.blob.core.windows.net, which is not in the AKS required endpoint egress list.
