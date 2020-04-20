@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-04-13
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 (to be published) will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+
+### Release Notes
+
+* Bug Fixes
+  * Added CriticalAddonsOnly toleration for calico-typha-horizontal-autoscaler
+  * Fixed a bug where the ILB backend bool would be removed after a manual VMSS update-instances command was issued.
+* Features
+  * AKS has now introduced a new **Mode** property for nodepools. This will allow you to set nodepools as *System* or *User* nodepools. System nodepools will have additional validations and will be preferred by system pods, while User pool will have more lax validations and can perform additional operations like scale to 0 nodes or be removed from the cluster. Each cluster needs at least one system pool. All details here: <https://aka.ms/aks/nodepool/mode>
+    * System/User nodepools are available from core CLI version 2.3.1 or greater (or latest preview extension 0.4.43)
+    * Nodepool mode requires API 2020-03-01 or greater
+  * AKS now allows User nodepools to scale to 0.
+  * AKS Diagnostics - Added networking and connectivity checks through our new Cluster Network Configuration detector. This allows you to check DNS and subnet related issues that may have impacted your cluster. It also highlights your network configuration to give you all this information at your fingertips.
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.04.06](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.04.06.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.04.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.04.06.txt).
+
 ## Release 2020-03-30
 
 **This release is rolling out to all regions**
