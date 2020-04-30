@@ -1,5 +1,37 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-04-27
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 (to be published) will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+* Only Spot and Regular will be accepted as parameters for nodepool scaleSetPriority, low priority (now Spot) will no longer be accepted.
+
+### Release Notes
+
+* Features
+  * Windows Server container support is now Generally Available on AKS.
+* Preview Features
+  * [The Public IP Per Node Feature](https://aka.ms/aks/pip-per-node) can now be used with Standard Load Balancer SKU.
+* Bug Fixes
+  * Added validation to prevent a subnetID update which would result on a failed nodepool.
+  * Fixed issue when multiple delete operations where attempted simultaneously.
+  * Fixed issue when performing cluster updates with APIs older than 2020-03-01 failed in clusters created using API 2020-03-01.
+  * Fixed issue with agent count mismatch on upgrade.
+  * Fixed an issue with a dependency on github:443 on Windows provisioning.
+* Behavior Changes
+  * Metrics-server now enforces burstable QoS class.
+* Component Updates
+  * Azure Network Policy (NPM) was updated from v1.0.33 to v1.1.0 - <https://github.com/Azure/azure-container-networking/releases/tag/v1.1.0>
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1158.200421](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1158.200421.txt).
+  * Azure CNI was updated to 1.0.33 on Windows
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.04.16](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.04.16.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.04.16](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.04.16.txt).
+
 ## Release 2020-04-13
 
 **This release is rolling out to all regions**
