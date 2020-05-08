@@ -1,5 +1,23 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-05-04
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 (to be published) will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+* Only Spot and Regular will be accepted as parameters for nodepool scaleSetPriority, low priority (now Spot) will no longer be accepted.
+
+### Release Notes
+
+* Features
+  * AKS has released an Admissions Enforcer to protect the system from Admission Controller Webhooks that might impact the kube-system components. Ready more about it [here](https://docs.microsoft.com/en-us/azure/aks/faq#can-admission-controller-webhooks-impact-kube-system-and-internal-aks-namespaces)
+  * AKS now allows users to create windows nodepools with the latest windows image without requiring a cluster upgrade.
+  * AKS now supports [HB series](https://docs.microsoft.com/en-us/azure/virtual-machines/hb-series) and [HBv2 series](https://docs.microsoft.com/en-us/azure/virtual-machines/hbv2-series) SKU families.
+
 ## Release 2020-04-27
 
 **This release is rolling out to all regions**
