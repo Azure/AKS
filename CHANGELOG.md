@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-05-11
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 (to be published) will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+* Only Spot and Regular will be accepted as parameters for nodepool scaleSetPriority, low priority (now Spot) will no longer be accepted.
+
+### Release Notes
+
+* Features
+  * AKS now offers an optional Paid Uptime SLA. Read more about it: <https://techcommunity.microsoft.com/t5/azure-kubernetes-service/aks-introduces-uptime-sla/ba-p/1350832>
+* Preview Features
+  * AKS now supports in preview kubernetes versions 1.18.1 and 1.18.2
+  * AKS now supports creating nodepools leveraging AKS Ubuntu 18.04 images in any existing cluster
+  eg. `az aks nodepool add -n 1804 --cluster-name aks -g aks --aks-custom-headers CustomizedUbuntu=aks-ubuntu-1804`
+* Bug Fixes
+  * Fixed bug where newly added agent pool did not inherit VnetCidrs from existing agent pools resulting in wrong nonMasqueradeCIDRs
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.06](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.06.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.06.txt).
+
 ## Release 2020-05-04
 
 **This release is rolling out to all regions**
