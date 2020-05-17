@@ -18,7 +18,7 @@
 * Preview Features
   * AKS now supports in preview kubernetes versions 1.18.1 and 1.18.2
   * AKS now supports creating nodepools leveraging AKS Ubuntu 18.04 images in any existing cluster
-  eg. `az aks nodepool add -n 1804 --cluster-name aks -g aks --aks-custom-headers CustomizedUbuntu=aks-ubuntu-1804`
+  eg. `az aks nodepool add -n ubuntu1804 --cluster-name aks -g aks --aks-custom-headers CustomizedUbuntu=aks-ubuntu-1804`
 * Bug Fixes
   * Fixed bug where newly added agent pool did not inherit VnetCidrs from existing agent pools resulting in wrong nonMasqueradeCIDRs
 * Component Updates
