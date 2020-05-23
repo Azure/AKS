@@ -27,7 +27,7 @@ hours only. For additional information please see:
 In order to use / opt into preview features via command line, you will need to install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
 
 ### Install aks-preview module
-In addition to the core installation, ou will need to install the `aks-preview` module to use preview features and ensure it is up to date with the latest release.
+In addition to the core installation, you will need to install the `aks-preview` module to use preview features and ensure it is up to date with the latest release.
 You can install the `aks-preview` extension by running:
 
 ```
