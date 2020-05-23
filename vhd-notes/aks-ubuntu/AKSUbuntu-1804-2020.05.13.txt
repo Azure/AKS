@@ -1,0 +1,176 @@
+Components downloaded in this VHD build (some of the below components might get deleted during cluster provisioning if they are not needed):
+  - apache2-utils
+  - apt-transport-https
+  - auditd
+  - blobfuse
+  - ca-certificates
+  - ceph-common
+  - cgroup-lite
+  - cifs-utils
+  - conntrack
+  - cracklib-runtime
+  - ebtables
+  - ethtool
+  - fuse
+  - git
+  - glusterfs-client
+  - init-system-helpers
+  - iproute2
+  - ipset
+  - iptables
+  - jq
+  - libpam-pwquality
+  - libpwquality-tools
+  - mount
+  - nfs-common
+  - pigz socat
+  - traceroute
+  - util-linux
+  - xz-utils
+  - zip
+  - bpftrace
+  - moby v3.0.10
+  - nvidia-docker2 nvidia-container-runtime
+  - nvidia-container-runtime=2.0.0+docker18.09.2-1
+  - bcc-tools
+  - libbcc-examples
+  - Azure CNI version 1.0.33
+  - Azure CNI version 1.0.29
+  - CNI plugin version 0.7.6
+  - CNI plugin version 0.7.5
+  - CNI plugin version 0.7.1
+  - containerd version 1.2.4
+  - containerd version 1.1.6
+  - containerd version 1.1.5
+  - img
+Docker images pre-pulled:
+  - mcr.microsoft.com/oss/kubernetes/kubernetes-dashboard:v1.10.1
+  - mcr.microsoft.com/oss/kubernetes/dashboard:v2.0.0-beta8
+  - mcr.microsoft.com/oss/kubernetes/metrics-scraper:v1.0.2
+  - mcr.microsoft.com/oss/kubernetes/exechealthz:1.2
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/addon-resizer:1.8.5
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/addon-resizer:1.8.4
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/addon-resizer:1.8.1
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/addon-resizer:1.7
+  - mcr.microsoft.com/oss/kubernetes/metrics-server:v0.3.5
+  - mcr.microsoft.com/k8s/core/pause:1.2.0
+  - mcr.microsoft.com/oss/kubernetes/pause:1.2.0
+  - mcr.microsoft.com/oss/kubernetes/coredns:1.6.6
+  - mcr.microsoft.com/oss/kubernetes/coredns:1.6.5
+  - mcr.microsoft.com/oss/kubernetes/coredns:1.5.0
+  - mcr.microsoft.com/oss/kubernetes/coredns:1.3.1
+  - mcr.microsoft.com/oss/kubernetes/coredns:1.2.6
+  - mcr.microsoft.com/containernetworking/networkmonitor:v0.0.7
+  - mcr.microsoft.com/containernetworking/networkmonitor:v0.0.6
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.1.2
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.1.0
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.0.33
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.0.32
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.0.30
+  - mcr.microsoft.com/containernetworking/azure-vnet-telemetry:v1.0.30
+  - nvidia/k8s-device-plugin:1.11
+  - nvidia/k8s-device-plugin:1.10
+  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v3.0.11
+  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v4.0.11
+  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v3.0.12
+  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v4.0.12
+  - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.6
+  - mcr.microsoft.com/aks/hcp/kube-svc-redirect:v1.0.7
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod01072020
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod03022020
+  - mcr.microsoft.com/oss/calico/cni:v3.5.0
+  - mcr.microsoft.com/oss/calico/node:v3.5.0
+  - mcr.microsoft.com/oss/calico/typha:v3.5.0
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.3.0
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.3.0_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.7.1
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.7.1-hotfix.20200403
+  - mcr.microsoft.com/k8s/flexvolume/keyvault-flexvolume:v0.0.13
+  - mcr.microsoft.com/k8s/flexvolume/blobfuse-flexvolume:1.0.8
+  - mcr.microsoft.com/oss/kubernetes/ip-masq-agent:v2.0.0_v0.0.5
+  - nginx:1.13.12-alpine
+  - mcr.microsoft.com/k8s/kms/keyvault:v0.0.9
+total 8046680
+-r-xr--r-- 1 root root      2237 May 13 18:23 health-monitor.sh
+-rwxr-xr-x 1 root root  35384960 May 13 18:27 bpftrace
+-rwxr-xr-x 1 root root  25700016 May 13 18:29 img
+-rwxr-xr-x 1 root root 150500800 May 13 18:33 kubelet-1.17.0
+-rwxr-xr-x 1 root root  59359708 May 13 18:33 kubectl-1.17.0
+-rwxr-xr-x 1 root root 203537368 May 13 18:34 kubelet-1.16.6
+-rwxr-xr-x 1 root root 203537368 May 13 18:34 kubectl-1.16.6
+-rwxr-xr-x 1 root root 264524976 May 13 18:34 kubelet-1.16.4
+-rwxr-xr-x 1 root root 264524976 May 13 18:34 kubectl-1.16.4
+-rwxr-xr-x 1 root root 212357872 May 13 18:35 kubelet-1.16.1
+-rwxr-xr-x 1 root root 212357872 May 13 18:35 kubectl-1.16.1
+-rwxr-xr-x 1 root root 211306608 May 13 18:35 kubelet-1.14.6
+-rwxr-xr-x 1 root root 211306608 May 13 18:35 kubectl-1.14.6
+-rwxr-xr-x 1 root root 211110000 May 13 18:35 kubelet-1.14.7
+-rwxr-xr-x 1 root root 211110000 May 13 18:35 kubectl-1.14.7
+-rwxr-xr-x 1 root root 211114032 May 13 18:36 kubelet-1.14.8
+-rwxr-xr-x 1 root root 211114032 May 13 18:36 kubectl-1.14.8
+-rwxr-xr-x 1 root root 200681104 May 13 18:36 kubelet-1.15.3
+-rwxr-xr-x 1 root root 200681104 May 13 18:36 kubectl-1.15.3
+-rwxr-xr-x 1 root root 200722064 May 13 18:37 kubelet-1.15.4
+-rwxr-xr-x 1 root root 200722064 May 13 18:37 kubectl-1.15.4
+-rwxr-xr-x 1 root root 250240456 May 13 18:38 kubelet-1.15.5
+-rwxr-xr-x 1 root root 250240456 May 13 18:38 kubectl-1.15.5
+-rwxr-xr-x 1 root root 250267632 May 13 18:38 kubelet-1.15.7
+-rwxr-xr-x 1 root root 250267632 May 13 18:38 kubectl-1.15.7
+-rwxr-xr-x 1 root root 250309000 May 13 18:39 kubelet-1.15.10
+-rwxr-xr-x 1 root root 250309000 May 13 18:39 kubectl-1.15.10
+-rwxr-xr-x 1 root root 250346640 May 13 18:39 kubelet-1.15.11
+-rwxr-xr-x 1 root root 250346640 May 13 18:39 kubectl-1.15.11
+-rwxr-xr-x 1 root root 212345584 May 13 18:40 kubelet-1.16.0
+-rwxr-xr-x 1 root root 212345584 May 13 18:40 kubectl-1.16.0
+-rwxr-xr-x 1 root root 203570904 May 13 18:40 kubelet-1.16.7
+-rwxr-xr-x 1 root root 203570904 May 13 18:40 kubectl-1.16.7
+-rwxr-xr-x 1 root root 203706472 May 13 18:40 kubelet-1.16.8
+-rwxr-xr-x 1 root root 203706472 May 13 18:40 kubectl-1.16.8
+-rwxr-xr-x 1 root root 203802464 May 13 18:41 kubelet-1.16.9
+-rwxr-xr-x 1 root root 203802464 May 13 18:41 kubectl-1.16.9
+-rwxr-xr-x 1 root root 150542024 May 13 18:42 kubelet-1.17.3
+-rwxr-xr-x 1 root root  59360015 May 13 18:42 kubectl-1.17.3
+-rwxr-xr-x 1 root root 150585392 May 13 18:42 kubelet-1.17.4
+-rwxr-xr-x 1 root root  59355711 May 13 18:42 kubectl-1.17.4
+-rwxr-xr-x 1 root root 111486824 May 13 18:43 kubelet-1.17.5
+-rwxr-xr-x 1 root root  43429888 May 13 18:43 kubectl-1.17.5
+-rwxr-xr-x 1 root root 113099496 May 13 18:43 kubelet-1.18.1
+-rwxr-xr-x 1 root root  43950080 May 13 18:43 kubectl-1.18.1
+-rwxr-xr-x 1 root root 113103592 May 13 18:44 kubelet-1.18.2
+-rwxr-xr-x 1 root root  43954176 May 13 18:44 kubectl-1.18.2
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.6_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.7_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.7-hotfix.20200326
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.8_f0.0.4
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.8-hotfix.20200326
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.3_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.4_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.5_f0.0.2
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.7_f0.0.2
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.7-hotfix.20200326
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.10_f0.0.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.10-hotfix.20200326
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.11
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.0_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.7-hotfix.20200326
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.7-hotfix.20200408
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.8
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.9
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.3-hotfix.20200326
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.3-hotfix.20200408
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.4
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.5
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.2
+  - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v2.0.1
+  - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.1.0-beta.7
+  - mcr.microsoft.com/oss/kubernetes/external-dns:v0.6.0-hotfix-20200228
+  - mcr.microsoft.com/oss/kubernetes/defaultbackend:1.4
+  - mcr.microsoft.com/oss/kubernetes/ingress/nginx-ingress-controller:0.19.0
+  - mcr.microsoft.com/oss/virtual-kubelet/virtual-kubelet
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20200325.1
+  - mcr.microsoft.com/azure-application-gateway/kubernetes-ingress:1.0.1-rc3
+  - mcr.microsoft.com/k8s/csi/azuredisk-csi:v0.4.0
+  - mcr.microsoft.com/k8s/csi/azurefile-csi:v0.3.0
+Using kernel:
+Linux version 5.3.0-1020-azure (buildd@lgw01-amd64-055) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #21~18.04.1-Ubuntu SMP Wed Apr 15 09:35:56 UTC 2020
