@@ -1,5 +1,43 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-05-18
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 (to be published) will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+* Only Spot and Regular will be accepted as parameters for nodepool scaleSetPriority, low priority (now Spot) will no longer be accepted.
+* For any cluster created on K8s 1.18 or above, AKS will default the kube-dashboard add-on to disabled moving forward.
+
+### Release Notes
+
+* Features
+  * Windows Server container support is now Generally Available on Azure Government Cloud.
+  * AKS has introduced new kubernetes patch versions v1.15.11, v1.16.8, v1.16.9.
+* Preview Features
+  * AKS now integrates with Azure Resource Health. <https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview>
+  * AKS has introduced new public preview patch version v1.17.4, v1.17.5.
+  * AKS now supports Gen2 VMs in Public Preview.
+
+    ```bash
+    az feature register --name "Gen2VMPreview" --namespace "Microsoft.ContainerService"    
+    # wait for the feature to register
+    az feature show --name Gen2VMPreview --namespace "Microsoft.ContainerService"
+    # Re-register the AKS namespace by performing the below
+    az provider register --namespace 'Microsoft.ContainerService'
+    # Finally create the cluster
+    az aks create -n aks -g aks -s Standard_D2s_v3 --aks-custom-headers usegen2vm=true
+    ```
+
+* Bug Fixes
+  * Fixed an issue where if a nodepool operation was performed in a locked resource group it would return error 500 instead of correctly returning a ResourceGroupLocked error.
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.13](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.13.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.13.txt).
+
 ## Release 2020-05-11
 
 **This release is rolling out to all regions**
