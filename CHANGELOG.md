@@ -1,5 +1,25 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-05-25
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS API version 2020-04-01 defaults to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+* For any cluster created on K8s 1.18 or above, AKS will default the kube-dashboard add-on to disabled moving forward.
+
+### Release Notes
+
+* Bug Fixes
+  * Fixed bug with Windows nodes and Managed Identity, where nodes were unable to pull images from ACR.
+* Component Updates
+  * Azure Policy image updated to version `prod_20200519.1`
+  * Azure Network policy image updated to v1.1.2, <https://github.com/Azure/azure-container-networking/releases/tag/v1.1.2>
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1217.200513](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1217.200513.txt)
+
 ## Release 2020-05-18
 
 **This release is rolling out to all regions**
@@ -23,7 +43,7 @@
   * AKS now supports Gen2 VMs in Public Preview.
 
     ```bash
-    az feature register --name "Gen2VMPreview" --namespace "Microsoft.ContainerService"    
+    az feature register --name "Gen2VMPreview" --namespace "Microsoft.ContainerService"
     # wait for the feature to register
     az feature show --name Gen2VMPreview --namespace "Microsoft.ContainerService"
     # Re-register the AKS namespace by performing the below
