@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-06-01
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* For any cluster created on K8s 1.18 or above, AKS will default the kube-dashboard add-on to disabled moving forward.
+* Kubernetes version 1.17 will GA on the week of July 1st and you will no longer be able to create 1.14.x based clusters or nodepools.
+  * Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+
+### Release Notes
+
+* Features
+  * Outbound Type is now Generally Available and supports Kubenet based clusters. Read more at <https://aka.ms/aks/outboundtype>
+  * AKS now supports custom Route Tables for Kubenet-based clusters, by enabling use of existing Route Tables so Kubernetes can add required routes for node communication. Read more at <https://aka.ms/aks/customrt>
+* Preview Features
+  * Support for Confidential Workloads on AKS and [DC-series](https://docs.microsoft.com/en-us/azure/virtual-machines/dcv2-series) nodepools are now in Private Preview. Read more at <https://aka.ms/accakspreview>.
+  * AKS now supports Max Surge Upgrades in preview. Read more at <https://aka.ms/aks/maxsurge>
+* Behavior changes
+  * AKS default OS disk size is now 128GB, a [P10](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/disks-types#premium-ssd).
+  * Set calico `IptablesFilterAllowAction` to return from its default value, so that requests not dropped by the policy can be compared against system chains. In this way, the requests to services without endpoints can be rejected following the intention of kube-proxy.
+  * AKS has released [API version 2020-04-01](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2020-04-01) which as previously announced defaults to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
+* Component Updates
+  * Updated Kube-Dashboard images for 1.16, 1.17 and 1.18
+    * 1.16 clusters will use dashboard:v2.0.0-rc3, 1.17 will use dashboard:v2.0.0-rc7, 1.18 will use dashboard:v2.0.1
+    * Read more about the User Experience here: <https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard>
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.27](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.27.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.27.txt).
+  
 ## Release 2020-05-25
 
 **This release is rolling out to all regions**
@@ -13,6 +43,8 @@
 
 ### Release Notes
 
+* Features
+  * Uptime SLA is now available in all Public Cloud regions.
 * Bug Fixes
   * Fixed bug with Windows nodes and Managed Identity, where nodes were unable to pull images from ACR.
 * Component Updates
