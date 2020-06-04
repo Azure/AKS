@@ -70,7 +70,6 @@
   * Windows Server container support is now Generally Available on Azure Government Cloud.
   * AKS has introduced new kubernetes patch versions v1.15.11, v1.16.8, v1.16.9.
 * Preview Features
-  * AKS now integrates with Azure Resource Health. <https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview>
   * AKS has introduced new public preview patch version v1.17.4, v1.17.5.
   * AKS now supports Gen2 VMs in Public Preview.
 
