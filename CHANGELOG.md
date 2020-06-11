@@ -1,5 +1,32 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-06-08
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS is preparing to GA the AKS Ubuntu 18.04 node image and recommends testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. **After AKS Ubuntu 18.04 is GA**, at the time of upgrading to a pre-announced kubernetes version, clusters running AKS Ubuntu 16.04 will receive this new image. See how here: <https://aka.ms/aks/Ubuntu1804>
+* Kubernetes version 1.17 will GA on the week of July 1st and you will no longer be able to create 1.14.x based clusters or nodepools.
+  * Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+
+### Release Notes
+
+* Features
+  * It is now supported to upgrade clusters from Free to Paid on all regions that support Uptime SLA. This can be done after this weeks release finishes via ARM and on the next CLI version.
+* Preview Features
+  * AKS has released [Node Image Upgrade](http://aka.ms/aks/nodeimageupgrade), to allow users to upgrade the node image of all their cluster nodes, or a specific nodepool, without requiring a full kubernetes upgrade. See more at: <http://aka.ms/aks/nodeimageupgrade>
+  * AKS has released the Application Ingress Controller (AGIC) Addon in public preview. With it you can now easily install and leverage AGIC as a fully managed addon on AKS. More here: <https://aka.ms/aks/agic>
+  * AKS now supports NDr_v2 with the gen2 preview.
+* Bug fixes
+  * Fixed issue where upgrading older clusters would fail due to incompatibility with the podpriority kubelet feature gate.
+  * Fixed issue in Upgrade and Update operations where there was a mismatch between the Cluster Autoscaler node count and current node count.
+* Behavior changes
+  * You are now allowed deploy AKS into dual-stack subnets on dual-stack vnets. The AKS cluster will only leverage the IPv4 stack currently.
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.31](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.31.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.31.txt).
+
 ## Release 2020-06-01
 
 **This release is rolling out to all regions**
