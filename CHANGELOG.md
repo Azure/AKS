@@ -14,6 +14,7 @@
 
 * Features
   * It is now supported to upgrade clusters from Free to Paid on all regions that support Uptime SLA. This can be done after this weeks release finishes via ARM and on the next CLI version.
+  * Windows Server container support is now Generally Available on Azure China regions.
 * Preview Features
   * AKS has released [Node Image Upgrade](http://aka.ms/aks/nodeimageupgrade), to allow users to upgrade the node image of all their cluster nodes, or a specific nodepool, without requiring a full kubernetes upgrade. See more at: <http://aka.ms/aks/nodeimageupgrade>
   * AKS has released the Application Ingress Controller (AGIC) Addon in public preview. With it you can now easily install and leverage AGIC as a fully managed addon on AKS. More here: <https://aka.ms/aks/agic>
