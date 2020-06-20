@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-06-15
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS is preparing to GA the AKS Ubuntu 18.04 node image and recommends testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. **After AKS Ubuntu 18.04 is GA**, at the time of upgrading to a pre-announced kubernetes version, clusters running AKS Ubuntu 16.04 will receive this new image. See how here: <https://aka.ms/aks/Ubuntu1804>
+* Kubernetes version 1.17 will GA on the week of July 1st and you will no longer be able to create 1.14.x based clusters or nodepools.
+  * Kubernetes 1.17 introduces API deprecations, please make sure your manifests are up to date before upgrading, and check Azure Advisor to confirm you are not using deprecated APIs. More information on 1.17 API deprecations here: <https://v1-17.docs.kubernetes.io/docs/setup/release/#deprecations-and-removals>
+
+### Release Notes
+
+* Behavior changes
+  * In advance of the GA of kubernetes v1.17 AKS is now defaulting to kubernetes v1.16 as the default version. If you have a dependency on the AKS default version, make sure your kubernetes APIs are up to date: https://github.com/Azure/AKS/issues/1205
+* Component updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.06.10.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.06.10.txt).
+  * Azure Monitor for Containers monitoring addon image was updated to ciprod05222020 and win-ciprod05222020-2 (for Windows). Notable changes:
+    * Windows Logs - Starting from this release, users will see the agent automatically start collecting windows container STDOUT/STDERR logs and sending them to same log analytics workspace.
+    * Metrics available for Alerting - Users will see the below metrics on the AKS 'Metrics' blade in the Azure portal, under the "Container Insights" Namespace.
+      * Metrics:
+        * diskUsagePercentage
+        * completedJobsCount
+        * oomKilledContainerCount
+        * podReadyPercentage
+        * restartingContainerCount
+        * cpuExceededPercentage
+        * memoryRssExceededPercentage
+        * memoryWorkingSetExceededPercentage
+
 ## Release 2020-06-08
 
 **This release is rolling out to all regions**
