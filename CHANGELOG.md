@@ -23,6 +23,7 @@
   * Fixed bug where users where being shown more than the minor version above as available versions to upgrade to.
 * Behavior changes
   * Kubernetes API server Log Level changed from 4 to 2. This will be reduce the log volume while keeping pair with k8s Prod recommendations.
+  * Azure Policy for AKS is removing the built-in policies offered for the private preview version 1.0 of the add-on. The built-in policies with category name of "Kubernetes Service" will no longer function starting July 21st, 2020. To continue service, update the add-on to version 2.0 by following [these steps](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) and use policies of category name "Kubernetes".
 * Component Updates
   * Metrics Server has been updated to v0.3.6.
   * Calico network policy has been updated to v3.8.0.
