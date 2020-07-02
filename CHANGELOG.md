@@ -1,5 +1,36 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-06-29
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS is preparing to GA the AKS Ubuntu 18.04 node image and recommends testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. **After AKS Ubuntu 18.04 is GA**, at the time of upgrading to a pre-announced kubernetes version, clusters running AKS Ubuntu 16.04 will receive this new image. See how here: <https://aka.ms/aks/Ubuntu1804>
+* AKS will default to containerd as the default runtime in the upcoming months. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA containerd will be served for all new clusters on the latest kubernetes version clusters that upgrade to it.
+
+### Release Notes
+
+* Features
+  * Kubernetes version 1.17 is now Generally Available (GA) on AKS. (1.14 is being retired as this release progressively reaches all regions, as previously communicated).
+  * New Kubernetes patch versions available, v1.15.12, v1.16.10, v1.17.7. Note that as per [policy](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions#supported-versions-policy-exceptions), versions <1.16.10 and <1.17.7 were removed due to severe bugs and security issues flagged upstream.
+* Preview Features
+  * New Kubernetes patch versions are available for preview, v1.18.4.
+  * AKS now supports `containerd` as container runtime in preview. This runtime will be the default on AKS on the upcoming months. Read about it at https://aka.ms/aks/containerd and try it out!
+  * AKS now supports Proximity Placement Groups in preview to provide collocation capabilities for low latency workloads. Read more about it at https://aka.ms/aks/ppg and try it out!
+* Bug fixes
+  * Fix issues on clusters using managed identities, where a cluster upgrade or scale operation would remove unknown identities.
+  * Fixed bug where users where being shown more than the minor version above as available versions to upgrade to.
+* Behavior changes
+  * Kubernetes API server Log Level changed from 4 to 2. This will be reduce the log volume while keeping pair with k8s Prod recommendations.
+* Component Updates
+  * Metrics Server has been updated to v0.3.6.
+  * Calico network policy has been updated to v3.8.0.
+  * New AKS base images - Upgrade to these using <https://aka.ms/aks/node-image-upgrade>
+    * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1282.200610](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1282.200610.txt)
+    * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.06.25.txt).
+    * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.06.25.txt).
+
 ## Release 2020-06-15
 
 **This release is rolling out to all regions**
