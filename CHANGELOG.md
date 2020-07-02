@@ -1,5 +1,37 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-06-29
+
+**This release is rolling out to all regions**
+
+### Important Service Updates
+
+* AKS is preparing to GA the AKS Ubuntu 18.04 node image and recommends testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. **After AKS Ubuntu 18.04 is GA**, at the time of upgrading to a pre-announced kubernetes version, clusters running AKS Ubuntu 16.04 will receive this new image. See how here: <https://aka.ms/aks/Ubuntu1804>
+* AKS will default to containerd as the default runtime in the upcoming months. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA containerd will be served for all new clusters on the latest kubernetes version clusters that upgrade to it.
+
+### Release Notes
+
+* Features
+  * Kubernetes version 1.17 is now Generally Available (GA) on AKS. (1.14 is being retired as this release progressively reaches all regions, as previously communicated).
+  * New Kubernetes patch versions available, v1.15.12, v1.16.10, v1.17.7. Note that as per [policy](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions#supported-versions-policy-exceptions), versions <1.16.10 and <1.17.7 were removed due to severe bugs and security issues flagged upstream.
+* Preview Features
+  * New Kubernetes patch versions are available for preview, v1.18.4.
+  * AKS now supports `containerd` as container runtime in preview. This runtime will be the default on AKS on the upcoming months. Read about it at https://aka.ms/aks/containerd and try it out!
+  * AKS now supports Proximity Placement Groups in preview to provide collocation capabilities for low latency workloads. Read more about it at https://aka.ms/aks/ppg and try it out!
+* Bug fixes
+  * Fix issues on clusters using managed identities, where a cluster upgrade or scale operation would remove unknown identities.
+  * Fixed bug where users where being shown more than the minor version above as available versions to upgrade to.
+* Behavior changes
+  * Kubernetes API server Log Level changed from 4 to 2. This will be reduce the log volume while keeping pair with k8s Prod recommendations.
+  * Azure Policy for AKS is removing the built-in policies offered for the private preview version 1.0 of the add-on. The built-in policies with category name of "Kubernetes Service" will no longer function starting July 21st, 2020. To continue service, update the add-on to version 2.0 by following [these steps](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) and use policies of category name "Kubernetes".
+* Component Updates
+  * Metrics Server has been updated to v0.3.6.
+  * Calico network policy has been updated to v3.8.0.
+  * New AKS base images - Upgrade to these using <https://aka.ms/aks/node-image-upgrade>
+    * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1282.200610](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1282.200610.txt)
+    * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.06.25.txt).
+    * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.06.25.txt).
+
 ## Release 2020-06-15
 
 **This release is rolling out to all regions**
@@ -52,6 +84,10 @@
 * Bug fixes
   * Fixed issue where upgrading older clusters would fail due to incompatibility with the podpriority kubelet feature gate.
   * Fixed issue in Upgrade and Update operations where there was a mismatch between the Cluster Autoscaler node count and current node count.
+  * AKS has cherry picked the following bug fixes into v1.15.11:
+    * https://github.com/kubernetes/kubernetes/pull/89337
+    * https://github.com/kubernetes/kubernetes/pull/90749
+    * https://github.com/kubernetes/kubernetes/pull/89794
 * Behavior changes
   * You are now allowed deploy AKS into dual-stack subnets on dual-stack vnets. The AKS cluster will only leverage the IPv4 stack currently.
 * Component Updates
@@ -336,6 +372,7 @@
 * K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). If you plan to upgrade to this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16.
 * AKS API version 2020-04-01 will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
 * AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* [Egress Breaking Change] Azure MCR has Updated its CDN endpoints - Read about it here: #1476
 
 ### Release Notes
 
