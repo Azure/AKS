@@ -84,6 +84,10 @@
 * Bug fixes
   * Fixed issue where upgrading older clusters would fail due to incompatibility with the podpriority kubelet feature gate.
   * Fixed issue in Upgrade and Update operations where there was a mismatch between the Cluster Autoscaler node count and current node count.
+  * AKS has cherry picked the following bug fixes into v1.15.11:
+    * https://github.com/kubernetes/kubernetes/pull/89337
+    * https://github.com/kubernetes/kubernetes/pull/90749
+    * https://github.com/kubernetes/kubernetes/pull/89794
 * Behavior changes
   * You are now allowed deploy AKS into dual-stack subnets on dual-stack vnets. The AKS cluster will only leverage the IPv4 stack currently.
 * Component Updates
@@ -368,6 +372,7 @@
 * K8s 1.16 introduces API deprecations which will impact user workloads as described in this [AKS issue](https://github.com/Azure/AKS/issues/1205). If you plan to upgrade to this version user action is required to remove dependencies on the deprecated APIs to avoid disruption to workloads. Ensure you have taken this action prior to upgrading to K8s 1.16.
 * AKS API version 2020-04-01 will default to VMSS (Virtual Machine Scale Sets), SLB (Standard Load Balancer) and RBAC enabled.
 * AKS has introduced AKS Ubuntu 18.04 in preview. During this time we will provide both OS versions side by side. **After AKS Ubuntu 18.04 is GA**, on the next cluster upgrade, clusters running AKS Ubuntu 16.04 will receive this new image.
+* [Egress Breaking Change] Azure MCR has Updated its CDN endpoints - Read about it here: #1476
 
 ### Release Notes
 
