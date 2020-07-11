@@ -51,9 +51,8 @@
   * Azure Policy for AKS is removing the built-in policies offered for the private preview version 1.0 of the add-on. The built-in policies with category name of "Kubernetes Service" will no longer function starting July 21st, 2020. To continue service, update the add-on to version 2.0 by following [these steps](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) and use policies of category name "Kubernetes".
 * Component Updates
   * Metrics Server has been updated to v0.3.6.
-  * Calico network policy has been updated to v3.8.0.
   * New AKS base images - Upgrade to these using <https://aka.ms/aks/node-image-upgrade>
-    * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1282.200610](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1282.200610.txt)
+    * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1282.200625](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1282.200625.txt)
     * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.06.25.txt).
     * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.06.25.txt).
 
