@@ -9,7 +9,7 @@
 * AKS will default to AKS ubuntu 18.04 in upcoming GA of kubernetes 1.18 and after AKS Ubuntu 18.04 is GA as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
 * AKS will default to containerd as the default runtime in the upcoming months. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA containerd will be served for all new clusters on the latest kubernetes version clusters that upgrade to it.
 * On the *next* release, AKS will be removing the custom "high-priority" and "addon-priority" Priority Classes which are no longer used by the service.
-* The Azure Kubernetes Service [pod security policy (preview)](https://aka.ms/aks/azpodpolicy) feature will be retired on 15 October 2020.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
 
 ### Release Notes
 
@@ -17,7 +17,7 @@
   * Users can now reuse inbound and outbound IPs on the Load Balancer. After this change, users can assign an outbound IP that is same as an inbound IP in the AKS SLB.
 * Preview Features
   * AKS is announcing the release of Azure RBAC integration for Kubnernetes Authorization in Preview. Which allows you to control the RBAC of your cluster directly from the Azure Portal. See more at: <https://aka.ms/aks/azure-rbac>
-  * AKS integration with Azure Policy and Gatekeeper now supports securing your pods with Azure Policy (with the equivalent controls that were made available previously in Pod Security Policies). Read more at <https://docs.microsoft.com/en-us/azure/aks/use-pod-security-on-azure-policy>
+  * AKS integration with Azure Policy and Gatekeeper now supports securing your pods with Azure Policy (with the equivalent controls that were made available previously in Pod Security Policies). Read more at <https://aka.ms/aks/azpodpolicy>
   * AKS now supports Azure Ultra disks in preview.
   * AKS now supports confidential workloads through DCSv2 SKUs (private preview). Read more [here](https://azure.microsoft.com/en-in/updates/azure-kubernetes-service-aks-now-supports-confidential-workloads-through-dcsv2-skus-preview/).
 * Component Updates
