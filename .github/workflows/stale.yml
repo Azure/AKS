@@ -19,4 +19,5 @@ jobs:
         stale-pr-label: 'stale'
         days-before-stale: 90
         days-before-close: 5
-        exempt-pr-labels: 'pinned,feature,feature-request,roadmap,enhancement,triage,bug,awaiting-approval,work-in-progress'
+        exempt-pr-label: 'pinned,feature,feature-request,roadmap,enhancement,triage,bug,awaiting-approval,work-in-progress'
+        exempt-issue-label: 'pinned,feature,feature-request,roadmap,enhancement,triage,bug,awaiting-approval,work-in-progress'
