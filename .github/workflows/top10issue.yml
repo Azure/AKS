@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Label Issues
-      uses: adamzolyak/top-issues-action@master
+      uses: adamzolyak/top-issues-action@1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TOP_NUMBER_OF_ISSUES: 10
