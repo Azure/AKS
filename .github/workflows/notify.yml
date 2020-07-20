@@ -10,6 +10,6 @@ jobs:
     steps:
         - uses: jenschelkopf/issue-label-notification-action@1.2
           with:
-             repo-token: ${{ secrets.GITHUB_TOKEN }}
+             token: ${{ secrets.GITHUB_TOKEN }}
              recipients: |
                   action-required=@Azure/aks-pm
