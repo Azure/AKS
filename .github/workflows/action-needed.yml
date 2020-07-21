@@ -2,7 +2,7 @@ name: Mark action required issues and pull requests
 
 on:
   schedule:
-  - cron: "45 17 * * 1"
+  - cron: "0 17 * * *"
 
 jobs:
   stale:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/stale@v1
+    - uses: actions/stale@v3
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-label: 'action-required'
@@ -18,5 +18,5 @@ jobs:
         stale-issue-message: 'Action required from @Azure/aks-pm'
         stale-pr-message: 'Action required from @Azure/aks-pm'
         only-labels: 'triage'
-        days-before-stale: 2
+        days-before-stale: 5
         days-before-close: -1
