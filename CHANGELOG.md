@@ -1,5 +1,47 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-07-27
+
+**This release is rolling out to all regions - ETA for conclusion 2020-08-07**
+
+### Important Service Updates
+
+* AKS will default to AKS ubuntu 18.04 in upcoming GA of kubernetes v1.18 which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
+* AKS has removed the custom "high-priority" and "addon-priority" Priority Classes which are no longer used by the service.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
+* Kubernetes version 1.18 will GA on the week of August 31st and you will no longer be able to create 1.15.x based clusters or nodepools.
+
+### Release Notes
+
+* Features
+  * AKS-managed Azure AD integration (v2) is now generally available: <https://docs.microsoft.com/en-us/azure/aks/managed-aad>
+    * You can now upgrade non-AzureAD clusters to AD-integrated clusters.
+    * You can now upgrade clusters with the previous iteration of the AzureAD integration (v1) into AKS-managed AzureAD clusters (v2)
+    * Closes: <https://github.com/Azure/AKS/issues/1489>
+  * AKS is now supported on the following regions:
+    * UAE Central - Closes <https://github.com/Azure/AKS/issues/1693>
+    * West Central US - Closes <https://github.com/Azure/AKS/issues/998>
+  * New Kubernetes patch versions available v1.16.13, v1.17.9
+    * This patch versions respond the following CVEs:
+      * https://github.com/Azure/AKS/issues/1724
+      * https://github.com/Azure/AKS/issues/1731
+      * https://github.com/Azure/AKS/issues/1732
+    * We've heard your feedback and we will not be removing all the previous versions due to the vulnerabilities. Instead we've patched all the latest GA ones (v1.15.11, v1.15.12, v1.16.10, v1.17.7) and you can still mitigate the vulnerabilities in any GA version by leveraging <https://aka.ms/aks/node-image-upgrade>.
+* Bug fixes
+  * AKS has added the ready and health plugins to coredns. Closes <https://github.com/Azure/AKS/issues/1676>
+  * We've added additional validations to prevent the creation of multiple node pool clusters with Basic Load Balancer which isn't supported.
+* Preview features
+  * AKS now supports Bring Your Own (BYO) control plane managed identity: <https://aka.ms/aks/byo-mi>
+  * New Kubernetes patch versions are available for preview, v1.18.6.
+* Behavior changes
+  * After API version 2020-07-01 the node image upgrade operation will only allow POST and not PUT. CLI versions won't be affected.
+* Component Updates
+  * Calico updated to v3.8.0
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1339.200716](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1339.200716.txt)
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.07.16](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.07.16.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.07.16](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.07.16.txt).
+
 ## Release 2020-07-06
 
 **This release is rolling out to all regions**
@@ -16,14 +58,14 @@
 * Features
   * Users can now reuse inbound and outbound IPs on the Load Balancer. After this change, users can assign an outbound IP that is same as an inbound IP in the AKS SLB.
 * Preview Features
-  * AKS is announcing the release of Azure RBAC integration for Kubnernetes Authorization in Preview. Which allows you to control the RBAC of your cluster directly from the Azure Portal. See more at: <https://aka.ms/aks/azure-rbac>
+  * AKS is announcing the release of Azure RBAC integration for Kubernetes Authorization in Preview. Which allows you to control the RBAC of your cluster directly from the Azure Portal. See more at: <https://aka.ms/aks/azure-rbac>
   * AKS integration with Azure Policy and Gatekeeper now supports securing your pods with Azure Policy (with the equivalent controls that were made available previously in Pod Security Policies). Read more at <https://aka.ms/aks/azpodpolicy>
   * AKS now supports Azure Ultra disks in preview.
   * AKS now supports confidential workloads through DCSv2 SKUs (private preview). Read more [here](https://azure.microsoft.com/en-in/updates/azure-kubernetes-service-aks-now-supports-confidential-workloads-through-dcsv2-skus-preview/).
 * Component Updates
   * New AKS base images - Upgrade to these using <https://aka.ms/aks/node-image-upgrade>
-    * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.30](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.06.30.txt).
-    * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.30](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.06.30.txt).
+    * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.30](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.06.30.txt).
+    * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.30](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.06.30.txt).
 
 ## Release 2020-06-29
 
@@ -53,8 +95,8 @@
   * Metrics Server has been updated to v0.3.6.
   * New AKS base images - Upgrade to these using <https://aka.ms/aks/node-image-upgrade>
     * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1282.200625](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1282.200625.txt)
-    * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.06.25.txt).
-    * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.06.25.txt).
+    * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.06.25.txt).
+    * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.06.25.txt).
 
 ## Release 2020-06-15
 
@@ -71,8 +113,8 @@
 * Behavior changes
   * In advance of the GA of kubernetes v1.17 AKS is now defaulting to kubernetes v1.16 as the default version. If you have a dependency on the AKS default version, make sure your kubernetes APIs are up to date: https://github.com/Azure/AKS/issues/1205
 * Component updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.06.10.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.06.10.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.06.10.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.06.10.txt).
   * Azure Monitor for Containers monitoring addon image was updated to ciprod05222020 and win-ciprod05222020-2 (for Windows). Notable changes:
     * Windows Logs - Starting from this release, users will see the agent automatically start collecting windows container STDOUT/STDERR logs and sending them to same log analytics workspace.
     * Metrics available for Alerting - Users will see the below metrics on the AKS 'Metrics' blade in the Azure portal, under the "Container Insights" Namespace.
@@ -115,8 +157,8 @@
 * Behavior changes
   * You are now allowed deploy AKS into dual-stack subnets on dual-stack vnets. The AKS cluster will only leverage the IPv4 stack currently.
 * Component Updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.31](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.31.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.31.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.31](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.05.31.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.05.31.txt).
 
 ## Release 2020-06-01
 
@@ -145,8 +187,8 @@
   * Updated Kube-Dashboard images for 1.16, 1.17 and 1.18
     * 1.16 clusters will use dashboard:v2.0.0-rc3, 1.17 will use dashboard:v2.0.0-rc7, 1.18 will use dashboard:v2.0.1
     * Read more about the User Experience here: <https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard>
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.27](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.27.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.27.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.27](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.05.27.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.05.27.txt).
   
 ## Release 2020-05-25
 
@@ -204,8 +246,8 @@
 * Bug Fixes
   * Fixed an issue where if a nodepool operation was performed in a locked resource group it would return error 500 instead of correctly returning a ResourceGroupLocked error.
 * Component Updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.13](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.13.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.13.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.13](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.05.13.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.05.13.txt).
 
 ## Release 2020-05-11
 
@@ -230,8 +272,8 @@
 * Bug Fixes
   * Fixed bug where newly added agent pool did not inherit VnetCidrs from existing agent pools resulting in wrong nonMasqueradeCIDRs
 * Component Updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.06](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.05.06.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.05.06.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.05.06](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.05.06.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.05.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.05.06.txt).
 
 ## Release 2020-05-04
 
@@ -280,8 +322,8 @@
   * Azure Network Policy (NPM) was updated from v1.0.33 to v1.1.0 - <https://github.com/Azure/azure-container-networking/releases/tag/v1.1.0>
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1158.200421](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1158.200421.txt).
   * Azure CNI was updated to 1.0.33 on Windows
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.04.16](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.04.16.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.04.16](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.04.16.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.04.16](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.04.16.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.04.16](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.04.16.txt).
 
 ## Release 2020-04-13
 
@@ -304,8 +346,8 @@
   * AKS now allows User nodepools to scale to 0.
   * AKS Diagnostics - Added networking and connectivity checks through our new Cluster Network Configuration detector. This allows you to check DNS and subnet related issues that may have impacted your cluster. It also highlights your network configuration to give you all this information at your fingertips.
 * Component Updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.04.06](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.04.06.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.04.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.04.06.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.04.06](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.04.06.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.04.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.04.06.txt).
 
 ## Release 2020-03-30
 
@@ -328,8 +370,8 @@
   * Fixed bug passing the correct nodepool at validation time on UDR OutboundType preview feature.
   * Patched bug where nodepool was not correctly added to internal SLB backend address pool: https://github.com/kubernetes/kubernetes/issues/89336
 * Component Updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.03.24.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.03.24.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.03.24.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.03.24.txt).
 
 
 ## Release 2020-03-23
@@ -359,8 +401,8 @@
 * Behavioral changes
   * All AKS Standard LBs will now have TCP Reset flag set to true.
 * Component Updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.03.11](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.03.11.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.03.11](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.03.11.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.03.11](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.03.11.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.03.11](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.03.11.txt).
 
 ## Release 2020-03-16
 
@@ -426,8 +468,8 @@
     * As usual, with the GA of 1.16 the AKS default version follows n-1 and is now 1.15
     * As per https://github.com/Azure/AKS/issues/1304 AKS will now upgrade the rest of the fleet to CoreDNS 1.6.6 after upgrading only non-Proxy users on [Release 2020-01-27](#release-2020-01-27).
 * Component Updates
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu:1604:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1604-2020.03.05.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu:1804:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1804-2020.03.05.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu:1604:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.03.05.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu:1804:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.03.05.txt).
   * Updated to Moby 3.0.10 - <https://github.com/Azure/moby/releases/tag/3.0.10>.
   * Updated Azure CNI plugin version for Linux to 1.0.33 and Azure CNI plugin version for Windows 1.0.30 - <https://github.com/Azure/azure-container-networking/releases>.
   * External DNS image was updated to v0.6.0.
@@ -488,7 +530,7 @@
     * <https://github.com/Azure/AKS/issues/1088>
     * <https://github.com/Azure/AKS/issues/1344>
 * Component Updates
-  * AKS VHD image updated to [aks-ubuntu-1604-202002_202002.12](vhd-notes/aks-ubuntu/aks-ubuntu-1604-202002_202002.12.txt)
+  * AKS VHD image updated to [aks-ubuntu-1604-202002_202002.12](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.02.12.txt)
 
 ## Release 2020-02-10
 
