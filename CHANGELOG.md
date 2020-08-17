@@ -1,5 +1,26 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-08-10
+
+**This release is rolling out to all regions - ETA for conclusion 2020-08-21**
+
+### Important Service Updates
+
+* AKS will default to AKS ubuntu 18.04 in upcoming GA of kubernetes v1.18 which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
+* Kubernetes version 1.18 will GA on the week of August 31st and you will no longer be able to create 1.15.x based clusters or nodepools.
+
+### Release Notes
+
+* Features
+  * AKS now supports autoscaling to 0. (latest CLI extension and following core CLI version)
+* Bug fixes
+  * Fixed a bug when scaling windows node pools and the windows profile parameters were missing.
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.08.06](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.08.06.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.08.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.08.06.txt).
+
 ## Release 2020-08-03
 
 **This release is rolling out to all regions - ETA for conclusion 2020-08-14**
