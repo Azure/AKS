@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-08-17
+
+**This release is rolling out to all regions - ETA for conclusion 2020-08-26**
+
+### Important Service Updates
+
+* AKS will default to AKS ubuntu 18.04 in upcoming GA of kubernetes v1.18 which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
+* Kubernetes version 1.18 will GA on the week of August 31st and you will no longer be able to create 1.15.x based clusters or nodepools.
+* Once GA AKS will default to the GPU specialized image as the supported option for GPU-capable agent nodes.
+
+### Release Notes
+
+* Features
+  * You can now see the [AKS Authentication Webhook Server](https://docs.microsoft.com/azure/aks/concepts-identity#webhook-and-api-server) logs for the Azure AD Integrated clusters, as part of the [AKS Control Plane logs](https://docs.microsoft.com/azure/aks/view-master-logs).
+* Preview Features
+  * AKS now has a specialized GPU Node Image that already includes not only the docker drivers but also the NVIDIA device plugin, so ready to use. See more at: <https://aka.ms/aks/specialized-gpu-image>
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.08.13](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.08.13.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.08.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.08.13.txt).
+
 ## Release 2020-08-10
 
 **This release is rolling out to all regions - ETA for conclusion 2020-08-21**
@@ -7,8 +29,8 @@
 ### Important Service Updates
 
 * AKS will default to AKS ubuntu 18.04 in upcoming GA of kubernetes v1.18 which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
-* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
-* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
 * Kubernetes version 1.18 will GA on the week of August 31st and you will no longer be able to create 1.15.x based clusters or nodepools.
 
 ### Release Notes
@@ -28,15 +50,15 @@
 ### Important Service Updates
 
 * AKS will default to AKS ubuntu 18.04 in upcoming GA of kubernetes v1.18 which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
-* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
-* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
 * Kubernetes version 1.18 will GA on the week of August 31st and you will no longer be able to create 1.15.x based clusters or nodepools.
 
 ### Release Notes
 
 * Preview Features
   * AKS now supports Ephemeral OS disks in Public Preview. Read more here: <https://aka.ms/aks/ephemeral-os>
-  * AKS has announced the AKS Portal Resource view: <https://azure.microsoft.com/en-us/updates/kubernetes-resource-view-is-in-public-preview>
+  * AKS has announced the AKS Portal Resource view: <https://azure.microsoft.com/updates/kubernetes-resource-view-is-in-public-preview>
 * Bug fixes
   * Fixed but where VNET CIDR was not set correctly on Windows nodes which could result in incorrect NATing behavior.
 
@@ -47,9 +69,9 @@
 ### Important Service Updates
 
 * AKS will default to AKS ubuntu 18.04 in upcoming GA of kubernetes v1.18 which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
-* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19.
 * AKS has removed the custom "high-priority" and "addon-priority" Priority Classes which are no longer used by the service.
-* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on 15 October 2020.
 * Kubernetes version 1.18 will GA on the week of August 31st and you will no longer be able to create 1.15.x based clusters or nodepools.
 
 ### Release Notes
@@ -76,6 +98,7 @@
   * New Kubernetes patch versions are available for preview, v1.18.6.
 * Behavior changes
   * After API version 2020-07-01 the node image upgrade operation will only allow POST and not PUT. CLI versions won't be affected.
+  * A default load balancer is not longer created in UDR OutboundType clusters. The LB can be automatically created later if a public service of type LoadBalancer is created.
 * Component Updates
   * Calico updated to v3.8.0
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1339.200716](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1339.200716.txt)

@@ -1,4 +1,3 @@
-tarting build on  Thu Aug 6 17:08:00 UTC 2020
 Components downloaded in this VHD build (some of the below components might get deleted during cluster provisioning if they are not needed):
   - apache2-utils
   - apt-transport-https
@@ -87,10 +86,8 @@ Docker images pre-pulled:
   - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.7
   - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.8
   - mcr.microsoft.com/aks/hcp/kube-svc-redirect:v1.0.7
-  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod03022020
-  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod05262020
-  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod06302020
   - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod07152020
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod08072020
   - mcr.microsoft.com/oss/calico/cni:v3.5.0
   - mcr.microsoft.com/oss/calico/cni:v3.8.0
   - mcr.microsoft.com/oss/calico/node:v3.5.0
@@ -119,27 +116,27 @@ Docker images pre-pulled:
 -rwxr-xr-x 1 root root  43429888 Jul 15 20:55 /usr/local/bin/kubectl-1.17.9
 -rwxr-xr-x 1 root root 113128200 Jul 23 22:11 /usr/local/bin/kubelet-1.18.6
 -rwxr-xr-x 1 root root  43958272 Jul 23 22:11 /usr/local/bin/kubectl-1.18.6
--r-xr--r-- 1 root root      2237 Aug  6 17:08 /usr/local/bin/health-monitor.sh
--rwxr-xr-x 1 root root  35384960 Aug  6 17:10 /usr/local/bin/bpftrace
--rwxr-xr-x 1 root root  25700016 Aug  6 17:12 /usr/local/bin/img
--rwxr-xr-x 1 root root 211122320 Aug  6 17:19 /usr/local/bin/kubelet-1.14.7
--rwxr-xr-x 1 root root 211122320 Aug  6 17:19 /usr/local/bin/kubectl-1.14.7
--rwxr-xr-x 1 root root 211130448 Aug  6 17:20 /usr/local/bin/kubelet-1.14.8
--rwxr-xr-x 1 root root 211130448 Aug  6 17:20 /usr/local/bin/kubectl-1.14.8
--rwxr-xr-x 1 root root 250267632 Aug  6 17:20 /usr/local/bin/kubelet-1.15.7
--rwxr-xr-x 1 root root 250267632 Aug  6 17:20 /usr/local/bin/kubectl-1.15.7
--rwxr-xr-x 1 root root 250320176 Aug  6 17:21 /usr/local/bin/kubelet-1.15.10
--rwxr-xr-x 1 root root 250320176 Aug  6 17:21 /usr/local/bin/kubectl-1.15.10
--rwxr-xr-x 1 root root 250381600 Aug  6 17:22 /usr/local/bin/kubelet-1.15.11
--rwxr-xr-x 1 root root 250381600 Aug  6 17:22 /usr/local/bin/kubectl-1.15.11
--rwxr-xr-x 1 root root 250471736 Aug  6 17:23 /usr/local/bin/kubelet-1.15.12
--rwxr-xr-x 1 root root 250471736 Aug  6 17:23 /usr/local/bin/kubectl-1.15.12
--rwxr-xr-x 1 root root 203802912 Aug  6 17:24 /usr/local/bin/kubelet-1.16.9
--rwxr-xr-x 1 root root 203802912 Aug  6 17:24 /usr/local/bin/kubectl-1.16.9
--rwxr-xr-x 1 root root 203833720 Aug  6 17:24 /usr/local/bin/kubelet-1.16.10
--rwxr-xr-x 1 root root 203833720 Aug  6 17:24 /usr/local/bin/kubectl-1.16.10
--rwxr-xr-x 1 root root 203854848 Aug  6 17:25 /usr/local/bin/kubelet-1.16.13
--rwxr-xr-x 1 root root 203854848 Aug  6 17:25 /usr/local/bin/kubectl-1.16.13
+-r-xr--r-- 1 root root      2237 Aug 13 18:08 /usr/local/bin/health-monitor.sh
+-rwxr-xr-x 1 root root  35384960 Aug 13 18:10 /usr/local/bin/bpftrace
+-rwxr-xr-x 1 root root  25700016 Aug 13 18:13 /usr/local/bin/img
+-rwxr-xr-x 1 root root 211122320 Aug 13 18:19 /usr/local/bin/kubelet-1.14.7
+-rwxr-xr-x 1 root root 211122320 Aug 13 18:19 /usr/local/bin/kubectl-1.14.7
+-rwxr-xr-x 1 root root 211130448 Aug 13 18:20 /usr/local/bin/kubelet-1.14.8
+-rwxr-xr-x 1 root root 211130448 Aug 13 18:20 /usr/local/bin/kubectl-1.14.8
+-rwxr-xr-x 1 root root 250267632 Aug 13 18:20 /usr/local/bin/kubelet-1.15.7
+-rwxr-xr-x 1 root root 250267632 Aug 13 18:20 /usr/local/bin/kubectl-1.15.7
+-rwxr-xr-x 1 root root 250320176 Aug 13 18:21 /usr/local/bin/kubelet-1.15.10
+-rwxr-xr-x 1 root root 250320176 Aug 13 18:21 /usr/local/bin/kubectl-1.15.10
+-rwxr-xr-x 1 root root 250381600 Aug 13 18:22 /usr/local/bin/kubelet-1.15.11
+-rwxr-xr-x 1 root root 250381600 Aug 13 18:22 /usr/local/bin/kubectl-1.15.11
+-rwxr-xr-x 1 root root 250471736 Aug 13 18:23 /usr/local/bin/kubelet-1.15.12
+-rwxr-xr-x 1 root root 250471736 Aug 13 18:23 /usr/local/bin/kubectl-1.15.12
+-rwxr-xr-x 1 root root 203802912 Aug 13 18:24 /usr/local/bin/kubelet-1.16.9
+-rwxr-xr-x 1 root root 203802912 Aug 13 18:24 /usr/local/bin/kubectl-1.16.9
+-rwxr-xr-x 1 root root 203833720 Aug 13 18:25 /usr/local/bin/kubelet-1.16.10
+-rwxr-xr-x 1 root root 203833720 Aug 13 18:25 /usr/local/bin/kubectl-1.16.10
+-rwxr-xr-x 1 root root 203854848 Aug 13 18:25 /usr/local/bin/kubelet-1.16.13
+-rwxr-xr-x 1 root root 203854848 Aug 13 18:25 /usr/local/bin/kubectl-1.16.13
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.7-hotfix.20200408.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.8-hotfix.20200529.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.7-hotfix.20200326
@@ -176,11 +173,13 @@ Docker images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.6
   - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v2.0.1
   - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.1.0-beta.8
+  - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.1.0-beta.12
   - mcr.microsoft.com/oss/kubernetes/external-dns:v0.6.0-hotfix-20200228
   - mcr.microsoft.com/oss/kubernetes/defaultbackend:1.4
   - mcr.microsoft.com/oss/kubernetes/ingress/nginx-ingress-controller:0.19.0
   - mcr.microsoft.com/oss/virtual-kubelet/virtual-kubelet:1.2.1.1
   - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20200519.1
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20200804.1
   - mcr.microsoft.com/azure-policy/policy-kubernetes-webhook:prod_20200505.3
   - mcr.microsoft.com/azure-application-gateway/kubernetes-ingress:1.0.1-rc3
   - mcr.microsoft.com/k8s/csi/azuredisk-csi:v0.7.0
