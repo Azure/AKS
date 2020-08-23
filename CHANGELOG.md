@@ -98,6 +98,7 @@
   * New Kubernetes patch versions are available for preview, v1.18.6.
 * Behavior changes
   * After API version 2020-07-01 the node image upgrade operation will only allow POST and not PUT. CLI versions won't be affected.
+  * A default load balancer is not longer created in UDR OutboundType clusters. The LB can be automatically created later if a public service of type LoadBalancer is created.
 * Component Updates
   * Calico updated to v3.8.0
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1339.200716](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1339.200716.txt)
