@@ -19,7 +19,7 @@ with AKS. For other tools, products and services see the [Upstream Azure Compute
 
 * AKS Roadmap: http://aka.ms/aks/roadmap
 * AKS Release Notes: https://aka.ms/aks/releasenotes
-* AKS Preview Features: https://aka.ms/aks/previewfeatures
+* AKS Preview Features: https://aka.ms/aks/preview-features
 * Updates about the service, including new features and new Azure regions:
   [AKS feed in Azure Updates](https://azure.microsoft.com/updates/?product=kubernetes-service)
 
