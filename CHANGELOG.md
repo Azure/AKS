@@ -4,7 +4,6 @@
 
 **This release is rolling out to all regions - ETA for conclusion 2020-09-18**
 
-* AKS will default to AKS ubuntu 18.04 in the upcoming patch kubernetes v1.18 (v1.18.9) which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
 * AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
 * [New Date] We heard your feedback and as such, the Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on February 1st 2021.
 * Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
@@ -17,6 +16,9 @@
   * The AKS Kubernetes Audit logs are now split in 2 categories to allow you granularly subscribe and save costs.
     * `kube-audit-admin`: This category contains only audit events that include write verbs (`create`,`update`,`delete`,`patch`,`post`)
     * `kube-audit`: This category contains all remaining audit events.
+  * AKS Ubuntu 18.04 is now Generally Available and will be the default agent node base image on k8s v1.18 and onward. 
+* Preview Features
+  * AKS now supports [Azure disk and Azure files CSI storage drivers](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers) in Public preview.
 * Bug Fix
   * Fixed an issue where non-AKS managed identities (eg. from Pod Identity) would be lost after an AKS upgrade.
   * Fixed bug where the VMSS backend pool was removed after a Service Principal reset operation.
