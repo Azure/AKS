@@ -1,5 +1,43 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-08-31
+
+**This release is rolling out to all regions - ETA for conclusion 2020-09-18**
+
+* AKS will default to AKS ubuntu 18.04 in the upcoming patch kubernetes v1.18 (v1.18.9) which marks the GA of AKS Ubuntu 18.04 as well. We recommend testing existing workloads on AKS Ubuntu 18.04 nodepools prior to GA. See how here: <https://aka.ms/aks/Ubuntu1804>
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
+* [New Date] We heard your feedback and as such, the Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on February 1st 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+
+### Release Notes
+
+* Features
+  * Kubernetes version 1.18 is now Generally Available (GA) on AKS. (1.15 is being retired as this release progressively reaches all regions, as previously communicated). Check the [release calendar](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) for future version release and GA date.
+  * New Kubernetes patch versions available, v1.18.8.
+  * The AKS Kubernetes Audit logs are now split in 2 categories to allow you granularly subscribe and save costs.
+    * `kube-audit-admin`: This category contains only audit events that include write verbs (`create`,`update`,`delete`,`patch`,`post`)
+    * `kube-audit`: This category contains all remaining audit events.
+* Bug Fix
+  * Fixed an issue where non-AKS managed identities (eg. from Pod Identity) would be lost after an AKS upgrade.
+  * Fixed bug where the VMSS backend pool was removed after a Service Principal reset operation.
+* Behavior Changes
+  * Ensure all components use only strong ciphers (matching the AKS API server). Metrics server now only allows the following cipher suites:
+    * TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    * TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+    * TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+* Component Updates
+  * Azure Policy Addon updated to Gatekeeper beta12 and Policy 0804 versions.
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1397.200820](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1397.200820.txt)
+  * Azure Monitor for Containers versions updated: <https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#08072020-->
+    * Linux version mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod08072020
+    * Windows version mcr.microsoft.com/azuremonitor/containerinsights/ciprod:win-ciprod08072020
+  * Add LivenessProbe and ReadinessProbe for Metrics Server.
+  * Updated AKS Moby version to 19.03.12 (from now on AKS Moby versions will follow docker versioning to assist scanning tools false positives).
+  * Updated NVIDIA GPU drivers to v450.51.06.
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.08.28](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.08.28.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.08.28](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.08.28.txt).
+
 ## Release 2020-08-17
 
 **This release is rolling out to all regions - ETA for conclusion 2020-08-26**

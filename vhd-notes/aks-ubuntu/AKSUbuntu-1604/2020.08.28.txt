@@ -1,4 +1,4 @@
-tarting build on  Thu Aug 6 17:08:00 UTC 2020
+Starting build on  Sat Aug 29 04:28:18 UTC 2020
 Components downloaded in this VHD build (some of the below components might get deleted during cluster provisioning if they are not needed):
   - apache2-utils
   - apt-transport-https
@@ -30,7 +30,7 @@ Components downloaded in this VHD build (some of the below components might get 
   - xz-utils
   - zip
   - bpftrace
-  - moby v3.0.10
+  - moby v19.03.12
   - nvidia-docker2 nvidia-container-runtime
   - nvidia-container-runtime=2.0.0+docker18.09.2-1
   - bcc-tools
@@ -70,27 +70,22 @@ Docker images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/coredns:1.2.6
   - mcr.microsoft.com/containernetworking/networkmonitor:v0.0.7
   - mcr.microsoft.com/containernetworking/networkmonitor:v0.0.6
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.1.7
   - mcr.microsoft.com/containernetworking/azure-npm:v1.1.5
   - mcr.microsoft.com/containernetworking/azure-npm:v1.1.4
-  - mcr.microsoft.com/containernetworking/azure-npm:v1.1.2
   - mcr.microsoft.com/containernetworking/azure-vnet-telemetry:v1.0.30
   - nvidia/k8s-device-plugin:1.11
   - nvidia/k8s-device-plugin:1.10
-  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v3.0.11
-  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v4.0.11
-  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v3.0.12
-  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v4.0.12
-  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v3.0.13
   - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v3.0.14
+  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v3.0.16
   - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v4.0.13
-  - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.6
-  - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.7
+  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:v1.9.2-v4.0.14
   - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.8
+  - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.9
+  - mcr.microsoft.com/aks/hcp/tunnel-openvpn:1.0.10
   - mcr.microsoft.com/aks/hcp/kube-svc-redirect:v1.0.7
-  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod03022020
-  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod05262020
-  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod06302020
   - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod07152020
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod08072020
   - mcr.microsoft.com/oss/calico/cni:v3.5.0
   - mcr.microsoft.com/oss/calico/cni:v3.8.0
   - mcr.microsoft.com/oss/calico/node:v3.5.0
@@ -103,8 +98,8 @@ Docker images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.7.1-hotfix.20200403
   - mcr.microsoft.com/k8s/flexvolume/keyvault-flexvolume:v0.0.13
   - mcr.microsoft.com/k8s/flexvolume/blobfuse-flexvolume:1.0.13
-  - mcr.microsoft.com/oss/kubernetes/ip-masq-agent:v2.0.0_v0.0.5
   - mcr.microsoft.com/oss/kubernetes/ip-masq-agent:v2.5.0
+  - mcr.microsoft.com/oss/kubernetes/ip-masq-agent:v2.5.0.1
   - nginx:1.13.12-alpine
   - mcr.microsoft.com/k8s/kms/keyvault:v0.0.9
 -rwxr-xr-x 1 root root 150582248 Jun  1 21:00 /usr/local/bin/kubelet-1.17.3
@@ -113,60 +108,65 @@ Docker images pre-pulled:
 -rwxr-xr-x 1 root root  43954176 Jun 24 20:02 /usr/local/bin/kubectl-1.18.2
 -rwxr-xr-x 1 root root 113124072 Jun 26 18:47 /usr/local/bin/kubelet-1.18.4
 -rwxr-xr-x 1 root root  43954176 Jun 26 18:47 /usr/local/bin/kubectl-1.18.4
--rwxr-xr-x 1 root root 111519656 Jul 15 03:38 /usr/local/bin/kubelet-1.17.7
--rwxr-xr-x 1 root root  43429888 Jul 15 03:38 /usr/local/bin/kubectl-1.17.7
--rwxr-xr-x 1 root root 111523752 Jul 15 20:55 /usr/local/bin/kubelet-1.17.9
--rwxr-xr-x 1 root root  43429888 Jul 15 20:55 /usr/local/bin/kubectl-1.17.9
 -rwxr-xr-x 1 root root 113128200 Jul 23 22:11 /usr/local/bin/kubelet-1.18.6
 -rwxr-xr-x 1 root root  43958272 Jul 23 22:11 /usr/local/bin/kubectl-1.18.6
--r-xr--r-- 1 root root      2237 Aug  6 17:08 /usr/local/bin/health-monitor.sh
--rwxr-xr-x 1 root root  35384960 Aug  6 17:10 /usr/local/bin/bpftrace
--rwxr-xr-x 1 root root  25700016 Aug  6 17:12 /usr/local/bin/img
--rwxr-xr-x 1 root root 211122320 Aug  6 17:19 /usr/local/bin/kubelet-1.14.7
--rwxr-xr-x 1 root root 211122320 Aug  6 17:19 /usr/local/bin/kubectl-1.14.7
--rwxr-xr-x 1 root root 211130448 Aug  6 17:20 /usr/local/bin/kubelet-1.14.8
--rwxr-xr-x 1 root root 211130448 Aug  6 17:20 /usr/local/bin/kubectl-1.14.8
--rwxr-xr-x 1 root root 250267632 Aug  6 17:20 /usr/local/bin/kubelet-1.15.7
--rwxr-xr-x 1 root root 250267632 Aug  6 17:20 /usr/local/bin/kubectl-1.15.7
--rwxr-xr-x 1 root root 250320176 Aug  6 17:21 /usr/local/bin/kubelet-1.15.10
--rwxr-xr-x 1 root root 250320176 Aug  6 17:21 /usr/local/bin/kubectl-1.15.10
--rwxr-xr-x 1 root root 250381600 Aug  6 17:22 /usr/local/bin/kubelet-1.15.11
--rwxr-xr-x 1 root root 250381600 Aug  6 17:22 /usr/local/bin/kubectl-1.15.11
--rwxr-xr-x 1 root root 250471736 Aug  6 17:23 /usr/local/bin/kubelet-1.15.12
--rwxr-xr-x 1 root root 250471736 Aug  6 17:23 /usr/local/bin/kubectl-1.15.12
--rwxr-xr-x 1 root root 203802912 Aug  6 17:24 /usr/local/bin/kubelet-1.16.9
--rwxr-xr-x 1 root root 203802912 Aug  6 17:24 /usr/local/bin/kubectl-1.16.9
--rwxr-xr-x 1 root root 203833720 Aug  6 17:24 /usr/local/bin/kubelet-1.16.10
--rwxr-xr-x 1 root root 203833720 Aug  6 17:24 /usr/local/bin/kubectl-1.16.10
--rwxr-xr-x 1 root root 203854848 Aug  6 17:25 /usr/local/bin/kubelet-1.16.13
--rwxr-xr-x 1 root root 203854848 Aug  6 17:25 /usr/local/bin/kubectl-1.16.13
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.7-hotfix.20200408.1
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.14.8-hotfix.20200529.1
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.7-hotfix.20200326
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.10-hotfix.20200408.1
+-rwxr-xr-x 1 root root 152695784 Aug 14 00:28 /usr/local/bin/kubelet-1.18.8
+-rwxr-xr-x 1 root root  60077962 Aug 14 00:28 /usr/local/bin/kubectl-1.18.8
+-rwxr-xr-x 1 root root 150656520 Aug 17 06:21 /usr/local/bin/kubelet-1.17.7
+-rwxr-xr-x 1 root root  59369310 Aug 17 06:21 /usr/local/bin/kubectl-1.17.7
+-rwxr-xr-x 1 root root 150655728 Aug 24 19:00 /usr/local/bin/kubelet-1.17.9
+-rwxr-xr-x 1 root root  59369310 Aug 24 19:00 /usr/local/bin/kubectl-1.17.9
+-rwxr-xr-x 1 root root 151168400 Aug 26 19:09 /usr/local/bin/kubelet-1.19.0
+-rwxr-xr-x 1 root root  60373229 Aug 26 19:09 /usr/local/bin/kubectl-1.19.0
+-r-xr--r-- 1 root root      2237 Aug 29 04:28 /usr/local/bin/health-monitor.sh
+-rwxr-xr-x 1 root root  35384960 Aug 29 04:30 /usr/local/bin/bpftrace
+-rwxr-xr-x 1 root root  25700016 Aug 29 04:33 /usr/local/bin/img
+-rwxr-xr-x 1 root root 211122320 Aug 29 04:38 /usr/local/bin/kubelet-1.14.7
+-rwxr-xr-x 1 root root 211122320 Aug 29 04:38 /usr/local/bin/kubectl-1.14.7
+-rwxr-xr-x 1 root root 211130448 Aug 29 04:39 /usr/local/bin/kubelet-1.14.8
+-rwxr-xr-x 1 root root 211130448 Aug 29 04:39 /usr/local/bin/kubectl-1.14.8
+-rwxr-xr-x 1 root root 250267632 Aug 29 04:39 /usr/local/bin/kubelet-1.15.7
+-rwxr-xr-x 1 root root 250267632 Aug 29 04:39 /usr/local/bin/kubectl-1.15.7
+-rwxr-xr-x 1 root root 250320176 Aug 29 04:40 /usr/local/bin/kubelet-1.15.10
+-rwxr-xr-x 1 root root 250320176 Aug 29 04:40 /usr/local/bin/kubectl-1.15.10
+-rwxr-xr-x 1 root root 250381624 Aug 29 04:41 /usr/local/bin/kubelet-1.15.11
+-rwxr-xr-x 1 root root 250381624 Aug 29 04:41 /usr/local/bin/kubectl-1.15.11
+-rwxr-xr-x 1 root root 250471792 Aug 29 04:42 /usr/local/bin/kubelet-1.15.12
+-rwxr-xr-x 1 root root 250471792 Aug 29 04:42 /usr/local/bin/kubectl-1.15.12
+-rwxr-xr-x 1 root root 203802912 Aug 29 04:43 /usr/local/bin/kubelet-1.16.9
+-rwxr-xr-x 1 root root 203802912 Aug 29 04:43 /usr/local/bin/kubectl-1.16.9
+-rwxr-xr-x 1 root root 203833416 Aug 29 04:44 /usr/local/bin/kubelet-1.16.10
+-rwxr-xr-x 1 root root 203833416 Aug 29 04:44 /usr/local/bin/kubectl-1.16.10
+-rwxr-xr-x 1 root root 203854928 Aug 29 04:45 /usr/local/bin/kubelet-1.16.13
+-rwxr-xr-x 1 root root 203854928 Aug 29 04:45 /usr/local/bin/kubectl-1.16.13
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.11-hotfix.20200529.1
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.11-hotfix.20200714.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.11-hotfix.20200824.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.12-hotfix.20200623.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.12-hotfix.20200714.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.15.12-hotfix.20200824.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.9-hotfix.20200529.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.10-hotfix.20200623.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.10-hotfix.20200714.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.10-hotfix.20200817.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.10-hotfix.20200824.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.13-hotfix.20200714.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.13-hotfix.20200817.1
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.16.13-hotfix.20200824.1
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.3-hotfix.20200601.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.3-hotfix.20200601
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.7-hotfix.20200624
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.7-hotfix.20200624
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.7-hotfix.20200714.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.7-hotfix.20200714
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.7-hotfix.20200714.2
+  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.7-hotfix.20200714
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.9-hotfix.20200714.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.9-hotfix.20200714
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.2-hotfix.20200624
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.2-hotfix.20200624
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.2-hotfix.20200624.1
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.2-hotfix.20200624
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.9-hotfix.20200817.1
+  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.9-hotfix.20200817
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.17.9-hotfix.20200824.1
+  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.9-hotfix.20200824
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.4-hotfix.20200624
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.4-hotfix.20200624
-  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.4-hotfix.20200624.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.4-hotfix.20200624
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.4-hotfix.20200626.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.4-hotfix.20200626
@@ -174,13 +174,18 @@ Docker images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.6-hotfix.20200723
   - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.6
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.6
+  - mcr.microsoft.com/oss/kubernetes/hyperkube:v1.18.8
+  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.8
+  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.19.0
   - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v2.0.1
   - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.1.0-beta.8
+  - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.1.0-beta.12
   - mcr.microsoft.com/oss/kubernetes/external-dns:v0.6.0-hotfix-20200228
   - mcr.microsoft.com/oss/kubernetes/defaultbackend:1.4
   - mcr.microsoft.com/oss/kubernetes/ingress/nginx-ingress-controller:0.19.0
   - mcr.microsoft.com/oss/virtual-kubelet/virtual-kubelet:1.2.1.1
   - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20200519.1
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20200804.1
   - mcr.microsoft.com/azure-policy/policy-kubernetes-webhook:prod_20200505.3
   - mcr.microsoft.com/azure-application-gateway/kubernetes-ingress:1.0.1-rc3
   - mcr.microsoft.com/k8s/csi/azuredisk-csi:v0.7.0
@@ -189,3 +194,8 @@ Docker images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar:v1.2.0
 Using kernel:
 Linux version 4.15.0-1092-azure (buildd@lcy01-amd64-022) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)) #102~16.04.1-Ubuntu SMP Tue Jul 14 20:28:23 UTC 2020
+Install completed successfully on  Sat Aug 29 05:01:05 UTC 2020
+VSTS Build NUMBER: 20200829.10_16.04_V1_no_v20200825
+VSTS Build ID: 34304083
+Commit: 461023a62dd51e5103792129402d15c4fdf67c55
+Feature flags: no
