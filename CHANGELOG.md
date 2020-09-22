@@ -1,5 +1,36 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-09-21
+**This release is rolling out to all regions - ETA for conclusion 2020-09-30**
+
+* AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
+* [New Date] We heard your feedback and as such, the Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on February 1st 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+
+### Release Notes
+
+* Features
+  * Azure Policy Addon is now Generally Available, see <https://azure.microsoft.com/updates/ga-policy-addon-for-azure-kubernetes-service>
+  * New Kubernetes patches available. v1.16.15 and v1.17.11
+  * New detectors for [AKS Diagnostics](https://docs.microsoft.com/azure/aks/concepts-diagnostics):
+    * Node drain failure detector that calls out node drain failures that might impact the cluster workloads.
+    * Managed-AAD integration detector that looks for common issues with AADv2 integration like the kubectl minimum version.
+* Preview features
+  * AKS now supports the ability to completely stop and start clusters on demand. A great option for times your cluster might be idle. Start here: <https://aka.ms/aks/stop-cluster>
+  * Ephemeral OS is now part of the 2020-09-01 AKS API and can be enabled through ARM. This will also allow you to in the future keep using managed network-attached disk if you want. <https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2020-09-01/examples/AgentPoolsCreate_Ephemeral.json>
+  * Azure RBAC for Kubernetes Authorization is now in Public Preview and open to anyone to test (no form required): <https://docs.microsoft.com/azure/aks/manage-azure-rbac>
+  * Kubernetes v1.19 is now in public preview
+  * Azure Confidential Compute addon for AKS is not in public preview providing you with confidential nodes: <https://docs.microsoft.com/azure/confidential-computing/confidential-nodes-aks-get-started>
+  * AKS now integrates with Azure Files NFS shares on its CSI storage drivers. See more here: <https://docs.microsoft.com/azure/aks/azure-files-csi#nfs-file-shares>
+* Bug fix
+  * Issue where addon names where not accepted with any casing fixed.
+* Component updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1397.200904](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1397.200904.txt)
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.09.17](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.09.17.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.09.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.09.17.txt).
+* Behavior Change
+  * AKS is now validating/blocking labels that are [disallowed upstream](https://github.com/kubernetes/enhancements/blob/master/keps/sig-auth/0000-20170814-bounding-self-labeling-kubelets.md#proposal).
+
 ## Release 2020-08-31
 
 **This release is rolling out to all regions - ETA for conclusion 2020-09-18**
