@@ -12,6 +12,9 @@
 * Features
   * Azure Policy Addon is now Generally Available, see <https://azure.microsoft.com/updates/ga-policy-addon-for-azure-kubernetes-service>
   * New Kubernetes patches available. v1.16.15 and v1.17.11
+  * New detectors for [AKS Diagnostics](https://docs.microsoft.com/azure/aks/concepts-diagnostics):
+    * Node drain failure detector that calls out node drain failures that might impact the cluster workloads.
+    * Managed-AAD integration detector that looks for common issues with AADv2 integration like the kubectl minimum version.
 * Preview features
   * AKS now supports the ability to completely stop and start clusters on demand. A great option for times your cluster might be idle. Start here: <https://aka.ms/aks/stop-cluster>
   * Ephemeral OS is now part of the 2020-09-01 AKS API and can be enabled through ARM. This will also allow you to in the future keep using managed network-attached disk if you want. <https://github.com/Azure/azure-rest-api-specs/blob/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2020-09-01/examples/AgentPoolsCreate_Ephemeral.json>
