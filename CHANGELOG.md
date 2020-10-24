@@ -23,6 +23,7 @@
 * Bug fixes
   * Fixed a few CPU throttling and health probe issues on the AKS control plane.
   * Updated signed PowerShell package to v0.0.3. Fixes #1772
+  * Fixed issue with Azure policy addon and kubernetes v1.19 preview. Fixes #1869
 * Component updates
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1397.201014](vhd-notes/AKSWindows/2019/17763.1397.201014.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.10.15](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.10.15.txt).
