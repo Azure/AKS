@@ -1,5 +1,33 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-10-19
+**This release is rolling out to all regions - ETA for conclusion 2020-10-28**
+
+### Announcements
+
+* AKS and Holiday Season: To ease the burden of upgrade and change during the holiday season, AKS is extending a limited scope of support for all clusters and nodepools on 1.16 as a courtesy. Customers with clusters and nodepools on 1.16 after the [announced deprecation date of 2020-11-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#kubernetes-version-support-policy).
+ The scope of this limited extension is effective from '2020-11-30 to 2021-01-31' and is limited to the following:
+  * Creation of new clusters and nodepools on 1.16.
+  * CRUD operations on 1.16 clusters.
+  * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
+* AKS will default to containerd as the default runtime on kubernetes v1.19+ after this feature GAs. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
+* After the GA of Ephemeral OS and release of the 2020-11-01 AKS API version. Clusters and nodepools will be created by default with Ephemeral OS. You can still select managed disks explicitly if you prefer that option. See more at <https://aka.ms/aks/ephemeral-os>.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on February 1st 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+
+### Release Notes
+
+* Features
+  * New cluster autoscaler parameters available for the [cluster autoscaler profile](https://docs.microsoft.com/azure/aks/cluster-autoscaler#using-the-autoscaler-profile). New parameters supported: `skip-nodes-with-local-storage`, `skip-nodes-with-system-pods`, `max-empty-bulk-delete`, `expander`, `new-pod-scale-up-delay`, `max-total-unready-percentage`, `ok-total-unready-count`
+  * New Admission controllers supported from kubernetes v1.19: `PodNodeSelector`, `PodTolerationRestriction`, `ExtendedResourceToleration`. See how to use them [here](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#extendedresourcetoleration) Releases for #1143, #1719 and #1449.
+* Bug fixes
+  * Fixed a few CPU throttling and health probe issues on the AKS control plane.
+  * Updated signed PowerShell package to v0.0.3. Fixes #1772
+* Component updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1397.201014](vhd-notes/AKSWindows/2019/17763.1397.201014.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.10.15](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.10.15.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.10.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.15.txt).
+
 ## Release 2020-10-12
 **This release is rolling out to all regions - ETA for conclusion 2020-10-22**
 
@@ -56,7 +84,7 @@
 * Bug fix
   * Issue where addon names where not accepted with any casing fixed.
 * Component updates
-  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1397.200904](https://github.com/Azure/aks-engine/blob/master/vhd/release-notes/aks-windows/2019-datacenter-core-smalldisk-17763.1397.200904.txt)
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1397.200904](vhd-notes/AKSWindows/2019/17763.1397.200904.txt)
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.09.17](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.09.17.txt).
   * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.09.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.09.17.txt).
 * Behavior Change
