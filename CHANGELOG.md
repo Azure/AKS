@@ -1,7 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-10-26
+
+This release is rolling out to all regions - ETA for conclusion 2020-11-11
+
+### Announcements
+
+* AKS and Holiday Season: To ease the burden of upgrade and change during the holiday season, AKS is extending a limited scope of support for all clusters and nodepools on 1.16 as a courtesy. Customers with clusters and nodepools on 1.16 after the [announced deprecation date of 2020-11-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#kubernetes-version-support-policy).
+ The scope of this limited extension is effective from '2020-11-30 to 2021-01-31' and is limited to the following:
+  * Creation of new clusters and nodepools on 1.16.
+  * CRUD operations on 1.16 clusters.
+  * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
+* AKS will default to containerd as the default runtime on kubernetes v1.19+ after this feature GAs. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
+* After the GA of Ephemeral OS and release of the 2020-11-01 AKS API version. Clusters and nodepools will be created by default with Ephemeral OS. You can still select managed disks explicitly if you prefer that option. See more at <https://aka.ms/aks/ephemeral-os>.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on February 1st 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+
+### Release Notes
+
+* Features
+  * Outbound type UDR now allows for dynamic route exchange over BGP for Private Clusters.
+  * Proximity Placement Group support is now Generally Available. Releases for #1351
+  * Spot Node pools are now Generally Available. Releases for #982
+  * Support for `CriticalAddonsOnly` taint as an exception for system pools. Releases for #1833
+  * Support for soft Taints. Resolves #1484
+  * New Kubernetes patch versions available, v1.17.13, 1.18.10.
+* Preview Features
+  * New Preview Kubernetes patch versions available, 1.19.3.
+* Bug Fixes
+  * Fixed mis-alignment of taint validations with upstream kubernetes validations. Fixes #1412
+* Component updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.10.21](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.10.21.txt).
+  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.10.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.21.txt).
+
 ## Release 2020-10-19
-**This release is rolling out to all regions - ETA for conclusion 2020-10-28**
+
+This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 
 ### Announcements
 
