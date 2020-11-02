@@ -31,7 +31,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-11-11
   * Fixed mis-alignment of taint validations with upstream kubernetes validations. Fixes #1412
 * Component updates
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.10.21](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.10.21.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.10.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.21.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2020.10.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.21.txt).
 
 ## Release 2020-10-19
 
@@ -61,7 +61,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 * Component updates
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1397.201014](vhd-notes/AKSWindows/2019/17763.1397.201014.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.10.15](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.10.15.txt).
-  * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.10.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.15.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2020.10.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.15.txt).
 
 ## Release 2020-10-12
 **This release is rolling out to all regions - ETA for conclusion 2020-10-22**
