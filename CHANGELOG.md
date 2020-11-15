@@ -1,5 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-11-09
+
+This release is rolling out to all regions - ETA for conclusion 2020-11-19 for public cloud
+
+### Announcements
+
+* AKS will default to containerd as the default runtime on kubernetes v1.19+ after this feature GAs. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
+* After the GA of Ephemeral OS and release of the 2020-11-01 AKS API version. Clusters and nodepools will be created by default with Ephemeral OS. You can still select managed disks explicitly if you prefer that option. See more at <https://aka.ms/aks/ephemeral-os>.
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on February 1st 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+
+### Release Notes
+
+* Features
+  * Migration from Service Principal-based clusters to Managed Identity Managed clusters is now supported. See how [here](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-service-principal-based-aks-cluster-to-managed-identities).
+  * Added Standard_Dxds_v4 VM SKUs.
+  * Added Standard_exds_v4.
+* Behavioral changes
+  * From kubernetes clusters v1.19+ `az aks browse` CLI command will open the Azure Portal resource view instead of the kubernetes dashboard that no longer is supported on these clusters.
+* Bug Fixes
+  * The AKS control plane will always send RST for idle connections after 4min. Closes #1052, #1755, #1877.
+  * Fixed issue with etcd replica management.
+* Component updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.10.28](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.10.28.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2020.10.28](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.28.txt).
+  * Azure Monitor for Containers updated to [version 10272020](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10272020--)
+  * Updated CNI network monitor addon to version v1.1.18.
+  * The new AKS API version 2020-11-11 [has been published](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2020-11-01).
+
 ## Release 2020-10-26
 
 This release is rolling out to all regions - ETA for conclusion 2020-11-11
