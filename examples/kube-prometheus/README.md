@@ -14,3 +14,7 @@ updates are applied to customize the configuration for AKS.
 ``` sh
 kustomize build github.com/Azure/AKS/examples/kube-prometheus | kubectl apply -f -
 ```
+
+## How-to
+
+- [Access the dashboards](https://github.com/prometheus-operator/kube-prometheus#access-the-dashboards)
