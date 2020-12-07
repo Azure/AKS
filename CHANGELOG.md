@@ -1,10 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2020-11-30
+
+This release is rolling out to all regions - ETA for conclusion 2020-12-09 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on May 31st, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* AKS will be defaulting Azure CNI to transparent mode (from its current default of bridge mode) on the next release. This should bring no impact and carries several benefits, read more about it [here](https://aka.ms/aks/transparent-mode)
+
+### Release Notes
+
+* Features
+  * Bring your Own (BYO) Control Plane Managed Identity is Now Generally Available.
+  * You may now update your Uptime SLA clusters to Free.
+* Behavioral Changes
+  * AKS Clusters will from now on choose to fail the upgrade if the drain/evict operation doesn't succeed instead of timing out. This means that users must ensure their PodDisruptionBudgets (PDBs) allow their pods to be successfully moved. To see if you have any incorrect PDB check [AKS Diagnostics](https://docs.microsoft.com/azure/aks/concepts-diagnostics) and search for PDBs and Node Drain Failures to see if you have any problematic PDBs in your cluster.
+* Preview Features
+  * AKS now supports [Custom Node Configuration](https://aka.ms/aks/custom-node-config) in Public Preview.
+  * AKS now supports Private Clusters created with no Private DNS zone, deferring all DNS to an enterprise-managed DNS server.
+    * You can create a cluster like this by using `--private-dns-zone none`, and making sure your custom DNS server is on the cluster subnet and contains all necessary entries including the API server endpoint IP (you can add after the cluster is created).
+  * [Azure AD Pod Identity Add-on](https://aka.ms/aks/pod-identity) is now in public preview.
+
 ## Release 2020-11-16
 
 This release is rolling out to all regions - ETA for conclusion 2020-11-25 for public cloud.
 
 ### Announcements
+
 * The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on May 31st, 2021.
 * Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
 
