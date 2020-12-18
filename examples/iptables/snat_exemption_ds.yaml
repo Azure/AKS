@@ -1,0 +1,66 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: snat-exemption
+  namespace: kube-system
+  labels:
+    app: snat-exemption
+spec:
+  selector:
+    matchLabels:
+      name: snat-exemption
+  template:
+    metadata:
+      labels:
+        name: snat-exemption
+    spec:
+      hostPID: true
+      hostNetwork: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      containers:
+        - name: snat-exemption
+          image: mcr.microsoft.com/azure-policy/alpine:prod_20200505.1
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          command:
+            - nsenter
+            - --target
+            - "1"
+            - --mount
+            - --uts
+            - --ipc
+            - --net
+            - --pid
+            - --
+            - sh
+            - -c
+            - |
+              #! /bin/sh
+              set -u
+              echo "snat-exemption daemonset starting..."
+              while true; do
+                ls -s /var/run/docker.sock 2>/dev/null
+                if [ $? -eq 0 ]; then
+                  echo "this node runs docker. not going to do anything."
+                  sleep 60
+                  continue
+                fi
+                iptables -t nat -L POSTROUTING  | grep -q "aks-kubenet-snat-exemption"
+                if [ $? -ne 0 ]; then
+                  echo "grabbing non-masq-cidr from kubelet args"
+                  kubeletargs=$(systemctl status kubelet | grep /usr/local/bin/kubelet)
+                  podCIDR=$(echo ${kubeletargs#*--non-masquerade-cidr=} | cut -d ' ' -f1)
+                  if [ -z "${podCIDR}" ]; then
+                    echo "could not find non-masq-cidr. not going to do anything."
+                    sleep 60
+                    continue
+                  fi
+                  echo "adding custom snat exemption for cluster pod cidr ${podCIDR}"
+                  iptables -t nat -I POSTROUTING -m addrtype ! --dst-type LOCAL -d ${podCIDR} -j ACCEPT -m comment --comment "aks-kubenet-snat-exemption: adding kubenet-SNAT exemption for cluster pod cidr"
+                else
+                  echo "iptables already set with proper rules."
+                fi
+                sleep 60
+              done
