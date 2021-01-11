@@ -1,0 +1,135 @@
+System Info
+	OS Name        : Windows Server 2019 Datacenter
+	OS Version     : 17763.1637
+	OS InstallType : Server Core
+
+Allowed security protocols: Tls, Tls11, Tls12
+
+Installed Features
+
+Display Name                                            Name                       Install State
+------------                                            ----                       -------------
+[X] File and Storage Services                           FileAndStorage-Services        Installed
+    [X] Storage Services                                Storage-Services               Installed
+[X] Hyper-V                                             Hyper-V                        Installed
+[X] .NET Framework 4.7 Features                         NET-Framework-45-Fea...        Installed
+    [X] .NET Framework 4.7                              NET-Framework-45-Core          Installed
+    [X] WCF Services                                    NET-WCF-Services45             Installed
+        [X] TCP Port Sharing                            NET-WCF-TCP-PortShar...        Installed
+[X] BitLocker Drive Encryption                          BitLocker                      Installed
+[X] Containers                                          Containers                     Installed
+[X] Enhanced Storage                                    EnhancedStorage                Installed
+[X] Remote Server Administration Tools                  RSAT                           Installed
+    [X] Role Administration Tools                       RSAT-Role-Tools                Installed
+        [X] Hyper-V Management Tools                    RSAT-Hyper-V-Tools             Installed
+            [X] Hyper-V Module for Windows PowerShell   Hyper-V-PowerShell             Installed
+[X] System Data Archiver                                System-DataArchiver            Installed
+[X] Windows Defender Antivirus                          Windows-Defender               Installed
+[X] Windows PowerShell                                  PowerShellRoot                 Installed
+    [X] Windows PowerShell 5.1                          PowerShell                     Installed
+[X] WoW64 Support                                       WoW64-Support                  Installed
+
+
+
+Installed Packages
+	Language.Basic~~~en-US~0.0.1.0
+	Language.Handwriting~~~en-US~0.0.1.0
+	Language.OCR~~~en-US~0.0.1.0
+	Language.Speech~~~en-US~0.0.1.0
+	Language.TextToSpeech~~~en-US~0.0.1.0
+	MathRecognizer~~~~0.0.1.0
+	OpenSSH.Client~~~~0.0.1.0
+	OpenSSH.Server~~~~0.0.1.0
+
+Installed QFEs
+	KB4578966 : Update          : http://support.microsoft.com/?kbid=4578966
+	KB4587735 : Security Update : http://support.microsoft.com/?kbid=4587735
+	KB4592440 : Security Update : http://support.microsoft.com/?kbid=4592440
+
+Installed Updates
+	2020-10 Cumulative Update for .NET Framework 3.5, 4.7.2 and 4.8 for Windows Server 2019 for x64 (KB4579976)
+	Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.329.430.0)
+	2020-12 Cumulative Update for Windows Server 2019 (1809) for x64-based Systems (KB4592440)
+
+Windows Update Registry Settings
+	https://docs.microsoft.com/en-us/windows/deployment/update/waas-wu-settings
+	HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+	HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+		NoAutoUpdate : 1
+
+Docker Info
+Version: Docker version 19.03.11, build 0da829ac52
+
+Images:
+
+Repository                                                     Tag                               ID          
+----------                                                     ---                               --          
+mcr.microsoft.com/windows/servercore                           ltsc2019                          c0773f9ce353
+mcr.microsoft.com/windows/nanoserver                           1809                              6795354d435f
+mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar v2.0.1                            077fe47c8702
+mcr.microsoft.com/oss/kubernetes/pause                         1.4.0                             23d55e3daca0
+mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar v1.2.1-alpha.1-windows-1809-amd64 927caec05c10
+mcr.microsoft.com/oss/kubernetes-csi/livenessprobe             v2.0.1-alpha.1-windows-1809-amd64 7c4afdb7e0d6
+
+
+
+Cached Files:
+
+File                                                                             Sha256                                                           SizeBytes
+----                                                                             ------                                                           ---------
+c:\akse-cache\collect-windows-logs.ps1                                           C7D732E41CB4687664D6682341DD93058B6341696053E70E84468117441EBE56      3499
+c:\akse-cache\collectlogs.ps1                                                    F979A04A6907690681074937337FA3C3F93278DDC6152E4571D8F220FA0AA5E5      7950
+c:\akse-cache\dumpVfpPolicies.ps1                                                02BFF0235421F1C8477E809B8EB354B313C348CE2732C4842B710239CD6FE665      1642
+c:\akse-cache\helper.psm1                                                        BC45AA98FA40D51C4E8640865C329BDC4B522EA53CC17A5F0B512B4D44058C8C     17945
+c:\akse-cache\hns.psm1                                                           A8A53ED4FAC2E27C7E4268DB069D4CF3129A56D466EF3BF9465FB52DCD76A29C     14733
+c:\akse-cache\microsoft.applicationinsights.2.11.0.nupkg                         4B0448F9640FCD84979D6CE736348EE9304A7A069F77E38FF411F3211E699C68    776442
+c:\akse-cache\portReservationTest.ps1                                            0940BA8A0A564E5937F60871F7F87C866C8617882D121FF33BBB0798B0C82AC0      4370
+c:\akse-cache\signedscripts-v0.0.2.zip                                           72AB4989F1239533D99B7CBAD61CBD0FE1F6964294CD65C9A93C0B1C165B3388     44608
+c:\akse-cache\signedscripts-v0.0.3.zip                                           F11EDAD2241CD7BE4D2F32FEB0A18A83D5A4B4E113D99B39F5C90B11B4E7F917     44594
+c:\akse-cache\signedscripts-v0.0.4.zip                                           B027C42E5BA9EDBDE0B1F06FA4FAC3914906822AA4AE2FC45ED2A50205113D35     53347
+c:\akse-cache\starthnstrace.cmd                                                  3A566462ADBD27A0DCAB4049EF4A1A3EE7AECF2FCFEC6ED8A1CAE305AE7EF562       408
+c:\akse-cache\startpacketcapture.cmd                                             3E31690E507C8B18AC5CC569C89B51CE1901630A501472DA1BC1FBF2737AA5BC       756
+c:\akse-cache\stoppacketcapture.cmd                                              BD966D7738A3C0FC73E651BAF196C0FB60D889F1180B2D114F8EA3F8A8453C3D        17
+c:\akse-cache\VFP.psm1                                                           3F2F44BD4B3219E8BB29EB9F8958EC96F2C8DDCEF556E995790B6476231A92DB      9616
+c:\akse-cache\win-bridge.exe                                                     CA12506E55DF3E3428B29994AE1FC8131DDFBB6838A550DFA22287CDC6548634   9599488
+c:\akse-cache\containerd\containerd-windows-0.0.11-1.zip                         C7B01325743FE57E7126A433B6DA809D359B440FE715CDFB1E665F429F7EAFA6  83460143
+c:\akse-cache\csi-proxy\csi-proxy-v0.2.2.tar.gz                                  60BF51D4FB425386C235ABC3BCBD50D70C23CACB94C32A77509DA91CF0F066AD   6481034
+c:\akse-cache\win-k8s\v1.16.10-hotfix.20200817-1int.zip                          8851ED60FF208C46F7B3E9F3C4D800C448DBAAFE1BA461F44053EB279947423B  98084915
+c:\akse-cache\win-k8s\v1.16.12-1int.zip                                          FB09AA607A573F8AAEB5F8741DE8AEA7BED37F519C1A5B63C2622EEAFE61000A  98022544
+c:\akse-cache\win-k8s\v1.16.13-1int.zip                                          086E58BA1D8E70DC09B29042720FAE681C38CB567DE95056F67C02EF13C16E4C  98027419
+c:\akse-cache\win-k8s\v1.16.13-azs-1int.zip                                      FB55038317319DF38092F3A3855D88B5747D3E0D9E0BA9E4657A6F87BFE8AB15  98026968
+c:\akse-cache\win-k8s\v1.16.13-hotfix.20200714-1int.zip                          27B44A3168206C51B68452724F9E552D36245F8CFFB7782EFC07569842890AC0  98030575
+c:\akse-cache\win-k8s\v1.16.13-hotfix.20200817-1int.zip                          238479D233899DD7FDBA209CFCF143B82AE96A656CDB0D5BB44254F7EA3D3862  98096564
+c:\akse-cache\win-k8s\v1.16.13-hotfix.20200824-1int.zip                          8B59B998F1B6B607DD60CFC10889A55872E4A5C7314CA157530911CEFA06AB2C  98096166
+c:\akse-cache\win-k8s\v1.16.13-hotfix.20200917-1int.zip                          1915D826C1C729FE1E67C7412E9419DB85AB5C523FF6A0E1A727D7A4392200F4  98096642
+c:\akse-cache\win-k8s\v1.16.14-1int.zip                                          EA52B63488F37AFF33C84B3B340E1ED199B1C3AEBB09971804BD4C892ED97B2B  98124258
+c:\akse-cache\win-k8s\v1.16.14-azs-1int.zip                                      AAF937F4A3C1B19259C29B6E71898006E57921EF97C7CCBFB10C228419488A86  98137579
+c:\akse-cache\win-k8s\v1.16.15-hotfix.20200903-1int.zip                          379C874725F7D3D642B1B16DA1C4401F26423CC4D29FC9FD717F1F4BF651962D  98137626
+c:\akse-cache\win-k8s\v1.17.11-1int.zip                                          A1E7049BEBAB5A2C7743D756FFC9394F734D9FA4E46A69D1872018C48DFDBB12  98387085
+c:\akse-cache\win-k8s\v1.17.11-azs-1int.zip                                      1355E699AE96EA6DAEACB0B8C4B8086881F6F3DF389BD316C2AABE3DAC372D8E  98389630
+c:\akse-cache\win-k8s\v1.17.11-hotfix.20200901-1int.zip                          CA7CECB05A5081E65195BCE11A2D4F4EC212D2D9DAA2961EC5FA167D5B9E24CC  98390423
+c:\akse-cache\win-k8s\v1.17.12-1int.zip                                          37995CEB017CBA3E8A92818A96C9FA33D762AF319D44FA36254D46F8B0D53145  98389164
+c:\akse-cache\win-k8s\v1.17.13-1int.zip                                          575B2A469ED7E8B7C97B8F6472F7FC97E24E38DAE84452E0945F658F29CAC03D  98393922
+c:\akse-cache\win-k8s\v1.17.7-hotfix.20200817-1int.zip                           7823108C804EA27E3315E7DE7003C057635B57D54ECCA9FF24FFDC02F9454699  98365082
+c:\akse-cache\win-k8s\v1.17.8-1int.zip                                           0A4BE204E497458BAB2AD6F731DAB5698D0A5D900BF158A90E1F7291BEC3C199  57396574
+c:\akse-cache\win-k8s\v1.17.9-1int.zip                                           5FF882E96484918141C649BDB0914D644C7DA2F9AADD355EF0DF077500F063D7  57402965
+c:\akse-cache\win-k8s\v1.17.9-azs-1int.zip                                       F9F31C5416CADCFA2E8F82CC862039F05FD06F4347A4F5E30FF6C00FB23D8F89  98294032
+c:\akse-cache\win-k8s\v1.17.9-hotfix.20200714-1int.zip                           0B7BECAE4248B8F35594A80FA823347A246D92F732507C4E24A04C82DEDA298E  57407696
+c:\akse-cache\win-k8s\v1.17.9-hotfix.20200817-1int.zip                           BEF4526C36A96F004F661A166F50B4CF0C17E2A2A4B7E4AB9D04D1AA5699E7C1  98365281
+c:\akse-cache\win-k8s\v1.17.9-hotfix.20200824-1int.zip                           E788E11994D3283C5C466A7725EFF7E159C193B9C0F3D0BB9DBB60866D8A4C19  98368709
+c:\akse-cache\win-k8s\v1.18.10-1int.zip                                          4AE1FA5897054DBB56FC5CBFF211644455A40B5E0B28A4E4695F142319647F03  99550807
+c:\akse-cache\win-k8s\v1.18.4-hotfix.20200626-1int.zip                           2F39F5E9EEEB9B5C2ED4063CC680D2D92BA714181635FB09C13EC72B51E5D32A  58027424
+c:\akse-cache\win-k8s\v1.18.5-1int.zip                                           D5C444B542865DEECB70BA876C24D9B8E43F4A4808004F390A57A678156D86AF  58022761
+c:\akse-cache\win-k8s\v1.18.6-1int.zip                                           201B61C5B9D3F5E6B8A43E29C0D43736E03AD71FF35FEB4E38146E3A0EB7DA93  58037009
+c:\akse-cache\win-k8s\v1.18.6-hotfix.20200723-1int.zip                           477FBB5C80AC088A574C5B7585E2C2520439E50DB9ED09CD68E068C785A21FAE  58037109
+c:\akse-cache\win-k8s\v1.18.8-1int.zip                                           1B2ED449DA428CFE32AD94B212641448AD75932A822E9E82AD2E92FC65E59433  99520042
+c:\akse-cache\win-k8s\v1.18.8-hotfix.20200924-1int.zip                           D669FB1F50744C668250C40999B27CD2155802F6FEB2479836ABCB7E115B05DC  99526379
+c:\akse-cache\win-k8s\v1.18.9-1int.zip                                           38EA92F0CE96FED3A6AF0A0AE71EA15C005CBCBF1C9EACDFF522C7302163C8AF  99533278
+c:\akse-cache\win-k8s\v1.19.0-1int.zip                                           9410B24188379D34EDEB78215DB97F1D4C1202A2CBEB453C6428A0D2C7CE9D4D 102808635
+c:\akse-cache\win-k8s\v1.19.1-1int.zip                                           C9553371707CFEA80FB210990A59A7F5444C738210669BE448E939BBBE93E1F8 102810011
+c:\akse-cache\win-k8s\v1.19.1-hotfix.20200923-1int.zip                           04F57C9AB7C9AA482CB870D00340B8BF9E33C14A1E2EBAD1A50DC077858B7F1A 102810662
+c:\akse-cache\win-k8s\v1.19.2-1int.zip                                           A5EDE0676697A7687550F0302BABF60AB5F101FDA28B108E7447CFDE9D93FD4E 102811264
+c:\akse-cache\win-k8s\v1.19.3-1int.zip                                           F79AA4FB03125239344244822BB51F0980AB16694A7DACC616BF5F9D5A24D14E 102836431
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.1.6.zip 1087FAC87BB88C83830BC59CD869574FAA3AB8F5A6F097E8B05C64CD2D440735  33472459
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.1.8.zip 10B48199F40A1786A26DF8698701B0D4DB231A724497AFE6F7F239817CAEE436  35236554
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.2.0.zip 85677C52C4091BEB7665C629A10F3A6388707D2C1E36369D10AF1F2A12D35547  39646523
