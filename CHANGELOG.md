@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-01-04
+
+This release is rolling out to all regions - ETA for conclusion 2021-01-13 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on May 31st, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* AKS has defaulted Azure CNI to transparent mode (from its previous default of bridge mode). This should bring no impact and carries several benefits, read more about it [here](https://aka.ms/aks/transparent-mode)
+* As previously announced, with the Holiday Season ending AKS will deprecate Kubernetes v1.16, completing the extension given after the GA of v1.19 for the holiday season and returning to the regular 3 supported versions window. After the week of January 31st, 2021 you will no longer be able to create v1.16.x based clusters or nodepools.
+
+### Release Notes
+
+* Features
+  * AKS now supports every CPU-based SKU dynamically. This means that every new CPU-based SKU is automatically supported by AKS so long they're not on the [restrictions list](https://docs.microsoft.com/azure/aks/quotas-skus-regions#restricted-vm-sizes). GPU-based SKUs and other specialty SKUs still require additional validation before being enabled
+  * AKS Cluster Autoscaler now exposes the `max-node-provision-time` and `priority` properties as part of the [Cluster Autoscaler profile](https://docs.microsoft.com/azure/aks/cluster-autoscaler#using-the-autoscaler-profile).
+* Bug Fixes
+  * Fixed edge case on Bring your own subnet + kubenet network plugin scenarios where the route table was not correctly associated before the nodes started being created.
+  * Better handling of race condition with liveness probes of the `aks-link` component.
+  * Cluster autoscaler bug fix for incorrectly reading the value of `new-pod-scale-up` and improvements to CA liveness probe.
+  * Case insensitivity fix for `networkPlugin``, networkPolicy` and `loadbalancerSku`.
+  * Bug fixed on BYO Route Table kubenet scenarios where the cluster deletion didn't correctly clean up the route table rules created by kubernetes.
+* Preview Features
+  * Cluster Start/Stop now works in clusters with Cluster Autoscaler enabled and Private clusters.
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1579.201208](vhd-notes/AKSWindows/2019/17763.1637.201215.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.12.15](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.12.15.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2020.12.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.12.15.txt).
+  * Updated Azure CNI plugin version for Linux and Windows to 1.2 - <https://github.com/Azure/azure-container-networking/releases>.
+
 ## Release 2020-11-30
 
 This release is rolling out to all regions - ETA for conclusion 2020-12-09 for public cloud.
