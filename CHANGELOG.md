@@ -704,7 +704,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 * Bug fixes
   * Added validation to block cluster creation if user specifies a subnet that is delegated
   * Fixed bug caused by apmz package being installed from https://upstreamartifacts.blob.core.windows.net, which is not in the AKS required endpoint egress list.
-  * CoreDNS memory *limit* increased to 500M and assigned *Guaranteed* QoS class.
+  * CoreDNS memory *limit* increased to 170Mb and assigned *Guaranteed* QoS class.
   * Fixed a bug with Cluster Proportional Autoscaler (CPA) version on 1.16. This bug is solved on version 1.7.1 which is now the version being used in AKS.
   * Fixed bug passing the correct nodepool at validation time on UDR OutboundType preview feature.
   * Patched bug where nodepool was not correctly added to internal SLB backend address pool: https://github.com/kubernetes/kubernetes/issues/89336
