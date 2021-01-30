@@ -1,5 +1,38 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-01-25
+
+This release is rolling out to all regions - ETA for conclusion 2021-02-03 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on May 31st, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* As previously announced, with the Holiday Season ending AKS will deprecate Kubernetes v1.16, completing the extension given after the GA of v1.19 for the holiday season and returning to the regular 3 supported versions window. After the week of January 31st, 2021 you will no longer be able to create v1.16.x based clusters or node pools.
+
+### Release Notes
+
+* Features
+  * The Application Gateway Ingress Controller (AGIC) is now GA.
+  * AKS now supports NCasT4_v3 SKUs.
+  * New Kubernetes patch versions available, v1.17.16, 1.18.14, v1.19.6.
+  * AKS Managed AAD now supports Azure AD Conditional Access. See more: <https://docs.microsoft.com/azure/aks/managed-aad#use-conditional-access-with-azure-ad-and-aks>
+* Preview Features
+  * AKS now supports WinDSR in AKS Windows nodes in preview by registering the `Microsoft.ContainerService/EnableAKSWindowsDSR` feature flag.
+  * New options for Custom node Configuration: `ContainerLogMaxSizeMB`, `ContainerLogMaxFiles`, `PodMaxPids`.
+  * AKS now supports Auto-Upgrade channels. <https://aka.ms/aks/autoupgrade>
+* Bug Fixes
+  * When clusters that are using bring your own subnet and route table with kubenet are deleted, they will now clean up any routes set by Kubernetes/AKS.
+  * Added new IP availability validation for cluster upgrade of kubenet clusters.
+  * Fixed bug where `Standard_DC2s_v2`, `Standard_DC4s_v2`, `Standard_DC8_v2` were incorrectly listed as supporting Accelerated Networking resulting in creation failures.
+* Behavioral Change
+  * The [Reset Service Principal](https://docs.microsoft.com/azure/aks/update-credentials) operation will now perform a node image upgrade in-order to update the configuration of each agent node.
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1697.210113](vhd-notes/AKSWindows/2019/17763.1697.210113.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.01.13](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.01.13.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.01.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.01.13.txt).
+  * Virtual Node updated to Virtual Kubelet 1.3.2.
+
 ## Release 2021-01-04
 
 This release is rolling out to all regions - ETA for conclusion 2021-01-13 for public cloud.
