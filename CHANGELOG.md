@@ -13,7 +13,6 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-03 for p
 ### Release Notes
 
 * Features
-  * The Application Gateway Ingress Controller (AGIC) is now GA.
   * AKS now supports NCasT4_v3 SKUs.
   * New Kubernetes patch versions available, v1.17.16, 1.18.14, v1.19.6.
   * AKS Managed AAD now supports Azure AD Conditional Access. See more: <https://docs.microsoft.com/azure/aks/managed-aad#use-conditional-access-with-azure-ad-and-aks>
