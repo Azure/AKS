@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-02-01
+
+This release is rolling out to all regions - ETA for conclusion 2021-02-12 for public cloud.
+
+### Announcements
+* Kubernetes 1.16 is officially deprecated in AKS
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on May 31st, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* Starting on the week of 15 February 2021 (Azure China Cloud and Azure Government Cloud users will get this update in the following weeks), we will upgrade AKS clusters Calico network policy from Calico version v3.8.9 to v3.17.1. This upgrade will cause a breaking change to the default behavior of all-interfaces Host Endpoints. For customers that use Host Endpoints, and only these, this version brings a change. Please follow our [guidance](https://github.com/Azure/AKS/issues/2089) to apply the appropriate label and Global Network Policy if you want to keep the v3.8.9 default behavior of all-interfaces Host Endpoints.
+
+### Release Notes
+
+* Features
+  * Generation 2 Virtual Machines are now [GA on AKS](https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#generation-2-virtual-machines-preview).
+  * New Kubernetes patch version available, 1.19.7
+* Preview Features
+  * Kubernetes 1.20.2 is now in preview
+* Bug Fixes
+  * Fixed ContainerD + Kubenet - Pod IP SNAT/Masquerade Behavior [GitHubIssue](https://github.com/Azure/AKS/issues/2031).
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1697.210127](vhd-notes/AKSWindows/2019/17763.1697.210127.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.01.28](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.01.28.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.01.28](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.01.28.txt).
+
 ## Release 2021-01-25
 
 This release is rolling out to all regions - ETA for conclusion 2021-02-03 for public cloud.
