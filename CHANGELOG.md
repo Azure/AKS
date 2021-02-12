@@ -12,10 +12,12 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-17 for p
 
 ### Release Notes
 
+* Features
+  * Cluster Start/Stop is now [GA](https://docs.microsoft.com/azure/aks/start-stop-cluster).
 * Preview Features
-  * AKS now supports Private Clusters created with a custom DNS zone (BYO DNS zone). Read more [here](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone)
+  * AKS now supports Private Clusters created with a custom DNS zone (BYO DNS zone). Read more [here](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone).
 * Behavioral Change
-  * The process of creating a Persistant Volume will be delayed until a pod is created. Allowing the Persistant Volume to be created in the same zone as the pod.
+  * The process of creating a Persistent Volume will be delayed until a pod is created. Allowing the Persistent Volume to be created in the same zone as the pod. Read more [here](https://docs.microsoft.com/azure/aks/azure-disk-csi#create-a-custom-storage-class).
 * Component Updates
   * Update default Windows Azure CNI to v1.2.2.
   * Calico updated to v3.8.9.2.
