@@ -1,5 +1,32 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-02-08
+
+This release is rolling out to all regions - ETA for conclusion 2021-02-17 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on May 31st, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* Starting on the week of 15 February 2021 (Azure China Cloud and Azure Government Cloud users will get this update in the following weeks), we will upgrade AKS clusters Calico network policy from Calico version v3.8.9 to v3.17.1. This upgrade will cause a breaking change to the default behavior of all-interfaces Host Endpoints. For customers that use Host Endpoints, and only these, this version brings a change. Please follow our [guidance](https://github.com/Azure/AKS/issues/2089) to apply the appropriate label and Global Network Policy if you want to keep the v3.8.9 default behavior of all-interfaces Host Endpoints.
+
+### Release Notes
+
+* Features
+  * Cluster Start/Stop is now [GA](https://docs.microsoft.com/azure/aks/start-stop-cluster).
+* Preview Features
+  * AKS now supports Private Clusters created with a custom DNS zone (BYO DNS zone). Read more [here](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone).
+  * AKS now allows you to re-use your standard LoadBalancer outbound IP (created by AKS) as Inbound IP to your services (and vice-versa) from Kubernetes v1.20+.
+  * AKS now supports re-using the same Load Balancer IP across multiple services from Kubernetes v1.20+.
+* Behavioral Change
+  * The AKS default storage class behavior now will be to delay the creation of a Persistent Volume until a pod is created. Allowing the Persistent Volume to be created in the same zone as the pod. Read more [here](https://docs.microsoft.com/azure/aks/azure-disk-csi#create-a-custom-storage-class).
+* Component Updates
+  * Update default Windows Azure CNI to v1.2.2.
+  * Calico updated to v3.8.9.2.
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1697.210127](vhd-notes/AKSWindows/2019/17763.1697.210127.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.02.03](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.02.03.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.02.03](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.02.03.txt).
+
 ## Release 2021-02-01
 
 This release is rolling out to all regions - ETA for conclusion 2021-02-12 for public cloud.
