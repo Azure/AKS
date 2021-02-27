@@ -12,8 +12,11 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-03 for p
 
 ### Release Notes
 
+* Bug Fixes
+  * Private DNS with .local entries will now work with Kubernetes 1.18 and Ubuntu 1804.
 * Component Updates
-  * Calico updated to v3.17.2.
+  * Calico updated to v3.17.2 for Kubernetes versions 1.20+.
+  * NMI image updated to 1.7.4.
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.02.17](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.02.17.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.02.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.02.17.txt).
 
