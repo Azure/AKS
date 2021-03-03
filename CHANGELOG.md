@@ -1,5 +1,25 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-03-01
+
+This release is rolling out to all regions - ETA for conclusion 2021-03-10 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on June 30th, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* Starting last week, the week of Feb 22nd (Azure China Cloud and Azure Government Cloud users will get this update in the following weeks), we will upgrade AKS clusters Calico network policy from Calico version v3.8.9 to v3.17.2 for cluster 1.20.2 and above. This upgrade will cause a breaking change to the default behavior of all-interfaces Host Endpoints. For customers that use Host Endpoints, and only these, this version brings a change. Please follow our [guidance](https://github.com/Azure/AKS/issues/2089) to apply the appropriate label and Global Network Policy if you want to keep the v3.8.9 default behavior of all-interfaces Host Endpoints.
+* Systemd-resolved will no longer be used in AKS Ubuntu 18.04 images starting on next week's release. This resolves past issues regarding private DNS with .local entries not working with [Kubernetes 1.18 and Ubuntu 18.04](https://github.com/Azure/AKS/issues/2052).
+
+### Release Notes
+
+* Features
+  * HTTP Application Routing addon now available in Gov Cloud.
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1790.210302](vhd-notes/AKSWindows/2019/17763.1790.210302.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.02.24](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.02.24.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.02.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.02.24.txt).
+
 ## Release 2021-02-22
 
 This release is rolling out to all regions - ETA for conclusion 2021-03-03 for public cloud.
