@@ -15,13 +15,13 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-10 for p
 
 * Features
   * AKS Managed AAD now supports Just-in-Time Access. See more: <https://docs.microsoft.com/en-us/azure/aks/managed-aad#configure-just-in-time-cluster-access-with-azure-ad-and-aks>
-  * Application Gateway Ingress Controller (AGIC) AKS Add-On is now [GA].
-  * Confidential computing nodes (DCSv2) AKS Add-on is now [GA].
-  * HTTP Application Routing addon now available in Gov Cloud.
-  * Encrypted customer managed keys policy for AKS is now [GA].
-  * Public IP per node capability in AKS is now [GA].
-  * Deploy WebLogic on Azure Kubernetes Service (AKS) using custom Docker images. See more: <https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/oracle/weblogic-aks>.
-  * Persistent Volume monitoring & Reports tab in Container Insights is now [GA]. See more:
+  * Application Gateway Ingress Controller (AGIC) AKS Add-On is now Generally Available [GA].
+  * Confidential computing nodes (DCSv2) AKS Add-on is now Generally Available [GA].
+  * HTTP Application Routing addon now Generally Available in Gov Cloud.
+  * Encrypted customer managed keys policy for AKS is now Generally Available [GA].
+  * Public IP per node capability in AKS is now Generally Avaiable [GA].
+  * Deploy WebLogic on Azure Kubernetes Service (AKS) using custom Docker images is now Generally Available [GA]. See more: <https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/oracle/weblogic-aks>.
+  * Persistent Volume monitoring & Reports tab in Container Insights is now Generally Available [GA]. See more:
     * <https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-persistent-volumes>.
     * <https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-reports>.
 * Preview Features
