@@ -14,7 +14,16 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-10 for p
 ### Release Notes
 
 * Features
+  * AKS Managed AAD now supports Just-in-Time Access. See more: <https://docs.microsoft.com/en-us/azure/aks/managed-aad#configure-just-in-time-cluster-access-with-azure-ad-and-aks>
+  * Application Gateway Ingress Controller (AGIC) AKS Add-On is now [GA]
+  * Confidential computing nodes (DCSv2) on Azure Kubernetes Service (AKS) is now [GA].
   * HTTP Application Routing addon now available in Gov Cloud.
+  * Encrypted customer managed keys policy for AKS is now [GA]
+  * Public IP per node capability in AKS is now [GA].
+* Preview Features
+  * Calico Windows support in AKS
+  * Planned maintenance windows in AKS
+  * Dynamic IP allocation & enhanced subnet support in AKS
 * Component Updates
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1790.210302](vhd-notes/AKSWindows/2019/17763.1790.210302.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.02.24](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.02.24.txt).
