@@ -1,14 +1,8 @@
-Build Number: 20210302.4_master_39943170
-Build Id:     39943170
-Build Repo:   https://github.com/Azure/AgentBaker
-Build Branch: master
-Commit:       34b4748efe374fb902f3ee3d86d49e316271c5cf
-
-VHD ID:      c5a543fe-47c6-466c-affc-ac9763aaebb6
+VHD ID:      93156f5d-6186-46a2-a6b8-99f40590fff4
 
 System Info
 	OS Name        : Windows Server 2019 Datacenter
-	OS Version     : 17763.1790
+	OS Version     : 17763.1757
 	OS InstallType : Server Core
 
 Allowed security protocols: Tls, Tls11, Tls12
@@ -50,14 +44,14 @@ Installed Packages
 	OpenSSH.Server~~~~0.0.1.0
 
 Installed QFEs
-	KB4601060 : Update          : http://support.microsoft.com/?kbid=4601060
-	KB4601393 : Security Update : http://support.microsoft.com/?kbid=4601393
-	KB4601383 : Update          : http://support.microsoft.com/?kbid=4601383
+	KB4586875 : Update          : http://support.microsoft.com/?kbid=4586875
+	KB4598480 : Security Update : http://support.microsoft.com/?kbid=4598480
+	KB4601345 : Security Update : http://support.microsoft.com/?kbid=4601345
 
 Installed Updates
-	2021-02 Cumulative Update for .NET Framework 3.5, 4.7.2 and 4.8 for Windows Server 2019 for x64 (KB4601887)
-	Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.331.2189.0)
-	2021-02 Cumulative Update Preview for Windows Server 2019 (1809) for x64-based Systems (KB4601383)
+	2021-01 Cumulative Update for .NET Framework 3.5, 4.7.2 and 4.8 for Windows Server 2019 for x64 (KB4598499)
+	Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.331.1467.0)
+	2021-02 Cumulative Update for Windows Server 2019 (1809) for x64-based Systems (KB4601345)
 
 Windows Update Registry Settings
 	https://docs.microsoft.com/en-us/windows/deployment/update/waas-wu-settings
@@ -72,7 +66,6 @@ Images:
 
 Repository                                                     Tag                               ID          
 ----------                                                     ---                               --          
-mcr.microsoft.com/k8s/csi/azuredisk-csi                        v1.1.0                            618c72778705
 mcr.microsoft.com/k8s/csi/azuredisk-csi                        v1.0.0                            f89d3345063a
 mcr.microsoft.com/windows/servercore                           ltsc2019                          31902e4b25a6
 mcr.microsoft.com/k8s/csi/azurefile-csi                        v1.0.0                            3ea14e2ed2ed
@@ -81,9 +74,9 @@ mcr.microsoft.com/oss/azure/secrets-store/provider-azure       0.0.12           
 mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver      v0.0.19                           ca273de9d00e
 mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager      v0.7.0                            fdcd17879102
 mcr.microsoft.com/oss/kubernetes-csi/livenessprobe             v2.2.0                            978d75aa6057
-mcr.microsoft.com/oss/kubernetes/pause                         1.4.1                             0ac0b63922f8
 mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar v2.0.1                            077fe47c8702
 mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager      v0.6.0                            5e6dfdfe4bea
+mcr.microsoft.com/oss/kubernetes/pause                         1.4.0                             23d55e3daca0
 mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager      v0.5.1                            6db76cecfbae
 mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar v1.2.1-alpha.1-windows-1809-amd64 927caec05c10
 mcr.microsoft.com/oss/kubernetes-csi/livenessprobe             v2.0.1-alpha.1-windows-1809-amd64 7c4afdb7e0d6
@@ -94,7 +87,7 @@ Cached Files:
 
 File                                                                                    Sha256                                                           SizeBytes
 ----                                                                                    ------                                                           ---------
-c:\akse-cache\collect-windows-logs.ps1                                                  F21B05ED2D4E08321C46768F2CEA2F2D69954F393B73BE3961F17FE026F7D2F0      5657
+c:\akse-cache\collect-windows-logs.ps1                                                  58E2633E784B7EBCA80C2DB562223FE1B318CA845D344C1548CE1A65B543DB63      5660
 c:\akse-cache\collectlogs.ps1                                                           943262C7AEC6EE8EBAF61780A419889FD44C22A431FCA8F9A354A5A3FB6AFFE2      8370
 c:\akse-cache\dumpVfpPolicies.ps1                                                       02BFF0235421F1C8477E809B8EB354B313C348CE2732C4842B710239CD6FE665      1642
 c:\akse-cache\helper.psm1                                                               BC45AA98FA40D51C4E8640865C329BDC4B522EA53CC17A5F0B512B4D44058C8C     17945
@@ -111,8 +104,7 @@ c:\akse-cache\stoppacketcapture.cmd                                             
 c:\akse-cache\VFP.psm1                                                                  3F2F44BD4B3219E8BB29EB9F8958EC96F2C8DDCEF556E995790B6476231A92DB      9616
 c:\akse-cache\win-bridge.exe                                                            CA12506E55DF3E3428B29994AE1FC8131DDFBB6838A550DFA22287CDC6548634   9599488
 c:\akse-cache\calico\calico-windows-v3.17.1.zip                                         221155FF037CE5CE50752F1D5E9F0FB64D44976B35B8F7096996633E971DE25D  64456915
-c:\akse-cache\calico\calico-windows-v3.17.2.zip                                         1112432007D25BE160A3CCA8594F231D96A554CC8218430E8860529236DF7C14  64457853
-c:\akse-cache\containerd\moby-containerd-1.4.3+azure-1.amd64.zip                        0CF29919333ACA414795F3E4DC73DA36D62F5BFE0F6EAC4030E3D51465AAE2B6  25526398
+c:\akse-cache\containerd\containerd-windows-0.0.11-1.zip                                C7B01325743FE57E7126A433B6DA809D359B440FE715CDFB1E665F429F7EAFA6  83460143
 c:\akse-cache\csi-proxy\csi-proxy-v0.2.2.tar.gz                                         60BF51D4FB425386C235ABC3BCBD50D70C23CACB94C32A77509DA91CF0F066AD   6481034
 c:\akse-cache\win-k8s\v1.16.10-hotfix.20200817-1int.zip                                 8851ED60FF208C46F7B3E9F3C4D800C448DBAAFE1BA461F44053EB279947423B  98084915
 c:\akse-cache\win-k8s\v1.16.13-hotfix.20210118-1int.zip                                 147453C03F93437912FA7CEB640E22E7C276CDD854037F33B31B8B38B1DEF9C4  98094534
