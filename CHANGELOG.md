@@ -1,5 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-03-01
+
+This release is rolling out to all regions - ETA for conclusion 2021-03-10 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on June 30th, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* Starting last week, the week of Feb 22nd (Azure China Cloud and Azure Government Cloud users will get this update in the following weeks), we will upgrade AKS clusters Calico network policy from Calico version v3.8.9 to v3.17.2 for cluster 1.20.2 and above. This upgrade will cause a breaking change to the default behavior of all-interfaces Host Endpoints. For customers that use Host Endpoints, and only these, this version brings a change. Please follow our [guidance](https://github.com/Azure/AKS/issues/2089) to apply the appropriate label and Global Network Policy if you want to keep the v3.8.9 default behavior of all-interfaces Host Endpoints.
+* Systemd-resolved will no longer be used in AKS Ubuntu 18.04 images starting on next week's release. This resolves past issues regarding private DNS with .local entries not working with [Kubernetes 1.18 and Ubuntu 18.04](https://github.com/Azure/AKS/issues/2052).
+
+### Release Notes
+
+* Features
+  * AKS Managed AAD now supports Just-in-Time Access is now Generally Available [GA](https://docs.microsoft.com/azure/aks/managed-aad#configure-just-in-time-cluster-access-with-azure-ad-and-aks).
+  * Application Gateway Ingress Controller (AGIC) AKS Add-On is now Generally Available [GA].
+  * Confidential Computing Nodes (DCSv2) AKS Add-on is now Generally Available [GA].
+  * HTTP Application Routing addon now Generally Available in Gov Cloud.
+  * Encrypted customer managed keys policy for AKS is now Generally Available [GA].
+  * Public IP per node capability in AKS is now Generally Available [GA].
+  * Deploy WebLogic on Azure Kubernetes Service (AKS) using custom Docker images is now Generally Available [GA](https://docs.microsoft.com/azure/virtual-machines/workloads/oracle/weblogic-aks).
+  * Persistent Volume monitoring & Reports tab in Container Insights is now Generally Available [GA]. Read more here:
+    * <https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-persistent-volumes>.
+    * <https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-reports>.
+* Preview Features
+  * Calico Windows support in AKS 1.20 for new clusters.
+  * Planned Maintenance Windows in AKS.
+  * Dynamic IP allocation & enhanced subnet support in AKS.
+  * Containerize and migrate apps to Azure Kubernetes Service with Azure Migrate: App Containerization. [Read More Here](https://docs.microsoft.com/azure/migrate/tutorial-containerize-java-kubernetes).
+* Behavioral Change
+  * Windows Containers may fail to resolve DNS names in ~1 seconds after it is created successfully and the status is showing running. This may not affect all customers but only those with applications that requires FQDN resolution when starting up the container. The workaround is retry or sleep ~1 seconds. For feedback, please go to [Windows Container GitHub](https://github.com/microsoft/Windows-Containers).
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1757.210220.](vhd-notes/AKSWindows/2019/17763.1757.210220.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.02.24](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.02.24.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.02.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.02.24.txt).
+
 ## Release 2021-02-22
 
 This release is rolling out to all regions - ETA for conclusion 2021-03-03 for public cloud.
