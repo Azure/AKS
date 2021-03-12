@@ -21,7 +21,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-17 for p
   * Fixed an issue where duplicate packets were sent for kubenet on clusters with k8s 1.19+ and containerd-based clusters. This was cased when the traffic is sent to another pod on the same node over cluster service IP."
   * Fixed bug in the addon profile API that caused crashes on build using Terraform in [sov clouds](https://github.com/terraform-providers/terraform-provider-azurerm/issues/6462).
 * Behavioral Change
-  * The Pod Identity count limitation has been raised from 50 to 200.
+  * The maximum number of managed identities for the Pod Identity addon was increased from 50 to 200.
   * Systemd-resolved will no longer be used in AKS Ubuntu 18.04 images. This weeks image, [AKSUbuntu-1804-2021.03.09](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2021.03.03.txt) resolves past issues regarding private DNS with .local entries not working with [Kubernetes 1.18 and Ubuntu 18.04](https://github.com/Azure/AKS/issues/2052).
 * Preview Features
   * Kubenet support for Pod Identity.
