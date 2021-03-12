@@ -1,8 +1,8 @@
-VHD ID:      01fe82de-9bd4-4d33-8a5b-d7aecb56bb1d
+VHD ID:      c5a543fe-47c6-466c-affc-ac9763aaebb6
 
 System Info
 	OS Name        : Windows Server 2019 Datacenter
-	OS Version     : 17763.1817
+	OS Version     : 17763.1790
 	OS InstallType : Server Core
 
 Allowed security protocols: Tls, Tls11, Tls12
@@ -46,12 +46,12 @@ Installed Packages
 Installed QFEs
 	KB4601060 : Update          : http://support.microsoft.com/?kbid=4601060
 	KB4601393 : Security Update : http://support.microsoft.com/?kbid=4601393
-	KB5000822 : Security Update : http://support.microsoft.com/?kbid=5000822
+	KB4601383 : Update          : http://support.microsoft.com/?kbid=4601383
 
 Installed Updates
 	2021-02 Cumulative Update for .NET Framework 3.5, 4.7.2 and 4.8 for Windows Server 2019 for x64 (KB4601887)
-	Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.333.98.0)
-	2021-03 Cumulative Update for Windows Server 2019 (1809) for x64-based Systems (KB5000822)
+	Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.331.2189.0)
+	2021-02 Cumulative Update Preview for Windows Server 2019 (1809) for x64-based Systems (KB4601383)
 
 Windows Update Registry Settings
 	https://docs.microsoft.com/en-us/windows/deployment/update/waas-wu-settings
@@ -66,12 +66,11 @@ Images:
 
 Repository                                                     Tag                               ID          
 ----------                                                     ---                               --          
-mcr.microsoft.com/k8s/csi/azuredisk-csi                        v1.1.1                            af2f3b28f880
-mcr.microsoft.com/windows/servercore                           ltsc2019                          3eaa9ebbf51f
-mcr.microsoft.com/windows/nanoserver                           1809                              47284f980c64
 mcr.microsoft.com/k8s/csi/azuredisk-csi                        v1.1.0                            618c72778705
 mcr.microsoft.com/k8s/csi/azuredisk-csi                        v1.0.0                            f89d3345063a
+mcr.microsoft.com/windows/servercore                           ltsc2019                          31902e4b25a6
 mcr.microsoft.com/k8s/csi/azurefile-csi                        v1.0.0                            3ea14e2ed2ed
+mcr.microsoft.com/windows/nanoserver                           1809                              f524b7260f3c
 mcr.microsoft.com/oss/azure/secrets-store/provider-azure       0.0.12                            bc1b7c74446d
 mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver      v0.0.19                           ca273de9d00e
 mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager      v0.7.0                            fdcd17879102
@@ -128,7 +127,7 @@ c:\akse-cache\win-k8s\v1.19.3-hotfix.20210118-1int.zip                          
 c:\akse-cache\win-k8s\v1.19.6-hotfix.20210118-1int.zip                                  B0D6258B0AD8456EEF07B573E92601A2597BDCA7932371049387152077B3AB46 102435304
 c:\akse-cache\win-k8s\v1.19.7-hotfix.20210122-1int.zip                                  87700E8ACA2FD7FA7A570BF6B7EEC531F692B7023A996AB2AE5DA5BD72D1A0F9  56472834
 c:\akse-cache\win-k8s\v1.20.2-1int.zip                                                  D7A4370E4C079DBA38C20423F416433D6D5E3F87CFDABC65BE140C8DE3E42E9F  56995567
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.1.8.zip        10B48199F40A1786A26DF8698701B0D4DB231A724497AFE6F7F239817CAEE436  35236554
 c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.2.0.zip        85677C52C4091BEB7665C629A10F3A6388707D2C1E36369D10AF1F2A12D35547  39646523
 c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.2.0_hotfix.zip 1866FF67A05DD0F150538B21C58B1A037981DEB77ED01101B49E6FA3C09E144E  39646348
 c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.2.2.zip        52306F546DCB87D266A6DFDBD545982E6292134DEB86B8F90E00485ACFD6B4A1  39555626
-c:\akse-cache\win-vnet-cni\azure-vnet-cni-singletenancy-windows-amd64-v1.2.6.zip        B2FF69608D97B963F8B0B0631F9E88329B006D954773566F019680DED75B8774  72629816

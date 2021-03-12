@@ -26,7 +26,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-17 for p
   * Changed default behavior of Node Pool logging to only log the error, but not return any error.
   * Systemd-resolved will no longer be used in AKS Ubuntu 18.04 images. This resolves past issues regarding private DNS with .local entries not working with [Kubernetes 1.18 and Ubuntu 18.04](https://github.com/Azure/AKS/issues/2052).
 * Component Updates
-  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1817.210310](vhd-notes/AKSWindows/2019/17763.1817.210310.txt).
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1790.210302](vhd-notes/AKSWindows/2019/17763.1790.210302.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.03.09](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.03.09.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.03.09](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.03.09.txt).
 
