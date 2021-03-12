@@ -8,23 +8,22 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-17 for p
 
 * The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on June 30th, 2021.
 * Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
-* Starting last week, the week of Feb 22nd (Azure China Cloud and Azure Government Cloud users will get this update in the following weeks), we will upgrade AKS clusters Calico network policy from Calico version v3.8.9 to v3.17.2 for cluster 1.20.2 and above. This upgrade will cause a breaking change to the default behavior of all-interfaces Host Endpoints. For customers that use Host Endpoints, and only these, this version brings a change. Please follow our [guidance](https://github.com/Azure/AKS/issues/2089) to apply the appropriate label and Global Network Policy if you want to keep the v3.8.9 default behavior of all-interfaces Host Endpoints.
-* Kubernetes version 1.17 will be deprecated at the end of March 2021.
+* Kubernetes version 1.17 will be deprecated in the last week of March 2021.
 
 ### Release Notes
 
 * Features
   * Azure monitor for containers now supports Pods & Replica set live logs in AKS resource view. Read more [here](https://azure.microsoft.com/updates/azmon-livelogs-pods/)
-  * Confidential Compute Addon SGX Device plugin daemonset now has a seamless integration with Intel Icelake architecture and Intel's open source device plugin implementation.
-  * Kubenet support for Pod Identity.
+  * Confidential computing addon for confidential computing nodes (DCSv2) on AKS is updated to align with Intel SGX's future initiatives.
 * Bug Fixes
-  * The latest Windows image fixes a bug where Windows would randomly break nodes at the CNI level and cause all pods scheduled on that node to be permanently stuck, or blocked during deployment. If you have questions about this fix, please contact the [Windows Container Team](https://github.com/microsoft/Windows-Containers).
-  * Fix duplicate packet for kubenet on containerd when traffic is sent to another pod on the same node over cluster service IP.
-  * Fixed bug in addon_profile that caused crashes on build using Terraform in [sov clouds](https://github.com/terraform-providers/terraform-provider-azurerm/issues/6462).
+  * The latest Windows image fixes a bug where Windows could break nodes at the CNI level and cause all pods scheduled on that node to be permanently stuck, or blocked during deployment. If you have questions about this fix, please contact the [Windows Container Team](https://github.com/microsoft/Windows-Containers).
+  * Fixed an issue where duplicate packets were sent for kubenet on clusters with k8s 1.19+ and containerd-based clusters. This was cased when the traffic is sent to another pod on the same node over cluster service IP."
+  * Fixed bug in the addon profile API that caused crashes on build using Terraform in [sov clouds](https://github.com/terraform-providers/terraform-provider-azurerm/issues/6462).
 * Behavioral Change
   * The Pod Identity count limitation has been raised from 50 to 200.
-  * Changed default behavior of Node Pool logging to only log the error, but not return any error.
-  * Systemd-resolved will no longer be used in AKS Ubuntu 18.04 images. This resolves past issues regarding private DNS with .local entries not working with [Kubernetes 1.18 and Ubuntu 18.04](https://github.com/Azure/AKS/issues/2052).
+  * Systemd-resolved will no longer be used in AKS Ubuntu 18.04 images. This weeks image, [AKSUbuntu-1804-2021.03.09](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2021.03.03.txt) resolves past issues regarding private DNS with .local entries not working with [Kubernetes 1.18 and Ubuntu 18.04](https://github.com/Azure/AKS/issues/2052).
+* Preview Features
+  * Kubenet support for Pod Identity.
 * Component Updates
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1790.210302](vhd-notes/AKSWindows/2019/17763.1790.210302.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.03.09](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.03.09.txt).
