@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-03-08
+
+This release is rolling out to all regions - ETA for conclusion 2021-03-17 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on June 30th, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* Kubernetes version 1.17 will be deprecated in the last week of March 2021.
+* Before k8s 1.20 a bug would allow exec probes to run indefinitely, ignoring any timeoutSeconds configuration value. The previous buggy behavior has been fixed, and timeouts are now enforced. Additionally, this change introduces a new default timeout of 1 second. Please audit all your existing exec probes to make sure that it is appropriate to enforce a 1 second timeout. If not, please provide an explicit timeoutSeconds value that is appropriate for each [exec probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+
+### Release Notes
+
+* Features
+  * Azure monitor for containers now supports Pods & Replica set live logs in AKS resource view. Read more [here](https://azure.microsoft.com/updates/azmon-livelogs-pods/)
+  * Confidential computing addon for confidential computing nodes (DCSv2) on AKS is updated to align with Intel SGX's future initiatives.
+* Bug Fixes
+  * The latest Windows image fixes a bug where Windows could break nodes at the CNI level and cause all pods scheduled on that node to be permanently stuck, or blocked during deployment. If you have questions about this fix, please contact the [Windows Container Team](https://github.com/microsoft/Windows-Containers).
+  * Fixed an issue where duplicate packets were sent for kubenet on clusters with k8s 1.19+ and containerd-based clusters. This was cased when the traffic is sent to another pod on the same node over cluster service IP."
+  * Fixed bug in the addon profile API that caused crashes on build using Terraform in [sov clouds](https://github.com/terraform-providers/terraform-provider-azurerm/issues/6462).
+* Behavioral Change
+  * The maximum number of managed identities for the Pod Identity addon was increased from 50 to 200.
+  * Systemd-resolved will no longer be used in AKS Ubuntu 18.04 images. This weeks image, [AKSUbuntu-1804-2021.03.09](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2021.03.03.txt) resolves past issues regarding private DNS with .local entries not working with [Kubernetes 1.18 and Ubuntu 18.04](https://github.com/Azure/AKS/issues/2052).
+* Preview Features
+  * Kubenet support for Pod Identity.
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1790.210302](vhd-notes/AKSWindows/2019/17763.1790.210302.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.03.09](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.03.09.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.03.09](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.03.09.txt).
+
 ## Release 2021-03-01
 
 This release is rolling out to all regions - ETA for conclusion 2021-03-10 for public cloud.
