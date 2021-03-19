@@ -16,7 +16,12 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-24 for p
 
 * Bug Fixes
   * Fixed an issue with using a managed identity created in a different subscription from the cluster while using pod identity [github](https://github.com/Azure/aad-pod-identity/issues/1003#issuecomment-802574090).
+* Behavioral Changes
+  * Made improvements to Cluster AutoScaler for ignoring terminating pods for scale down
+  * WinDSR is enabled by default for [Kubernetes versions 1.20+]
 * Component Updates
+  * Updated image customer-net-probe to v1.0.2
+  * Updated image tunnel-front to v1.9.2-v3.0.22
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1817.210310](vhd-notes/AKSWindows/2019/17763.1817.210310.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.03.10](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.03.10.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.03.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.03.10.txt).
