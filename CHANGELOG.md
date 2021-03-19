@@ -17,7 +17,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-24 for p
 * Bug Fixes
   * Fixed an issue with using a managed identity created in a different subscription from the cluster while using pod identity [github](https://github.com/Azure/aad-pod-identity/issues/1003#issuecomment-802574090).
 * Behavioral Changes
-  * Made improvements to Cluster AutoScaler for ignoring pods that are stuck in terminating for scale down considerations
+  * Made improvements to Cluster AutoScaler for ignoring pods that are stuck in Terminating state to be considered for scale down after exhausting their grace period.
   * WinDSR is enabled by default for [Kubernetes versions 1.20+]
 * Component Updates
   * Updated image tunnel-front to v1.9.2-v3.0.22
