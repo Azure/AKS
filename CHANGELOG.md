@@ -1,5 +1,26 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-03-15
+
+This release is rolling out to all regions - ETA for conclusion 2021-03-24 for public cloud.
+
+### Announcements
+
+* The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on June 30th, 2021.
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* Kubernetes version 1.17 will be deprecated in the last week of March 2021.
+* Before k8s 1.20 a bug would allow exec probes to run indefinitely, ignoring any timeoutSeconds configuration value. The previous buggy behavior has been fixed, and timeouts are now enforced. Additionally, this change introduces a new default timeout of 1 second. Please audit all your existing exec probes to make sure that it is appropriate to enforce a 1 second timeout. If not, please provide an explicit timeoutSeconds value that is appropriate for each [exec probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+* CSI Drivers will become default for [Kubernetes versions 1.21+](https://docs.microsoft.com/azure/aks/csi-storage-drivers).
+
+### Release Notes
+
+* Bug Fixes
+  * Fixed an issue with using a managed identity created in a different subscription from the cluster while using pod identity [github](https://github.com/Azure/aad-pod-identity/issues/1003#issuecomment-802574090).
+* Component Updates
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1817.210310](vhd-notes/AKSWindows/2019/17763.1817.210310.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.03.10](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.03.10.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.03.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.03.10.txt).
+
 ## Release 2021-03-08
 
 This release is rolling out to all regions - ETA for conclusion 2021-03-17 for public cloud.
