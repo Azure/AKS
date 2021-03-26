@@ -12,7 +12,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-03-31 for p
 * Before k8s 1.20 a bug would allow exec probes to run indefinitely, ignoring any timeoutSeconds configuration value. The previous buggy behavior has been fixed, and timeouts are now enforced. Additionally, this change introduces a new default timeout of 1 second. Please audit all your existing exec probes to make sure that it is appropriate to enforce a 1 second timeout. If not, please provide an explicit timeoutSeconds value that is appropriate for each [exec probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 * CSI Drivers will become default for [Kubernetes versions 1.21+](https://docs.microsoft.com/azure/aks/csi-storage-drivers).
 * Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
-* In Kubernetes versions 1.20+, Core-DNS will be upgrade on all clusters to version 1.8.3. This will remove `resyncperiod` and `upstream` from plugin/Kubernetes.
+* For all AKS clusters using kubernetes v1.20+, coredns will be upgraded to version 1.8.3. This will remove resyncperiodand upstream from the Kubernetes plugin.
 
 ### Release Notes
 
