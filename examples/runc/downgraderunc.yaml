@@ -1,0 +1,60 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: downgraderunc
+  namespace: kube-system
+  labels:
+    app: downgraderunc
+spec:
+  selector:
+    matchLabels:
+      name: downgraderunc
+  template:
+    metadata:
+      labels:
+        name: downgraderunc
+    spec:
+      hostPID: true
+      hostNetwork: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      containers:
+        - name: nsenter
+          image: alpine
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          command:
+            - nsenter
+            - --target
+            - "1"
+            - --mount
+            - --uts
+            - --ipc
+            - --net
+            - --pid
+            - --
+            - sh
+            - -c
+            - |
+              #! /bin/sh
+              set -u
+              while true; do
+                CURRENT_VERSION=$(runc --version | grep "runc version" | sed 's/runc version//')
+                echo "running runc ${CURRENT_VERSION}"
+                if [ $CURRENT_VERSION != "1.0.0-rc93" ]; then
+                  echo "running runc ${CURRENT_VERSION}, no need to downgrade"
+                  sleep infinity
+                fi
+                echo "downgrading to runc 1.0.0-rc92"
+                apt-get -y -f install moby-runc=1.0.0~rc92* --allow-downgrades
+                if [ $? -ne 0 ]; then
+                  echo "downgrade was not successful, exited with status $?"
+                  exit 1
+                fi
+                CURRENT_VERSION=$(runc --version | grep "runc version" | sed 's/runc version//')
+                if [ $CURRENT_VERSION != "1.0.0-rc92" ]; then
+                  echo "runc version ${CURRENT_VERSION} not at 1.0.0-rc92"
+                  exit 1
+                fi
+                reboot
