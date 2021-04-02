@@ -12,12 +12,15 @@ This release is rolling out to all regions - ETA for conclusion 2021-04-07 for p
 * CSI Drivers will become default for [Kubernetes versions 1.21+](https://docs.microsoft.com/azure/aks/csi-storage-drivers).
 * Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
 * For all AKS clusters using Kubernetes v1.20+, CoreDNS will be upgraded to version 1.8.3. This will remove `resyncperiod` and `upstream`from the Kubernetes plugin.
-* Calico will upgrade to 3.18.1 to correct the policy for Tigera operator which requires hostPath. This fix requires no customer actions and is non-disruptive. For the base Calico on linux, we will automatically upgrade cluster with Calico 3.17.2. For the Windows node pools, calico will be upgraded to v3.18.1 in any agent pool update/upgrade operations, for example, upgrade the cluster, update the node image, or upgrade the node pool. For detailed updates on Calico, please read more [here](https://docs.projectcalico.org/archive/v3.18/release-notes/).
 
 ### Release Notes
 
+* New Features
+  * `brazilsouth`, `centralindia`, `eastasia` and `francecentral` are all new supported regions for Virtual Node. The `southindia` region has been removed from the supported region list.
+* Preview Features
+  * Open Service Mesh (OSM), as a managed AKS add-on, is now in public preview.
 * Component Updates
-  * Calico updated to 3.18.1.
+  * Calico will upgrade to 3.18.1 to correct the policy for Tigera operator which requires hostPath. This fix requires no customer actions and is non-disruptive. For the base Calico on linux, we will automatically upgrade cluster with Calico 3.17.2. For the Windows node pools, calico will be upgraded to v3.18.1 in any agent pool update/upgrade operations, for example, upgrade the cluster, update the node image, or upgrade the node pool. For detailed updates on Calico, please read more [here](https://docs.projectcalico.org/archive/v3.18/release-notes/).
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1817.210310](vhd-notes/AKSWindows/2019/17763.1817.210310.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.03.17](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.03.17.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.03.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.03.17.txt).
