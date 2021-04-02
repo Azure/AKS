@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-03-29
+
+This release is rolling out to all regions - ETA for conclusion 2021-04-07 for public cloud.
+
+### Announcements
+
+* Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
+* Kubernetes version 1.17 has now been deprecated since March 31st.
+* Before k8s 1.20 a bug would allow exec probes to run indefinitely, ignoring any timeoutSeconds configuration value. The previous buggy behavior has been fixed, and timeouts are now enforced. Additionally, this change introduces a new default timeout of 1 second. Please audit all your existing exec probes to make sure that it is appropriate to enforce a 1 second timeout. If not, please provide an explicit timeoutSeconds value that is appropriate for each [exec probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+* CSI Drivers will become default for [Kubernetes versions 1.21+](https://docs.microsoft.com/azure/aks/csi-storage-drivers).
+* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+* For all AKS clusters using Kubernetes v1.20+, CoreDNS will be upgraded to version 1.8.3. This will remove `resyncperiod` and `upstream`from the Kubernetes plugin.
+
+### Release Notes
+
+* New Features
+  * `brazilsouth`, `centralindia`, `eastasia` and `francecentral` are all new supported regions for Virtual Node. The `southindia` region has been removed from the supported region list.
+* Preview Features
+  * Open Service Mesh (OSM), as a managed AKS add-on, is now in public preview.
+* Component Updates
+  * Calico will upgrade to 3.18.1 to correct the policy for Tigera operator which requires hostPath. For the base Calico on linux, we will automatically upgrade cluster with Calico 3.17.2. For the Windows node pools, calico will be upgraded to v3.18.1 in any agent pool update/upgrade operations, for example, upgrade the cluster, update the node image, or upgrade the node pool. For detailed updates on Calico, please read more [here](https://docs.projectcalico.org/archive/v3.18/release-notes/).
+
 ## Release 2021-03-22
 
 This release is rolling out to all regions - ETA for conclusion 2021-03-31 for public cloud.
