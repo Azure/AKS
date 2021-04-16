@@ -23,7 +23,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-04-14 for p
 * Component Updates
   * Removed Cross-namespace owner references in Azure Policy on AKS v1.20+.
   * Updated omsagent to [March_release](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#03262021--).
-  * Updated Azure Confidential Compute Image to updated webhook and plugin version, to include a liveness probe.
+  * Updated Azure Confidential Compute Image to 1.16 with updated webhook and plugin version, to include a liveness probe.
   * Calico will upgrade to 3.18.1 to correct the policy for Tigera operator which requires hostPath. For the base Calico on linux, we will automatically upgrade cluster with Calico 3.17.2. For the Windows node pools, calico will be upgraded to v3.18.1 in any agent pool update/upgrade operations, for example, upgrade the cluster, update the node image, or upgrade the node pool. For detailed updates on Calico, please read more [here](https://docs.projectcalico.org/archive/v3.18/release-notes/).
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1817.210330](vhd-notes/AKSWindows/2019/17763.1817.210330.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.03.31](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.03.31.txt).
