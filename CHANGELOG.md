@@ -16,7 +16,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-04-14 for p
 ### Release Notes
 
 * Bug Fixes
-  * Fixed a bug in runc that caused pods to be stuck in containercreation in containerd 1.4.3 and 1.4.4.
+  * Fixed a bug in runc that caused pods to be stuck in container creation in containerd 1.4.3 and 1.4.4.
   * Fixed a bug in VMAS that accidently enabled VMAS to be scaled down to 0.
 * Behavioral Changes
   * Increased nslookup/nc timeout to 10s for Provisioning CSE in nodes.
