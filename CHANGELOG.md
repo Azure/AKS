@@ -22,7 +22,6 @@ This release is rolling out to all regions - ETA for conclusion 2021-04-14 for p
   * Increased nslookup/nc timeout to 10s for Provisioning CSE in nodes.
 * Component Updates
   * Removed Cross-namespace owner references in Azure Policy on AKS v1.20+.
-  * Added support for updating Windows password on Windows AKS nodes.
   * Updated omsagent to [March_release](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#03262021--).
   * Updated Azure Confidential Compute Image to updated webhook and plugin version, to include a liveness probe.
   * Calico will upgrade to 3.18.1 to correct the policy for Tigera operator which requires hostPath. For the base Calico on linux, we will automatically upgrade cluster with Calico 3.17.2. For the Windows node pools, calico will be upgraded to v3.18.1 in any agent pool update/upgrade operations, for example, upgrade the cluster, update the node image, or upgrade the node pool. For detailed updates on Calico, please read more [here](https://docs.projectcalico.org/archive/v3.18/release-notes/).
