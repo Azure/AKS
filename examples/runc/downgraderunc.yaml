@@ -57,7 +57,7 @@ spec:
                   echo "runc version ${CURRENT_VERSION} not at 1.0.0-rc92"
                   exit 1
                 fi
-                if [ -d /var/lib/cni/networks/kubenet ]; then
+                if [ -d /var/lib/cni/networks/kubenet ] && [ ! -f /usr/bin/docker ]; then #kubelet docker-shim has some built-in ipam cleanup
                   echo "this node is running kubenet - flushing out possible stale IPs"
                   cd /var/lib/cni/networks/kubenet                                                                                                                                                                                 
                   for podID in $(tail -n +1 * | egrep '^[A-Za-z0-9]{64,64}$'); do
