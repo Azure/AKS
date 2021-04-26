@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-04-22
+
+This release is rolling out to all regions - ETA for conclusion 2021-04-26 for public cloud and 2021-05-03 for sovereign clouds.
+
+### Announcements
+
+* Kubernetes version 1.17 has now been deprecated since March 31st.
+* CSI Drivers will become default for [Kubernetes versions 1.21+](https://docs.microsoft.com/azure/aks/csi-storage-drivers).
+* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+* For all AKS clusters using Kubernetes v1.20+, CoreDNS will be upgraded to version 1.8.3. This will remove `resyncperiod` and `upstream`from the Kubernetes plugin.
+
+### Release Notes
+
+* New Features
+  * You can now update Windows passwords via Azure cli.
+* Bug Fixes
+  * Fixed a bug with Cert Rotation trying to call windows agentpools, this is a linux only function.
+  * Fixed a bug that if a customer uses "[]" as "AvailabilityZones" for both create and update, their update will be blocked incorrectly.
+* Behavioral Changes
+  * Node pool limit has increased from 10 to 100.
+* Component Updates
+  * Linux Pause container image has been updated to [3.5] from 1.3.1
+  * Dns-autoscaler image has been updated to [mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.8.3]  for 1.18 and above cluster.  1.8.3 uses non-root user.
+  * Pod Identity nmi image has been updated to [1.7.5] and set critical addon torelations.
+  * OSM has been updated to [v0.8.3]
+  * The OSM Envoy image has been updated to [1.17.2]
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1879.210414](vhd-notes/AKSWindows/2019/17763.1879.210414.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.04.20](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.04.20.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.04.20](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.04.20.txt).
+
 ## Release 2021-04-05
 
 This release is rolling out to all regions - ETA for conclusion 2021-04-14 for public cloud.
