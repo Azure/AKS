@@ -24,8 +24,8 @@ This release is rolling out to all regions - ETA for conclusion 2021-04-26 for p
   * Linux Pause container image has been updated to [3.5] from 1.3.1
   * Dns-autoscaler image has been updated to [mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.8.3]  for 1.18 and above cluster.  1.8.3 uses non-root user.
   * Pod Identity nmi image has been updated to [1.7.5] and set critical addon torelations.
-  * OSM add on has been updated to [v0.8.3]
-  * The Envoy image has been updated to [1.17.2]
+  * OSM has been updated to [v0.8.3]
+  * The OSM Envoy image has been updated to [1.17.2]
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1879.210414](vhd-notes/AKSWindows/2019/17763.1879.210414.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.04.20](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.04.20.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.04.20](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.04.20.txt).
