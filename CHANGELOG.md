@@ -10,12 +10,12 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-03 for p
 
 ### Release Notes
 
-* New Features
+* Preview Features
   * Autoupgrade will now respect customer's default maintenance configuration settings.
-* Behavioral Changes
+* Bug Fixes
   * Customers trying to use the `RunCommand` on clusters with both PrivateLink and AAD enabled will now see a `NotSupportedSetup` message.
 * Component Updates
-  * Azure Monitor for Containers image tag has been updated. Read more [here](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
+  * Azure Monitor for Containers image tag has been updated to ciprod04222021. Read more [here](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1911.210423](vhd-notes/AKSWindows/2019/17763.1911.210423.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.04.27](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.04.27.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.04.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.04.27.txt).
