@@ -6,19 +6,16 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-03 for p
 
 ### Announcements
 
-* Kubernetes version 1.17 has now been deprecated since March 31st.
-* CSI Drivers will become default for [Kubernetes versions 1.21+](https://docs.microsoft.com/azure/aks/csi-storage-drivers).
 * Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
-* For all AKS clusters using Kubernetes v1.20+, CoreDNS will be upgraded to version 1.8.3. This will remove `resyncperiod` and `upstream`from the Kubernetes plugin.
 
 ### Release Notes
 
-* Behavioral Changes
+* Preview Features
   * Autoupgrade will now respect customer's default maintenance configuration settings.
+* Bug Fixes
   * Customers trying to use the `RunCommand` on clusters with both PrivateLink and AAD enabled will now see a `NotSupportedSetup` message.
-  * Kubelet client TLS bootstrap is now rolled out to all regions.
 * Component Updates
-  * OSM image tag has been updated. Read more [here](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
+  * Azure Monitor for Containers image tag has been updated to ciprod04222021. Read more [here](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1911.210423](vhd-notes/AKSWindows/2019/17763.1911.210423.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.04.27](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.04.27.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.04.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.04.27.txt).
