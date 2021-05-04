@@ -12,7 +12,6 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-03 for p
 
 * New Features
   * Autoupgrade will now respect customer's default maintenance configuration settings.
-  * Kubelet client TLS bootstrap is now rolled out to all regions.
 * Behavioral Changes
   * Customers trying to use the `RunCommand` on clusters with both PrivateLink and AAD enabled will now see a `NotSupportedSetup` message.
 * Component Updates
