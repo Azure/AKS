@@ -1,0 +1,64 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: enableanonymousauth
+  namespace: kube-system
+  labels:
+    app: enableanonymousauth
+spec:
+  selector:
+    matchLabels:
+      name: enableanonymousauth
+  template:
+    metadata:
+      labels:
+        name: enableanonymousauth
+    spec:
+      hostPID: true
+      hostNetwork: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      containers:
+        - name: nsenter
+          image: alpine
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          command:
+            - nsenter
+            - --target
+            - "1"
+            - --mount
+            - --uts
+            - --ipc
+            - --net
+            - --pid
+            - --
+            - sh
+            - -c
+            - |
+              #! /bin/sh
+              set -u
+              while true; do
+                if [ ! -e /etc/default/kubeletconfig.json ]; then
+                  echo "/etc/default/kubeletconfig.json not found. Skipping..."
+                  sleep infinity
+                fi
+                x509=`cat /etc/default/kubeletconfig.json | jq '.authentication.x509'`
+                if [ "$x509" != "{}" ]; then
+                  echo "x509 not empty, skipping..."
+                  sleep infinity
+                fi
+                anonymousauth=`cat /etc/default/kubeletconfig.json | jq '.authentication.anonymous.enabled'`
+                if [ "$anonymousauth" = true ]; then
+                  echo "anonymous-auth is already enabled. Skipping..."
+                  sleep infinity
+                fi
+
+                cp /etc/default/kubeletconfig.json /etc/default/kubeletconfig.json.bak
+                tmp=$(mktemp)
+                jq '.authentication.anonymous.enabled = true' /etc/default/kubeletconfig.json > "$tmp" && mv "$tmp" /etc/default/kubeletconfig.json
+                chmod +r /etc/default/kubeletconfig.json
+                cat /etc/default/kubeletconfig.json | jq '.authentication.anonymous'
+                systemctl restart kubelet
+              done
