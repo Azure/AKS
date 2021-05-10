@@ -2,7 +2,7 @@
 
 ## Release 2021-05-06
 
-This release is rolling out to all regions - ETA for conclusion 2021-05-10 for public cloud and 2021-05-17 for sovereign clouds.
+This release is rolling out to all regions - ETA for conclusion 2021-05-13 for public cloud and 2021-05-17 for sovereign clouds.
 
 ### Announcements
 
@@ -10,9 +10,8 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-10 for p
 
 ### Release Notes
 
-* New Features
-  * New API to list egress traffic endpoints.
-  * AKS users may now deploy NP series VMs, which were previously blocked due to conservative filtering of VM sizes.
+* Preview Features
+  * FIPS compliant nodes 
 * Bug Fixes
   * Fix a bug that different users could not reset service principal using same Azure Active Directory Client ID.
 * Component Updates
