@@ -2,7 +2,7 @@
 
 ## Release 2021-05-13
 
-This release is rolling out to all regions - ETA for conclusion 2021-05-17 for public cloud and 2021-05-24 for sovereign clouds.
+This release is rolling out to all regions - ETA for conclusion 2021-05-20 for public cloud and 2021-05-24 for sovereign clouds.
 
 ### Announcements
 
@@ -11,7 +11,9 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-17 for p
 ### Release Notes
 
 * Component Updates
-  * Upgrade azuredisk/azurefile csi driver to v1.2.0.
+  * Upgrade azuredisk/azurefile csi driver to v1.2.0 (currently in preview).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.08](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.08.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.08.txt).
 
 ## Release 2021-05-06
 
