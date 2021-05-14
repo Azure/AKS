@@ -10,8 +10,10 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-20 for p
 
 ### Release Notes
 
+* Preview Features
+  * The Secrets Store CSI Driver for Kubernetes allows for the integration of Azure Key Vault, as a secrets store with a Kubernetes cluster via a CSI Volume.
 * Component Updates
-  * Upgrade azuredisk/azurefile csi driver to v1.2.0 (currently in preview).
+  * Upgrade azuredisk/azurefile CSI Driver to v1.2.0 (currently in preview).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.08](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.08.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.08.txt).
 
