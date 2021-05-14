@@ -11,7 +11,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-17 for p
 ### Release Notes
 
 * Component Updates
-  * Upgrade azuredisk/azurefile csi driver to v1.2.0 to support the Edge Zone scenario.
+  * Upgrade azuredisk/azurefile csi driver to v1.2.0.
 
 ## Release 2021-05-06
 
