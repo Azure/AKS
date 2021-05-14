@@ -1,5 +1,22 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-05-13
+
+This release is rolling out to all regions - ETA for conclusion 2021-05-20 for public cloud and 2021-05-24 for sovereign clouds.
+
+### Announcements
+
+* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+
+### Release Notes
+
+* Preview Features
+  * The CSI Secret Store AKS Addon is now in Public Preview. See more [here](https://docs.microsoft.com/azure/aks/csi-secrets-store-driver).
+* Component Updates
+  * Upgrade azuredisk/azurefile CSI Driver to v1.2.0 (currently in preview).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.08](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.08.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.08.txt).
+
 ## Release 2021-05-06
 
 This release is rolling out to all regions - ETA for conclusion 2021-05-13 for public cloud and 2021-05-17 for sovereign clouds.
