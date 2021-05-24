@@ -1,5 +1,25 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-05-20
+
+This release is rolling out to all regions - ETA for conclusion 2021-05-27 for public cloud and 2021-05-31 for sovereign clouds.
+
+### Announcements
+
+* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+
+### Release Notes
+
+* Component Updates
+  * Reverting Container Insights agent to March release [ciprod03262021] in response to failing livenss probes.
+  * Upgraded calico to v3.19. The newest Calico update includes [this fix](https://github.com/tigera/operator/pull/1289)  for customers that were experiencing upgrade problems.
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.15](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.15.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.19](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.19.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.15.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.19.txt).
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1935.210507](vhd-notes/AKSWindows/2019/17763.1935.210507.txt)
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1911.210513](vhd-notes/AKSWindows/2019/17763.1911.210513.txt)
+
 ## Release 2021-05-13
 
 This release is rolling out to all regions - ETA for conclusion 2021-05-20 for public cloud and 2021-05-24 for sovereign clouds.
