@@ -14,14 +14,12 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-27 for p
   * Use Set-TimeZone now with Windows Containers to change timezones. 
 * Preview Features
   * Windows containerd support on AKS are available in 3 regions (eastus, uksouth, and westcentralus) today. If you registered the containerd public preview feature flag and add node pool on a cluster below k8s 1.20 version in other regions than mentioned above, the windows nodepool creation will fail. If you are using k8s version 1.20 and register the containerd feature flag in the available regions, this will only add containerd node pool instead of docker. You can unregister the feature flag to use docker node pool. Please note that we are working towards releasing the fix in other regions in few days.
-* Component Updates
+* Bug Fixes
   * Reverting Container Insights agent to March release [ciprod03262021] in response to failing livenss probes.
+* Component Updates
   * Upgraded calico to v3.19. The newest Calico update includes [this fix](https://github.com/tigera/operator/pull/1289)  for customers that were experiencing upgrade problems.
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.15](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.15.txt).
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.19](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.19.txt).
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.15.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.19.txt).
-  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1935.210507](vhd-notes/AKSWindows/2019/17763.1935.210507.txt)
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1911.210513](vhd-notes/AKSWindows/2019/17763.1911.210513.txt)
 
 ## Release 2021-05-13
