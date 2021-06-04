@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-06-03
+
+This release is rolling out to all regions - ETA for conclusion 2021-06-10 for public cloud and 2021-06-14 for sovereign clouds.
+
+### Announcements
+
+* As a response to customer feedback and issues with previous Kubernetes version patches that left a lot of users with hard options. The AKS Team is extending a limited scope of support for all clusters and nodepools on 1.18 as a courtesy. Customers with clusters and nodepools on 1.18 [after the announced deprecation date of 2021-06-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) .The scope of this limited extension is effective from '2021-06-30 to 2021-07-31' and is limited to the following:
+  * Creation of new clusters and nodepools on 1.18.
+  * CRUD operations on 1.18 clusters.
+  * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
+* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+* ContainerD is now available in all regions.
+
+### Release Notes
+
+* Bug Fixes
+  * Fix priority expander in cluster autoscaler falling back to a random choice when a higher priority exists. To read more about this bug, click [here](https://github.com/Azure/AKS/issues/2359).
+  * Fix a regression where users with > 200 group memberships may fail to authenticate to AAD enabled AKS clusters in Azure public cloud.
+* Component Updates
+  * Updated omsagent to [ciprod05202021](https://github.com/microsoft/Docker-Provider/blob/afdf5d21dceac7d27ac56f29d86f2ccf9714fa49/ReleaseNotes.md).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.02](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.02.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.06.02](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.06.02.txt).
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1935.210513](vhd-notes/AKSWindows/2019/17763.1935.210513.txt)
+
 ## Release 2021-05-20
 
 This release is rolling out to all regions - ETA for conclusion 2021-05-27 for public cloud and 2021-05-31 for sovereign clouds.
