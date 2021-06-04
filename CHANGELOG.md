@@ -11,7 +11,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-06-10 for p
   * CRUD operations on 1.18 clusters.
   * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
 * Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
-* ContainerD is now available in all regions.
+* Containerd is now available in all regions.
 
 ### Release Notes
 
