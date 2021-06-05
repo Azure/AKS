@@ -11,10 +11,11 @@ This release is rolling out to all regions - ETA for conclusion 2021-06-10 for p
   * CRUD operations on 1.18 clusters.
   * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
 * Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
-* Windows containerd support on AKS is now available in all regions. Read more [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 
 ### Release Notes
 
+* Preview Features
+  * Windows containerd support on AKS is now available in all regions. Read more [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Bug Fixes
   * Fix priority expander in cluster autoscaler falling back to a random choice when a higher priority exists. To read more about this bug, click [here](https://github.com/Azure/AKS/issues/2359).
   * Fix a regression where users with > 200 group memberships may fail to authenticate to AAD enabled AKS clusters in Azure public cloud.
