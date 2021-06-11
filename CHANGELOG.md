@@ -1,5 +1,28 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-06-10
+
+This release is rolling out to all regions - ETA for conclusion 2021-06-17 for public cloud and 2021-06-21 for sovereign clouds.
+
+### Announcements
+
+* As a response to customer feedback and issues with previous Kubernetes version patches that left a lot of users with hard options. The AKS Team is extending a limited scope of support for all clusters and nodepools on 1.18 as a courtesy. Customers with clusters and nodepools on 1.18 [after the announced deprecation date of 2021-06-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) .The scope of this limited extension is effective from '2021-06-30 to 2021-07-31' and is limited to the following:
+  * Creation of new clusters and nodepools on 1.18.
+  * CRUD operations on 1.18 clusters.
+  * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
+* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+
+### Release Notes
+
+* Preview Features
+  * Public DNS support for Private Clusters using the Private cluster endpoint.
+* Bug Fixes
+  * Runc r95 to address a vulnerability to symlink-exchange attack
+* Component Updates
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.09](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.09.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.06.09](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.06.09.txt).
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1999.210609](vhd-notes/AKSWindows/2019/17763.1999.210609.txt)
+
 ## Release 2021-06-03
 
 This release is rolling out to all regions - ETA for conclusion 2021-06-10 for public cloud and 2021-06-14 for sovereign clouds.
@@ -27,25 +50,29 @@ This release is rolling out to all regions - ETA for conclusion 2021-06-10 for p
 
 ## Release 2021-05-20
 
-This release is rolling out to all regions - ETA for conclusion 2021-05-27 for public cloud and 2021-05-31 for sovereign clouds.
+This release is rolling out to all regions - ETA for conclusion 2021-06-03 for public cloud and 2021-06-07 for sovereign clouds.
 
 ### Announcements
 
-* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+* Previous pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
 
 ### Release Notes
 
-* New Features
-  * Use Set-TimeZone now with Windows Containers to change timezones. 
+* Features
+  * Use Set-TimeZone now with Windows Containers to change timezones.
+  * New Kubernetes patch versions available, v1.18.19, 1.19.11, v1.20.7.
+  * Encryption at Host is now GA
 * Preview Features
+  * Kubernetes 1.21.1
+  * Disable local accounts in now in preview [here](https://docs.microsoft.com/en-us/azure/aks/managed-aad#disable-local-accounts-preview).
   * Windows containerd support on AKS are available in 3 regions (eastus, uksouth, and westcentralus) today. If you registered the containerd public preview feature flag and add node pool on a cluster below k8s 1.20 version in other regions than mentioned above, the windows nodepool creation will fail. If you are using k8s version 1.20 and register the containerd feature flag in the available regions, this will only add containerd node pool instead of docker. You can unregister the feature flag to use docker node pool. Please note that we are working towards releasing the fix in other regions in few days.
 * Bug Fixes
-  * Reverting Container Insights agent to March release [ciprod03262021] in response to failing livenss probes.
+  * Reverting Container Insights agent to March release [ciprod03262021] in response to failing liveness probes.
 * Component Updates
-  * Upgraded calico to v3.19. The newest Calico update includes [this fix](https://github.com/tigera/operator/pull/1289)  for customers that were experiencing upgrade problems.
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.19](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.19.txt).
+  * Upgraded calico to v3.19. The newest Calico update includes this fix for customers that were experiencing upgrade problems.
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.05.19](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.05.19txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.05.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.05.19.txt).
-  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1911.210513](vhd-notes/AKSWindows/2019/17763.1911.210513.txt)
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1911.210513](vhd-notes/AKSWindows/2019/17763.1911.210513.txt).
 
 ## Release 2021-05-13
 
