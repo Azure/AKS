@@ -17,7 +17,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-06-17 for p
 * Preview Features
   * Public DNS support for Private Clusters using the Private cluster endpoint.
 * Bug Fixes
-  * Runc r95 to address a vulnerability to symlink-exchange attack.
+  * Released runc r95 to address a [vulnerability](https://github.com/Azure/AKS/issues/2375) to symlink-exchange attack.
 * Component Updates
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.09](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.09.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.06.09](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.06.09.txt).
