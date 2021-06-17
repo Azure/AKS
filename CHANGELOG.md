@@ -18,8 +18,8 @@ This release is rolling out to all regions - ETA for conclusion 2021-06-24 for p
   * Omsagent updated to 06112021. Read more [here](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#06112021--).
   * Windows Azure CNI updated to version 1.4.0.
   * HTTP Application Routing addon has been updated to support Kubernetes version >= 1.21.
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.12](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.12.txt).
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.06.12](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.06.12.txt).
+  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.12](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.12.txt) - ETA for 2021-06-24.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.06.12](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.06.12.txt) - ETA for 2021-06-24.
 
 ## Release 2021-06-10
 
