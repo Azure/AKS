@@ -1,8 +1,8 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2021-06-26
+## Release 2021-07-03
 
-This release is rolling out to all regions - estimated time for completed roll out is 2021-07-01 for public cloud and 2021-07-05 for sovereign clouds.
+This release is rolling out to all regions - estimated time for completed roll out is 2021-07-07 for public cloud and 2021-07-13 for sovereign clouds.
 
 ### Announcements
 
