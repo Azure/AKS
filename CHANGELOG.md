@@ -18,13 +18,11 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Resolved "TO/FROM rule and port rule on same PodSelector in multiple policies", https://github.com/Azure/azure-container-networking/issues/870
 
 * Component Updates
-  * AKS tunneled secure communication between the nodes and the control plane will be delivered by a new component starting on next week's release. The new component will be name konnectivity, replacing the existing tunnelfront and aks-link tunnel components. No disruption is expected or changes required.
-  * Block enabling autoupgrade for unsupported k8s versions (less than lowest minor verion by one)
-  * Add ScaleDownMode to 20200701 API (Delete/Deallocate or Delete only for Spot instances)
-  * Revert to use default Fluent flush interval to 15s from 1s 
-  * Set VM Size Standard_B1ls as restricted for AKS use
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.19](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.19.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.06.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.06.19.txt).
+
+* Behavioral Changes
+  * Block enabling autoupgrade for unsupported k8s versions (less than lowest minor verion by one)
 
 
 ## Release 2021-06-17
