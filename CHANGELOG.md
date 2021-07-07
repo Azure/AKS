@@ -2,7 +2,7 @@
 
 ## Release 2021-07-03
 
-This release is rolling out to all regions - estimated time for completed roll out is 2021-07-07 for public cloud and 2021-07-13 for sovereign clouds.
+This release is rolling out to all regions - estimated time for completed roll out is 2021-07-08 for public cloud and 2021-07-14 for sovereign clouds.
 
 ### Announcements
 
@@ -18,7 +18,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Resolved "TO/FROM rule and port rule on same PodSelector in multiple policies", https://github.com/Azure/azure-container-networking/issues/870
 
 * Component Updates
-  * Block enabling autoupgrade for unsupported k8s versions (less than lowest minor verion by one)
+  * Block enabling autoupgrade for unsupported k8s versions (less than lowest minor version by one)
 
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.19](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.19.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.06.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.06.19.txt).
