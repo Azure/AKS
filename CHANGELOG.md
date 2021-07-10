@@ -19,7 +19,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.03](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.03.txt).
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1999.210609](vhd-notes/AKSWindows/2019/17763.1999.210609.txt).
 
-
 ## Release 2021-07-03
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-07-08 for public cloud and 2021-07-14 for sovereign clouds.
