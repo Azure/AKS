@@ -14,6 +14,10 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release Notes
 
+* New Features
+  * Bring your own Managed Identity is now GA. Allowing you to bring your own [control plane MI](https://docs.microsoft.com/azure/aks/use-managed-identity#bring-your-own-control-plane-mi) and [Kubelet MI](https://docs.microsoft.com/azure/aks/use-managed-identity#bring-your-own-kubelet-mi).
+* Preview Features
+  * Public DNS for private clusters is now in preview. Read more [here](https://docs.microsoft.com/azure/aks/private-clusters#create-a-private-aks-cluster-with-a-custom-private-dns-zone).
 * Component Updates
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.07.03](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.07.03.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.03](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.03.txt).
