@@ -6,6 +6,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcements
 
+* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward. 
 * As a response to customer feedback and issues with previous Kubernetes version patches that left a lot of users with hard options. The AKS Team is extending a limited scope of support for all clusters and nodepools on 1.18 as a courtesy. Customers with clusters and nodepools on 1.18 [after the announced deprecation date of 2021-06-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) .The scope of this limited extension is effective from '2021-06-30 to 2021-07-31' and is limited to the following:
   * Creation of new clusters and nodepools on 1.18.
   * CRUD operations on 1.18 clusters.
@@ -25,9 +26,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Component Updates
   * Azuredisk and Azurefile CSI drivers upgraded to v1.4.0 in 1.20.0+ clusters.
   * Windows image update for omsagent for Windows mdm by setting the NODE_IP environment variable for 'machine' as required by Windows in non-sidecar enabled mode. 
-  * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.07.10](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.07.10.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.10.txt).
-  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.1999.210609](vhd-notes/AKSWindows/2019/17763.1999.210609.txt).
 
 ## Release 2021-07-08
 
