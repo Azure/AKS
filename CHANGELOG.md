@@ -2,7 +2,7 @@
 
 ## Release 2021-07-15
 
-This release is rolling out to all regions - estimated time for completed roll out is 2021-07-22 for public cloud and 2021-07-26 for sovereign clouds.
+This release is rolling out to all regions - estimated time for completed roll out is 2021-07-27 for public cloud and 2021-07-31 for sovereign clouds.
 
 ### Announcements
 
@@ -14,12 +14,12 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release Notes
 * New Features
-  * Kubernetes 1.21 is now in GA, estimated to roll out the week of 2021-07-19.
-  * Container Storage Interface (CSI) drivers for Azure disks and Azure files on Azure Kubernetes Service (AKS) is now GA in Kubernetes version 1.21+. Azure Disk CSI migration is turned on for 1.21.0+ clusters.
+  * Kubernetes 1.21 is now Generally Available (GA), estimated to roll out the week of 2021-07-19.
+  * Container Storage Interface (CSI) drivers for Azure disks and Azure files on Azure Kubernetes Service (AKS) is now Generally Available (GA) in Kubernetes version 1.21+. Azure Disk CSI migration is turned on for 1.21.0+ clusters.
 * Bug Fixes
   * Fix external-dns 0.8.0 for HTTP application routing addon for 1.21+ clusters. 
 * Behavioral Changes
-  * During cluster upgrade, when profile resolver's provisioningState is upgrading, recreate intermediate certs.
+  * Azure Kubernetes Service (AKS) will now rotate your intermediate certificates during an upgrade operation
 * Preview Features
   * Windows containerd support on AKS is now available in all sovereign clouds. 
 * Component Updates
