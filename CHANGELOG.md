@@ -2,7 +2,7 @@
 
 ## Release 2021-07-22
 
-This release is rolling out to all regions - estimated time for completed roll out is 2021-08-03 for public cloud and 2021-08-01 for sovereign clouds.
+This release is rolling out to all regions - estimated time for completed roll out is 2021-07-29 for public cloud and 2021-08-03 for sovereign clouds.
 
 ### Announcements
 
@@ -14,8 +14,9 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
 
 ### Release Notes
-* New Features
-  * Kubernetes 1.21.1 and 1.21.2 is now Generally Available (GA), estimated to roll out the week of 2021-07-26.
+* Features
+  * New Kubernetes patch version available, v.1.21.2.
+* Preview Features
   * Upgrade your Windows nodepool from Docker to Containerd by the following two methods. Note that the Kubernetes version should be > 1.20.0 and the feature flag UseCustomizedWindowsPreview should be registered under your current Azure subscription. Reminder that Docker is removed in Kubernetes 1.24 completely, use the following commands to move your workload from Docker to Containerd now. 
     * To upgrade a specific nodepool to use containerd: az aks nodepool upgrade --cluster-name $CLUSTERNAME --name $NODEPOOLNAME --resource-group $RGNAME --kubernetes-version 1.21.1  --http-headers WindowsContainerRuntime=containerd
     * To upgrade the cluster to use containerd for all Windows nodepools: az aks upgrade --cluster-name $CLUSTERNAME --resource-group $RGNAME --kubernetes-version 1.21.1  --http-headers WindowsContainerRuntime=containerd
