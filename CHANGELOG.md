@@ -14,8 +14,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
 
 ### Release Notes
-* Behavioral Changes
-  * Update Azure Key Vault secrets to provide [tolerations](https://github.com/Azure/AKS/issues/2146).
+* Bug Fixes
+  * Added missing [tolerations](https://github.com/Azure/AKS/issues/2146) to Pod Identity Pods.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.25.txt).
 
