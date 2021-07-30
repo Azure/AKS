@@ -15,7 +15,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release Notes
 * Bug Fixes
-  * Added missing [tolerations](https://github.com/Azure/AKS/issues/2146) to Pod Identity Pods.
+  * Added missing tolerations to Pod Identity Pods. Closes #2146.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.25.txt).
 
