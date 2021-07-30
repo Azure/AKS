@@ -36,9 +36,9 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Features
   * New Kubernetes patch version available, v.1.21.2.
 * Preview Features
-  * Upgrade your Windows nodepool from Docker to Containerd by the following two methods. Note that the Kubernetes version should be > 1.20.0 and the feature flag UseCustomizedWindowsPreview should be registered under your current Azure subscription. Reminder that Docker is removed in Kubernetes 1.24 completely, use the following commands to move your workload from Docker to Containerd now. 
-    * To upgrade a specific nodepool to use containerd: az aks nodepool upgrade --cluster-name $CLUSTERNAME --name $NODEPOOLNAME --resource-group $RGNAME --kubernetes-version 1.21.1  --http-headers WindowsContainerRuntime=containerd
-    * To upgrade the cluster to use containerd for all Windows nodepools: az aks upgrade --cluster-name $CLUSTERNAME --resource-group $RGNAME --kubernetes-version 1.21.1  --http-headers WindowsContainerRuntime=containerd
+  * Upgrade your Windows nodepool from Docker to Containerd by the following two methods. Note that the Kubernetes version should be > 1.20.0 and the feature flag UseCustomizedWindowsContainerRuntime should be registered under your current Azure subscription. Reminder that Docker is removed in Kubernetes 1.24 completely, use the following commands to move your workload from Docker to Containerd now. 
+    * To upgrade a specific nodepool to use containerd: `az aks nodepool upgrade --cluster-name $CLUSTERNAME --name $NODEPOOLNAME --resource-group $RGNAME --kubernetes-version 1.21.1 --aks-custom-headers WindowsContainerRuntime=containerd`
+    * To upgrade the cluster to use containerd for all Windows nodepools: `az aks upgrade --cluster-name $CLUSTERNAME --resource-group $RGNAME --kubernetes-version 1.21.1 --aks-custom-headers WindowsContainerRuntime=containerd`
 * Behavioral Changes
   * Cluster autoscaler will now enforce the minimum count in cases where the actual count drops below that. For example, Spot eviction or changing the minimum count value from the AKS API. In the past, the autoscaler operated and respected the minimum count but never interfered to enforce it if external factors affect it.
 * Component Updates
