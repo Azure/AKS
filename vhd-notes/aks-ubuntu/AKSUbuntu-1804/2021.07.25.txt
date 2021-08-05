@@ -27,7 +27,11 @@ Components downloaded in this VHD build (some of the below components might get 
   - util-linux
   - xz-utils
   - zip
-  - moby v19.03.14
+  - [installed] containerd v1.4.8
+  - [cached] containerd v1.4.4
+  - crictl version 1.19.0
+  - crictl version 1.20.0
+  - crictl version 1.21.0
   - runc version 1.0.0-rc95
   - [cached] runc 1.0.0-rc92
   - [cached] runc 1.0.0-rc95
@@ -38,7 +42,7 @@ Components downloaded in this VHD build (some of the below components might get 
   - bcc-tools
   - libbcc-examples
   - img
-docker images pre-pulled:
+containerd images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/kubernetes-dashboard:v1.10.1
   - mcr.microsoft.com/oss/kubernetes/dashboard:v2.0.0-beta8
   - mcr.microsoft.com/oss/kubernetes/dashboard:v2.0.0-rc3
@@ -168,21 +172,7 @@ docker images pre-pulled:
   - CNI plugin version 0.7.1
   - CNI plugin version 0.8.6
   - mcr.microsoft.com/oss/nvidia/k8s-device-plugin:v0.9.0
-  - nginx:1.13.12-alpine
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.13
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.13-hotfix.20210310.2
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.16
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.17.16-hotfix.20210310.2
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.8-hotfix.20200924
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.8-hotfix.20201112.2
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.10-hotfix.20210118
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.10-hotfix.20210310.2
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.14-hotfix.20210511
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.14-hotfix.20210525
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.17-hotfix.20210525.1
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.17-hotfix.20210525.2
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.19-hotfix.20210522.1
-  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.18.19-hotfix.20210522.2
+  - docker.io/library/nginx:1.13.12-alpine
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.19.1-hotfix.20200923
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.19.1-hotfix.20200923.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.19.3
@@ -210,22 +200,14 @@ docker images pre-pulled:
 kubelet/kubectl downloaded:
 -rwxr-xr-x 1 root root 151175456 Sep 24  2020 /usr/local/bin/kubelet-1.19.1
 -rwxr-xr-x 1 root root  60381530 Sep 24  2020 /usr/local/bin/kubectl-1.19.1
--rwxr-xr-x 1 root root 152696096 Sep 25  2020 /usr/local/bin/kubelet-1.18.8
--rwxr-xr-x 1 root root  60077962 Sep 25  2020 /usr/local/bin/kubectl-1.18.8
 -rwxr-xr-x 1 root root 151219448 Oct 16  2020 /usr/local/bin/kubelet-1.19.3
 -rwxr-xr-x 1 root root  60381333 Oct 16  2020 /usr/local/bin/kubectl-1.19.3
--rwxr-xr-x 1 root root 152767208 Jan 18  2021 /usr/local/bin/kubelet-1.18.10
--rwxr-xr-x 1 root root  60078093 Jan 18  2021 /usr/local/bin/kubectl-1.18.10
 -rwxr-xr-x 1 root root 151019720 Jan 18  2021 /usr/local/bin/kubelet-1.19.6
 -rwxr-xr-x 1 root root  60288196 Jan 18  2021 /usr/local/bin/kubectl-1.19.6
 -rwxr-xr-x 1 root root 109921416 Mar 10 23:55 /usr/local/bin/kubelet-1.19.7
 -rwxr-xr-x 1 root root  42942464 Mar 10 23:55 /usr/local/bin/kubectl-1.19.7
 -rwxr-xr-x 1 root root 113990600 Mar 10 23:59 /usr/local/bin/kubelet-1.20.2
 -rwxr-xr-x 1 root root  40218624 Mar 10 23:59 /usr/local/bin/kubectl-1.20.2
--rwxr-xr-x 1 root root 152799184 Mar 22 23:18 /usr/local/bin/kubelet-1.18.14
--rwxr-xr-x 1 root root  60086227 Mar 22 23:18 /usr/local/bin/kubectl-1.18.14
--rwxr-xr-x 1 root root 113214328 May  6 00:46 /usr/local/bin/kubelet-1.18.17
--rwxr-xr-x 1 root root  43937792 May  6 00:46 /usr/local/bin/kubectl-1.18.17
 -rwxr-xr-x 1 root root 109970600 May  6 00:50 /usr/local/bin/kubelet-1.19.9
 -rwxr-xr-x 1 root root  42934272 May  6 00:50 /usr/local/bin/kubectl-1.19.9
 -rwxr-xr-x 1 root root 114044008 May  6 00:51 /usr/local/bin/kubelet-1.20.5
@@ -234,8 +216,6 @@ kubelet/kubectl downloaded:
 -rwxr-xr-x 1 root root  40218624 May 13 08:36 /usr/local/bin/kubectl-1.20.7
 -rwxr-xr-x 1 root root 118054736 May 13 08:41 /usr/local/bin/kubelet-1.21.1
 -rwxr-xr-x 1 root root  47566848 May 13 08:41 /usr/local/bin/kubectl-1.21.1
--rwxr-xr-x 1 root root 113267576 May 13 17:37 /usr/local/bin/kubelet-1.18.19
--rwxr-xr-x 1 root root  43950080 May 13 17:37 /usr/local/bin/kubectl-1.18.19
 -rwxr-xr-x 1 root root 109999304 May 13 17:43 /usr/local/bin/kubelet-1.19.11
 -rwxr-xr-x 1 root root  42938368 May 13 17:43 /usr/local/bin/kubectl-1.19.11
 -rwxr-xr-x 1 root root 118123056 Jun 17 17:01 /usr/local/bin/kubelet-1.21.2
@@ -244,18 +224,19 @@ kubelet/kubectl downloaded:
 -rwxr-xr-x 1 root root  42938368 Jun 17 20:09 /usr/local/bin/kubectl-1.19.12
 -rwxr-xr-x 1 root root 114109576 Jun 18 08:32 /usr/local/bin/kubelet-1.20.8
 -rwxr-xr-x 1 root root  40214528 Jun 18 08:32 /usr/local/bin/kubectl-1.20.8
--r-xr--r-- 1 root root      2462 Jul 25 04:34 /usr/local/bin/health-monitor.sh
+-r-xr--r-- 1 root root      2462 Jul 25 04:33 /usr/local/bin/health-monitor.sh
 -rwxr-xr-x 1 root root  35384960 Jul 25 04:38 /usr/local/bin/bpftrace
 Disk usage:
 Filesystem      Size  Used Avail Use% Mounted on
 udev            3.4G     0  3.4G   0% /dev
-tmpfs           696M  708K  695M   1% /run
-/dev/sdb1        29G   22G  7.6G  74% /
+tmpfs           696M  692K  695M   1% /run
+/dev/sda1        29G   25G  4.3G  86% /
 tmpfs           3.4G     0  3.4G   0% /dev/shm
 tmpfs           5.0M     0  5.0M   0% /run/lock
 tmpfs           3.4G     0  3.4G   0% /sys/fs/cgroup
-/dev/sdb15      105M  6.6M   98M   7% /boot/efi
-/dev/sda1        14G   41M   13G   1% /mnt
+/dev/sda15      105M  6.6M   98M   7% /boot/efi
+/dev/sdb1        14G   41M   13G   1% /mnt
 tmpfs           696M     0  696M   0% /run/user/1000
+WARNING: 75% of /dev/sda1 is used
 Using kernel:
 Linux version 5.4.0-1055-azure (buildd@lcy01-amd64-025) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #57~18.04.1-Ubuntu SMP Fri Jul 16 19:40:19 UTC 2021
