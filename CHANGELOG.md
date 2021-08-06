@@ -15,8 +15,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release Notes
 
-* New Features
-  * All regions can now enable Azure Policy V2.
+* Behavioral Changes
+  * All regions now use Azure Policy V2 by default.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.31.txt).
   * TLS 1.2 is now enabled for Windows nodes going forward.
