@@ -8,7 +8,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 * Behavioral Changes
   * All regions now use Azure Policy V2 by default.
-  * TLS 1.2 is now enabled for in AKS Windows nodes. And TLS1.1, TLS1.0, SSL3.0, SSL2.0 are disabled.
+  * TLS 1.2 is now enabled for in AKS Windows nodes. TLS1.1, TLS1.0, SSL3.0, SSL2.0 are now disabled.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.31.txt).
 
