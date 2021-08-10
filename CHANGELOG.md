@@ -4,22 +4,13 @@
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-08-12 for public cloud and 2021-08-17 for sovereign clouds.
 
-### Announcements
-
-* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward. 
-* As a response to customer feedback and issues with previous Kubernetes version patches that left a lot of users with hard options. The AKS Team is extending a limited scope of support for all clusters and nodepools on 1.18 as a courtesy. Customers with clusters and nodepools on 1.18 [after the announced deprecation date of 2021-06-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) .The scope of this limited extension is effective from '2021-06-30 to 2021-07-31' and is limited to the following:
-  * Creation of new clusters and nodepools on 1.18.
-  * CRUD operations on 1.18 clusters.
-  * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
-* Previous [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
-
 ### Release Notes
 
 * Behavioral Changes
   * All regions now use Azure Policy V2 by default.
+  * TLS 1.2 is now enabled for in AKS Windows nodes. And TLS1.1, TLS1.0, SSL3.0, SSL2.0 are disabled.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.31.txt).
-  * TLS 1.2 is now enabled for Windows nodes going forward.
 
 ## Release 2021-07-29
 
