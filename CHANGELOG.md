@@ -1,5 +1,14 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-08-12
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-08-19 for public cloud and 2021-08-24 for sovereign clouds.
+
+### Release Notes
+
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.07.txt).
+
 ## Release 2021-08-05
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-08-12 for public cloud and 2021-08-17 for sovereign clouds.
