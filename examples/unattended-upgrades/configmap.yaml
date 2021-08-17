@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: set-upgrade-script
+data:
+  run.sh: |
+    #!/bin/sh
+
+    echo "reading upgrade config"
+    less /config
+
+    # Deactivate upgrades
+    sed -e 's/Update-Package-Lists "1"/Update-Package-Lists "0"/ ; s/Unattended-Upgrade "1"/Unattended-Upgrade "0"/' /config > /config_out
+    # Activate upgrades
+    #sed -e 's/Update-Package-Lists "0"/Update-Package-Lists "1"/ ; s/Unattended-Upgrade "0"/Unattended-Upgrade "1"/' /config > /config_out
+
+    cat /config_out > /config
+
+    echo "new config:"
+
+    less /config
+
+    exit 0
