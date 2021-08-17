@@ -23,26 +23,24 @@ spec:
           - /bin/sh
           - -c
           - |
-            echo "copy scripts to /tmp"
-            cp /scripts/*.sh /tmp
-            echo "chmod"
-            chmod +x /tmp/run.sh
-            echo "execute"
-            /tmp/run.sh
+            echo "reading upgrade config"
+            less /config
+            # Deactivate upgrades
+            # sed -e 's/Update-Package-Lists "1"/Update-Package-Lists "0"/ ; s/Unattended-Upgrade "1"/Unattended-Upgrade "0"/' /config
+            # Activate upgrades
+            sed -e 's/Update-Package-Lists "0"/Update-Package-Lists "1"/ ; s/Unattended-Upgrade "0"/Unattended-Upgrade "1"/' /config 
+            echo "new config:"
+            less /config
+            sleep 1000000
           resources:
             requests:
               cpu: 5m
               memory: 50Mi
           volumeMounts:
-          - mountPath: /scripts
-            name: scripts
           - mountPath: /config
             name: upgradeconfig
             readOnly: false
-      volumes:
-      - name: scripts
-        configMap:
-          name: set-upgrade-script
+      volumes:  
       - name: upgradeconfig
         hostPath:
           path: /etc/apt/apt.conf.d/20auto-upgrades
