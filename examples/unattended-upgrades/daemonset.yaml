@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: set-upgrade-daemon
+  namespace: kube-system
+  labels:
+    app: set-upgrade-daemon
+spec:
+  selector:
+    matchLabels:
+      app: set-upgrade-daemon
+  template:
+    metadata:
+      labels:
+        app: set-upgrade-daemon
+    spec:
+      containers:
+        - name: set-upgrade-daemon
+          securityContext:
+            privileged: true
+          image: mcr.microsoft.com/azure-policy/alpine:prod_20200505.1
+          imagePullPolicy: Always
+          command:
+          - /bin/sh
+          - -c
+          - |
+            echo "previous config"
+            less /config
+            # Deactivate upgrades
+            sed -e 's/Update-Package-Lists "1"/Update-Package-Lists "0"/ ; s/Unattended-Upgrade "1"/Unattended-Upgrade "0"/' /config > /config_out
+            # Activate upgrades
+            # sed -e 's/Update-Package-Lists "0"/Update-Package-Lists "1"/ ; s/Unattended-Upgrade "0"/Unattended-Upgrade "1"/' /config > /config_out
+            cat /config_out > /config
+            echo "new config:"
+            less /config
+            sleep 1000000
+          
+          volumeMounts:
+          - mountPath: /config
+            name: upgradeconfig
+            readOnly: false
+      terminationGracePeriodSeconds: 1 #sleep 1000000 does not respect the interrupt signal 
+      volumes:  
+      - name: upgradeconfig
+        hostPath:
+          path: /etc/apt/apt.conf.d/20auto-upgrades
+          type: File
