@@ -1,5 +1,51 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-08-19
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-08-26 for public cloud and 2021-09-02 for sovereign clouds.
+
+### Announcements
+* On the next release of the az AKS CLI we will introduce a new subcommand "aks addons" which will have the following commands: disable, enable, list, list-available, show, update.
+
+### Release Notes
+
+* Component Updates
+  * Kubernetes patch versions: 1.19.13 and 1.20.9 have been onboarded. Versions 1.19.9 and 1.20.5 have been deprecated.
+  * Bump Windows containerd to v0.0.42
+  * Bump CoreDNS  to 1.8.4 for Kubernetes versions above 1.20.0
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.14](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.14.txt) - please refer to the link for package versions in this VHD.
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2114.210811](vhd-notes/AKSWindows/2019/17763.2114.210811.txt) - please refer to the link for component versions in this VHD.
+
+
+* Behavioral Changes
+  * Stop ability to make changes to the following system labels:
+    * beta.kubernetes.io/arch
+    * beta.kubernetes.io/instance-type
+    * beta.kubernetes.io/os
+    * failure-domain.beta.kubernetes.io/region
+    * failure-domain.beta.kubernetes.io/zone
+    * failure-domain.kubernetes.io/zone
+    * failure-domain.kubernetes.io/region
+    * kubernetes.io/arch
+    * kubernetes.io/hostname
+    * kubernetes.io/os
+    * kubernetes.io/role
+    * kubernetes.io/instance-type
+    * node.kubernetes.io/instance-type
+    * topology.kubernetes.io/region
+    * topology.kubernetes.io/zone
+    * kubernetes.azure.com/role=agent
+    * node-role.kubernetes.io/agent
+    * kubernetes.io/role=agent
+    * agentpool
+    * storageprofile
+    * storagetier
+    * accelerator
+    * kubernetes.azure.com/fips_enabled
+    * kubernetes.azure.com/os-sku
+    * kubernetes.azure.com/cluster
+
+
 ## Release 2021-08-12
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-08-19 for public cloud and 2021-08-24 for sovereign clouds.
