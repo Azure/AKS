@@ -5,7 +5,7 @@
 This release is rolling out to all regions - estimated time for completed roll out is 2021-08-26 for public cloud and 2021-09-02 for sovereign clouds.
 
 ### Announcements
-* On the next release of the az AKS CLI we will introduce a new subcommand "aks addons" which will be the new way to manage addons going forward.
+* On the next release of the az AKS CLI we will introduce a new subcommand "aks addons" which will have the following commands: disable, enable, list, list-available, show, update.
 
 ### Release Notes
 
