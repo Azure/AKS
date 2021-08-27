@@ -4,18 +4,20 @@
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-02-02 for public cloud and 2021-09-09 for sovereign clouds.
 
+### Preannouncement
+
+* AKS will be upgrading to CoreDNS v1.8.4 in September.
+
 ### Release Notes
 
 * Component Updates
   * Azuredisk and Azurefile CSI drivers upgraded to v1.5.0 in 1.21.0+ clusters.
   * Open Service Mesh (OSM) addon has been updated to v0.9.2.
   * Calico has been updated to v3.20.0 on linux.
-  * Bump Windows containerd to v0.0.42
-  * Bump CoreDNS  to 1.8.4 for Kubernetes versions above 1.20.0
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.21.txt) - please refer to the link for package versions in this VHD.
 
-* Behavioral Changes
-  * Customers are no longer restricted to have at least one linux pool, before creating an agent pool.
+* Bug Fixes
+  * Users using API versions before 2020-03-01 can now create clusters with their first agent pool being either windows or spot pools.
 
 ## Release 2021-08-19
 
