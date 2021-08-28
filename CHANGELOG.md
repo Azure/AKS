@@ -6,7 +6,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Preannouncement
 
-* AKS will be upgrading to CoreDNS v1.8.4 in September.
+* AKS will be upgrading to CoreDNS v1.8.4 in September. Users who are using the rewrite plugin, should [upgrade their configuration](https://github.com/Azure/AKS/issues/2521) before 1.8.4 goes live.
 
 ### Release Notes
 
@@ -15,7 +15,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Open Service Mesh (OSM) addon has been updated to v0.9.2.
   * Calico has been updated to v3.20.0 on linux.
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.21.txt) - please refer to the link for package versions in this VHD.
-
 * Bug Fixes
   * Users using API versions before 2020-03-01 can now create clusters with their first agent pool being either windows or spot pools.
 
