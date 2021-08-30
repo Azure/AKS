@@ -16,7 +16,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Calico has been updated to v3.20.0 on linux.
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.21.txt) - please refer to the link for package versions in this VHD.
 * Bug Fixes
-  * Users using API versions before 2020-03-01 can now create clusters with their first agent pool being either windows or spot pools. However, it is still required that at least one system pool is on linux.
+  * In scenarios where users are creating multiple node pools simultaneously, it is now possible to have the first User node pool in the deployment to have any characteristics so long as there is at least one System pool present in the deployment.
 
 ## Release 2021-08-19
 
