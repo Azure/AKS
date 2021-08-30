@@ -1,5 +1,23 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-08-26
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-09-02 for public cloud and 2021-09-09 for sovereign clouds.
+
+### Preannouncement
+
+* AKS will be upgrading to CoreDNS v1.8.4 in September. Users who are using the rewrite plugin, should [upgrade their configuration](https://github.com/Azure/AKS/issues/2521) before 1.8.4 goes live.
+
+### Release Notes
+
+* Component Updates
+  * Azuredisk and Azurefile CSI drivers upgraded to v1.5.0 in 1.21.0+ clusters.
+  * Open Service Mesh (OSM) addon has been updated to v0.9.2.
+  * Calico has been updated to v3.20.0 on linux.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.21.txt) - please refer to the link for package versions in this VHD.
+* Bug Fixes
+  * In scenarios where users are creating multiple node pools simultaneously, it is now possible to have the first User node pool in the deployment to have any characteristics so long as there is at least one System pool present in the deployment.
+
 ## Release 2021-08-19
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-08-26 for public cloud and 2021-09-02 for sovereign clouds.
@@ -44,7 +62,6 @@ This release is rolling out to all regions - estimated time for completed roll o
     * kubernetes.azure.com/fips_enabled
     * kubernetes.azure.com/os-sku
     * kubernetes.azure.com/cluster
-
 
 ## Release 2021-08-12
 
