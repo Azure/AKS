@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-09-02
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-09-09 for public cloud and 2021-09-18 for sovereign clouds.
+
+### Preannouncement
+
+* AKS will be upgrading to CoreDNS v1.8.4 in September. Users who are using the rewrite plugin, should [upgrade their configuration](https://github.com/Azure/AKS/issues/2521) before 1.8.4 goes live.
+
+### Announcement
+* In order to preserve any deallocated VMs, you must to set Scale-down Mode to Deallocate. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to Delete will remove any deallocate VMs.
+
+### Release Notes
+* Features
+  * Scale-down mode is now in public preview [https://docs.microsoft.com/en-us/azure/aks/scale-down-mode](https://docs.microsoft.com/en-us/azure/aks/scale-down-mode)
+
+* Component Updates
+  * Update Windows Azure CNI version to v1.4.9.  - Azure CNI start time shortened by 500ms
+  * csi-snapshotter has been updated to v4.2.1 for Kubernetes 1.21
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.31.txt) - please refer to the link for package versions in this VHD.
+
+* Bug Fixes
+  * NPM updated to 1.4.9, fixing https://github.com/Azure/azure-container-networking/issues/851
+
+
+
 ## Release 2021-08-26
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-09-02 for public cloud and 2021-09-09 for sovereign clouds.
