@@ -1,5 +1,20 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-09-09
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-09-16 for public cloud and 2021-09-25 for sovereign clouds.
+
+### Announcement
+* In order to preserve any deallocated VMs, you must to set Scale-down Mode to Deallocate. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to Delete will remove any deallocate VMs.
+
+### Release Notes
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.06.txt) - please refer to the link for package versions in this VHD.
+
+* Behavioral Change
+  * Azure Confidential Compute has changed the CPU resource request and limits for the device plugin and quote helper daemonset as part of the ACC addon deployments. They are now reduced as the earlier requested amounts were not necessary.
+  * AKS Run Command will now be enabled by default, and customers can now disable when desired through the cli.
+
 ## Release 2021-09-02
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-09-09 for public cloud and 2021-09-18 for sovereign clouds.
@@ -22,8 +37,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 * Bug Fixes
   * NPM updated to 1.4.9, fixing https://github.com/Azure/azure-container-networking/issues/851
-
-
 
 ## Release 2021-08-26
 
