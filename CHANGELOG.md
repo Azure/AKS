@@ -8,6 +8,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 * In order to preserve any deallocated VMs, you must to set Scale-down Mode to Deallocate. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to Delete will remove any deallocate VMs.
 
 ### Release Notes
+* New Features
+  * AKS Run Command is now Generally Available (GA), estimated to roll out the week of 2021-09-13.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.06.txt) - please refer to the link for package versions in this VHD.
 * Behavioral Change
