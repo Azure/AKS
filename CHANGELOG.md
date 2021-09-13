@@ -14,7 +14,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.06.txt) - please refer to the link for package versions in this VHD.
 * Behavioral Change
   * Azure Confidential Compute has changed the CPU resource request and limits for the device plugin and quote helper daemonset as part of the ACC addon deployments. They are now reduced as the earlier requested amounts were not necessary.
-  * AKS Run Command will now be enabled by default, and customers can now disable when desired through the cli.
+  * AKS Run Command will now be available by default, and customers can now disable when desired through the cli.
 
 ## Release 2021-09-02
 
