@@ -13,7 +13,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * New Features
   * You can now [integrate Azure HPC Cache with Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/azure-hpc-cache).
 * Component Updates
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.11](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.11.txt) - please refer to the link for package versions in this VHD.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.19.txt) - please refer to the link for package versions in this VHD.
   * Azure Disk CSI driver has been updated to v1.7.0.
   * Azure File CSI driver has been updated to v1.6.0.
 
