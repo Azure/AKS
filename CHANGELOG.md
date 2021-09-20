@@ -1,13 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-09-16
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-09-23 for public cloud and 2021-09-30 for sovereign clouds.
+
+### Announcement
+
+* In order to preserve any deallocated VMs, you must to set Scale-down Mode to `Deallocate`. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to `Delete` will remove any deallocated VMs.
+
+### Release Notes
+
+* New Features
+  * You can now [integrate Azure HPC Cache with Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/azure-hpc-cache).
+* Preview Features
+  * Cloud Controller Manager is now in Public Preview in anticipation of moving [Azure specific controllers out of tree](https://docs.microsoft.com/azure/aks/out-of-tree).
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.19.txt) - please refer to the link for package versions in this VHD.
+  * Azure Disk CSI driver has been updated to v1.7.0.
+  * Azure File CSI driver has been updated to v1.6.0.
+
 ## Release 2021-09-09
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-09-16 for public cloud and 2021-09-25 for sovereign clouds.
 
 ### Announcement
+
 * In order to preserve any deallocated VMs, you must to set Scale-down Mode to Deallocate. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to Delete will remove any deallocate VMs.
 
 ### Release Notes
+
 * New Features
   * AKS Run Command is now Generally Available (GA), estimated to roll out the week of 2021-09-13.
 * Component Updates
@@ -25,9 +46,11 @@ This release is rolling out to all regions - estimated time for completed roll o
 * AKS will be upgrading to CoreDNS v1.8.4 in September. Users who are using the rewrite plugin, should [upgrade their configuration](https://github.com/Azure/AKS/issues/2521) before 1.8.4 goes live.
 
 ### Announcement
+
 * In order to preserve any deallocated VMs, you must to set Scale-down Mode to Deallocate. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to Delete will remove any deallocate VMs.
 
 ### Release Notes
+
 * Features
   * Scale-down mode is now in public preview [https://docs.microsoft.com/en-us/azure/aks/scale-down-mode](https://docs.microsoft.com/en-us/azure/aks/scale-down-mode)
 
@@ -62,6 +85,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 This release is rolling out to all regions - estimated time for completed roll out is 2021-08-26 for public cloud and 2021-09-02 for sovereign clouds.
 
 ### Announcements
+
 * On the next release of the az AKS CLI we will introduce a new subcommand "aks addons" which will have the following commands: disable, enable, list, list-available, show, update.
 
 ### Release Notes
