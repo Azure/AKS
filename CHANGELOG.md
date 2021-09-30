@@ -1,5 +1,24 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-09-30
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-10-07 for public cloud and 2021-10-14 for sovereign clouds.
+
+### Announcement
+
+* In order to preserve any deallocated VMs, you must to set Scale-down Mode to `Deallocate`. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to `Delete` will remove any deallocated VMs.
+
+### Release Notes
+
+* Preview Features
+  * Enable multiple service account issuers for clusters using version >= 1.22, also fixing CNCF Validation issues.
+* Behavioral Changes
+  * When turning Cluster Auto Scaler off, you can now specify the requested agent pool node number.
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.25.txt) - please refer to the link for package versions in this VHD.
+  * AKS Windows image has been updated to the 9C patch version [2019-datacenter-core-smalldisk-17763.2213.210922](vhd-notes/AKSWindows/2019/17763.2213.210922.txt) - please refer to the link for component versions in this VHD.
+
+
 ## Release 2021-09-16
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-09-23 for public cloud and 2021-09-30 for sovereign clouds.
