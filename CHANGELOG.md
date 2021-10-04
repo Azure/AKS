@@ -4,10 +4,6 @@
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-10-07 for public cloud and 2021-10-14 for sovereign clouds.
 
-### Announcement
-
-* In order to preserve any deallocated VMs, you must to set Scale-down Mode to `Deallocate`. That includes VMs that have been deallocated using IaaS APIs (Virtual Machine Scale Set APIs). Setting Scale-down Mode to `Delete` will remove any deallocated VMs.
-
 ### Release Notes
 
 * Preview Features
