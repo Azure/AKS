@@ -1,5 +1,28 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-09-30
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-10-07 for public cloud and 2021-10-14 for sovereign clouds.
+
+### Release Notes
+
+* Features
+  * [Ability to tune azuredisk performance parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/enhancements/feat-add-ability-to-tune-azuredisk-performance-parameters.md)
+* Preview Features
+  * Kubernetes 1.22.1 is now in preview 
+  * Enable multiple service account issuers for clusters using version >= 1.22, also fixing CNCF Validation issues.
+  * Cloud Controller Manager is now default for clusters 1.22+
+* Behavioral Changes
+  * When turning Cluster Auto Scaler off, you can now specify the requested agent pool node number.
+* Bug Fixes
+  * Fixed csi driver crash issue on Windows nodes.
+* Component Updates
+  * Containerd 1.5 is now available to clusters 1.22+, for clusters prior to 1.22 AKS will continue to use and patch containerd 1.4.
+   * New patches for containerd released, 1.5.5 and 1.4.9, which address [CVE-2021-41103](https://github.com/Azure/AKS/issues/2583)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.25.txt) - please refer to the link for package versions in this VHD.
+  * AKS Windows image has been updated to the 9C patch version [2019-datacenter-core-smalldisk-17763.2213.210922](vhd-notes/AKSWindows/2019/17763.2213.210922.txt) - please refer to the link for component versions in this VHD.
+
+
 ## Release 2021-09-16
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-09-23 for public cloud and 2021-09-30 for sovereign clouds.
