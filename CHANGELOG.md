@@ -7,6 +7,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * Preview Features
+  * Kubernetes 1.21.1 is now in preview 
   * Enable multiple service account issuers for clusters using version >= 1.22, also fixing CNCF Validation issues.
 * Behavioral Changes
   * When turning Cluster Auto Scaler off, you can now specify the requested agent pool node number.
