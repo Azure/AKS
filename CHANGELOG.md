@@ -6,8 +6,18 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release Notes
 
+* Features
+  * General Availability of Ultra SSD support
+* Preview Features
+  * Public Preview of Private DNS sub zone support for Private Clusters
+  * Public Preview of HTTP Proxy
+  * Public Preview of support for WASM/WASI based nodepools
+* Behavioral Changes
+  * Validation that DNS service IP is not on subnet boundary
+  * Improve system pool taints error messages
+  * Don't provision network monitor on any clusters >= 1.21 as Azure CNI moved to transparent mode
+  
 * Component Updates
-
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.02](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.02.txt) - please refer to the link for package versions in this VHD.
 
 
