@@ -16,7 +16,8 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Validation that DNS service IP is not on subnet boundary
   * Improve system pool taints error messages
   * Don't provision network monitor on any clusters >= 1.21 as Azure CNI moved to transparent mode
-  
+* Bug Fixes
+  * Fix issue where images in China region were pulled from public cloud MCR
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.02](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.02.txt) - please refer to the link for package versions in this VHD.
 
