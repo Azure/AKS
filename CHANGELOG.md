@@ -7,11 +7,11 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * Features
-  * General Availability of Ultra SSD support
+  * General Availability of [Ultra SSD support](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks)
 * Preview Features
   * Public Preview of Private DNS sub zone support for Private Clusters
-  * Public Preview of HTTP Proxy
-  * Public Preview of support for WASM/WASI based nodepools
+  * Public Preview of [HTTP Proxy](https://docs.microsoft.com/en-us/azure/aks/http-proxy)
+  * Public Preview of support for [WASM/WASI based nodepools](https://docs.microsoft.com/en-us/azure/aks/use-wasi-node-pools)
 * Behavioral Changes
   * Validation that DNS service IP is not on subnet boundary
   * Improve system pool taints error messages
