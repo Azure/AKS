@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-10-08
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-10-14 for public cloud and 2021-10-21 for sovereign clouds. 
+
+### Release Notes
+
+* Features
+  * General Availability of [Ultra SSD support](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks)
+* Preview Features
+  * Public Preview of Private DNS sub zone support for Private Clusters
+  * Public Preview of [HTTP Proxy](https://docs.microsoft.com/en-us/azure/aks/http-proxy)
+  * Public Preview of support for [WASM/WASI based nodepools](https://docs.microsoft.com/en-us/azure/aks/use-wasi-node-pools)
+* Behavioral Changes
+  * Validation that DNS service IP is not on subnet boundary
+  * Improve system pool taints error messages
+  * Don't provision network monitor on any clusters >= 1.21 as Azure CNI moved to transparent mode
+* Bug Fixes
+  * Fix issue where images in China region were pulled from public cloud MCR
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.02](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.02.txt) - please refer to the link for package versions in this VHD.
+
+
 ## Release 2021-09-30
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-10-07 for public cloud and 2021-10-14 for sovereign clouds.
