@@ -8,7 +8,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 * Behavioral Changes
   * Add aks-managed-cluster-rg and aks-managed-cluster-name tags to the node resource group
-
+* Bug Fixes
+  * Fix [issue](https://github.com/Azure/AKS/issues/2584) where Terraform is unable to set a default for the auto upgrade channel preview feature
 * Component Updates
   * Update Virtual Kubelet to 1.4.0
   * Use 1.5.0-rc1 of the AGIC Addon for k8s 1.22.0 to support ingress v1 API
