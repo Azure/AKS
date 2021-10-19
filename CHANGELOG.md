@@ -1,5 +1,24 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-10-15
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-10-21 for public cloud and 2021-10-28 for sovereign clouds.
+
+### Release Notes
+
+* Behavioral Changes
+  * Add aks-managed-cluster-rg and aks-managed-cluster-name tags to the node resource group
+* Bug Fixes
+  * Fix [issue](https://github.com/Azure/AKS/issues/2584) where Terraform is unable to set a default for the auto upgrade channel preview feature
+* Component Updates
+  * Update Virtual Kubelet to 1.4.0
+  * Use 1.5.0-rc1 of the AGIC Addon for k8s 1.22.0 to support ingress v1 API
+  * Update Azure CNI to v1.4.12 for Windows
+  * Update AKS base image version for Edge zones to 2021.10.13
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.13.txt) - please refer to the link for package versions in this VHD.
+  * AKS Windows image has been updated to the 10B patch version including KB5004335, KB5004424, KB5006672 & KB5005701 [2019-datacenter-core-smalldisk-17763.2237.211014](vhd-notes/AKSWindows/2019/17763.2237.211014.txt) - please refer to the link for component versions in this VHD.
+
+
 ## Release 2021-10-08
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-10-14 for public cloud and 2021-10-21 for sovereign clouds. 
