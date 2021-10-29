@@ -1,5 +1,26 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-10-28
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-11-04 for public cloud and 2021-11-11 for sovereign clouds.
+
+### Release Notes
+
+* New Features
+  * Users can now update/add node labels to existing nodes without having to reimage.
+* Preview Features
+  * Node pool start/stop is now in [preview](https://docs.microsoft.com/azure/aks/start-stop-nodepools).
+* Bug Fixes
+  * add missing `managed-csi` storage class in AKS Kubernetes versions 1.21+.
+* Behavioral Changes
+  * CSIMigration for AzureFile is on by default for Kubernetes versions 1.22+.
+  * Users can no longer add/update their label wit the AKS prefix ("kubernetes.azure.com")
+* Component Updates
+  * Update CSI Disk Driver to v1.8. and File Driver to 1.7.
+  * Update omsagent to [ciprod10132021 and win-ciprod10132021](https://github.com/microsoft/Docker-Provider/blob/ci_dev/ReleaseNotes.md#10132021--).
+  * Update Azure CNI to v1.4.13 for Windows.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.23](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.23.txt) - please refer to the link for package versions in this VHD.
+
 ## Release 2021-10-15
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-10-21 for public cloud and 2021-10-28 for sovereign clouds.
@@ -17,7 +38,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Update AKS base image version for Edge zones to 2021.10.13
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.13.txt) - please refer to the link for package versions in this VHD.
   * AKS Windows image has been updated to the 10B patch version including KB5004335, KB5004424, KB5006672 & KB5005701 [2019-datacenter-core-smalldisk-17763.2237.211014](vhd-notes/AKSWindows/2019/17763.2237.211014.txt) - please refer to the link for component versions in this VHD.
-
 
 ## Release 2021-10-08
 
@@ -40,7 +60,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.02](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.02.txt) - please refer to the link for package versions in this VHD.
 
-
 ## Release 2021-09-30
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-10-07 for public cloud and 2021-10-14 for sovereign clouds.
@@ -62,7 +81,6 @@ This release is rolling out to all regions - estimated time for completed roll o
    * New patches for containerd released, 1.5.5 and 1.4.9, which address [CVE-2021-41103](https://github.com/Azure/AKS/issues/2583)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.25.txt) - please refer to the link for package versions in this VHD.
   * AKS Windows image has been updated to the 9C patch version [2019-datacenter-core-smalldisk-17763.2213.210922](vhd-notes/AKSWindows/2019/17763.2213.210922.txt) - please refer to the link for component versions in this VHD.
-
 
 ## Release 2021-09-16
 
