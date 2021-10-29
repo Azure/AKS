@@ -11,14 +11,15 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Preview Features
   * Node pool start/stop is now in [preview](https://docs.microsoft.com/azure/aks/start-stop-nodepools).
 * Bug Fixes
-  * add missing `managed-csi` storage class in AKS Kubernetes versions 1.21+.
+  * added missing `managed-csi` storage class in AKS Kubernetes versions 1.21+.
+  * Fixed a bug with the cluster autoscaler nodepool balancing due to a new agentpool label being added "kubernetes.azure.com/agentpool"
 * Behavioral Changes
   * CSIMigration for AzureFile is on by default for Kubernetes versions 1.22+.
   * Users can no longer add/update their label with the AKS prefix ("kubernetes.azure.com")
 * Component Updates
-  * Update CSI Disk Driver to v1.8. and File Driver to 1.7.
-  * Update omsagent to [ciprod10132021 and win-ciprod10132021](https://github.com/microsoft/Docker-Provider/blob/ci_dev/ReleaseNotes.md#10132021--).
-  * Update Azure CNI to v1.4.13 for Windows.
+  * Updated CSI Disk Driver to v1.8. and File Driver to 1.7.
+  * Updated omsagent to [ciprod10132021 and win-ciprod10132021](https://github.com/microsoft/Docker-Provider/blob/ci_dev/ReleaseNotes.md#10132021--).
+  * Updated Azure CNI to v1.4.13 for Windows.
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.23](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.23.txt) - please refer to the link for package versions in this VHD.
 
 ## Release 2021-10-15
