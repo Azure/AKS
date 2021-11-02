@@ -7,19 +7,17 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Announcement
 
 * AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
-* AKS is implementing Konnectivity to replace tunnel-front slowly over the rest of the calendar year. The following regions westcentralus, uksouth, uaenorth already have Konnectivity activated.
+* Konnectivity - a new version of the AKS tunnel component will replace the aks-link and tunnel-front versions slowly over the rest of the calendar year. The following regions westcentralus, uksouth, uaenorth already have Konnectivity enabled
 
 ### Release Notes
 
-* New Features
-  * Users can now update/add node labels to existing nodes without having to reimage.
 * Preview Features
   * Node pool start/stop is now in [preview](https://docs.microsoft.com/azure/aks/start-stop-nodepools).
-  * Node pool snapshots are now supported. Please check the AKS documentation at 10am Pacific on 11/02/2021 to read more.
+  * Node pool snapshots are now supported. Please check the AKS documentation at 5pm Pacific on 11/02/2021 to read more.
 * Bug Fixes
   * added missing `managed-csi` storage class in AKS Kubernetes versions 1.21+.
   * Fixed a bug with the cluster autoscaler nodepool balancing due to a new agentpool label being added "kubernetes.azure.com/agentpool"
-  * Users can no longer add/update their label with the AKS prefix ("kubernetes.azure.com"). This operation is now blocked.
+  * User manipulation or usage of the system-reserved label prefix "kubernetes.azure.com" is now correctly blocked.
 * Component Updates
   * Updated CSI Disk Driver to v1.8. and File Driver to 1.7.
   * Updated omsagent to [ciprod10132021 and win-ciprod10132021](https://github.com/microsoft/Docker-Provider/blob/ci_dev/ReleaseNotes.md#10132021--).
