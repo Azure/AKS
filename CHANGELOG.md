@@ -20,8 +20,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * added missing `managed-csi` storage class in AKS Kubernetes versions 1.21+.
   * Fixed a bug with the cluster autoscaler nodepool balancing due to a new agentpool label being added "kubernetes.azure.com/agentpool"
   * Users can no longer add/update their label with the AKS prefix ("kubernetes.azure.com"). This operation is now blocked.
-* Behavioral Changes
-  * CSIMigration for AzureFile is on by default for Kubernetes versions 1.22+.
 * Component Updates
   * Updated CSI Disk Driver to v1.8. and File Driver to 1.7.
   * Updated omsagent to [ciprod10132021 and win-ciprod10132021](https://github.com/microsoft/Docker-Provider/blob/ci_dev/ReleaseNotes.md#10132021--).
