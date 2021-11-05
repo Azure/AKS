@@ -1,5 +1,21 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-11-04
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-11-11 for public cloud and 2021-11-18 for sovereign clouds.
+
+### Announcement
+
+* AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
+* Konnectivity - a new version of the AKS tunnel component will replace the aks-link and tunnel-front versions slowly over the rest of the calendar year. The following regions eastus, westcentralus, uksouth, uaenorth already have Konnectivity enabled.
+
+### Release Notes
+
+* Bug Fixes
+  * A bug has been fixed in `Application Gateway Ingress Controller` that previously caused users OOM errors while running a large number of ingress objects.
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.10.30](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.10.30.txt) - please refer to the link for package versions in this VHD.
+
 ## Release 2021-10-28
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-11-04 for public cloud and 2021-11-11 for sovereign clouds.
