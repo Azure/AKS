@@ -11,6 +11,9 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release Notes
 
+* Preview Features
+  * Managed NAT Gateway is now in [public preview](https://docs.microsoft.com/azure/aks/nat-gateway).
+  * Enable Group Managed Service Accounts (GMSA) for your Windows Server nodes on your Azure Kubernetes Service (AKS) cluster is now in [public preview](https://docs.microsoft.com/azure/aks/use-group-managed-service-accounts).
 * Bug Fixes
   * A bug has been fixed in `Application Gateway Ingress Controller` that previously caused users OOM errors while running a large number of ingress objects.
 * Component Updates
