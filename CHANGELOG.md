@@ -1,5 +1,26 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-11-11
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-11-18 for public cloud and 2021-11-25 for sovereign clouds.
+
+### Announcement
+
+* AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
+* Konnectivity - is deployed in all Azure Public regions.
+* AKS Version 1.19 will be deprecated and removed from AKS at the end of January 2022.
+
+### Release Notes
+
+* New Features
+  * Auto-Upgrade for AKS is now [GA](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel). 
+* Bug Fixes
+  * An Authentication issue related to [pulling image secrets](https://github.com/virtual-kubelet/azure-aci/pull/171) has been fixed with a new version of the virtual-kubelet.
+* Component Updates
+  * Virtual-kubelet has been updated to version 1.4.1.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.11.06](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.11.06.txt) - please refer to the link for package versions in this VHD.
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2300.211110](vhd-notes/AKSWindows/2019/17763.2300.211110.txt) - please refer to the link for component versions in this VHD.
+
 ## Release 2021-11-04
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-11-11 for public cloud and 2021-11-18 for sovereign clouds.
