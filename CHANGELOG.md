@@ -7,7 +7,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Announcement
 
 * AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
-* Konnectivity - is deployed in all Azure Public regions.
 * AKS Version 1.19 will be deprecated and removed from AKS at the end of January 2022.
 
 ### Release Notes
