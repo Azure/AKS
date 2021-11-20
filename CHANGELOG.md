@@ -1,5 +1,21 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-11-18
+
+This release is rolling out to all regions - estimated time for completed roll out is 2021-11-25 for public cloud and 2021-12-03 for sovereign clouds.
+
+### Announcement
+
+* AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
+* Konnectivity - We have stopped the rollout of Konnectivity dues to issues we found during testing.
+* AKS Version 1.19 will be deprecated and removed from AKS at the end of January 2022.
+
+### Release Notes
+
+* Component Updates
+  * Update Metrics Server to 0.5.1 for Kubernetes 1.22
+  * Update Azure CNI to v1.4.14 for Windows nodes
+
 ## Release 2021-11-11
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-11-18 for public cloud and 2021-11-25 for sovereign clouds.
