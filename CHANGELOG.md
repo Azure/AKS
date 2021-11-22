@@ -23,8 +23,12 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Announcement
 
 * AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
-* Konnectivity - is deployed in all Azure Public regions.
-* AKS Version 1.19 will be deprecated and removed from AKS at the end of January 2022.
+* Konnectivity - a new version of the AKS tunnel component that will replace the aks-link and tunnel-front versions has been rolled back in all regions. The AKS team will announce when Konnectivity is re-released.
+* AKS and Holiday Season: To ease the burden of upgrade and change during the holiday season, AKS is extending a limited scope of support for all clusters and node pools on 1.19 as a courtesy. Customers with clusters and node pools on 1.19 after the [announced deprecation date of 2021-11-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#kubernetes-version-support-policy).
+ The scope of this limited extension is effective from '2021-12-01 to 2022-01-31' and is limited to the following:
+  * Creation of new clusters and node pools on 1.19.
+  * CRUD operations on 1.19 clusters.
+  * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
 
 ### Release Notes
 
