@@ -12,6 +12,11 @@
   * CRUD operations on 1.19 clusters.
   * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
 
+### Release Notes
+
+* Bug Fixes
+  * A bug has been fixed where clusters would come up with incorrect SNAT settings that broke DNS resolution. The following GitHub issues describe the bug, [Pods cannot resolve external DNSes](https://github.com/Azure/AKS/issues/2646) and [azure-ip-masq-agent-config populated with empty nonMasqueradeCIDRs list for private cluster](https://github.com/Azure/AKS/issues/2653).
+
 ## Release 2021-11-11
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-11-18 for public cloud and 2021-11-25 for sovereign clouds.
