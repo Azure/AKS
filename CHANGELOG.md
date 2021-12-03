@@ -1,11 +1,11 @@
 # Azure Kubernetes Service Changelog
 
 ## Release 2021-12-2
-This release is rolling out to all regions - estimated time for completed roll out is 2021-12-2 for public cloud and 2021-12-9 for sovereign clouds.
+This release is rolling out to all regions - estimated time for completed roll out is 2021-12-09 for public cloud and 2021-12-16 for sovereign clouds.
 
 ### Announcement
 
-* Containerd default / Dockershim deprecation on Windows.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
 * Konnectivity rollout has been halted for the rest of the year. We will continue the rollout in the new calendar year.
 
 ### Release Notes
@@ -14,9 +14,10 @@ This release is rolling out to all regions - estimated time for completed roll o
   * The DelegateFSGroupToCSIDriver feature flag is only introduced to kubelet in 1.22, the nodes on 1.21 wont be able to start with this feature flag.
 * Component Updates
   * When cluster has Bring Your Own Key (BYOK) setting, and os disk is ephemeral by default then the fix is to ignore BYOK os disk setting and set os disk as ephemeral. Users could still use BYOK for data disk feature.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.11.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.11.27.txt) - please refer to the link for package versions in this VHD.
 
 ## Release 2021-11-25
-This release is rolling out to all regions - estimated time for completed roll out is 2021-11-25 for public cloud and 2021-12-2 for sovereign clouds.
+This release is rolling out to all regions - estimated time for completed roll out is 2021-12-02 for public cloud and 2021-12-09 for sovereign clouds.
 
 ### Announcement
 
@@ -33,6 +34,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Windows containerd GA with Containerd version 1.5.8. Containerd will be used by default in windows node with k8s version 1.22.3 or newer, otherwise, Docker will be used. Docker   will be deprecated in AKS for the k8s version newer than 1.23.0. To enable Containerd under k8s version 1.22.3, the customer header WindowsContainerRuntime=containerd is required during upgrade or creation. To enable Docker with k8s newer than 1.22.3 and older than 1.23.0, the customer is required to set the customer header WindowsContainerRuntime=docker. NOTE: Containerd cannot be reverted to Docker.
 * Bug Fixes
   * A WindowsGmsaProfile certificate renewal issue during certificate rotation has been identified and fixed.
+  * Added the component=tunnel label to konnectivity-agent pods so they will be matched by any label selectors that previously matched tunnelfront pods. This only applies to clusters that have received the new Konnectivity network tunnel.
 * Component Updates
   * Increased cpu limits of csi driver node daemonsets to prevent cpu throttling,
   

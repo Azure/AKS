@@ -1,0 +1,39 @@
+az aks create --resource-group Test-Kaar --name myAKSCluster --node-count 3 
+az aks get-credentials --resource-group Test-Kaar --name myAKSCluster   
+kubectl get nodes
+Kubectl get pods
+kubectl apply -f azure-vote.yaml
+kubectl get service azure-vote-front --watch
+
+
+AGIC
+
+az aks create -n AGICCluster -g Test-Kaar --network-plugin azure --enable-managed-identity
+
+Deploy App gateway
+az network public-ip create -n myPublicIp -g Test-Kaar --allocation-method Static --sku Standard
+az network vnet create -n myVnet -g Test-Kaar --address-prefix 11.0.0.0/8 --subnet-name mySubnet --subnet-prefix 11.1.0.0/16 
+az network application-gateway create -n myApplicationGateway -l canadacentral -g Test-Kaar --sku Standard_v2 --public-ip-address myPublicIp --vnet-name myVnet --subnet mySubnet
+
+Enable AGIC Addon
+$appgwId=az network application-gateway show -n myApplicationGateway -g Test-Kaar -o tsv --query "id" 
+az aks enable-addons -n AGICCluster -g Test-Kaar -a ingress-appgw --appgw-id $appgwId
+
+Peer the two with VNETs
+
+$nodeResourceGroup=az aks show -n AGICCluster -g Test-Kaar -o tsv --query "nodeResourceGroup" $aksVnetName=az network vnet list -g $nodeResourceGroup -o tsv --query "[0].name"
+
+$aksVnetId=az network vnet show -n $aksVnetName -g $nodeResourceGroup -o tsv --query "id"
+
+az network vnet peering create -n AppGWtoAKSVnetPeering -g Test-Kaar --vnet-name myVnet --remote-vnet $aksVnetId --allow-vnet-access
+
+$appGWVnetId=az network vnet show -n myVnet -g Test-Kaar -o tsv --query "id"
+az network vnet peering create -n AKStoAppGWVnetPeering -g $nodeResourceGroup --vnet-name $aksVnetName --remote-vnet $appGWVnetId --allow-vnet-access
+
+Deploy a sample application using AGIC
+
+az aks get-credentials -n AGICCluster -g Test-Kaar
+kubectl apply -f https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/aspnetapp.yaml
+
+Check that the application is reachable
+kubectl get ingress
