@@ -1,5 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2021-12-2
+This release is rolling out to all regions - estimated time for completed roll out is 2021-12-2 for public cloud and 2021-12-9 for sovereign clouds.
+
+### Announcement
+
+* Containerd default / Dockershim deprecation on Windows.
+* Konnectivity rollout has been halted for the rest of the year. We will continue the rollout in the new calendar year.
+
+### Release Notes
+
+* Bug Fixes
+  * The DelegateFSGroupToCSIDriver feature flag is only introduced to kubelet in 1.22, the nodes on 1.21 wont be able to start with this feature flag.
+* Component Updates
+  * When cluster has Bring Your Own Key (BYOK) setting, and os disk is ephemeral by default then the fix is to ignore BYOK os disk setting and set os disk as ephemeral. Users could still use BYOK for data disk feature.
+
+## Release 2021-11-25
+This release is rolling out to all regions - estimated time for completed roll out is 2021-11-25 for public cloud and 2021-12-2 for sovereign clouds.
+
+### Announcement
+
+* Konnectivity rollout has been halted for the rest of the year. We will continue the rollout in the new calendar year.
+* AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
+* AKS and Holiday Season: To ease the burden of upgrade and change during the holiday season, AKS is extending a limited scope of support for all clusters and node pools on 1.19 as a courtesy. Customers with clusters and node pools on 1.19 after the [announced deprecation date of 2021-11-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#kubernetes-version-support-policy).
+ The scope of this limited extension is effective from '2021-12-01 to 2022-01-31' and is limited to the following:
+  * Creation of new clusters and node pools on 1.19.
+  * CRUD operations on 1.19 clusters.
+  * Azure Support of non-Kubernetes related, platform issues. Platform issues include trouble with networking, storage, or compute running on Azure. Any support requests for K8s patching and troubleshooting will be requested to upgrade into a supported version.
+
+### Release Notes
+* New Features
+  * Windows containerd GA with Containerd version 1.5.8. Containerd will be used by default in windows node with k8s version 1.22.3 or newer, otherwise, Docker will be used. Docker   will be deprecated in AKS for the k8s version newer than 1.23.0. To enable Containerd under k8s version 1.22.3, the customer header WindowsContainerRuntime=containerd is required during upgrade or creation. To enable Docker with k8s newer than 1.22.3 and older than 1.23.0, the customer is required to set the customer header WindowsContainerRuntime=docker. NOTE: Containerd cannot be reverted to Docker.
+* Bug Fixes
+  * A WindowsGmsaProfile certificate renewal issue during certificate rotation has been identified and fixed.
+* Component Updates
+  * Increased cpu limits of csi driver node daemonsets to prevent cpu throttling,
+  
 ## Release 2021-11-18
 
 ### Announcement
