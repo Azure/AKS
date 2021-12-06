@@ -24,7 +24,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * A WindowsGmsaProfile certificate renewal issue during certificate rotation has been identified and fixed.
   * Added the component=tunnel label to konnectivity-agent pods so they will be matched by any label selectors that previously matched tunnelfront pods. This only applies to clusters that have received the new Konnectivity network tunnel.
 * Component Updates
-    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.11.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.11.27.txt) - please refer to the link for package versions in this VHD.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.11.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.11.27.txt) - please refer to the link for package versions in this VHD.
 
 ## Release 2021-11-18
 
