@@ -18,15 +18,13 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * New Features
-  * Windows containerd GA with Containerd version 1.5.8. Containerd will be used by default in windows node with k8s version 1.22.3 or newer, otherwise, Docker will be used. Docker  will be deprecated in AKS for the k8s version newer than 1.23.0. To enable Containerd under k8s version 1.22.3, the customer header WindowsContainerRuntime=containerd is required during upgrade or creation. To enable Docker with k8s newer than 1.22.3 and older than 1.23.0, the customer is required to set the customer header WindowsContainerRuntime=docker. NOTE: Containerd cannot be reverted to Docker.
+  * Windows containerd preview out with Containerd version 1.5.8. Containerd will be used by default in windows node with k8s version 1.22.3 or newer, otherwise, Docker will be used. Docker  will be deprecated in AKS for the k8s version newer than 1.23.0. To enable Containerd under k8s version 1.22.3, the customer header WindowsContainerRuntime=containerd is required during upgrade or creation. To enable Docker with k8s newer than 1.22.3 and older than 1.23.0, the customer is required to set the customer header WindowsContainerRuntime=docker. NOTE: Containerd cannot be reverted to Docker.
 * Bug Fixes
-  * The DelegateFSGroupToCSIDriver feature flag is only introduced to kubelet in 1.22, the nodes on 1.21 wont be able to start with this feature flag.
+  * Fixed a bug such that the nodes on 1.21 wont be able to start with the DelegateFSGroupToCSIDriver feature flag. This feature flag is only introduced to kubelet in 1.22. 
   * A WindowsGmsaProfile certificate renewal issue during certificate rotation has been identified and fixed.
   * Added the component=tunnel label to konnectivity-agent pods so they will be matched by any label selectors that previously matched tunnelfront pods. This only applies to clusters that have received the new Konnectivity network tunnel.
 * Component Updates
-  * When cluster has Bring Your Own Key (BYOK) setting, and os disk is ephemeral by default then the fix is to ignore BYOK os disk setting and set os disk as ephemeral. Users could still use BYOK for data disk feature.
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.11.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.11.27.txt) - please refer to the link for package versions in this VHD.
-  * Increased cpu limits of csi driver node daemonsets to prevent cpu throttling.
+    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.11.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.11.27.txt) - please refer to the link for package versions in this VHD.
 
 ## Release 2021-11-18
 
