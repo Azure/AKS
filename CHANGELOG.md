@@ -21,6 +21,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Fixed a bug such that the nodes on 1.21 wont be able to start with the DelegateFSGroupToCSIDriver feature flag. This feature flag is only introduced to kubelet in 1.22. 
   * A WindowsGmsaProfile certificate renewal issue during certificate rotation has been identified and fixed.
   * Added the component=tunnel label to konnectivity-agent pods so they will be matched by any label selectors that previously matched tunnelfront pods. This only applies to clusters that have received the new Konnectivity network tunnel.
+  * Increased cpu limits of csi driver node daemonsets from 200m to 1cpu in order to prevent cpu throttling.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.11.27](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.11.27.txt) - please refer to the link for package versions in this VHD.
 
