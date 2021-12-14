@@ -23,7 +23,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Bug Fixes
   * Corrected validation that silently ignored updates to HTTP proxy settings.
   * Fixed issue that blocked creation of 0 node nodepools.
-  * CSI driver probe timeout increased to avoid driver crashes on small Windows VM sizes.
+  * CSI driver probe timeout increased to 30s avoid driver crashes on small Windows VM sizes.
 * Component Updates
   * Calico updated to [v3.21.0](https://projectcalico.docs.tigera.io/archive/v3.21/release-notes/#v3210) on Linux.
   * Updated Azure CNI on Windows to [v1.4.16](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.16). Fixes #2608
