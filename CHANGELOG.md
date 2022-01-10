@@ -1,5 +1,42 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-01-07
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-01-17 for public cloud and 2022-01-20 for sovereign clouds.
+
+### Announcement
+
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* Konnectivity rollout has been halted for the rest of the year. We will continue the rollout in the new calendar year.
+* AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
+* Kubernetes 1.19 will be removed on 2021-01-31.
+* Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
+
+### Release Notes
+
+* Features
+  * Private DNS Subzone for Private Cluster is now GA.
+* Preview Features
+  * Kubenet IPv6 support has been enabled all public cloud regions. See https://aka.ms/aks/ipv6  for more details.
+* Bug Fixes
+  * Corrected validation that silently ignored updates to HTTP proxy settings.
+  * Fixed issue that blocked creation of 0 node nodepools.
+  * CSI driver probe timeout increased to 30s avoid driver crashes on small Windows VM sizes.
+* Behavioral Change
+  * Private Cluster now supports cross-subscription VNET for PrivateLink.
+  * In 1.21+ existing and newly created clusters, all built-in storage classes will use [CSI Driver provisioners](disk.csi.azure.com) [and](file.csi.azure.com). There are no in-tree provisioners any more(kubernetes.io/azure-disk and kubernetes.io/azure-file).
+  * CPU limits for CSI drivers have been removed.
+  * Azure CNI - won't reserve VNet IP addresses for daemonset pods using hostNetwork: true"
+* Component Updates
+  * Cluster Auto Scaler updates:
+    * Added support for more SKUs for scaling from zero (including Standard_E2s_v5, Standard_D8s_v5 and Standard_D4s_v5).
+    * Fixed an issue with balancing node groups and scaling from zero in clusters with CSI drivers that utilize zonal affinities.
+    * Fixed an issue with scaling from zero when pods have a selector on the stable instance type label node.kubernetes.io/instance-type.
+    * Improve scale up performance in very large scale-up scenarios
+  * Azure Policy for AKS updated to [Gatekeeper 3.7.0](https://newreleases.io/project/github/open-policy-agent/gatekeeper/release/v3.7.0-beta.2)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.01.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.07.txt).
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2366.211215](vhd-notes/AKSWindows/2019/17763.2366.211215.txt).
+
 ## Release 2021-12-9
 
 This release is rolling out to all regions - estimated time for completed roll out is 2021-12-20 for public cloud and 2021-12-23 for sovereign clouds.
