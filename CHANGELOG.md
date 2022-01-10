@@ -16,6 +16,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 * Features
   * Private DNS Subzone for Private Cluster is now GA.
+  * Containerd runtime on Windows is now GA
 * Preview Features
   * Kubenet IPv6 support has been enabled all public cloud regions. See https://aka.ms/aks/ipv6  for more details.
 * Bug Fixes
