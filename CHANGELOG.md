@@ -34,7 +34,7 @@ This release is rolling out to all regions - estimated time for completed roll o
     * Fixed an issue with balancing node groups and scaling from zero in clusters with CSI drivers that utilize zonal affinities.
     * Fixed an issue with scaling from zero when pods have a selector on the stable instance type label node.kubernetes.io/instance-type.
     * Improve scale up performance in very large scale-up scenarios
-  * Azure Policy for AKS updated to [Gatekeeper 3.7.0](https://newreleases.io/project/github/open-policy-agent/gatekeeper/release/v3.7.0-beta.2)
+  * Azure Policy for AKS updated to [Gatekeeper 3.7.0](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.7.0)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.01.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.07.txt).
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2366.211215](vhd-notes/AKSWindows/2019/17763.2366.211215.txt).
 
