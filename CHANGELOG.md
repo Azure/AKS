@@ -17,8 +17,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Bug Fixes
   * Fixed a bug where if RBAC was disabled on a cluster, the Azure file daemonset would crash on windows nodes.
 * Component Updates
-  * Add Azure Policy multi-arch image to use on existing amd-64 clusters.
-  * Upgrade dns-autoscaler to 'multi-arch' version for 1.22+ cluster, in order that the dns-autoscaler works on 1.22+ arm64 nodes.
+  * Upgrade dns-autoscaler to version 1.8.5 for 1.22+.
   * Azure disk CSI driver updated to v.1.10.
   * Azure file CSI driver updated to v.19 on AKS versions 1.21+
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.01.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.08.txt).
