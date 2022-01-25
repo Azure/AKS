@@ -14,8 +14,10 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release Notes
 
+* Preview Features
+  * Multi Instance GPU support is available for ND A100 v4 VMs. See https://aka.ms/AAfjra1 for more details.
 * Bug Fixes
-  * Fixed bug where some custom in-tree storage classes on 1.21+ were delete by mistake.
+  * Fixed bug where some custom in-tree storage classes on 1.21+ were deleted by mistake.
   * Ensured Azure Defender pods have affinity for system pools.
   * App GW ingress controller was added the CriticalAddonsOnly toleration as the rest of the addons and system components.
 * Behavioral changes
