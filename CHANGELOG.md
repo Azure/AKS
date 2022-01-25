@@ -1,5 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-01-20
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-01-31 for public cloud and 2022-02-03 for sovereign clouds.
+
+### Announcement
+
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* Konnectivity rollout will continue in Feb 2022.
+* Client automatic cert rotation is now being enabled on the last set of regions.
+* Kubernetes 1.19 will be removed on 2021-01-31.
+* Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
+
+### Release Notes
+
+* Bug Fixes
+  * Fixed bug where some custom in-tree storage classes on 1.21+ were delete by mistake.
+  * Ensured Azure Defender pods have affinity for system pools.
+  * App GW ingress controller was added the CriticalAddonsOnly toleration as the rest of the addons and system components.
+* Behavioral changes
+  * New global policy added to clusters with Calico network policies enabled to allow egress from the konnectivity system component.
+  * All AKS system-created tags will have an "aks-managed" prefix and cannot be modified or deleted.
+* Component Updates
+  * ip-masq-agent updated to v2.5.0.9.
+  * Konnectivity updated to v0.0.27.
+  * Azure CNI updated to v0.9.1.
+  * Azure Policy addon updated to prod_20220114.1.
+  * Windows Pause Image updated to 3.6-hotfix.20220114.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.01.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.19.txt).
+
 ## Release 2022-01-13
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-01-24 for public cloud and 2022-01-27 for sovereign clouds.

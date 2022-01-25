@@ -30,8 +30,15 @@ Components downloaded in this VHD build (some of the below components might get 
   - dnsutils
   - zip
   - krustlet v0.0.1
-  - moby v19.03.14
-  - runc version 1.0.0-rc95
+  - [installed] containerd v1.4.9-3
+  - [cached] containerd v1.4.4-1
+  - [cached] updated containerd v1.5.5-3
+  - crictl version 1.19.0
+  - crictl version 1.20.0
+  - crictl version 1.21.0
+  - crictl version 1.22.0
+  - crictl version 1.23.0
+  - runc version 1.0.3
   - [cached] runc 1.0.0-rc92
   - [cached] runc 1.0.0-rc95
   - bpftrace
@@ -42,7 +49,7 @@ Components downloaded in this VHD build (some of the below components might get 
   - bcc-tools
   - libbcc-examples
   - img
-docker images pre-pulled:
+containerd images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/kubernetes-dashboard:v1.10.1
   - mcr.microsoft.com/oss/kubernetes/dashboard:v2.0.1
   - mcr.microsoft.com/oss/kubernetes/dashboard:v2.4.0
@@ -93,7 +100,6 @@ docker images pre-pulled:
   - mcr.microsoft.com/oss/cilium/cilium:1.10.3.3
   - mcr.microsoft.com/oss/cilium/cilium:1.10.5
   - mcr.microsoft.com/oss/tigera/operator:v1.20.0
-  - mcr.microsoft.com/oss/tigera/operator:v1.22.3
   - mcr.microsoft.com/oss/tigera/operator:v1.23.1
   - mcr.microsoft.com/oss/tigera/operator:v1.23.3
   - mcr.microsoft.com/oss/appscode/guard:v0.7.1
@@ -101,8 +107,12 @@ docker images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.0.2
   - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.1.1
   - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v0.7.9
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v0.7.11
   - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.0.6
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.0.8
   - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.1.2
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.1.4
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.23.1
   - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.7.1-hotfix.20200403
   - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.8.3
   - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.8.5
@@ -113,13 +123,15 @@ docker images pre-pulled:
   - mcr.microsoft.com/k8s/kms/keyvault:v0.0.9
   - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.2.0.6
   - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.8.0.1
-  - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.9.0
+  - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.8.0.2
+  - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.10.0
   - mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.2.0
   - mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.7.0
-  - mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.8.0
+  - mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.9.0
   - mcr.microsoft.com/oss/kubernetes-csi/livenessprobe:v2.2.0
   - mcr.microsoft.com/oss/kubernetes-csi/livenessprobe:v2.4.0
   - mcr.microsoft.com/oss/kubernetes-csi/livenessprobe:v2.5.0
+  - mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar:v2.0.1
   - mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar:v2.3.0
   - mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar:v2.4.0
   - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.4.1
@@ -138,8 +150,11 @@ docker images pre-pulled:
   - mcr.microsoft.com/oss/virtual-kubelet/virtual-kubelet:1.4.0
   - mcr.microsoft.com/oss/virtual-kubelet/virtual-kubelet:1.4.1
   - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20210909.1
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20211230.1
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20220114.1
   - mcr.microsoft.com/azure-policy/policy-kubernetes-webhook:prod_20210714.1
   - mcr.microsoft.com/azure-policy/policy-kubernetes-webhook:prod_20210909.1
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-webhook:prod_20211230.1
   - mcr.microsoft.com/azure-application-gateway/kubernetes-ingress:1.4.0
   - mcr.microsoft.com/azure-application-gateway/kubernetes-ingress:1.5.0-rc1
   - mcr.microsoft.com/oss/azure/aad-pod-identity/nmi:v1.7.5.4
@@ -155,8 +170,14 @@ docker images pre-pulled:
   - Azure Swift CNI version 1.4.14
   - Azure Swift CNI version 1.4.16
   - CNI plugin version 0.7.6
-  - CNI plugin version 0.8.7
+  - CNI plugin version 0.9.1
   - mcr.microsoft.com/oss/nvidia/k8s-device-plugin:v0.9.0
+  - mcr.microsoft.com/aks/acc/sgx-device-plugin:1.0
+  - mcr.microsoft.com/aks/acc/sgx-plugin:0.2
+  - mcr.microsoft.com/aks/acc/sgx-plugin:0.4
+  - mcr.microsoft.com/aks/acc/sgx-webhook:0.6
+  - mcr.microsoft.com/aks/acc/sgx-webhook:0.9
+  - mcr.microsoft.com/aks/acc/sgx-attestation:2.0
   - mcr.microsoft.com/oss/nginx/nginx:1.13.12-alpine
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.19.11-hotfix.20211009.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.19.11-hotfix.20211101.1
@@ -180,6 +201,7 @@ docker images pre-pulled:
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.22.2.1
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.22.4
   - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.23.0
+  - mcr.microsoft.com/oss/kubernetes/kube-proxy:v1.23.1
 kubelet/kubectl downloaded:
 -rwxr-xr-x 1 root root 114080872 Aug 17 02:18 /usr/local/bin/kubelet-1.20.7
 -rwxr-xr-x 1 root root  40218624 Aug 17 02:18 /usr/local/bin/kubectl-1.20.7
@@ -205,16 +227,18 @@ kubelet/kubectl downloaded:
 -rwxr-xr-x 1 root root  46915584 Nov 18 19:56 /usr/local/bin/kubectl-1.22.4
 -rwxr-xr-x 1 root root 124472288 Dec  7 21:26 /usr/local/bin/kubelet-1.23.0
 -rwxr-xr-x 1 root root  46563328 Dec  7 21:26 /usr/local/bin/kubectl-1.23.0
--r-xr--r-- 1 root root      2462 Jan  1 04:05 /usr/local/bin/health-monitor.sh
--rwxr-xr-x 1 root root  50632320 Jan  1 04:09 /usr/local/bin/krustlet-wagi
--rwxr-xr-x 1 root root  35384960 Jan  1 04:09 /usr/local/bin/bpftrace
+-rwxr-xr-x 1 root root 124484576 Dec 16 19:19 /usr/local/bin/kubelet-1.23.1
+-rwxr-xr-x 1 root root  46571520 Dec 16 19:19 /usr/local/bin/kubectl-1.23.1
+-r-xr--r-- 1 root root      2462 Jan 19 00:59 /usr/local/bin/health-monitor.sh
+-rwxr-xr-x 1 root root  50632320 Jan 19 01:03 /usr/local/bin/krustlet-wagi
+-rwxr-xr-x 1 root root  35384960 Jan 19 01:04 /usr/local/bin/bpftrace
 === Installed Packages Begin
 Listing...
 accountsservice/bionic-updates,bionic-security,now 0.6.45-1ubuntu1.3 amd64 [installed,automatic]
 acl/bionic,now 2.2.52-3build1 amd64 [installed,automatic]
 acpid/bionic,now 1:2.0.28-1ubuntu1 amd64 [installed,automatic]
 adduser/bionic,now 3.116ubuntu1 all [installed,automatic]
-apache2-utils/bionic-updates,now 2.4.29-1ubuntu4.20 amd64 [installed]
+apache2-utils/bionic-updates,bionic-security,now 2.4.29-1ubuntu4.21 amd64 [installed]
 apparmor/bionic-updates,bionic-security,now 2.12-4ubuntu5.1 amd64 [installed,automatic]
 apport/bionic-updates,bionic-security,now 2.20.9-0ubuntu7.27 all [installed,automatic]
 apport-symptoms/bionic,now 0.20 all [installed,automatic]
@@ -234,7 +258,7 @@ binfmt-support/bionic,now 2.1.8-2 amd64 [installed,automatic]
 binutils/bionic-updates,bionic-security,now 2.30-21ubuntu1~18.04.7 amd64 [installed,automatic]
 binutils-common/bionic-updates,bionic-security,now 2.30-21ubuntu1~18.04.7 amd64 [installed,automatic]
 binutils-x86-64-linux-gnu/bionic-updates,bionic-security,now 2.30-21ubuntu1~18.04.7 amd64 [installed,automatic]
-blobfuse/bionic,now 1.4.1 amd64 [installed,upgradable to: 1.4.2]
+blobfuse/bionic,now 1.4.2 amd64 [installed,upgradable to: 1.4.3]
 bsdmainutils/bionic,now 11.1.2ubuntu1 amd64 [installed,automatic]
 bsdutils/bionic-updates,bionic-security,now 1:2.31.1-0.4ubuntu3.7 amd64 [installed,automatic]
 btrfs-progs/bionic,now 4.15.1-1build1 amd64 [installed,automatic]
@@ -544,7 +568,7 @@ libnl-genl-3-200/bionic,now 3.2.29-0ubuntu3 amd64 [installed]
 libnl-route-3-200/bionic,now 3.2.29-0ubuntu3 amd64 [installed,automatic]
 libnpth0/bionic,now 1.5-3 amd64 [installed,automatic]
 libnspr4/bionic,now 2:4.18-1ubuntu1 amd64 [installed,automatic]
-libnss-systemd/bionic-updates,now 237-3ubuntu10.52 amd64 [installed,automatic]
+libnss-systemd/bionic-updates,now 237-3ubuntu10.53 amd64 [installed,automatic]
 libnss3/bionic-updates,bionic-security,now 2:3.35-2ubuntu2.13 amd64 [installed,automatic]
 libntfs-3g88/bionic-updates,bionic-security,now 1:2017.3.23-2ubuntu0.18.04.3 amd64 [installed,automatic]
 libnuma1/bionic-updates,now 2.0.11-2.1ubuntu0.1 amd64 [installed,automatic]
@@ -557,7 +581,7 @@ libpam-modules/bionic-updates,now 1.1.8-3.6ubuntu2.18.04.3 amd64 [installed,auto
 libpam-modules-bin/bionic-updates,now 1.1.8-3.6ubuntu2.18.04.3 amd64 [installed,automatic]
 libpam-pwquality/bionic,now 1.4.0-2 amd64 [installed]
 libpam-runtime/bionic-updates,now 1.1.8-3.6ubuntu2.18.04.3 all [installed,automatic]
-libpam-systemd/bionic-updates,now 237-3ubuntu10.52 amd64 [installed,automatic]
+libpam-systemd/bionic-updates,now 237-3ubuntu10.53 amd64 [installed,automatic]
 libpam0g/bionic-updates,now 1.1.8-3.6ubuntu2.18.04.3 amd64 [installed,automatic]
 libparted2/bionic-updates,now 3.2-20ubuntu0.2 amd64 [installed,automatic]
 libpcap0.8/bionic-updates,now 1.8.1-6ubuntu1.18.04.2 amd64 [installed,automatic]
@@ -614,7 +638,7 @@ libssl1.1/bionic-updates,now 1.1.1-1ubuntu2.1~18.04.14 amd64 [installed,automati
 libstdc++-7-dev/bionic-updates,bionic-security,now 7.5.0-3ubuntu1~18.04 amd64 [installed,automatic]
 libstdc++6/bionic-updates,bionic-security,now 8.4.0-1ubuntu1~18.04 amd64 [installed,automatic]
 libsysfs2/bionic,bionic-updates,now 2.1.0+repack-4build1 amd64 [installed,automatic]
-libsystemd0/bionic-updates,now 237-3ubuntu10.52 amd64 [installed,automatic]
+libsystemd0/bionic-updates,now 237-3ubuntu10.53 amd64 [installed,automatic]
 libtalloc2/bionic,now 2.1.10-2ubuntu1 amd64 [installed]
 libtasn1-6/bionic,now 4.13-2 amd64 [installed,automatic]
 libtcmalloc-minimal4/bionic,now 2.5-2.2ubuntu3 amd64 [installed,automatic]
@@ -628,7 +652,7 @@ libtinfo5/bionic-updates,now 6.1-1ubuntu1.18.04 amd64 [installed,automatic]
 libtirpc1/bionic-updates,bionic-security,now 0.2.5-1.2ubuntu0.1 amd64 [installed,automatic]
 libtsan0/bionic-updates,bionic-security,now 8.4.0-1ubuntu1~18.04 amd64 [installed,automatic]
 libubsan0/bionic-updates,bionic-security,now 7.5.0-3ubuntu1~18.04 amd64 [installed,automatic]
-libudev1/bionic-updates,now 237-3ubuntu10.52 amd64 [installed,automatic]
+libudev1/bionic-updates,now 237-3ubuntu10.53 amd64 [installed,automatic]
 libunistring2/bionic-updates,now 0.9.9-0ubuntu2 amd64 [installed,automatic]
 libunwind8/bionic,now 1.2.1-8 amd64 [installed,automatic]
 liburcu6/bionic-updates,now 0.10.1-1ubuntu1 amd64 [installed,automatic]
@@ -653,26 +677,35 @@ libxslt1.1/bionic-updates,bionic-security,now 1.1.29-5ubuntu0.2 amd64 [installed
 libxtables12/bionic,now 1.6.1-2ubuntu2 amd64 [installed,automatic]
 libyaml-0-2/bionic,now 0.1.7-2ubuntu3 amd64 [installed,automatic]
 libzstd1/bionic-updates,bionic-security,now 1.3.3+dfsg-2ubuntu1.2 amd64 [installed,automatic]
-linux-azure/bionic-updates,bionic-security,now 5.4.0.1064.44 amd64 [installed]
-linux-azure-5.4-cloud-tools-5.4.0-1064/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
-linux-azure-5.4-headers-5.4.0-1064/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 all [installed]
-linux-azure-5.4-tools-5.4.0-1064/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
+linux-azure/bionic-updates,now 5.4.0.1067.46 amd64 [installed]
+linux-azure-5.4-cloud-tools-5.4.0-1065/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-azure-5.4-cloud-tools-5.4.0-1067/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
+linux-azure-5.4-headers-5.4.0-1065/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 all [installed]
+linux-azure-5.4-headers-5.4.0-1067/bionic-updates,now 5.4.0-1067.70~18.04.1 all [installed,automatic]
+linux-azure-5.4-tools-5.4.0-1065/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-azure-5.4-tools-5.4.0-1067/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
 linux-base/bionic-updates,now 4.5ubuntu1.7 all [installed,automatic]
 linux-base-sgx/bionic-updates,now 4.5ubuntu1.7 all [installed]
-linux-cloud-tools-5.4.0-1064-azure/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
-linux-cloud-tools-azure/bionic-updates,bionic-security,now 5.4.0.1064.44 amd64 [installed]
-linux-cloud-tools-common/bionic-updates,bionic-security,now 4.15.0-163.171 all [installed]
-linux-headers-4.15.0-163/bionic-updates,bionic-security,now 4.15.0-163.171 all [installed,auto-removable]
-linux-headers-5.4.0-1064-azure/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
-linux-headers-azure/bionic-updates,bionic-security,now 5.4.0.1064.44 amd64 [installed]
-linux-image-5.4.0-1064-azure/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
-linux-image-azure/bionic-updates,bionic-security,now 5.4.0.1064.44 amd64 [installed]
-linux-libc-dev/bionic-updates,bionic-security,now 4.15.0-163.171 amd64 [installed,automatic]
-linux-modules-5.4.0-1064-azure/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
-linux-modules-extra-5.4.0-1064-azure/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
-linux-tools-5.4.0-1064-azure/bionic-updates,bionic-security,now 5.4.0-1064.67~18.04.1 amd64 [installed]
-linux-tools-azure/bionic-updates,bionic-security,now 5.4.0.1064.44 amd64 [installed]
-linux-tools-common/bionic-updates,bionic-security,now 4.15.0-163.171 all [installed]
+linux-cloud-tools-5.4.0-1065-azure/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-cloud-tools-5.4.0-1067-azure/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
+linux-cloud-tools-azure/bionic-updates,now 5.4.0.1067.46 amd64 [installed]
+linux-cloud-tools-common/bionic-updates,bionic-security,now 4.15.0-166.174 all [installed]
+linux-headers-4.15.0-166/bionic-updates,bionic-security,now 4.15.0-166.174 all [installed,auto-removable]
+linux-headers-5.4.0-1065-azure/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-headers-5.4.0-1067-azure/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
+linux-headers-azure/bionic-updates,now 5.4.0.1067.46 amd64 [installed]
+linux-image-5.4.0-1065-azure/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-image-5.4.0-1067-azure/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
+linux-image-azure/bionic-updates,now 5.4.0.1067.46 amd64 [installed]
+linux-libc-dev/bionic-updates,bionic-security,now 4.15.0-166.174 amd64 [installed,automatic]
+linux-modules-5.4.0-1065-azure/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-modules-5.4.0-1067-azure/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
+linux-modules-extra-5.4.0-1065-azure/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-modules-extra-5.4.0-1067-azure/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
+linux-tools-5.4.0-1065-azure/bionic-updates,bionic-security,now 5.4.0-1065.68~18.04.1 amd64 [installed]
+linux-tools-5.4.0-1067-azure/bionic-updates,now 5.4.0-1067.70~18.04.1 amd64 [installed,automatic]
+linux-tools-azure/bionic-updates,now 5.4.0.1067.46 amd64 [installed]
+linux-tools-common/bionic-updates,bionic-security,now 4.15.0-166.174 all [installed]
 locales/bionic-updates,now 2.27-3ubuntu1.4 all [installed,automatic]
 login/bionic-updates,now 1:4.5-1ubuntu2 amd64 [installed]
 logrotate/bionic,now 3.11.0-0.1ubuntu1 amd64 [installed,automatic]
@@ -694,10 +727,8 @@ mawk/bionic,now 1.3.3-17ubuntu3 amd64 [installed,automatic]
 mdadm/bionic-updates,now 4.1~rc1-3~ubuntu18.04.4 amd64 [installed,automatic]
 mime-support/bionic,now 3.60ubuntu1 all [installed,automatic]
 mlocate/bionic,now 0.26-2ubuntu3.1 amd64 [installed,automatic]
-moby-cli/bionic,now 19.03.14+azure-1 amd64 [installed,upgradable to: 20.10.11+azure-3]
-moby-containerd/bionic,now 1.4.11+azure-1 amd64 [installed,automatic]
-moby-engine/bionic,now 19.03.14+azure-1 amd64 [installed,upgradable to: 20.10.11+azure-3]
-moby-runc/bionic,now 1.0.0~rc95+azure-1 amd64 [installed,upgradable to: 1.0.3+azure-1]
+moby-containerd/bionic,now 1.4.9+azure-3 amd64 [installed,upgradable to: 1.4.12+azure-2]
+moby-runc/bionic,now 1.0.3+azure-1 amd64 [installed,automatic]
 mokutil/bionic-updates,now 0.3.0+1538710437.fb6250f-0ubuntu2~18.04.1 amd64 [installed]
 motd-news-config/bionic-updates,now 10.1ubuntu2.11 all [installed,automatic]
 mount/bionic-updates,bionic-security,now 2.31.1-0.4ubuntu3.7 amd64 [installed]
@@ -830,6 +861,7 @@ python3-zope.interface/bionic,now 4.3.2-1build2 amd64 [installed,automatic]
 python3.6/bionic-updates,bionic-security,now 3.6.9-1~18.04ubuntu1.6 amd64 [installed,automatic]
 python3.6-minimal/bionic-updates,bionic-security,now 3.6.9-1~18.04ubuntu1.6 amd64 [installed,automatic]
 readline-common/bionic,now 7.0-3 all [installed,automatic]
+rng-tools/bionic,now 5-0ubuntu4 amd64 [installed]
 rpcbind/bionic-updates,bionic-security,now 0.2.3-0.6ubuntu0.18.04.4 amd64 [installed,automatic]
 rsync/bionic-updates,now 3.1.2-2.1ubuntu1.2 amd64 [installed,automatic]
 rsyslog/bionic,bionic-updates,now 8.32.0-1ubuntu4 amd64 [installed,automatic]
@@ -854,8 +886,8 @@ strace/bionic,now 4.21-1ubuntu1 amd64 [installed,automatic]
 sudo/bionic-updates,bionic-security,now 1.8.21p2-3ubuntu1.4 amd64 [installed,automatic]
 sysfsutils/bionic,bionic-updates,now 2.1.0+repack-4build1 amd64 [installed]
 sysstat/bionic-updates,bionic-security,now 11.6.1-1ubuntu0.1 amd64 [installed]
-systemd/bionic-updates,now 237-3ubuntu10.52 amd64 [installed,automatic]
-systemd-sysv/bionic-updates,now 237-3ubuntu10.52 amd64 [installed,automatic]
+systemd/bionic-updates,now 237-3ubuntu10.53 amd64 [installed,automatic]
+systemd-sysv/bionic-updates,now 237-3ubuntu10.53 amd64 [installed,automatic]
 sysvinit-utils/bionic,now 2.88dsf-59.10ubuntu1 amd64 [installed]
 tar/bionic-updates,bionic-security,now 1.29b-2ubuntu0.2 amd64 [installed,automatic]
 tcpdump/bionic-updates,bionic-security,now 4.9.3-0ubuntu0.18.04.1 amd64 [installed,automatic]
@@ -864,14 +896,14 @@ time/bionic,now 1.7-25.1build1 amd64 [installed,automatic]
 tmux/bionic-updates,now 2.6-3ubuntu0.2 amd64 [installed,automatic]
 traceroute/bionic,now 1:2.1.0-2 amd64 [installed]
 tzdata/bionic-updates,bionic-security,now 2021e-0ubuntu0.18.04 all [installed,automatic]
-ubuntu-advantage-tools/bionic-updates,now 27.4.2~18.04.1 amd64 [installed,automatic]
+ubuntu-advantage-tools/bionic-updates,now 27.5~18.04.1 amd64 [installed,automatic]
 ubuntu-keyring/bionic-updates,now 2018.09.18.1~18.04.2 all [installed,automatic]
 ubuntu-minimal/bionic-updates,now 1.417.5 amd64 [installed]
 ubuntu-release-upgrader-core/bionic-updates,now 1:18.04.45 all [installed,automatic]
 ubuntu-server/bionic-updates,now 1.417.5 amd64 [installed]
 ubuntu-standard/bionic-updates,now 1.417.5 amd64 [installed]
 ucf/bionic,now 3.0038 all [installed,automatic]
-udev/bionic-updates,now 237-3ubuntu10.52 amd64 [installed,automatic]
+udev/bionic-updates,now 237-3ubuntu10.53 amd64 [installed,automatic]
 ufw/bionic-updates,now 0.36-0ubuntu0.18.04.2 all [installed,automatic]
 uidmap/bionic-updates,now 1:4.5-1ubuntu2 amd64 [installed,automatic]
 unattended-upgrades/bionic-updates,now 1.1ubuntu1.18.04.14 all [installed,automatic]
@@ -903,13 +935,13 @@ zlib1g/bionic,now 1:1.2.11.dfsg-0ubuntu2 amd64 [installed,automatic]
 Disk usage:
 Filesystem      Size  Used Avail Use% Mounted on
 udev            3.4G     0  3.4G   0% /dev
-tmpfs           696M  732K  695M   1% /run
-/dev/sda1        29G   19G   11G  66% /
+tmpfs           695M  608K  695M   1% /run
+/dev/sda1        29G   28G  1.8G  94% /
 tmpfs           3.4G     0  3.4G   0% /dev/shm
 tmpfs           5.0M     0  5.0M   0% /run/lock
 tmpfs           3.4G     0  3.4G   0% /sys/fs/cgroup
 /dev/sda15      105M  4.4M  100M   5% /boot/efi
 /dev/sdb1        14G   41M   13G   1% /mnt
-tmpfs           696M     0  696M   0% /run/user/1000
+tmpfs           695M     0  695M   0% /run/user/1000
 Using kernel:
-Linux version 5.4.0-1064-azure (buildd@lgw01-amd64-001) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #67~18.04.1-Ubuntu SMP Wed Nov 10 11:38:21 UTC 2021
+Linux version 5.4.0-1065-azure (buildd@lgw01-amd64-041) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #68~18.04.1-Ubuntu SMP Fri Dec 3 14:08:44 UTC 2021
