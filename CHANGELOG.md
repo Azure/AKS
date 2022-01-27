@@ -11,6 +11,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Client automatic cert rotation is now being enabled on the last set of regions.
 * Kubernetes 1.19 will be removed on 2022-01-31.
 * Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
 
 ### Release Notes
 
