@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-01-27
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-02-07 for public cloud and 2022-02-10 for sovereign clouds.
+
+### Announcement
+
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* Konnectivity rollout will continue in Feb 2022.
+* Client automatic cert rotation is now being enabled on the last set of regions.
+* Kubernetes 1.19 will be removed on 2022-01-31.
+* Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+* Upgraded Linux version to 5.4.0-1067.70-azure to address CVE-2022-0185 (https://github.com/Azure/AKS/issues/2749.
+
+### Release Notes
+
+* Behavioral changes
+  * For new, dual-stack clusters when --pod-cidrs or --service-cidrs are omitted, AKS will now create pseudo-random IPv6 address ranges for the Kubernetes pod and service IPs per    RFC 4193, instead of a default static value.
+* Component Updates
+  * CNI Plugins should now be toggle enabled and moved to version 0.9.1.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.01.22](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.22.txt).
+
 ## Release 2022-01-20
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-01-31 for public cloud and 2022-02-03 for sovereign clouds.
