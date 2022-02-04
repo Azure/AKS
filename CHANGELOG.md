@@ -19,7 +19,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Removed secret RBAC for azure disk csi driver.
   * Increased csi-resizer timeout from 60s to 120s.
 * Component Updates
-    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.01.22](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.22.txt). Upgraded Linux version to 5.4.0-1067.70-azure to address CVE-2022-0185 (https://github.com/Azure/AKS/issues/2749.
+    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.01.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.24.txt). Upgraded Linux version to 5.4.0-1067.70-azure to address CVE-2022-0185 (https://github.com/Azure/AKS/issues/2749.
     
 ## Release 2022-01-20
 
