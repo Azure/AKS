@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-02-06
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-02-16 for public cloud and 2022-02-19 for sovereign clouds.
+
+### Announcement
+
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* Konnectivity rollout will continue in Feb 2022.
+* Kubernetes 1.19 will be removed on the next release.
+* Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+
+### Release Notes
+
+* Behavioral changes
+  * Increase CPU limit on Windows OMS agent from 200mc to 500mc
+* Bug Fixes
+  * Fix azure file NFS mount permissions and enable azure file volume stats by default on AKS 1.21+
+* Preview Features
+  * Enable ephemeral OS on [temp disk](https://aka.ms/aks/ephemeral-os-temp)
+* Component Updates
+    * Kubernetes 1.20.15, 1.21.9 and 1.22.6 released, 1.20.9, 1.21.2, and 1.22.2 removed
+    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.01.txt).
+
 ## Release 2022-01-27
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-02-07 for public cloud and 2022-02-10 for sovereign clouds.
