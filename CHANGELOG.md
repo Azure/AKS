@@ -19,6 +19,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Bug Fixes
   * Fix azure file NFS mount permissions and enable azure file volume stats by default on AKS 1.21+
 * Preview Features
+  * Kubernetes 1.23.3
   * Enable ephemeral OS on [temp disk](https://aka.ms/aks/ephemeral-os-temp)
 * Component Updates
     * Kubernetes 1.20.15, 1.21.9 and 1.22.6 released, 1.20.9, 1.21.2, and 1.22.2 removed
