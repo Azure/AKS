@@ -16,11 +16,13 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 * Behavioral changes
   * Increase CPU limit on Windows OMS agent from 200mc to 500mc
+  * GA AKS Tags now allows Patch tags to managedCluster which will also patch tags to child ARM resources {NetworkSecurityGroup, LoadBalancer, virtualNetwork}
 * Bug Fixes
   * Fix azure file NFS mount permissions and enable azure file volume stats by default on AKS 1.21+
+  * Upgraded Linux version to 5.4.0-1068.70-azure to address [CVE-2021-4034](https://github.com/Azure/AKS/issues/2756)
 * Preview Features
   * Kubernetes 1.23.3
-  * Enable ephemeral OS on [temp disk](https://aka.ms/aks/ephemeral-os-temp)
+  * Enable ephemeral OS on [temp disk](https://aka.ms/aks/ephemeral-os-temp) for v5 VM instances
 * Component Updates
     * Kubernetes 1.20.15, 1.21.9 and 1.22.6 released, 1.20.9, 1.21.2, and 1.22.2 removed
     * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.01.txt).
