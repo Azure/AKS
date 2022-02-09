@@ -24,10 +24,10 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Kubernetes 1.23.3
   * Enable ephemeral OS on [temp disk](https://aka.ms/aks/ephemeral-os-temp) for v5 VM instances
 * Component Updates
-    * Kubernetes 1.20.15, 1.21.9 and 1.22.6 released, 1.20.9, 1.21.2, and 1.22.2 removed
-    * Upgraded Linux version to 5.4.0-1068.70-azure to address [CVE-2021-4034](https://github.com/Azure/AKS/issues/2756 )
-    * Containerd registry configuration for Linux nodes - including adding root CAs for containerd via DS.
-    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.01.txt).
+  * Kubernetes 1.20.15, 1.21.9 and 1.22.6 released, 1.20.9, 1.21.2, and 1.22.2 removed
+  * Upgraded Linux version to 5.4.0-1068.70-azure to address [CVE-2021-4034](https://github.com/Azure/AKS/issues/2756 )
+  * Containerd registry configuration for Linux nodes - including adding root CAs for containerd via DS.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.01.txt).
 
 ## Release 2022-01-27
 
