@@ -13,4 +13,4 @@ jobs:
         with:
           check_filenames: true
           skip: ./.git,./.github/workflows/codespell.yml,.git,*.png,*.jpg,*.svg,*.sum
-          ignore_words_list: "AKS,aks"
+          ignore_words_list: "AKS,aks,ND"
