@@ -15,7 +15,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * Behavioral changes
-  * We know limit the OIDC issuer preview feature to 1.20+
+  * We now limit the OIDC issuer preview feature to 1.20+
   * Increased liveness/readiness probe timeout to 10 seconds for metrics server
 * Component Updates
   * OSM addon updated to v1.0.0
