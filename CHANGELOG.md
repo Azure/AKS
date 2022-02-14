@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-02-10
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-02-23 for public cloud and 2022-02-26 for sovereign clouds.
+
+### Announcement
+
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* Konnectivity rollout will continue in Feb 2022.
+* Kubernetes 1.19 has been removed.
+* Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+
+### Release Notes
+
+* Behavioral changes
+  * We know limit the OIDC issuer preview feature to 1.20+
+  * Increased liveness/readiness probe timeout to 10 seconds for metrics server
+* Component Updates
+  * OSM addon updated to v1.0.0
+  * Calico updated to v3.21.4 on Linux w/ operator managing CRDs
+  * Azure file updated to v1.10.0 on aks 1.21+
+  * omsagent update [ciprod01312022 & win-ciprod01312022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#1312022--) 
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.07.txt).
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2565.220211](vhd-notes/AKSWindows/2019/17763.2565.220211.txt).
+
 ## Release 2022-02-06
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-02-16 for public cloud and 2022-02-19 for sovereign clouds.
