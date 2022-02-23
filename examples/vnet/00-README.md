@@ -1,4 +1,4 @@
-This example respository contains two ARM templates which demonstrate new functionality in AKS to use an existing VNet with custom IP addressing and Azure CNI for IP address allocation.
+This example repository contains two ARM templates which demonstrate new functionality in AKS to use an existing VNet with custom IP addressing and Azure CNI for IP address allocation.
 
 ## Address ranges
 

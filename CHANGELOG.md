@@ -214,7 +214,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * Bug Fixes
-  * Fixed a bug such that the nodes on 1.21 wont be able to start with the DelegateFSGroupToCSIDriver feature flag. This feature flag is only introduced to kubelet in 1.22. 
+  * Fixed a bug such that the nodes on 1.21 won't be able to start with the DelegateFSGroupToCSIDriver feature flag. This feature flag is only introduced to kubelet in 1.22.
   * A WindowsGmsaProfile certificate renewal issue during certificate rotation has been identified and fixed.
   * Added the component=tunnel label to konnectivity-agent pods so they will be matched by any label selectors that previously matched tunnelfront pods. This only applies to clusters that have received the new Konnectivity network tunnel.
 * Behavioral Changes
@@ -834,7 +834,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-04-14 for p
 
 * Bug Fixes
   * Fixed a bug in runc that caused pods to be stuck in container creation in containerd 1.4.3 and 1.4.4.
-  * Fixed a bug in VMAS that accidently enabled VMAS to be scaled down to 0.
+  * Fixed a bug in VMAS that accidentally enabled VMAS to be scaled down to 0.
 * Behavioral Changes
   * Increased nslookup/nc timeout to 10s for Provisioning CSE in nodes.
 * Component Updates
@@ -1019,7 +1019,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-24 for p
   * Fixed Auto Scaling issues with 1.19 Preview Clusters where no image is found for a distro to scale from. 
   * A previous release defaulted to Gen2 VHDs for Kubernetes versions below 1.18.0. This implicitly changed the Ubuntu version from 16.04 to 18.04 for users still below 1.18.0. This has been fixed and users will only receive Gen2 VHDs for Kubernetes versions greater than or equal to 1.18.0.
   * Fixed AuthorizationFailed errors on cluster deletion operations to better expose to users.
-  * Fixed case sensivity problem when specifying "--os-type"
+  * Fixed case senstivity problem when specifying "--os-type"
   * Fixed an Error Handling issue when provisioning node pools with Ephemeral OS and a VM size with no cache disk.
   * Fixed an issue with Azure Policy pods not getting scheduled with CriticalAddonsOnly taint [GithubIssue](https://github.com/Azure/AKS/issues/1963)
 
@@ -1183,7 +1183,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-11-25 for p
 * Behavioral changes
   * The command `az aks browse` will now open the [Azure Portal Kubernetes resource view](https://docs.microsoft.com/azure/aks/kubernetes-portal) after the Azure CLI v2.15.0.
   * A new property `subnetCIDR` was added for the Application Gateway Ingress Controller (AGIC) addon. This property will eventually replace `subnetPrefix`, and is used by AGIC to create a new subnet for Application Gateway. Application Gateway is deployed in this subnet and is then configured by AGIC to provide ingress capability to AKS.
-  * Added additional username and password validations for windows. The minimal password lenght in AKS is 14 characters. See more [here](https://docs.microsoft.com/rest/api/compute/virtualmachinescalesets/createorupdate#virtualmachinescalesetosprofile).
+  * Added additional username and password validations for windows. The minimal password length in AKS is 14 characters. See more [here](https://docs.microsoft.com/rest/api/compute/virtualmachinescalesets/createorupdate#virtualmachinescalesetosprofile).
   * AKS Base images now come from [Shared Image Gallery](https://docs.microsoft.com/azure/virtual-machines/windows/shared-image-galleries) and no longer from the Azure Marketplace.
 * Bug Fixes
   * Fixed issued caused by Chrony on recent AKSUbuntu-1604-2020.10.28 images.
@@ -1250,7 +1250,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-11-11
 * Preview Features
   * New Preview Kubernetes patch versions available, 1.19.3.
 * Bug Fixes
-  * Fixed mis-alignment of taint validations with upstream kubernetes validations. Fixes #1412
+  * Fixed misalignment of taint validations with upstream kubernetes validations. Fixes #1412
 * Component updates
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.10.21](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.10.21.txt).
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2020.10.21](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.21.txt).
@@ -2869,7 +2869,7 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
     * Specifically, there was a bug in the cluster creation workflow where users
       would specific `--network-plugin=azure` with Azure CNI / Advanced Networking
       but miss passing in the additional options (eg '--pod-cidr, --service-cidr,
-      etc). If this occured, the service would fall-back and create the cluster
+      etc). If this occurred, the service would fall-back and create the cluster
       with Kubenet instead.
 
 * Preview Features
