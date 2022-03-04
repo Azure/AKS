@@ -13,13 +13,10 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 * Behavioral changes
   * The default VNET address for managed VNETs will change from 10.0.0.0/8 to 10.240.0.0/16 and the default node subnet address will change from 10.224.0.0/12 to 10.224.0.0/16. New clusters will be required to have service and pod CIDR ranges that do not overlap with these new VNET ranges.
-
 * Bug fixes
   * Fix azure disk resize timeout issue on aks 1.21+
-
 * Preview features
   * Associate capacity reservation to node pools. Documentation available [here](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#associate-capacity-reservation-groups-to-node-pools-preview).
-
 * Component updates
   * Azure Policy for AKS updated to [Gatekeeper 3.7.1](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.7.1)
 
