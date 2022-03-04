@@ -2,7 +2,7 @@
 
 ## Release 2022-02-17
 
-This release is rolling out to all regions - estimated time for completed roll out is 2022-02-23 for public cloud and 2022-02-26 for sovereign clouds.
+This release is rolling out to all regions - estimated time for completed roll out is 2022-03-02 for public cloud and 2022-03-05 for sovereign clouds.
 
 ### Announcement
 
