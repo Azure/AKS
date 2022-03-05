@@ -18,6 +18,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Preview features
   * Associate capacity reservation to node pools. Documentation available [here](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#associate-capacity-reservation-groups-to-node-pools-preview).
 * Component updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.19.txt).
   * Azure Policy for AKS updated to [Gatekeeper 3.7.1](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.7.1)
 
 ## Release 2022-02-17
@@ -35,7 +36,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 * Component Updates
   * Calico updated to v3.21.4 on Windows
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.07.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.15.txt).
 
 ## Release 2022-02-10
 
