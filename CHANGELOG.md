@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-03-03
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-03-16 for public cloud and 2022-03-19 for sovereign clouds.
+### Announcements
+
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
+* Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+* Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
+* AKS x OSS Integration Blog Series: This month’s article highlights how to deploy a highly available Redis Cluster to AKS. [Run scalable and resilient Redis with Kubernetes and Azure Kubernetes Service - Microsoft Tech Community](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/run-scalable-and-resilient-redis-with-kubernetes-and-azure/ba-p/3247956). Previous two articles explore storing [Prometheus metrics with Thanos/AKS](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/store-prometheus-metrics-with-thanos-azure-storage-and-azure/ba-p/3067849) and [Cluster monitoring with Prometheus/Grafana/AKS] (https://techcommunity.microsoft.com/t5/apps-on-azure-blog/using-azure-kubernetes-service-with-grafana-and-prometheus/ba-p/3020459).
+
+### Release notes
+
+* Behavioral changes
+  * The default VNET address for managed VNETs will change from 10.0.0.0/8 to 10.224.0.0/16 and the default node subnet address will change from 10.224.0.0/12 to 10.224.0.0/16. New clusters will be required to have service and pod CIDR ranges that do not overlap with these new VNET ranges.
+  * Enable-get-volume-stats=true is already true by default on azure file csi driver v1.11.
+* Preview features
+  * Associate capacity reservation to node pools is now previewed in all regions. Documentation available [here](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#associate-capacity-reservation-groups-to-node-pools-preview).
+* Component updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.03](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.03.txt) contains hotfix for [containerd-1602](https://github.com/Azure/AgentBaker/pull/1602).
+  * Introducing Prometheus performance metrics, measuring execution time of handling pod/namespace/network policy CRUD events. The pre-existing npm_add_policy_exec_time metric now has an "error" label.
+
 ## Release 2022-02-24
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-03-09 for public cloud and 2022-03-12 for sovereign clouds.
