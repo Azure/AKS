@@ -9,14 +9,9 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
 * Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
 * Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
-* AKS x OSS Integration Blog Series: This month’s article highlights how to deploy a highly available Redis Cluster to AKS. [Run scalable and resilient Redis with Kubernetes and Azure Kubernetes Service - Microsoft Tech Community](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/run-scalable-and-resilient-redis-with-kubernetes-and-azure/ba-p/3247956). Previous two articles explore storing [Prometheus metrics with Thanos/AKS](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/store-prometheus-metrics-with-thanos-azure-storage-and-azure/ba-p/3067849) and [Cluster monitoring with Prometheus/Grafana/AKS](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/using-azure-kubernetes-service-with-grafana-and-prometheus/ba-p/3020459).
 
 ### Release notes
 
-* Behavioral changes
- 
-* Preview features
-  * 
 * Component updates
   * AKS clusters >= 1.19 will now have Application Gateway Ingress Controller (AGIC) version 1.5.1 which adds support for ingress class and path prefix
   * Upgrade Azure disk CSI driver to 1.12.0 on 1.21+ clusters
@@ -24,7 +19,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Upgrade Azure Defender pod-collector image to 0.3.19 from 0.3.18
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.07.txt) 
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2686.220309](vhd-notes/AKSWindows/2019/17763.2686.220309.txt).
-  * Introducing Prometheus performance metrics, measuring execution time of handling pod/namespace/network policy CRUD events. The pre-existing npm_add_policy_exec_time metric now has an "error" label.
 
 ## Release 2022-03-03
 
