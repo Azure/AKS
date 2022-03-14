@@ -15,7 +15,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Component updates
   * AKS clusters >= 1.19 will now have Application Gateway Ingress Controller (AGIC) version 1.5.1 which adds support for ingress class and path prefix
   * Upgrade Azure disk CSI driver to 1.12.0 on 1.21+ clusters
-  * Update AKS Windows SIG VHD to 17763.2686.220309 (2022-3b)
   * Upgrade Azure Defender pod-collector image to 0.3.19 from 0.3.18
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.07.txt) 
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2686.220309](vhd-notes/AKSWindows/2019/17763.2686.220309.txt).
