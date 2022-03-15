@@ -1,24 +1,5 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2022-03-10
-
-This release is rolling out to all regions - estimated time for completed roll out is 2022-03-23 for public cloud and 2022-03-26 for sovereign clouds.
-### Announcements
-
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
-* Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
-* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
-* Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
-
-### Release notes
-
-* Component updates
-  * AKS clusters >= 1.19 will now have Application Gateway Ingress Controller (AGIC) version 1.5.1 which adds support for ingress class and path prefix
-  * Upgrade Azure disk CSI driver to 1.12.0 on 1.21+ clusters
-  * Upgrade Azure Defender pod-collector image to 0.3.19 from 0.3.18
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.07.txt) 
-  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2686.220309](vhd-notes/AKSWindows/2019/17763.2686.220309.txt).
-
 ## Release 2022-03-03
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-03-16 for public cloud and 2022-03-19 for sovereign clouds.
