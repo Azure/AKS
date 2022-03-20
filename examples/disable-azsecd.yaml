@@ -1,0 +1,89 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: disable-azsecd
+  namespace: kube-system
+  labels:
+    app: disable-azsecd
+spec:
+  selector:
+    matchLabels:
+      name: disable-azsecd
+  template:
+    metadata:
+      labels:
+        name: disable-azsecd
+    spec:
+      hostPID: true
+      hostNetwork: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      containers:
+        - name: disable-azsecd
+          image: mcr.microsoft.com/azure-policy/alpine:prod_20200505.1
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          command:
+            - nsenter
+            - --target
+            - "1"
+            - --mount
+            - --uts
+            - --ipc
+            - --net
+            - --pid
+            - --
+            - sh
+            - -c
+            - |
+              #! /bin/sh
+              set -u
+              echo "disable-azsecd daemonset starting..."
+              while true; do
+                for pkgname in azsec-clamav azsec-monitor azure-security qualys-command-line-agent; do
+                  for n in $(seq 1 10); do
+                    echo "Attempt $n to remove $pkgname"
+                    if dpkg-query -l $pkgname; then
+                      echo "uninstalling $pkgname"
+                      dpkg --purge $pkgname;
+                      if [ $? -ne 0 ]; then
+                        echo "Failed (probably due to lock conflict, sleeping 15 seconds before trying again"
+                        sleep 15;
+                      fi;
+                    fi;
+                    dpkg-query -l $pkgname
+                    if [ $? -ne 0 ]; then
+                      break
+                    fi
+                  done;
+                done
+                if [ -e /opt/microsoft/auoms/bin/auomsctl ]; then
+                  /opt/microsoft/auoms/bin/auomsctl disable
+                fi
+                if [ -e /etc/opt/microsoft/azuremonitoragent/tenants/asa ]; then
+                  /opt/microsoft/azuremonitoragent/bin/mdsdmgrctl remove-tenant asa
+                  rm -f /etc/opt/microsoft/azuremonitoragent/tenants/asa
+                fi
+                REMOVE_FAILED=0
+                for pkgname in azsec-clamav azsec-monitor azure-security qualys-command-line-agent; do
+                  dpkg-query -l $pkgname >/dev/null 2>&1
+                  if [ $? -eq 0 ]; then
+                    echo "The $pkgname package is still present"
+                    REMOVE_FAILED=1
+                  fi
+                done
+                for procname in azsecd azsecmond auoms; do
+                  pgrep -x $procname >/dev/null 2>&1
+                  if [ $? -eq 0 ]; then
+                    echo "The $procname process is still running"
+                    REMOVE_FAILED=1
+                  fi
+                done
+                if [ $REMOVE_FAILED -ne 0 ]; then
+                  echo "FAILED: Failed to fully remove azsecpack components. Sleeping ...."
+                else
+                  echo "SUCCESS: Remove azsecpack components. Sleeping ...."
+                fi
+                sleep 3600
+              done
