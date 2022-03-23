@@ -7,10 +7,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Announcements
 
 * Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
-* The [single placement group VMSS flag](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-hpc#:~:text=Virtual%20machine%20scale,increased%20to%20300.) will now be enabled for newly-created node pools using InfiniBand/RDMA-capable VM sizes. InfiniBand/RDMA-capable SKUs, like most [H-series](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-hpc) and some [N-series](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-gpu) sizes, can be identified by the "r" in the additional features section of the size name (e.g. Standard_HB120**r**s_v3, Standard_ND96as**r**_v4). Note that the InfiniBand drivers are not currently loaded to nodes. Loading these via a DaemonSet will come in the near future.
-* Accelerated networking will now be enabled by default for newly-created Windows nodepools.
-* [Calico network policies for Windows nodes](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) are now GA.
-* [Node pool snapshot](https://docs.microsoft.com/en-us/azure/aks/node-pool-snapshot) is now GA.
 * The 2022.03.20+ AKS Ubuntu 18.04 images fix an issue (present since 2022.02.19) in which an unneeded Azure security agent was installed, leading to higher than expected memory consumption on nodes.
 * From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
@@ -19,6 +15,12 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release notes
 
+* Behavioral changes
+  * Accelerated networking will now be enabled by default for newly-created Windows nodepools.
+  * The [single placement group VMSS flag](https://docs.microsoft.com/azure/virtual-machines/sizes-hpc#cluster-configuration-options) will now be enabled for newly-created node pools using InfiniBand/RDMA-capable VM sizes. InfiniBand/RDMA-capable SKUs, like most [H-series](https://docs.microsoft.com/azure/virtual-machines/sizes-hpc) and some [N-series](https://docs.microsoft.com/azure/virtual-machines/sizes-gpu) sizes, can be identified by the "r" in the additional features section of the size name (e.g. Standard_HB120**r**s_v3, Standard_ND96as**r**_v4). Note that the InfiniBand drivers are not currently loaded to nodes. Loading these via a DaemonSet will come in the near future.
+* Features
+  * [Calico network policies for Windows nodes](https://docs.microsoft.com/azure/aks/use-network-policies) are now GA.
+  * [Node pool snapshot](https://docs.microsoft.com/azure/aks/node-pool-snapshot) is now GA.
 * Component updates
   * Containerd updated to 1.6 for AKS Windows nodes on AKS v1.23+
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.20](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.20.txt)
