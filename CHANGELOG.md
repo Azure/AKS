@@ -6,7 +6,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcements
 
-* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version 2022.03.20 or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
+* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
 * The [single placement group VMSS flag](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-hpc#:~:text=Virtual%20machine%20scale,increased%20to%20300.) will now be enabled for newly-created node pools using InfiniBand/RDMA-capable VM sizes. InfiniBand/RDMA-capable SKUs, like most [H-series](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-hpc) and some [N-series](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-gpu) sizes, can be identified by the "r" in the additional features section of the size name (e.g. Standard_HB120**r**s_v3, Standard_ND96as**r**_v4). Note that the InfiniBand drivers are not currently loaded to nodes. Loading these via a DaemonSet will come in the near future.
 * Accelerated networking will now be enabled by default for newly-created Windows nodepools.
 * [Calico network policies for Windows nodes](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) are now GA.
