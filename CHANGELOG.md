@@ -1,5 +1,33 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-03-20
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-04-03 for public cloud and 2022-04-06 for sovereign clouds. Please note that the AKS release cadence has shifted; new releases will now be cut on Sunday.
+
+### Announcements
+
+* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
+* From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
+* Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+* Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
+
+### Release notes
+
+* Behavioral changes
+  * Accelerated networking will now be enabled by default for newly-created Windows nodepools.
+  * The [single placement group VMSS flag](https://docs.microsoft.com/azure/virtual-machines/sizes-hpc#cluster-configuration-options) will now be enabled for newly-created node pools using InfiniBand/RDMA-capable VM sizes. InfiniBand/RDMA-capable SKUs, like most [H-series](https://docs.microsoft.com/azure/virtual-machines/sizes-hpc) and some [N-series](https://docs.microsoft.com/azure/virtual-machines/sizes-gpu) sizes, can be identified by the "r" in the additional features section of the size name (e.g. Standard_HB120**r**s_v3, Standard_ND96as**r**_v4). Note that the InfiniBand drivers are not currently loaded to nodes. Loading these via a DaemonSet will come in the near future.
+* Bug fixes
+  * The 2022.03.20+ AKS Ubuntu 18.04 images fix an issue (present since 2022.02.19) in which an unneeded Azure security agent was installed, leading to higher than expected memory consumption on nodes.
+  * Improved error handling to resolve a bug where a cluster stop operation may show an inconsistent state, leading to a cluster that is stuck in the "Stopping" state or moves to the "Failed" state. If a cluster is stuck in this state currently, running `az resource update --ids <cluster resource ID>` should resolve the issue.
+* Features
+  * [Calico network policies for Windows nodes](https://docs.microsoft.com/azure/aks/use-network-policies) are now GA.
+  * [Node pool snapshot](https://docs.microsoft.com/azure/aks/node-pool-snapshot) is now GA.
+* Component updates
+  * Containerd updated to 1.6 for AKS Windows nodes on AKS v1.23+
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.20](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.20.txt)
+  * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2686.220317](vhd-notes/AKSWindows/2019/17763.2686.220317.txt).
+
 ## Release 2022-03-10
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-03-23 for public cloud and 2022-03-26 for sovereign clouds.
