@@ -1,5 +1,37 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-03-27
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-04-08 for public cloud and 2022-04-11 for sovereign clouds.
+
+### Announcements
+
+* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
+* From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
+* Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+* Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Node Pool Snapshot CLI experience is changing by April 6,  2022. The current nodepool snapshot commands i.e az `aks snapshot` will now be `az aks nodepool snapshot`.
+
+### Release notes
+
+* Preview Features
+  * You can now [Bring your Own CNI plugin to AKS](https://docs.microsoft.com/azure/aks/use-byo-cni)
+* Features
+  * Node pool [Scale-down Mode](https://docs.microsoft.com/azure/aks/scale-down-mode) is not Generally available and supports Spot Node Pools.
+* Bug Fixes
+  * Fixed <https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1317> in kubernetes v1.22+.
+  * Fixed <https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1346> in kubernetes v1.22+.
+  * Fixed bug with auto-scaling from zero with pods that utilize an `agentpool=` label selector.
+  * Fixed bug for IPv6-enabled clusters using OpenVPN and BYO VNET that checked the incorrect IPv6 CIDR.
+* Behavioral changes
+* Component Updates
+  * Azure CNI for Windows updated to [v1.4.22](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.22).
+  * Azure Disk CSI driver to [v1.13.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.13.0).
+  * Azure Monitor for Containers addon updated to [ciprod03172022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#3172022--).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.23](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.23.txt).
+
 ## Release 2022-03-20
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-04-03 for public cloud and 2022-04-06 for sovereign clouds. Please note that the AKS release cadence has shifted; new releases will now be cut on Sunday.
@@ -21,7 +53,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * The 2022.03.20+ AKS Ubuntu 18.04 images fix an issue (present since 2022.02.19) in which an unneeded Azure security agent was installed, leading to higher than expected memory consumption on nodes.
   * Improved error handling to resolve a bug where a cluster stop operation may show an inconsistent state, leading to a cluster that is stuck in the "Stopping" state or moves to the "Failed" state. If a cluster is stuck in this state currently, running `az resource update --ids <cluster resource ID>` should resolve the issue.
 * Features
-  * [Calico network policies for Windows nodes](https://docs.microsoft.com/azure/aks/use-network-policies) are now GA.
   * [Node pool snapshot](https://docs.microsoft.com/azure/aks/node-pool-snapshot) is now GA.
 * Component updates
   * Containerd updated to 1.6 for AKS Windows nodes on AKS v1.23+
@@ -31,6 +62,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ## Release 2022-03-10
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-03-23 for public cloud and 2022-03-26 for sovereign clouds.
+
 ### Announcements
 
 * From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
