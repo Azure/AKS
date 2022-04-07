@@ -26,7 +26,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Fixed bug with auto-scaling from zero with pods that utilize an `agentpool=` label selector.
   * Fixed bug for IPv6-enabled clusters using OpenVPN and BYO VNET that checked the incorrect IPv6 CIDR.
 * Behavioral changes
-  * An empty or partial PUT on managed cluster without any agent pool specified will no longer upgrade all the agent pools. This was causing too many unintentional upgrades. Control plane will be upgaded if specified and no agentpools are upgraded. However you will get an error if you specify only some agnetpools and not others, If you wish to upgrade agentpools please specify ALL agentpools orchestratorVersion. Ideally a full GET, mutate and put is recommended here.
+  * An AKS API call on the cluster after a control plane upgrade was incorrectly causing many nodepool upgrades. We have amended the behavior such that if you dont specify nodepools or specify some nodepools in the call, then the nodepools are not upgraded to the control plane version implicitly. In order to upgrade all the nodepools following the control plane upgrade, an explicit upgrade orchestrator version and all the nodepools should be mentioned in the call.
 * Component Updates
   * Azure CNI for Windows updated to [v1.4.22](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.22).
   * Azure Disk CSI driver to [v1.13.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.13.0).
