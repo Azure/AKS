@@ -20,8 +20,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Features
   * [Custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for AKS is now generally available.
   * [gMSAv2 security policy support on Windows](https://docs.microsoft.com/azure/aks/use-group-managed-service-accounts) is now generally available. 
-* Behavioral changes
-  * The AKS run command now returns an error message with useful feedback if you cannot start a pod within 30 seconds. The message asks you to retry running the command and improving performance by using larger nodes or the paid AKS tier.
+* Bug Fixes
+  * Fixed a bug where deployments done via the AKS run command would incorrectly display a server error when pods in a deployment did not become ready in 30s. This is now correctly flagged as a client error and will ask the user to retry or take action to ensure the pods of the deployment become ready within the allocated time.
 * Component Updates
   * Azure Keyvault Secrets Provider has been updated to [v1.1.0](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.1.0).
   * Azure Disk CSI driver has been updated to [1.14](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.14.0).
