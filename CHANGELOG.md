@@ -16,8 +16,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release notes
 
-* Features
-  * Windows Server 2022 is now available to use as your AKS cluster windows node when you enable `aks-preview` and register feature `Microsoft.ContainerService/AKSWindows2022Preview` and set `--os-sku Windows2022`.
 * Behavioral changes
   * The AKS run command now returns an error message with useful feedback if you cannot start a pod within 30 seconds.
 * Component Updates
