@@ -15,6 +15,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release notes
 
+* Preview Features
+  * AKS now supports [Host Process Containers](https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/) as a preview feature on versions 1.23+.
 * Features
   * [Custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for AKS is now generally available.
   * [gMSAv2 security policy support on Windows](https://docs.microsoft.com/azure/aks/use-group-managed-service-accounts) is now generally available. 
