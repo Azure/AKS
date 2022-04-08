@@ -1,5 +1,31 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-04-03
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-04-15 for public cloud and 2022-04-18 for sovereign clouds.
+
+### Announcements
+
+* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
+* From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
+* Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+* Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Node Pool Snapshot CLI experience is changing by April 6,  2022. The current nodepool snapshot commands i.e az `aks snapshot` will now be `az aks nodepool snapshot`.
+
+### Release notes
+
+* Features
+  * Windows Server 2022 is now available to use as your AKS cluster windows node when you enable `aks-preview` and register feature `Microsoft.ContainerService/AKSWindows2022Preview` and set `--os-sku Windows2022`.
+* Behavioral changes
+  * The AKS run command now returns an error message with useful feedback if you cannot start a pod within 30 seconds.
+* Component Updates
+  * Azure Keyvault Secrets Provider has been updated to v1.1.0.
+  * Azure Disk CSI driver has been updated to 1.14.
+  * Azure File CSI driver has been updated to 1.13.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.29](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.29.txt).
+
 ## Release 2022-03-27
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-04-08 for public cloud and 2022-04-11 for sovereign clouds.
