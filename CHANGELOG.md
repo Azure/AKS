@@ -11,7 +11,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
 * Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
-* Node Pool Snapshot CLI experience is changing by April 6,  2022. The current nodepool snapshot commands i.e az `aks snapshot` will now be `az aks nodepool snapshot`.
 
 ### Release notes
 
