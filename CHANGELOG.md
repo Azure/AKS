@@ -1,5 +1,32 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-04-03
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-04-15 for public cloud and 2022-04-18 for sovereign clouds.
+
+### Announcements
+
+* From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
+* Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+* Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
+* Kubernetes version 1.20 will be deprecated and removed from AKS on April 7th 2022.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+
+### Release notes
+
+* Preview Features
+  * AKS now supports [Host Process Containers](https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/) as a preview feature on versions 1.23+.
+* Features
+  * [Custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for AKS is now generally available.
+  * [gMSAv2 security policy support on Windows](https://docs.microsoft.com/azure/aks/use-group-managed-service-accounts) is now generally available. 
+* Bug Fixes
+  * Fixed a bug where deployments done via the AKS run command would incorrectly display a server error when pods in a deployment did not become ready in 30s. This is now correctly flagged as a client error and will ask the user to retry or take action to ensure the pods of the deployment become ready within the allocated time.
+* Component Updates
+  * Azure Keyvault Secrets Provider has been updated to [v1.1.0](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.1.0).
+  * Azure Disk CSI driver has been updated to [1.14](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.14.0).
+  * Azure File CSI driver has been updated to [1.13](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.13.0).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.29](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.29.txt).
+
 ## Release 2022-03-27
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-04-08 for public cloud and 2022-04-11 for sovereign clouds.
