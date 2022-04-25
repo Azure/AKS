@@ -53,6 +53,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Fixed bug with auto-scaling from zero with pods that utilize an `agentpool=` label selector.
   * Fixed bug for IPv6-enabled clusters using OpenVPN and BYO VNET that checked the incorrect IPv6 CIDR.
 * Behavioral changes
+  * An AKS API call on the cluster after a control plane upgrade was incorrectly causing many nodepool upgrades. We have amended the behavior such that if you dont specify nodepools or specify some nodepools in the call, then the nodepools are not upgraded to the control plane version implicitly. In order to upgrade the nodepools following the control plane upgrade, an explicit kubernetes version upgrade in the respective nodepool(s) should be added in the request.
 * Component Updates
   * Azure CNI for Windows updated to [v1.4.22](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.22).
   * Azure Disk CSI driver to [v1.13.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.13.0).
