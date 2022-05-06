@@ -11,6 +11,9 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
+* Public preview
+  * The `aks-preview` Azure CLI extension (version 0.5.66+) now supports running `az aks nodepool update -g <resourceGroup> -c <clusterName> -n <nodepoolName>` without any optional arguments. This will perform an update operation without performing any changes, which can recover a cluster stuck in a failure state.
+  * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
 * Behavioral changes
   * Kube-proxy now detects local traffic using the local interface subnet instead of cluster CIDR when using Azure CNI. For clusters that have agent pools in separate subnets, this ensures that kube-proxy NAT rules do not interfere with network policies enforced by Azure NPM. The configuration change applies to clusters running Azure CNI and Kubernetes version 1.23.3 or later.
   * Clusters deployed with outboundType loadBalancer but deployed in a subnet with an attached NAT gateway will be updatable. Deployment of clusters into a bring-your-own-vnet subnet with a NAT Gateway already attached will be blocked unless `outboundType userAssignedNATGateway` is passed. See [NAT Gateway](https://docs.microsoft.com/en-us/azure/aks/nat-gateway) in the AKS Documentation for more details.
