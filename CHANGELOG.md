@@ -16,7 +16,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Clusters deployed with outboundType loadBalancer but deployed in a subnet with an attached NAT gateway will be updatable. Deployment of clusters into a bring-your-own-vnet subnet with a NAT Gateway already attached will be blocked unless `outboundType userAssignedNATGateway` is passed. See [NAT Gateway](https://docs.microsoft.com/en-us/azure/aks/nat-gateway) in the AKS Documentation for more details.
 * Component Updates
   * Azure CNI has been updated to [v1.4.22](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.22).
-  * Azure NPM v2 will be rolling out over the coming weeks, which has significant performance optimizations, leading to a reduced time to apply Network Policies on namespace or pod changes.
   * [Cloud Provider Azure](https://kubernetes-sigs.github.io/cloud-provider-azure/) is being upgraded to [v1.23.11](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.23.11)/[v1.1.14](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.1.14)/[v1.0.18](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.0.18)/[v0.7.21](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v0.7.21) (depending on AKS cluster version).
   
 ## Release 2022-04-24
