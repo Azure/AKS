@@ -1,5 +1,26 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-05-01
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-05-13 for public cloud and 2022-05-16 for sovereign clouds.
+
+### Announcements
+* From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
+* Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+* Konnectivity rollout will continue in May 2022 and is expected to complete by end of May.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+
+### Release notes
+* Public preview
+  * The `aks-preview` Azure CLI extension (version 0.5.66+) now supports running `az aks nodepool update -g <resourceGroup> -c <clusterName> -n <nodepoolName>` without any optional arguments. This will perform an update operation without performing any changes, which can recover a cluster stuck in a failure state.
+  * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
+* Behavioral changes
+  * Kube-proxy now detects local traffic using the local interface subnet instead of cluster CIDR when using Azure CNI. For clusters that have agent pools in separate subnets, this ensures that kube-proxy NAT rules do not interfere with network policies enforced by Azure NPM. The configuration change applies to clusters running Azure CNI and Kubernetes version 1.23.3 or later.
+  * Clusters deployed with outboundType loadBalancer but deployed in a subnet with an attached NAT gateway will be updatable. Deployment of clusters into a bring-your-own-vnet subnet with a NAT Gateway already attached will be blocked unless `outboundType userAssignedNATGateway` is passed. See [NAT Gateway](https://docs.microsoft.com/en-us/azure/aks/nat-gateway) in the AKS Documentation for more details.
+* Component Updates
+  * Azure CNI has been updated to [v1.4.22](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.22).
+  * [Cloud Provider Azure](https://kubernetes-sigs.github.io/cloud-provider-azure/) is being upgraded to [v1.23.11](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.23.11)/[v1.1.14](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.1.14)/[v1.0.18](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.0.18)/[v0.7.21](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v0.7.21) (depending on AKS cluster version).
+  
 ## Release 2022-04-24
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-05-06 for public cloud and 2022-05-09 for sovereign clouds.
