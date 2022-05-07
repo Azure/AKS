@@ -12,7 +12,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release notes
 * Public preview
-  * The `aks-preview` Azure CLI extension (version 0.5.66+) now supports running `az aks nodepool update -g <resourceGroup> -c <clusterName> -n <nodepoolName>` without any optional arguments. This will perform an update operation without performing any changes, which can recover a cluster stuck in a failure state.
+  * The `aks-preview` Azure CLI extension (version 0.5.66+) now supports running `az aks update -g <resourceGroup> -n <clusterName>` without any optional arguments. This will perform an update operation without performing any changes, which can recover a cluster stuck in a failed provisioning state.
   * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
 * Behavioral changes
   * Kube-proxy now detects local traffic using the local interface subnet instead of cluster CIDR when using Azure CNI. For clusters that have agent pools in separate subnets, this ensures that kube-proxy NAT rules do not interfere with network policies enforced by Azure NPM. The configuration change applies to clusters running Azure CNI and Kubernetes version 1.23.3 or later.
