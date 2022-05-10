@@ -12,13 +12,13 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release notes
 * Public preview
-    *[AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
- * Bug Fixes
-    *Fixes a bug with the AKS-EnableDualStack preview feature that would delete managed outbound IPv6 IPs if updating the cluster with a version of the API before the dual-stack parameters were added.
-    *A validation to prevent adding clusters to a subnet with a NAT Gateway without setting the appropriate outboundType was applied to updates as well as creates, preventing changes to clusters in this situation. The validation has been removed from update calls.
- * Component Updates
-    *Azure File CSI driver has been updated to [v1.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.16.0)
-    *AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
+    * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
+* Bug Fixes
+    * Fixes a bug with the AKS-EnableDualStack preview feature that would delete managed outbound IPv6 IPs if updating the cluster with a version of the API before the dual-stack parameters were added.
+    * A validation to prevent adding clusters to a subnet with a NAT Gateway without setting the appropriate outboundType was applied to updates as well as creates, preventing changes to clusters in this situation. The validation has been removed from update calls.
+* Component Updates
+    * Azure File CSI driver has been updated to [v1.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.16.0)
+    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
 
 ## Release 2022-05-01
 
