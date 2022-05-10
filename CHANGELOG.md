@@ -14,7 +14,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Public preview
   * The `aks-preview` Azure CLI extension (version 0.5.66+) now supports running `az aks update -g <resourceGroup> -n <clusterName>` without any optional arguments. This will perform an update operation without performing any changes, which can recover a cluster stuck in a failed provisioning state.
   * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
-* Behavioral changes
+* Bug fixes
+  * A check for incorrect `outboundType` when deploying a cluster into a subnet with an attached NAT Gateway that was applying on update operations has been corrected to apply only to cluster creates.
     * Fixes a bug with the AKS-EnableDualStack preview feature that would delete managed outbound IPv6 IPs if updating the cluster with a version of the API before the dual-stack parameters were added.
 * Component Updates
     *Azure File CSI driver has been updated to [v1.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.16.0)
