@@ -15,7 +15,7 @@ This release is rolling out to all regions - estimated time for completed roll o
     *[AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
  * Bug Fixes
     *Fixes a bug with the AKS-EnableDualStack preview feature that would delete managed outbound IPv6 IPs if updating the cluster with a version of the API before the dual-stack parameters were added.
-    *A check for incorrect `outboundType` when deploying a cluster into a subnet with an attached NAT Gateway that was applying on update operations has been corrected to apply only to cluster creates.
+    *A validation to prevent adding clusters to a subnet with a NAT Gateway without setting the appropriate outboundType was applied to updates as well as creates, preventing changes to clusters in this situation. The validation has been removed from update calls.
 * Behavioral changes
     *The `aks-preview` Azure CLI extension (version 0.5.66+) now supports running `az aks update -g <resourceGroup> -n <clusterName>` without any optional arguments. This will perform an update operation without performing any changes, which can recover a cluster stuck in a failed provisioning state.
 * Component Updates
