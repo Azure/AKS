@@ -19,7 +19,7 @@ This release is rolling out to all regions - estimated time for completed roll o
     * Fixes a bug with the AKS-EnableDualStack preview feature that would delete managed outbound IPv6 IPs if updating the cluster with a version of the API before the dual-stack parameters were added.
 * Component Updates
     *Azure File CSI driver has been updated to [v1.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.16.0)
-    *AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
 ## Release 2022-05-01
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-05-13 for public cloud and 2022-05-16 for sovereign clouds.
