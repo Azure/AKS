@@ -63,3 +63,6 @@ this repository must:
 
 [1]: https://azure.microsoft.com/support/options/
 [2]: https://docs.microsoft.com/en-us/azure/aks/support-policies
+
+## Hiring
+
