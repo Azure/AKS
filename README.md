@@ -81,6 +81,6 @@ this repository must:
 - [Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1176631/Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
 - [Senior Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1176656/Senior%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
 
-### Program Management
+### Product Management
 
-- [Senior Program Manager](https://careers.microsoft.com/us/en/job/1225749/Senior%20Program%20Manager)
+- [Senior Product Manager](https://careers.microsoft.com/us/en/job/1225749/Senior%20Program%20Manager)
