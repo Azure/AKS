@@ -1,6 +1,7 @@
 resources:
 - github.com/prometheus-operator/kube-prometheus?ref=v0.9.0
 - coredns-prometheusRule.yaml
+- node-exporter-connector-daemonset.yaml
 
 patchesStrategicMerge:
 - alertmanager-secret.yaml
