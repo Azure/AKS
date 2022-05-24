@@ -14,19 +14,19 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release notes
 
-* General availability
-  * [AKS Cluster Extensions](https://azure.microsoft.com/en-us/updates/generally-available-aks-cluster-extensions/)
-  * [Azure CNI dynamic IP allocation and enhanced subnet support](https://azure.microsoft.com/en-us/updates/generally-available-dynamic-ip-allocation-and-enhanced-subnet-support-in-aks/)
-  * [Alias minor version](https://azure.microsoft.com/en-us/updates/generally-available-alias-minor-version-support-in-aks/)
-  * [Custom node configuration](https://azure.microsoft.com/en-us/updates/generally-available-custom-node-configuration-on-aks/)
-  * [Subnet per node pool](https://azure.microsoft.com/en-us/updates/generally-available-subnet-per-node-pool/)
-* Public preview
-  * [ARM64 agent pools](https://azure.microsoft.com/en-us/updates/public-preview-arm64-agent-node-support-in-aks/)
-  * [Azure Disk CSI driver v2](https://azure.microsoft.com/en-us/updates/public-preview-azure-disk-csi-driver-v2-in-aks/)
-  * [Draft extension for Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/updates/public-preview-draft-extension-for-azure-kubernetes-service-aks/)
-  * [KEDA add-on](https://azure.microsoft.com/en-us/updates/public-preview-keda-addon-for-aks/)
-  * [Web application routing add-on](https://azure.microsoft.com/en-us/updates/public-preview-web-application-routing-addon-for-azure-kubernetes-service-aks/)
-  * [Windows Server 2022 host support](https://azure.microsoft.com/en-us/updates/public-preview-windows-server-2022-host-support-in-aks/)
+* Features
+  * [AKS Cluster Extensions](https://azure.microsoft.com/en-us/updates/generally-available-aks-cluster-extensions/) is now generally available.
+  * [Azure CNI dynamic IP allocation and enhanced subnet support](https://azure.microsoft.com/en-us/updates/generally-available-dynamic-ip-allocation-and-enhanced-subnet-support-in-aks/) is now generally available.
+  * [Alias minor version](https://azure.microsoft.com/en-us/updates/generally-available-alias-minor-version-support-in-aks/) is now generally available.
+  * [Custom node configuration](https://azure.microsoft.com/en-us/updates/generally-available-custom-node-configuration-on-aks/) is now generally available.
+  * [Subnet per node pool](https://azure.microsoft.com/en-us/updates/generally-available-subnet-per-node-pool/) is now generally available.
+* Preview features
+  * [ARM64 agent pools](https://azure.microsoft.com/en-us/updates/public-preview-arm64-agent-node-support-in-aks/) is now in public preview.
+  * [Azure Disk CSI driver v2](https://azure.microsoft.com/en-us/updates/public-preview-azure-disk-csi-driver-v2-in-aks/) is now in public preview.
+  * [Draft extension for Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/updates/public-preview-draft-extension-for-azure-kubernetes-service-aks/) is now in public preview.
+  * [KEDA add-on](https://azure.microsoft.com/en-us/updates/public-preview-keda-addon-for-aks/) is now in public preview.
+  * [Web application routing add-on](https://azure.microsoft.com/en-us/updates/public-preview-web-application-routing-addon-for-azure-kubernetes-service-aks/) is now in public preview.
+  * [Windows Server 2022 host support](https://azure.microsoft.com/en-us/updates/public-preview-windows-server-2022-host-support-in-aks/) is now in public preview.
 * Bug fixes
     * BYOCNI nodes will no longer be provisioned with additional secondary IPs
     * Calls to admission webhooks in Konnectivity clusters will properly use the Konnectivity tunnel to reach the webhook URL
