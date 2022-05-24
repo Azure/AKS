@@ -1,5 +1,44 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-05-22
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-06-03 for public cloud and 2022-06-06 for sovereign clouds.
+
+### Announcements
+* From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
+* Starting with Kubernetes 1.24, the following changes will be made:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled
+* Konnectivity rollout will continue in May 2022 and is expected to complete by end of May.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+
+### Release notes
+
+* General availability
+  * [AKS Cluster Extensions](https://azure.microsoft.com/en-us/updates/generally-available-aks-cluster-extensions/)
+  * [Azure CNI dynamic IP allocation and enhanced subnet support](https://azure.microsoft.com/en-us/updates/generally-available-dynamic-ip-allocation-and-enhanced-subnet-support-in-aks/)
+  * [Alias minor version](https://azure.microsoft.com/en-us/updates/generally-available-alias-minor-version-support-in-aks/)
+  * [Custom node configuration](https://azure.microsoft.com/en-us/updates/generally-available-custom-node-configuration-on-aks/)
+  * [Subnet per node pool](https://azure.microsoft.com/en-us/updates/generally-available-subnet-per-node-pool/)
+* Public preview
+  * [ARM64 agent pools](https://azure.microsoft.com/en-us/updates/public-preview-arm64-agent-node-support-in-aks/)
+  * [Azure Disk CSI driver v2](https://azure.microsoft.com/en-us/updates/public-preview-azure-disk-csi-driver-v2-in-aks/)
+  * [Draft extension for Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/updates/public-preview-draft-extension-for-azure-kubernetes-service-aks/)
+  * [KEDA add-on](https://azure.microsoft.com/en-us/updates/public-preview-keda-addon-for-aks/)
+  * [Web application routing add-on](https://azure.microsoft.com/en-us/updates/public-preview-web-application-routing-addon-for-azure-kubernetes-service-aks/)
+  * [Windows Server 2022 host support](https://azure.microsoft.com/en-us/updates/public-preview-windows-server-2022-host-support-in-aks/)
+* Bug fixes
+    * BYOCNI nodes will no longer be provisioned with additional secondary IPs
+    * Calls to admission webhooks in Konnectivity clusters will properly use the Konnectivity tunnel to reach the webhook URL
+* Component Updates
+    * Azure Disk CSI driver has been updated to [v1.18.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.18.0)
+    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
+    * AKS Windows 2019 image has been updated to [17763.2928.220511](vhd-notes/AKSWindows/2019/17763.2928.220511.txt).
+    * AKS Windows 2022 image has been added with version [20348.707.220511](vhd-notes/AKSWindows/2022/20348.707.220511.txt).
+    * Cloud controller manager has been updated to versions [v1.23.12](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.23.12)/[v1.1.15](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.1.15)/[v1.0.19](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.0.19) (see the [version matrix](https://github.com/kubernetes-sigs/cloud-provider-azure#version-matrix) to see which CCM version maps to which AKS version)
+    * CoreDNS has been updated to [v1.8.7](https://github.com/coredns/coredns/releases/tag/v1.8.7)
+    * external-dns has been updated to [v0.10.2](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.10.2)
+
 ## Release 2022-05-08
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-05-21 for public cloud and 2022-05-24 for sovereign clouds.
