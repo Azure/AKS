@@ -28,16 +28,16 @@ This release is rolling out to all regions - estimated time for completed roll o
   * [Web application routing add-on](https://azure.microsoft.com/en-us/updates/public-preview-web-application-routing-addon-for-azure-kubernetes-service-aks/) is now in public preview.
   * [Windows Server 2022 host support](https://azure.microsoft.com/en-us/updates/public-preview-windows-server-2022-host-support-in-aks/) is now in public preview.
 * Bug fixes
-    * BYOCNI nodes will no longer be provisioned with additional secondary IPs
-    * Calls to admission webhooks in Konnectivity clusters will properly use the Konnectivity tunnel to reach the webhook URL
+  * BYOCNI nodes will no longer be provisioned with additional secondary IPs
+  * Calls to admission webhooks in Konnectivity clusters will properly use the Konnectivity tunnel to reach the webhook URL
 * Component Updates
-    * Azure Disk CSI driver has been updated to [v1.18.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.18.0)
-    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
-    * AKS Windows 2019 image has been updated to [17763.2928.220511](vhd-notes/AKSWindows/2019/17763.2928.220511.txt).
-    * AKS Windows 2022 image has been added with version [20348.707.220511](vhd-notes/AKSWindows/2022/20348.707.220511.txt).
-    * Cloud controller manager has been updated to versions [v1.23.12](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.23.12)/[v1.1.15](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.1.15)/[v1.0.19](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.0.19) (see the [version matrix](https://github.com/kubernetes-sigs/cloud-provider-azure#version-matrix) to see which CCM version maps to which AKS version)
-    * CoreDNS has been updated to [v1.8.7](https://github.com/coredns/coredns/releases/tag/v1.8.7)
-    * external-dns has been updated to [v0.10.2](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.10.2)
+  * Azure Disk CSI driver has been updated to [v1.18.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.18.0)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
+  * AKS Windows 2019 image has been updated to [17763.2928.220511](vhd-notes/AKSWindows/2019/17763.2928.220511.txt).
+  * AKS Windows 2022 image has been added with version [20348.707.220511](vhd-notes/AKSWindows/2022/20348.707.220511.txt).
+  * Cloud controller manager has been updated to versions [v1.23.12](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.23.12)/[v1.1.15](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.1.15)/[v1.0.19](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.0.19) (see the [version matrix](https://github.com/kubernetes-sigs/cloud-provider-azure#version-matrix) to see which CCM version maps to which AKS version)
+  * CoreDNS has been updated to [v1.8.7](https://github.com/coredns/coredns/releases/tag/v1.8.7) for AKS clusters >=1.20.0. Clusters before 1.20.0 remain on 1.6.6.
+  * external-dns has been updated to [v0.10.2](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.10.2)
 
 ## Release 2022-05-08
 
