@@ -66,20 +66,10 @@ this repository must:
 
 ## Hiring
 ### Engineering
-
+- [Principal Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1332158/Principal%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
 - [Senior Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1171089/Senior%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
-- [Principal Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1171095/Principal%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
-- [Senior Software Engineer](https://careers.microsoft.com/us/en/job/1147351/Senior%20Software%20Engineer)
-- [Principal Software Engineer](https://careers.microsoft.com/us/en/job/1115237/Principal%20Software%20Engineer)
-- [Software Engineer II - Azure Kubernetes; Networking](https://careers.microsoft.com/us/en/job/1012374/Software%20Engineer%20II%20-%20Azure%20Kubernetes;%20Networking)
-- [Software Engineer II - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1129325/Software%20Engineer%20II%20-%20Azure%20Kubernetes%20Service)
-- [Software Engineer II - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1129318/Software%20Engineer%20II%20-%20Azure%20Kubernetes%20Service)
-- [Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1170472/Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
-- [Senior Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1129319/Senior%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
-- [Software Engineer II - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1094994/Software%20Engineer%20II%20-%20Azure%20Kubernetes%20Service)
-- [Software Engineer II - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1176652/Software%20Engineer%20II%20-%20Azure%20Kubernetes%20Service)
-- [Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1176631/Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
-- [Senior Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1176656/Senior%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
+- [Software Engineer II - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1241030)
+- [Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1241021)
 
 ### Product Management
 
