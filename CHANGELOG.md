@@ -15,7 +15,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release notes
 
 * Features
-  * Private Link support for KMS
+  * AKV with Private Link with KMS is now supported
   * Preview of Kubernetes 1.24
 * Bug fixes
   * Add extra information in error messages when a subnet is full or drain issues are found
