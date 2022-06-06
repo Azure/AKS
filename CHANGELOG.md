@@ -5,22 +5,21 @@
 This release is rolling out to all regions - estimated time for completed roll out is 2022-06-10 for public cloud and 2022-06-13 for sovereign clouds.
 
 ### Announcements
-* From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with Kubernetes 1.24, the following changes will be made:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
   * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled
-* Konnectivity rollout will continue in May 2022 and is expected to complete by end of May.
+* Konnectivity rollout will continue in May 2022 and is expected to complete by end of June.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
 
 * Features
-  * AKV with Private Link with KMS is now supported
+  * Azure Key Vault with Private Link with KMS is now [supported](https://docs.microsoft.com/en-us/azure/aks/use-kms-etcd-encryption)
   * Preview of Kubernetes 1.24
 * Bug fixes
   * Add extra information in error messages when a subnet is full or drain issues are found
 * Component Updates
-  * Upgrade Azure File CSI driver to v1.18.0
+  * Upgrade Azure File CSI driver to [v1.18.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.18.0)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.24.txt).
   * AKS Windows 2019 image has been updated to [17763.2928.220525](vhd-notes/AKSWindows/2019/17763.2928.220525.txt).
   * AKS Windows 2022 image has been added with version [20348.707.220525](vhd-notes/AKSWindows/2022/20348.707.220525.txt).
