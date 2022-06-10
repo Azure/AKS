@@ -16,6 +16,8 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Release notes
 
+* Features
+  * [AKS Release Tracker](https://docs.microsoft.com/en-us/azure/aks/release-tracker) is now generally available.
 * Behavioral Changes
   * Set agentPoolProfile default maxPods for new agentpools to align with the expected default maxPods based on the cluster's network configuration.
   * Reverted the changes of request values to api server to reduce churn on Uptime SLA enabled AKS clusters.
