@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-06-12
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-06-24 for public cloud and 2022-06-27 for sovereign clouds.
+
+### Announcements
+* Starting with the June 26th, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
+* Starting with Kubernetes 1.24, the following changes will be made:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+* Konnectivity rollout will continue in May 2022 and is expected to complete by end of June.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+
+### Release notes
+
+* Behavioral Changes
+  * [Upgrades spot node pools](https://docs.microsoft.com/azure/aks/spot-node-pool#upgrade-a-spot-node-pool) is now available starting this week: When upgrading a spot node pool, AKS will issue a cordon and an eviction notice, but no drain is applied. There are no surge nodes available for spot node pool upgrades.
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.08.txt).
+  * Upgrade Azure File CSI driver to [v1.19.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.19.0)
+  * Upgrade Azure Disk CSI driver to [v1.19.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.19.0)
+  * Cloud-controller-manager, Azure SDK, & API version has been updated for v1.21.7 and v1.21.9 (see the [version matrix](https://github.com/kubernetes-sigs/cloud-provider-azure#version-matrix) to see which CCM version maps to which AKS version.  
+
 ## Release 2022-06-05
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-06-17 for public cloud and 2022-06-20 for sovereign clouds.
