@@ -1,5 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-06-19
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-07-01 for public cloud and 2022-07-04 for sovereign clouds.
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+* Starting with the June 26th, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
+* Starting with Kubernetes 1.24, the following changes will be made:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+* Konnectivity rollout will continue in May 2022 and is expected to complete by end of June.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+
+### Release notes
+
+* Behavioral Changes
+  * Some of the KEDA scalers will no longer be able to scale workloads. When describing the HPA created for the KEDA scaled object through a command like kubectl describe hpa <hpa-name>, you   may see a warning message such as - Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found
+  * PVC mounts will now work in clouds with custom root CAs.
+  * Nodepool snapshots will only allow taking snapshots from Nodepools with provisioning status as Succeeded.
+  * Added node restriction property for api model, which will allow user to enable/disable node restriction.  
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.13.txt).
+  * Upgrade Azure File CSI driver to [v1.19.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.19.0)
+  * AKS Windows 2019 image has been updated to [17763.2928.220615](vhd-notes/AKSWindows/2019/17763.3046.220615.txt).
+  * AKS Windows 2022 image has been added with version [20348.707.220525](vhd-notes/AKSWindows/2022/20348.768.220615.txt).
+  * Upgraded cloud-controller-manager network API version to 2021-08-01
+
 ## Release 2022-06-12
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-06-24 for public cloud and 2022-06-27 for sovereign clouds.
