@@ -17,7 +17,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release notes
 
 * Behavioral Changes
-  * [Upgrades for Spot Nodepools](https://docs.microsoft.com/en-us/azure/aks/spot-node-pool#UpgradeaSpotnodepool) is now available starting this week : This will involve a cordon and an eviction notice. There is no Drain or Surge nodes available for the Spot nodepool upgrades.
+  * [Upgrades spot node pools](https://docs.microsoft.com/azure/aks/spot-node-pool#upgrade-a-spot-node-pool) is now available starting this week: When upgrading a spot node pool, AKS will issue a cordon and an eviction notice, but no drain is applied. There are no surge nodes available for spot node pool upgrades.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.08.txt).
   * Upgrade Azure File CSI driver to [v1.19.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.19.0)
