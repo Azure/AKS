@@ -22,7 +22,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.08.txt).
   * Upgrade Azure File CSI driver to [v1.19.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.19.0)
   * Upgrade Azure Disk CSI driver to [v1.19.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.19.0)
-  * Cloud-controller-manager, azure SDK, & API version has been updated for v1.21.7 and v1.21.9 (see the [version matrix](https://github.com/kubernetes-sigs/cloud-provider-azure#version-matrix) to see which CCM version maps to which AKS version.  
+  * Cloud-controller-manager, Azure SDK, & API version has been updated for v1.21.7 and v1.21.9 (see the [version matrix](https://github.com/kubernetes-sigs/cloud-provider-azure#version-matrix) to see which CCM version maps to which AKS version.  
 
 ## Release 2022-06-05
 
