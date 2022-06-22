@@ -18,14 +18,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 ### Release notes
 
 * Behavioral Changes
-  * PVC mounts will now work in clouds with custom root CAs.
+  * PersistentVolumeClaim mounts will now work in clouds with custom root CAs.
   * Nodepool snapshots will only allow taking snapshots from Nodepools with provisioning status as Succeeded.
-  * Added node restriction property for api model, which will allow user to enable/disable node restriction.  
+  * Added node restriction property for AKS resource API , which will allow users to enable/disable node restriction.  
 * Bug Fixes
   * Fixed issue related to KEDA Cluster-role : Some of the KEDA scalers such as cron scalers will not be able to scale workloads, i.e When describing the HPA created for the KEDA scaled object through a command like kubectl describe hpa <hpa-name>, you  may now see a warning message such as - Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found. The warning is introduced to correct a prior issue.  
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.13.txt).
-  * Upgrade Azure File CSI driver to [v1.19.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.19.0)
   * AKS Windows 2019 image has been updated to [17763.2928.220615](vhd-notes/AKSWindows/2019/17763.3046.220615.txt).
   * AKS Windows 2022 image has been added with version [20348.707.220525](vhd-notes/AKSWindows/2022/20348.768.220615.txt).
   * Upgraded cloud-controller-manager network API version to 2021-08-01
