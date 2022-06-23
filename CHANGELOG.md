@@ -12,17 +12,19 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled
   * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
   * metrics-server version 0.6.1 will be the default version.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
 * Konnectivity rollout will continue in May 2022 and is expected to complete by end of June.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
-
+* Features
+  * Disable [CSI Storage Drivers](https://docs.microsoft.com/en-us/azure/aks/azure-disk-csi) available in Preview.
 * Behavioral Changes
   * PersistentVolumeClaim mounts will now work in clouds with custom root CAs.
   * Nodepool snapshots will only allow taking snapshots from Nodepools with provisioning status as Succeeded.
   * Added node restriction property for AKS resource API , which will allow users to enable/disable node restriction.  
 * Bug Fixes
-  * Fixed issue related to KEDA Cluster-role : Any of the KEDA scalers may have noticed an issue when scaling workloads, This is now replaced with a warning i.e When describing the HPA created for the KEDA scaled object through a command like kubectl describe hpa <hpa-name>, you  may now see a warning message such as - Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found. The warning is introduced to correct a prior issue.  
+  * Fixed an issue related to missing KEDA Cluster-role : Any of the KEDA scalers may have noticed the following issue when scaling workloads,i.e When describing the HPA created for the KEDA scaled object through a command like kubectl describe hpa <hpa-name>, you  may now see a warning message such as - Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found. The issue is now fixed by adding the missing cluster role - clusterrole.rbac.authorization.k8s.io. 
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.13.txt).
   * AKS Windows 2019 image has been updated to [17763.2928.220615](vhd-notes/AKSWindows/2019/17763.3046.220615.txt).
