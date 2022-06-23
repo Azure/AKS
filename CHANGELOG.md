@@ -7,9 +7,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 ### Announcements
 * Starting with the June 26th, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
-* Starting with Kubernetes 1.24, the following changes will be made:
+* Starting with Kubernetes 1.24, the following changes will be made default:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
-  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
   * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
   * metrics-server version 0.6.1 will be the default version.
 * Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
@@ -22,7 +22,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Behavioral Changes
   * PersistentVolumeClaim mounts will now work in clouds with custom root CAs.
   * Nodepool snapshots will only allow taking snapshots from Nodepools with provisioning status as Succeeded.
-  * Added node restriction property for AKS resource API , which will allow users to enable/disable node restriction.  
 * Bug Fixes
   * Fixed an issue related to missing KEDA Cluster-role : Any of the KEDA scalers may have noticed the following issue when scaling workloads,i.e When describing the HPA created for the KEDA scaled object through a command like kubectl describe hpa <hpa-name>, you  may now see a warning message such as - Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found. The issue is now fixed by adding the missing cluster role - clusterrole.rbac.authorization.k8s.io. 
 * Component Updates
