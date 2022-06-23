@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 ### Release notes
 * Preview Features
-  * Disable [CSI Storage Drivers](https://docs.microsoft.com/en-us/azure/aks/azure-disk-csi) available in Preview.
+  * Disable [CSI Storage Drivers](https://docs.microsoft.com/azure/aks/azure-disk-csi) available in preview.
 * Behavioral Changes
   * PersistentVolumeClaim mounts will now work in clouds with custom root CAs.
   * Nodepool snapshots will only allow taking snapshots from Nodepools with provisioning status as Succeeded.
