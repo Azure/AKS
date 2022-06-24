@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * PersistentVolumeClaim mounts will now work in clouds with custom root CAs.
   * Nodepool snapshots will only allow taking snapshots from Nodepools with provisioning status as Succeeded.
 * Bug Fixes
-  * Fixed issue where KEDA scalers using HorizontalPodAutoscaler (HPA) were impacted by missing ClusterRole. This was observed previously as a warning on the describe output of HPA - `Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found`. The missing ClusterRole has now been added to address this issue.
+  * Fixed issue that prevented KEDA from scaling workloads. This could be observed previously as following status condition when describing the HPA for the KEDA scaled object: `Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found`.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.13.txt).
   * AKS Windows 2019 image has been updated to [17763.2928.220615](vhd-notes/AKSWindows/2019/17763.3046.220615.txt).
