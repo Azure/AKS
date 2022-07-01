@@ -19,7 +19,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 ### Release notes
 * Features
-  * [Calico Network Policy](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-for-calico-network-policies) is now supported for Windows Server 2019 and 2022. This new feature allows customers to use network policies with Windows Server on AKS. Customers can also enable and use both Linux and Windows network policies in a single cluster. This feature will be available from Kubernetes 1.20. Please take note of [common issues related to this change in our troubleshooting documentation.](https://docs.microsoft.com/azure/aks/troubleshooting#windows-containers-have-connectivity-issues-after-a-cluster-upgrade-operation)
+  * [Calico Network Policy](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-for-calico-network-policies) is now generally available for Windows Server 2019 and 2022. This new feature allows customers to use network policies with Windows Server on AKS. Customers can also enable and use both Linux and Windows network policies in a single cluster. This feature will be available from Kubernetes 1.20. Please take note of [common issues related to this change in our troubleshooting documentation.](https://docs.microsoft.com/azure/aks/troubleshooting#windows-containers-have-connectivity-issues-after-a-cluster-upgrade-operation)
 * Preview Features
   * [API Server VNet Integration](https://docs.microsoft.com/azure/aks/api-server-vnet-integration) is available in preview.
 * Component Updates
