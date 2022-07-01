@@ -1,5 +1,32 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-06-26
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-07-08 for public cloud and 2022-07-11 for sovereign clouds.
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+* Starting with the July 3rd, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
+* Starting with Kubernetes 1.24, the following changes will be made default:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+  * metrics-server vertical pod autoscaler will be enabled.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
+* Konnectivity rollout will continue in May 2022 and is expected to complete by end of June.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+
+### Release notes
+* Features
+  * [Calico Network Policy](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-for-calico-network-policies) is now supported for Windows Server 2019 and 2022. This new feature allows customers to use network policies with Windows Server on AKS. Customers can also enable and use both Linux and Windows network policies in a single cluster. This feature will be available from Kubernetes 1.20. Please take note of [common issues related to this change in our troubleshooting documentation.](https://docs.microsoft.com/azure/aks/troubleshooting#windows-containers-have-connectivity-issues-after-a-cluster-upgrade-operation)
+* Preview Features
+  * [API Server VNet Integration](https://docs.microsoft.com/azure/aks/api-server-vnet-integration) is available in preview.
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.22](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.22.txt).
+  * AKS Windows 2022 image updated to [20348.768.220615](vhd-notes/AKSWindows/2022/20348.768.220615.txt).
+  * Application Gateway Ingress Controller add-on has been updated to version 1.5.2.
+
 ## Release 2022-06-19
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-07-01 for public cloud and 2022-07-04 for sovereign clouds.
