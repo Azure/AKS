@@ -25,7 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.22](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.22.txt).
   * AKS Windows 2022 image updated to [20348.768.220615](vhd-notes/AKSWindows/2022/20348.768.220615.txt).
-  * Application Gateway Ingress Controller add-on has been updated to version 1.5.2.
+  * Application Gateway Ingress Controller add-on has been updated to version [1.5.2](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.5.2).
 
 ## Release 2022-06-19
 
