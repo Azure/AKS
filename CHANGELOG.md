@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * PersistentVolumeClaim mounts will now work in clouds with custom root CAs.
   * Nodepool snapshots will only allow taking snapshots from Nodepools with provisioning status as Succeeded.
 * Bug Fixes
-  * Fixed issue that prevented KEDA from scaling workloads. This could be observed previously as following status condition when describing the HPA for the KEDA scaled object: `Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found`.
+  * Fixed issue that prevented KEDA from scaling workloads. This could be observed previously as following status condition when describing the HorizontalPodAutoscaler for the KEDA scaled object: `Cannot list resource "<external-metric-name>" in API group "external.metrics.k8s.io " in the namespace "<namespace-name>": RBAC: clusterrole.rbac.authorization.k8s.io  "keda-operator-external-metrics-reader" not found`.
   * Update cloud-controller-manager versions to v1.24.2, v1.23.14, v1.1.17, v1.0.21 for Kubernetes 1.24, 1.23, 1.22, and 1.21 -
     * A new annotation is added in order to specify the PublicIP Prefix for creating IP of LB-service.beta. kubernetes.io/azure-pip-prefix-id: "/subscriptions/8ecadfc9-ffff-4ea4-ffff-0d9f87e4d7c8/resourceGroups/lodrem/providers/Microsoft.Network/publicIPPrefixes/bb" [#1848](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1848).
     * Fix unexpected managed PLS deletion issue when ILB subnet is specified. [#1835](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1835)
