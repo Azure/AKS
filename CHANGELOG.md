@@ -22,12 +22,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Features
   * [Node pool start/stop](https://docs.microsoft.com/azure/aks/start-stop-nodepools) is now generally available. 
 * Bug Fixes
- * Fixed issue on 1.24+ clusters with Windows node pools to automatically create the service account required for installing Calico.
+ * Fixed issue on 1.24+ clusters with Windows node pools and Calico as network policy to automatically create the service account required for installing Calico.
  * Set `priorityClassName` to `system-node-critical` for Azure Key Vault Provider for Secrets Store CSI Driver addon to prevent scheduling issues arising from saturation by non-critical workloads. 
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.29](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.29.txt).
-  * AKS Windows 2019 image has been updated to [17763.3046.220624](vhd-notes/AKSWindows/2019/17763.3046.220624.txt).
-  * AKS Windows 2022 image has been added with version [20348.768.220624](vhd-notes/AKSWindows/2022/20348.768.220624.txt).
 
 ## Release 2022-06-26
 
@@ -53,7 +51,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * [API Server VNet Integration](https://docs.microsoft.com/azure/aks/api-server-vnet-integration) is available in preview.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.22](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.22.txt).
-  * AKS Windows 2022 image updated to [20348.768.220615](vhd-notes/AKSWindows/2022/20348.768.220615.txt).
+  * AKS Windows 2019 image has been updated to [17763.3046.220624](vhd-notes/AKSWindows/2019/17763.3046.220624.txt).
+  * AKS Windows 2022 image has been added with version [20348.768.220624](vhd-notes/AKSWindows/2022/20348.768.220624.txt).
   * Application Gateway Ingress Controller add-on has been updated to version [1.5.2](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.5.2).
   * The Open Service Mesh addon image has been updated from version 1.0.0 to [version 1.1.1](https://github.com/openservicemesh/osm/releases/tag/v1.1.1) for AKS clusters running 1.23.5+. Please note the **breaking change** mentioned in the [version 1.1.0 release notes](https://github.com/openservicemesh/osm/releases/tag/v1.1.0).
 
