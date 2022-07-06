@@ -1,5 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-07-03
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-07-15 for public cloud and 2022-07-18 for sovereign clouds.
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+* Starting with this release, the pod memory limit for Azure NPM has been increased from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
+* Starting with Kubernetes 1.24, the following changes will be made default:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+  * metrics-server vertical pod autoscaler will be enabled.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Kubernetes patch versions 1.21.14, 1.22.11, and 1.23.8 are now available; Kubernetes patch versions 1.21.7, 1.22.4, and 1.23.3 are deprecated and removed. Learn more about Kubernetes version support policy followed by AKS [here](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy).
+* Konnectivity rollout is done for most regions. Targeting end of this week for completion of rollout to the remaining regions - `centralus, westus, germanynorth, westeurope, australiacentral2, australiasoutheast, brazilsoutheast, canadaeast, francesouth, japanwest, jioindiacentral, koreasouth, norwaywest, southafricawest, southcentralus, southeastasia, southindia, swedensouth, switzerlandwest, uaecentral, westus3`.
+
+### Release notes
+* Features
+  * [Node pool start/stop](https://docs.microsoft.com/azure/aks/start-stop-nodepools) is now generally available. 
+* Bug Fixes
+ * Fixed Calico issue on Windows node pools in 1.24+ clusters.
+ * Set `priorityClassName` to `system-node-critical` for Azure Key Vault Provider for Secrets Store CSI Driver addon to prevent scheduling issues arising from saturation by non-critical workloads. 
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.29](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.29.txt).
+  * AKS Windows 2019 image has been updated to [17763.3046.220624](vhd-notes/AKSWindows/2019/17763.3046.220624.txt).
+  * AKS Windows 2022 image has been added with version [20348.768.220624](vhd-notes/AKSWindows/2022/20348.768.220624.txt).
+
 ## Release 2022-06-26
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-07-08 for public cloud and 2022-07-11 for sovereign clouds.
