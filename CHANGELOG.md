@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Features
   * [Node pool start/stop](https://docs.microsoft.com/azure/aks/start-stop-nodepools) is now generally available. 
 * Bug Fixes
- * Fixed Calico issue on Windows node pools in 1.24+ clusters.
+ * Fixed issue on 1.24+ clusters with Windows node pools to automatically create the service account required for installing Calico.
  * Set `priorityClassName` to `system-node-critical` for Azure Key Vault Provider for Secrets Store CSI Driver addon to prevent scheduling issues arising from saturation by non-critical workloads. 
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.29](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.29.txt).
