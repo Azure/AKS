@@ -90,6 +90,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.13.txt).
   * AKS Windows 2019 image has been updated to [17763.2928.220615](vhd-notes/AKSWindows/2019/17763.3046.220615.txt).
   * AKS Windows 2022 image has been added with version [20348.707.220525](vhd-notes/AKSWindows/2022/20348.768.220615.txt).
+  * Updated Windows containerd package to v1.6.6
   
 ## Release 2022-06-12
 
