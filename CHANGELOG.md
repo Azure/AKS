@@ -15,7 +15,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * metrics-server vertical pod autoscaler will be enabled.
 * Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
-* Kubernetes patch versions 1.21.14, 1.22.11, and 1.23.8 are now available; Kubernetes patch versions 1.21.7, 1.22.4, and 1.23.3 are deprecated and removed. Learn more about Kubernetes version support policy followed by AKS [here](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy).
 * Konnectivity rollout is done for all regions. 
 
 ### Release notes
@@ -25,10 +24,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.04.txt).
-  * AKS Windows 2019 image has been updated to [17763.3165.220713](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019/17763.3165.220713.txt).
-  * AKS Windows 2022 image has been added with version [20348.825.220713](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.825.220713.txt).
-  
-  
 
 ## Release 2022-07-03
 
