@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * metrics-server vertical pod autoscaler will be enabled.
 * Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
-* Konnectivity rollout is done for all regions. 
+* Konnectivity rollout is fnished in global and started in Sov (China, USGov). 
 
 ### Release notes
 * Features
