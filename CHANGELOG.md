@@ -20,7 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 ### Release notes
 * Features
   * [Microsoft Defender cloud-native security agent for AKS clusters ](https://docs.microsoft.com/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks) is now generally available. 
-  * [AKS API Server VNet Integration](https://docs.microsoft.com/azure/aks/api-server-vnet-integration) is now generally available. 
+  * [AKS API Server VNet Integration](https://docs.microsoft.com/azure/aks/api-server-vnet-integration) is now public preview. 
 
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.04.txt).
