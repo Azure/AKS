@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-07-10
+
+This release is rolling out to all regions - estimated time for completed roll out is 2022-07-22 for public cloud and 2022-07-25 for sovereign clouds.
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+* Starting with Kubernetes 1.24, the following changes will be made default:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+  * metrics-server vertical pod autoscaler will be enabled.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Konnectivity rollout is finished in global and started in Sovereign (China, USGov). 
+
+### Release notes
+* Features
+  * [Microsoft Defender cloud-native security agent for AKS clusters ](https://docs.microsoft.com/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks) is now generally available. 
+* Bug Fixes
+  * The nodepools will not inherit node resource group tags in `az aks create --tags` and  `az aks update --tags` scenarios. Because nodepools have  `az aks nodepool add --tags` and `az aks nodepool update --tags`.
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.04.txt).
+  * omsagent update [ciprod06272022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#06272022--).
+
 ## Release 2022-07-03
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-07-15 for public cloud and 2022-07-18 for sovereign clouds.
