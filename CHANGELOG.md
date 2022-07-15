@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Features
   * [Microsoft Defender cloud-native security agent for AKS clusters ](https://docs.microsoft.com/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks) is now generally available. 
 * Bug Fixes
-  * The nodepools will not inherit MC_ resource group tags in `az aks create --tags` and  `az aks update --tags` scenarios.
+  * The nodepools will not inherit MC_ resource group tags in `az aks create --tags` and  `az aks update --tags` scenarios. Because nodepools have  `az aks nodepool add --tags` and `az aks nodepool update --tags`.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.04.txt).
   * omsagent update [ciprod06272022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#06272022--).
