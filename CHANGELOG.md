@@ -6,7 +6,6 @@ This release is rolling out to all regions - estimated time for completed roll o
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
 
 ### Announcements
-* Starting with July 3rd,2022, the pod memory limit for Azure NPM has been increased from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
 * Starting with Kubernetes 1.24, the following changes will be made default:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
   * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
@@ -15,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * metrics-server vertical pod autoscaler will be enabled.
 * Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
-* Konnectivity rollout is finished in global and started in Sov (China, USGov). 
+* Konnectivity rollout is finished in global and started in Sovereign (China, USGov). 
 
 ### Release notes
 * Features
