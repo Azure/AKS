@@ -15,13 +15,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * metrics-server vertical pod autoscaler will be enabled.
 * Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
-* Konnectivity rollout is fnished in global and started in Sov (China, USGov). 
+* Konnectivity rollout is finished in global and started in Sov (China, USGov). 
 
 ### Release notes
 * Features
   * [Microsoft Defender cloud-native security agent for AKS clusters ](https://docs.microsoft.com/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks) is now generally available. 
-  * [AKS API Server VNet Integration](https://docs.microsoft.com/azure/aks/api-server-vnet-integration) is now public preview. 
-
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.04.txt).
 
