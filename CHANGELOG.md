@@ -21,7 +21,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 ## Release notes
 
 * Preview Features
-  * [Azure Blob CSI Driver](https://github.com/kubernetes-sigs/blob-csi-driver#set-up-csi-driver-on-aks-cluster-only-for-aks-users) is now supported in public preview in AKS. Follow these [instructions](https://docs.microsoft.com/azure/aks/azure-blob-csi?tabs=NFS) to use blob csi driver as a managed addon to mount blob storage to a pod via blobfuse or NFS 3.0 options.
+  * Draft is now available in VsCode through the AKS DevX extension. To install the DevX extension for Vscode, check out the [marketplace](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.aks-devx-tools). To check out the open source code, visit the [GitHub repo](https://github.com/Azure/aks-devx-tools).
+  * Automated Deployments is now Public Preview on AKS. Automated Deployments allows you to take your containerized application and deploy it to an AKS cluster easily with GitHub Actions. [Read more here](https://docs.microsoft.com/azure/aks/automated-deployments).
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.18](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.18.txt).
   * AKS Windows 2019 image has been updated to [17763.3232.220722](vhd-notes/AKSWindows/2019/17763.3232.220722.txt).
@@ -48,6 +49,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 * Preview Features
   * KEDA Addon is now supported on ARM64-based nodes.
+  * [Azure Blob CSI Driver](https://github.com/kubernetes-sigs/blob-csi-driver#set-up-csi-driver-on-aks-cluster-only-for-aks-users) is now supported in public preview in AKS. Follow these [instructions](https://docs.microsoft.com/azure/aks/azure-blob-csi?tabs=NFS) to use blob csi driver as a managed addon to mount blob storage to a pod via blobfuse or NFS 3.0 options.
 * Features
   * The annotation `kubernetes.azure.com/set-kube-service-host-fqdn` can now be added to pods to set the KUBERNETES_SERVICE_HOST variable to the domain name of the API server instead of the in-cluster service IP. This is useful in cases where the cluster egress is via a layer 7 firewall, like Azure Firewall with Application Rules.
 * Bug Fixes
