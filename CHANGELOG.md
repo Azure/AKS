@@ -17,8 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Konnectivity rollout is finished in global and started in Sovereign (China, USGov).
 * Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
 
-
-## Release notes
+### Release notes
 
 * Preview Features
   * Draft is now available in VsCode through the AKS DevX extension. To install the DevX extension for Vscode, check out the [marketplace](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.aks-devx-tools). To check out the open source code, visit the [GitHub repo](https://github.com/Azure/aks-devx-tools).
@@ -45,7 +44,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Konnectivity rollout is finished in global and started in Sovereign (China, USGov).
 * Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
 
-## Release notes
+### Release notes
 
 * Preview Features
   * KEDA Addon is now supported on ARM64-based nodes.
