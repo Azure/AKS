@@ -1,5 +1,63 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-07-24
+
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+
+* Starting with Kubernetes 1.24, the following changes will be made default:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+  * metrics-server vertical pod autoscaler will be enabled.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Konnectivity rollout is finished in global and started in Sovereign (China, USGov).
+* Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+
+* Preview Features
+  * Draft is now available in VsCode through the AKS DevX extension. To install the DevX extension for Vscode, check out the [marketplace](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.aks-devx-tools). To check out the open source code, visit the [GitHub repo](https://github.com/Azure/aks-devx-tools).
+  * Automated Deployments is now Public Preview on AKS. Automated Deployments allows you to take your containerized application and deploy it to an AKS cluster easily with GitHub Actions. [Read more here](https://docs.microsoft.com/azure/aks/automated-deployments).
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.18](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.18.txt).
+  * AKS Windows 2019 image has been updated to [17763.3232.220722](vhd-notes/AKSWindows/2019/17763.3232.220722.txt).
+  * AKS Windows 2022 image has been added with version [20348.859.220722](vhd-notes/AKSWindows/2022/20348.859.220722.txt).
+
+## Release 2022-07-17
+
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+
+* Starting with Kubernetes 1.24, the following changes will be made default:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+  * metrics-server vertical pod autoscaler will be enabled.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Konnectivity rollout is finished in global and started in Sovereign (China, USGov).
+* Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+
+* Preview Features
+  * KEDA Addon is now supported on ARM64-based nodes.
+  * [Azure Blob CSI Driver](https://github.com/kubernetes-sigs/blob-csi-driver#set-up-csi-driver-on-aks-cluster-only-for-aks-users) is now supported in public preview in AKS. Follow these [instructions](https://docs.microsoft.com/azure/aks/azure-blob-csi?tabs=NFS) to use blob csi driver as a managed addon to mount blob storage to a pod via blobfuse or NFS 3.0 options.
+* Features
+  * The annotation `kubernetes.azure.com/set-kube-service-host-fqdn` can now be added to pods to set the KUBERNETES_SERVICE_HOST variable to the domain name of the API server instead of the in-cluster service IP. This is useful in cases where the cluster egress is via a layer 7 firewall, like Azure Firewall with Application Rules.
+* Bug Fixes
+  * Fixed issue where removed nodepool labels would still incorrectly show on autoscaled nodes.
+* Component Updates
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.11](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.11.txt).
+  * AKS Windows 2019 image has been updated to [17763.3165.220713](vhd-notes/AKSWindows/2019/17763.3165.220713.txt).
+  * AKS Windows 2022 image has been added with version [20348.825.220713](vhd-notes/AKSWindows/2022/20348.825.220713.txt).
+
 ## Release 2022-07-10
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-07-22 for public cloud and 2022-07-25 for sovereign clouds.
@@ -14,7 +72,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * metrics-server vertical pod autoscaler will be enabled.
 * Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
-* Konnectivity rollout is finished in global and started in Sovereign (China, USGov). 
+* Konnectivity rollout is finished in global and started in Sovereign (China, USGov).
 
 ### Release notes
 * Features
