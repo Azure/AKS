@@ -22,9 +22,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 ### Release notes
 
 * Features
-  * [FIPS-enabled Windows node pool](https://docs.microsoft.com/en-us/azure/aks/enable-fips-nodes#create-a-fips-enabled-windows-node-pool) is now generally available.
+  * [Dedicated Host Support](https://docs.microsoft.com/en-us/azure/aks/use-azure-dedicated-hosts) is now generally available.
+  * [Confidential Virtual Machines](https://docs.microsoft.com/en-us/azure/aks/use-cvm) is now in Public Preview.
 * Behavioral Changes
   * Use QuotaExceeded error code instead of OperationNotAllowed when receiving quota exceed errors from ARM
+
+* Bug Fixes
+  * Azure Monitor for Containers, fixes [issue](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#07272022--) with node allocatable cpu and memory value when limits are not set
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.07.28](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.07.28.txt).
 
