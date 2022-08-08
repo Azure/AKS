@@ -1,5 +1,39 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-08-07
+
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+
+* Starting with Kubernetes 1.25, the following changes will be made default:
+  * The host Linux VM operating system will be Ubuntu 22.04 for Intel and ARM64 architectures
+  * The host Windows VM operating system will be Windows Server 2022
+
+* Starting with Kubernetes 1.24, the following changes will be made default:
+  * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
+  * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
+  * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
+  * metrics-server version 0.6.1 will be the default version.
+  * metrics-server vertical pod autoscaler will be enabled.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Konnectivity rollout is finished in global and started in Sovereign (China, USGov).
+* Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+
+* Features
+  * GA of Kubernetes 1.24
+  * Deprecation of Kubernetes 1.21
+* Behavioral Changes
+  * increased memory request (20Mi -> 40Mi) for azuredisk and node-driver-registrar containers in azurediskcsi-azuredisk-v2-node
+* Component Updates
+  * Calico is updated to v3.21.6
+  * CSI Secret Store now supports Windows Server 2022
+  * Microsoft Defender for Containers images updated 1.0.67
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.02](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.02.txt).
+
 ## Release 2022-07-31
 
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
