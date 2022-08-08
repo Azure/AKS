@@ -7,9 +7,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 ### Announcements
 
 * Starting with Kubernetes 1.25, the following changes will be made default:
-  * The host Linux VM operating system will be Ubuntu 22.04 for Intel and ARM64 architectures
-  * The host Windows VM operating system will be Windows Server 2022
-
+  * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+  * Windows Server 2022 will be the default host.
 * Starting with Kubernetes 1.24, the following changes will be made default:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
   * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
