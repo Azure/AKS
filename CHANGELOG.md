@@ -25,9 +25,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 * Features
   * GA of Kubernetes 1.24
-  * Deprecation of Kubernetes 1.21
 * Behavioral Changes
-  * increased memory request (20Mi -> 40Mi) for azuredisk and node-driver-registrar containers in azurediskcsi-azuredisk-v2-node
+  * Deprecation of Kubernetes 1.21
+  * Increased memory request (20Mi -> 40Mi) for azuredisk and node-driver-registrar containers in azurediskcsi-azuredisk-v2-node
 * Component Updates
   * Calico is updated to v3.21.6
   * CSI Secret Store now supports Windows Server 2022
