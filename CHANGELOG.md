@@ -28,7 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * Deprecation of Kubernetes 1.21
   * Increased memory request (20Mi -> 40Mi) for azuredisk and node-driver-registrar containers in azurediskcsi-azuredisk-v2-node
 * Component Updates
-  * Calico is updated to v3.21.6
+  * Calico is updated to [v3.21.6](https://github.com/projectcalico/calico/releases/tag/v3.21.6)
   * CSI Secret Store now supports Windows Server 2022
   * Microsoft Defender for Containers images updated 1.0.67
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.02](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.02.txt).
