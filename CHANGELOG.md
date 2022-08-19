@@ -1,5 +1,33 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-08-14
+
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+
+* Starting with Kubernetes 1.25, the following changes will be made default:
+  * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+  * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
+* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+
+* Behavioral Changes
+ * Remove responseObject from kube-audit logs when its size is reaching log analytics column size limit (32K) and customer enables kube-audit/kube-audit-admin diagnostics.
+* Bug fixes
+ * Fix bug in processing fractional memory limits on Windows Nodes
+ * Fix log loss due to inode reuse on Windows Nodes
+ * Fix issue with cert rotation on Windows nodes that caused VMSS inconsistency
+ * Removed `Microsoft.Resources/deployments/write`, `Microsoft.Insights/alertRules/*`, and `Microsoft.Support/*` from the [built-in Azure RBAC data plane roles for AKS](https://docs.microsoft.com/azure/aks/manage-azure-rbac#create-role-assignments-for-users-to-access-cluster).
+* Component Updates
+  * Azure Monitor for container insights addon updated for Windows to [win-ciprod08102022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#08102022--)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.10](../AKS/vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.10.txt)
+  * AKS Windows 2019 image has been updated to [17763.3287.220810](../AKS/vhd-notes/AKSWindows/2019/17763.3287.220810.txt)
+  * AKS Windows 2022 image has been updated to [20348.887.220810](../AKS/vhd-notes/AKSWindows/2022/20348.887.220810.txt)
+
 ## Release 2022-08-07
 
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
@@ -129,19 +157,21 @@ This release is rolling out to all regions - estimated time for completed roll o
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
 
 ### Announcements
+
 * Starting with Kubernetes 1.24, the following changes will be made default:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
   * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
   * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
   * metrics-server version 0.6.1 will be the default version.
   * metrics-server vertical pod autoscaler will be enabled.
-* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * Konnectivity rollout is finished in global and started in Sovereign (China, USGov).
 
 ### Release notes
+
 * Features
-  * [Microsoft Defender cloud-native security agent for AKS clusters ](https://docs.microsoft.com/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks) is now generally available. 
+  * [Microsoft Defender cloud-native security agent for AKS clusters](https://docs.microsoft.com/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks) is now generally available.
 * Bug Fixes
   * The nodepools will not inherit node resource group tags in `az aks create --tags` and  `az aks update --tags` scenarios. Because nodepools have  `az aks nodepool add --tags` and `az aks nodepool update --tags`.
 * Component Updates
@@ -154,6 +184,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
 
 ### Announcements
+
 * Starting with this release, the pod memory limit for Azure NPM has been increased from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
 * Starting with Kubernetes 1.24, the following changes will be made default:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
@@ -161,17 +192,18 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
   * metrics-server version 0.6.1 will be the default version.
   * metrics-server vertical pod autoscaler will be enabled.
-* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * Kubernetes patch versions 1.21.14, 1.22.11, and 1.23.8 are now available; Kubernetes patch versions 1.21.7, 1.22.4, and 1.23.3 are deprecated and removed. Learn more about Kubernetes version support policy followed by AKS [here](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy).
 * Konnectivity rollout is done for most regions. Targeting end of this week for completion of rollout to the remaining regions - `centralus, westus, germanynorth, westeurope, australiacentral2, australiasoutheast, brazilsoutheast, canadaeast, francesouth, japanwest, jioindiacentral, koreasouth, norwaywest, southafricawest, southcentralus, southeastasia, southindia, swedensouth, switzerlandwest, uaecentral, westus3`.
 
 ### Release notes
+
 * Features
-  * [Node pool start/stop](https://docs.microsoft.com/azure/aks/start-stop-nodepools) is now generally available. 
+  * [Node pool start/stop](https://docs.microsoft.com/azure/aks/start-stop-nodepools) is now generally available.
 * Bug Fixes
- * Fixed issue on 1.24+ clusters with Windows node pools and Calico as network policy to automatically create the service account required for installing Calico.
- * Set `priorityClassName` to `system-node-critical` for Azure Key Vault Provider for Secrets Store CSI Driver addon to prevent scheduling issues arising from saturation by non-critical workloads. 
+* Fixed issue on 1.24+ clusters with Windows node pools and Calico as network policy to automatically create the service account required for installing Calico.
+* Set `priorityClassName` to `system-node-critical` for Azure Key Vault Provider for Secrets Store CSI Driver addon to prevent scheduling issues arising from saturation by non-critical workloads.
 * Component Updates
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.06.29](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.06.29.txt).
 
@@ -181,6 +213,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
 
 ### Announcements
+
 * Starting with the July 3rd, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
 * Starting with Kubernetes 1.24, the following changes will be made default:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
@@ -188,11 +221,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
   * metrics-server version 0.6.1 will be the default version.
   * metrics-server vertical pod autoscaler will be enabled.
-* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
 * Konnectivity rollout will continue in May 2022 and is expected to complete by end of June.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
+
 * Features
   * [Calico Network Policy](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-for-calico-network-policies) is now generally available for Windows Server 2019 and 2022. This new feature allows customers to use network policies with Windows Server on AKS. Customers can also enable and use both Linux and Windows network policies in a single cluster. This feature will be available from Kubernetes 1.20. Please take note of [common issues related to this change in our troubleshooting documentation.](https://docs.microsoft.com/azure/aks/troubleshooting#windows-containers-have-connectivity-issues-after-a-cluster-upgrade-operation)
 * Preview Features
@@ -210,17 +244,19 @@ This release is rolling out to all regions - estimated time for completed roll o
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
 
 ### Announcements
+
 * Starting with the June 26th, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
 * Starting with Kubernetes 1.24, the following changes will be made default:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
   * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled.  This will allow users to enable/disable node restriction.
   * CoreDNS version 1.9.2 will be default version. With this new version of CoreDNS wildcard queries are no longer allowed.
   * metrics-server version 0.6.1 will be the default version.
-* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022. 
+* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
 * Konnectivity rollout will continue in May 2022 and is expected to complete by end of June.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
+
 * Preview Features
   * Disable [CSI Storage Drivers](https://docs.microsoft.com/azure/aks/azure-disk-csi) available in preview.
 * Behavioral Changes
@@ -245,6 +281,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 This release is rolling out to all regions - estimated time for completed roll out is 2022-06-24 for public cloud and 2022-06-27 for sovereign clouds.
 
 ### Announcements
+
 * Starting with the June 26th, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
 * Starting with Kubernetes 1.24, the following changes will be made:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
@@ -269,6 +306,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 This release is rolling out to all regions - estimated time for completed roll out is 2022-06-17 for public cloud and 2022-06-20 for sovereign clouds.
 
 ### Announcements
+
 * Starting with the June 26th, 2022 AKS release, Azure NPM will increase its pod memory limit from 300 MB to 1 GB for clusters with the uptime SLA enabled. Requests will stay at 300 MB.
 * Starting with Kubernetes 1.24, the following changes will be made:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
@@ -285,7 +323,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Behavioral Changes
   * Set agentPoolProfile default maxPods for new agentpools to align with the expected default maxPods based on the cluster's network configuration.
   * Reverted the changes of request values to api server to reduce churn on Uptime SLA enabled AKS clusters.
-  * Konnectivity agent now uses a new Service Account konnectivity-agent, instead of the default Service Account. 
+  * Konnectivity agent now uses a new Service Account konnectivity-agent, instead of the default Service Account.
 * Bug fixes
   * CSI Secret Store removed limit of node-driver-registrar to address[AKS Issue](https://github.com/Azure/AKS/issues/2972)
 * Component Updates
@@ -296,6 +334,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 This release is rolling out to all regions - estimated time for completed roll out is 2022-06-10 for public cloud and 2022-06-13 for sovereign clouds.
 
 ### Announcements
+
 * Starting with Kubernetes 1.24, the following changes will be made:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
   * The [NodeRestriction Admission Controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) will be enabled
@@ -315,12 +354,12 @@ This release is rolling out to all regions - estimated time for completed roll o
   * AKS Windows 2019 image has been updated to [17763.2928.220525](vhd-notes/AKSWindows/2019/17763.2928.220525.txt).
   * AKS Windows 2022 image has been added with version [20348.707.220525](vhd-notes/AKSWindows/2022/20348.707.220525.txt).
 
-
 ## Release 2022-05-22
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-06-03 for public cloud and 2022-06-06 for sovereign clouds.
 
 ### Announcements
+
 * From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with Kubernetes 1.24, the following changes will be made:
   * The default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
@@ -360,32 +399,36 @@ This release is rolling out to all regions - estimated time for completed roll o
 This release is rolling out to all regions - estimated time for completed roll out is 2022-05-21 for public cloud and 2022-05-24 for sovereign clouds.
 
 ### Announcements
+
 * From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
 * Konnectivity rollout will continue in May 2022 and is expected to complete by end of May.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
+
 * Public preview
-    * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
+  * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
 * Bug Fixes
-    * Fixes a bug with the AKS-EnableDualStack preview feature that would delete managed outbound IPv6 IPs if updating the cluster with a version of the API before the dual-stack parameters were added.
-    * A validation to prevent adding clusters to a subnet with a NAT Gateway without setting the appropriate outboundType was applied to updates as well as creates, preventing changes to clusters in this situation. The validation has been removed from update calls.
+  * Fixes a bug with the AKS-EnableDualStack preview feature that would delete managed outbound IPv6 IPs if updating the cluster with a version of the API before the dual-stack parameters were added.
+  * A validation to prevent adding clusters to a subnet with a NAT Gateway without setting the appropriate outboundType was applied to updates as well as creates, preventing changes to clusters in this situation. The validation has been removed from update calls.
 * Component Updates
-    * Azure File CSI driver has been updated to [v1.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.16.0)
-    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
+  * Azure File CSI driver has been updated to [v1.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.16.0)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.05.04](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.05.04.txt).
 
 ## Release 2022-05-01
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-05-13 for public cloud and 2022-05-16 for sovereign clouds.
 
 ### Announcements
+
 * From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
 * Konnectivity rollout will continue in May 2022 and is expected to complete by end of May.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
+
 * Public preview
   * The `aks-preview` Azure CLI extension (version 0.5.66+) now supports running `az aks update -g <resourceGroup> -n <clusterName>` without any optional arguments. This will perform an update operation without performing any changes, which can recover a cluster stuck in a failed provisioning state.
   * [AKS now supports updating kubelet on node pools to use a new or changed user-assigned managed identity.](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity-preview)
@@ -401,19 +444,21 @@ This release is rolling out to all regions - estimated time for completed roll o
 This release is rolling out to all regions - estimated time for completed roll out is 2022-05-06 for public cloud and 2022-05-09 for sovereign clouds.
 
 ### Announcements
+
 * From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
 * Konnectivity rollout will continue in May 2022 and is expected to complete by end of May.
 * Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 
 ### Release notes
+
 * Preview features
   * AKS now supports enabling [encryption at rest for data in etcd](https://docs.microsoft.com/azure/aks/use-kms-etcd-encryption) using Azure Key Vault with Key Management Service (KMS) plugin.
 * Bug Fixes
   * Fixed CSI driver version display issue in Azure disk and file CSI Driver objects.
   * Fixed bug where cloud-controller-manager was not deleting Node Object after deletion of VMSS instance.
 * Behavioral changes
-  * Taints and labels applied using the AKS nodepool API are not modifiable from the Kubernetes API and vice versa. 
+  * Taints and labels applied using the AKS nodepool API are not modifiable from the Kubernetes API and vice versa.
 * Component Updates
   * Azure Disk CSI driver has been updated to [1.16](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.16.0).
   * Azure File CSI driver has been rolled back to [1.12](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.12.0) to avoid storage account creation every time when a new Azure file share volume is created.
@@ -439,7 +484,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * AKS now supports [Host Process Containers](https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/) as a preview feature on versions 1.23+.
 * Features
   * [Custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for AKS is now generally available.
-  * [gMSAv2 security policy support on Windows](https://docs.microsoft.com/azure/aks/use-group-managed-service-accounts) is now generally available. 
+  * [gMSAv2 security policy support on Windows](https://docs.microsoft.com/azure/aks/use-group-managed-service-accounts) is now generally available.
 * Bug Fixes
   * Fixed a bug where deployments done via the AKS run command would incorrectly display a server error when pods in a deployment did not become ready in 30s. This is now correctly flagged as a client error and will ask the user to retry or take action to ensure the pods of the deployment become ready within the allocated time.
 * Component Updates
@@ -525,12 +570,13 @@ This release is rolling out to all regions - estimated time for completed roll o
   * AKS clusters >= 1.19 will now have Application Gateway Ingress Controller (AGIC) version 1.5.1 which adds support for ingress class and path prefix
   * Upgrade Azure disk CSI driver to 1.12.0 on 1.21+ clusters
   * Upgrade Azure Defender pod-collector image to 0.3.19 from 0.3.18
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.07.txt) 
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.03.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.03.07.txt)
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2686.220309](vhd-notes/AKSWindows/2019/17763.2686.220309.txt).
 
 ## Release 2022-03-03
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-03-16 for public cloud and 2022-03-19 for sovereign clouds.
+
 ### Announcements
 
 * From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
@@ -550,6 +596,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ## Release 2022-02-24
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-03-09 for public cloud and 2022-03-12 for sovereign clouds.
+
 ### Announcements
 
 * From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
@@ -574,7 +621,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout will continue in Feb 2022.
 * Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
 * Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
@@ -591,7 +638,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout will continue in Feb 2022.
 * Kubernetes 1.19 has been removed.
 * Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
@@ -606,7 +653,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * OSM addon updated to v1.0.0
   * Calico updated to v3.21.4 on Linux w/ operator managing CRDs
   * Azure file updated to v1.10.0 on aks 1.21+
-  * omsagent update [ciprod01312022 & win-ciprod01312022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#1312022--) 
+  * omsagent update [ciprod01312022 & win-ciprod01312022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#1312022--)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.02.07](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.02.07.txt).
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2565.220211](vhd-notes/AKSWindows/2019/17763.2565.220211.txt).
 
@@ -616,7 +663,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout will continue in Feb 2022.
 * Kubernetes 1.19 will be removed on the next release.
 * Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
@@ -645,7 +692,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout will continue in Feb 2022.
 * Kubernetes 1.19 will be removed on the next release.
 * Starting with 1.23 AKS will follow upstream kubernetes and deprecate in-tree azure authentication which is marked for deprecation to be replaced with 'exec'. If you are using Azure CLI or Azure clients, AKS will download kubelogin for users automatically. If outside of Azure CLI, users need to download and install kubelogin in order to continue to use kubectl with AAD authentication. <https://github.com/Azure/kubelogin>
@@ -658,15 +705,15 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Removed secret RBAC for azure disk csi driver.
   * Increased csi-resizer timeout from 60s to 120s.
 * Component Updates
-    * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.01.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.24.txt). Upgraded Linux version to 5.4.0-1067.70-azure to address CVE-2022-0185 (https://github.com/Azure/AKS/issues/2749.
-    
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.01.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.01.24.txt). Upgraded Linux version to 5.4.0-1067.70-azure to address CVE-2022-0185 (<https://github.com/Azure/AKS/issues/2749>.
+
 ## Release 2022-01-20
 
 This release is rolling out to all regions - estimated time for completed roll out is 2022-01-31 for public cloud and 2022-02-03 for sovereign clouds.
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout will continue in Feb 2022.
 * Client automatic cert rotation is now being enabled on the last set of regions.
 * Kubernetes 1.19 will be removed on 2022-01-31.
@@ -676,7 +723,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * Preview Features
-  * Multi Instance GPU support is available for ND A100 v4 VMs. See https://aka.ms/AAfjra1 for more details.
+  * Multi Instance GPU support is available for ND A100 v4 VMs. See <https://aka.ms/AAfjra1> for more details.
 * Bug Fixes
   * Fixed bug where some custom in-tree storage classes on 1.21+ were deleted by mistake.
   * Ensured Azure Defender pods have affinity for system pools.
@@ -698,7 +745,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout will continue in Feb 2022.
 * AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
 * Kubernetes 1.19 will be removed on 2022-01-31.
@@ -720,7 +767,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout will continue in Feb 2022.
 * AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
 * Kubernetes 1.19 will be removed on 2021-01-31.
@@ -732,7 +779,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Private DNS Subzone for Private Cluster is now GA.
   * Containerd runtime on Windows is now GA
 * Preview Features
-  * Kubenet IPv6 support has been enabled all public cloud regions. See https://aka.ms/aks/ipv6  for more details.
+  * Kubenet IPv6 support has been enabled all public cloud regions. See <https://aka.ms/aks/ipv6>  for more details.
 * Bug Fixes
   * Corrected validation that silently ignored updates to HTTP proxy settings.
   * Fixed issue that blocked creation of 0 node nodepools.
@@ -758,7 +805,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout has been halted for the rest of the year. We will continue the rollout in the new calendar year.
 * AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
 * Kubernetes 1.19 will be removed on 2021-01-31.
@@ -787,7 +834,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcement
 
-* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview.
+* From Kubernetes 1.23, containerD will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation here <https://docs.microsoft.com/en-us/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview>.
 * Konnectivity rollout has been halted for the rest of the year. We will continue the rollout in the new calendar year.
 * AKS is implementing auto-cert rotation slowly over the next few months. We have already enabled the following regions westcentralus, uksouth, eastus, australiacentral, and australiaest. If you have clusters in those regions please run a cluster upgrade in order to have that cluster configured for auto-cert rotation. The following regions brazilsouth, canadacentral, centralindia, and eastasia will be released in January after the holidays as the next group of regions. We will update the release notes will the upcoming schedule going forward until all regions are deployed.
 * AKS and Holiday Season: To ease the burden of upgrade and change during the holiday season, AKS is extending a limited scope of support for all clusters and node pools on 1.19 as a courtesy. Customers with clusters and node pools on 1.19 after the [announced deprecation date of 2021-11-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#kubernetes-version-support-policy).
@@ -841,7 +888,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * New Features
-  * Auto-Upgrade for AKS is now [GA](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel). 
+  * Auto-Upgrade for AKS is now [GA](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
 * Bug Fixes
   * An Authentication issue related to [pulling image secrets](https://github.com/virtual-kubelet/azure-aci/pull/171) has been fixed with a new version of the virtual-kubelet.
 * Component Updates
@@ -912,7 +959,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ## Release 2021-10-08
 
-This release is rolling out to all regions - estimated time for completed roll out is 2021-10-14 for public cloud and 2021-10-21 for sovereign clouds. 
+This release is rolling out to all regions - estimated time for completed roll out is 2021-10-14 for public cloud and 2021-10-21 for sovereign clouds.
 
 ### Release Notes
 
@@ -940,7 +987,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Features
   * [Ability to tune azuredisk performance parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/enhancements/feat-add-ability-to-tune-azuredisk-performance-parameters.md)
 * Preview Features
-  * Kubernetes 1.22.1 is now in preview 
+  * Kubernetes 1.22.1 is now in preview
   * Enable multiple service account issuers for clusters using version >= 1.22, also fixing CNCF Validation issues.
   * Cloud Controller Manager is now default for clusters 1.22+
 * Behavioral Changes
@@ -949,7 +996,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Fixed csi driver crash issue on Windows nodes.
 * Component Updates
   * Containerd 1.5 is now available to clusters 1.22+, for clusters prior to 1.22 AKS will continue to use and patch containerd 1.4.
-   * New patches for containerd released, 1.5.5 and 1.4.9, which address [CVE-2021-41103](https://github.com/Azure/AKS/issues/2583)
+  * New patches for containerd released, 1.5.5 and 1.4.9, which address [CVE-2021-41103](https://github.com/Azure/AKS/issues/2583)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.09.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.09.25.txt) - please refer to the link for package versions in this VHD.
   * AKS Windows image has been updated to the 9C patch version [2019-datacenter-core-smalldisk-17763.2213.210922](vhd-notes/AKSWindows/2019/17763.2213.210922.txt) - please refer to the link for component versions in this VHD.
 
@@ -1013,7 +1060,7 @@ This release is rolling out to all regions - estimated time for completed roll o
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.31](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.31.txt) - please refer to the link for package versions in this VHD.
 
 * Bug Fixes
-  * NPM updated to 1.4.9, fixing https://github.com/Azure/azure-container-networking/issues/851
+  * NPM updated to 1.4.9, fixing <https://github.com/Azure/azure-container-networking/issues/851>
 
 ## Release 2021-08-26
 
@@ -1049,7 +1096,6 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Bump CoreDNS  to 1.8.4 for Kubernetes versions above 1.20.0
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.08.14](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.08.14.txt) - please refer to the link for package versions in this VHD.
   * AKS Windows image has been updated to [2019-datacenter-core-smalldisk-17763.2114.210811](vhd-notes/AKSWindows/2019/17763.2114.210811.txt) - please refer to the link for component versions in this VHD.
-
 
 * Behavioral Changes
   * Stop ability to make changes to the following system labels:
@@ -1106,7 +1152,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcements
 
-* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward. 
+* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward.
 * As a response to customer feedback and issues with previous Kubernetes version patches that left a lot of users with hard options. The AKS Team is extending a limited scope of support for all clusters and nodepools on 1.18 as a courtesy. Customers with clusters and nodepools on 1.18 [after the announced deprecation date of 2021-06-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) .The scope of this limited extension is effective from '2021-06-30 to 2021-07-31' and is limited to the following:
   * Creation of new clusters and nodepools on 1.18.
   * CRUD operations on 1.18 clusters.
@@ -1126,7 +1172,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcements
 
-* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward. 
+* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward.
 * As a response to customer feedback and issues with previous Kubernetes version patches that left a lot of users with hard options. The AKS Team is extending a limited scope of support for all clusters and nodepools on 1.18 as a courtesy. Customers with clusters and nodepools on 1.18 [after the announced deprecation date of 2021-06-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) .The scope of this limited extension is effective from '2021-06-30 to 2021-07-31' and is limited to the following:
   * Creation of new clusters and nodepools on 1.18.
   * CRUD operations on 1.18 clusters.
@@ -1138,7 +1184,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 * Features
   * New Kubernetes patch version available, v.1.21.2.
 * Preview Features
-  * Upgrade your Windows nodepool from Docker to Containerd by the following two methods. Note that the Kubernetes version should be > 1.20.0 and the feature flag UseCustomizedWindowsContainerRuntime should be registered under your current Azure subscription. Reminder that Docker is removed in Kubernetes 1.24 completely, use the following commands to move your workload from Docker to Containerd now. 
+  * Upgrade your Windows nodepool from Docker to Containerd by the following two methods. Note that the Kubernetes version should be > 1.20.0 and the feature flag UseCustomizedWindowsContainerRuntime should be registered under your current Azure subscription. Reminder that Docker is removed in Kubernetes 1.24 completely, use the following commands to move your workload from Docker to Containerd now.
     * To upgrade a specific nodepool to use containerd: `az aks nodepool upgrade --cluster-name $CLUSTERNAME --name $NODEPOOLNAME --resource-group $RGNAME --kubernetes-version 1.21.1 --aks-custom-headers WindowsContainerRuntime=containerd`
     * To upgrade the cluster to use containerd for all Windows nodepools: `az aks upgrade --cluster-name $CLUSTERNAME --resource-group $RGNAME --kubernetes-version 1.21.1 --aks-custom-headers WindowsContainerRuntime=containerd`
 * Behavioral Changes
@@ -1153,7 +1199,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcements
 
-* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward. 
+* Azure Kubernetes Service (AKS) will stop publishing Ubuntu 16.04 image change moving forward.
 * As a response to customer feedback and issues with previous Kubernetes version patches that left a lot of users with hard options. The AKS Team is extending a limited scope of support for all clusters and nodepools on 1.18 as a courtesy. Customers with clusters and nodepools on 1.18 [after the announced deprecation date of 2021-06-30](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) will be granted an extension of capabilities outside the [usual scope of support for deprecated versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar) .The scope of this limited extension is effective from '2021-06-30 to 2021-07-31' and is limited to the following:
   * Creation of new clusters and nodepools on 1.18.
   * CRUD operations on 1.18 clusters.
@@ -1166,14 +1212,14 @@ This release is rolling out to all regions - estimated time for completed roll o
   * Kubernetes 1.21 is now Generally Available (GA), estimated to roll out the week of 2021-07-19.
   * Container Storage Interface (CSI) drivers for Azure disks and Azure files on Azure Kubernetes Service (AKS) is now Generally Available (GA) in Kubernetes version 1.21+. Azure Disk CSI migration is turned on for 1.21.0+ clusters.
 * Bug Fixes
-  * Fix external-dns 0.8.0 for HTTP application routing addon for 1.21+ clusters. 
+  * Fix external-dns 0.8.0 for HTTP application routing addon for 1.21+ clusters.
 * Behavioral Changes
   * Azure Kubernetes Service (AKS) will now rotate your intermediate certificates during an upgrade operation
 * Preview Features
-  * Windows containerd support on AKS is now available in all sovereign clouds. 
+  * Windows containerd support on AKS is now available in all sovereign clouds.
 * Component Updates
   * Azuredisk and Azurefile CSI drivers upgraded to v1.4.0 in 1.20.0+ clusters.
-  * Windows image update for omsagent for Windows mdm by setting the NODE_IP environment variable for 'machine' as required by Windows in non-sidecar enabled mode. 
+  * Windows image update for omsagent for Windows mdm by setting the NODE_IP environment variable for 'machine' as required by Windows in non-sidecar enabled mode.
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2021.07.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2021.07.10.txt).
 
 ## Release 2021-07-08
@@ -1214,7 +1260,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 ### Release Notes
 
 * Bug Fixes
-  * Resolved "TO/FROM rule and port rule on same PodSelector in multiple policies", https://github.com/Azure/azure-container-networking/issues/870
+  * Resolved "TO/FROM rule and port rule on same PodSelector in multiple policies", <https://github.com/Azure/azure-container-networking/issues/870>
 * Component Updates
   * Block enabling autoupgrade for unsupported k8s versions (less than lowest minor version by one)
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2021.06.19](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2021.06.19.txt).
@@ -1295,7 +1341,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-06-03 for p
 
 ### Announcements
 
-* Previous pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
+* Previous pod security policy (preview)](<https://docs.microsoft.com/azure/aks/use-pod-security-policies>) deprecation was June 30th 2021. To better align with Kubernetes Upstream pod security policy (preview) deprecation will begin with Kubernetes version 1.21, with its removal in version 1.25. As Kubernetes Upstream approaches that milestone, the Kubernetes community will be working to document viable alternatives.
 
 ### Release Notes
 
@@ -1343,7 +1389,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-05-13 for p
 ### Release Notes
 
 * Preview Features
-  * FIPS compliant nodes 
+  * FIPS compliant nodes
 * Bug Fixes
   * Fix a bug that different users could not reset service principal using same Azure Active Directory Client ID.
 * Component Updates
@@ -1601,7 +1647,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-24 for p
 * Behavioral Change
   * Date/Time removed from tunnel-front log entries. Timestamps can still be viewed by adding --timestamps to your kubectl logs command.
 * Bug Fixes
-  * Fixed Auto Scaling issues with 1.19 Preview Clusters where no image is found for a distro to scale from. 
+  * Fixed Auto Scaling issues with 1.19 Preview Clusters where no image is found for a distro to scale from.
   * A previous release defaulted to Gen2 VHDs for Kubernetes versions below 1.18.0. This implicitly changed the Ubuntu version from 16.04 to 18.04 for users still below 1.18.0. This has been fixed and users will only receive Gen2 VHDs for Kubernetes versions greater than or equal to 1.18.0.
   * Fixed AuthorizationFailed errors on cluster deletion operations to better expose to users.
   * Fixed case senstivity problem when specifying "--os-type"
@@ -1645,6 +1691,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-17 for p
 This release is rolling out to all regions - ETA for conclusion 2021-02-12 for public cloud.
 
 ### Announcements
+
 * Kubernetes 1.16 is officially deprecated in AKS
 * The Azure Kubernetes Service [pod security policy (preview)](https://docs.microsoft.com/azure/aks/use-pod-security-policies) feature will be retired on May 31st, 2021.
 * Once GA AKS will default to its new [GPU specialized image](https://aka.ms/aks/specialized-gpu-image) as the supported option for GPU-capable agent nodes.
@@ -1871,6 +1918,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2020.10.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.15.txt).
 
 ## Release 2020-10-12
+
 **This release is rolling out to all regions - ETA for conclusion 2020-10-22**
 
 ### Announcements
@@ -1902,6 +1950,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.10.08](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.10.08.txt).
 
 ## Release 2020-09-21
+
 **This release is rolling out to all regions - ETA for conclusion 2020-09-30**
 
 * AKS will default to containerd as the default runtime in kubernetes v1.19. During preview we encourage to create nodepools with the new container runtime to validate workloads still work as expected. And do check the [containerd differences and limitations](https://docs.microsoft.com/azure/aks/cluster-configuration#containerd-limitationsdifferences). After GA of kubernetes v1.19, containerd will be served by default for all new clusters or cluster that upgrade to v1.19. If you are doing container builds in cluster please use the recommended [docker buildx](https://github.com/docker/buildx).
@@ -1948,7 +1997,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * The AKS Kubernetes Audit logs are now split in 2 categories to allow you granularly subscribe and save costs.
     * `kube-audit-admin`: This category contains only audit events that include write verbs (`create`,`update`,`delete`,`patch`,`post`)
     * `kube-audit`: This category contains all remaining audit events.
-  * AKS Ubuntu 18.04 is now Generally Available and will be the default agent node base image on k8s v1.18 and onward. 
+  * AKS Ubuntu 18.04 is now Generally Available and will be the default agent node base image on k8s v1.18 and onward.
 * Preview Features
   * AKS now supports [Azure disk and Azure files CSI storage drivers](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers) in Public preview.
 * Bug Fix
@@ -2058,9 +2107,9 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
     * West Central US - Closes <https://github.com/Azure/AKS/issues/998>
   * New Kubernetes patch versions available v1.16.13, v1.17.9
     * This patch versions respond the following CVEs:
-      * https://github.com/Azure/AKS/issues/1724
-      * https://github.com/Azure/AKS/issues/1731
-      * https://github.com/Azure/AKS/issues/1732
+      * <https://github.com/Azure/AKS/issues/1724>
+      * <https://github.com/Azure/AKS/issues/1731>
+      * <https://github.com/Azure/AKS/issues/1732>
     * We've heard your feedback and we will not be removing all the previous versions due to the vulnerabilities. Instead we've patched all the latest GA ones (v1.15.11, v1.15.12, v1.16.10, v1.17.7) and you can still mitigate the vulnerabilities in any GA version by leveraging <https://aka.ms/aks/node-image-upgrade>.
 * Bug fixes
   * AKS has added the ready and health plugins to coredns. Closes <https://github.com/Azure/AKS/issues/1676>
@@ -2118,8 +2167,8 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * New Kubernetes patch versions available, v1.15.12, v1.16.10, v1.17.7. Note that as per [policy](https://docs.microsoft.com/en-us/azure/aks/supported-kubernetes-versions#supported-versions-policy-exceptions), versions <1.16.10 and <1.17.7 were removed due to severe bugs and security issues flagged upstream.
 * Preview Features
   * New Kubernetes patch versions are available for preview, v1.18.4.
-  * AKS now supports `containerd` as container runtime in preview. This runtime will be the default on AKS on the upcoming months. Read about it at https://aka.ms/aks/containerd and try it out!
-  * AKS now supports Proximity Placement Groups in preview to provide collocation capabilities for low latency workloads. Read more about it at https://aka.ms/aks/ppg and try it out!
+  * AKS now supports `containerd` as container runtime in preview. This runtime will be the default on AKS on the upcoming months. Read about it at <https://aka.ms/aks/containerd> and try it out!
+  * AKS now supports Proximity Placement Groups in preview to provide collocation capabilities for low latency workloads. Read more about it at <https://aka.ms/aks/ppg> and try it out!
 * Bug fixes
   * Fix issues on clusters using managed identities, where a cluster upgrade or scale operation would remove unknown identities.
   * Fixed bug where users where being shown more than the minor version above as available versions to upgrade to.
@@ -2146,7 +2195,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 ### Release Notes
 
 * Behavior changes
-  * In advance of the GA of kubernetes v1.17 AKS is now defaulting to kubernetes v1.16 as the default version. If you have a dependency on the AKS default version, make sure your kubernetes APIs are up to date: https://github.com/Azure/AKS/issues/1205
+  * In advance of the GA of kubernetes v1.17 AKS is now defaulting to kubernetes v1.16 as the default version. If you have a dependency on the AKS default version, make sure your kubernetes APIs are up to date: <https://github.com/Azure/AKS/issues/1205>
 * Component updates
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.06.10.txt).
   * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.06.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.06.10.txt).
@@ -2186,9 +2235,9 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * Fixed issue where upgrading older clusters would fail due to incompatibility with the podpriority kubelet feature gate.
   * Fixed issue in Upgrade and Update operations where there was a mismatch between the Cluster Autoscaler node count and current node count.
   * AKS has cherry picked the following bug fixes into v1.15.11:
-    * https://github.com/kubernetes/kubernetes/pull/89337
-    * https://github.com/kubernetes/kubernetes/pull/90749
-    * https://github.com/kubernetes/kubernetes/pull/89794
+    * <https://github.com/kubernetes/kubernetes/pull/89337>
+    * <https://github.com/kubernetes/kubernetes/pull/90749>
+    * <https://github.com/kubernetes/kubernetes/pull/89794>
 * Behavior changes
   * You are now allowed deploy AKS into dual-stack subnets on dual-stack vnets. The AKS cluster will only leverage the IPv4 stack currently.
 * Component Updates
@@ -2399,15 +2448,14 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * New VM GPU SKUs are now supported: Standard_NV12_Promo; Standard_NV12s_v3; Standard_NV24_Promo; Standard_NV24s_v3; Standard_NV48s_v3.
 * Bug fixes
   * Added validation to block cluster creation if user specifies a subnet that is delegated
-  * Fixed bug caused by apmz package being installed from https://upstreamartifacts.blob.core.windows.net, which is not in the AKS required endpoint egress list.
+  * Fixed bug caused by apmz package being installed from <https://upstreamartifacts.blob.core.windows.net>, which is not in the AKS required endpoint egress list.
   * CoreDNS memory *limit* increased to 170Mb and assigned *Guaranteed* QoS class.
   * Fixed a bug with Cluster Proportional Autoscaler (CPA) version on 1.16. This bug is solved on version 1.7.1 which is now the version being used in AKS.
   * Fixed bug passing the correct nodepool at validation time on UDR OutboundType preview feature.
-  * Patched bug where nodepool was not correctly added to internal SLB backend address pool: https://github.com/kubernetes/kubernetes/issues/89336
+  * Patched bug where nodepool was not correctly added to internal SLB backend address pool: <https://github.com/kubernetes/kubernetes/issues/89336>
 * Component Updates
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu-1604-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.03.24.txt).
   * AKS Ubuntu 18.04 image release notes: [AKSUbuntu-1804-2020.03.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.03.24.txt).
-
 
 ## Release 2020-03-23
 
@@ -2420,7 +2468,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 * **Two security issues were discovered in Kubernetes that could lead to a recoverable denial of service.**
   * CVE-2020-8551 affects the kubelet, and has been rated Medium ([CVSS:3.0/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L](https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L)).
   * CVE-2020-8552 affects the API server, and has also been rated Medium ([CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L](https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L)).
-  * **Am I vulnerable?** 
+  * **Am I vulnerable?**
     * Only in cases where the attacker can make authorized resource requests to un-patched API server or kubelets.
     * Also AKS auto restarts apiserver and kubelet in the event of an OOM error which further limits exposure.
   * **How can I get the latest patched API and kubelet and fix this vulnerability?**
@@ -2486,7 +2534,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
     * Note that, as before, You can only add Windows nodepools to clusters using VMSS and AzureCNI.
   * AKS now supports a new AKS base image based of Ubuntu 18.04 LTS.
     * You can test it by following:
-    
+
         ```bash
         # Install or update the extension
         az extension add --name aks-preview
@@ -2495,13 +2543,13 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
         # Create 18.04 based cluster
         az aks create -g <CLUSTER RG> -n <CLUSTER NAME> --aks-custom-headers CustomizedUbuntu=aks-ubuntu-1804
         ```
-        
+
     * If you want to continue to create 16.04 GA clusters, just omit the -aks-custom-headers.
 * Behavioral Changes
   * To ensure user is correctly configuring OutboundType: UDR feature AKS now validates not only if a Route Table is present but also if it contains a default route from 0.0.0.0/0 to allow egress through an appliance, FW, on-prem GW, etc. More details how to correctly configure this feature can be found here: <https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype>.
   * AKS enforces password expiration as part of CIS compliance but excludes the linux admin account that is using public key auth only. All accounts created using password will be subject to this enforcement.
     * As usual, with the GA of 1.16 the AKS default version follows n-1 and is now 1.15
-    * As per https://github.com/Azure/AKS/issues/1304 AKS will now upgrade the rest of the fleet to CoreDNS 1.6.6 after upgrading only non-Proxy users on [Release 2020-01-27](#release-2020-01-27).
+    * As per <https://github.com/Azure/AKS/issues/1304> AKS will now upgrade the rest of the fleet to CoreDNS 1.6.6 after upgrading only non-Proxy users on [Release 2020-01-27](#release-2020-01-27).
 * Component Updates
   * AKS Ubuntu 16.04 image updated to [AKSUbuntu:1604:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1604/2020.03.05.txt).
   * AKS Ubuntu 18.04 image release notes: [AKSUbuntu:1804:2020.03.05](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2020.03.05.txt).
@@ -2590,7 +2638,6 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 * Behavioral Changes
   * AKS has released a new API [version](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2020-02-01)
 
-
 ## Release 2020-02-03
 
 **This release is rolling out to all regions**
@@ -2605,14 +2652,13 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 ### Release Notes
 
 * New Features
-  * AKS now supports specifying the Outbound Port and Idle Timeout properties on the Azure SLB. https://aka.ms/aks/slb-ports
+  * AKS now supports specifying the Outbound Port and Idle Timeout properties on the Azure SLB. <https://aka.ms/aks/slb-ports>
 * Bug Fixes
   * Fixed a bug that caused a billing extension error.
 * Preview features
   * AKS now supports specifying Outbound type to define if the cluster should egress through the Standard Load Balancer (SLB) or a custom UDR (that sends egress traffic through a custom FW, on-prem gateway, etc.) Egress requirements are still the same, wherever the traffic egresses from. <https://aka.ms/aks/egress>
 * Behavioral Changes
-  * The private cluster FQDN format has changed from *guid.<region>.azmk8s.io to *guid.privatelink.<region>.azmk8s.io
-    
+  * The private cluster FQDN format has changed from *guid.<region>.azmk8s.io to*guid.privatelink.<region>.azmk8s.io
 
 ## Release 2020-01-27
 
@@ -2651,9 +2697,8 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * Updated to Moby 3.0.8 - <https://github.com/Azure/moby/releases/tag/3.0.8>
   * Updated AKS-Engine to 0.45.0 - <https://github.com/Azure/aks-engine/releases/tag/v0.45.0>
   * Azure Monitor for Containers Agent updated to [01072020 release](https://github.com/microsoft/Docker-Provider/releases/tag/v8.0.0.2)
-    * **Important** Node cpu, node memory, container cpu and container memory metrics were obtained earlier by querying kubelet readonly port(http://$NODE_IP:10255). Agent now supports getting these metrics from kubelet port(https://$NODE_IP:10250) as well. During the agent startup, it checks for connectivity to kubelet port(https://$NODE_IP:10250), and if it fails the metrics source is defaulted to readonly port(http://$NODE_IP:10255).
+    * **Important** Node cpu, node memory, container cpu and container memory metrics were obtained earlier by querying kubelet readonly port(<http://$NODE_IP:10255>). Agent now supports getting these metrics from kubelet port(<https://$NODE_IP:10250>) as well. During the agent startup, it checks for connectivity to kubelet port(<https://$NODE_IP:10250>), and if it fails the metrics source is defaulted to readonly port(<http://$NODE_IP:10255>).
   * AKS VHD image updated to [aks-ubuntu-1604-202001_2020.01.10](https://github.com/jackfrancis/aks-engine/blob/1de1ad55f86e863952081f0a6fbf85910d02e9d7/releases/vhd-notes/aks-ubuntu-1604/aks-ubuntu-1604-202001_2020.01.10.txt)
-
 
 ## Release 2019-12-02
 
@@ -2683,7 +2728,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * Announcing AKS Diagnostics in Public Preview
     * Hopefully, most of the time your AKS clusters are running happily and healthily. However, when things go wrong, we want to make sure that our AKS customers are empowered to easily and quickly figure out what's wrong and the next steps for mitigation or deeper investigation.
     * AKS Diagnostics is a guided and interactive experience in the Azure Portal that helps you diagnose and solve potential issues with your AKS cluster, such as identity and security management, node issues, CRUD operations and more. Detectors in AKS Diagnostics intelligently find issues and observations as well as recommend next steps. This feature comes configured completely out-of-the-box and is free for all our AKS customers.
-    * Get started and learn more here: https://aka.ms/aks/diagnostics
+    * Get started and learn more here: <https://aka.ms/aks/diagnostics>
   * Support for new regions:
     * Norway East
     * Norway West
@@ -2758,13 +2803,13 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 
 * New Features
   * Multiple Nodepools backed AKS clusters are now Generally Available (GA)
-    * https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools
+    * <https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools>
   * Cluster Autoscaler is now Generally Available (GA)
-    * https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler
+    * <https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler>
   * Availability Zones are now Generally Available (GA)
-    * https://docs.microsoft.com/en-us/azure/aks/availability-zones
+    * <https://docs.microsoft.com/en-us/azure/aks/availability-zones>
   * AKS API server Authorized IP Ranges is now Generally Available (GA)
-    * https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges
+    * <https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges>
   * Kubernetes versions 1.15.5, 1.14.8 and 1.13.12 have been added.
     * These versions have new API call logic that helps users with many AKS clusters in the same subscription to incur is less throttling.
     * These versions have security fixes for [CVE-2019-11253](https://github.com/Azure/AKS/issues/1262)
@@ -2862,9 +2907,9 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 
 * New Features
   * Customer may use NetworkPolicies with Azure CNI and Kubenet based clusters:
-    * https://docs.microsoft.com/en-us/azure/aks/use-network-policies
+    * <https://docs.microsoft.com/en-us/azure/aks/use-network-policies>
   * Managed Identity (MSI) support is now in *public preview*.
-    * https://docs.microsoft.com/en-us/azure/aks/use-managed-identity
+    * <https://docs.microsoft.com/en-us/azure/aks/use-managed-identity>
 * Bug Fixes
   * Fix a bug where the removal of an outbound rule from standard load balancer
     in the AKS node resource group could cause the failure of subsequent
@@ -2886,11 +2931,10 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 
 ## Release 2019-09-23
 
-
 ### Service Updates
 
 * Azure CLI 2.0.74 released with key AKS changes
-  * https://github.com/Azure/azure-cli/releases/tag/azure-cli-2.0.74
+  * <https://github.com/Azure/azure-cli/releases/tag/azure-cli-2.0.74>
   * Added `--load-balancer-sku` parameter to aks create command, which allows for
     creating AKS cluster with SLB
   * Added `--load-balancer-managed-outbound-ip-count`,
@@ -2901,6 +2945,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
     specify vm types of an AKS Cluster (vmas or vmss)
 
 ### Release Notes
+
 * Bug Fixes
   * Fixed an issue where the node pool count rendered in the portal would be incorrect when not using the multiple node pools feature.
   * Fixed an issue to ensure a cluster upgrade will upgrade both the control plane and agent pools for clusters using VMSS, but not multiple agent pools.
@@ -2934,20 +2979,20 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * AKS Periscope will allow AKS customers to run initial diagnostics and
     collect logs into an Azure Blob storage account to help them analyze and
     identify potential problems.
-  * For more information please see: https://aka.ms/AKSPeriscope
+  * For more information please see: <https://aka.ms/AKSPeriscope>
 
 ### Release Notes
 
 * New Features
   * AKS now GA in the Azure US Gov Virginia region.
-    * https://azure.microsoft.com/en-us/updates/azure-kubernetes-service-is-now-available-in-azure-government/
+    * <https://azure.microsoft.com/en-us/updates/azure-kubernetes-service-is-now-available-in-azure-government/>
   * Control of egress traffic for cluster nodes in AKS is now GA
     * This feature allows you to restrict outbound network communication for
       you cluster as required for compliance or other secure use-cases.
-    * https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic
+    * <https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic>
 * Known Issues:
   * Clusters that do not have PSPs enabled upgrading to Kubernetes 1.15 will fail
-    * https://github.com/Azure/AKS/issues/1220
+    * <https://github.com/Azure/AKS/issues/1220>
 * Bug Fixes
   * An issue where excessively logs (eg node/status patch events) were being
     emitted to the audit logs stream and stored. Customer should now see
@@ -2957,14 +3002,14 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
     will force the upgrade of the customers control plane without simultaneously
     upgrading the other nodepools. This functionality is only supported for
     multi-pool clusters.
-    * See: https://github.com/Azure/azure-cli-extensions/blob/master/src/aks-preview/HISTORY.md
+    * See: <https://github.com/Azure/azure-cli-extensions/blob/master/src/aks-preview/HISTORY.md>
 
 ## Release 2019-09-09
 
 **Service Updates**
 
 * AKS Kubernetes 1.10 support will end-of-lifed on Oct 25, 2019
-  * Please see: https://azure.microsoft.com/en-us/updates/kubernetes-1-10-x-end-of-life-upgrade-by-oct-25-2019/
+  * Please see: <https://azure.microsoft.com/en-us/updates/kubernetes-1-10-x-end-of-life-upgrade-by-oct-25-2019/>
 * AKS Kubernetes 1.11 & 1.12 support will end-of-lifed on Dec 9, 2019
   * Note that AKS Kuberrnetes 1.15 support is in public preview, on Dec 9, 2019
     the supported *minor* Kubernetes versions will be 1.13, 1.14, 1.15
@@ -2974,16 +3019,16 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * VMSS backed AKS clusters are now GA
     * VMSS is the underlying compute resource type which enables features such
       as cluster autoscaler, but is a separate feature.
-    * See https://docs.microsoft.com/azure/virtual-machine-scale-sets/overview
-      and https://docs.microsoft.com/azure/aks/cluster-autoscaler
+    * See <https://docs.microsoft.com/azure/virtual-machine-scale-sets/overview>
+      and <https://docs.microsoft.com/azure/aks/cluster-autoscaler>
       for more information.
     * **NOTE**: Official support in the Azure CLI for AKS+VMSS will be released
-      on 2019-09-24 (version 2.0.74 https://github.com/Azure/azure-cli/milestone/73)
+      on 2019-09-24 (version 2.0.74 <https://github.com/Azure/azure-cli/milestone/73>)
   * Standard Load Balancer support (SLB) is now GA
-    * See https://docs.microsoft.com/azure/aks/load-balancer-standard
+    * See <https://docs.microsoft.com/azure/aks/load-balancer-standard>
       for documentation.
     * **NOTE**: Official support in the Azure CLI for AKS+SLB will be released
-      on 2019-09-24 (version 2.0.74 https://github.com/Azure/azure-cli/milestone/73)
+      on 2019-09-24 (version 2.0.74 <https://github.com/Azure/azure-cli/milestone/73>)
   * Support for the following VM SKUs is now released: Standard_D48_v3,
     Standard_D48s_v3, Standard_E48_v3, Standard_E48s_v3, Standard_F48s_v2,
     Standard_L48s_v2, Standard_M208ms_v2, Standard_M208s_v2
@@ -3005,7 +3050,6 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
   * Fixed an issue where the incorrect node count would be returned or fail to
     update when using multiple node pools
 
-
 ## Release 2019-09-02
 
 * Preview Features
@@ -3023,7 +3067,7 @@ This release is rolling out to all regions - ETA for conclusion 2020-10-28.
 
 * Component Updates
   * aks-engine has been updated to v0.40.0
-    * https://github.com/Azure/aks-engine/releases/tag/v0.40.0
+    * <https://github.com/Azure/aks-engine/releases/tag/v0.40.0>
 
 ## Release 2019-08-26
 
@@ -3077,9 +3121,8 @@ CVE-2019-9514. Please see our [customer guidance](https://github.com/Azure/AKS/i
   * Fixed issue creating AKS clusters using supported Promo SKUs
 * Component Updates
   * aks-engine has been updated to v0.38.8
-    * https://github.com/Azure/aks-engine/releases/tag/v0.38.8
+    * <https://github.com/Azure/aks-engine/releases/tag/v0.38.8>
   * Azure CNI has been updated to v1.0.25
-
 
 ## Release 2019-08-12
 
@@ -3124,8 +3167,7 @@ CVE-2019-11249. Please see our [customer guidance](https://github.com/Azure/AKS/
     count.
 * Component Updates
   * aks-engine has been updated to v0.38.7
-    * https://github.com/Azure/aks-engine/releases/tag/v0.38.7
-
+    * <https://github.com/Azure/aks-engine/releases/tag/v0.38.7>
 
 ## Release 2019-07-29
 
@@ -3138,7 +3180,7 @@ CVE-2019-11249. Please see our [customer guidance](https://github.com/Azure/AKS/
   * An issue where the `--pod-max-pids` was set to 100 (maximum) for clusters
     and re-applied during upgrade causing `pthread_create() failed (11: Resource
     temporarily unavailable)` pod start failures was fixed.
-    * See https://github.com/Azure/aks-engine/pull/1623 for more information
+    * See <https://github.com/Azure/aks-engine/pull/1623> for more information
 
 * Preview Features
   * AKS is now in **Public Preview** in the Azure Government (Fairfax, VA)
@@ -3159,7 +3201,7 @@ CVE-2019-11249. Please see our [customer guidance](https://github.com/Azure/AKS/
 
 * Component Updates
   * AKS-Engine has been updated to v0.38.4
-    * https://github.com/Azure/aks-engine/releases/tag/v0.38.4
+    * <https://github.com/Azure/aks-engine/releases/tag/v0.38.4>
 
 ## Release 2019-07-22
 
@@ -3181,7 +3223,6 @@ need to update your network configuration to allow ACR.
 
 [Please see the documentation](https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic#required-ports-and-addresses-for-aks-clusters) for more
 information including all required AKS cluster ports and URLs
-
 
 * New Features
   * Support for the M, NC_promo and DS_v3 Azure Compute VM SKUs has been added.
@@ -3218,7 +3259,7 @@ information including all required AKS cluster ports and URLs
 AKS cluster. Follow the instructions in [Choose to update or create a service principal][8] and then execute the `Update AKS cluster with new credentials` command passing in the `--tenant-id` argument.
 * Behavioral Changes
   * All new clusters now have --protect-kernel-defaults enabled.
-    * See: https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
+    * See: <https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/>
 * Preview Features
   * Kubernetes 1.14.3 is now available for preview users.
   * Azure availability zone support is now in public preview.
@@ -3229,7 +3270,7 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
     instructions and documentation links.
 * Component Updates
   * aks-engine has been updated to version 0.37.5
-    * https://github.com/Azure/aks-engine/releases/tag/v0.37.5
+    * <https://github.com/Azure/aks-engine/releases/tag/v0.37.5>
   * Azure CNI has been updated to version 1.0.22
   * Moby has been updated to 3.0.5 from 3.0.4
     * Note that this version number is Azure specific, the Moby project does not
@@ -3262,9 +3303,8 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
 * Component Updates
   * [AKS-Engine has been updated to v0.35.6](https://github.com/Azure/aks-engine/releases/tag/v0.35.6)
     * This change includes a new AKS VHD with the Linux Kernel CVE fixes. See more:
-      https://github.com/Azure/AKS/issues/
+      <https://github.com/Azure/AKS/issues/>
     * This new VHD also fixes broken IPv6 support for the host.
-
 
 ## Release 2019-06-24
 
@@ -3299,13 +3339,12 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
    cluster autoscaler has been fixed.
   * A missing CRD for calico-enabled clusters (#1042) has been fixed.
 
-
 ## Release 2019-06-10
 
 * Bug Fixes
   * Kubernetes taints and tolerations are now supported in all AKS regions.
     * Taints & Tolerations are preserved for current cluster nodes and
-      through upgrades, however they are _not_ preserved through scale (up,
+      through upgrades, however they are *not* preserved through scale (up,
       down) operations.
 
 * Preview Features
@@ -3317,7 +3356,7 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
     request has been fixed.
 
 * Behavioral Changes
-  * AKS removed all weak CBC suite ciphers for API server. More info: https://blog.qualys.com/technology/2019/04/22/zombie-poodle-and-goldendoodle-vulnerabilities
+  * AKS removed all weak CBC suite ciphers for API server. More info: <https://blog.qualys.com/technology/2019/04/22/zombie-poodle-and-goldendoodle-vulnerabilities>
 
 * Component Updates
   * AKS-Engine has been updated to v0.35.4
@@ -3349,7 +3388,7 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
     Preview CLI with the 'Preview' or 'isPreview' tag has been resolved.
   * An issue where customers would get excessive log entries due to missing
     Heapster rbac permissions has been fixed.
-    * https://github.com/Azure/AKS/issues/520
+    * <https://github.com/Azure/AKS/issues/520>
   * An issue where AKS clusters could end up with missing DNS entries resulting
     in DNS resolution errors or crashes within CoreDNS has been resolved.
 
@@ -3362,14 +3401,13 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
     that blocked disabling the autoscaler. A fix for multiple agent pools and
     the cluster autoscaler is in development.
 
-
 ## Release 2019-05-17 (Announcement)
 
 * Window node support for AKS is now in Public Preview
-  * Blog post: https://aka.ms/aks/windows
+  * Blog post: <https://aka.ms/aks/windows>
   * Support and documentation:
-    * Documentation: https://aka.ms/aks/windowsdocs
-    * Issues may be filed on this Github repository (https://github.com/Azure/AKS)
+    * Documentation: <https://aka.ms/aks/windowsdocs>
+    * Issues may be filed on this Github repository (<https://github.com/Azure/AKS>)
       or raised as a Sev C support request. Support requests and issues for
       preview features do not have an SLA / SLO and are best-effort only.
   * **Do not enable preview featured on production subscriptions or clusters.**
@@ -3380,8 +3418,8 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
   * An issue impacting Java workloads where pods running Java workloads would
     consume all available node resources instead of the defined pod resource
     limits defined by the user has been resolved.
-    * https://bugs.openjdk.java.net/browse/JDK-8217766
-    * AKS-Engine PR for fix: https://github.com/Azure/aks-engine/pull/1095
+    * <https://bugs.openjdk.java.net/browse/JDK-8217766>
+    * AKS-Engine PR for fix: <https://github.com/Azure/aks-engine/pull/1095>
 
 * Component Updates
   * AKS-Engine has been updates to v0.35.1
@@ -3395,7 +3433,7 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
       may now have multiple AKS clusters on a subnet.
     * If the subnet provided to AKS has NSGs, those NSGs will be preserved and
       used.
-      * **Warning**: NSGs must respect: https://aka.ms/aksegress or the
+      * **Warning**: NSGs must respect: <https://aka.ms/aksegress> or the
       cluster might not come up or work properly.
     * Note: Shared subnet support is not supported with VMSS (in preview)
 * Bug Fixes
@@ -3404,24 +3442,24 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
     was over 110 for CNI has been fixed.
   * A validation bug blocking long DNS names used by customers has been fixed.
     For restrictions on DNS/Cluster names, please see
-    https://aka.ms/aks-naming-rules
+    <https://aka.ms/aks-naming-rules>
 
 ## Release 2019-05-06
 
 * New Features
   * Kubernetes Network Policies are GA
-    * See https://docs.microsoft.com/en-us/azure/aks/use-network-policies
+    * See <https://docs.microsoft.com/en-us/azure/aks/use-network-policies>
       for documentation.
 
 * Bug Fixes
   * An issues customers reported with CoreDNS entering CrashLoopBackoff has
     been fixed. This was related to the upstream move to `klog`
-    * https://github.com/coredns/coredns/pull/2529
+    * <https://github.com/coredns/coredns/pull/2529>
   * An issue where AKS managed pods (within kube-system) did not have the correct
     tolerations preventing them from being scheduled when customers use
     taints/tolerations has been fixed.
   * An issue with kube-dns crashing on specific config map override scenarios
-    as seen in https://github.com/Azure/acs-engine/issues/3534 has been
+    as seen in <https://github.com/Azure/acs-engine/issues/3534> has been
     resolved by updating to the latest upstream kube-dns release.
   * An issue where customers could experience longer than normal create times
     for clusters tied to a blocking wait on heapster pods has been resolved.
@@ -3461,7 +3499,7 @@ AKS cluster. Follow the instructions in [Choose to update or create a service pr
   * Kubernetes 1.14 is now in Preview
   * An issue with Network Policy and Calico where cluster creation could
     fail/time out and pods would enter a crashloop has been fixed.
-    * https://github.com/Azure/AKS/issues/905
+    * <https://github.com/Azure/AKS/issues/905>
     * Note, in order to get the fix properly applied, you should create a new
       cluster based on this release, or upgrade your existing cluster and then
       run the following clean up command after the upgrade is complete:
@@ -3472,7 +3510,7 @@ kubectl delete -f https://github.com/Azure/aks-engine/raw/master/docs/topics/cal
 
 * Component Updates
   * Azure Monitoring for Containers has been updated to the 2019-04-23 release
-    * For more information, please see: https://github.com/Microsoft/docker-provider/tree/ci_feature_prod#04232019--
+    * For more information, please see: <https://github.com/Microsoft/docker-provider/tree/ci_feature_prod#04232019>--
 
 ## Release 2019-04-15
 
@@ -3499,7 +3537,7 @@ kubectl delete -f https://github.com/Azure/aks-engine/raw/master/docs/topics/cal
     * This change requires newly provisioned clusters, existing clusters can
       not be migrated to support this new capability. Cluster migration across
       subscriptions and RGs is not currently supported.
-  *  AKS now properly associates existing route tables created by AKS when
+  * AKS now properly associates existing route tables created by AKS when
       passing in custom VNET for Kubenet/Basic Networking. *This does not
       support User Defined / Custom routes (UDRs)*.
 
@@ -3517,7 +3555,7 @@ kubectl delete -f https://github.com/Azure/aks-engine/raw/master/docs/topics/cal
       pods via: `maxPods or maxPods * vm_count > managed add-on pods`
 
 * Behavioral Changes
-  * AKS cluster creation now properly pre-checks the assigned service CIDR
+  *AKS cluster creation now properly pre-checks the assigned service CIDR
     range to block against possible conflicts with the dns-service CIDR.
     * As an example, a user could use 10.2.0.1/24 instead of 10.2.0.0/24 which
       would lead to IP conflicts. This is now validated/checked and if there is
@@ -3558,7 +3596,6 @@ kubectl delete -f https://github.com/Azure/aks-engine/raw/master/docs/topics/cal
     in creation resulting in an unclear error ('Could not find role name') has
     been resolved.
 
-
 ## Release 2019-04-08 (Hotfix)
 
 This release fixes one AKS product regression and an issue identified with the
@@ -3573,23 +3610,23 @@ Azure Jenkins plugin.
     bug triggered by a new AKS API version but was related to a latent issue in
     the plugin's API detection behavior.
   * An updated Jenkins plugin has been published:
-    https://github.com/jenkinsci/azure-acs-plugin/issues/16
-  * https://github.com/jenkinsci/azure-acs-plugin/releases/tag/azure-acs-0.2.4
+    <https://github.com/jenkinsci/azure-acs-plugin/issues/16>
+  * <https://github.com/jenkinsci/azure-acs-plugin/releases/tag/azure-acs-0.2.4>
 
 ## Release 2019-04-04 - Hotfix (CVE mitigation)
 
 * Bug fixes
   * New kubernetes versions released with multiple CVE mitigations
     * Kubernetes 1.12.7
-      * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#changelog-since-v1126
+      * <https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#changelog-since-v1126>
     * Kubernetes 1.11.9
-      * https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#changelog-since-v1118
+      * <https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#changelog-since-v1118>
     * Customers should upgrade to the latest 1.11 and 1.12 releases.
       * Kubernetes versions prior to 1.11 must upgrade to 1.11/1.12 for the fix.
 
 * Component updates
   * Updated included AKS-Engine version to 0.33.2
-    * See: https://github.com/Azure/aks-engine/releases/tag/v0.33.4 for details
+    * See: <https://github.com/Azure/aks-engine/releases/tag/v0.33.4> for details
 
 ## Release 2019-03-29 (Hotfix)
 
@@ -3645,7 +3682,7 @@ Azure Jenkins plugin.
   * The "View Kubernetes Dashboard" has been removed from the Azure Portal
     * Note that this button did not expose/add functionality, it only linked to
       the existing instructions for using the Kubernetes dashboard found here:
-      https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard
+      <https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard>
 
 ## Release 2019-03-07
 
@@ -3677,7 +3714,6 @@ Azure Jenkins plugin.
 * The `cachingmode: ReadOnly` flag was not always being correctly applied to
   the managed premium storage class, this has been resolved.
 
-
 ## Release 2019-03-01
 
 * New kubernetes versions released for CVE-2019-1002100 mitigation
@@ -3685,7 +3721,7 @@ Azure Jenkins plugin.
   * Kubernetes 1.11.8
   * Customers should upgrade to the latest 1.11 and 1.12 releases.
   * Kubernetes versions prior to 1.11 must upgrade to 1.11/1.12 for the fix.
-    * Announcement here: https://groups.google.com/forum/#!msg/kubernetes-announce/vmUUNkYfG9g/B9rHFrqLCAAJ
+    * Announcement here: <https://groups.google.com/forum/#!msg/kubernetes-announce/vmUUNkYfG9g/B9rHFrqLCAAJ>
 * A security bug with the Kubernetes dashboard and overly permissive service
   account access has been fixed
 * The France Central region is now GA for all customers
@@ -3805,7 +3841,7 @@ be in all regions within 24-48 hours barring unforeseen issues**
     compatible work around (formatting of the customizations has changed
     however). Please see the example/notes below for usage.
 
-### Using the new CoreDNS configuration for DNS configuration.
+### Using the new CoreDNS configuration for DNS configuration
 
 With kube-dns, there was an undocumented feature where it supported two config
 maps allowing users to perform DNS overrides/stub domains, and other
@@ -3839,7 +3875,6 @@ force-load the new config.
 kubectl -n kube-system delete po -l k8s-app=kube-dns
 ```
 
-
 ## Release 2019-01-31
 
 * [Kubernetes 1.12.4 GA Release][1]
@@ -3854,9 +3889,9 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
       deployments will be discarded.
     * We have identified two issues with this release that will be resolved in
       a hot fix beginning rollout this week:
-      * https://github.com/Azure/AKS/issues/811 (kube-dns config map not
+      * <https://github.com/Azure/AKS/issues/811> (kube-dns config map not
         compatible with CoreDNS)
-      * https://github.com/Azure/AKS/issues/812 (kube-dns/coreDNS autoscaler
+      * <https://github.com/Azure/AKS/issues/812> (kube-dns/coreDNS autoscaler
         conflicts)
 * Kube-dns (pre 1.12) / CoreDNS (1.12+) autoscaler(s) are enabled by default,
   this should resolve the DNS timeout and other issues related to DNS queries
