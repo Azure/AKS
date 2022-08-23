@@ -16,10 +16,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 ### Release notes
 
 * Preview Features
- * [Azure Network Policy Manager (NPM)](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) is now available on Windows nodes on AKS.  Security rules from [Kubernetes Network Policy resources](https://kubernetes.io/docs/concepts/services-networking/network-policies/) can now be enforced on all pod traffic on/across Linux and Windows Server 2022 nodes for clusters with --network-policy=azure. NPM continues to be a managed solution, configurable at cluster creation. To learn more about the feature, access the [NPM](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) page in the AKS documentation.
+  * [Azure Network Policy Manager (NPM)](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) is now available on Windows nodes on AKS.  Security rules from [Kubernetes Network Policy resources](https://kubernetes.io/docs/concepts/services-networking/network-policies/) can now be enforced on all pod traffic on/across Linux and Windows Server 2022 nodes for clusters with --network-policy=azure. NPM continues to be a managed solution, configurable at cluster creation. To learn more about the feature, access the [NPM](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) page in the AKS documentation.
 * Bug fixes
- * v20220724 contains a bug that will cause clusters running the Open Service Mesh addon to fail when upgrading to v1.24.0, and therefore the upgrade will fail as well. This bug was fixed in the v20220807 release but the hotfix needs to rollout to customers already seeing the bug in the mean time. 
- * Missing CWD(Current Working Directory) field in process creation events fixed. Update low level collector image version from 1.3.42 to 1.3.48
+  * v20220724 contains a bug that will cause clusters running the Open Service Mesh addon to fail when upgrading to v1.24.0, and therefore the upgrade will fail as well. This bug was fixed in the v20220807 release but the hotfix needs to rollout to customers already seeing the bug in the mean time. 
+  * Missing CWD(Current Working Directory) field in process creation events fixed. Update low level collector image version from 1.3.42 to 1.3.48
 * Component Updates
   * Azure Disk Driver has been upgraded to v1.22.0
   * Azure Monitor for container insights addon updated for Windows to [win-ciprod08102022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#08102022--)
