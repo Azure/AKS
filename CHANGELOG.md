@@ -9,30 +9,23 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
   * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
-* Kubernetes 1.21 version deprecation will start taking effect from July 31st, 2022.
-* Update your AKS labels to the recommended substitutions before deprecation after the Kubernetes v1.24 release. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Kubernetes 1.21 version has been deprecated as of July 31st, 2022.
+* Some AKS labels have been deprecated with the Kubernetes 1.24 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
 
 ### Release notes
 
-* Features
- * 
 * Preview Features
  * [Azure Network Policy Manager (NPM)](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) is now available on Windows nodes on AKS.  Security rules from [Kubernetes Network Policy resources](https://kubernetes.io/docs/concepts/services-networking/network-policies/) can now be enforced on all pod traffic on/across Linux and Windows Server 2022 nodes for clusters with --network-policy=azure. NPM continues to be a managed solution, configurable at cluster creation. To learn more about the feature, access the [NPM](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) page in the AKS documentation.
-* Behavioral Changes
- * 
 * Bug fixes
  * v20220724 contains a bug that will cause clusters running the Open Service Mesh addon to fail when upgrading to v1.24.0, and therefore the upgrade will fail as well. This bug was fixed in the v20220807 release but the hotfix needs to rollout to customers already seeing the bug in the mean time. 
  * Missing CWD(Current Working Directory) field in process creation events fixed. Update low level collector image version from 1.3.42 to 1.3.48
- * 
- * 
 * Component Updates
   * Azure Disk Driver has been upgraded to v1.22.0
   * Azure Monitor for container insights addon updated for Windows to [win-ciprod08102022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#08102022--)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.15](../AKS/vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.15.txt)
   * AKS Windows 2019 image has been updated to [17763.3287.220810](../AKS/vhd-notes/AKSWindows/2019/17763.3287.220810.txt)
   * AKS Windows 2022 image has been updated to [20348.887.220810](../AKS/vhd-notes/AKSWindows/2022/20348.887.220810.txt)
-
 
 ## Release 2022-08-14
 
