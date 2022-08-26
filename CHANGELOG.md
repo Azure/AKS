@@ -12,16 +12,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Kubernetes 1.21 version has been deprecated as of July 31st, 2022.
 * Some AKS labels have been deprecated with the Kubernetes 1.24 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * Docker will no longer be supported as a container runtime on Windows after September 1, 2022. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+* The Open Service Mesh addon has been updated from version 1.1.1 to version [1.2.0](https://github.com/openservicemesh/osm/releases/tag/v1.2.0) for AKS clusters running 1.24.0+. Please note the breaking changes mentioned in the [version 1.2.0 release notes](https://github.com/openservicemesh/osm/releases/tag/v1.2.0)
 
 ### Release notes
 
-* Preview Features
-  * [Azure Network Policy Manager (NPM)](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) is now available on Windows nodes on AKS.  Security rules from [Kubernetes Network Policy resources](https://kubernetes.io/docs/concepts/services-networking/network-policies/) can now be enforced on all pod traffic on/across Linux and Windows Server 2022 nodes for clusters with --network-policy=azure. NPM continues to be a managed solution, configurable at cluster creation. To learn more about the feature, access the [NPM](https://docs.microsoft.com/en-us/azure/aks/use-network-policies) page in the AKS documentation.
 * Bug fixes
-  * v20220724 contains a bug that will cause clusters running the Open Service Mesh addon to fail when upgrading to v1.24.0, and therefore the upgrade will fail as well. This bug was fixed in the v20220807 release but the hotfix needs to rollout to customers already seeing the bug in the mean time. 
-  * Missing CWD(Current Working Directory) field in process creation events fixed. Update low level collector image version from 1.3.42 to 1.3.48
+  * v20220724 contains a bug that will cause clusters running the Open Service Mesh addon to fail when upgrading to v1.24.0, and therefore the upgrade will fail as well. This bug was hotfixed in the v20220731 release. It was also fixed in the v20220807 release but the hotfix needs to rollout to customers already seeing the bug in the mean time. 
+  * Missing CWD(Current Working Directory) field in process creation events fixed. Update low level collector image version from 1.3.42 to 1.3.49
+  * Added a scheduled task "hns-remediator-task" in AKS Windows nodes which will restart kubeproxy automatically when HNS service crashes.
 * Component Updates
-  * Azure Disk Driver has been upgraded to v1.22.0
+  * Upgrade Azure Disk V2 CSI Driver to [v2.0.0-beta.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v2.0.0-beta.6)
+  * Upgrade Azure Disk CSI driver to [v1.22.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.22.0)
   * Azure Monitor for container insights addon updated for Windows to [win-ciprod08102022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#08102022--)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.15](../AKS/vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.15.txt)
   * AKS Windows 2019 image has been updated to [17763.3287.220810](../AKS/vhd-notes/AKSWindows/2019/17763.3287.220810.txt)
