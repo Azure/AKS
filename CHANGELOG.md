@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Component Updates
   * Upgrade Azure Disk V2 CSI Driver to [v2.0.0-beta.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v2.0.0-beta.6)
   * Upgrade Azure Disk CSI driver to [v1.22.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.22.0)
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.15](../AKS/vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.15.txt)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.15.txt)
 
 
 ## Release 2022-08-14
@@ -48,9 +48,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
  * Removed `Microsoft.Resources/deployments/write`, `Microsoft.Insights/alertRules/*`, and `Microsoft.Support/*` from the [built-in Azure RBAC data plane roles for AKS](https://docs.microsoft.com/azure/aks/manage-azure-rbac#create-role-assignments-for-users-to-access-cluster).
 * Component Updates
   * Azure Monitor for container insights addon updated for Windows to [win-ciprod08102022](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#08102022--)
-  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.10](../AKS/vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.10.txt)
-  * AKS Windows 2019 image has been updated to [17763.3287.220810](../AKS/vhd-notes/AKSWindows/2019/17763.3287.220810.txt)
-  * AKS Windows 2022 image has been updated to [20348.887.220810](../AKS/vhd-notes/AKSWindows/2022/20348.887.220810.txt)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.10.txt)
+  * AKS Windows 2019 image has been updated to [17763.3287.220810](vhd-notes/AKSWindows/2019/17763.3287.220810.txt)
+  * AKS Windows 2022 image has been updated to [20348.887.220810](vhd-notes/AKSWindows/2022/20348.887.220810.txt)
 
 ## Release 2022-08-07
 
