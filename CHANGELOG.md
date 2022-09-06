@@ -19,7 +19,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 ### Release notes
 * Features
-  * [Bring your own Container Network Interface (CNI) plugin with Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) is now generally available. 
+  * [Bring your own Container Network Interface (CNI) plugin with Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) is now generally available.
+  * [ARM64 AKS nodepool](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-an-arm64-node-pool) is now generally available.
 * Bug fixes
   * DNS resolution failure due to Ubuntu unattended update is fixed.
 * Component Updates
