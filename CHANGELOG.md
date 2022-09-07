@@ -8,7 +8,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * The memory limits of liveness-probe container and node-driver-registrar container running in AzureDisk and AzureFile pods on Windows nodes are increased from 100MiB to 150MiB.
 * AKS now supports aborting a [long running operation](https://docs.microsoft.com/en-us/azure/aks/manage-abort-operations?tabs=azure-rest), allowing you to take back control and run another operation seamlessly.
 * Add VMSS tag and node label ebpf-dataplane=cilium when Cilium is enabled.
-* Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](What do you like about Draft? Does it help you accomplish your goals? · Issue #140 · Azure/draft (github.com)) to start a conversation with the AKS team.
+* Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](https://github.com/Azure/draft/issues/140) to start a conversation with the AKS team.
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
   * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
