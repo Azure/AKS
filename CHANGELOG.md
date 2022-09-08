@@ -47,7 +47,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 * Bug fixes
   * Missing CWD(Current Working Directory) field in process creation events fixed. Update low level collector image version from 1.3.42 to 1.3.49.
-  * Added a scheduled task "hns-remediator-task" in AKS Windows nodes which will restart kubeproxy automatically when HNS service crashes.
 * Component Updates
   * Upgrade Azure Disk V2 CSI Driver to [v2.0.0-beta.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v2.0.0-beta.6)
   * Upgrade Azure Disk CSI driver to [v1.22.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.22.0)
