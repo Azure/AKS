@@ -5,9 +5,6 @@
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
 
 ### Announcements
-* The memory limits of liveness-probe container and node-driver-registrar container running in AzureDisk and AzureFile pods on Windows nodes are increased from 100MiB to 150MiB.
-* AKS now supports aborting a [long running operation](https://docs.microsoft.com/en-us/azure/aks/manage-abort-operations?tabs=azure-rest), allowing you to take back control and run another operation seamlessly.
-* Add VMSS tag and node label ebpf-dataplane=cilium when Cilium is enabled.
 * Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](https://github.com/Azure/draft/issues/140) to start a conversation with the AKS team.
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
@@ -21,8 +18,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * [Bring your own Container Network Interface (CNI) plugin with Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) is now generally available.
   * [ARM64 AKS nodepool](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-an-arm64-node-pool) is now generally available.
   * [Azure CNI Overlay for AKS](https://docs.microsoft.com/en-us/azure/aks/azure-cni-overlay) is now Public Preview.
+  * AKS now supports aborting a [long running operation](https://docs.microsoft.com/en-us/azure/aks/manage-abort-operations?tabs=azure-rest), allowing you to take back control and run another operation seamlessly.
 * Bug fixes
-  * DNS resolution failure due to Ubuntu unattended update is fixed.
+  * DNS resolution failure due to Ubuntu security patch is fixed.
+* Behavior changes
+  * The memory limits of liveness-probe container and node-driver-registrar container running in AzureDisk and AzureFile pods on Windows nodes are increased from 100MiB to 150MiB.
 * Component Updates
   * The Open Service Mesh addon has been updated from version 1.1.1 to version [1.2.0](https://github.com/openservicemesh/osm/releases/tag/v1.2.0) for AKS clusters running 1.24.0+. Please note the breaking changes mentioned in the [version 1.2.0 release notes](https://github.com/openservicemesh/osm/releases/tag/v1.2.0)
   * The Azure File CSI driver has been updated from v1.20.0 to [v1.21.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.21.0)
