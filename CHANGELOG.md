@@ -1,5 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-09-04
+
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+* Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](https://github.com/Azure/draft/issues/140) to start a conversation with the AKS team.
+* Starting with Kubernetes 1.25, the following changes will be made default:
+  * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+  * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
+* Kubernetes 1.21 version has been deprecated as of July 31st, 2022. See [documentation](https://docs.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) on how to upgrade your cluster.
+* Some AKS labels have been deprecated with the Kubernetes 1.24 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+* Features
+  * [Bring your own Container Network Interface (CNI) plugin with Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) is now generally available.
+  * [ARM64 AKS nodepool](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-an-arm64-node-pool) is now generally available.
+  * [Azure CNI Overlay for AKS](https://docs.microsoft.com/en-us/azure/aks/azure-cni-overlay) is now Public Preview.
+  * AKS now supports aborting a [long running operation](https://docs.microsoft.com/en-us/azure/aks/manage-abort-operations?tabs=azure-rest), allowing you to take back control and run another operation seamlessly.
+* Bug fixes
+  * DNS resolution failure due to Ubuntu security patch is fixed.
+* Behavior changes
+  * The memory limits of liveness-probe container and node-driver-registrar container running in AzureDisk and AzureFile pods on Windows nodes are increased from 100MiB to 150MiB.
+* Component Updates
+  * The Open Service Mesh addon has been updated from version 1.1.1 to version [1.2.0](https://github.com/openservicemesh/osm/releases/tag/v1.2.0) for AKS clusters running 1.24.0+. Please note the breaking changes mentioned in the [version 1.2.0 release notes](https://github.com/openservicemesh/osm/releases/tag/v1.2.0)
+  * The Azure File CSI driver has been updated from v1.20.0 to [v1.21.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.21.0)
+  * Microsoft Defender for Containers images updated 1.0.70
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.08.29](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.08.29.txt)
+
 ## Release 2022-08-21
 
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
@@ -18,7 +47,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 * Bug fixes
   * Missing CWD(Current Working Directory) field in process creation events fixed. Update low level collector image version from 1.3.42 to 1.3.49.
-  * Added a scheduled task "hns-remediator-task" in AKS Windows nodes which will restart kubeproxy automatically when HNS service crashes.
 * Component Updates
   * Upgrade Azure Disk V2 CSI Driver to [v2.0.0-beta.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v2.0.0-beta.6)
   * Upgrade Azure Disk CSI driver to [v1.22.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.22.0)
