@@ -1,0 +1,17 @@
+apiVersion: fleet.azure.com/v1alpha1
+kind: ClusterResourcePlacement
+metadata:
+  name: hello-world
+spec:
+  resourceSelectors:
+    - group: ""
+      version: v1
+      kind: Namespace
+      name: hello-world
+  policy:
+    affinity:
+      clusterAffinity:
+        clusterSelectorTerms:
+          - labelSelector:
+              matchLabels:
+                fleet.azure.com/location: westcentralus
