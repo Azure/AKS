@@ -68,7 +68,7 @@ kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/liqian/fleet/exampl
 
 Verify the placement status:
 ```bash
-kubectl get crp hello-world -o yaml | grep Status -A 1000
+kubectl get crp hello-world -o yaml | grep status -A 1000
 ```
 
 Here is the expected output.
