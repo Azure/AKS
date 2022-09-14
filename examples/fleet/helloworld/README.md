@@ -55,8 +55,8 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
    deployment.apps/hello-world   0/5     0            0           28s
    ```
 
-   Note that the deployment is not deployed (`READY: 0/5`) and the service doesn't have an external IP (`EXTERNAL-IP: <pending>`).
-   This is working as expected as the objective to deploy the application to member clusters not the hub cluster.
+   Note that the deployment does not result in any pod created on the hub cluster (`READY: 0/5`) and the service doesn't have an external IP (`EXTERNAL-IP: <pending>`).
+   This is working as expected as the objective is to deploy the application to member clusters not the hub cluster.
 
 ### 2. Place to Member Clusters
 
@@ -116,6 +116,8 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
 
    ```shell
    KUBECONFIG=member1 kubectl get all -n hello-world
+   KUBECONFIG=member2 kubectl get all -n hello-world
+   KUBECONFIG=member3 kubectl get all -n hello-world
    ```
    
    The output is similar to:
