@@ -37,7 +37,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
     kubectl expose deployment hello-world -n hello-world --type=LoadBalancer --name=my-service
     ```
 
-1. Verify the application is deployed but not running:
+1.  Verify the application is deployed but not running:
     ```shell
     kubectl get all -n hello-world
     ```
@@ -53,8 +53,10 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
    ```
 
    {{< note >}}
+
    Note that the deployment is not deployed (`READY: 0/5`) and the service doesn't have an external IP (`EXTERNAL-IP: <pending>`).
    This is working as expected as the objective to deploy the application to member clusters not the hub cluster.
+
    {{< /note >}}
 
 ### 2. Place to Member Clusters
@@ -62,13 +64,14 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
 #### Scenario A: Place to all member clusters
 
 1. Place to all the member clusters:
+
    {{< codenew file="hello-world-crp-all-clusters.yaml" >}}
 
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/helloworld/hello-world-crp-all-clusters.yaml
-    ```
+   ```shell
+   kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/helloworld/hello-world-crp-all-clusters.yaml
+   ```
 
-1. Verify the placement status:
+3. Verify the placement status:
     ```shell
     kubectl get crp hello-world -o yaml | grep status -A 1000
     ```
@@ -110,7 +113,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
 
    All the resources under namespace `hello-world` (including the namespace) are selected and placed to all the member clusters.
 
-1. Verify the application is deployed in the selected clusters:
+4. Verify the application is deployed in the selected clusters:
     ```shell
     KUBECONFIG=member1 kubectl get all -n hello-world
     ```
@@ -134,7 +137,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
     replicaset.apps/hello-world-6755976cfc   5         5         5       15m
     ```
 
-1. Access the running app:
+5. Access the running app:
     ```shell
     curl 13.78.193.35:8080
     ```
