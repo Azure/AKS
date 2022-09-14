@@ -8,7 +8,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
 * Install [kubectl](https://kubernetes.io/docs/tasks/tools/).
 * Create a fleet with three members: `aks-member-1`, `aks-member-2`, and `aks-member-3`.
 * Configure kubectl to communicate with your hub cluster.
-* Get kubeconfig files for member clusters as `member1`, `member2`, and `member3`.
+* Get `kubeconfig` files for member clusters as `member1`, `member2`, and `member3`.
 
 ## Objectives
 * Deploy a Hello World application with a LB service in the hub cluster.
@@ -42,8 +42,8 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
 3. Verify the application is deployed but not running:
 
    ```shell
-    kubectl get all -n hello-world
-    ```
+   kubectl get all -n hello-world
+   ```
    
    The output is similar to:
    
@@ -54,7 +54,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
    NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
    deployment.apps/hello-world   0/5     0            0           28s
    ```
-   
+
    Note that the deployment is not deployed (`READY: 0/5`) and the service doesn't have an external IP (`EXTERNAL-IP: <pending>`).
    This is working as expected as the objective to deploy the application to member clusters not the hub cluster.
 
@@ -119,6 +119,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
    ```
    
    The output is similar to:
+
    ```coonsole
    NAME                               READY   STATUS    RESTARTS   AGE
    pod/hello-world-6755976cfc-8qhht   1/1     Running   0          15m
@@ -139,12 +140,13 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
 
 4. Access the running app:
 
-    ```shell
-    curl 13.78.193.35:8080
-    ```
-    ```console
-    Hello Kubernetes!
-    ```
+   ```shell
+   curl 13.78.193.35:8080
+   ```
+
+   ```console
+   Hello Kubernetes!
+   ```
 
 Congratulations, you have deployed your first app through fleet workload placement.
 
@@ -152,7 +154,7 @@ Congratulations, you have deployed your first app through fleet workload placeme
 
 Place to member clusters selected by names: `aks-member-1` and `aks-member-3` ([hello-world-crp-by-cluster-names.yaml](https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/helloworld/hello-world-crp-by-cluster-names.yaml)):
 
-```bash
+```shell
 kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/helloworld/hello-world-crp-by-cluster-names.yaml
 ```
 
@@ -161,7 +163,7 @@ Follow the instructions in scenario A to verify the outputs.
 #### Scenario C: Place to member clusters selected by labels
 Place to member cluster selected by label selectors: `fleet.azure.com/location: westcentralus` ([hello-world-crp-by-cluster-labels.yaml](https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/helloworld/hello-world-crp-by-cluster-labels.yaml)):
 
-```bash
+```shell
 kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/helloworld/hello-world-crp-by-cluster-labels.yaml
 ```
 
