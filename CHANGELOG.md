@@ -10,6 +10,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
   * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
+  * Azure Cloud Provider for Azure will use [v1.25](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/05/v1.25.0/)
 * Kubernetes 1.21 version has been deprecated as of July 31st, 2022. See [documentation](https://docs.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) on how to upgrade your cluster.
 * Some AKS labels have been deprecated with the Kubernetes 1.24 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
@@ -18,12 +19,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 * Features
   * [AKS as an EventGrid event source](https://docs.microsoft.com/Azure/event-grid/event-schema-aks?tabs=event-grid-event-schema) is now Generally Available.
+  * [Updating the Kubelet managed identity](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity) is now generally available.
 * Preview Features
   * [Azure CNI Overlay](https://docs.microsoft.com/azure/aks/azure-cni-overlay) now supports 5th generation VM SKUs (v5 SKUs) to be used as nodes.
   * [Image Cleaner](https://docs.microsoft.com/azure/aks/image-cleaner), for removal of insecure container images cached in the nodes, is now in public preview.
   * [Azure Network Policy Manager (NPM) is now supported in public preview for Windows nodepools and containers](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-with-azure-npm-enabled---windows-server-2022-preview) (using Windows Server 2022).
 * Behavioral Changes
-  * For AKS clusters on version 1.16 or above, AKS will no longer use deprecated labels `beta.kubernetes.io/os` and `failure-domain.beta.kubernetes.io/zone`. It will now use `kubernetes.io/os` and `topology.kubernetes.io/zone` instead.
   * For Kubernetes 1.24+ the services of type `LoadBalancer` with appProtocol HTTP/HTTPS will switch to use HTTP/HTTPS as health probe protocol (while before v1.24.0 it uses TCP). And `/` will be used as the default health probe request path. If your service doesn’t respond `200` for `/`, please ensure you're setting the service annotation `service.beta.kubernetes.io/port_{port}_health-probe_request-path` or `service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path` (applies to all ports) with the correct request path to avoid service breakage.
 * Component Updates
   * Update Windows NPM to [v1.4.34](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.34).
