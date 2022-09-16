@@ -20,10 +20,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Features
   * [AKS as an EventGrid event source](https://docs.microsoft.com/Azure/event-grid/event-schema-aks?tabs=event-grid-event-schema) is now Generally Available.
   * [Updating the Kubelet managed identity](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity) is now generally available.
+  * [Multi-instance GPU support](https://docs.microsoft.com/en-us/azure/aks/gpu-multi-instance) for AKS nodepools is now Generally 
 * Preview Features
   * [Azure CNI Overlay](https://docs.microsoft.com/azure/aks/azure-cni-overlay) now supports 5th generation VM SKUs (v5 SKUs) to be used as nodes.
   * [Image Cleaner](https://docs.microsoft.com/azure/aks/image-cleaner), for removal of insecure container images cached in the nodes, is now in public preview.
-  * [Azure Network Policy Manager (NPM) is now supported in public preview for Windows nodepools and containers](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-with-azure-npm-enabled---windows-server-2022-preview) (using Windows Server 2022).
+  * [Azure Network Policy Manager (NPM) is now supported in public preview for Windows nodepools and containers](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-with-azure-npm-enabled---windows-server-2022-preview) (using Windows Server 2022). Security rules from [Kubernetes Network Policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/) resources can now be enforced on all pod traffic on/across Linux and Windows Server 2022 nodes for clusters with `--network-policy=azure`. NPM continues to be a managed solution, configurable at cluster creation.
 * Behavioral Changes
   * For Kubernetes 1.24+ the services of type `LoadBalancer` with appProtocol HTTP/HTTPS will switch to use HTTP/HTTPS as health probe protocol (while before v1.24.0 it uses TCP). And `/` will be used as the default health probe request path. If your service doesn’t respond `200` for `/`, please ensure you're setting the service annotation `service.beta.kubernetes.io/port_{port}_health-probe_request-path` or `service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path` (applies to all ports) with the correct request path to avoid service breakage.
 * Component Updates
