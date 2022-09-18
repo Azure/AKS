@@ -20,7 +20,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Features
   * [AKS as an EventGrid event source](https://docs.microsoft.com/Azure/event-grid/event-schema-aks?tabs=event-grid-event-schema) is now Generally Available.
   * [Updating the Kubelet managed identity](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity) is now generally available.
-  * [Multi-instance GPU support](https://docs.microsoft.com/en-us/azure/aks/gpu-multi-instance) for AKS nodepools is now Generally 
+  * [Multi-instance GPU support](https://docs.microsoft.com/azure/aks/gpu-multi-instance) for AKS nodepools is now Generally Available.
+  * [Disable CSI Storage Drivers](https://learn.microsoft.com/azure/aks/csi-storage-drivers#disable-csi-storage-drivers-on-a-new-cluster) is now Generally Available.
 * Preview Features
   * [Azure CNI Overlay](https://docs.microsoft.com/azure/aks/azure-cni-overlay) now supports 5th generation VM SKUs (v5 SKUs) to be used as nodes.
   * [Image Cleaner](https://docs.microsoft.com/azure/aks/image-cleaner), for removal of insecure container images cached in the nodes, is now in public preview.
