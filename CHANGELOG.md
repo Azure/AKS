@@ -1,10 +1,46 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-09-11
+
+Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
+
+### Announcements
+
+* Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](https://github.com/Azure/draft/issues/140) to start a conversation with the AKS team.
+* Starting with Kubernetes 1.25, the following changes will be made default:
+  * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+  * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
+  * Azure Cloud Provider for Azure will use [v1.25](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/05/v1.25.0/)
+* Kubernetes 1.21 version has been deprecated as of July 31st, 2022. See [documentation](https://docs.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) on how to upgrade your cluster.
+* Some AKS labels have been deprecated with the Kubernetes 1.24 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+
+* Features
+  * [AKS as an EventGrid event source](https://docs.microsoft.com/Azure/event-grid/event-schema-aks?tabs=event-grid-event-schema) is now Generally Available.
+  * [Updating the Kubelet managed identity](https://docs.microsoft.com/azure/aks/use-managed-identity#update-an-existing-cluster-using-kubelet-identity) is now generally available.
+  * [Multi-instance GPU support](https://docs.microsoft.com/azure/aks/gpu-multi-instance) for AKS nodepools is now Generally Available.
+  * [Disable CSI Storage Drivers](https://learn.microsoft.com/azure/aks/csi-storage-drivers#disable-csi-storage-drivers-on-a-new-cluster) is now Generally Available.
+* Preview Features
+  * [Azure CNI Overlay](https://docs.microsoft.com/azure/aks/azure-cni-overlay) now supports 5th generation VM SKUs (v5 SKUs) to be used as nodes.
+  * [Image Cleaner](https://docs.microsoft.com/azure/aks/image-cleaner), for removal of insecure container images cached in the nodes, is now in public preview.
+  * [Azure Network Policy Manager (NPM) is now supported in public preview for Windows nodepools and containers](https://docs.microsoft.com/azure/aks/use-network-policies#create-an-aks-cluster-with-azure-npm-enabled---windows-server-2022-preview) (using Windows Server 2022). Security rules from [Kubernetes Network Policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/) resources can now be enforced on all pod traffic on/across Linux and Windows Server 2022 nodes for clusters with `--network-policy=azure`. NPM continues to be a managed solution, configurable at cluster creation.
+* Behavioral Changes
+  * For Kubernetes 1.24+ the services of type `LoadBalancer` with appProtocol HTTP/HTTPS will switch to use HTTP/HTTPS as health probe protocol (while before v1.24.0 it uses TCP). And `/` will be used as the default health probe request path. If your service doesn’t respond `200` for `/`, please ensure you're setting the service annotation `service.beta.kubernetes.io/port_{port}_health-probe_request-path` or `service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path` (applies to all ports) with the correct request path to avoid service breakage.
+* Component Updates
+  * Update Windows NPM to [v1.4.34](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.34).
+  * Update Azure CNI to [v1.4.32](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.32).
+  * OSM updated to [v1.2.1](https://github.com/openservicemesh/osm/releases/tag/v1.2.1).
+  * Azure Cloud Provider for kubernetes was updated to [v1.24.5](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/05/v1.24.5/), [v1.23.18](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/06/v1.23.18/) (for these respective kubernetes minor versions), and to [v1.1.21](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/06/v1.1.21/) for kubernetes minor version 1.22.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.09.05](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.09.05.txt)
+
 ## Release 2022-09-04
 
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
 
 ### Announcements
+
 * Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](https://github.com/Azure/draft/issues/140) to start a conversation with the AKS team.
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
@@ -14,11 +50,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
 
 ### Release notes
+
 * Features
   * [Bring your own Container Network Interface (CNI) plugin with Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) is now generally available.
   * [ARM64 AKS nodepool](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-an-arm64-node-pool) is now generally available.
-  * [Azure CNI Overlay for AKS](https://docs.microsoft.com/en-us/azure/aks/azure-cni-overlay) is now Public Preview.
   * AKS now supports aborting a [long running operation](https://docs.microsoft.com/en-us/azure/aks/manage-abort-operations?tabs=azure-rest), allowing you to take back control and run another operation seamlessly.
+* Preview Features
+  * [Azure CNI Overlay for AKS](https://docs.microsoft.com/en-us/azure/aks/azure-cni-overlay) is now Public Preview.
 * Bug fixes
   * DNS resolution failure due to Ubuntu security patch is fixed.
 * Behavior changes
