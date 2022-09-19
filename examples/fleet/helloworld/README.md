@@ -1,4 +1,4 @@
-# Example: Place HelloWorld application to  on Fleet
+# Example: Place HelloWorld application to multiple clusters in a fleet
 
 This directory contains the instructions on how to deploy a Hello World application using Fleet resource placement.
 
