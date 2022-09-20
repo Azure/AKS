@@ -165,7 +165,7 @@ export MEMBER_ID3=/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/provide
 
 ### 5. Add three AKS clusters as members of the fleet
 
-If you have skipped 3b, you need to export the following variables to point to your own AKS clusters:
+If you have skipped Step 4, you need to export the following variables to point to your own AKS clusters:
 
 ```shell
 export MEMBER_ID1=/subscriptions/<subscription-id1>/resourceGroups/<group1>/providers/Microsoft.ContainerService/managedClusters/<cluster1>
@@ -189,6 +189,9 @@ The output is similar to:
 /subscriptions/<subscription-id3>/resourceGroups/<group3>/providers/Microsoft.ContainerService/managedClusters/<cluster3>
 ```
 
+Join three clusters simultaneously with `--no-wait` for the first two.
+This step will take several minutes. You can wait for the 3rd one to be done and proceed.
+
 ```shell
 export MEMBER1=aks-member-1
 az fleet member create -g ${GROUP} --fleet-name ${FLEET} --member-cluster-id=${MEMBER_ID1} -n ${MEMBER1} --no-wait
@@ -199,9 +202,6 @@ az fleet member create -g ${GROUP} --fleet-name ${FLEET} --member-cluster-id=${M
 export MEMBER3=aks-member-3
 az fleet member create -g ${GROUP} --fleet-name ${FLEET} --member-cluster-id=${MEMBER_ID3} -n ${MEMBER3}
 ```
-
-Note that we are joining three clusters simultaneously with `--no-wait` for the first two.
-This step will take several minutes. You can wait for the 3rd one to be done and proceed.
 
 Verify the members have joined successfully:
 
@@ -297,7 +297,7 @@ aks-member-2   True     11m
 aks-member-3   True     11m
 ```
 
-### 6. Get credentials to access member clusters
+### 7. Get credentials to access member clusters
 
 ```shell
 az aks get-credentials -g ${GROUP} -n ${MEMBER1} --file member1
