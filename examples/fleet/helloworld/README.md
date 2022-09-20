@@ -122,7 +122,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
    
    The output is similar to:
 
-   ```coonsole
+   ```console
    NAME                               READY   STATUS    RESTARTS   AGE
    pod/hello-world-6755976cfc-8qhht   1/1     Running   0          15m
    pod/hello-world-6755976cfc-c5p5j   1/1     Running   0          15m
