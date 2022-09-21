@@ -9,4 +9,4 @@ spec:
       kind: Namespace
       name: kuard-demo
   # If policy is unspecified, deploy to all the member clusters by default.
-  policy:
+  # policy:

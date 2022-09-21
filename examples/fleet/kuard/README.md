@@ -1,19 +1,20 @@
 # Example: Exporting service using Fleet resource placement
 
-This directory contains the instructions on how to export services using Fleet resource placement and setup Layer 4 load balancing across workloads deployed across fleet member clusters.
+This directory contains step-by-step instructions and example YAML files to expose a workload deployed in multiple clusters through a Layer 4 load balancer using Azure fleet management's Kubernetes native interface.
 
-The application is using [kuard](https://github.com/kubernetes-up-and-running/kuard) as the service to demonstrate the responding cluster/pod.
+This quick start is using [kuard](https://github.com/kubernetes-up-and-running/kuard) as an exemplary service to demonstrate the typical user experience flow.
 
 ## Before you begin
 * Install [kubectl](https://kubernetes.io/docs/tasks/tools/).
 * Create a fleet with three members: `aks-member-1`, `aks-member-2`, and `aks-member-3` using [Azure CNI networking](https://review.learn.microsoft.com/en-us/azure/aks/configure-azure-cni).
-* Member clusters reside on the same virtual network, or [peered virtual networks](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview) such that pods from different clusters can communicate directly with each other using pod IPs.
-* Configure kubectl to communicate with your hub cluster.
-* Get `kubeconfig` files for member clusters as `member1`, `member2`, and `member3`.
+* Member clusters **MUST** reside either in the same virtual network, or [peered](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview) virtual networks such that pods from different clusters can communicate directly with each other using pod IPs.
+* Configure kubectl to communicate with your hub cluster as `hub` using: 
+
+  `az fleet get-credentials -g ${GROUP} -n ${FLEET} --file hub`
+* Download `kubeconfig` files for member clusters as `member1`, `member2`, and `member3` respectively.
 
 ## Objectives
-* Deploy a Kuard demo application with an internal load balancer service and export the service in the hub cluster.
-* Place the resources (deployment, service, service export) to member clusters.
+* Deploy a Kuard demo application with an internal load balancer service in the member clusters and export the service.
 * Expose fleet-wide endpoints from exported services with a multi-cluster service.
 
 ## Steps
@@ -23,19 +24,19 @@ The application is using [kuard](https://github.com/kubernetes-up-and-running/ku
 1. Switch to the hub cluster context to create namespace:
 
    ```shell
-   kubectl create namespace kuard-demo
+   KUBECONFIG=hub kubectl create namespace kuard-demo
    ```
 
 2. Deploy a Kuard demo application with an internal load balancer service and export the service.
 
    ```shell
-   kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard/kuard-export-service.yaml
+   KUBECONFIG=hub kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard/kuard-export-service.yaml
    ```
 
 3. Verify the application is deployed but not running:
    
    ```shell
-   kubectl get all -n kuard-demo
+   KUBECONFIG=hub kubectl get all -n kuard-demo
    ```
 
    The output is similar to:
@@ -52,7 +53,7 @@ The application is using [kuard](https://github.com/kubernetes-up-and-running/ku
 
 4. Verify the service export is created but not running:
     ```shell
-   kubectl get serviceexport -n kuard-demo
+   KUBECONFIG=hub kubectl get serviceexport -n kuard-demo
    ```
 
    The output is similar to:
@@ -61,21 +62,21 @@ The application is using [kuard](https://github.com/kubernetes-up-and-running/ku
    NAME    IS-VALID   IS-CONFLICTED   AGE
    kuard                              2m53s
    ```
-   Note that the `IS-VALID` and `IS-CONFLICTED` is empty. 
+   Note that `IS-VALID` and `IS-CONFLICTED` are empty. 
    This is working as expected as the objective is to deploy the service export to member clusters not the hub cluster.
 
 ### 2. Place to Member Clusters
 
-1. Place to all the member clusters
+1. Place the application to all the member clusters through a ClusterResourcePlacement CR:
 
     ```shell
-   kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard/kuard-crp.yaml
+   KUBECONFIG=hub kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard/kuard-crp.yaml
    ```
    
 2. Verify the placement status:
 
    ```shell
-   kubectl get crp kuard -o yaml | grep status -A 1000
+   KUBECONFIG=hub kubectl get crp kuard -o yaml | grep status -A 1000
    ```
 
    The output is similar to:
@@ -143,7 +144,9 @@ The application is using [kuard](https://github.com/kubernetes-up-and-running/ku
 4. Switch to the member clusters to verify the service export has been created:
    
    ```shell
-   kubectl get serviceexport -n kuard-demo
+   KUBECONFIG=member1 kubectl get serviceexport -n kuard-demo
+   KUBECONFIG=member2 kubectl get serviceexport -n kuard-demo
+   KUBECONFIG=member3 kubectl get serviceexport -n kuard-demo
    ```
 
    The output is similar to:
@@ -158,12 +161,13 @@ The application is using [kuard](https://github.com/kubernetes-up-and-running/ku
 1. Switch to `aks-member-1` context to create a multi-cluster service. The endpoints will then be exposed with a L4 load balancer using `aks-member-1` nodes.
 
    ```shell
-   kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard/kuard-mcs.yaml
+   KUBECONFIG=member1 kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard/kuard-mcs.yaml
    ```
+
 2. Verify the mutli-cluster service is valid:
 
-    ```shell
-   kubectl get mcs -n kuard-demo
+   ```shell
+   KUBECONFIG=member1 kubectl get mcs -n kuard-demo
    ```
 
    The output is similar to:
@@ -181,4 +185,4 @@ The application is using [kuard](https://github.com/kubernetes-up-and-running/ku
 
    The request will randomly hit different pods.
 
-Congratulations, you have created your first multi-cluster service using Fleet resource placement.
+Congratulations, you have created your first multi-cluster service using Azure fleet management.

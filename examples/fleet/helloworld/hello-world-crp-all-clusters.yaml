@@ -9,4 +9,4 @@ spec:
       kind: Namespace
       name: hello-world
   # If policy is unspecified, deploy to all the member clusters by default.
-  policy:
+  # policy:

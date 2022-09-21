@@ -8,7 +8,7 @@ The application is from https://kubernetes.io/docs/tutorials/stateless-applicati
 * Install [kubectl](https://kubernetes.io/docs/tasks/tools/).
 * Create a fleet with three members: `aks-member-1`, `aks-member-2`, and `aks-member-3`.
 * Configure kubectl to communicate with your hub cluster.
-* Get `kubeconfig` files for member clusters as `member1`, `member2`, and `member3`.
+* Download `kubeconfig` files for member clusters as `member1`, `member2`, and `member3` respectively.
 
 ## Objectives
 * Deploy a Hello World application with a LB service in the hub cluster.
