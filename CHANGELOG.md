@@ -27,8 +27,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * ACIConnect/VK version updated to v1.4.4 from v1.4.1 [vk1.4.4](https://github.com/virtual-kubelet/azure-aci/commit/b28784ae5d0d70919357676fda2814bd793de91c).
   * Cloud-controller-manager versions are upgraded to to v1.25.1/v1.24.6/v1.23.19/v1.1.22, which has added retries for empty response issue from ARM APIs. Refer (Cloud-Provider)[https://cloud-provider-azure.sigs.k8s.io/blog/]  for more detailed release notes.
   * AKS Windows 2019 image has been updated to [17763.3406.220913](vhd-notes/AKSWindows/2019/17763.3406.220913.txt)
-  * AKS Windows 2022 containerd image has been updated to [20348.1006.220913](vhd-notes/AKSWindows/2022/20348.1006.220913.txt)
-
+  * AKS Windows 2022 image has been updated to [20348.1006.220913](vhd-notes/AKSWindows/2022/20348.1006.220913.txt)
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.09.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.09.13.txt)
 
 ## Release 2022-09-11
 
