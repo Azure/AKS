@@ -65,7 +65,7 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
 
     ```console
     NAME    TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
-    kuard   LoadBalancer   10.0.107.1   10.1.0.62     8080:32450/TCP   78s
+    kuard   LoadBalancer   10.0.107.1   <none>        8080:32450/TCP   78s
     ```
 3. Verify the service export is valid and has no conflicts:
 

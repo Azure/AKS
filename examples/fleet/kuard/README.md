@@ -43,12 +43,12 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
 
    ```console
    NAME            TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
-   service/kuard   LoadBalancer   10.0.72.28   <pending>     8080:32629/TCP   23s
+   service/kuard   LoadBalancer   10.0.72.28   <none>     8080:32629/TCP   23s
 
    NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
    deployment.apps/kuard   0/2     0            0           25s
    ```
-   Note that the deployment does not result in any pod created on the hub cluster (`READY: 0/2`) and the service doesn't have an external IP (`EXTERNAL-IP: <pending>`).
+   Note that the deployment does not result in any pod created on the hub cluster (`READY: 0/2`).
    This is working as expected as the objective is to deploy the application to member clusters not the hub cluster.
 
 4. Verify the service export is created but not running:
@@ -133,7 +133,7 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
    pod/kuard-7788d9bc5-tp54d   1/1     Running   0          13m
 
    NAME            TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
-   service/kuard   LoadBalancer   10.0.188.8   10.2.0.62     8080:32629/TCP   13m
+   service/kuard   LoadBalancer   10.0.188.8   <none>        8080:32629/TCP   13m
 
    NAME                    READY   UP-TO-DATE   AVAILABLE   AGE                  
    deployment.apps/kuard   2/2     2            2           13m
