@@ -1,0 +1,12 @@
+apiVersion: fleet.azure.com/v1alpha1
+kind: ClusterResourcePlacement
+metadata:
+  name: kuard
+spec:
+  resourceSelectors:
+    - group: ""
+      version: v1
+      kind: Namespace
+      name: kuard-demo
+  # If policy is unspecified, deploy to all the member clusters by default.
+  # policy:
