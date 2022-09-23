@@ -14,7 +14,7 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
 * Download `kubeconfig` files for member clusters as `member1`, `member2`, and `member3` respectively.
 
 ## Objectives
-* Deploy a Kuard demo application with an internal load balancer service in the member clusters and export the service.
+* Deploy a Kuard demo application with a `ClusterIP` type service in the member clusters and export the service.
 * Expose fleet-wide endpoints from exported services with a multi-cluster service.
 
 ## Steps
@@ -27,7 +27,7 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
    KUBECONFIG=hub kubectl create namespace kuard-demo
    ```
 
-2. Deploy a Kuard demo application with an internal load balancer service and export the service.
+2. Deploy a Kuard demo application with a `ClusterIP` type service and export the service.
 
    ```shell
    KUBECONFIG=hub kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard/kuard-export-service.yaml

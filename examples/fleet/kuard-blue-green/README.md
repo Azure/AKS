@@ -16,7 +16,7 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
 ## Objectives
 * Deploy a Kuard demo application using blue image in the `aks-member-blue`.
 * Deploy a Kuard demo application using green image in the `aks-member-green`.
-* Create an internal load balancer service to expose the deployment and export the service.
+* Create a `ClusterIP` type service to expose the deployment and export the service.
 * Expose fleet-wide endpoints from exported services with a multi-cluster service.
 
 ## Steps
@@ -49,7 +49,7 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
 
 ### 3. Create service and service export in the member clusters
 
-1. Switch to `aks-member-blue` context to create the kuard service with an internal load balancer and service export:
+1. Switch to `aks-member-blue` context to create the kuard service and its service export:
 
    ```shell
    KUBECONFIG=member-blue kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard-blue-green/kuard-export.yaml
@@ -79,7 +79,7 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
     NAME    IS-VALID   IS-CONFLICTED   AGE
     kuard   True       False           31s
     ```
-4. Switch to `aks-member-green` context to create the kuard service with an internal load balancer and service export:   
+4. Switch to `aks-member-green` context to create the kuard service and its service export:   
 
    ```shell
    KUBECONFIG=member-green kubectl apply -f https://raw.githubusercontent.com/Azure/AKS/master/examples/fleet/kuard-blue-green/kuard-export.yaml
@@ -113,6 +113,6 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
    ```
    Or access the http://20.81.3.74:8080 in the browser.
 
-   The request will randomly hit different hostnames with blue or green version.
+   The request will randomly hit different hostnames with blue or green version and the number of hits is proportional to the number of pods in each deployment.
 
 Congratulations, you have created your first multi-cluster service.
