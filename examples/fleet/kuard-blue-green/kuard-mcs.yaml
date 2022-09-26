@@ -1,0 +1,8 @@
+apiVersion: networking.fleet.azure.com/v1alpha1
+kind: MultiClusterService
+metadata:
+  name: kuard
+  namespace: net
+spec:
+  serviceImport:
+    name: kuard

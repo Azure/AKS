@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kuard
+  namespace: net
+  labels:
+    app: kuard
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: kuard
+---
+apiVersion: networking.fleet.azure.com/v1alpha1
+kind: ServiceExport
+metadata:
+  name: kuard
+  namespace: net
+

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuard
+  namespace: kuard-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kuard
+  template:
+    metadata:
+      labels:
+        app: kuard
+    spec:
+      containers:
+        - name: kuard
+          image: gcr.io/kuar-demo/kuard-amd64:blue
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kuard
+  namespace: kuard-demo
+  labels:
+    app: kuard
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: kuard
+---
+apiVersion: networking.fleet.azure.com/v1alpha1
+kind: ServiceExport
+metadata:
+  name: kuard
+  namespace: kuard-demo
