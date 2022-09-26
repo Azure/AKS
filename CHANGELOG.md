@@ -16,16 +16,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 ### Release notes
 
 * Features
-  * [Disable CSI storage drivers on a new cluster](https://learn.microsoft.com/en-us/azure/aks/csi-storage-drivers#disable-csi-storage-drivers-on-a-new-cluster) is now Generally Available.
   * Windows Server 2022 is now GA on AKS. Take a look at our [documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-windows-2019-2022) for guidance on upgrading your workloads from Windows Server 2019 to 2022 and adding new Windows Server 2022 nodepools. Windows Server 2019 will remain default for nodepool creation until kubernetes 1.25. Important, old windows 2019 containers will not work on windows server 2022 hosts.
-  * Azure Cloud Provider for Azure will use [v1.25](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/05/v1.25.0/)
-* Preview Features
-  * [Azure CNI Overlay](https://docs.microsoft.com/azure/aks/azure-cni-overlay) now supports 5th generation VM SKUs (v5 SKUs) to be used as nodes. CNI Overlay is now available in northcentralus region. 
-* Behavioral Changes
-  * For Kubernetes 1.24+ the services of type `LoadBalancer` with appProtocol HTTP/HTTPS will switch to use HTTP/HTTPS as health probe protocol (while before v1.24.0 it uses TCP). And `/` will be used as the default health probe request path. If your service doesn’t respond `200` for `/`, please ensure you're setting the service annotation `service.beta.kubernetes.io/port_{port}_health-probe_request-path` or `service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path` (applies to all ports) with the correct request path to avoid service breakage.
 * Component Updates
-  * ACIConnect/VK version updated to v1.4.4 from v1.4.1 [vk1.4.4](https://github.com/virtual-kubelet/azure-aci/commit/b28784ae5d0d70919357676fda2814bd793de91c).
-  * Cloud-controller-manager versions are upgraded to to v1.25.1/v1.24.6/v1.23.19/v1.1.22, which has added retries for empty response issue from ARM APIs. Refer (Cloud-Provider)[https://cloud-provider-azure.sigs.k8s.io/blog/]  for more detailed release notes.
+  * Virtual Kubelet component of AKS Virtual Nodes was updated to v1.4.4 from v1.4.1 [vk1.4.4](https://github.com/virtual-kubelet/azure-aci/commit/b28784ae5d0d70919357676fda2814bd793de91c).
   * AKS Windows 2019 image has been updated to [17763.3406.220913](vhd-notes/AKSWindows/2019/17763.3406.220913.txt)
   * AKS Windows 2022 image has been updated to [20348.1006.220913](vhd-notes/AKSWindows/2022/20348.1006.220913.txt)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.09.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.09.13.txt)
