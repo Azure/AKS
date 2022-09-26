@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Features
   * Windows Server 2022 is now GA on AKS. Take a look at our [documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-windows-2019-2022) for guidance on upgrading your workloads from Windows Server 2019 to 2022 and adding new Windows Server 2022 nodepools. Windows Server 2019 will remain default for nodepool creation until kubernetes 1.25. Important, old windows 2019 containers will not work on windows server 2022 hosts.
 * Component Updates
-  * Virtual Kubelet component of AKS Virtual Nodes was updates to v1.4.4 from v1.4.1 [vk1.4.4](https://github.com/virtual-kubelet/azure-aci/commit/b28784ae5d0d70919357676fda2814bd793de91c).
+  * Virtual Kubelet component of AKS Virtual Nodes was updated to v1.4.4 from v1.4.1 [vk1.4.4](https://github.com/virtual-kubelet/azure-aci/commit/b28784ae5d0d70919357676fda2814bd793de91c).
   * AKS Windows 2019 image has been updated to [17763.3406.220913](vhd-notes/AKSWindows/2019/17763.3406.220913.txt)
   * AKS Windows 2022 image has been updated to [20348.1006.220913](vhd-notes/AKSWindows/2022/20348.1006.220913.txt)
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.09.13](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.09.13.txt)
