@@ -9,9 +9,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 * Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](https://github.com/Azure/draft/issues/140) to start a conversation with the AKS team.
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
-  * Windows Server 2022 is now GA on AKS. Take a look at our [documentation](https://learn.microsoft.com/en-us/azure/aks/learn/quick-windows-container-deploy-cli) for guidance on upgrading your workloads from Windows Server 2019 to 2022 and adding new Windows Server 2022 nodepools. Windows Server 2019 will remain default for nodepool creation until kubernetes 1.25. Important, old windows 2019 containers will not work on windows server 2022 hosts.
-  * Azure Cloud Provider for Azure will use [v1.25](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/05/v1.25.0/)
-* Kubernetes 1.21 version has been deprecated as of July 31st, 2022. See [documentation](https://docs.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) on how to upgrade your cluster.
+  * Kubernetes 1.21 version has been deprecated as of July 31st, 2022. See [documentation](https://docs.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) on how to upgrade your cluster.
 * Some AKS labels have been deprecated with the Kubernetes 1.24 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
 
@@ -19,6 +17,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
 
 * Features
   * [Disable CSI storage drivers on a new cluster](https://learn.microsoft.com/en-us/azure/aks/csi-storage-drivers#disable-csi-storage-drivers-on-a-new-cluster) is now Generally Available.
+  * Windows Server 2022 is now GA on AKS. Take a look at our [documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-windows-2019-2022) for guidance on upgrading your workloads from Windows Server 2019 to 2022 and adding new Windows Server 2022 nodepools. Windows Server 2019 will remain default for nodepool creation until kubernetes 1.25. Important, old windows 2019 containers will not work on windows server 2022 hosts.
+  * Azure Cloud Provider for Azure will use [v1.25](https://cloud-provider-azure.sigs.k8s.io/blog/2022/09/05/v1.25.0/)
 * Preview Features
   * [Azure CNI Overlay](https://docs.microsoft.com/azure/aks/azure-cni-overlay) now supports 5th generation VM SKUs (v5 SKUs) to be used as nodes. CNI Overlay is now available in northcentralus region. 
 * Behavioral Changes
