@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-09-25
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Draft is looking to get feedback. If you have used Draft or are interested in Draft, please click [here](https://github.com/Azure/draft/issues/140) to start a conversation with the AKS team.
+* Starting with Kubernetes 1.25, the following changes will be made default:
+  * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+  * Kubernetes 1.21 version has been deprecated as of July 31st, 2022. See [documentation](https://docs.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) on how to upgrade your cluster.
+* Some AKS labels are being deprecated with the Kubernetes 1.25 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+
+* Features
+  * New Kubernetes patch versions released. Kubernetes 1.22.15, 1.23.12 and 1.24.6.
+  * Nodepool snapshots can now work across regions.
+* Preview Features
+  * THe AKS maintenance window can now also be set centrally via [Azure maintenance windows](https://learn.microsoft.com/azure/aks/aks-planned-maintenance-weekly-releases).
+* Behavior Changes
+  * AKS no longer uses `beta.kubernetes.io/os`, `failure-domain.beta.kubernetes.io/zone` labels in its managed components. `kubernetes.io/os` and `topology.kubernetes.io/zone` will be used instead, respectively.
+  * An additional tag `aks-managed-private-dns-zone-mode:none` will be added to the nodes on private cluster scenarios when the cluster is using 'none' private DNS zone.
+* Bug Fixes
+  * Fixed KMS error message to clarify when Key Vault has connectivity blocked.
+  * Fixed issue with Availability Set-based clusters where node IPs were double counted when performing available IP validations.
+* Component Updates
+  * Cloud Controller Manager updated to v1.24.7, v1.23.20 and v1.1.23 (for 1.22 and lower) for the respective kubernetes minor versions.
+  * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.09.22](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.09.22.txt)
+
 ## Release 2022-09-18
 
 Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks/release-tracker).
