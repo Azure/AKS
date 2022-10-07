@@ -11,13 +11,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
 * Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. `beta.kubernetes.io/arch=` and `beta.kubernetes.io/os=`  are still applied by kubelet in kubernetes code.
 * Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
-* **Bug**: A bug has been found in Windows clusters that have been upgraded to K8s v1.24 that causes external VIP load balancing rules to reference endpoints that no longer exist. The AKS team has rolled out a block on all upgrades to K8s version 1.24 for Windows cluster as we wait for a fix from Windows upstream.
 
 ### Release notes
 
 * Preview Features
   * Cluster snapshot and cluster pinning is now released in [public preview](https://learn.microsoft.com/azure/aks/managed-cluster-snapshot), allowing you to easily save cluster configurations and apply them to other clusters.
   * Vertical Pod Autoscaling is now released in [public preview](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler). VPA allows you to automatically set resource requests and limits on containers per workload based on past usage.
+* Bugs
+  * **Bug**: A bug has been found in Windows clusters that have been upgraded to K8s v1.24 that causes external VIP load balancing rules to reference endpoints that no longer exist. The AKS team has rolled out a block on all upgrades to K8s version 1.24 for Windows cluster as we wait for a fix from Windows upstream.
 * Component Updates
   * Windows Azure CNI updated to version v1.4.35.
   * Microsoft Defender low-level-collector image updated to v1.3.57.
