@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * Azure AD Workload Identity is now released in [public preview](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview), integrated with the Kubernetes native capabilities to federated with Azure AD.
 * Bug
-  * Hotfixes on v1.24.3 and v1.24.6 for [BUG] (https://github.com/Azure/AKS/issues/3246) has been published to all regions. You can check the k8s package version in C:\AzureData\CustomDataSetupScript.log. If neither v1.24.3-hotfix.20221006-1int.zip nor v1.24.6-hotfix.20221006-1int.zip are used, you need to upgrade your clusters or create new Windows agent pools to get the fix.
+  * Hotfixes on v1.24.3 and v1.24.6 for [Windows BUG] (https://github.com/Azure/AKS/issues/3246) has been published to all regions. You can check the k8s package version in C:\AzureData\CustomDataSetupScript.log. If neither v1.24.3-hotfix.20221006-1int.zip nor v1.24.6-hotfix.20221006-1int.zip are used, you need to upgrade your clusters or create new Windows agent pools to get the fix.
   * Fixed a bug where an AKS FIPS node may become a non-FIPS node after unattended upgrade and reboot.
   * Hotfixed a bug where we double counted windows vms in subent size validation,
 * Behavior Changes
