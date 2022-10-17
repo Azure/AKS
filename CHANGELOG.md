@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Fixes
   * Hotfixes on v1.24.3 and v1.24.6 for [Windows BUG] (https://github.com/Azure/AKS/issues/3246) has been published to all regions. You can check the k8s package version in C:\AzureData\CustomDataSetupScript.log. If neither v1.24.3-hotfix.20221006-1int.zip nor v1.24.6-hotfix.20221006-1int.zip are used, you need to upgrade your clusters or create new Windows agent pools to get the fix.
   * Fixed a bug where an AKS FIPS node may become a non-FIPS node after unattended upgrade and reboot.
-  * Hotfixed a bug where we double counted windows vms in subent size validation,
+  * Hotfixed a bug where we double counted windows vms in subnet size validation.
 * Behavior Changes
   * Added pid.available<2000 to kubelet flag --eviction-hard, making the effective number of allocatable PIDs = kernel.pid_max - 2000 [eviction-signals](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals)
 * Component Updates
