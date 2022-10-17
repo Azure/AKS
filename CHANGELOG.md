@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 
 * Features
-  * [5000 node scale](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale) is now Generally Available.
+  * [AKS 5000 Node limit per cluster](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale) is now Generally Available.
   * [Confidential VM Node Pool](https://learn.microsoft.com/en-us/azure/aks/use-cvm) on AKS is now Generally Available.
   * [Event Grid](https://learn.microsoft.com/en-US/Azure/event-grid/event-schema-aks?tabs=event-grid-event-schema) integration with AKS is now Generally Available.
 * Preview Features
