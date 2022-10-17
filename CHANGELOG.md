@@ -14,8 +14,18 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
+
+* Features
+  * [5000 node scale](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale) is now Generally Available.
+  * [Confidential VM Node Pool](https://learn.microsoft.com/en-us/azure/aks/use-cvm) on AKS is now Generally Available.
+  * [Event Grid](https://learn.microsoft.com/en-US/Azure/event-grid/event-schema-aks?tabs=event-grid-event-schema) integration with AKS is now Generally Available.
+  * [ARM64](https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#create-an-aks-cluster) support in AKS is now Generally Available.
 * Preview Features
-  * Azure AD Workload Identity is now released in [public preview](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview), integrated with the Kubernetes native capabilities to federated with Azure AD.
+  * [Azure AD Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview), integrated with the Kubernetes native capabilities to federated with Azure AD, is now in Public Preview.
+  * [Azure Kubernetes Fleet Manager](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/overview) is now in Public Preview.
+  * [Azure CNI Overlay Mode]https://learn.microsoft.com/en-us/azure/aks/azure-cni-overlay) is now in Public Preview.
+  * [Planned Maintenance Window](https://learn.microsoft.com/en-us/azure/aks/planned-maintenance) is now in Public Preview.
+  * [Kubernetes Apps on Azure MarketPlace](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/releasing-kubernetes-apps-offer-in-microsoft-cloud-marketplace/ba-p/3650628) is now in Public Preview.
 * Bug
   * Hotfixes on v1.24.3 and v1.24.6 for [Windows BUG] (https://github.com/Azure/AKS/issues/3246) has been published to all regions. You can check the k8s package version in C:\AzureData\CustomDataSetupScript.log. If neither v1.24.3-hotfix.20221006-1int.zip nor v1.24.6-hotfix.20221006-1int.zip are used, you need to upgrade your clusters or create new Windows agent pools to get the fix.
   * Fixed a bug where an AKS FIPS node may become a non-FIPS node after unattended upgrade and reboot.
@@ -24,7 +34,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Added pid.available<2000 to kubelet flag --eviction-hard, making the effective number of allocatable PIDs = kernel.pid_max - 2000 [eviction-signals](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals)
 * Component Updates
   * CNI plugin updated to version [v1.1.1](https://github.com/containernetworking/plugins/releases/tag/v1.1.1).
-  * Virtual-Node volume hotfix release 1.4.5.
+  * Virtual-Node updated to version 1.4.5.
   * Updated Azure Disk CSI Driver to [v1.23.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.23.0) , Azure File CSI Driver to [v1.22.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.22.0) 
   * AKS Ubuntu 18.04 image updated to [AKSUbuntu-1804-2022.10.03](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.10.03.txt)
 
