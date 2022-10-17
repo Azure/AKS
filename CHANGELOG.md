@@ -22,8 +22,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * [Azure AD Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview), integrated with the Kubernetes native capabilities to federated with Azure AD, is now in Public Preview.
   * [Azure Kubernetes Fleet Manager](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/overview) is now in Public Preview.
-  * [Azure CNI Overlay Mode]https://learn.microsoft.com/en-us/azure/aks/azure-cni-overlay) is now in Public Preview.
-  * [Planned Maintenance Window](https://learn.microsoft.com/en-us/azure/aks/planned-maintenance) is now in Public Preview.
   * [Kubernetes Apps on Azure MarketPlace](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/releasing-kubernetes-apps-offer-in-microsoft-cloud-marketplace/ba-p/3650628) is now in Public Preview.
 * Fixes
   * Hotfixes on v1.24.3 and v1.24.6 for [Windows BUG] (https://github.com/Azure/AKS/issues/3246) has been published to all regions. You can check the k8s package version in C:\AzureData\CustomDataSetupScript.log. If neither v1.24.3-hotfix.20221006-1int.zip nor v1.24.6-hotfix.20221006-1int.zip are used, you need to upgrade your clusters or create new Windows agent pools to get the fix.
