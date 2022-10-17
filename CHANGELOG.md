@@ -19,7 +19,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [5000 node scale](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale) is now Generally Available.
   * [Confidential VM Node Pool](https://learn.microsoft.com/en-us/azure/aks/use-cvm) on AKS is now Generally Available.
   * [Event Grid](https://learn.microsoft.com/en-US/Azure/event-grid/event-schema-aks?tabs=event-grid-event-schema) integration with AKS is now Generally Available.
-  * [ARM64](https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#create-an-aks-cluster) support in AKS is now Generally Available.
 * Preview Features
   * [Azure AD Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview), integrated with the Kubernetes native capabilities to federated with Azure AD, is now in Public Preview.
   * [Azure Kubernetes Fleet Manager](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/overview) is now in Public Preview.
