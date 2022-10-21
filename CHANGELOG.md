@@ -6,6 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
+* AKS is retiring `v1.22.x` on December 4th 2022. Please upgrade your clusters to `v1.23` and above.
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
 * Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. `beta.kubernetes.io/arch=` and `beta.kubernetes.io/os=`  are still applied by kubelet in kubernetes code.
