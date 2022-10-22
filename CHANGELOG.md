@@ -1,5 +1,31 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-10-17
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* AKS is retiring `v1.22.x` on December 4th 2022. Please upgrade your clusters to `v1.23` and above.
+* Starting with Kubernetes 1.25, the following changes will be made default:
+  * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+* Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. `beta.kubernetes.io/arch=` and `beta.kubernetes.io/os=`  are still applied by kubelet in kubernetes code.
+* Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+
+### Release notes
+
+* Features
+  * [OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/cluster-configuration#oidc-issuer) is now Generally Available.
+* Behavior Changes
+  * The CPU limits for `cloud-node-manager` has been removed.
+  * OMSAgent resources will be renamed to [`ama-logs`](https://techcommunity.microsoft.com/t5/azure-monitor-status-archive/name-update-for-agent-and-associated-resources-in-azure-monitor/ba-p/3576810).
+* Component Updates
+  * `ip-masq-agent-v2` has been updated to [v0.1.5](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.5), which includes the usage of a distroless-iptables image and a reduction in image size from 75.4MB to 34.2MB.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.10.12](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.10.12.txt)
+  * AKS Windows 2019 image has been updated to [17763.3532.221012](vhd-notes/AKSWindows/2019/17763.3532.221012.txt) fixes [2022—KB5020438 Out-of-band](https://support.microsoft.com/en-us/topic/october-17-2022-kb5020438-os-build-17763-3534-out-of-band-cd499c1a-6d60-49a1-9a40-fad42c1d393a)
+  * AKS Windows 2022 image has been updated to [20348.1129.221012](vhd-notes/AKSWindows/2022/20348.1129.221012.txt) fixes [2022—KB5020436 Out-of-band](https://support.microsoft.com/en-us/topic/october-17-2022-kb5020436-os-build-20348-1131-out-of-band-18baa25a-5fc0-4118-9b89-ddbe9819e578)
+
+  
 ## Release 2022-10-10
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
