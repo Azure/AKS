@@ -22,8 +22,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * `ip-masq-agent-v2` has been updated to [v0.1.5](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.5), which includes the usage of a distroless-iptables image and a reduction in image size from 75.4MB to 34.2MB.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.10.12](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.10.12.txt)
-  * AKS Windows 2019 image has been updated to [17763.3532.221012](vhd-notes/AKSWindows/2019/17763.3532.221012.txt) fixes [2022—KB5020438 Out-of-band](https://support.microsoft.com/en-us/topic/october-17-2022-kb5020438-os-build-17763-3534-out-of-band-cd499c1a-6d60-49a1-9a40-fad42c1d393a)
-  * AKS Windows 2022 image has been updated to [20348.1129.221012](vhd-notes/AKSWindows/2022/20348.1129.221012.txt) fixes [2022—KB5020436 Out-of-band](https://support.microsoft.com/en-us/topic/october-17-2022-kb5020436-os-build-20348-1131-out-of-band-18baa25a-5fc0-4118-9b89-ddbe9819e578)
+  * AKS Windows 2019 image has been updated to [17763.3532.221012](vhd-notes/AKSWindows/2019/17763.3532.221012.txt)
+  * AKS Windows 2022 image has been updated to [20348.1129.221012](vhd-notes/AKSWindows/2022/20348.1129.221012.txt) 
 
   
 ## Release 2022-10-10
