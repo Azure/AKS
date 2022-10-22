@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Features
   * [OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/cluster-configuration#oidc-issuer) is now Generally Available.
 * Behavior Changes
-  * The CPU limits for `cloud-node-manager` has been removed.
+  * The CPU limits for `cloud-node-manager` have been removed.
   * OMSAgent resources will be renamed to [`ama-logs`](https://techcommunity.microsoft.com/t5/azure-monitor-status-archive/name-update-for-agent-and-associated-resources-in-azure-monitor/ba-p/3576810).
   * `ip-masq-agent-v2` is updated to [v0.1.5](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.5), which includes the usage of a distroless-iptables image and a reduction in image size from 75.4MB to 34.2MB.
 * Component Updates
