@@ -1,5 +1,37 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-10-24
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* AKS is retiring `v1.22.x` on December 4th 2022. Please upgrade your clusters to `v1.23` and above.
+* Starting with Kubernetes 1.25, the following changes will be made default:
+  * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+* Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. `beta.kubernetes.io/arch=` and `beta.kubernetes.io/os=`  are still applied by kubelet in kubernetes code.
+* Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
+* Kubernetes 1.25 is in preview. We support Kubernetes 1.25.2.
+
+### Release notes
+
+* Features
+  * Enables v5 SKUs with Azure CNI Overlay (public preview) - https://aka.ms/aks/overlay
+
+* Behavior Changes
+  * Stop clusters with 0 nodes for more than 30 days as documented in [support policy](https://learn.microsoft.com/en-us/azure/aks/support-policies#stopped-or-de-allocated-clusters)
+  * The cpu limits for cloud-node-manager, csi drivers, and kube-proxy have been removed.
+  * Provided the option to remove the LoadBalancer service tunnelfront port 9000 for clusters using Konnectivity. 
+  * Fixed a bug to allow cluster creation where both AAD and local accounts are disabled. 
+  * Fixed a bug in the 10/16 overlaymgr release where azure-cns does not mount /var/run/azure-cns on the host filesystem. When azure-cns pods are restarted, they lose track of which IPs have been assigned; if these IPs are re-assigned, pod networking breaks. This will happen in Cilium-enabled clusters whenever azure-cns crashes or overlaymgr deploys a new version of the azure-cns daemonset. 
+  * Fixed bug where when a cluster is updated, it triggers a reconcile cluster operation which will remove the setting  aks-vnet -> subnet -> service endpoints  which is set by csi driver when provisioning volume using NFS protocol.
+  * Fixed a bug which prevented executing a command in a container in an svc cluster. 
+* Component Updates
+  * Updated workload identity image to v.1.14.0.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.10.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.10.17.txt).
+  * AKS Windows 2019 image has been updated to [17763.3534.221019](vhd-notes/AKSWindows/2019/17763.3534.221019.txt). 
+  * AKS Windows 2022 image has been updated to [20348.1131.221019](vhd-notes/AKSWindows/2022/20348.1131.221019.txt).
+
 ## Release 2022-10-17
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
