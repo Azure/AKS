@@ -6,14 +6,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* AKS is retiring `v1.22.x` on December 4th 2022. Please [upgrade](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli) your clusters to `v1.23` and above.
+* AKS is retiring `v1.22.x` on December 4th 2022. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cl) your clusters to `v1.23` and above.
 * Starting with Kubernetes 1.25, the following changes will be made default:
   * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
 * Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. `beta.kubernetes.io/arch=` and `beta.kubernetes.io/os=`  are still applied by kubelet in kubernetes code.
 * Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
 * Kubernetes 1.25 is in preview. We support Kubernetes 1.25.2.
-* AKS will be enforcing the de-allocated clusters [policy](https://learn.microsoft.com/azure/aks/support-policies#stopped-or-de-allocated-clusters) which specifies that manually de-allocating clusters renders the cluster out of support. Starting November 1, 2022 clusters with zero nodes will be stopped after 30 days. Internal subs will be shutdown after 1d.
-* Virtual Node is supported in [these] (https://github.com/virtual-kubelet/azure-aci/commit/a33f6278694ecf8f71b6c182f6b31a90fd5d60cc) additional regions. 
+* AKS will be enforcing the de-allocated clusters [policy](https://learn.microsoft.com/azure/aks/support-policies#stopped-or-de-allocated-clusters) which specifies that manually de-allocating clusters renders the cluster out of support. Starting November 1, 2022 clusters with zero nodes will be stopped after 30 days.
+* Virtual Node is supported in [these](https://github.com/virtual-kubelet/azure-aci/blob/master/provider/aci.go) additional regions. 
 
 ### Release notes
 
@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed bug where when a cluster is updated, it triggers a reconcile cluster operation which will remove the setting  aks-vnet -> subnet -> service endpoints  which is set by csi driver when provisioning volume using NFS protocol.
 
 * Component Updates
-  * Updated [workload identity image](https://github.com/Azure/azure-workload-identity/releases/tag/v0.14.0) to v.1.14.0.
+  * Updated [workload identity image](https://github.com/Azure/azure-workload-identity/releases) to v0.14.0.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.10.17](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.10.17.txt).
   * AKS Windows 2019 image has been updated to [17763.3534.221019](vhd-notes/AKSWindows/2019/17763.3534.221019.txt). 
   * AKS Windows 2022 image has been updated to [20348.1131.221019](vhd-notes/AKSWindows/2022/20348.1131.221019.txt).
