@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    component: kubelet-parameters
+  name: kubelet-parameters
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      component: kubelet-parameters
+      tier: node
+  template:
+    metadata:
+      labels:
+        component: kubelet-parameters
+        tier: node
+    spec:
+      #Enable node selector in case you need to run on specific node pool      
+      #nodeSelector:
+      #  agentpool: default      
+      containers:
+      - command:
+        - nsenter
+        - --target
+        - "1"
+        - --mount
+        - --uts
+        - --ipc
+        - --net
+        - --pid
+        - --
+        - sh
+        - -c
+        - |
+          if cat /etc/default/kubelet | grep -q 'kube-api-qps';then
+             echo "kube-api-qps parameter already exists in kubelet configuration"
+          else
+             sed -i "s/KUBELET_FLAGS=/KUBELET_FLAGS=--kube-api-qps 10 /g" /etc/default/kubelet
+             systemctl daemon-reload
+             systemctl restart kubelet
+             echo "kube-api-qps parameter has been added to kubelet configuration"
+          fi      
+          if cat /etc/default/kubelet | grep -q 'kube-api-burst';then
+             echo "kube-api-burst parameter already exists in kubelet configuration"
+          else
+             sed -i "s/KUBELET_FLAGS=/KUBELET_FLAGS=--kube-api-burst 15 /g" /etc/default/kubelet
+             systemctl daemon-reload
+             systemctl restart kubelet
+             echo "kube-api-burst parameter has been added to kubelet configuration"
+          fi
+          while true; do sleep 100000; done
+        image: alpine
+        imagePullPolicy: IfNotPresent
+        name: kubelet-parameters
+        resources:
+          requests:
+            cpu: 10m
+        securityContext:
+          privileged: true
+      dnsPolicy: ClusterFirst
+      hostPID: true
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+      restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
