@@ -17,10 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
-* Features
-  * Enables v5 SKUs with Azure CNI Overlay (public preview) - https://aka.ms/aks/overlay
-
-* Behavior Changes
+* Behavior Changes 
   * The cpu limits for cloud-node-manager, csi drivers, and kube-proxy have been removed.
   * Fixed a bug to disallow cluster creation where both AAD and local accounts are disabled.  
   * Fixed bug where when a cluster is updated, it triggers a reconcile cluster operation which will remove the setting  aks-vnet -> subnet -> service endpoints  which is set by csi driver when provisioning volume using NFS protocol.
