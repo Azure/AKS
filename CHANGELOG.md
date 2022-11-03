@@ -13,11 +13,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Docker is no longer supported as a container runtime on Windows. Follow these [steps](https://docs.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli#:~:text=Upgrade%20an%20existing%20Windows%20Server%20node%20pool%20to%20containerd) in our documentation to upgrade your Kubernetes cluster to change your container runtime to containerd.
 * Kubernetes 1.25 is in preview. We support Kubernetes 1.25.2.
 * AKS will be enforcing the de-allocated clusters [policy](https://learn.microsoft.com/azure/aks/support-policies#stopped-or-de-allocated-clusters) which specifies that manually de-allocating clusters renders the cluster out of support. Starting November 1, 2022 clusters with zero nodes will be stopped after 30 days.
-* Virtual Node is supported in [these](https://github.com/virtual-kubelet/azure-aci/blob/master/provider/aci.go) additional regions. 
+* Virtual Node is supported in [these](https://github.com/virtual-kubelet/azure-aci/blob/master/provider/aci.go) additional regions.
 
 ### Release notes
 
-* Behavior Changes 
+* Behavior Changes
   * The cpu limits for cloud-node-manager, csi drivers, and kube-proxy have been removed.
   * Fixed a bug to disallow cluster creation where both AAD and local accounts are disabled.  
   * Fixed bug where when a cluster is updated, it triggers a reconcile cluster operation which will remove the setting  aks-vnet -> subnet -> service endpoints  which is set by csi driver when provisioning volume using NFS protocol.
