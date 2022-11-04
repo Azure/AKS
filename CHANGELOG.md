@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-10-31
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* AKS is retiring `v1.22.x` on December 4th 2022. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cl) your clusters to `v1.23` and above.
+* Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. `beta.kubernetes.io/arch=` and `beta.kubernetes.io/os=`  are still applied by kubelet in kubernetes code.
+* AKS will be enforcing the de-allocated clusters [policy](https://learn.microsoft.com/azure/aks/support-policies#stopped-or-de-allocated-clusters) which specifies that manually de-allocating clusters renders the cluster out of support. Starting November 1, 2022 clusters with zero nodes will be stopped after 30 days.
+
+
+### Release notes
+
+* Preview Features
+  * Kubernetes version 1.25 has been released in public preview for AKS and is rolling out to all region. We support Kubernetes 1.25.2.
+    * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+    * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
+* Bug Fixes
+  * Updated the AKS WS2022 images with 2022.10C. This update addresses an issue that causes Host Network Service to stop working, creating traffic interruptions. This fix will also be included in the AKS Windows2019 images with 2022.11B. Please see the release notes in https://github.com/Azure/AgentBaker/pull/2380 .
+* Behavior Changes
+  * AKS plans to disable "JobTrackingWithFinalizers" APISever feature for k8s version "1.23" in all regions. There is a bug in this feature. 1.23 by default turned on the feature and 1.24+ turned it off.
+  * The fields Cloud, Environment, UnderlayClass, and UnderlayName will no longer be available in customers' log analytics workspaces.
+  * The container runtime for Ubuntu VHDs now only depends on VHD version, not Kubernetes version. For supported Kubernetes versions < 1.24, this may imply an upgrade. The latest containerd version for all Ubuntu nodes will now be 1.6
+* Component Updates
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.10.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.10.24.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2022.10.24](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2022.10.24.txt).
+  * AKS Mariner V2 image has been updated to [AKSMarinerV2-2022.10.24](vhd-notes/AKSMarinerV2/2022.10.24.txt).
+  * AKS Windows 2022 image has been updated to [20348.1194.221026](vhd-notes/AKSWindows/2022/20348.1194.221026.txt).
+
+
 ## Release 2022-10-24
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
