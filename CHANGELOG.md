@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features
   * Kubernetes version 1.25 has been released in public preview for AKS and is rolling out to all region. We support Kubernetes 1.25.2.
-    * Ubuntu 22.04 for x86, AMD and ARM64 architectures will be the default host.
+    * Ubuntu 22.04 for AMD and ARM64 architectures will be the default host.
     * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
 * Bug Fixes
   * Updated the AKS WS2022 images with 2022.10C. This update addresses an issue that causes Host Network Service to stop working, creating traffic interruptions. This fix will also be included in the AKS Windows2019 images with 2022.11B. Please see the release notes in https://github.com/Azure/AgentBaker/pull/2380 .
@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.10.24](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.10.24.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2022.10.24](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2022.10.24.txt).
-  * AKS Mariner V2 image has been updated to [AKSMarinerV2-2022.10.24](vhd-notes/AKSMarinerV2/2022.10.24.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2022.10.24](vhd-notes/AKSMariner/2022.10.24.txt).
   * AKS Windows 2022 image has been updated to [20348.1194.221026](vhd-notes/AKSWindows/2022/20348.1194.221026.txt).
 
 
