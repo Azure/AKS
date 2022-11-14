@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-11-07
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* AKS is retiring `v1.22.x` on December 4th 2022. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cl) your clusters to `v1.23` and above.
+* Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. 
+* AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/en-us/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/en-us/azure/aks/use-psa) before the deprecation deadline.
+* Azure NAT gateways do not support IPv6 and therefore cannot be used with dual-stack clusters as the cluster would not have a valid IPv6 outbound connection.
+
+### Release notes
+
+* Preview Features
+  * [Updating SSH key on existing AKS cluster](https://learn.microsoft.com/en-us/azure/aks/node-access#update-ssh-key-on-an-existing-aks-cluster-preview) is now public preview.
+* Bug Fixes
+  * STOP operation will not stuck for a long time to wait for the namespace to be deleted.
+* Component Updates
+  * Update Azure CNI to [v1.4.35](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.35)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.11.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.11.01.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2022.11.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2022.11.01.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2022.11.01](vhd-notes/AKSMariner/2022.11.01.txt).
+
+
 ## Release 2022-10-31
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
