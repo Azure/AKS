@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * [Updating SSH key on existing AKS cluster](https://learn.microsoft.com/en-us/azure/aks/node-access#update-ssh-key-on-an-existing-aks-cluster-preview) is now public preview.
 * Bug Fixes
-  * STOP operation will not stuck for a long time to wait for the namespace to be deleted.
+  * Fix issue that would cause a Cluster Stop operation to become stuck.
 * Component Updates
   * Update Azure CNI to [v1.4.35](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.35)
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.11.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.11.01.txt).
