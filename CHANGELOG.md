@@ -21,6 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix issue that would cause a Cluster Stop operation to become stuck.
 * Component Updates
   * Update Azure CNI to [v1.4.35](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.35)
+  * Update AKS Windows image versions to [17763.3650.221110](vhd-notes/AKSWindows/2019/17763.3650.221110.txt) for WS2019 and to 20348.1249.221110(vhd-notes/AKSWindows/2022/20348.1249.221110.txt) for WS2022 with the Windows security patch in Nov 2022. It contains an important bug fix for the hns crash issue.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.11.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.11.01.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2022.11.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2022.11.01.txt).
   * AKS Mariner image has been updated to [AKSMariner-2022.11.01](vhd-notes/AKSMariner/2022.11.01.txt).
