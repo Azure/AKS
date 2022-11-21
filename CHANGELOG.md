@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2022-11-14
+## Release 2022-11-13
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -34,7 +34,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Mariner image has been updated to [AKSMariner-2022.11.01](vhd-notes/AKSMariner/2022.11.01.txt).
 
 
-## Release 2022-10-31
+## Release 2022-10-30
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -64,7 +64,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Windows 2022 image has been updated to [20348.1194.221026](vhd-notes/AKSWindows/2022/20348.1194.221026.txt).
 
 
-## Release 2022-10-24
+## Release 2022-10-23
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -92,7 +92,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Windows 2019 image has been updated to [17763.3534.221019](vhd-notes/AKSWindows/2019/17763.3534.221019.txt). 
   * AKS Windows 2022 image has been updated to [20348.1131.221019](vhd-notes/AKSWindows/2022/20348.1131.221019.txt).
 
-## Release 2022-10-17
+## Release 2022-10-16
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -118,7 +118,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Windows 2022 image has been updated to [20348.1129.221012](vhd-notes/AKSWindows/2022/20348.1129.221012.txt)
 
   
-## Release 2022-10-10
+## Release 2022-10-09
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
