@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * [Azure Blob storage Container Storage Interface (CSI) driver](https://learn.microsoft.com/azure/aks/azure-blob-csi) is now General Available.
+  * [Azure Blob storage Container Storage Interface (CSI) driver](https://learn.microsoft.com/azure/aks/azure-blob-csi) is now generally available.
 * Preview Features
   * [Updating SSH key on existing AKS cluster](https://learn.microsoft.com/azure/aks/node-access#update-ssh-key-on-an-existing-aks-cluster-preview) is now public preview.
 * Security Disclosures
