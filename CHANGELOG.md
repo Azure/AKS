@@ -8,16 +8,16 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * AKS is retiring `v1.22.x` on December 4th 2022. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cl) your clusters to `v1.23` and above.
 * Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. 
-* AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/en-us/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/en-us/azure/aks/use-psa) before the deprecation deadline.
+* AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/en-us/azure/aks/use-psa) before the deprecation deadline.
 * Azure NAT gateways do not support IPv6 and therefore cannot be used with dual-stack clusters as the cluster would not have a valid IPv6 outbound connection.
 * AKS clusters with Calico enabled should not upgrade to Kubernetes v1.25 preview.
 
 ### Release notes
 
 * Features
-  * [Azure Blob storage Container Storage Interface (CSI) driver](https://learn.microsoft.com/en-us/azure/aks/azure-blob-csi) is now General Available.
+  * [Azure Blob storage Container Storage Interface (CSI) driver](https://learn.microsoft.com/azure/aks/azure-blob-csi) is now General Available.
 * Preview Features
-  * [Updating SSH key on existing AKS cluster](https://learn.microsoft.com/en-us/azure/aks/node-access#update-ssh-key-on-an-existing-aks-cluster-preview) is now public preview.
+  * [Updating SSH key on existing AKS cluster](https://learn.microsoft.com/azure/aks/node-access#update-ssh-key-on-an-existing-aks-cluster-preview) is now public preview.
 * Security Disclosures
   * [CVE-2022-3162](https://github.com/Azure/AKS/issues/3326)
   * [CVE-2022-3294](https://github.com/Azure/AKS/issues/3327)
