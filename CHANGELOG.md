@@ -18,6 +18,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Azure Blob storage Container Storage Interface (CSI) driver](https://learn.microsoft.com/en-us/azure/aks/azure-blob-csi) is now General Available.
 * Preview Features
   * [Updating SSH key on existing AKS cluster](https://learn.microsoft.com/en-us/azure/aks/node-access#update-ssh-key-on-an-existing-aks-cluster-preview) is now public preview.
+ * Behavior Changes
+  * The OSM add-on now includes horizontal pod autoscaling for the osm-injector pod with a minimum of 2 replicas, maximum of 10. The resources for the injector pod has also been increased so request memory is now 128 MB and limit memory is now 500 MB.
 * Bug Fixes
   * Fix issue that would cause a Cluster Stop operation to become stuck.
 * Component Updates
