@@ -19,9 +19,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * [Updating SSH key on existing AKS cluster](https://learn.microsoft.com/en-us/azure/aks/node-access#update-ssh-key-on-an-existing-aks-cluster-preview) is now public preview.
 * Security Disclosures
-  * [CVE-2022-3162](CVE-2022-3162: Unauthorized read of Custom Resources · Issue #3326 · Azure/AKS (github.com))
-  * [CVE-2022-3294](CVE-2022-3294: Node address isn't always verified when proxying · Issue #3327 · Azure/AKS (github.com))
-  * [CVE-2022-3602 and CVE-2022-3786](CVE-2022-3786 and CVE-2022-3602: X.509 Email Address Buffer Overflows · Issue #3299 · Azure/AKS (github.com))
+  * [CVE-2022-3162](https://github.com/Azure/AKS/issues/3326)
+  * [CVE-2022-3294](https://github.com/Azure/AKS/issues/3327)
+  * [CVE-2022-3602 and CVE-2022-3786](https://github.com/Azure/AKS/issues/3299)
  * Behavior Changes
   * The OSM add-on now includes horizontal pod autoscaling for the osm-injector pod with a minimum of 2 replicas, maximum of 10. The resources for the injector pod has also been increased so request memory is now 128 MB and limit memory is now 500 MB.
 * Bug Fixes
