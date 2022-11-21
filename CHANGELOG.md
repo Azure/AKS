@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [CVE-2022-3162](https://github.com/Azure/AKS/issues/3326)
   * [CVE-2022-3294](https://github.com/Azure/AKS/issues/3327)
   * [CVE-2022-3602 and CVE-2022-3786](https://github.com/Azure/AKS/issues/3299)
- * Behavior Changes
+* Behavior Changes
   * The OSM add-on now includes horizontal pod autoscaling for the osm-injector pod with a minimum of 2 replicas, maximum of 10. The resources for the injector pod has also been increased so request memory is now 128 MB and limit memory is now 500 MB.
 * Bug Fixes
   * Fix issue that would cause a Cluster Stop operation to become stuck.
