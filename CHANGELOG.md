@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2022-11-13
+## Release 2022-11-06
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
