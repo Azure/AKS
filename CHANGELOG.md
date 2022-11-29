@@ -6,7 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* AKS is retiring `v1.22.x` on December 4th 2022. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cl) your clusters to `v1.23` and above.
+* AKS is retiring `v1.22.x` on December 4th 2022. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) your clusters to `v1.23` and above.
 * On December 4th 2022, AKS is updating all patch's on supported Kubernetes versions. This means that the oldest patch version on a supported minor version will be deprecated. Read more about AKS versioning and our policy [here](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy).
 * Some AKS labels are being deprecated with the Kubernetes 1.26 release. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. 
 * AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
