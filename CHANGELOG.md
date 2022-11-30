@@ -16,10 +16,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
-* Security Disclosures
-  * [CVE-2022-3162](https://github.com/Azure/AKS/issues/3326)
-  * [CVE-2022-3294](https://github.com/Azure/AKS/issues/3327)
-  * [CVE-2022-3602 and CVE-2022-3786](https://github.com/Azure/AKS/issues/3299)
 * Behavior Changes
   * Creation, Upgrade operations of PSP-enabled cluster if k8s version is v1.25 or above will no longer be allowed. 
   * Updated Calico to v3.23.3 when Kubernetes version is greater than or equal to v1.25.0.
