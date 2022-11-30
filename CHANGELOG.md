@@ -12,7 +12,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
 * Azure NAT gateways do not support IPv6 and therefore cannot be used with dual-stack clusters as the cluster would not have a valid IPv6 outbound connection.
 * [AKS clusters with Calico enabled](https://github.com/Azure/AKS/issues/3315) should not upgrade to Kubernetes v1.25 preview.
-* Starting Kubernetes v1.25 two in-tree driver persistent volumes wont be supported in AKS : kubernetes.io/azure-disk, kubernetes.io/azure-file. 
+* Starting Kubernetes v1.25 two in-tree driver persistent volumes won't be supported in AKS : kubernetes.io/azure-disk, kubernetes.io/azure-file. 
 
 ### Release notes
 
