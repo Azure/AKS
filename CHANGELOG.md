@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * In Azure CNI powered by Cilium clusters, AKS now sets prometheus.io/port and prometheus.io/scrape annotations on the cilium-operator deployment as well as the prometheus container ports on the cilium and cilium operator manifests.
 * Behavior Changes
-  * AKS now provides a `kubernetes.azure.com/dedicated-host-group=<HOST GROUP NAME>` label for nodes in an Azure Dedicated Host Group.
+  * AKS now provides a `kubernetes.azure.com/dedicated-host-group=<HOST GROUP ID>` label for nodes in an Azure Dedicated Host Group.
   * App Gateway Ingress Controller (AGIC) addon memory limit increased to 600 Mi to address to adjust for resourcing in clusters with large pod/secret counts.
   * The only allowed operation that can be performed on a stopped cluster is starting the cluster.
 * Bug Fixes
