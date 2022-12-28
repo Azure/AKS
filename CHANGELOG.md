@@ -1,5 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2022-12-04
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* AKS is retiring `v1.22.x` on this (December 4th) release. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cl) your clusters to `v1.23` or (preferably) above.
+* On this release (December 4th 2022), AKS is updating all patches on supported Kubernetes versions. This means that the oldest patch version on a supported minor version will be deprecated. Read more about AKS versioning and our policy [here](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy).
+* Some AKS labels are being deprecated with the Kubernetes 1.26 release in January. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation. 
+* AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Azure NAT gateways do not support IPv6 and therefore cannot be used with dual-stack clusters as the cluster would not have a valid IPv6 outbound connection.
+* [AKS clusters with Calico enabled](https://github.com/Azure/AKS/issues/3315) should not upgrade to Kubernetes v1.25 preview.
+* Starting Kubernetes v1.25 two in-tree driver persistent volumes types kubernetes.io/azure-disk, kubernetes.io/azure-file are deprecated and will no longer be supported. Removal of these drivers following its deprecation is not currently planned but all users should migrate as soon as possible to the corresponding persistent volume types, disk.csi.azure.com and file.csi.azure.com respectively. See how here: <https://learn.microsoft.com/azure/aks/csi-storage-drivers#migrate-custom-in-tree-storage-classes-to-csi>
+
+### Release notes
+
+* Features
+  * Kubernetes 1.25 is now Generally available. 1.25.4 patch version was added
+    * Ubuntu 22.04 for AMD and ARM64 architectures will be the default host.
+    * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
+* Preview Features
+  * In Azure CNI powered by Cilium clusters, AKS now sets prometheus.io/port and prometheus.io/scrape annotations on the cilium-operator deployment as well as the prometheus container ports on the cilium and cilium operator manifests.
+* Behavior Changes
+  * AKS now provides a `kubernetes.azure.com/dedicated-host-group=<HOST GROUP NAME>` label for nodes in an Azure Dedicated Host Group.
+  * App Gateway Ingress Controller (AGIC) addon memory limit increased to 600 Mi to address to adjust for resourcing in clusters with large pod/secret counts.
+  * The only allowed operation that can be performed on a stopped cluster is starting the cluster.
+* Bug Fixes
+  * Fixed and issue with cluster updates after a failed cluster start getting stuck.
+  * AKS will have Accelerated Networking turned off in Azure Dedicated Host nodepools as Azure Dedicated Host placement currently doesn't correctly account for Accelerated Networking capable SKUs at the moment.
+  * Fixed IPv6 casing mismatch between azure network provider and AKS.  
+* Component Updates
+  * Azure Monitor Container Insights updated to version [ciprod12032022-c9f3dc30](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#12032022--)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2022.12.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2022.12.19.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2022.12.19](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2022.12.19.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2022.12.19](vhd-notes/AKSMariner/2022.12.19.txt).
+
 ## Release 2022-11-27
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
