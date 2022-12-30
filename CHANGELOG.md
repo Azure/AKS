@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * App Gateway Ingress Controller (AGIC) addon memory limit increased to 600 Mi to address to adjust for resourcing in clusters with large pod/secret counts.
   * The only allowed operation that can be performed on a stopped cluster is starting the cluster.
 * Bug Fixes
-  * Fixed and issue with cluster updates after a failed cluster start getting stuck.
+  * Fixed an issue with cluster updates after a failed cluster start getting stuck.
   * AKS will have Accelerated Networking turned off in Azure Dedicated Host nodepools as Azure Dedicated Host placement currently doesn't correctly account for Accelerated Networking capable SKUs at the moment.
   * Fixed IPv6 casing mismatch between azure network provider and AKS.  
 * Component Updates
