@@ -18,6 +18,7 @@ with AKS. For other tools, products and services see the [Upstream Azure Compute
 ## Important links
 
 * AKS Roadmap: http://aka.ms/aks/roadmap
+* AKS hybrid deployment options: https://aka.ms/aks-hybrid
 * AKS Release Notes: https://aka.ms/aks/releasenotes
 * AKS Preview Features: https://aka.ms/aks/preview-features
 * AKS Public Office Hours: https://aka.ms/akspublicofficehours
