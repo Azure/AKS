@@ -1,5 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-01-08
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Kubernetes 1.25 has finished rolling out in all non-sovereign regions.
+* AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+
+### Release notes
+
+* Features
+  * Starting with Kubernetes 1.26:
+    * HostProcess Containers will be GA
+    * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+  * [Dynamic IP Allocation](https://learn.microsoft.com/azure/aks/configure-azure-cni#:~:text=AKS%20cluster%20creation%3A-,Dynamic%20allocation%20of%20IPs%20and%20enhanced%20subnet%20support,-A%20drawback%20with) is now available for Windows nodes.
+* Preview Features
+  * [IP based Load Balancer](https://learn.microsoft.com/azure/aks/load-balancer-standard#:~:text=Change%20the%20inbound%20pool%20type%20(PREVIEW)) is now available in preview
+  * [Node public IP tags](https://learn.microsoft.com/azure/aks/use-node-public-ips) is now available in preview
+  * [Host port NSG control](https://learn.microsoft.com/azure/aks/use-node-public-ips) is now available in preview
+  * [Host ASG control](https://learn.microsoft.com/azure/aks/use-node-public-ips) is now available in preview
+  * [Azure CNI Overlay for Windows](https://learn.microsoft.com/azure/aks/azure-cni-overlay) is now available in preview
+* Behavior Changes
+  * The OSM addon's osm-injector pod's autoscaler will no longer scale on memory, only on CPU. The osm-controller pod's HPA resource will be reconciled in EnsureExists mode to allow you to edit the resource.
+* Bug Fixes
+  * A bug regarding Kubernetes version 1.25 and the tigera operator has been [fixed](https://github.com/Azure/AKS/issues/3394). If your cluster is already running on v1.25.4, please create a new cluster or file a support ticket with AKS for any further help.
+* Component Updates
+  * [CIS Kubernetes v1.24 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) has been published which covers AKS 1.21.x through AKS 1.24.x
+  * KEDA add-on for AKS has been upgraded to [v2.9](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v290)
+  * Virtual Kubelet has been upgraded to [v1.4.7](https://github.com/virtual-kubelet/azure-aci/releases/tag/v1.4.7) and [v1.4.8](https://github.com/virtual-kubelet/azure-aci/releases/tag/v1.4.8). See changelog for bug fixes and new features.
+  * Azure disk csi driver has been updated to [v1.26.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.0)
+  * Azure files csi driver has been updated to [v1.24.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.0)
+  * Azure blob csi driver has been updated to [v1.19.0](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.0)
+  * AKS Windows 2022 image has been updated to [20348.1366.221214](vhd-notes/AKSWindows/2022/20348.1366.221214.txt)
+  * AKS Windows 2019 image has been updated to [17763.3770.221214](vhd-notes/AKSWindows/2019/17763.3770.221214.txt).
+
 ## Release 2022-12-04
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
