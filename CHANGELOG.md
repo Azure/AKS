@@ -14,7 +14,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Features
   * Starting with Kubernetes 1.26:
     * HostProcess Containers will be GA
-    * Azure NPM will now enforce ingress network policies for traffic sent via LoadBalancer IP's. The previous behavior NPM would only enforce pod to pod traffic. To avoid a breaking change, verify that you have CIDR block allow rules for your external traffic.
     * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
   * [Dynamic IP Allocation](https://learn.microsoft.com/azure/aks/configure-azure-cni#:~:text=AKS%20cluster%20creation%3A-,Dynamic%20allocation%20of%20IPs%20and%20enhanced%20subnet%20support,-A%20drawback%20with) is now available for Windows nodes.
 * Preview Features
@@ -29,7 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * A bug regarding Kubernetes version 1.25 and the tigera operator has been [fixed](https://github.com/Azure/AKS/issues/3394). If your cluster is already running on v1.25.4, please create a new cluster or file a support ticket with AKS for any further help.
 * Component Updates
   * [CIS Kubernetes v1.24 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) has been published which covers AKS 1.21.x through AKS 1.24.x
-  * KEDA add-on for AKS has been upgraded to v2.9
+  * KEDA add-on for AKS has been upgraded to [v2.9](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v290)
   * Virtual Kubelet has been upgraded to [v1.4.7](https://github.com/virtual-kubelet/azure-aci/releases/tag/v1.4.7) and [v1.4.8](https://github.com/virtual-kubelet/azure-aci/releases/tag/v1.4.8). See changelog for bug fixes and new features.
   * Azure disk csi driver has been updated to [v1.26.0](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.0)
   * Azure files csi driver has been updated to [v1.24.0](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.0)
