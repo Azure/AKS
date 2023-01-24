@@ -24,7 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Azure Monitor Managed Prometheus has been updated to [release 01-11-2023](https://github.com/Azure/prometheus-collector/blob/07ba2a930b61ea6f1deae91fb16b05da19cf1f1a/RELEASENOTES.md#release-01-11-2023).
   * Azure disk csi driver v2 has been updated to [v2.0.0-beta.10](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v2.0.0-beta.10).
   * AKS Windows 2022 image has been updated to [20348.1487.230111](vhd-notes/AKSWindows/2022/20348.1487.230111.txt).
-  * AKS Windows 2019 image has been updated to [17763.3887.230111]](vhd-notes/AKSWindows/2019/17763.3887.230111.txt).
+  * AKS Windows 2019 image has been updated to [17763.3887.230111](vhd-notes/AKSWindows/2019/17763.3887.230111.txt).
   * Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24+.
   * Containerd on Windows has been updated to [v1.6.14](https://github.com/containerd/containerd/releases/tag/v1.6.14).
   * Open Service Mesh Addon has been updated to [v1.2.3](https://github.com/openservicemesh/osm/releases/tag/v1.2.3) for clusters running AKS 1.24+.
