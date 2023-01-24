@@ -1,5 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-01-15
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Starting in API version 2023-01-01, the following API changes will occur:
+  * The name for the AKS cluster SKU Name `Basic` will change to `Base`. `Basic` will be removed in the 2023-07-01 API version.
+  * The name for the AKS cluster SKU Tier `Paid` will change to `Standard`. `Paid` will be removed in the 2023-07-01 API version.
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+
+### Release notes
+
+* Features
+  * Starting with Kubernetes 1.26:
+    * HostProcess Containers will be GA
+    * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Behavior Changes
+  * AKS clusters deployed in [dual-stack (IPv4/IPv6) mode](https://learn.microsoft.com/azure/aks/configure-kubenet-dual-stack) and utilizing [instance-level public IP addresses](https://learn.microsoft.com/azure/aks/use-node-public-ips) will now receive both IPv4 and IPv6 public IP addresses.
+  * The `nosharesock` option has been added to the default Azure Files dynamic storage class to address [this GitHub issue](https://github.com/kubernetes-sigs/azurefile-csi-driver/issues/1137).
+* Component Updates
+  * Azure Monitor Managed Prometheus has been updated to [release 01-11-2023](https://github.com/Azure/prometheus-collector/blob/07ba2a930b61ea6f1deae91fb16b05da19cf1f1a/RELEASENOTES.md#release-01-11-2023).
+  * Azure disk csi driver v2 has been updated to [v2.0.0-beta.10](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v2.0.0-beta.10).
+  * AKS Windows 2022 image has been updated to [20348.1487.230111](vhd-notes/AKSWindows/2022/20348.1487.230111.txt).
+  * AKS Windows 2019 image has been updated to [17763.3887.230111]](vhd-notes/AKSWindows/2019/17763.3887.230111.txt).
+  * Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24+.
+  * Containerd on Windows has been updated to [v1.6.14](https://github.com/containerd/containerd/releases/tag/v1.6.14).
+  * Open Service Mesh Addon has been updated to [v1.2.3](https://github.com/openservicemesh/osm/releases/tag/v1.2.3) for clusters running AKS 1.24+.
+
 ## Release 2023-01-08
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
