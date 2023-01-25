@@ -18,7 +18,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * The `nosharesock` option has been added to the default Azure Files dynamic storage class to address [this GitHub issue](https://github.com/kubernetes-sigs/azurefile-csi-driver/issues/1137).
 * Component Updates
   * Azure Monitor Managed Prometheus has been updated to [release 01-11-2023](https://github.com/Azure/prometheus-collector/blob/07ba2a930b61ea6f1deae91fb16b05da19cf1f1a/RELEASENOTES.md#release-01-11-2023).
-  * Azure disk csi driver v2 has been updated to [v2.0.0-beta.10](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v2.0.0-beta.10).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.01.10](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.10.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.01.10](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.01.10.txt).
   * AKS Mariner image has been updated to [AKSMariner-2023.01.10](vhd-notes/AKSMariner/2023.01.10.txt).
