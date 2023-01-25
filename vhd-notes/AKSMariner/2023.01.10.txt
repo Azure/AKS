@@ -1,0 +1,475 @@
+Starting build on  Tue Jan 10 01:02:01 UTC 2023
+Components downloaded in this VHD build (some of the below components might get deleted during cluster provisioning if they are not needed):
+  - apt-transport-https
+  - blobfuse=1.4.4
+  - ca-certificates
+  - ceph-common
+  - cgroup-lite
+  - cifs-utils
+  - conntrack
+  - cracklib-runtime
+  - ebtables
+  - ethtool
+  - fuse
+  - git
+  - glusterfs-client
+  - init-system-helpers
+  - iproute2
+  - ipset
+  - iptables
+  - jq
+  - libpam-pwquality
+  - libpwquality-tools
+  - mount
+  - nfs-common
+  - nftables
+  - pigz socat
+  - traceroute
+  - util-linux
+  - xz-utils
+  - netcat
+  - dnsutils
+  - zip
+  - krustlet v0.3.0
+  - [installed] containerd v1.6.15-1
+  - crictl version 1.25.0
+  - runc version 1.1.2
+  - bpftrace
+  - nvidia-docker2=2.8.0-1
+  - nvidia-container-runtime=3.6.0
+  - nvidia-gpu-driver-version={{GPUDriverVersion}}
+  - nvidia-fabricmanager={{GPUDriverVersion}}
+  - bcc-tools
+  - libbcc-examples
+containerd images pre-pulled:
+  - mcr.microsoft.com/oss/kubernetes/metrics-scraper:v1.0.4
+  - mcr.microsoft.com/oss/kubernetes/metrics-scraper:v1.0.7
+  - mcr.microsoft.com/oss/kubernetes/exechealthz:1.2_v0.0.5
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/addon-resizer:1.8.5
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/addon-resizer:1.8.14
+  - mcr.microsoft.com/oss/kubernetes/metrics-server:v0.5.2
+  - mcr.microsoft.com/oss/kubernetes/metrics-server:v0.6.1
+  - mcr.microsoft.com/oss/kubernetes/pause:3.6
+  - mcr.microsoft.com/oss/kubernetes/coredns:v1.8.7
+  - mcr.microsoft.com/oss/kubernetes/coredns:v1.9.3
+  - mcr.microsoft.com/containernetworking/azure-cns:v1.4.35
+  - mcr.microsoft.com/containernetworking/azure-cns:v1.4.39
+  - mcr.microsoft.com/containernetworking/cni-dropgz:v0.0.2
+  - mcr.microsoft.com/containernetworking/cni-dropgz:v0.0.3
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.4.32
+  - mcr.microsoft.com/aks/hcp/hcp-tunnel-front:master.220527.2
+  - mcr.microsoft.com/oss/kubernetes/apiserver-network-proxy/agent:v0.0.30
+  - mcr.microsoft.com/oss/kubernetes/apiserver-network-proxy/agent:v0.0.33-hotfix.20221110
+  - mcr.microsoft.com/aks/hcp/tunnel-openvpn:master.220527.2
+  - mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver:v1.2.2.4
+  - mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver:v1.3.0
+  - mcr.microsoft.com/oss/azure/secrets-store/provider-azure:v1.2.0
+  - mcr.microsoft.com/oss/azure/secrets-store/provider-azure:v1.4.0
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod12032022-c9f3dc30
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:5.4.0-main-10-26-2022-16f02b39
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:6.0.1-main-11-29-2022-97e2122e
+  - mcr.microsoft.com/oss/kubernetes/kube-state-metrics:v2.6.0
+  - mcr.microsoft.com/oss/calico/cni:v3.8.9.3
+  - mcr.microsoft.com/oss/calico/cni:v3.21.6
+  - mcr.microsoft.com/oss/calico/cni:v3.23.3
+  - mcr.microsoft.com/oss/calico/cni:v3.24.0
+  - mcr.microsoft.com/oss/calico/node:v3.8.9.5
+  - mcr.microsoft.com/oss/calico/node:v3.21.6
+  - mcr.microsoft.com/oss/calico/node:v3.23.3
+  - mcr.microsoft.com/oss/calico/node:v3.24.0
+  - mcr.microsoft.com/oss/calico/typha:v3.8.9
+  - mcr.microsoft.com/oss/calico/typha:v3.21.6
+  - mcr.microsoft.com/oss/calico/typha:v3.23.3
+  - mcr.microsoft.com/oss/calico/typha:v3.24.0
+  - mcr.microsoft.com/oss/calico/pod2daemon-flexvol:v3.8.9.1
+  - mcr.microsoft.com/oss/calico/pod2daemon-flexvol:v3.21.6
+  - mcr.microsoft.com/oss/calico/pod2daemon-flexvol:v3.23.3
+  - mcr.microsoft.com/oss/calico/pod2daemon-flexvol:v3.24.0
+  - mcr.microsoft.com/oss/calico/kube-controllers:v3.21.6
+  - mcr.microsoft.com/oss/calico/kube-controllers:v3.23.3
+  - mcr.microsoft.com/oss/calico/kube-controllers:v3.24.0
+  - mcr.microsoft.com/oss/cilium/operator-generic:1.12.2
+  - mcr.microsoft.com/oss/cilium/operator-generic:1.12.5
+  - mcr.microsoft.com/oss/cilium/cilium:1.12.2.3
+  - mcr.microsoft.com/oss/cilium/cilium:1.12.5
+  - mcr.microsoft.com/oss/tigera/operator:v1.23.8
+  - mcr.microsoft.com/oss/tigera/operator:v1.27.12
+  - mcr.microsoft.com/oss/tigera/operator:v1.28.0
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.1.14
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.23.24
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.24.11
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.25.5
+  - mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.26.0
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.8.3
+  - mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.8.5
+  - mcr.microsoft.com/k8s/flexvolume/blobfuse-flexvolume:1.0.15
+  - mcr.microsoft.com/k8s/flexvolume/keyvault-flexvolume:v0.0.13
+  - mcr.microsoft.com/oss/kubernetes/ip-masq-agent:v2.5.0.12
+  - mcr.microsoft.com/aks/ip-masq-agent-v2:v0.1.5
+  - mcr.microsoft.com/k8s/kms/keyvault:v0.0.9
+  - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.2.2.5
+  - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.24.0.2
+  - mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.26.0
+  - mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.2.2
+  - mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.23.0
+  - mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.24.0
+  - mcr.microsoft.com/oss/kubernetes-csi/livenessprobe:v2.2.0
+  - mcr.microsoft.com/oss/kubernetes-csi/livenessprobe:v2.6.0
+  - mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar:v2.5.0
+  - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.8.1
+  - mcr.microsoft.com/oss/open-policy-agent/gatekeeper:v3.10.0
+  - mcr.microsoft.com/oss/kubernetes/external-dns:v0.10.2
+  - mcr.microsoft.com/oss/kubernetes/defaultbackend:1.4
+  - mcr.microsoft.com/oss/kubernetes/ingress/nginx-ingress-controller:v1.2.1
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20220512.2
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-addon-prod:prod_20221215.1
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-webhook:prod_20220512.2
+  - mcr.microsoft.com/azure-policy/policy-kubernetes-webhook:prod_20221215.1
+  - mcr.microsoft.com/oss/azure/aad-pod-identity/nmi:v1.8.13.1
+  - mcr.microsoft.com/aks/command/runtime:master.220211.1
+  - mcr.microsoft.com/aks/aks-node-ca-watcher:master.221011.1
+  - Azure CNI version 1.4.32
+  - Azure CNI version 1.4.35
+  - Azure Swift CNI version 1.4.32
+  - Azure Swift CNI version 1.4.35
+  - Azure Overlay CNI version 1.4.32
+  - Azure Overlay CNI version 1.4.35
+  - CNI plugin version 1.1.1
+  - mcr.microsoft.com/oss/nginx/nginx:1.13.12-alpine
+kubelet/kubectl downloaded:
+-rwxr-xr-x 1 root root   120865016 Jun 21  2022 /usr/local/bin/kubelet-1.22.11
+-rwxr-xr-x 1 root root    46923776 Jun 21  2022 /usr/local/bin/kubectl-1.22.11
+-rwxr-xr-x 1 root root   124152896 Jun 21  2022 /usr/local/bin/kubelet-1.23.8
+-rwxr-xr-x 1 root root    46579712 Jun 21  2022 /usr/local/bin/kubectl-1.23.8
+-rwxr-xr-x 1 root root   116013432 Jul 15 06:15 /usr/local/bin/kubelet-1.24.3
+-rwxr-xr-x 1 root root    45711360 Jul 15 06:15 /usr/local/bin/kubectl-1.24.3
+-rwxr-xr-x 1 1001 docker  50311268 Aug 26 07:18 /usr/local/bin/crictl
+-rwxr-xr-x 1 root root   116066776 Sep 21 22:10 /usr/local/bin/kubelet-1.24.6
+-rwxr-xr-x 1 root root    45723648 Sep 21 22:10 /usr/local/bin/kubectl-1.24.6
+-rwxr-xr-x 1 root root   120873336 Sep 21 22:11 /usr/local/bin/kubelet-1.22.15
+-rwxr-xr-x 1 root root    46927872 Sep 21 22:11 /usr/local/bin/kubectl-1.22.15
+-rwxr-xr-x 1 root root   124189824 Sep 21 22:11 /usr/local/bin/kubelet-1.23.12
+-rwxr-xr-x 1 root root    46592000 Sep 21 22:11 /usr/local/bin/kubectl-1.23.12
+-rwxr-xr-x 1 root root   114229048 Oct  6 23:34 /usr/local/bin/kubelet-1.25.2
+-rwxr-xr-x 1 root root    45015040 Oct  6 23:34 /usr/local/bin/kubectl-1.25.2
+-rwxr-xr-x 1 root root   114237304 Nov 10 22:25 /usr/local/bin/kubelet-1.25.4
+-rwxr-xr-x 1 root root    45015040 Nov 10 22:25 /usr/local/bin/kubectl-1.25.4
+-rwxr-xr-x 1 root root   121251736 Jan  3 21:00 /usr/local/bin/kubelet-1.26.0
+-rwxr-xr-x 1 root root    48021504 Jan  3 21:00 /usr/local/bin/kubectl-1.26.0
+-r-xr--r-- 1 root root         593 Jan 10 01:02 /usr/local/bin/logrotate.sh
+-r-xr--r-- 1 root root        2462 Jan 10 01:02 /usr/local/bin/health-monitor.sh
+-rwxr-xr-x 1 root root         705 Jan 10 01:02 /usr/local/bin/ci-syslog-watcher.sh
+-rwxr-xr-x 1 root root    36014944 Jan 10 01:04 /usr/local/bin/containerd-shim-spin-v1
+-rwxr-xr-x 1 root root    47622592 Jan 10 01:04 /usr/local/bin/containerd-shim-slight-v1
+-rwxr-x--- 1 root root    35384960 Jan 10 01:04 /usr/local/bin/bpftrace
+=== Installed Packages Begin
+python3-requests-2.22.0-2.cm1.noarch
+filesystem-1.1-7.cm1.x86_64
+rpm-build-libs-4.14.2-15.cm1.x86_64
+libgcc-9.1.0-7.cm1.x86_64
+librepo-1.14.2-1.cm1.x86_64
+libstdc++-9.1.0-7.cm1.x86_64
+python3-libdnf-0.65.0-1.cm1.x86_64
+readline-7.0-4.cm1.x86_64
+ca-certificates-base-20200720-29.cm1.noarch
+libcap-2.26-2.cm1.x86_64
+mariner-repos-1.0-16.cm1.noarch
+wget-1.21.2-1.cm1.x86_64
+gzip-1.12-1.cm1.x86_64
+kmod-25-4.cm1.x86_64
+cryptsetup-libs-2.3.7-1.cm1.x86_64
+device-mapper-libs-2.03.05-6.cm1.x86_64
+grub2-2.06~rc1-8.cm1.x86_64
+slang-2.3.2-3.cm1.x86_64
+dbus-1.13.6-5.cm1.x86_64
+python3-dbus-1.2.16-7.cm1.x86_64
+p11-kit-0.23.22-1.cm1.x86_64
+lvm2-2.03.05-6.cm1.x86_64
+openldap-2.4.57-3.cm1.x86_64
+audit-3.0-19.cm1.x86_64
+shadow-utils-4.9-8.cm1.x86_64
+chrony-3.5.1-5.cm1.x86_64
+bzip2-libs-1.0.6-15.cm1.x86_64
+hypervkvpd-5.10.158.1-1.cm1.x86_64
+irqbalance-1.6.0-4.cm1.x86_64
+libtool-2.4.6-8.cm1.x86_64
+zstd-1.4.9-1.cm1.x86_64
+libarchive-3.6.1-2.cm1.x86_64
+rpm-devel-4.14.2-15.cm1.x86_64
+ncurses-term-6.3-2.cm1.x86_64
+libassuan-2.5.1-3.cm1.x86_64
+openssh-8.9p1-1.cm1.x86_64
+dhcp-libs-4.4.2-2.cm1.x86_64
+tdnf-cli-libs-2.1.0-7.cm1.x86_64
+tdnf-plugin-repogpgcheck-2.1.0-7.cm1.x86_64
+tzdata-2022g-1.cm1.noarch
+python3-dnf-4.10.0-1.cm1.noarch
+zchunk-libs-1.1.5-2.cm1.x86_64
+python3-dnf-plugins-core-4.0.22-3.cm1.x86_64
+file-libs-5.38-1.cm1.x86_64
+dnf-utils-4.0.22-3.cm1.x86_64
+cloud-init-21.4-2.cm1.noarch
+lz4-1.9.2-2.cm1.x86_64
+hyperv-daemons-5.10.158.1-1.cm1.x86_64
+grub2-pc-2.06~rc1-8.cm1.x86_64
+python-xml-2.7.18-11.cm1.x86_64
+json-c-0.14-3.cm1.x86_64
+chkconfig-1.11-2.cm1.x86_64
+libtasn1-4.14-4.cm1.x86_64
+grub2-efi-binary-2.06~rc1-8.cm1.x86_64
+libunistring-0.9.10-4.cm1.x86_64
+glibc-iconv-2.28-24.cm1.x86_64
+fuse-2.9.7-7.cm1.x86_64
+autogen-libopts-5.18.16-5.cm1.x86_64
+blobfuse-1.3.6-13.cm1.x86_64
+zchunk-1.1.5-2.cm1.x86_64
+cifs-utils-6.8-6.cm1.x86_64
+libmnl-1.0.4-5.cm1.x86_64
+libnetfilter_conntrack-1.0.7-4.cm1.x86_64
+libcomps-0.1.11-4.cm1.x86_64
+libnetfilter_cthelper-1.0.0-4.cm1.x86_64
+iputils-20180629-5.cm1.x86_64
+conntrack-tools-1.4.5-6.cm1.x86_64
+libedit-3.1.20180525-5.cm1.x86_64
+ebtables-legacy-2.0.11-6.cm1.x86_64
+perl-5.30.3-1.cm1.x86_64
+libksba-1.3.5-3.cm1.x86_64
+utf8proc-2.2.0-3.cm1.x86_64
+perl-DBI-1.641-3.cm1.x86_64
+nss-3.73-1.cm1.x86_64
+libserf-1.3.9-6.cm1.x86_64
+bc-1.07.1-4.cm1.x86_64
+subversion-perl-1.14.0-5.cm1.x86_64
+inotify-tools-3.14-2.cm1.x86_64
+ipset-7.1-2.cm1.x86_64
+jq-1.5-6.cm1.x86_64
+logrotate-3.20.0-1.cm1.x86_64
+lsof-4.93.2-3.cm1.x86_64
+sed-4.5-3.cm1.x86_64
+nmap-ncat-7.90-2.cm1.x86_64
+libnfsidmap-2.3.3-8.cm1.x86_64
+keyutils-1.5.10-3.cm1.x86_64
+pigz-2.6-1.cm1.x86_64
+librelp-1.2.17-7.cm1.x86_64
+libfastjson-0.99.8-4.cm1.x86_64
+gnupg2-2.2.20-3.cm1.x86_64
+socat-1.7.3.4-2.cm1.x86_64
+sysstat-12.3.3-2.cm1.x86_64
+zip-3.0-5.cm1.x86_64
+libseccomp-2.4.1-2.cm1.x86_64
+apparmor-parser-2.13-12.cm1.x86_64
+moby-containerd-1.6.6+azure-6.cm1.x86_64
+python3-bcc-0.12.0-1.cm1.x86_64
+initramfs-2.0-8.cm1.x86_64
+python3-markupsafe-1.1.1-1.cm1.x86_64
+python3-idna-2.7-4.cm1.noarch
+python3-PyYAML-3.13-5.cm1.x86_64
+python3-oauthlib-2.1.0-4.cm1.noarch
+python3-jsonpointer-2.0-3.cm1.noarch
+python3-certifi-2018.10.15-5.cm1.noarch
+python3-pyasn1-0.4.4-3.cm1.noarch
+python3-cffi-1.14.5-1.cm1.x86_64
+python3-packaging-17.1-6.cm1.noarch
+python3-pyOpenSSL-18.0.0-6.cm1.noarch
+mpfr-4.0.1-3.cm1.x86_64
+python-pyasn1-0.4.4-3.cm1.noarch
+gpg-pubkey-3135ce90-5e6fda74
+glibc-2.28-24.cm1.x86_64
+openssl-libs-1.1.1k-12.cm1.x86_64
+ncurses-libs-6.3-2.cm1.x86_64
+ncurses-6.3-2.cm1.x86_64
+libdb-5.3.28-6.cm1.x86_64
+sqlite-libs-3.34.1-2.cm1.x86_64
+lua-5.3.5-9.cm1.x86_64
+curl-libs-7.86.0-1.cm1.x86_64
+libcap-ng-0.7.9-3.cm1.x86_64
+mariner-release-1.0-52.cm1.noarch
+nettle-3.7.3-1.cm1.x86_64
+libselinux-3.2-1.cm1.x86_64
+grep-3.1-5.cm1.x86_64
+libsepol-3.2-2.cm1.x86_64
+glib-2.58.0-10.cm1.x86_64
+pam-1.5.1-2.cm1.x86_64
+mariner-repos-shared-1.0-16.cm1.noarch
+cracklib-dicts-2.9.7-3.cm1.x86_64
+ca-certificates-tools-20200720-29.cm1.noarch
+libxml2-2.9.14-3.cm1.x86_64
+nspr-4.33-1.cm1.x86_64
+rpm-libs-4.14.2-15.cm1.x86_64
+python2-libs-2.7.18-11.cm1.x86_64
+python3-3.7.13-5.cm1.x86_64
+python3-xml-3.7.13-5.cm1.x86_64
+python3-dateutil-2.7.3-4.cm1.noarch
+python3-netifaces-0.10.9-3.cm1.x86_64
+python3-curses-3.7.13-5.cm1.x86_64
+python3-urllib3-1.25.9-2.cm1.noarch
+libmodulemd-2.13.0-1.cm1.x86_64
+bind-utils-9.16.33-1.cm1.x86_64
+xz-libs-5.2.4-3.cm1.x86_64
+libdnf-0.65.0-1.cm1.x86_64
+python3-hawkey-0.65.0-1.cm1.x86_64
+mariner-repos-microsoft-1.0-16.cm1.noarch
+gptfdisk-1.0.4-4.cm1.x86_64
+findutils-4.6.0-8.cm1.x86_64
+xz-5.2.4-3.cm1.x86_64
+libgcrypt-1.8.7-3.cm1.x86_64
+kernel-5.4.91-6.cm1.x86_64
+systemd-239-43.cm1.x86_64
+device-mapper-2.03.05-6.cm1.x86_64
+popt-1.16-7.cm1.x86_64
+device-mapper-event-libs-2.03.05-6.cm1.x86_64
+newt-0.52.21-1.cm1.x86_64
+iptables-1.8.3-6.cm1.x86_64
+libffi-3.2.1-12.cm1.x86_64
+device-mapper-event-2.03.05-6.cm1.x86_64
+cyrus-sasl-2.1.28-1.cm1.x86_64
+audit-libs-3.0-19.cm1.x86_64
+p11-kit-trust-0.23.22-1.cm1.x86_64
+libsemanage-3.2-1.cm1.x86_64
+sudo-1.9.12p1-1.cm1.x86_64
+hypervfcopyd-5.10.158.1-1.cm1.x86_64
+elfutils-libelf-0.176-4.cm1.x86_64
+hypervvssd-5.10.158.1-1.cm1.x86_64
+cryptsetup-2.3.7-1.cm1.x86_64
+libgpg-error-1.32-4.cm1.x86_64
+vim-9.0.0982-1.cm1.x86_64
+zstd-devel-1.4.9-1.cm1.x86_64
+rpm-4.14.2-15.cm1.x86_64
+python3-rpm-4.14.2-15.cm1.x86_64
+openssh-server-8.9p1-1.cm1.x86_64
+cpio-2.13-3.cm1.x86_64
+pkg-config-0.29.2-4.cm1.x86_64
+dhcp-client-4.4.2-2.cm1.x86_64
+e2fsprogs-libs-1.44.6-4.cm1.x86_64
+tdnf-2.1.0-7.cm1.x86_64
+core-packages-container-0.1-27.cm1.x86_64
+libssh2-1.9.0-1.cm1.x86_64
+dnf-data-4.10.0-1.cm1.noarch
+dnf-4.10.0-1.cm1.noarch
+elfutils-0.176-4.cm1.x86_64
+dnf-plugins-core-4.0.22-3.cm1.x86_64
+gdbm-1.18-3.cm1.x86_64
+core-packages-base-image-0.1-27.cm1.x86_64
+WALinuxAgent-2.2.54.2-4.cm1.noarch
+grub2-efi-2.06~rc1-8.cm1.x86_64
+cloud-utils-growpart-0.32-3.cm1.noarch
+ca-certificates-20200720-29.cm1.noarch
+kernel-5.10.158.1-1.cm1.x86_64
+shim-unsigned-15.4-2.cm1.x86_64
+gc-8.0.0-3.cm1.x86_64
+libltdl-2.4.6-8.cm1.x86_64
+guile-2.0.14-3.cm1.x86_64
+boost-1.66.0-3.cm1.x86_64
+gnutls-3.6.14-8.cm1.x86_64
+file-5.38-1.cm1.x86_64
+check-restart-1.0.0-2.cm1.x86_64
+cloud-init-azure-kvp-21.4-2.cm1.noarch
+libnfnetlink-1.0.1-4.cm1.x86_64
+e2fsprogs-1.44.6-4.cm1.x86_64
+libnetfilter_queue-1.0.3-4.cm1.x86_64
+python3-libcomps-0.1.11-4.cm1.x86_64
+libnetfilter_cttimeout-1.0.0-4.cm1.x86_64
+pinentry-1.1.0-3.cm1.x86_64
+dnf-automatic-4.10.0-1.cm1.noarch
+procps-ng-3.3.15-3.cm1.x86_64
+ethtool-5.0-2.cm1.x86_64
+apr-1.6.5-5.cm1.x86_64
+iproute-4.18.0-5.cm1.x86_64
+perl-CGI-4.40-2.cm1.noarch
+perl-YAML-1.26-4.cm1.noarch
+apr-util-1.6.1-4.cm1.x86_64
+bzip2-1.0.6-15.cm1.x86_64
+subversion-1.14.0-5.cm1.x86_64
+bridge-utils-1.6-4.cm1.x86_64
+git-2.23.4-2.cm1.x86_64
+iana-etc-2.30-5.cm1.noarch
+iotop-0.6-7.cm1.noarch
+which-2.21-7.cm1.x86_64
+oniguruma-6.9.5-2.cm1.x86_64
+kernel-devel-5.10.158.1-1.cm1.x86_64
+libtirpc-1.1.4-5.cm1.x86_64
+net-tools-1.60-14.cm1.x86_64
+libpcap-1.9.1-2.cm1.x86_64
+tar-1.32-2.cm1.x86_64
+rpcbind-1.2.5-3.cm1.x86_64
+libaio-0.3.112-3.cm1.x86_64
+libevent-2.1.8-3.cm1.x86_64
+libuv-1.38.0-2.cm1.x86_64
+nfs-utils-2.3.3-8.cm1.x86_64
+psmisc-23.2-4.cm1.x86_64
+libestr-0.1.10-5.cm1.x86_64
+npth-1.6-3.cm1.x86_64
+rsyslog-8.37.0-8.cm1.x86_64
+gpgme-1.13.1-6.cm1.x86_64
+cronie-1.5.2-5.cm1.x86_64
+python3-gpg-1.13.1-6.cm1.x86_64
+traceroute-2.1.0-5.cm1.x86_64
+libapparmor-2.13-12.cm1.x86_64
+libyaml-0.2.1-3.cm1.x86_64
+moby-runc-1.1.2+azure-4.cm1.x86_64
+libcgroup-0.41-24.cm1.x86_64
+bcc-0.12.0-1.cm1.x86_64
+bcc-tools-0.12.0-1.cm1.x86_64
+dracut-049-5.cm1.x86_64
+python3-configobj-5.0.6-6.cm1.noarch
+python3-jsonschema-2.6.0-5.cm1.noarch
+python3-prettytable-0.7.2-8.cm1.noarch
+python3-jsonpatch-1.23-4.cm1.noarch
+python3-chardet-3.0.4-5.cm1.noarch
+python3-asn1crypto-0.24.0-3.cm1.noarch
+python3-pycparser-2.18-3.cm1.noarch
+python3-pyparsing-2.2.0-7.cm1.noarch
+python3-cryptography-3.3.2-1.cm1.x86_64
+gawk-4.2.1-4.cm1.x86_64
+gpg-pubkey-be1229cf-5631588c
+zlib-1.2.12-2.cm1.x86_64
+openssl-1.1.1k-12.cm1.x86_64
+zstd-libs-1.4.9-1.cm1.x86_64
+expat-libs-2.5.0-1.cm1.x86_64
+krb5-1.18.4-2.cm1.x86_64
+expat-2.5.0-1.cm1.x86_64
+pcre-libs-8.44-2.cm1.x86_64
+hyperv-daemons-license-5.10.158.1-1.cm1.noarch
+gmp-6.1.2-6.cm1.x86_64
+ca-certificates-shared-20200720-29.cm1.noarch
+pcre-8.44-2.cm1.x86_64
+coreutils-8.30-11.cm1.x86_64
+bash-4.4.23-1.cm1.x86_64
+util-linux-libs-2.32.1-7.cm1.x86_64
+cracklib-2.9.7-3.cm1.x86_64
+util-linux-2.32.1-7.cm1.x86_64
+openssh-clients-8.9p1-1.cm1.x86_64
+libpwquality-1.4.2-7.cm1.x86_64
+curl-7.86.0-1.cm1.x86_64
+mariner-rpm-macros-1.0-8.cm1.noarch
+nss-libs-3.73-1.cm1.x86_64
+libsolv-0.7.20-1.cm1.x86_64
+python2-2.7.18-11.cm1.x86_64
+python3-libs-3.7.13-5.cm1.x86_64
+python3-six-1.11.0-5.cm1.noarch
+python3-setuptools-3.7.13-5.cm1.noarch
+python3-distro-1.6.0-2.cm1.noarch
+python3-jinja2-2.11.3-1.cm1.noarch
+=== Installed Packages End
+Disk usage:
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        3.4G     0  3.4G   0% /dev
+tmpfs           3.4G     0  3.4G   0% /dev/shm
+tmpfs           3.4G  488K  3.4G   1% /run
+tmpfs           3.4G     0  3.4G   0% /sys/fs/cgroup
+/dev/sda2        30G   20G  8.6G  70% /
+tmpfs           3.4G  4.0K  3.4G   1% /tmp
+/dev/sda1       8.0M  2.3M  5.8M  29% /boot/efi
+/dev/sdb1        14G   24K   13G   1% /mnt
+tmpfs           683M     0  683M   0% /run/user/1000
+Using kernel:
+Linux version 5.10.158.1-1.cm1 (root@CBL-Mariner) (gcc (GCC) 9.1.0, GNU ld (GNU Binutils) 2.36.1) #1 SMP Wed Dec 21 03:16:07 UTC 2022
+Install completed successfully on  Tue Jan 10 01:15:30 UTC 2023
+VSTS Build NUMBER: 20230110.1_master_66910241
+VSTS Build ID: 66910241
+Commit: fdca7c562b04ee09e8e846cfdaad813cfa8f9af6
+Ubuntu version: 
+Hyperv generation: V2
+Feature flags: None
+Container runtime: containerd
+FIPS enabled: false
