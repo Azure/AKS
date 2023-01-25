@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.01.10](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.01.10.txt).
   * AKS Mariner image has been updated to [AKSMariner-2023.01.10](vhd-notes/AKSMariner/2023.01.10.txt).
   * AKS Windows 2022 image has been updated to [20348.1487.230111](vhd-notes/AKSWindows/2022/20348.1487.230111.txt).
-  * AKS Windows 2019 image has been updated to [17763.3887.230111]](vhd-notes/AKSWindows/2019/17763.3887.230111.txt).
+  * AKS Windows 2019 image has been updated to [17763.3887.230111](vhd-notes/AKSWindows/2019/17763.3887.230111.txt).
   * Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24+.
   * Containerd on Windows has been updated to [v1.6.14](https://github.com/containerd/containerd/releases/tag/v1.6.14).
   * Open Service Mesh Addon has been updated to [v1.2.3](https://github.com/openservicemesh/osm/releases/tag/v1.2.3) for clusters running AKS 1.24+.
