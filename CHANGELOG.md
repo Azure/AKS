@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-01-22
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24 and up.
+
+### Release notes
+
+* Features
+  * New k8s patch versions for 1.24 and 1.25: Added 1.24.9, removed 1.24.3; added 1.25.5, removed 1.25.2
+* Preview Feature
+  * New AKS Auto Upgrade Schedule "aksmanagedAutoUPgradeSchedule" that offers better controls, flexibility like quarterly , biweekly, bimonthly etc. [Read more](https://learn.microsoft.com/en-us/azure/aks/planned-maintenance#creating-a-maintenance-window) 
+* Bug Fix
+  * Add multiple replicas for the OSM injector for clusters versioned lower than 1.24. Initially AKS added an HPA and removed the explicit replicas count, but the HPA was conditionally added only for clusters >= 1.24. The fix ensures that the replica count will continue to exist for lower version clusters.
+* Component Updates
+  * The Managed Prometheus addon now supports ARM64 nodepools.
+  * Workload Identity addon upgraded to [0.15.0](https://github.com/Azure/azure-workload-identity/releases/tag/v0.15.0)
+  * CSI Secret Store addon upgraded to [v1.4](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.4.0)
+  * Cilium AKS addon upgraded to [1.12.5](https://github.com/cilium/cilium/releases/tag/v1.12.5)
+  * CSI-proxy upgraded to [v1.0.2](https://github.com/kubernetes-csi/csi-proxy/releases/tag/v1.0.2) on Windows node
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.01.19](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.19.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.01.19](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.01.19.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2023.01.19](vhd-notes/AKSMariner/2023.01.19.txt).
+  
 ## Release 2023-01-15
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
