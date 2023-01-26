@@ -15,8 +15,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * AKS patch version 1.24.9 now available. Removed 1.24.3
-  * AKS patch version 1.25.5 now available. Removed 1.25.2
+  * New k8s patch versions for 1.24 and 1.25: Added 1.24.9, removed 1.24.3; added 1.25.5, removed 1.25.2
+  * New AKS Auto Upgrade Schedule "aksmanagedAutoUPgradeSchedule" that offers better controls, flexibility like quarterly , biweekly, bimonthly etc. [Read more](https://learn.microsoft.com/en-us/azure/aks/planned-maintenance#creating-a-maintenance-window) 
 * Bug Fix
   * Add multiple replicas for the OSM injector for clusters versioned lower than 1.24. Initially AKS added an HPA and removed the explicit replicas count, but the HPA was conditionally added only for clusters >= 1.24. The fix ensures that the replica count will continue to exist for lower version clusters.
 * Component Updates
