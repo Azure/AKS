@@ -11,6 +11,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
 * Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24 and up.
+* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
 
 ### Release notes
 
@@ -40,6 +41,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * HostProcess Containers will be GA
   * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
 
 ### Release notes
 
@@ -65,6 +67,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Kubernetes 1.25 has finished rolling out in all non-sovereign regions.
 * AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
 
 ### Release notes
 
@@ -106,7 +109,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Azure NAT gateways do not support IPv6 and therefore cannot be used with dual-stack clusters as the cluster would not have a valid IPv6 outbound connection.
 * [AKS clusters with Calico enabled](https://github.com/Azure/AKS/issues/3394) should not upgrade to Kubernetes v1.25.
 * Starting Kubernetes v1.25 two in-tree driver persistent volumes types kubernetes.io/azure-disk, kubernetes.io/azure-file are deprecated and will no longer be supported. Removal of these drivers following its deprecation is not currently planned but all users should migrate as soon as possible to the corresponding persistent volume types, disk.csi.azure.com and file.csi.azure.com respectively. See how [here](https://learn.microsoft.com/azure/aks/csi-storage-drivers#migrate-custom-in-tree-storage-classes-to-csi).
-* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-15 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
+* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
 * Starting Jan 3, 2023 AKS will expand the policy of 0 node clusters, that are automatically stopped after 30d to include clusters with 0 "Ready" nodes (or all "Not Ready") and 0 Running VMs. Clusters with all nodes manually stopped (unsupported) and in "Not Ready" state after 30 days will be stopped accordingly. To re-start your cluster, run a [cluster start command](https://learn.microsoft.com/azure/aks/start-stop-cluster?tabs=azure-cli#start-an-aks-cluster). See the complete [Support Policy](https://learn.microsoft.com/azure/aks/support-policies) for more information.
 
 ### Release notes
