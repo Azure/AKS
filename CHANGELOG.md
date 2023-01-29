@@ -41,7 +41,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * HostProcess Containers will be GA
   * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
-* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
 
 ### Release notes
 
@@ -67,7 +66,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Kubernetes 1.25 has finished rolling out in all non-sovereign regions.
 * AKS begins pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
-* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
 
 ### Release notes
 
