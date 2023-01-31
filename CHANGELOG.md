@@ -17,10 +17,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * New k8s patch versions for 1.23: Added 1.23.15, removed 1.23.8
+  * HTTP Proxy now allows updating the "No Proxy" configuration after cluster deployment. 
 * Preview Feature
   * Azure CNI Overlay now available in uksouth, australiaeast 
-* Behavior Change
-  * AKS now allows updating httpProxyConfig.noProxy after cluster deployment. This updates the webhook which automatically injects environment variables into pods. It does not yet update noProxy configuration on running nodes. New nodepools or VMSS model upgrades will update noProxy on the nodes. In the future, rolling nodes may become automatic.
 * Component Updates
   * Container Insights addon upgraded to[ciprod01182023](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/7484271).
   * Azure NPM addon upgraded to [v1.4.32](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.32) in SOV Clouds.
