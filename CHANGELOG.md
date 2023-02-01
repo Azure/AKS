@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * New k8s patch versions for 1.23: Added 1.23.15, removed 1.23.8
-  * [HTTP Proxy](https://learn.microsoft.com/en-us/azure/aks/http-proxy##updating-proxy-configurations) now allows updating the "No Proxy" configuration after cluster deployment. 
+  * [HTTP Proxy](https://learn.microsoft.com/en-us/azure/aks/http-proxy##updating-proxy-configurations) now allows updating the "No Proxy" configuration after cluster deployment using aks update. 
 * Preview Feature
   * Azure CNI Overlay now available in uksouth, australiaeast 
 * Component Updates
