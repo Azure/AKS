@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Feature
   * Azure CNI Overlay now available in uksouth, australiaeast 
 * Component Updates
-  * Container Insights addon upgraded to [ciprod01182023](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/7484271).
+  * Container Insights addon upgraded to [ciprod01182023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#01182023--).
   * Azure NPM addon upgraded to [v1.4.32](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.32) in SOV Clouds.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.01.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.25.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.01.25](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.01.25.txt).
