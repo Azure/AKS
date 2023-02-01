@@ -17,11 +17,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * New k8s patch versions for 1.23: Added 1.23.15, removed 1.23.8
-  * HTTP Proxy now allows updating the "No Proxy" configuration after cluster deployment. 
+  * [HTTP Proxy](https://learn.microsoft.com/en-us/azure/aks/http-proxy##updating-proxy-configurations) now allows updating the "No Proxy" configuration after cluster deployment. 
 * Preview Feature
   * Azure CNI Overlay now available in uksouth, australiaeast 
 * Component Updates
-  * Container Insights addon upgraded to[ciprod01182023](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/7484271).
+  * Container Insights addon upgraded to [ciprod01182023](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/7484271).
   * Azure NPM addon upgraded to [v1.4.32](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.32) in SOV Clouds.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.01.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.25.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.01.25](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.01.25.txt).
