@@ -1,5 +1,32 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-01-29
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24 and up.
+* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
+
+### Release notes
+
+* Features
+  * New k8s patch versions for 1.23: Added 1.23.15, removed 1.23.8
+  * [HTTP Proxy](https://learn.microsoft.com/en-us/azure/aks/http-proxy##updating-proxy-configurations) now allows updating the "No Proxy" configuration after cluster deployment using aks update. 
+* Preview Feature
+  * Azure CNI Overlay now available in uksouth, australiaeast 
+* Component Updates
+  * Container Insights addon upgraded to [ciprod01182023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#01182023--).
+  * Azure NPM addon upgraded to [v1.4.32](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.32) in SOV Clouds.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.01.25](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.25.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.01.25](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.01.25.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2023.01.25](vhd-notes/AKSMariner/2023.01.25.txt).
+
 ## Release 2023-01-22
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
