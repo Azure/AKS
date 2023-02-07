@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-02-05
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 to 10%. 
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24 and up.
+* Workload Identity: Application pods using workload identity will need the following label added `azure.workload.identity/use` starting with the 2023-01-29 release. Add the label to your running pods/deployments to avoid pods from failing at restart. See more [here](https://learn.microsoft.com/azure/aks/workload-identity-overview#service-account-labels).
+
+### Release notes
+
+* Features
+  * Managed Prometheus addon image release. See [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-01-31-2023)
+* Bug Fix
+  * [HTTP Proxy](https://learn.microsoft.com/en-us/azure/aks/http-proxy##updating-proxy-configurations) Fixed an issue on the "No Proxy" update -  where the cluster FQDN would be removed from noProxy on updates. 
+  * The aks swagger api specs now moved under a subfolder per the [issue](https://github.com/Azure/azure-sdk/issues/5385)
+* Component Updates
+  * Add support for [defender agent](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-kubernetes-introduction#what-are-the-benefits-of-microsoft-defender-for-kubernetes) to run on FIPS machines.
+  * Clients (e.g. portal / CLI / powershell) can now discover the trusted access role bindings operations on available operations..
+  * AKS Ubuntu 18.04 image [AKSUbuntu-1804-2023.01.26](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.26.txt) addresses an [issue](https://github.com/Azure/AgentBaker/pull/2714) where fips_enabled would be set to 0 while running on a fips kernel.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-2204-2023.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.01.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.01.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2023.01.25](vhd-notes/AKSMariner/2023.02.01.txt).
+  
 ## Release 2023-01-29
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
