@@ -25,7 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * Add support for [defender agent](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-kubernetes-introduction#what-are-the-benefits-of-microsoft-defender-for-kubernetes) to run on FIPS machines.
   * Managed Prometheus addon image release. See [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-01-31-2023).
-  * Clients (e.g. portal / CLI / powershell) can now discover the trusted access role bindings operations on available operations..
+  * Clients (e.g. portal / CLI / powershell) can now discover the trusted access role bindings operations on available operations.
   * AKS Ubuntu 18.04 image [AKSUbuntu-1804-2023.01.26](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.26.txt) addresses an [issue](https://github.com/Azure/AgentBaker/pull/2714) where fips_enabled would be set to 0 while running on a fips kernel.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-2204-2023.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.01.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.01.txt).
