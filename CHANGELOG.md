@@ -5,7 +5,7 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-
+* AKS introduces a new [Standard tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) which includes the previous standalone uptime SLA in addition to improved capabilities over the Free tier. Read the [blog](https://aka.ms/aks/standard-tier-blog) to learn more about the launch of the Standard tier. Azure API is updated to include the new “Standard” tier, as a result, "Basic" and "Paid" will be removed in the 2023-07-01 API version, and this will be a breaking change in API version 2023-07-01 or newer. If you use automated scripts, CD pipelines, ARM templates, Terraform, or other third-party toolings that rely on the above parameters, please be sure to make the necessary changes before upgrading to the 2023-07-01 or newer API version. From API version 2023-01-01 and newer, you can start transitioning to the new API parameters "Base" and "Standard".
 * Starting with Kubernetes 1.26:
   * HostProcess Containers will be GA
   * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
@@ -18,8 +18,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
-* Features
-  * AKS introduces a new [Standard tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) which includes the previous standalone uptime SLA in addition to improved capabilities over the Free tier. Read the [blog](https://aka.ms/aks/standard-tier-blog) to learn more about the launch of the Standard tier. Azure API is updated to include the new “Standard” tier, as a result, "Basic" and "Paid" will be removed in the 2023-07-01 API version, and this will be a breaking change in API version 2023-07-01 or newer. If you use automated scripts, CD pipelines, ARM templates, Terraform, or other third-party toolings that rely on the above parameters, please be sure to make the necessary changes before upgrading to the 2023-07-01 or newer API version. From API version 2023-01-01 and newer, you can start transitioning to the new API parameters "Base" and "Standard".
 * Bug Fix
   * [HTTP Proxy](https://learn.microsoft.com/azure/aks/http-proxy##updating-proxy-configurations) Fixed an issue on the "No Proxy" update -  where the cluster FQDN would be removed from noProxy on updates. 
 * Component Updates
