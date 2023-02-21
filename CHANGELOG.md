@@ -1,10 +1,39 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-02-12
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 to 10%.
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24 and up.
+* Starting from the release of 2023-02-19 clusters with automatic [node image upgrades](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#using-cluster-auto-upgrade) (node-image auto-upgrade channel) will have nightly in-place patches turned off. Node image auto upgrade offers a better idempotent way to receive these fixes on a schedule (via [upgrade schedules](https://learn.microsoft.com/azure/aks/planned-maintenance#add-a-maintenance-window-configuration-with-a-json-file)). Clusters not using the node-image auto-upgrade channel remain unchanged in preparation for the release of the [OS Upgrade Channel](https://github.com/Azure/AKS/issues/2181) functionality.
+
+### Release notes
+
+* Preview Features
+  * Kubernetes 1.26.0 is now Public Preview.
+* Behavior Changes
+  * Auto-upgrade Patch channel can now be set in any patch version of a supported Kubernetes minor version and it will bring the cluster to the latest supported patch.
+* Component Updates
+  * Azure CNI for Windows has been updated to version [1.4.41](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.41).
+  * Windows Calico updated to [v3.24.0](https://github.com/projectcalico/calico/blob/release-v3.24/calico/_includes/release-notes/v3.24.0-release-notes.md) for Kubernetes v1.24+.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.02.09](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.02.09.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.02.09](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.09.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2023.02.09](vhd-notes/AKSMariner/2023.02.09.txt).
+
 ## Release 2023-02-05
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
+
 * AKS introduces a new [Standard tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) which includes the previous standalone uptime SLA in addition to improved capabilities over the Free tier. Read the [blog](https://aka.ms/aks/standard-tier-blog) to learn more about the launch of the Standard tier. Azure API is updated to include the new “Standard” tier, as a result, "Basic" and "Paid" will be removed in the 2023-07-01 API version, and this will be a breaking change in API version 2023-07-01 or newer. If you use automated scripts, CD pipelines, ARM templates, Terraform, or other third-party toolings that rely on the above parameters, please be sure to make the necessary changes before upgrading to the 2023-07-01 or newer API version. From API version 2023-01-01 and newer, you can start transitioning to the new API parameters "Base" and "Standard".
 * Starting with Kubernetes 1.26:
   * HostProcess Containers will be GA
@@ -25,9 +54,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Managed Prometheus addon image release. See [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-01-31-2023).
   * Clients (e.g. portal / CLI / powershell) can now discover the trusted access role bindings operations on available operations.
   * AKS Ubuntu 18.04 image [AKSUbuntu-1804-2023.01.26](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.01.26.txt) addresses an [issue](https://github.com/Azure/AgentBaker/pull/2714) where fips_enabled would be set to 0 while running on a fips kernel.
-  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-2204-2023.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.01.txt).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.02.01.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.02.01](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.01.txt).
-  * AKS Mariner image has been updated to [AKSMariner-2023.01.25](vhd-notes/AKSMariner/2023.02.01.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2023.02.01](vhd-notes/AKSMariner/2023.02.01.txt).
   
 ## Release 2023-01-29
 
