@@ -13,14 +13,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * The Max Surge default value will change on newly created nodepools from 1 to 10%.
 * AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
 * Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24 and up.
-* Starting from the release of 2023-02-19 clusters with automatic node image upgrades (node-image auto-upgrade channel) will have nightly in-place patches turned off. Node image auto upgrade offers a better idempotent way to receive this fixes on a schedule (via upgrade schedules). Clusters not using the node-image auto-upgrade channel remain unchanged in preparation for the release of the [OS Upgrade Channel](https://github.com/Azure/AKS/issues/2181) functionality.
+* Starting from the release of 2023-02-19 clusters with automatic [node image upgrades](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#using-cluster-auto-upgrade) (node-image auto-upgrade channel) will have nightly in-place patches turned off. Node image auto upgrade offers a better idempotent way to receive these fixes on a schedule (via [upgrade schedules](https://learn.microsoft.com/azure/aks/planned-maintenance#add-a-maintenance-window-configuration-with-a-json-file)). Clusters not using the node-image auto-upgrade channel remain unchanged in preparation for the release of the [OS Upgrade Channel](https://github.com/Azure/AKS/issues/2181) functionality.
 
 ### Release notes
 
 * Preview Features
   * Kubernetes 1.26.0 is now Public Preview.
 * Behavior Changes
-  * Auto-upgrade Patch channel can now be set in any patch version of a supported Kubernetes minor version and will bring the cluster to latest supported patch.
+  * Auto-upgrade Patch channel can now be set in any patch version of a supported Kubernetes minor version and it will bring the cluster to the latest supported patch.
 * Component Updates
   * Azure CNI for Windows has been updated to version [1.4.41](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.41).
   * Windows Calico updated to [v3.24.0](https://github.com/projectcalico/calico/blob/release-v3.24/calico/_includes/release-notes/v3.24.0-release-notes.md) for Kubernetes v1.24+.
