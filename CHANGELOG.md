@@ -17,6 +17,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
+* Bug Fix
+  * In 2023-01-01 Azure API, a hot fix is released and currently rolling out to fix this (bug)[https://github.com/Azure/AKS/issues/3481] and returns 400 error on PUT requests to "Base" or "Standard" parameters, allowing customers to still use "Basic" parameter in ManagedClusterSKUName with "Free" or "Paid" parameters in ManagedClusterSKUTier.
 * Behavior Changes
   * Clusters on upgrade-channel nodeimage or nodeos-channel will no longer pull security updates through unattended upgrade. They will now get security updates through the weekly node image upgrade.
   * Clusters with automatic [node image upgrades](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#using-cluster-auto-upgrade) (node-image auto-upgrade channel) will have nightly in-place patches turned off. You can set your own schedule (via [upgrade schedules](https://learn.microsoft.com/azure/aks/planned-maintenance#add-a-maintenance-window-configuration-with-a-json-file)).
