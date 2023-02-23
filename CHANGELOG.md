@@ -21,9 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Clusters on upgrade-channel nodeimage or nodeos-channel will no longer pull security updates through unattended upgrade. They will now get security updates through the weekly node image upgrade.
   * Clusters with automatic [node image upgrades](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#using-cluster-auto-upgrade) (node-image auto-upgrade channel) will have nightly in-place patches turned off. You can set your own schedule (via [upgrade schedules](https://learn.microsoft.com/azure/aks/planned-maintenance#add-a-maintenance-window-configuration-with-a-json-file)).
 * Component Updates
-  * Cluster Autoscaler has been upgraded to v1.25.2.
   * Azure Disk CSI driver has been upgraded to v1.26.2.
-  * Windows Azure CNI version has been upgraded to v1.4.43.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-2023.02.15](vhd-notes/aks-ubuntu/AKSUbuntu-1804/2023.02.15.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-2023.02.15](vhd-notes/aks-ubuntu/AKSUbuntu-2204/2023.02.15.txt).
   * AKS Windows 2019 image has been updated to [17763.4010.230216](vhd-notes/AKSWindows/2019/17763.4010.230216.txt).
