@@ -1,5 +1,38 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-02-26
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2nd 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* Starting with Kubernetes 1.26:
+  * Core DNS changes - Update to 1.10 and will set lamemark to 5s & ttl to 30 to follow community defaults
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 to 10%.
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+* Azure Policy will be updated to [GateKeeper 3.11](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.11.0) on Feb 20th for AKS 1.24 and up.
+
+### Release notes
+
+* Preview Features
+  * Enable windows metrics collection from the Azure Monitor Metrics
+* Bug Fix
+  * Fix Agent Pool stop issue when powerstate reporting is inconsistent
+  * Fix blobfuse2 backward compatibility issue on AKS 1.25
+  * Fix cluster autoscaler scheduler bug which is causing CA to crash. 
+  * Update node label with Security Patch versions from VHD 
+* Behavior Changes
+  * Removed 5 minute back off when attemptng to delete a node pool with an existing operation taking place
+* Component Updates
+  * Azure Blob CSI driver updated to version v1.19.1
+  * Update Prometheus Add-on to [02-22-2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-02-22-2023)
+  * AKS Windows 2019 image has been updated to [17763.4010.230223](vhd-notes/AKSWindows/2019/17763.4010.230223.txt).
+  * AKS Windows 2022 image has been updated to [20348.1547.230223](vhd-notes/AKSWindows/2022/20348.1547.230223.txt).
+
 ## Release 2023-02-19
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
