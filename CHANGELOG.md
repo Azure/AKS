@@ -7,6 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2nd 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* Java/JDK support for cgroups v2 is available in [JDK 15](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8230305) and above.  Kubernetes 1.25+ and on AKS uses cgroups.  Please migrate your workloads to the new JDK.
 * Starting with Kubernetes 1.26:
   * Core DNS changes - Update to 1.10 and will set lamemark to 5s & ttl to 30 to follow community defaults
   * HostProcess Containers will be GA
