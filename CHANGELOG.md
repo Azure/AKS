@@ -9,7 +9,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2nd 2023. Please upgrade your AKS clusters to version 1.24 or above.
 * Java/JDK support for cgroups v2 is available in [JDK 15](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8230305) and above.  Kubernetes 1.25+ and on AKS uses cgroups.  Please migrate your workloads to the new JDK.
 * Starting with Kubernetes 1.26:
-  * Core DNS changes - Update to 1.10 and will set lamemark to 5s & ttl to 30 to follow community defaults
   * HostProcess Containers will be GA
   * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
 * Starting with Kubernetes 1.27:
@@ -21,13 +20,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * Support for (Pod Sandboxing)[https://learn.microsoft.com/en-gb/azure/aks/use-pod-sandboxing] workloads
   * Enable windows metrics collection from the Azure Monitor Metrics
-  * (Node OS auto-upgrade channel)[https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-image] for automatically applying OS security patches promptly.  
+  * (Node OS auto-upgrade channel)[https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-image] for automatically applying OS security patches promptly
   
 * Bug Fix
   * In 2023-01-01 Azure API, a hot fix is released to fix this (bug)[https://github.com/Azure/AKS/issues/3481] and returns 400 error on PUT requests to "Base" or "Standard" parameters, allowing customers to still use "Basic" parameter in ManagedClusterSKUName with "Free" or "Paid" parameters in ManagedClusterSKUTier.
   * Fix Agent Pool stop issue when powerstate reporting is inconsistent
   * Fix blobfuse2 backward compatibility issue on AKS 1.25
-  * Fix cluster autoscaler scheduler bug which is causing CA to crash. 
+  * Fix cluster autoscaler scheduler bug which is causing CA to crash
   * Update node label with Security Patch versions from VHD 
 * Behavior Changes
   * Removed 5 minute back off when attemptng to delete a node pool with an existing operation taking place
