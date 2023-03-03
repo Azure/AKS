@@ -1,5 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-02-26
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2nd 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* Java/JDK support for cgroups v2 is available in [JDK 15](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8230305) and above.  Kubernetes 1.25+ and on AKS uses cgroups.  Please migrate your workloads to the new JDK.
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 to 10%.
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+
+### Release notes
+
+* Preview Features
+  * Support for (Pod Sandboxing)[https://learn.microsoft.com/en-gb/azure/aks/use-pod-sandboxing] workloads
+  * Enable windows metrics collection from the Azure Monitor Metrics
+  * (Node OS auto-upgrade channel)[https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-image] for automatically applying OS security patches promptly
+  
+* Bug Fix
+  * In 2023-01-01 Azure API, a hot fix is released to fix this (bug)[https://github.com/Azure/AKS/issues/3481] and returns 400 error on PUT requests to "Base" or "Standard" parameters, allowing customers to still use "Basic" parameter in ManagedClusterSKUName with "Free" or "Paid" parameters in ManagedClusterSKUTier.
+  * Fix Agent Pool stop issue when powerstate reporting is inconsistent
+  * Fix blobfuse2 backward compatibility issue on AKS 1.25
+  * Fix cluster autoscaler scheduler bug which is causing CA to crash
+  * Update node label with Security Patch versions from VHD 
+* Behavior Changes
+  * Removed 5 minute back off when attemptng to delete a node pool with an existing operation taking place
+* Component Updates
+  * Azure Blob CSI driver updated to version v1.19.1
+  * Update Prometheus Add-on to [02-22-2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-02-22-2023)
+  * AKS Windows 2019 image has been updated to [17763.4010.230223](vhd-notes/AKSWindows/2019/17763.4010.230223.txt).
+  * AKS Windows 2022 image has been updated to [20348.1547.230223](vhd-notes/AKSWindows/2022/20348.1547.230223.txt).
+
 ## Release 2023-02-19
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
