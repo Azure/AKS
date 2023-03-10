@@ -1,5 +1,43 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-03-05
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* The Docker Bridge CIDR field in the AKS API was made redundant during our change from Docker to containerD in Kubernetes version 1.19. Starting in April 2023 with the 2023-04-01 AKS API version, the Docker Bridge CIDR field will be removed. It will continue to be supported (but ignored) in all preexisting API versions.
+* The KEDA addon currently supports aks versions 1.23, 1.24 and 1.25. the managed KEDA addon will not be supported on 1.26 GA at launch. If you use the KEDA addon, please do not upgrade to 1.26. If you use auto-upgrade with the rapid channel enabled as well as the KEDA addon, please switch off the rapid channel and update manually. 
+* AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2nd 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* Java/JDK support for cgroups v2 is available in [JDK 11 (patch 11.0.16 and later) or JDK 15 and above](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8230305).  AKS Kubernetes 1.25+ uses cgroups v2.  Please migrate your workloads to the new JDK.
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 to 10%.
+* AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
+
+### Release notes
+
+* Preview Features
+  * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) Public Preview is now available in ALL Azure Public Cloud Regions.
+* Bug Fix
+  * Fixed issue with Linux node outbound connectivity failing due to HTTP_PROXY/HTTPS_PROXY not fully respected.
+  * Fix to allow a stopped AKS cluster to rotate certificates/
+* Behavior Changes
+  * Increased qps limits and worker threads for CSI driver on azuredisk v2.
+  * the token credential will gradually be rotated. it shall not incur any impact since kubeconfig has the client certificate. should you see any issue, call az aks get-credentials again.
+  * For customers using the Web App Routing add-on (Preview), we added an "identity" field in the API response exposing the managed service identity creates by the add-on. You can grant that identity permissions to manage other Azure resources used by the add-on, such as Azure DNS and Azure Key Vault.
+  * Extended cluster tag support to Standard Load Balancer and Public IP.
+  * Bumped the memory limit for the Container Insights Add-on for Windows to 1Gb.
+  * Customer applied tags on Azure cloud provider managed resources (LB, publicIp, NSG, PLS, etc) under node resource group would be overwritten allowing the tags to removed from the resources when requested.
+* Component Updates
+  * Image Cleaner addon updated to version [v1.0.0](https://github.com/Azure/eraser/releases/tag/v1.0.0)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202303.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202303.06.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202303.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202303.06.0.txt).
+  * AKS Mariner image has been updated to [AKSMariner-2023.03.06](vhd-notes/AKSMariner/2023.03.06.txt).
+
+
 ## Release 2023-02-26
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
