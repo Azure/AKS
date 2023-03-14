@@ -6,6 +6,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
+* Windows Server 2019 will be retired with Kubernetes version 1.32 EOL on March 1, 2026. Follow the detailed steps
+[in our documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-windows-2019-2022)to transition to Windows Server 2022.
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired,you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/en-us/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
 * The Docker Bridge CIDR field in the AKS API was made redundant during our change from Docker to containerD in Kubernetes version 1.19. Starting in April 2023 with the 2023-04-01 AKS API version, the Docker Bridge CIDR field will be removed. It will continue to be supported (but ignored) in all preexisting API versions.
 * The KEDA addon currently supports aks versions 1.23, 1.24 and 1.25. the managed KEDA addon will not be supported on 1.26 GA at launch. If you use the KEDA addon, please do not upgrade to 1.26. If you use auto-upgrade with the rapid channel enabled as well as the KEDA addon, please switch off the rapid channel and update manually. 
 * AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2nd 2023. Please upgrade your AKS clusters to version 1.24 or above.
