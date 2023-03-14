@@ -24,6 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features
   * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) Public Preview is now available in ALL Azure Public Cloud Regions.
+  * [Trusted Access](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is now in Public Preview.
 * Bug Fix
   * Fixed issue with Linux node outbound connectivity failing due to HTTP_PROXY/HTTPS_PROXY not fully respected.
   * Fix to allow a stopped AKS cluster to rotate certificates/
