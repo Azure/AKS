@@ -24,6 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Preview Features
+  * [Azure Backup for AKS](https://azure.microsoft.com/updates/backupforakspublicpreview/) Public Preview is now available.
   * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) Public Preview is now available in ALL Azure Public Cloud Regions.
   * [Trusted Access](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is now in Public Preview.
 * Bug Fix
