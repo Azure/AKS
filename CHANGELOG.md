@@ -28,7 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Trusted Access](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is now in Public Preview.
 * Bug Fix
   * Fixed issue with Linux node outbound connectivity failing due to HTTP_PROXY/HTTPS_PROXY not fully respected.
-  * Fix to allow a stopped AKS cluster to rotate certificates/
+  * Fix to allow a stopped AKS cluster to rotate certificates.
 * Behavior Changes
   * Increased qps limits and worker threads for CSI driver on azuredisk v2.
   * the token credential will gradually be rotated. it shall not incur any impact since kubeconfig has the client certificate. should you see any issue, call az aks get-credentials again.
