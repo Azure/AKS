@@ -5,7 +5,7 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-
+ 
 * Windows Server 2019 will be retired with Kubernetes version 1.32 EOL on March 1, 2026. Follow the detailed steps
 [in our documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-windows-2019-2022)to transition to Windows Server 2022.
 * Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired,you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/en-us/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
@@ -16,6 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Starting with Kubernetes 1.26:
   * HostProcess Containers will be GA
   * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+  * Two in-tree driver persistent volumes won't be supported in AKS : kubernetes.io/azure-disk, kubernetes.io/azure-file.
 * Starting with Kubernetes 1.27:
   * The Max Surge default value will change on newly created nodepools from 1 to 10%.
 * AKS began pod security policy deprecation on 2022-11-01 API. The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) will be removed completely on 2023-06-01 API with AKS 1.25 version or higher. You can migrate pod security policy to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) before the deprecation deadline.
@@ -36,7 +37,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Bumped the memory limit for the Container Insights Add-on for Windows to 1Gb.
   * Customer applied tags on Azure cloud provider managed resources (LB, publicIp, NSG, PLS, etc) under node resource group would be overwritten allowing the tags to removed from the resources when requested.
 * Component Updates
-  * Image Cleaner addon updated to version [v1.0.0](https://github.com/Azure/eraser/releases/tag/v1.0.0)
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202303.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202303.06.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202303.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202303.06.0.txt).
   * AKS Mariner image has been updated to [AKSMariner-2023.03.06](vhd-notes/AKSMariner/2023.03.06.txt).
