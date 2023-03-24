@@ -27,7 +27,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior Changes
   * Podsubnet won't work in ussec/usnat. Mooncake and fairfax regions will not be affected.
-  * Addon v2 has been disabled for overlay-upgrade-data in uksouth. New clusters will install addon overlay-upgrade-data with addon v1.
   * Default memory for Windows pods increased from 600mi to 700mi.
 
 * Component Updates
