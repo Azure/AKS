@@ -1,5 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-03-12
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+ 
+* Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/en-us/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+  * CNI Overlay uses hostProcess containers on Windows node pools (CNS) which is not compatible with nodes using docker as the container runtime. Clusters that may be upgrading from CNI v1 using docker will break. Upgrade the container runtime to contianerd on those node pools.
+* AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2, 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+  * Two in-tree driver persistent volumes won't be supported in AKS: kubernetes.io/azure-disk, kubernetes.io/azure-file.
+  * All AKS clusters on version 1.26+ will use the latest coreDNS version [v1.10.1.](https://github.com/coredns/coredns/releases/tag/v1.10.1).
+    * For all AKS clusters on version 1.26+, coreDNS health plugin will use lameduck 5s to minimizes DNS resolution failures during coreDNS pod restart or deployment rollout. 
+    * For all AKS clusters on version 1.26+, coreDNS will use ttl 30 as default TTL for DNS records.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 to 10%.
+
+### Release notes
+
+* Bug Fix
+  * Fixed an issue where default Linux sysctls were not applied if users specified any Linux OS config. If these sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3.
+
+* Behavior Changes
+  * Podsubnet won't work in ussec/usnat. Mooncake and fairfax regions will not be affected.
+  * Addon v2 has been disabled for overlay-upgrade-data in uksouth. New clusters will install addon overlay-upgrade-data with addon v1.
+  * To enable InifinBand, set SPG and PlatformDomainCount. This setting is invalid and cannot be enabled for node pools with multile zones.
+  * Default memory for Windows pods increased from 600mi to 700mi.
+
+* Component Updates
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202303.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202303.13.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202303.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202303.13.0.txt).
+  * AKS Mariner image has been updated to [AKSMariner-202303.13.0](vhd-notes/AKSMariner/202303.13.0.txt).
+
 ## Release 2023-03-05
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
