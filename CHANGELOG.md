@@ -23,7 +23,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Bug Fix
-  * Fixed an issue where default Linux sysctls were not applied if users specified any Linux OS config. If these sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3.
+  * Fixed an issue where default Linux sysctls were not applied if users specified any [Linux OS custom configuration](https://learn.microsoft.com/en-us/azure/aks/custom-node-configuration#:~:text=Linux%20OS%20custom%20configuration). If the following sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3. A [node image upgrade](https://learn.microsoft.com/en-us/azure/aks/node-image-upgrade) is recommended to restore the previous behavior.
+
+  
 
 * Behavior Changes
   * Podsubnet won't work in ussec/usnat. Mooncake and fairfax regions will not be affected.
