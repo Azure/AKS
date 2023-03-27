@@ -24,11 +24,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Bug Fix
   * Fixed an issue where default Linux sysctls were not applied if users specified any [Linux OS custom configuration](https://learn.microsoft.com/en-us/azure/aks/custom-node-configuration#:~:text=Linux%20OS%20custom%20configuration). If the following sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3. A [node image upgrade](https://learn.microsoft.com/en-us/azure/aks/node-image-upgrade) is recommended to restore the previous behavior.
+  * Fixed an issue where CAs passed during provisioning would not be added to trust store correctly. This fix is already applied and should be reflected in any new operations. See Custom CA Trust (Preview) [documentation](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
 
 * Behavior Changes
   * Default memory for Windows pods increased from 600mi to 700mi.
 
 * Component Updates
+  * Container Insights has been updated to [3.1.4](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#03012023--:~:text=the%20release%203.1.4-,03/01/2023%20%2D,-Version%20microsoft/oms).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202303.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202303.13.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202303.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202303.13.0.txt).
   * AKS Mariner image has been updated to [AKSMariner-202303.13.0](vhd-notes/AKSMariner/202303.13.0.txt).
