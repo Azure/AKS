@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2023-03-12
+## Release 2023-03-19
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -25,6 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fix
   * Fixed an issue where default Linux sysctls were not applied if users specified any [Linux OS custom configuration](https://learn.microsoft.com/en-us/azure/aks/custom-node-configuration#:~:text=Linux%20OS%20custom%20configuration). If the following sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3. A [node image upgrade](https://learn.microsoft.com/en-us/azure/aks/node-image-upgrade) is recommended to restore the previous behavior.
   * Fixed an issue where CAs passed during provisioning would not be added to trust store correctly. This fix is already applied and should be reflected in all new create operations. New scale operations will require a [node image upgrade](https://learn.microsoft.com/en-us/azure/aks/node-image-upgrade).
+  * Fixed an issue that when client installed oss versioned Image Cleaner or Workload Identity, AKS addon manager deleted their roles, service accounts, etc. which blocked its running.
 
 * Behavior Changes
   * Default memory for Windows pods increased from 600mi to 700mi.
