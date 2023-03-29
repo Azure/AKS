@@ -7,8 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
  
 * Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
-* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/en-us/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
-  * CNI Overlay uses hostProcess containers on Windows node pools (CNS) which is not compatible with nodes using docker as the container runtime. Clusters that may be upgrading from CNI v1 using docker will break. Upgrade the container runtime to contianerd on those node pools.
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
 * AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2, 2023. Please upgrade your AKS clusters to version 1.24 or above.
 * Starting with Kubernetes 1.26:
   * HostProcess Containers will be GA
@@ -23,8 +22,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Bug Fix
-  * Fixed an issue where default Linux sysctls were not applied if users specified any [Linux OS custom configuration](https://learn.microsoft.com/en-us/azure/aks/custom-node-configuration#:~:text=Linux%20OS%20custom%20configuration). If the following sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3. A [node image upgrade](https://learn.microsoft.com/en-us/azure/aks/node-image-upgrade) is recommended to restore the previous behavior.
-  * Fixed an issue where CAs passed during provisioning would not be added to trust store correctly. This fix is already applied and should be reflected in all new create operations. New scale operations will require a [node image upgrade](https://learn.microsoft.com/en-us/azure/aks/node-image-upgrade).
+  * Fixed an issue where default Linux sysctls were not applied if users specified any [Linux OS custom configuration](https://learn.microsoft.com/azure/aks/custom-node-configuration#:~:text=Linux%20OS%20custom%20configuration). If the following sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3. A [node image upgrade](https://learn.microsoft.com/azure/aks/node-image-upgrade) is recommended to restore the previous behavior.
+  * Fixed an issue where CAs passed during provisioning would not be added to trust store correctly. This fix is already applied and should be reflected in all new create operations. New scale operations will require a [node image upgrade](https://learn.microsoft.com/azure/aks/node-image-upgrade).
   * Fixed an issue that when client installed oss version of Image Cleaner or Workload Identity, AKS addon manager deleted their roles, service accounts, etc. which blocked its running.
 
 * Behavior Changes
