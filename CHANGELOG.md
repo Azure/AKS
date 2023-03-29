@@ -1,5 +1,40 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-03-19
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+ 
+* Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+* AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2, 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+  * Two in-tree driver persistent volumes won't be supported in AKS: kubernetes.io/azure-disk, kubernetes.io/azure-file.
+  * All AKS clusters on version 1.26+ will use the latest coreDNS version [v1.10.1.](https://github.com/coredns/coredns/releases/tag/v1.10.1).
+    * For all AKS clusters on version 1.26+, coreDNS health plugin will use lameduck 5s to minimizes DNS resolution failures during coreDNS pod restart or deployment rollout. 
+    * For all AKS clusters on version 1.26+, coreDNS will use ttl 30 as default TTL for DNS records.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 to 10%.
+
+### Release notes
+
+* Bug Fix
+  * Fixed an issue where default Linux sysctls were not applied if users specified any [Linux OS custom configuration](https://learn.microsoft.com/azure/aks/custom-node-configuration#:~:text=Linux%20OS%20custom%20configuration). If the following sysctls were not specified, the defaults may previously have changed unintentionally: net.core.somaxconn, net.ipv4.tcp_max_syn_backlog, net.ipv4.neigh.default.gc_thresh1, net.ipv4.neigh.default.gc_thresh2, and net.ipv4.neigh.default.gc_thresh3. A [node image upgrade](https://learn.microsoft.com/azure/aks/node-image-upgrade) is recommended to restore the previous behavior.
+  * Fixed an issue where CAs passed during provisioning would not be added to trust store correctly. This fix is already applied and should be reflected in all new create operations. New scale operations will require a [node image upgrade](https://learn.microsoft.com/azure/aks/node-image-upgrade).
+  * Fixed an issue that when client installed oss version of Image Cleaner or Workload Identity, AKS addon manager deleted their roles, service accounts, etc. which blocked its running.
+
+* Behavior Changes
+  * Default memory for Windows pods increased from 600mi to 700mi.
+
+* Component Updates
+  * Container Insights has been updated to [3.1.4](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#03012023--:~:text=the%20release%203.1.4-,03/01/2023%20%2D,-Version%20microsoft/oms).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202303.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202303.13.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202303.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202303.13.0.txt).
+  * AKS Mariner image has been updated to [AKSMariner-202303.13.0](vhd-notes/AKSMariner/202303.13.0.txt).
+
 ## Release 2023-03-05
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
