@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
+## Release 2023-03-26
 
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+ 
+* Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+* AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2, 2023. Please upgrade your AKS clusters to version 1.24 or above.
+
+### Release notes
+
+* Bug Fix
+  * Fixed an issue that NodeNotReady in Cilium clusters with systemd >=249.  
+
+* Behavior Changes
+  * [L7 proxy for cilium is disabled](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#limitations) and not supported for GA
+
+* Component Updates
+  * Workload Identity has been updated to version [v1.0.0](https://github.com/Azure/azure-workload-identity/releases/tag/v1.0.0).
+  * Azure File CSI driver has been updated to version [v1.26.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.1)on AKS 1.26. Azure File CSI driver v1.26 has CVE fixes and adds action to clean up orphaned disks in node management group. These disks were created by VMAS node and will not be used after VMs are deleted.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202303.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202303.20.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202303.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202303.20.0.txt).
+  * AKS Mariner image has been updated to [AKSMariner-202303.20.0](vhd-notes/AKSMariner/202303.20.0.txt).
+  
+  
 ## Release 2023-03-19
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
