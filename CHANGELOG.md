@@ -12,6 +12,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
+* Feature
+  * (Terminating a long running operation)[https://learn.microsoft.com/azure/aks/manage-abort-operations?tabs=azure-cli] on an AKS cluster is now Generally available.
+  
 * Bug Fix
   * Fixed an issue that NodeNotReady in Cilium clusters with systemd >=249.  
 
