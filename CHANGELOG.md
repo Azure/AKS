@@ -1,5 +1,43 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-03-26
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+* AKS will [deprecate](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2, 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* Starting with Kubernetes 1.26:
+  * HostProcess Containers will be GA
+  * Some AKS labels will be deprecated. Update your AKS labels to the recommended substitutions. See more information on label deprecations and how to update your labels in the [Use labels in an AKS cluster](https://docs.microsoft.com/azure/aks/use-labels) documentation.
+  * Two in-tree driver persistent volumes won't be supported in AKS: kubernetes.io/azure-disk, kubernetes.io/azure-file.
+  * All AKS clusters on version 1.26+ will use the latest coreDNS version [v1.10.1.](https://github.com/coredns/coredns/releases/tag/v1.10.1).
+    * For all AKS clusters on version 1.26+, coreDNS health plugin will use lameduck 5s to minimizes DNS resolution failures during coreDNS pod restart or deployment rollout. 
+    * For all AKS clusters on version 1.26+, coreDNS will use ttl 30 as default TTL for DNS records.
+* Starting with Kubernetes 1.27:
+  * The Max Surge default value will change on newly created nodepools from 1 node to 10% of the node pool size.
+
+### Release notes
+
+* Features
+  * New k8s patch versions
+    * Removed 1.24.6, added 1.24.10.
+    * Removed 1.25.4, added 1.25.6.
+* Preview Features
+  * [Custom kubelet configuration for Windows](https://learn.microsoft.com/azure/aks/custom-node-configuration#prerequisites-for-windows-kubelet-custom-configuration-preview) is now in preview.
+* Bug Fixes
+  * Fixed a bug where clusters with multiple node pools using the same pod subnet could get stuck during deletion.
+* Component Updates
+  * AKS v1.26 clusters have been reverted to CoreDNS v1.9.4 to fix a regression in v1.10.1.
+  * Azure CNI has been updated to version [v1.4.44](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.44).
+  * Azure Monitor Agent Windows logs pod has been updated to [v3.1.5](https://github.com/microsoft/Docker-Provider/blob/3.1.5/ReleaseNotes.md).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202303.22.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202303.22.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202303.22.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202303.22.0.txt).
+  * AKS Windows 2019 image has been updated to [17763.4131.230315](vhd-notes/AKSWindows/2019/17763.4131.230315.txt).
+  * AKS Windows 2022 image has been updated to [20348.1607.230315](vhd-notes/AKSWindows/2022/20348.1607.230315.txt).
+
 ## Release 2023-03-19
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
