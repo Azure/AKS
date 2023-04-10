@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * For all AKS clusters on version 1.26+, coreDNS health plugin will use lameduck 5s to minimizes DNS resolution failures during coreDNS pod restart or deployment rollout. 
     * For all AKS clusters on version 1.26+, coreDNS will use ttl 30 as default TTL for DNS records.
 * Starting with Kubernetes 1.27:
-  * The Max Surge default value will change on newly created nodepools from 1 to 10%.
+  * The Max Surge default value will change on newly created nodepools from 1 node to 10% of the node pool size.
 
 ### Release notes
 
