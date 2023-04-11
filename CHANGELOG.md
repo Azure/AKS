@@ -19,7 +19,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue that NodeNotReady in Cilium clusters with systemd >=249.  
 
 * Behavior Changes
-  * [L7 proxy for cilium is disabled](https://learn.microsoft.com/en-us/azure/aks/azure-cni-powered-by-cilium#limitations) and not supported for GA
+  * [L7 proxy for Azure CNI powered by Cilium is disabled](https://learn.microsoft.com/en-us/azure/aks/azure-cni-powered-by-cilium#limitations) and not supported for GA
 
 * Component Updates
   * Workload Identity has been updated to version [v1.0.0](https://github.com/Azure/azure-workload-identity/releases/tag/v1.0.0).
