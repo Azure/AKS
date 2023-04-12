@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Terminating a long running operation](https://learn.microsoft.com/azure/aks/manage-abort-operations?tabs=azure-cli) on an AKS cluster is now Generally available.
   
 * Bug Fix
-  * Fixed an issue that network connectivity lost on systemd-networkd restart.
+  * Fixed an issue that [network connectivity lost on systemd-networkd restart](https://github.com/cilium/cilium/issues/18706).
 
 * Behavior Changes
   * [L7 proxy for Azure CNI powered by Cilium is disabled](https://learn.microsoft.com/en-us/azure/aks/azure-cni-powered-by-cilium#limitations) and not supported for GA
