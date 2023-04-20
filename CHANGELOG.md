@@ -8,23 +8,23 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  
 * Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
 * Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
-* Kubernetes version 1.26 is now Generally Available with AKS. AKS has [deprecated](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2, 2023. Please upgrade your AKS clusters to version 1.24 or above.
+* [Kubernetes version 1.26](https://kubernetes.io/blog/2022/12/09/kubernetes-v1-26-release/) is now Generally Available with AKS. AKS has [deprecated](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) Kubernetes version 1.23 on April 2, 2023. Please upgrade your AKS clusters to version 1.24 or above.
 
 ### Release notes
 
-* Feature
+* Features
   * [AAD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) is now Generally Available.
-  * [Stop cluster minor version upgrades on API breaking changes] is now available in preview. AKS will fail fast on minor version manual upgrades if it detects usages of deprecated APIs in the target version of the upgrade. This is available when target cluster for upgrade is >= 1.26.0, when the API request for cluster is using API version >= 2023-01-02-preview, and when usage of API breaking changes has been detected in the 12 hours prior to the upgrade.
-  * [Kubernetes Event-driven Autoscaling (KEDA) add-on](https://learn.microsoft.com/azure/aks/keda-deploy-add-on-cli) is now available on AKS version 1.26.
   * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) is now supported on Windows Server 2019 node pools.
+
+* Preview Features
+  * [Stop cluster minor version upgrades on API breaking changes] is now available in preview. AKS will fail fast on minor version manual upgrades if it detects usages of deprecated APIs in the target version of the upgrade. This is available when target cluster for upgrade is >= 1.26.0, when the API request for cluster is using API version >= 2023-01-02-preview, and when usage of API breaking changes has been detected in the 12 hours prior to the upgrade.
 
 * Bug Fix
   * Fixed an [issue](https://github.com/kubernetes/kubernetes/pull/115179) where `kube-scheduler` would crash on AKS clusters of version 1.25+ when there are inline volumes in the cluster.
   * Fixed an issue where it was not possible to [rotate certificates](https://learn.microsoft.com/azure/aks/certificate-rotation) for [stopped AKS clusters](https://learn.microsoft.com/azure/aks/start-stop-cluster?tabs=azure-cli).
-  * When installing Cilium Enterprise through Azure Marketplace, AKS validates that if the extension is from an Isovalent offer, then the extension name must be "cilium". The extension name error message has been clarified to reflect this requirement.
+  * When installing [Cilium Enterprise through Azure Marketplace](https://learn.microsoft.com/azure/aks/cilium-enterprise-marketplace), AKS validates that if the extension is from an Isovalent offer, then the extension name must be "cilium". The extension name error message has been clarified to reflect this requirement.
 
 * Component Updates
-  * Eraser has been updated to version [v1.0.0](https://github.com/Azure/eraser/releases/tag/v1.0.0).
   * [Azure Monitor managed service for Prometheus addon](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview)'s `kube-state-metrics` image has been updated from 2.6.0 to [2.8.1](https://github.com/kubernetes/kube-state-metrics/releases/tag/v2.8.1). 
   * [Kubernetes Event-driven Autoscaling (KEDA) add-on](https://learn.microsoft.com/azure/aks/keda-deploy-add-on-cli) has been updated to version [2.10.0](https://github.com/kedacore/keda/releases/tag/v2.10.0) and is now available on AKS version 1.26.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202304.05.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202304.05.0.txt).
