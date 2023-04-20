@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Feature
   * [AAD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) is now Generally Available.
-  * [Stop cluster minor version upgrades on API breaking changes] is now available in preview. AKS will fail fast on minor version manual upgrades if it detects usages of deprecated APIs in the target version of the upgrade. This is availble when target cluster for upgrade is >= 1.26.0, when the API request for cluster is using API version >= 2023-01-02-preview, and when usage of API breaking changes has been detected in the 12 hours prior to the upgrade.
+  * [Stop cluster minor version upgrades on API breaking changes] is now available in preview. AKS will fail fast on minor version manual upgrades if it detects usages of deprecated APIs in the target version of the upgrade. This is available when target cluster for upgrade is >= 1.26.0, when the API request for cluster is using API version >= 2023-01-02-preview, and when usage of API breaking changes has been detected in the 12 hours prior to the upgrade.
   * [Kubernetes Event-driven Autoscaling (KEDA) add-on](https://learn.microsoft.com/azure/aks/keda-deploy-add-on-cli) is now available on AKS version 1.26.
   * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) is now supported on Windows Server 2019 node pools.
 
@@ -25,7 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * When installing Cilium Enterprise through Azure Marketplace, AKS validates that if the extension is from an Isovalent offer, then the extension name must be "cilium". The extension name error message has been clarified to reflect this requirement.
 
 * Behavior Changes
-  * Added exclusion list under [Image Clener feature](https://learn.microsoft.com/azure/aks/image-cleaner?tabs=azure-cli) for `mcr.microsoft.com/oss/kubernetes/pause:*` system image.
+  * Added exclusion list under [Image Cleaner feature](https://learn.microsoft.com/azure/aks/image-cleaner?tabs=azure-cli) for `mcr.microsoft.com/oss/kubernetes/pause:*` system image.
 
 * Component Updates
   * Eraser has been updated to version [v1.0.0](https://github.com/Azure/eraser/releases/tag/v1.0.0).
