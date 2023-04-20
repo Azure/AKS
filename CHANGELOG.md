@@ -14,7 +14,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * [AAD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) is now Generally Available.
-  * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) is now supported on Windows Server 2019 node pools.
 
 * Preview Features
   * [Stop cluster minor version upgrades on API breaking changes] is now available in preview. AKS will fail fast on minor version manual upgrades if it detects usages of deprecated APIs in the target version of the upgrade. This is available when target cluster for upgrade is >= 1.26.0, when the API request for cluster is using API version >= 2023-01-02-preview, and when usage of API breaking changes has been detected in the 12 hours prior to the upgrade.
