@@ -23,9 +23,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where it was not possible to [rotate certificates](https://learn.microsoft.com/azure/aks/certificate-rotation) for [stopped AKS clusters](https://learn.microsoft.com/azure/aks/start-stop-cluster?tabs=azure-cli).
   * When installing Cilium Enterprise through Azure Marketplace, AKS validates that if the extension is from an Isovalent offer, then the extension name must be "cilium". The extension name error message has been clarified to reflect this requirement.
 
-* Behavior Changes
-  * Added exclusion list under [Image Cleaner feature](https://learn.microsoft.com/azure/aks/image-cleaner?tabs=azure-cli) for `mcr.microsoft.com/oss/kubernetes/pause:*` system image.
-
 * Component Updates
   * Eraser has been updated to version [v1.0.0](https://github.com/Azure/eraser/releases/tag/v1.0.0).
   * [Azure Monitor managed service for Prometheus addon](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview)'s `kube-state-metrics` image has been updated from 2.6.0 to [2.8.1](https://github.com/kubernetes/kube-state-metrics/releases/tag/v2.8.1). 
