@@ -28,7 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * For AKS clusters of version >= 1.23, [RuntimeDefault](https://kubernetes.io/docs/tutorials/security/seccomp/#enable-the-use-of-runtimedefault-as-the-default-seccomp-profile-for-all-workloads) is set as the default seccomp profile for all workloads.
 
 * Component Updates
-  * [Azure cloud controller manager] image updated to [v1.23.30](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.23.30/), [v1.24.17](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.24.17/), [v1.25.11](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.25.11/) and [v1.26.7](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.26.7/).
+  * Azure cloud controller manager image updated to [v1.23.30](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.23.30/), [v1.24.17](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.24.17/), [v1.25.11](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.25.11/) and [v1.26.7](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.26.7/).
   * Updated Azure Disk CSI driver to [1.26.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.3) on AKS clusters of versions >= 1.24.
   * Azure Monitor Container Insights image has been updated to [3.1.6](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#04072023--)
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202304.10.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202304.10.0.txt).
