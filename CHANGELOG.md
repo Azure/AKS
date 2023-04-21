@@ -1,5 +1,42 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-04-16
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+ 
+* Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+
+### Release notes
+
+* Features
+  * [Dual-stack networking (IPv4/IPv6) on kubenet](https://learn.microsoft.com/azure/aks/configure-kubenet-dual-stack?tabs=azure-cli%2Ckubectl) is now generally available.
+
+* Preview Features
+  * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) for Azure Kubernetes Service is now available in preview.
+
+* Bug Fix
+  * Fixed an issue that prevented the user-assigned managed identity of the AKS cluster from being updated from identity to another user-assigned managed identity.
+  * Disabled kubelet-registration-probe on Windows nodes of AKS version 1.26 to reduce [CPU consumption](https://github.com/kubernetes-csi/node-driver-registrar/issues/229).
+  * For clusters using [Image Cleaner preview feature](https://learn.microsoft.com/azure/aks/image-cleaner), the unused role `eraser-leader-election-role` and rolebinding `eraser-leader-election-rolebinding` have been deleted.
+  * Reduced Azure Blob CSI driver memory limit on agent node from 2100Mi to 400Mi.
+  * For dual-stack networking (IPv4/IPv6) clusters, fixed an issue where the Standard Load Balancer couldn't have IPv6 public prefixes.
+
+* Behavior Changes
+  * For AKS clusters of version >= 1.23, [RuntimeDefault](https://kubernetes.io/docs/tutorials/security/seccomp/#enable-the-use-of-runtimedefault-as-the-default-seccomp-profile-for-all-workloads) is set as the default seccomp profile for all workloads.
+
+* Component Updates
+  * [Azure cloud controller manager] image updated to [v1.23.30](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.23.30/), [v1.24.17](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.24.17/), [v1.25.11](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.25.11/) and [v1.26.7](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.26.7/).
+  * Updated Azure Disk CSI driver to [1.26.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.3) on AKS clusters of versions >= 1.24.
+  * Azure Monitor Container Insights image has been updated to [3.1.6](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#04072023--)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202304.10.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202304.10.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202304.10.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202304.10.0.txt).
+  * AKS Mariner image has been updated to [AKSMariner-202304.10.0](vhd-notes/AKSMariner/202304.10.0.txt).
+  * AKS Windows 2019 image has been updated to [17763.4252.230412](vhd-notes/AKSWindows/2019/17763.4252.230412.txt).
+  * AKS Windows 2022 image has been updated to [20348.1668.230412](vhd-notes/AKSWindows/2022/20348.1668.230412.txt).
+  
 ## Release 2023-04-09
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
@@ -16,7 +53,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [AAD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) is now Generally Available.
 
 * Preview Features
-  * [Stop cluster minor version upgrades on API breaking changes] is now available in preview. AKS will fail fast on minor version manual upgrades if it detects usages of deprecated APIs in the target version of the upgrade. This is available when target cluster for upgrade is >= 1.26.0, when the API request for cluster is using API version >= 2023-01-02-preview, and when usage of API breaking changes has been detected in the 12 hours prior to the upgrade.
+  * [Stop cluster minor version upgrades on API breaking changes](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) is now available in preview. AKS will fail fast on minor version manual upgrades if it detects usages of deprecated APIs in the target version of the upgrade. This is available when target cluster for upgrade is >= 1.26.0, when the API request for cluster is using API version >= 2023-01-02-preview, and when usage of API breaking changes has been detected in the 12 hours prior to the upgrade.
 
 * Bug Fix
   * Fixed an [issue](https://github.com/kubernetes/kubernetes/pull/115179) where `kube-scheduler` would crash on AKS clusters of version 1.25+ when there are inline volumes in the cluster.
@@ -4729,3 +4766,4 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
 [8]: https://docs.microsoft.com/en-us/azure/aks/update-credentials
 
 [previews]: https://github.com/Azure/AKS/blob/master/previews.md
+
