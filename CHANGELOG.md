@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-04-23
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+ 
+* Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
+* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+* Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
+* Microsoft has joined OpenCost community as a contributing partner, with initial contributions focused on bringing Azure resource pricing, cost allocation, and cost export to OpenCost and AKS. More details can be found [here](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/leverage-opencost-on-azure-kubernetes-service-to-understand-and/ba-p/3796813).
+
+### Release notes
+
+* Behavior Changes
+  * Image Cleaner removed unused RBAC resource - eraser-leader-election-role from image.
+  * Added a cert validation for reset service principal operation for cert rotation operations where both certs and service principal are expired.
+  * Changed the maxUnavailable pod to 5% from 2% for Large Scale clusters upgrade issues when running Cilium.
+  * Mariner is now rebranded to Azure Linux.  Customers can deploy with Mariner or Azure Linux, as both point to the same sku.
+
+* Component Updates
+  * Updated Blob CSI driver to [1.19.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.4) on AKS clusters of versions >= 1.24.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202304.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202304.20.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202304.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202304.20.0.txt).
+  * AKS Mariner image has been updated to [AKSMariner-202304.20.0](vhd-notes/AKSMariner/202304.20.0.txt).
+
 ## Release 2023-04-16
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
