@@ -9,7 +9,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
 * Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
 * Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
-* We are no longer offering support for Azure Disk and Azure File in-tree drivers in 1.26. Please migrate to csi
+* We are no longer offering support for Azure Disk and Azure File in-tree drivers in 1.26. Please [migrate to csi](https://learn.microsoft.com/en-us/azure/aks/csi-migrate-in-tree-volumes)
 
 ### Release notes
 
