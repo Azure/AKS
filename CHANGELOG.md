@@ -12,10 +12,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
+* Features
+  * [AAD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) is now Generally Available.
+
 * Behavior Changes
   * Added a cert validation for reset service principal operation for cert rotation operations where both certs and service principal are expired.
   * Changed the maxUnavailable pod to 5% from 2% for Large Scale clusters upgrade issues when running Cilium.
   * Mariner is now rebranded to Azure Linux. Customers can deploy with Mariner or Azure Linux, as both point to the same sku.
+  * The Azure Kubernetes Service RBAC Admin role definition has been updated to contain explicit references to dataActions instead of the broad ""Microsoft.ContainerService/managedClusters/*"" dataAction. This role is now equivalent to the permissions specified in the Kubernetes built-in admin role.
 
 * Component Updates
   * Updated Blob CSI driver to [1.19.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.4) on AKS clusters of versions >= 1.24.
