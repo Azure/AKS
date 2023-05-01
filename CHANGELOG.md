@@ -23,7 +23,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202304.24.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202304.24.0.txt).
   * AKS Mariner image has been updated to [AKSMariner-202304.24.0](vhd-notes/AKSMariner/202304.24.0.txt).
 
-
 ## Release 2023-04-23
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
