@@ -14,11 +14,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Preview Features
-  * Mariner is now supported in [NodeOSUpgradeChannel (preview)](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image).
+  * Mariner is now supported in [NodeOSUpgradeChannel (preview)](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image). This change is currently rolling out and expected to be in all regions by May 12th.
+  * [Migrating Azure CNI](https://learn.microsoft.com/azure/aks/azure-cni-overlay) (not enhanced subnet) to overlay is now in Public Preview.
 
 * Component Updates
   * AKS Container Insights monitoring addon has been updated to v3.1.7.
-  * The Prometheus addon image for linux and windows has been updated to v6.6.0-main-04-25-2023-2eb2a81c and v6.6.0-main-04-25-2023-2eb2a81c-win respectively. 
+  * The Prometheus addon image for linux and windows has been updated to v6.6.0-main-04-25-2023-2eb2a81c and v6.6.0-main-04-25-2023-2eb2a81c-win respectively.
+  * Metrics-server has been updated to version v0.6.3.
+  * Linux NPM has been updated to version v1.4.45.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202304.24.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202304.24.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202304.24.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202304.24.0.txt).
   * AKS Mariner image has been updated to [AKSMariner-202304.24.0](vhd-notes/AKSMariner/202304.24.0.txt).
