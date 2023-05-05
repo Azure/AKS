@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes
    * Upgraded csi-provisioner version to v3.5.0 to fix a volume deletion issue, [details](https://github.com/kubernetes/kubernetes/issues/100485#issuecomment-1497878875)
    * Added update permission for ciliumidentity, without this permission- cilium-operator and ciliumAgent cannot garbage collect unused [identities](https://github.com/cilium/cilium/commit/2adf5f4313d42ae055528b09eb8dff4c19e74a98).
-   * Now returning a clientError, when you do Stop/RunCommand action on a cluster that was never successfully provisioned and wa stuck in failed state.
+   * Now returning a clientError, when you do Stop/RunCommand action on a cluster that was never successfully provisioned and was stuck in failed state.
 
 * Behavior Changes
    * The maximum size of a request body for Nginx ingress controller default increased from 1MB to 64MB.Refer ARM specs [here](https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-details.md#max-request-body-size).
