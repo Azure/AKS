@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior Changes
    * The maximum size of a request body for Nginx ingress controller default increased from 1MB to 64MB.Refer ARM specs [here](https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-details.md#max-request-body-size).
-   * SDKs and other tools using API version 2023-04-01 or 2023-04-02-preview have removed the dockerBridgeCidr field. This field has been ignored since Kubernetes 1.19. Attempting to set this field may result in an error. To resolve the error, do not set this field.
+   * The Docker Bridge CIDR field in the AKS API was made redundant during our change from Docker to containerD in Kubernetes version 1.19. Starting with the 2023-04-01 AKS API version, the Docker Bridge CIDR field will be removed. 
 
 * Component Updates
   * AKS updated the OSM addon on clusters running AKS k8s version >= v1.24.0 from OSM v1.2.3 to v.1.2.4. Details [here](https://github.com/openservicemesh/osm/releases/tag/v1.2.4).
