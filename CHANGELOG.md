@@ -18,6 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Upgraded csi-provisioner version to v3.5.0 to fix a volume deletion issue, [details](https://github.com/kubernetes/kubernetes/issues/100485#issuecomment-1497878875)
    * Added update permission for ciliumidentity, without this permission- cilium-operator and ciliumAgent cannot garbage collect unused [identities](https://github.com/cilium/cilium/commit/2adf5f4313d42ae055528b09eb8dff4c19e74a98).
    * Now returning a clientError, when you do Stop/RunCommand action on a cluster that was never successfully provisioned and was stuck in failed state.
+   * Upgraded blob csi driver to [v1.19.5](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.5) on AKS 1.24, 1.25 to fix blobfuse install failures.
 
 * Behavior Changes
    * The maximum size of a request body for Nginx ingress controller default increased from 1MB to 64MB.Refer ARM specs [here](https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-details.md#max-request-body-size).
@@ -26,7 +27,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * AKS updated the OSM addon on clusters running AKS k8s version >= v1.24.0 from OSM v1.2.3 to v.1.2.4. Details [here](https://github.com/openservicemesh/osm/releases/tag/v1.2.4).
   * Azure Service Mesh add-on's Istiod and ingress images updated from v1.17.1 to [v1.17.2 patch](https://github.com/istio/istio/compare/1.17.1...1.17.2).
-
+  * Upgraded Cilium to version 1.12.8 along with changes to match [upstream](https://github.com/cilium/cilium/pull/24075/files#diff-8d03af2c9f8f368b86831ae81cfb6f4152e884baf74366c09f2d92363ad791e7).
 
 ## Release 2023-04-30
 
