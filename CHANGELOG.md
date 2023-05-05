@@ -21,7 +21,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Upgraded blob csi driver to [v1.19.5](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.5) on AKS 1.24, 1.25 to fix blobfuse install failures.
 
 * Behavior Changes
-   * The maximum size of a request body for Nginx ingress controller default increased from 1MB to 64MB.Refer ARM specs [here](https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-details.md#max-request-body-size).
    * The Docker Bridge CIDR field in the AKS API was made redundant during our change from Docker to containerD in Kubernetes version 1.19. Starting with the 2023-04-01 AKS API version, the Docker Bridge CIDR field will be removed. 
 
 * Component Updates
