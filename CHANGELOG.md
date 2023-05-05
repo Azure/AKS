@@ -8,6 +8,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Starting on March 21, 2023, traffic to k8s.gcr.io will be redirected to registry.k8s.io, following the [community announcement](https://kubernetes.io/blog/2023/03/10/image-registry-redirect/).
 * Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
 * Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
+* The Docker Bridge CIDR field in the AKS API was made redundant during our change from Docker to containerD in Kubernetes version 1.19. Starting with the 2023-04-01 AKS API version, the Docker Bridge CIDR field will be removed. 
 
 ### Release notes
 
@@ -17,11 +18,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes
    * Upgraded csi-provisioner version to v3.5.0 to fix a volume deletion issue, [details](https://github.com/kubernetes/kubernetes/issues/100485#issuecomment-1497878875)
    * Added update permission for ciliumidentity, without this permission- cilium-operator and ciliumAgent cannot garbage collect unused [identities](https://github.com/cilium/cilium/commit/2adf5f4313d42ae055528b09eb8dff4c19e74a98).
-   * Now returning a clientError, when you do Stop/RunCommand action on a cluster that was never successfully provisioned and was stuck in failed state.
+   * Now returning a clientError, when you do a Stop/RunCommand action on a cluster that was never successfully provisioned and was stuck in failed state. Error message returned is "The cluster is being deleted or hasn't been fully provisioned yet.".
    * Upgraded blob csi driver to [v1.19.5](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.5) on AKS 1.24, 1.25 to fix blobfuse install failures.
-
-* Behavior Changes
-   * The Docker Bridge CIDR field in the AKS API was made redundant during our change from Docker to containerD in Kubernetes version 1.19. Starting with the 2023-04-01 AKS API version, the Docker Bridge CIDR field will be removed. 
 
 * Component Updates
   * AKS updated the OSM addon on clusters running AKS k8s version >= v1.24.0 from OSM v1.2.3 to v.1.2.4. Details [here](https://github.com/openservicemesh/osm/releases/tag/v1.2.4).
