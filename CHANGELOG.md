@@ -5,7 +5,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
  
-* Docker container runtime will be retired for Windows nodepools on May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+* Docker container runtime for Windows nodepools has been retired as of May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
 * Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
 * The Docker Bridge CIDR field in the AKS API was made redundant during our change from Docker to containerD in Kubernetes version 1.19. Starting with the 2023-04-01 AKS API version, the Docker Bridge CIDR field will be removed. 
 
@@ -15,16 +15,16 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Mariner is now supported in [NodeOSUpgradeChannel (preview)](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image). This change is currently rolling out and expected to be in all regions by May 12th.
 
 * Bug Fixes
-   * Csi-provisioner version updated to v3.5.0 in order to fix a volume deletion issue, [details](https://github.com/kubernetes/kubernetes/issues/100485#issuecomment-1497878875)
-   * Added update permission for ciliumidentity, without this permission- cilium-operator and ciliumAgent cannot garbage collect unused [identities](https://github.com/cilium/cilium/commit/2adf5f4313d42ae055528b09eb8dff4c19e74a98).
+   * Updated 'cilium', 'cilium-operator', 'cilium-pre-flight' ClusterRoles to include 'update' permission for 'ciliumidentities' api-resource. This addresses the issue where cilium-operator and cilium-agent could not garbage collect unused identities. [identities](https://github.com/cilium/cilium/commit/2adf5f4313d42ae055528b09eb8dff4c19e74a98).
    * Now returning a clientError, when you do a Stop/RunCommand action on a cluster that was never successfully provisioned and was stuck in failed state. Error message returned is "The cluster is being deleted or hasn't been fully provisioned yet.".
-   * The CPU limit of Azure Monitor Metrics Addon (Windows Daemonset) is updated from 200m to 500m to fix a throttling issue.
+   * The CPU limit of Windows DaemonSet for Azure Monitor Metrics Addon is updated from 200m to 500m to fix throttling issue.
 
 * Component Updates
   * Open Service Mesh add-on images updated from v1.2.3 to [v1.2.4](https://github.com/openservicemesh/osm/releases/tag/v1.2.4) for AKS clusters of versions >= 1.24.0.
   * Istio-based service mesh add-on's istiod and ingress images updated from v1.17.1 to v1.17.2. User needs to restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
   * Cilium upgraded to [1.12.8](https://github.com/cilium/cilium/releases/tag/v1.12.8) for [AKS clusters with Azure CNI Powered by Cilium](https://learn.microsoft.com/en-us/azure/aks/azure-cni-powered-by-cilium).
   * Blob csi driver upgraded to [v1.19.5](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.5) on AKS 1.24, 1.25 to fix blobfuse install failures.
+  * Csi-provisioner version updated to v3.5.0 in order to fix a volume deletion issue, [details](https://github.com/kubernetes/kubernetes/issues/100485#issuecomment-1497878875)
   * Validations logic added to error out in [Azure CNI overlay](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/insufficientsubnetsize-error-advanced-networking) clusters, whenever autoscaler max count or manual scale node count likely goes over the IP limits of what the managed subnet and podcidr settings get by default
 
 ## Release 2023-04-30
