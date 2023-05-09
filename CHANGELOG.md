@@ -18,6 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Updated 'cilium', 'cilium-operator', 'cilium-pre-flight' ClusterRoles to include 'update' permission for 'ciliumidentities' api-resource. This addresses the issue where cilium-operator and cilium-agent could not garbage collect unused identities. [identities](https://github.com/cilium/cilium/commit/2adf5f4313d42ae055528b09eb8dff4c19e74a98).
    * Now returning a clientError, when you do a Stop/RunCommand action on a cluster that was never successfully provisioned and was stuck in failed state. Error message returned is "The cluster is being deleted or hasn't been fully provisioned yet.".
    * The CPU limit of Windows DaemonSet for Azure Monitor Metrics Addon is updated from 200m to 500m to fix throttling issue.
+   * Validations logic added to error out in [Azure CNI overlay](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/insufficientsubnetsize-error-advanced-networking) clusters, whenever autoscaler max count or manual scale node count likely goes over the IP limits of what the managed subnet and podcidr settings get by default
 
 * Component Updates
   * Open Service Mesh add-on images updated from v1.2.3 to [v1.2.4](https://github.com/openservicemesh/osm/releases/tag/v1.2.4) for AKS clusters of versions >= 1.24.0.
@@ -25,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Cilium upgraded to [1.12.8](https://github.com/cilium/cilium/releases/tag/v1.12.8) for [AKS clusters with Azure CNI Powered by Cilium](https://learn.microsoft.com/en-us/azure/aks/azure-cni-powered-by-cilium).
   * Blob csi driver upgraded to [v1.19.5](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.19.5) on AKS 1.24, 1.25 to fix blobfuse install failures.
   * Csi-provisioner version updated to v3.5.0 in order to fix a volume deletion issue, [details](https://github.com/kubernetes/kubernetes/issues/100485#issuecomment-1497878875)
-  * Validations logic added to error out in [Azure CNI overlay](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/insufficientsubnetsize-error-advanced-networking) clusters, whenever autoscaler max count or manual scale node count likely goes over the IP limits of what the managed subnet and podcidr settings get by default
+ 
 
 ## Release 2023-04-30
 
