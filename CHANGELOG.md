@@ -17,9 +17,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Customers can now upgrade AKS private clusters to [apiserver vnet integrated clusters](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration#limitations) in all public cloud regions.
   
 * Bug Fixes
-   * Now returning a clientError if the Public IP is not found, when creating agent pool with invalid nodePublicIPPrefixID.
+   * Now returning a clientError "Could not find the Public IP in resource group %s in subscription %s" when creating agent pool with invalid nodePublicIPPrefixID.
    * For Node Restriction enabled clusters running window calico, we added a new role "windows-calico-node-role" to grant windows containers permission to get secret from calico-system only.
-   * Now returning a clientError when Stop Cluster fails with ScaleVMSSAgentPoolFailed when there is no LB on the cluster.
+   * Now returning a clientError "Could not find any load balancer in resource group %s in subscription %s" when Stop Cluster fails with ScaleVMSSAgentPoolFailed when there is no LB on the cluster.
 
 * Component Updates
   * Azure File CSI driver upgraded to [v1.24.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.1)  for AKS 1.24, 1.25.
