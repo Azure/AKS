@@ -1,4 +1,34 @@
 # Azure Kubernetes Service Changelog
+## Release 2023-05-14
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+ 
+* Docker container runtime for Windows nodepools has been retired as of May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.
+* Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
+* AKS is gradually rolling out a change that will rotate the token in the kubeconfig credentials. It shall not incur any impact since kubeconfig has the client certificate. Should you see any issue, retrieve the kubeconfig again with `az aks get-credentials`.
+* Unattended Upgrades are disabled on Mariner when running on a NVIDIA GPU enabled VM sizes.
+* SecurityPatch OS Servicing channel is not supported on Mariner when running on NVIDIA GPU enabled VM sizes.
+
+### Release notes
+
+* Behavior Changes
+   * Customers can now upgrade AKS private clusters to [apiserver vnet integrated clusters](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limitations) in all public cloud regions.
+  
+* Bug Fixes
+   * Now returning a clientError "Could not find the Public IP in resource group %s in subscription %s" when creating agent pool with invalid nodePublicIPPrefixID.
+   * For Node Restriction enabled clusters running window calico, we added a new role "windows-calico-node-role" to grant windows containers permission to get secret from calico-system only.
+   * Now returning a clientError "Could not find any load balancer in resource group %s in subscription %s" when Stop Cluster fails with ScaleVMSSAgentPoolFailed when there is no LB on the cluster.
+
+* Component Updates
+  * Blob CSI driver upgraded to [v1.21.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.2) for AKS 1.26.
+  * CSI image liveness-probe upgraded to [v2.10.0](https://github.com/kubernetes-csi/livenessprobe/releases/tag/v2.10.0) and the node-driver-registrar image upgraded to [v2.8.0](https://github.com/kubernetes-csi/node-driver-registrar/releases/tag/v2.8.0) for CVE fixes.
+  * Azure File CSI driver upgraded to [v1.24.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.1)  for AKS 1.24, 1.25.
+  * CoreDNS upgraded to [1.9.4](https://github.com/coredns/coredns/releases/tag/v1.9.4) for AKS clusters of versions >= 1.24.0.
+  * AKS Windows 2019 image has been updated to [17763.4377.230510](vhd-notes/AKSWindows/2019/17763.4377.230510.txt).
+  * AKS Windows 2022 image has been updated to [20348.1726.230510](vhd-notes/AKSWindows/2022/20348.1726.230510.txt).
+
 ## Release 2023-05-07
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
