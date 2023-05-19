@@ -20,9 +20,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Enabled extra validation for user's custom resources in Istio addon.
    * The OSM addon no longer cleans-up HPA resources (osm-controller-hpa and osm-injector-hpa) on uninstall of the addon due to a label change. This change ensures these resources are cleaned up.
    * Enabled aks-support role to "get" access to these cilium CRD for debugging:ciliumnetworkpolicy, ciliumclusterwidenetworkpolicy,ciliumendpoint ciliumidentity, and ciliumnode for debugging.
-    * During cluster cleanup, we no longer delete the etcd backup storage after the cluster has been stopped for 30 days. Deletion of etcd backup only happens when the cluster is deleted.  
-    * For arm clients that use the location header instead of the async-operation header, return bad request 400 if the async operation failed for a client error rather than 500.
-    * AKS is gradually rolling out a change that will rotate the token in the kubeconfig credentials. It shall not incur any impact since kubeconfig has the client certificate. Should you see any issue, retrieve the kubeconfig again with az aks get-credentials.
+   * During cluster cleanup, we no longer delete the etcd backup storage after the cluster has been stopped for 30 days. Deletion of etcd backup only happens when the cluster is deleted.  
+   * For arm clients that use the location header instead of the async-operation header, return bad request 400 if the async operation failed for a client error rather than 500.
    * Enable the toggle to use ForcePodDrain option in Stop MC operation to give some grace period for the pod to stop before deleting the node. 
 
 * Bug Fixes
