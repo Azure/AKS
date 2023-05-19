@@ -1,4 +1,42 @@
 # Azure Kubernetes Service Changelog
+
+## Release 2023-05-21
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Docker container runtime for Windows nodepools has been retired as of May 1, 2023. After docker container runtime is retired, you may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd.AKS will delete all published windows 2019 docker images and it will block scaling up new nodes or creating new agent pools if windows 2019 docker images are used.  
+* After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only.
+* Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
+* AKS is gradually rolling out a change that will rotate the token in the kubeconfig credentials. It shall not incur any impact since kubeconfig has the client certificate. Should you see any issue, retrieve the kubeconfig again with `az aks get-credentials`.
+* Unattended Upgrades are disabled on Mariner when running on a NVIDIA GPU enabled VM sizes.
+* SecurityPatch OS Servicing channel is not supported on Mariner when running on NVIDIA GPU enabled VM sizes.
+
+### Release notes
+
+* Behavior Changes
+   * Introduced new field MaintenanceWindow into stable version 2023-05-01 to the MaintenanceConfiguration data model which allows users to configure more flexible schedule with custom UTC offsets.
+   * Enabled extra validation for user's custom resources in Istio addon.
+   * The OSM addon no longer cleans-up HPA resources (osm-controller-hpa and osm-injector-hpa) on uninstall of the addon due to a label change. This change ensures these resources are cleaned up.
+   * Enabled aks-support role to "get" access to these cilium CRD for debugging:ciliumnetworkpolicy, ciliumclusterwidenetworkpolicy,ciliumendpoint ciliumidentity, and ciliumnode for debugging.
+    * During cluster cleanup, we no longer delete the etcd backup storage after the cluster has been stopped for 30 days. Deletion of etcd backup only happens when the cluster is deleted.  
+    * For arm clients that use the location header instead of the async-operation header, return bad request 400 if the async operation failed for a client error rather than 500.
+
+* Bug Fixes
+   * Fixed bug that will recreate IPv6 SLB backend pools if missing on dual-stack clusters.
+   * Azure CNS released bug fix to generate cni conflist if NCs already exist, as well as implementation for CNS to write Cilium conflist. 
+   * Fixed bug to prevent customers from listing secrets in agent nodes. 
+
+* Component Updates
+   * Decrease default CPU request of Image Cleaner's vulnerability scanner from 1 core to half core which may cause client's scanning take longer time.
+   * Update container insights addon to version [3.1.8](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md). 
+   * Upgrade Azure Disk CSI driver to [v1.26.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.4) to fix CVE.
+   * Move to the [latest version](https://github.com/Azure/ClusterConfigurationAgent/releases/tag/v1.11.6-aks) of the extensionmanager image.  
+   * AKS Mariner image has been updated to [AKSMariner-202305.15.0](vhd-notes/AKSMariner/202305.15.0.txt).
+   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202305.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202305.15.0.txt). 
+   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202305.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202305.15.0.txt).
+
 ## Release 2023-05-14
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
@@ -15,6 +53,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior Changes
    * Customers can now upgrade AKS private clusters to [apiserver vnet integrated clusters](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limitations) in all public cloud regions.
+   * AKS is gradually rolling out a change that will rotate the token in the kubeconfig credentials. It shall not incur any impact since kubeconfig has the client certificate. Should you see any issue, retrieve the kubeconfig again with az aks get-credentials.
+   * Enable the toggle to use ForcePodDrain option in Stop MC operation to give some grace period for the pod to stop before deleting the node. 
   
 * Bug Fixes
    * Now returning a clientError "Could not find the Public IP in resource group %s in subscription %s" when creating agent pool with invalid nodePublicIPPrefixID.
@@ -22,12 +62,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Now returning a clientError "Could not find any load balancer in resource group %s in subscription %s" when Stop Cluster fails with ScaleVMSSAgentPoolFailed when there is no LB on the cluster.
 
 * Component Updates
-  * Blob CSI driver upgraded to [v1.21.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.2) for AKS 1.26.
-  * CSI image liveness-probe upgraded to [v2.10.0](https://github.com/kubernetes-csi/livenessprobe/releases/tag/v2.10.0) and the node-driver-registrar image upgraded to [v2.8.0](https://github.com/kubernetes-csi/node-driver-registrar/releases/tag/v2.8.0) for CVE fixes.
-  * Azure File CSI driver upgraded to [v1.24.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.1)  for AKS 1.24, 1.25.
-  * CoreDNS upgraded to [1.9.4](https://github.com/coredns/coredns/releases/tag/v1.9.4) for AKS clusters of versions >= 1.24.0.
-  * AKS Windows 2019 image has been updated to [17763.4377.230510](vhd-notes/AKSWindows/2019/17763.4377.230510.txt).
-  * AKS Windows 2022 image has been updated to [20348.1726.230510](vhd-notes/AKSWindows/2022/20348.1726.230510.txt).
+   * Blob CSI driver upgraded to [v1.21.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.2) for AKS 1.26.
+   * CSI image liveness-probe upgraded to [v2.10.0](https://github.com/kubernetes-csi/livenessprobe/releases/tag/v2.10.0) and the node-driver-registrar image upgraded to [v2.8.0](https://github.com/kubernetes-csi/node-driver-registrar/releases/tag/v2.8.0) for CVE fixes.
+   * Azure File CSI driver upgraded to [v1.24.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.1)  for AKS 1.24, 1.25.
+   * CoreDNS upgraded to [1.9.4](https://github.com/coredns/coredns/releases/tag/v1.9.4) for AKS clusters of versions >= 1.24.0.
+   * AKS Windows 2019 image has been updated to [17763.4377.230510](vhd-notes/AKSWindows/2019/17763.4377.230510.txt).
+   * AKS Windows 2022 image has been updated to [20348.1726.230510](vhd-notes/AKSWindows/2022/20348.1726.230510.txt).
 
 ## Release 2023-05-07
 
