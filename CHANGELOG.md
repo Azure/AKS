@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Bug Fixes
    * Fixed bug that will recreate IPv6 SLB backend pools if missing on dual-stack clusters.
-   * Azure CNI released bug fix to generate cni conflist if NCs already exist, as well as implementation for CNS to write Cilium conflist. 
+   * Azure CNS released bug fix to generate cni conflist if NCs(network container) already exist, as well as implementation for CNS to write Cilium conflist. 
    * Fixed bug to prevent customers from listing secrets in agent nodes. 
    * Fixed a bug where [disabling the Open Service Mesh add-on](https://learn.microsoft.com/azure/aks/open-service-mesh-uninstall-add-on) was leaving behind the HorizontalPodAutoscaler resources `osm-controller-hpa` and `osm-injector-hpa`
 
