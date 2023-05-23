@@ -16,24 +16,21 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Behavior Changes
-   * Introduced new field MaintenanceWindow into stable version 2023-05-01 to the MaintenanceConfiguration data model which allows users to configure more flexible schedule with custom UTC offsets.
-   * Enabled extra validation for user's custom resources in Istio addon.
-   * The OSM addon no longer cleans-up HPA resources (osm-controller-hpa and osm-injector-hpa) on uninstall of the addon due to a label change. This change ensures these resources are cleaned up.
    * Enabled aks-support role to "get" access to these cilium CRD for debugging:ciliumnetworkpolicy, ciliumclusterwidenetworkpolicy,ciliumendpoint ciliumidentity, and ciliumnode for debugging.
-   * During cluster cleanup, we no longer delete the etcd backup storage after the cluster has been stopped for 30 days. Deletion of etcd backup only happens when the cluster is deleted.  
-   * For arm clients that use the location header instead of the async-operation header, return bad request 400 if the async operation failed for a client error rather than 500.
+   * During cluster cleanup to help resolve [capacity issues](https://news.ycombinator.com/item?id=33743567), we no longer delete the etcd backup storage after the cluster has been stopped for 30 days. Deletion of etcd backup only happens when the cluster is deleted.  
+   * For arm clients that use the location header instead of the async-operation header, return bad request 400 if the async operation failed for a client error rather than 500 according to this [spec](https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md).
    * Enable the toggle to use ForcePodDrain option in Stop MC operation to give some grace period for the pod to stop before deleting the node. 
 
 * Bug Fixes
    * Fixed bug that will recreate IPv6 SLB backend pools if missing on dual-stack clusters.
-   * Azure CNS released bug fix to generate cni conflist if NCs already exist, as well as implementation for CNS to write Cilium conflist. 
+   * Azure CNI released bug fix to generate cni conflist if NCs already exist, as well as implementation for CNS to write Cilium conflist. 
    * Fixed bug to prevent customers from listing secrets in agent nodes. 
+   * Fixed a bug where [disabling the Open Service Mesh add-on](https://learn.microsoft.com/azure/aks/open-service-mesh-uninstall-add-on) was leaving behind the HorizontalPodAutoscaler resources `osm-controller-hpa` and `osm-injector-hpa`
 
 * Component Updates
    * Decrease default CPU request of Image Cleaner's vulnerability scanner from 1 core to half core which may cause client's scanning take longer time.
    * Update container insights addon to version [3.1.8](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md). 
    * Upgrade Azure Disk CSI driver to [v1.26.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.4) to fix CVE.
-   * Move to the [latest version](https://github.com/Azure/ClusterConfigurationAgent/releases/tag/v1.11.6-aks) of the extensionmanager image.  
    * AKS Mariner image has been updated to [AKSMariner-202305.15.0](vhd-notes/AKSMariner/202305.15.0.txt).
    * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202305.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202305.15.0.txt). 
    * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202305.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202305.15.0.txt).
@@ -175,9 +172,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * For clusters using [Image Cleaner preview feature](https://learn.microsoft.com/azure/aks/image-cleaner), the unused role `eraser-leader-election-role` and rolebinding `eraser-leader-election-rolebinding` have been deleted.
   * Reduced Azure Blob CSI driver memory limit on agent node from 2100Mi to 400Mi.
   * For dual-stack networking (IPv4/IPv6) clusters, fixed an issue where the Standard Load Balancer couldn't have IPv6 public prefixes.
-
-* Behavior Changes
-  * For AKS clusters of version >= 1.23, [RuntimeDefault](https://kubernetes.io/docs/tutorials/security/seccomp/#enable-the-use-of-runtimedefault-as-the-default-seccomp-profile-for-all-workloads) is set as the default seccomp profile for all workloads.
 
 * Component Updates
   * Azure cloud controller manager image updated to [v1.23.30](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.23.30/), [v1.24.17](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.24.17/), [v1.25.11](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.25.11/) and [v1.26.7](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.26.7/).
