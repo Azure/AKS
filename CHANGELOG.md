@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Behavior Changes
-   * Enabled aks-support role to "get" access to these cilium CRD for debugging:ciliumnetworkpolicy, ciliumclusterwidenetworkpolicy,ciliumendpoint ciliumidentity, and ciliumnode for debugging.
+   * Added get permissions for ciliumnetworkpolicy, ciliumclusterwidenetworkpolicy,ciliumendpoint ciliumidentity, and ciliumnode api-resources to the aks-service ClusterRole to enable support workflows.
    * During cluster cleanup to help resolve [capacity issues](https://news.ycombinator.com/item?id=33743567), we no longer delete the etcd backup storage after the cluster has been stopped for 30 days. Deletion of etcd backup only happens when the cluster is deleted.  
    * For arm clients that use the location header instead of the async-operation header, return bad request 400 if the async operation failed for a client error rather than 500 according to this [spec](https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md).
    * Enable the toggle to use ForcePodDrain option in Stop MC operation to give some grace period for the pod to stop before deleting the node. 
