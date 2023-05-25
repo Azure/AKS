@@ -22,12 +22,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Bug Fixes
    * Fixed bug that will recreate IPv6 SLB backend pools if missing on dual-stack clusters.
-   * Azure CNS released bug fix to generate cni conflist if NCs(network container) already exist, as well as implementation for CNS to write Cilium conflist. 
    * Fixed bug to prevent customers from listing secrets in agent nodes. 
    * Fixed a bug where [disabling the Open Service Mesh add-on](https://learn.microsoft.com/azure/aks/open-service-mesh-uninstall-add-on) was leaving behind the HorizontalPodAutoscaler resources `osm-controller-hpa` and `osm-injector-hpa`
 
 * Component Updates
    * Decrease default CPU request of Image Cleaner's vulnerability scanner from 1 core to half core which may cause client's scanning take longer time.
+   * Updated `azure-cns` image to [v1.4.44_hotfix](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.44_hotfix)
    * Update container insights addon to version [3.1.8](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md). 
    * Upgrade Azure Disk CSI driver to [v1.26.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.4) to fix CVE.
    * AKS Mariner image has been updated to [AKSMariner-202305.15.0](vhd-notes/AKSMariner/202305.15.0.txt).
