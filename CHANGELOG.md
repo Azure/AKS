@@ -1,4 +1,39 @@
 # Azure Kubernetes Service Changelog
+
+## Release 2023-05-21
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Docker container runtime for Windows nodepools has been retired as of May 1, 2023. You may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd. In alignment with this retirement, AKS has deleted all published windows 2019 docker images.  
+* After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only.
+* Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
+* Unattended Upgrades are disabled on Mariner when running on a NVIDIA GPU enabled VM sizes.
+* SecurityPatch OS Servicing channel is not supported on Mariner when running on NVIDIA GPU enabled VM sizes.
+
+### Release notes
+
+* Behavior Changes
+   * Added get permissions for ciliumnetworkpolicy, ciliumclusterwidenetworkpolicy,ciliumendpoint ciliumidentity, and ciliumnode api-resources to the aks-service ClusterRole to enable support workflows.
+   * After a cluster has been stopped for 30 days, etcd backup storage is no longer deleted. Deletion of etcd backup now only happens when the cluster is deleted.
+   * For arm clients that use the location header instead of the async-operation header, return bad request 400 if the async operation failed for a client error rather than 500 according to this [spec](https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md).
+   * Enable the toggle to use ForcePodDrain option in Stop MC operation to give some grace period for the pod to stop before deleting the node. 
+
+* Bug Fixes
+   * Fixed bug that will recreate IPv6 SLB backend pools if missing on dual-stack clusters.
+   * Fixed bug to prevent customers from listing secrets in agent nodes. 
+   * Fixed a bug where [disabling the Open Service Mesh add-on](https://learn.microsoft.com/azure/aks/open-service-mesh-uninstall-add-on) was leaving behind the HorizontalPodAutoscaler resources `osm-controller-hpa` and `osm-injector-hpa`
+
+* Component Updates
+   * Decrease default CPU request of Image Cleaner's vulnerability scanner from 1 core to half core which may cause client's scanning take longer time.
+   * Updated `azure-cns` image to [v1.4.44_hotfix](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.44_hotfix)
+   * Update container insights addon to version [3.1.8](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md). 
+   * Upgrade Azure Disk CSI driver to [v1.26.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.4) to fix CVE.
+   * AKS Mariner image has been updated to [AKSMariner-202305.15.0](vhd-notes/AKSMariner/202305.15.0.txt).
+   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202305.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202305.15.0.txt). 
+   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202305.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202305.15.0.txt).
+
 ## Release 2023-05-14
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
@@ -15,19 +50,18 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior Changes
    * Customers can now upgrade AKS private clusters to [apiserver vnet integrated clusters](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limitations) in all public cloud regions.
-  
 * Bug Fixes
    * Now returning a clientError "Could not find the Public IP in resource group %s in subscription %s" when creating agent pool with invalid nodePublicIPPrefixID.
    * For Node Restriction enabled clusters running window calico, we added a new role "windows-calico-node-role" to grant windows containers permission to get secret from calico-system only.
    * Now returning a clientError "Could not find any load balancer in resource group %s in subscription %s" when Stop Cluster fails with ScaleVMSSAgentPoolFailed when there is no LB on the cluster.
 
 * Component Updates
-  * Blob CSI driver upgraded to [v1.21.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.2) for AKS 1.26.
-  * CSI image liveness-probe upgraded to [v2.10.0](https://github.com/kubernetes-csi/livenessprobe/releases/tag/v2.10.0) and the node-driver-registrar image upgraded to [v2.8.0](https://github.com/kubernetes-csi/node-driver-registrar/releases/tag/v2.8.0) for CVE fixes.
-  * Azure File CSI driver upgraded to [v1.24.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.1)  for AKS 1.24, 1.25.
-  * CoreDNS upgraded to [1.9.4](https://github.com/coredns/coredns/releases/tag/v1.9.4) for AKS clusters of versions >= 1.24.0.
-  * AKS Windows 2019 image has been updated to [17763.4377.230510](vhd-notes/AKSWindows/2019/17763.4377.230510.txt).
-  * AKS Windows 2022 image has been updated to [20348.1726.230510](vhd-notes/AKSWindows/2022/20348.1726.230510.txt).
+   * Blob CSI driver upgraded to [v1.21.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.2) for AKS 1.26.
+   * CSI image liveness-probe upgraded to [v2.10.0](https://github.com/kubernetes-csi/livenessprobe/releases/tag/v2.10.0) and the node-driver-registrar image upgraded to [v2.8.0](https://github.com/kubernetes-csi/node-driver-registrar/releases/tag/v2.8.0) for CVE fixes.
+   * Azure File CSI driver upgraded to [v1.24.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.1)  for AKS 1.24, 1.25.
+   * CoreDNS upgraded to [1.9.4](https://github.com/coredns/coredns/releases/tag/v1.9.4) for AKS clusters of versions >= 1.24.0.
+   * AKS Windows 2019 image has been updated to [17763.4377.230510](vhd-notes/AKSWindows/2019/17763.4377.230510.txt).
+   * AKS Windows 2022 image has been updated to [20348.1726.230510](vhd-notes/AKSWindows/2022/20348.1726.230510.txt).
 
 ## Release 2023-05-07
 
@@ -137,9 +171,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * For clusters using [Image Cleaner preview feature](https://learn.microsoft.com/azure/aks/image-cleaner), the unused role `eraser-leader-election-role` and rolebinding `eraser-leader-election-rolebinding` have been deleted.
   * Reduced Azure Blob CSI driver memory limit on agent node from 2100Mi to 400Mi.
   * For dual-stack networking (IPv4/IPv6) clusters, fixed an issue where the Standard Load Balancer couldn't have IPv6 public prefixes.
-
-* Behavior Changes
-  * For AKS clusters of version >= 1.23, [RuntimeDefault](https://kubernetes.io/docs/tutorials/security/seccomp/#enable-the-use-of-runtimedefault-as-the-default-seccomp-profile-for-all-workloads) is set as the default seccomp profile for all workloads.
 
 * Component Updates
   * Azure cloud controller manager image updated to [v1.23.30](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.23.30/), [v1.24.17](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.24.17/), [v1.25.11](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.25.11/) and [v1.26.7](https://cloud-provider-azure.sigs.k8s.io/blog/2023/03/13/v1.26.7/).
