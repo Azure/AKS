@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * Azure Linux is now generally available as a container host OS on AKS. The Build announcement can be found [here](https://build.microsoft.com/en-US/sessions/379005cd-6a55-4511-8d43-c5ceaad34e60?source=sessions) and the documentation for deploying Azure Linux can be found [here](https://learn.microsoft.com/en-us/azure/azure-linux/intro-azure-linux).
+  * Azure Linux is now generally available as a container host OS on AKS. The Build announcement can be found [here](https://build.microsoft.com/sessions/379005cd-6a55-4511-8d43-c5ceaad34e60?source=sessions) and the documentation for deploying Azure Linux can be found [here](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux).
   * FIPS image support is now enabled for Azure Linux.
   * The [AKS devX extension](https://github.com/Azure/aks-devx-tools) now supports the creation of GitHub Actions.
   * Azure AD [Workload Identity](https://aka.ms/aks/workloadidentity) is now Generally available.
