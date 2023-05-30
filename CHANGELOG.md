@@ -30,13 +30,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavior Changes
   * Customers may not upgrade to v1.25 and above if PSP is enabled, an error will occur if attempted.
   * Added hint to help guide users to install kubelogin if not already in their PATH.
-  * KMS v2 now supports clusters on kubernetes v1.27 and above. For kubernetes v1.27 and above, KMS v2 will be used as default for new clusters. For existing clusters upgraded to kubernetes 1.27 and above, KMS v1 will be used.
   * Updated error handling for VMs failing with the same error code (50,51,52).
   * large-cluster-overrides.yaml is not disabled for free tier clusters in subscriptions included in the file.
   * Web Application Routing now supports configuration through the Azure portal.
    
 * Bug Fixes
-  * Fixed a bug to make windows azure-cns work in kubernetes v1.27 and above.
   * Fixed a bug to resolve an upstream issue where the volume is not detached after the pod and PVC objects are deleted. See resolved issue [here](https://github.com/kubernetes/kubernetes/issues/114207).
   * Fixed a bug that caused DNS leakage in AKS Managed DNS zone.
   * Fixed a bug to add disk pv node affinity check.
