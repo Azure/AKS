@@ -11,22 +11,21 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
 * Unattended Upgrades are disabled on Azure Linux when running on a NVIDIA GPU enabled VM sizes.
 * [SecurityPatch OS Servicing channel](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-image) is not supported on Azure Linux when running on NVIDIA GPU enabled VM sizes.
-* Windows2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows2022](https://learn.microsoft.com/en-us/azure/aks/upgrade-windows-2019-2022).
+* Windows2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
 
 ### Release notes
 
 * Features
-  * Azure Linux is now generally available as a container host OS on AKS. The Build announcement can be found [here](https://build.microsoft.com/en-US/sessions/379005cd-6a55-4511-8d43-c5ceaad34e60?source=sessions) and the documentation for deploying Azure Linux can be found [here](https://learn.microsoft.com/en-us/azure/azure-linux/intro-azure-linux).
+  * Azure Linux is now generally available as a container host OS on AKS. The Build announcement can be found [here](https://build.microsoft.com/sessions/379005cd-6a55-4511-8d43-c5ceaad34e60?source=sessions) and the documentation for deploying Azure Linux can be found [here](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux).
   * FIPS image support is now enabled for Azure Linux.
   * The [AKS devX extension](https://github.com/Azure/aks-devx-tools) now supports the creation of GitHub Actions.
-  * Azure AD [Workload Identity](https://aka.ms/aks/workloadidentity) is now Generally available.
-  * [Managed Prometheus](https://learn.microsoft.com/en-Us/azure/azure-monitor/essentials/prometheus-metrics-overview) and [Grafana](https://learn.microsoft.com/en-us/azure/managed-grafana/overview) are now Generally available.
+  * [Managed Prometheus](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview) and [Grafana](https://learn.microsoft.com/azure/managed-grafana/overview) are now Generally available.
   * [Kubernetes Apps](https://aka.ms/deployK8sApp) is now Generally available.
 
 * Preview Features
-  * [Generation 2 VMs](https://learn.microsoft.com/en-us/azure/aks/cluster-configuration#:~:text=Generation%202%20virtual%20machines%20on%20Windows%20(preview)) are now supported for Windows node pools. 
-  * [Custom Node Configuration for kubelet parameters](https://learn.microsoft.com/en-us/azure/aks/custom-node-configuration?tabs=linux-node-pools#:~:text=Prerequisites%20for%20Windows%20kubelet%20custom%20configuration%20(preview)) is now supported for Windows node pools.
-  * [Automated deployments](https://learn.microsoft.com/en-us/azure/aks/automated-deployments) now supports draft. Take your application and automatically create dockerfiles, kubernetes manifests, and github actions to deploy it onto your AKS cluster with ease.
+  * [Generation 2 VMs](https://learn.microsoft.com/azure/aks/cluster-configuration#:~:text=Generation%202%20virtual%20machines%20on%20Windows%20(preview)) are now supported for Windows node pools. 
+  * [Custom Node Configuration for kubelet parameters](https://learn.microsoft.com/azure/aks/custom-node-configuration?tabs=linux-node-pools#:~:text=Prerequisites%20for%20Windows%20kubelet%20custom%20configuration%20(preview)) is now supported for Windows node pools.
+  * [Automated deployments](https://learn.microsoft.com/azure/aks/automated-deployments) now supports draft. Take your application and automatically create dockerfiles, kubernetes manifests, and github actions to deploy it onto your AKS cluster with ease.
 
 * Behavior Changes
   * Customers may not upgrade to v1.25 and above if PSP is enabled, an error will occur if attempted.
