@@ -1,5 +1,49 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-05-28
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Docker container runtime for Windows nodepools has been retired as of May 1, 2023. You may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd. In alignment with this retirement, AKS has deleted all published windows 2019 docker images.  
+* After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only.
+* Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
+* Unattended Upgrades are disabled on Azure Linux when running on a NVIDIA GPU enabled VM sizes.
+* [SecurityPatch OS Servicing channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) is not supported on Azure Linux when running on NVIDIA GPU enabled VM sizes.
+* Windows2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+
+### Release notes
+
+* Features
+  * Azure Linux is now generally available as a container host OS on AKS. The Build announcement can be found [here](https://build.microsoft.com/sessions/379005cd-6a55-4511-8d43-c5ceaad34e60?source=sessions) and the documentation for deploying Azure Linux can be found [here](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux).
+  * FIPS image support is now enabled for Azure Linux.
+  * The [AKS devX extension](https://github.com/Azure/aks-devx-tools) now supports the creation of GitHub Actions.
+  * [Managed Prometheus](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview) is now Generally available.
+  * [Kubernetes Apps](https://aka.ms/deployK8sApp) is now Generally available.
+
+* Preview Features
+  * [Generation 2 VMs](https://learn.microsoft.com/azure/aks/cluster-configuration#:~:text=Generation%202%20virtual%20machines%20on%20Windows%20(preview)) are now supported for Windows node pools. 
+  * [Custom Node Configuration for kubelet parameters](https://learn.microsoft.com/azure/aks/custom-node-configuration?tabs=linux-node-pools#:~:text=Prerequisites%20for%20Windows%20kubelet%20custom%20configuration%20(preview)) is now supported for Windows node pools.
+  * [Automated deployments](https://learn.microsoft.com/azure/aks/automated-deployments) now supports draft. Take your application and automatically create dockerfiles, kubernetes manifests, and github actions to deploy it onto your AKS cluster with ease.
+
+* Behavior Changes
+  * PodSecurityPolicy is removed in AKS clusters v1.25 and higher. Customers may not upgrade to v1.25 and above if PSP is enabled, an error will occur if attempted. PSP needs to be disabled before upgrading.
+  * Added [installhint](https://kubernetes.io/docs/reference/config-api/kubeconfig.v1/#ExecConfig:~:text=clobber%20unknown%20fields-,ExecConfig,-Appears%20in%3A) to help guide users to install kubelogin if not already in their PATH. Users will see this hint when they get the user kubeconfig for their cluster in exec format and when a tool they use in conjunction with that kubeconfig chooses to display that hint.
+  * Added configmap hash to cilium agent and operator annotations. The configmap hash will appear in the k8s manifests for [cilium-operator and cilium-agent](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium). 
+  * Improved error messages and public documentation for errors [50](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-outboundconnfailvmextensionerror), [51](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-k8sapiserverconnfailvmextensionerror), and [52](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-k8sapiserverdnslookupfailvmextensionerror). Now when customers encounter these errors, they should be able to resolve them by accessing the appropriate section in our troubleshooting documentation.
+  * Web Application Routing now supports configuration through the Azure portal.
+  * During cluster upgrade to v1.26.0 or a later version, disk PV node affinity check will cause the upgrade to fail if there are disk PVs still using deprecated labels: failure-domain.beta.kubernetes.io/zone and failure-domain.beta.kubernetes.io/region
+   
+* Bug Fixes
+  * Fixed a bug to resolve an upstream issue where the volume is not detached after the pod and PVC objects are deleted. See resolved issue [here](https://github.com/kubernetes/kubernetes/issues/114207).
+
+* Component Updates
+  * Azure File CSI driver has been upgraded to [v1.24.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.2).
+  * Azure Linux image has been updated to [AzureLinux-202305.24.0](vhd-notes/AzureLinux/202305.24.0.txt).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202305.24.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202305.24.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202305.24.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202305.24.0.txt).
+
 ## Release 2023-05-21
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
