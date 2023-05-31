@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior Changes
   * PodSecurityPolicy is removed in AKS clusters v1.25 and higher. Customers may not upgrade to v1.25 and above if PSP is enabled, an error will occur if attempted. PSP needs to be disabled before upgrading.
-  * Added hint to help guide users to install kubelogin if not already in their PATH.
+  * Added [installhint](https://kubernetes.io/docs/reference/config-api/kubeconfig.v1/#ExecConfig:~:text=clobber%20unknown%20fields-,ExecConfig,-Appears%20in%3A) to help guide users to install kubelogin if not already in their PATH. Users will see this hint when they get the user kubeconfig for their cluster in exec format and when a tool they use in conjunction with that kubeconfig chooses to display that hint.
   * Added configmap hash to cilium agent and operator annotations. The configmap hash will appear in the k8s manifests for [cilium-operator and cilium-agent](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium). 
   * Improved error messages and public documentation for errors [50](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-outboundconnfailvmextensionerror), [51](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-k8sapiserverconnfailvmextensionerror), and [52](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-k8sapiserverdnslookupfailvmextensionerror). Now when customers encounter these errors, they should be able to resolve them by accessing the appropriate section in our troubleshooting documentation.
   * Web Application Routing now supports configuration through the Azure portal.
