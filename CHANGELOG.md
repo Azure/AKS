@@ -33,7 +33,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Added configmap hash to cilium agent and operator annotations. The configmap hash will appear in the k8s manifests for [cilium-operator and cilium-agent](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium). 
   * Improved error messages and public documentation for errors [50](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-outboundconnfailvmextensionerror), [51](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-k8sapiserverconnfailvmextensionerror), and [52](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/error-code-k8sapiserverdnslookupfailvmextensionerror). Now when customers encounter these errors, they should be able to resolve them by accessing the appropriate section in our troubleshooting documentation.
   * Web Application Routing now supports configuration through the Azure portal.
-  * During cluster upgrade to v1.26.0 or a later version, disk PV node affinity check will cause the upgrade to fail if there are disk PVs still using deprecated labels failure-domain.beta.kubernetes.io/zone and failure-domain.beta.kubernetes.io/regio
+  * During cluster upgrade to v1.26.0 or a later version, disk PV node affinity check will cause the upgrade to fail if there are disk PVs still using deprecated labels failure-domain.beta.kubernetes.io/zone and failure-domain.beta.kubernetes.io/region
    
 * Bug Fixes
   * Fixed a bug to resolve an upstream issue where the volume is not detached after the pod and PVC objects are deleted. See resolved issue [here](https://github.com/kubernetes/kubernetes/issues/114207).
