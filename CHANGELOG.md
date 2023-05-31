@@ -36,7 +36,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    
 * Bug Fixes
   * Fixed a bug to resolve an upstream issue where the volume is not detached after the pod and PVC objects are deleted. See resolved issue [here](https://github.com/kubernetes/kubernetes/issues/114207).
-  * Fixed a bug that caused DNS leakage in AKS Managed DNS zone.
   * Fixed a bug to add disk pv node affinity check.
 
 * Component Updates
