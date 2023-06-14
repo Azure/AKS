@@ -1,5 +1,34 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-06-11
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* With [AKS Components Breaking Changes by Version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version), you can note important changes to make before you upgrade.
+* [Kubernetes 1.24 is the last version of Kubernetes supported by AKS Engine](https://github.com/Azure/aks-engine#project-status). Kubernetes 1.24 goes end-of-life in July, at which point Upstream will stop releasing patches for AKS Engine and archive the project. Please consider using [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/products/kubernetes-service/#overview) for managed Kubernetes or [Cluster API Provider Azure](https://github.com/kubernetes-sigs/cluster-api-provider-azure) for self-managed Kubernetes.
+* [Kubernetes version 1.27](https://kubernetes.io/blog/2023/04/11/kubernetes-v1-27-release/) is now Public Preview with AKS. [AKS will deprecate Kubernetes version 1.24 in July](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar), 2023. Please upgrade your AKS clusters to version 1.25 or above before 1.24 deprecation.
+* After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only.
+* [SecurityPatch OS Servicing channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) is not supported on Azure Linux when running on NVIDIA GPU enabled VM sizes.
+* Windows2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+
+### Release notes
+
+* Features
+  * [Migrating a cluster from Azure CNI V1 to CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay#upgrade-an-existing-cluster-to-cni-overlay-preview) is GA now. 
+  * [KMS V2 is configured by default since AKS version 1.27 with the KMS feature enabled](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#kms-v2-support). With KMS V2, you aren't limited to the 2,000 secrets support. For more information, you can refer to the [KMS V2 Improvements](https://kubernetes.io/blog/2022/09/09/kms-v2-improvements/).
+
+
+* Component Updates
+  * DNC, DNC-rc images have been upgraded to [2023.6.5.1](add link).
+  * ip-masq-agent-v2 has been updated to [v0.1.7](https://github.com/Azure/AgentBaker/pull/3278)
+  * omsagent/ama-logs addon has been updated to [v3.1.9](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#06082023--)
+  * OSM addon has been updated from v1.2.4 to v.1.2.5 on clusters running AKS >= v1.24.0. This patch release allows users to set the http and tcp idle timeouts via MeshConfig.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202306.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202306.07.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.07.0.txt).
+  * AKS Mariner image has been updated to [AKSMariner-202306.07.0](vhd-notes/AKSMariner/202306.07.0.txt).
+
+
 ## Release 2023-05-28
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
