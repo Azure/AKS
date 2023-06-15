@@ -28,7 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * OSM addon has been updated from v1.2.4 to v.1.2.5 on clusters running AKS >= v1.24.0. This patch release allows users to set the http and tcp idle timeouts via MeshConfig.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202306.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202306.07.0.txt). 
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.07.0.txt).
-  * AKS Mariner image has been updated to [AKSMariner-202306.07.0](vhd-notes/AKSMariner/202306.07.0.txt).
+  * Azure Linux image has been updated to [AKSMariner-202306.07.0](vhd-notes/AKSMariner/202306.07.0.txt).
 
 
 ## Release 2023-05-28
