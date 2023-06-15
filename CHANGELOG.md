@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-06-04
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Docker container runtime for Windows nodepools has been retired as of May 1, 2023. You may remain on existing deployed instances but scaling operations will fail, nodepool creation will fail, and you will be out of support. Follow the detailed steps [in our documentation](https://learn.microsoft.com/azure/aks/learn/quick-windows-container-deploy-cli) to upgrade to containerd. In alignment with this retirement, AKS has deleted all published windows 2019 docker images. 
+* After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only.
+* Each Kubernetes version is supported for 12 months. After 12 months, the minor version will shift to platform support only. Our new [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy) provides customers with Azure infrastructure support while the cluster is in an n-3 version (where n is the latest supported AKS GA minor version). Platform support does not include anything related to Kubernetes functionality and components, but provides customers with additional support beyond what was previously provided for unsupported versions.
+* Unattended Upgrades are disabled on Azure Linux when running on a NVIDIA GPU enabled VM sizes.
+* [SecurityPatch OS Servicing channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) is not supported on Azure Linux when running on NVIDIA GPU enabled VM sizes.
+* Windows2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+
+### Release notes
+
+* Behavior Changes
+   * Automatic upgrades will now be blocked on clusters that have clients [using deprecated API versions](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes-preview). This will be logged into the cluster's activity log. Upgrades will be retried during each upgrade interval and will succeed when usage of deprecated APIs has stopped. Clusters can also be [upgraded manually with the deprecated API validation bypassed](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#bypass-validation-to-ignore-api-changes).
+   * Konnectivity will now be deployed into clusters using BYOCNI or API Server VNet Integration in combination with Azure CNI Overlay.
+
+* Component Updates
+  * ip-masq-agent-v2 has been upgraded to [v0.1.6](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.6).
+  * Azure Blob Storage CSI driver has been upgraded to [v1.21.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.3) for AKS 1.26+.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202306.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202306.01.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.01.0.txt).
+
 ## Release 2023-05-28
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
