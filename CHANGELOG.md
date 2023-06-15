@@ -11,7 +11,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only.
 * [SecurityPatch OS Servicing channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) is not supported on Azure Linux when running on NVIDIA GPU enabled VM sizes.
 * Windows2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
-
+The support policy for clusters in a deleted subscription has been updated. To align with Azure data retention policies, all clusters in a deleted subscription will be deleted immediately. See [support policy](https://learn.microsoft.com/azure/aks/support-policies#stopped-or-de-allocated-clusters:~:text=Stopped%2C%20deallocated%2C%20and%20Not%20Ready%20nodes) for more details.
 ### Release notes
 
 * Features
