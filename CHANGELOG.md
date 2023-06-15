@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * [Migrating a cluster from Azure CNI V1 to CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay#upgrade-an-existing-cluster-to-cni-overlay-preview) is GA now. 
+  * [Migrating a cluster from Azure CNI V1 to CNI Overlay](https://learn.microsoft.com/en-us/azure/aks/azure-cni-overlay#upgrade-an-existing-cluster-to-cni-overlay) is GA now. 
   * [KMS V2 is configured by default since AKS version 1.27 with the KMS feature enabled](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#kms-v2-support). With KMS V2, you aren't limited to the 2,000 secrets support. For more information, you can refer to the [KMS V2 Improvements](https://kubernetes.io/blog/2023/05/16/kms-v2-moves-to-beta/).
 
 
