@@ -67,11 +67,5 @@ this repository must:
 
 ## Hiring
 ### Engineering
-- [Principal Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1332158/Principal%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
-- [Senior Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1171089/Senior%20Software%20Engineer%20-%20Azure%20Kubernetes%20Service)
-- [Software Engineer II - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1241030)
-- [Software Engineer - Azure Kubernetes Service](https://careers.microsoft.com/us/en/job/1241021)
 
-### Product Management
-
-- [Senior Product Manager](https://careers.microsoft.com/us/en/job/1225749/Senior%20Program%20Manager)
+- [Senior Software Engineer - Azure Kubernetes Service](https://jobs.careers.microsoft.com/global/en/job/1571321/Senior-Software-Engineer---Azure-Kubernetes-Service)
