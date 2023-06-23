@@ -35,7 +35,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Default for [node os upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) updated to `NodeImage` in 2023-06-01 and 2023-06-02-preview APIs.
   * [Registration of NodeOSUpgradeChannelPreview feature flag](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image#register-the-nodeosupgradechannelpreview-feature-flag) is only required to use `SecurityPatch` Channel.
 
-
 * Bug Fixes
   * Fix a bug that could cause nodepool creation to retry unnecessarily in [Azure CNI enhanced subnet support clusters](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation).
   * Increased CSI snapshot timeout to 600s to fix the azure disk cross region snapshot timeout issue.
