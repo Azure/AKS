@@ -1,5 +1,58 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-06-18
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* [Kubernetes 1.24 is the last version of Kubernetes supported by AKS Engine](https://github.com/Azure/aks-engine#project-status). Kubernetes 1.24 goes end-of-life in July, at which point Upstream will stop releasing patches for AKS Engine and archive the project. Please consider using [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/products/kubernetes-service/#overview) for managed Kubernetes or [Cluster API Provider Azure](https://github.com/kubernetes-sigs/cluster-api-provider-azure) for self-managed Kubernetes.
+* Because of Ubuntu 22.04 FIPS certification status, we'll [switch AKS FIPS nodes from 18.04 to 20.04](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version) from 1.27 preview onwards.
+* After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only. 
+* Windows2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+
+### Release notes
+
+* Preview Features
+  * Existing AKS private clusters can now be converted to [API Server VNet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) clusters.
+
+* Behavior Changes
+  * Added node affinity for ebpf-dataplane=cilium to Azure CNI Powered by Cilium pod.
+  * Introduced `overlay-vpa-webhook-generation` and `overlay-vpa-cert-webhook-check` jobs to cleanup and generate [Vertical Pod Autoscaling](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) secrets and webhook.
+  * Change the default OS disk to Standard SSD instead of Standard HDD for VM SKUs that do not support ephemeral OS disks.
+  * Starting 2023-06-02-preview API, pod CIDR is returned when network plugin is none.
+  * Updated custom node configuration to change allowed value range for the following:
+    * sysctls
+      * netIpv4TcpkeepaliveIntvl - Previously: 10-75. New: 10-90.
+      * netIpv4IpLocalPortRange - Previously: First (1024 - 60999) and Last (32768 - 65000). New: First (1024 - 60999) and Last (32768 - 65535).
+      * netNetfilterNfConntrackMax - Previously: 131072 - 1048576. New: 131072 - 2097152.
+      * netNetfilterNfConntrackBuckets - Previously: 65536 - 147456. New: 65536 - 524288.
+    * ulimits
+      * maxLockedMemory - Previously: unlimited. New: values > 0.
+      * noFile - Previously: 1024. New: Values > 1024.
+  * Removed unnecessary `kubernetes.io/os: linux` nodeSelector from Cilium daemonset in Azure CNI Powered By Cilium clusters.
+  * `kube-proxy-replacement-healthz-bind-address` set to `0.0.0.0:10256` in `cilium-config` ConfigMap on Azure CNI Powered By Cilium clusters.
+  * Default for [node os upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) updated to `NodeImage` in 2023-06-01 and 2023-06-02-preview APIs.
+  * [Registration of NodeOSUpgradeChannelPreview feature flag](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image#register-the-nodeosupgradechannelpreview-feature-flag) is only required to use `SecurityPatch` Channel.
+
+
+* Bug Fixes
+  * Fix a bug that could cause nodepool creation to retry unnecessarily in [Azure CNI enhanced subnet support clusters](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation).
+  * Increased CSI snapshot timeout to 600s to fix the azure disk cross region snapshot timeout issue.
+
+* Component Updates
+  * cloud-node-manager updated to [v1.24.21](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.24.21), [v1.25.15](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.15), [v1.26.11](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.11) and [v1.27.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.5) on respective AKS versions.
+  * Updated azure-cns version to [1.5.3](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.3).
+  * Updated cluster-auto-scaler version to 1.26.5.
+  * Updated virtual kubelet Azure ACI connector image to [1.4.16](https://github.com/virtual-kubelet/azure-aci/releases/tag/v1.4.16)
+  * Updated Cilium version to [1.12.10](https://github.com/cilium/cilium/releases/tag/v1.12.10) in Azure CNI Powered by Cilium.
+  * Updated Blob CSI driver to [1.21.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.4).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202306.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202306.13.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.13.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202306.13.0](vhd-notes/AzureLinux/202306.13.0.txt).
+  * AKS Windows 2019 image has been updated to [17763.4499.230614](vhd-notes/AKSWindows/2019/17763.4499.230614.txt).
+  * AKS Windows 2022 image has been updated to [20348.1787.230614](vhd-notes/AKSWindows/2022/20348.1787.230614.txt).
+
 ## Release 2023-06-11
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
