@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Upgrade Azure Disk CSI driver version to [1.26.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.5) on K8S 1.24+
   * Upgrade AGIC addon to version [1.7.1](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.7.1) for K8S >= 1.27
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202306.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202306.19.0.txt). 
-  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.13.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.19.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202306.19.0](vhd-notes/AzureLinux/202306.19.0.txt).
 
 
