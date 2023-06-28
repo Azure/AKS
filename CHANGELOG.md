@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-06-25
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* [Kubernetes 1.24 is the last version of Kubernetes supported by AKS Engine](https://github.com/Azure/aks-engine#project-status). Kubernetes 1.24 goes end-of-life in July, at which point Upstream will stop releasing patches for AKS Engine and archive the project. Please consider using [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/products/kubernetes-service/#overview) for managed Kubernetes or [Cluster API Provider Azure](https://github.com/kubernetes-sigs/cluster-api-provider-azure) for self-managed Kubernetes.
+* Because of [Ubuntu 22.04 FIPS](https://ubuntu.com/security/fips) certification status, we'll [switch AKS FIPS nodes from 18.04 to 20.04](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version) from 1.27 preview onwards.
+* After May 31, 2023, Ubuntu 18.04 will reach end of life. AKS will continue to update the host OS from Canonical into the Kubernetes 1.24 VHD images. Customers will not receive daily security updates from Canonical past the end of May, but will be able to consume those through a node image update only. 
+* Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+* Kubernetes 1.24 is being deprecated end of July 2023. From Kubernetes 1.25 the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance.
+
+### Release notes
+
+* Behavior Changes
+  * Added node anti affinity for Cilium and Azure Linux so that Network Observability extension does not run on these environments that are not supported.
+  * Cluster create check that the size of Kubenet based clusters will not exceed 400 nodes (Kubenet on Azure limit)
+
+* Bug Fixes
+  * [Enable failure-domain.beta.kubernetes.io](https://github.com/Azure/AKS/issues/3668) labels on K8S 1.26+ nodes by default to resolve issue with in tree CSI drivers.  Will be removed from K8S 1.28
+
+* Component Updates
+  * Upgrade Secret store driver to [v1.3.4](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.3.4)
+  * Upgrade Azure Disk CSI driver version to [1.26.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.5) on K8S 1.24+
+  * Upgrade AGIC addon to version [1.7.1](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.7.1) for K8S >= 1.27
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202306.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202306.19.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.19.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202306.19.0](vhd-notes/AzureLinux/202306.19.0.txt).
+
+
 ## Release 2023-06-18
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
