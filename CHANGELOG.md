@@ -14,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior Changes
   * The default OS disk type for non-ephemeral OS disks is now Standard SSD.
-  * Enable on-call engineers to access to Open Service Mesh (OSM) CRDs for debugging.
+  * Enable on-call engineers to access Open Service Mesh (OSM) CRDs for debugging.
 
 * Bug Fixes
   * Disabled auto mounting of service account token for ip-masq-agent.
