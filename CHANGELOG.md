@@ -29,7 +29,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.26.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202306.26.0](vhd-notes/AzureLinux/202306.26.0.txt).
 
-
 ## Release 2023-06-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
