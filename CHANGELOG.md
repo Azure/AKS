@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Component Updates
   * Update Azure Monitor metrics addon image to release [06-26-2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-26-2023).
-   * Update Azure Blob Storage CSI driver version to [1.22.1](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.1) on Kubernetes 1.27+
+  * Update Azure Blob Storage CSI driver version to [1.22.1](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.1) on Kubernetes 1.27+
   * Update Azure CNS to [v1.4.44.2](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.44.2) and [v1.5.5](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.5); adding CNI v1.5.5, and adding dropgz [v0.0.9](https://github.com/Azure/azure-container-networking/releases/tag/dropgz%2Fv0.0.9).
   * Update App Routing add-on image.
   * Hotfixes for Kubernetes images v1.24.9, v1.24.10, v1.25.5, v1.25.6, v1.26.0, v1.26.3, and v1.27.1.
