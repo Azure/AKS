@@ -10,17 +10,15 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Kubernetes 1.24 is being deprecated end of July 2023 and support will transition to our [platform support policy](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). 
 * Starting Kubernetes 1.25, the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance.
 * A [known issue](https://github.com/Azure/AKS/issues/3718) in Kubernetes version 1.24 is causing name resolution failures in Windows pods. Customers experiencing this issue should upgrade their cluster to Kubernetes version 1.25.
-* Learn [how to deploy an application that uses OpenAI on AKS](https://learn.microsoft.com/en-us/azure/aks/open-ai-quickstart?tabs=aoai) by running a sample multi-container solution for an e-commerce website and deploying OpenAI service to generate product descriptions.
 
 ### Release notes
 
 * Preview Features
-  * Added Prometheus scraping annotations to App Routing add-on.
-  * Support for changing pod CIDR for bring your own CNI plugin.
+  * Added annotations to App Routing add-on for Prometheus automatic discovery and scraping of the [nginx ingress controller metrics](https://kubernetes.github.io/ingress-nginx/user-guide/monitoring/).
+  * Support for [changing pod CIDR](https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-update) for bring your own CNI plugin.
 
 * Behavior Changes
   * The default OS disk type for non-ephemeral OS disks is now Standard SSD.
-  * Enable on-call engineers to access Open Service Mesh (OSM) CRDs for debugging.
 
 * Bug Fixes
   * Disabled auto mounting of service account token for ip-masq-agent.
