@@ -12,10 +12,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
+* Preview Features
+  * Added Prometheus scraping annotations to App Routing add-on.
+  * Support for Azure DNS private zones in the App Routing add-on.
+  * Support for changing pod CIDR for bring your own CNI plugin.
+
 * Behavior Changes
   * The default OS disk type for non-ephemeral OS disks is now Standard SSD.
   * Enable on-call engineers to access Open Service Mesh (OSM) CRDs for debugging.
-  * Added Prometheus scraping annotations to App Routing add-on.
 
 * Bug Fixes
   * Disabled auto mounting of service account token for ip-masq-agent.
