@@ -1,5 +1,39 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-07-02
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+* Kubernetes 1.24 is being deprecated end of July 2023 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). 
+* Starting Kubernetes 1.25, the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance.
+* A [known issue](https://github.com/Azure/AKS/issues/3718) in Kubernetes version 1.24 is causing name resolution failures in Windows pods. Customers experiencing this issue should upgrade their cluster to Kubernetes version 1.25.
+
+### Release notes
+
+* Preview Features
+  * Added annotations to App Routing add-on for Prometheus automatic discovery and scraping of the [nginx ingress controller metrics](https://kubernetes.github.io/ingress-nginx/user-guide/monitoring/).
+  * Support for [changing pod CIDR](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-update) for bring your own CNI plugin.
+
+* Behavior Changes
+  * The default OS disk type for non-ephemeral OS disks is now Standard SSD.
+
+* Bug Fixes
+  * Disabled auto mounting of service account token for ip-masq-agent.
+  * Fixed an issue that can incorrectly override the custom certificate authority trust on a nodepool update.
+
+* Component Updates
+  * Update Azure Monitor metrics addon image to release [06-26-2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-26-2023).
+  * Update Azure Blob Storage CSI driver version to [1.22.1](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.1) on Kubernetes 1.27+
+  * Update Azure CNS to [v1.4.44.2](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.44.2) and [v1.5.5](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.5); adding CNI v1.5.5, and adding dropgz [v0.0.9](https://github.com/Azure/azure-container-networking/releases/tag/dropgz%2Fv0.0.9).
+  * Update App Routing add-on image to use [ingress-nginx 1.3.0](https://github.com/kubernetes/ingress-nginx/releases/tag/controller-v1.3.0)
+  * Hotfixes for Kubernetes images v1.24.9, v1.24.10, v1.25.5, v1.25.6, v1.26.0, v1.26.3, and v1.27.1.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202306.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202306.26.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.26.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202306.26.0](vhd-notes/AzureLinux/202306.26.0.txt).
+
 ## Release 2023-06-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
