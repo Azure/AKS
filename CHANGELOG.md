@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features
   * Added annotations to App Routing add-on for Prometheus automatic discovery and scraping of the [nginx ingress controller metrics](https://kubernetes.github.io/ingress-nginx/user-guide/monitoring/).
-  * Support for [changing pod CIDR](https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-update) for bring your own CNI plugin.
+  * Support for [changing pod CIDR](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-update) for bring your own CNI plugin.
 
 * Behavior Changes
   * The default OS disk type for non-ephemeral OS disks is now Standard SSD.
