@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Added support for KEDA v2.11 on Kubernetes version 1.27.
 
 * Bug Fixes
-  * A bug has been fixed that caused issues with windows pods while using inline volume for 1.24+ clusters.
+  * A bug has been fixed that caused issues with Windows Server container pods while using inline volume for 1.24+ clusters.
 
 * Component Updates
   * Update KEDA addon to v2.10.1 for versions less than Kubernetes version 1.27.
