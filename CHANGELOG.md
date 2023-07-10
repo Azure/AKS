@@ -20,8 +20,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update KEDA addon to [v2.10.1](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2101) for versions less than Kubernetes version 1.27 and [KEDA v2.11](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2110) for Kubernetes version 1.27.
   * Update Azure Monitor for Containers to [v3.1.10](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
   * Hotfixes for Kubernetes images v1.24.9, v1.24.10, v1.25.5, v1.25.6, v1.26.0, v1.26.3, and v1.27.1.
-  * Update microsoft-defender-pod-collector image to 1.0.72.
-  * Update microsoft-defender-security-publisher image to 1.0.64.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.04.0.txt). 
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202307.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202307.04.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202307.04.0](vhd-notes/AzureLinux/202307.04.0.txt).
