@@ -13,14 +13,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
-* Preview Features
-  * Added support for [KEDA v2.11](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2110) on Kubernetes version 1.27.
-
 * Bug Fixes
   * A bug has been fixed that caused issues with Windows Server container pods while using inline volume for 1.24+ clusters.
 
 * Component Updates
-  * Update KEDA addon to [v2.10.1](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2101) for versions less than Kubernetes version 1.27.
+  * Update KEDA addon to [v2.10.1](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2101) for versions less than Kubernetes version 1.27 and [KEDA v2.11](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2110) for Kubernetes version 1.27.
   * Update Azure Monitor for Containers to [v3.1.10](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
   * Hotfixes for Kubernetes images v1.24.9, v1.24.10, v1.25.5, v1.25.6, v1.26.0, v1.26.3, and v1.27.1.
   * Update microsoft-defender-pod-collector image to 1.0.72.
