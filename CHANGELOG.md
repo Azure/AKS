@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-07-09
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+* Kubernetes 1.24 is being deprecated end of July 2023 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). 
+* Starting Kubernetes 1.25, the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance.
+* A [known issue](https://github.com/Azure/AKS/issues/3718) in Kubernetes version 1.24 is causing name resolution failures in Windows pods. Customers experiencing this issue should upgrade their cluster to Kubernetes version 1.25.
+
+### Release notes
+
+* Preview Features
+  * Added support for KEDA v2.11 on Kubernetes version 1.27.
+
+* Bug Fixes
+  * A bug has been fixed that caused issues with windows pods while using inline volume for 1.24+ clusters.
+
+* Component Updates
+  * Update KEDA addon to v2.10.1 for versions less than Kubernetes version 1.27.
+  * Update Azure Monitor for Containers to [v3.1.10](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
+  * Hotfixes for Kubernetes images v1.24.9, v1.24.10, v1.25.5, v1.25.6, v1.26.0, v1.26.3, and v1.27.1.
+  * Update microsoft-defender-pod-collector image to 1.0.72.
+  * Update microsoft-defender-security-publisher image to 1.0.64.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.04.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202307.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202307.04.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202307.04.0](vhd-notes/AzureLinux/202307.04.0.txt).
+
+
 ## Release 2023-07-02
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
