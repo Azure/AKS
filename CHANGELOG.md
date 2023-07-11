@@ -14,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Bug Fixes
-  * A bug has been fixed that caused issues with Windows Server container pods while using inline volume for 1.24+ clusters.
+  * A node restriction bug has been fixed that caused issues with Windows Server container pods while using inline volume for 1.24+ clusters.
 
 * Component Updates
   * Update KEDA addon to [v2.10.1](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2101) for versions less than Kubernetes version 1.27 and [KEDA v2.11](https://github.com/kedacore/keda/blob/main/CHANGELOG.md#v2110) for Kubernetes version 1.27.
