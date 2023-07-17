@@ -15,8 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral changes
   * Remove the [deprecated label](https://learn.microsoft.com/en-us/azure/aks/use-labels#deprecated-labels) kubernetes.io/role=agent from ama-logs-windows daemonset and ama-logs-rs deployment. 
-  * Allow existing AKS clusters to enable Azure CNI Powered By Cilium  by setting networkDataplane=cilium
-
+  * Allow existing AKS clusters to enable [Azure CNI Powered By Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) by setting networkDataplane=cilium.
 
 * Component Updates
   * Upgrade Azure File CSI driver to [v1.24.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.3) to fix [CVE](https://github.com/advisories/GHSA-xc8m-28vv-4pjc)
