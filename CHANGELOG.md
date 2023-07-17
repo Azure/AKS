@@ -1,5 +1,31 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-07-16
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+* Kubernetes 1.24 is being deprecated end of July 2023 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). 
+* Starting Kubernetes 1.25, the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ][https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2] for cgroupsv2.
+* A [known issue](https://github.com/Azure/AKS/issues/3718) in Kubernetes version 1.24 is causing name resolution failures in Windows pods. Customers experiencing this issue should upgrade their cluster to Kubernetes version 1.25.
+
+### Release notes
+
+* Behavioral changes
+  * Remove the [deprecated label](https://learn.microsoft.com/en-us/azure/aks/use-labels#deprecated-labels) kubernetes.io/role=agent from ama-logs-windows daemonset and ama-logs-rs deployment. 
+  * Allow existing AKS clusters to enable Azure CNI Powered By Cilium  by setting networkDataplane=cilium
+
+
+* Component Updates
+  * Upgrade Azure File CSI driver to [v1.24.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.3) to fix [CVE](https://github.com/advisories/GHSA-xc8m-28vv-4pjc)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.12.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.12.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202307.12.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202307.12.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202307.12.0](vhd-notes/AzureLinux/202307.12.0.txt).
+  * AKS Windows 2019 image has been updated to [17763.4645.230712](vhd-notes/AKSWindows/2019/17763.4645.230712.txt).
+  * AKS Windows 2022 image has been updated to [20348.1850.230712](vhd-notes/AKSWindows/2022/20348.1850.230712.txt).
+
 ## Release 2023-07-09
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
