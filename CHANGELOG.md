@@ -10,12 +10,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Kubernetes 1.24 is being deprecated end of July 2023 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). 
 * Starting Kubernetes 1.25, the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ][https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2] for cgroupsv2.
 * A [known issue](https://github.com/Azure/AKS/issues/3718) in Kubernetes version 1.24 is causing name resolution failures in Windows pods. Customers experiencing this issue should upgrade their cluster to Kubernetes version 1.25.
-* A CVE has been found in Envoy Proxy (part of OSM and Istio).  We are rolling out a fix to all affected customers, please follow the [instructions](https://github.com/Azure/AKS/blob/master/examples/envoy-ghsa-jfxv-29pc-x22r/README.md) to monitor the rollout and restart your proxies.
 
 ### Release notes
-
-* Features
-  * [Bring your own keys](https://learn.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys) (BYOK) with Azure disks is GA 
 
 * Behavioral changes
   * Remove the [deprecated label](https://learn.microsoft.com/en-us/azure/aks/use-labels#deprecated-labels) kubernetes.io/role=agent from ama-logs-windows daemonset and ama-logs-rs deployment. 
