@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
      * Removed 1.24.9, added 1.24.15.
      * Removed 1.25.5, added 1.25.11.
      * Removed 1.26.0, added 1.26.6.
-     * Added 1.27.3.
+     * Added 1.27.3(preview).
 
 * Behavioral changes
   * CNI V2 maxpods increased from 16 to 60 for clusters with more than 1000 nodes and to 40 for clusters with less than 1000 nodes. 
