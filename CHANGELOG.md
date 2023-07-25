@@ -1,5 +1,39 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-07-23
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+* Kubernetes 1.24 is being deprecated end of July 2023 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). 
+* Starting Kubernetes 1.25, the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ][https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2] for cgroupsv2.
+* A [known issue](https://github.com/Azure/AKS/issues/3718) in Kubernetes version 1.24 is causing name resolution failures in Windows pods. Customers experiencing this issue should upgrade their cluster to Kubernetes version 1.25.
+* CVE-2023-35945 has been found in Envoy Proxy (part of OSM and Istio).  We are rolling out a fix to all affected customers, please follow the [instructions](https://github.com/Azure/AKS/issues/3814) to monitor the rollout and restart your proxies.
+* For AKS clusters built at version v1.27+ and enable KMS, KMS v2 is configured by default. However, for clusters with KMS enabled at versions below v1.27, upgrading to v1.27 will be blocked. To upgrade, follow the steps outlined in this [documentation](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#migration-to-kms-v2) for migrating from KMS v1 to v2, and then proceed with upgrading the cluster to version v1.27.
+
+
+### Release notes
+
+* Features
+  * New K8s patch versions
+     * Removed 1.24.9, added 1.24.15.
+     * Removed 1.25.5, added 1.25.11.
+     * Removed 1.26.0, added 1.26.6.
+     * Added 1.27.3(preview).
+
+* Behavioral changes
+  * CNI V2 maxpods increased from 16 to 60 for clusters with more than 1000 nodes and to 40 for clusters with less than 1000 nodes. 
+
+* Bug Fixes
+  * Fixed a bug that custom kubelet identity was not working on VMAS clusters.
+
+* Component Updates
+  * Cloud Provider Azure versions are bumped to [1.24.22](https://cloud-provider-azure.sigs.k8s.io/blog/2023/07/20/v1.27.6/), [1.25.16](https://cloud-provider-azure.sigs.k8s.io/blog/2023/07/21/v1.25.16/), [1.26.12](https://cloud-provider-azure.sigs.k8s.io/blog/2023/07/20/v1.26.12/), and [1.27.6](https://cloud-provider-azure.sigs.k8s.io/blog/2023/07/20/v1.27.6/)
+  * CNS for AKS CNI PodSubnet and CNI Overlay bumped to [1.4.44](https://pkg.go.dev/github.com/Azure/azure-container-networking@v1.4.44/cns)
+  * AKS Image cleaner eraser image bumped to [v1.1.1](https://github.com/Azure/eraser/releases/tag/v1.1.1)
+  
 ## Release 2023-07-16
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
