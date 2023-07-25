@@ -24,7 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
      * Added 1.27.3.
 
 * Behavioral changes
-  * CNI V2 maxpods changed from 16 to 60 for 1K node + clusters or 40 for smaller clusters. 
+  * CNI V2 maxpods increased from 16 to 60 for clusters with more than 1000 nodes and to 40 for clusters with less than 1000 nodes. 
 
 * Bug Fixes
   * Fixed a bug that custom kubelet identity was not working on VMAS clusters.
