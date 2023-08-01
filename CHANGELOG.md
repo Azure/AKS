@@ -15,13 +15,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * The [AKS Vscode extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-aks-tools) now supports [cluster creation](https://azure.github.io/vscode-aks-tools/features/show-properties-azureportal-start-stop.html).
-  * Kubernetes version 1.27 is now Generally Available (GA).
+  * [Kubernetes version 1.27](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#changelog-since-v1270) is now Generally Available (GA).
 
 * Behavioral changes
   * Kubernetes version 1.24 is now deprecated.
-  * The nodereadiness-retry-interval has changed from 10s to 5s.
-  * The nodereadiness-retry-max-count has changed from 5 to 12.
-  * Enable bpf-lb-sock-hostns-only option in Azure CNI Powered by Cilium for compatibility with Istio and other service meshes.
+  * The nodereadiness-retry-interval has changed from 10s to 5s allowing for an earlier success response.
+  * The nodereadiness-retry-max-count has changed from 5 to 12 allowing for an earlier success response.
 
 * Component Updates
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.27.0.txt). 
