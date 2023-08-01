@@ -7,31 +7,29 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
-* Starting Kubernetes 1.25, the default cgroups implementation on AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ][https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2] for cgroupsv2.
-* A [known issue](https://github.com/Azure/AKS/issues/3718) in Kubernetes version 1.24 is causing name resolution failures in Windows pods. Customers experiencing this issue should upgrade their cluster to Kubernetes version 1.25.
-* CVE-2023-35945 has been found in Envoy Proxy (part of OSM and Istio).  We are rolling out a fix to all affected customers, please follow the [instructions](https://github.com/Azure/AKS/issues/3814) to monitor the rollout and restart your proxies.
 * For AKS clusters built at version v1.27+ and enable KMS, KMS v2 is configured by default. However, for clusters with KMS enabled at versions below v1.27, upgrading to v1.27 will be blocked. To upgrade, follow the steps outlined in this [documentation](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#migration-to-kms-v2) for migrating from KMS v1 to v2, and then proceed with upgrading the cluster to version v1.27.
+* The pod security policy feature was deprecated on 1st August 2023 and removed since AKS version 1.25. We recommend you migrate to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) to stay within Azure support.
 
 
 ### Release notes
 
 * Features
   * The [AKS Vscode extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-aks-tools) now supports [cluster creation](https://azure.github.io/vscode-aks-tools/features/show-properties-azureportal-start-stop.html).
-  * Kubernetes version 1.27 is now GA.
-  * Kubernetes version 1.24 is now deprecated.
+  * Kubernetes version 1.27 is now Generally Available (GA).
 
 * Behavioral changes
+  * Kubernetes version 1.24 is now deprecated.
   * The nodereadiness-retry-interval has changed from 10s to 5s.
   * The nodereadiness-retry-max-count has changed from 5 to 12.
+  * Enable bpf-lb-sock-hostns-only option in Azure CNI Powered by Cilium for compatibility with Istio and other service meshes.
 
 * Component Updates
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.27.0.txt). 
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202307.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202307.27.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202307.27.0](vhd-notes/AzureLinux/202307.27.0.txt).
-  * Updated Azure Service Mesh charts to [v1.17.5](https://istio.io/latest/news/releases/1.17.x/announcing-1.17.5/).
-  * Updated Windows Azure CNI to v1.5.6.
-  * Updated Azure Container Networking for Windows to [pv1.5.5](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.5).
-  * Updated microsoft-defender-pod-collector image to 1.0.73
+  * Istio-based service mesh add-on's istiod and ingress images updated to v1.17.5. User needs to restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
+  * Updated Windows Azure CNI to [v1.5.6](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.6).
+  * Updated microsoft-defender-pod-collector image to 1.0.73.
 
 ## Release 2023-07-23
 
