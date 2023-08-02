@@ -8,7 +8,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
 * For AKS clusters built at version v1.27+ and enable KMS, KMS v2 is configured by default. However, for clusters with KMS enabled at versions below v1.27, upgrading to v1.27 will be blocked. To upgrade, follow the steps outlined in this [documentation](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#migration-to-kms-v2) for migrating from KMS v1 to v2, and then proceed with upgrading the cluster to version v1.27.
-* The pod security policy feature was deprecated on 1st August 2023 and removed since AKS version 1.25. We recommend you migrate to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) to stay within Azure support.
+* The pod security policy feature was deprecated on 1st August 2023 and removed since AKS version 1.25. We recommend you migrate to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) or [Azure Policy](https://learn.microsoft.com/azure/aks/policy-reference) to stay within Azure support.
 
 
 ### Release notes
