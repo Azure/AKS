@@ -19,8 +19,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral changes
   * Kubernetes version 1.24 is now deprecated.
-  * The nodereadiness-retry-interval has changed from 10s to 5s allowing for an earlier success response.
-  * The nodereadiness-retry-max-count has changed from 5 to 12 allowing for an earlier success response.
 
 * Component Updates
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.27.0.txt). 
