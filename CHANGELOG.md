@@ -19,6 +19,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral changes
   * Kubernetes version 1.24 is now deprecated.
+  * During [Outbound Type](https://learn.microsoft.com/azure/aks/egress-outboundtype) Migration, Public IPs are released when it doesn't meet Outbound IP goal.
+  * During [Outbound Type](https://learn.microsoft.com/azure/aks/egress-outboundtype) Migration, NAT Gateway Profile is set to `1` when Outbound Type is set to something other than Managed NAT Gateway.
 
 * Component Updates
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.27.0.txt). 
