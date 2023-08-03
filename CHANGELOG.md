@@ -1,5 +1,35 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-07-30
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Windows 2019 will be retired in Kubernetes v1.33 and above (ETA March 2026). Customers should [upgrade to Windows 2022](https://learn.microsoft.com/azure/aks/upgrade-windows-2019-2022).
+* For AKS clusters built at version v1.27+ and enable KMS, KMS v2 is configured by default. However, for clusters with KMS enabled at versions below v1.27, upgrading to v1.27 will be blocked. To upgrade, follow the steps outlined in this [documentation](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#migration-to-kms-v2) for migrating from KMS v1 to v2, and then proceed with upgrading the cluster to version v1.27.
+* The pod security policy feature was deprecated on 1st August 2023 and removed since AKS version 1.25. We recommend you migrate to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) or [Azure Policy](https://learn.microsoft.com/azure/aks/policy-reference) to stay within Azure support.
+
+
+### Release notes
+
+* Features
+  * The [AKS Vscode extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-aks-tools) now supports [cluster creation](https://azure.github.io/vscode-aks-tools/features/show-properties-azureportal-start-stop.html).
+  * [Kubernetes version 1.27](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#changelog-since-v1270) is now Generally Available (GA).
+
+* Behavioral changes
+  * Kubernetes version 1.24 is now deprecated.
+  * During [Outbound Type](https://learn.microsoft.com/azure/aks/egress-outboundtype) Migration, Public IPs are released when it doesn't meet Outbound IP goal.
+  * During [Outbound Type](https://learn.microsoft.com/azure/aks/egress-outboundtype) Migration, NAT Gateway Profile is set to `1` when Outbound Type is set to something other than Managed NAT Gateway.
+
+* Component Updates
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202307.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202307.27.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202307.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202307.27.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202307.27.0](vhd-notes/AzureLinux/202307.27.0.txt).
+  * Istio-based service mesh add-on's istiod and ingress images updated to v1.17.5. User needs to restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
+  * Updated Windows Azure CNI to [v1.5.6](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.6).
+  * Updated microsoft-defender-pod-collector image to 1.0.73.
+
 ## Release 2023-07-23
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
