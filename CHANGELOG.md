@@ -6,33 +6,33 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* For AKS clusters built at version v1.27+ and enable KMS, KMS v2 is configured by default. However, for clusters with KMS enabled at versions below v1.27, upgrading to v1.27 will be blocked. To upgrade, follow the steps outlined in this [documentation](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#migration-to-kms-v2) for migrating from KMS v1 to v2, and then proceed with upgrading the cluster to version v1.27.
+* New v1.27+ AKS clusters will have KMS v2 configured by default when KMS is enabled. Customers with clusters on v1.26 and below with KMS enabled will not be able to upgrade to v1.27. To upgrade, follow the steps outlined in this [documentation](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption#migration-to-kms-v2) for migrating from KMS v1 to v2, and then proceed with upgrading the cluster to version v1.27.
 * The pod security policy feature was deprecated on 1st August 2023 and removed since AKS version 1.25. We recommend you migrate to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) or [Azure Policy](https://learn.microsoft.com/azure/aks/policy-reference) to stay within Azure support.
 
 ### Release notes
 
 * Behavioral changes
   * API structure for AutoscalerProfile has been updated.
-  * Customers will now be able to use node public IP with authorized IP ranges and APIservervnet integration. Previously this functionality was blocked.
-  * Customers can now install Azure Service Mesh with on AKS clusters with Cilium.
-  * Configure exponential backoff in calls from the Cilium daemonset to the Kubernetes apiserver in Azure CNI Powered by Cilium to improve recovery from OOM kills. 
+  * Customers will now be able to use [node public IP](https://learn.microsoft.com/azure/aks/use-node-public-ips) with [authorized IP ranges](https://learn.microsoft.com/azure/aks/api-server-authorized-ip-ranges) and [API Server VNet integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration). Previously this functionality was blocked.
+  * Customers can now install [Azure Service Mesh](https://learn.microsoft.com/azure/aks/istio-deploy-addon) on AKS clusters with Cilium.
+  * Configure exponential backoff in calls from the [Cilium daemonset](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) to the Kubernetes apiserver in Azure CNI Powered by Cilium to improve recovery from OOM kills. 
 
  * Bug Fixes
   * Fixed a bug where the addon-token-adapter may get a staled long connection to apiserver causing network connection errors.
-  * Added validation to check if pobSubnet is associated with NAT Gateway when cluster outbound type is userAssignedNATGateway and pobSubnet in agentpoolProfile is not empty.
-  * Azure CNS will write the CNI conflict on the VM only after the networking goal state has been programmed for that VM. This means that Nodes will stay in a NotReady state with status "network plugin not initialized" until after DNC has created the NC and the Azure host has programmed it.
+  * Added validation to check if pobSubnet is associated with NAT Gateway when cluster outbound type is [userAssignedNATGateway](https://learn.microsoft.com/azure/aks/nat-gateway) and pobSubnet in agentpoolProfile is not empty.
+  * [Azure CNS]((https://github.com/Azure/azure-container-networking/releases)) will write the CNI conflict on the VM only after the networking goal state has been programmed for that VM. This means that Nodes will stay in a NotReady state with status "network plugin not initialized" until after DNC has created the NC and the Azure host has programmed it.
 
 * Component Updates
-  * Windows CNS updated to v1.4.44.4
-  * Envoy Proxy (part of OSM and Istio) has been updated to 1.26.4 to fix CVE-2023-35941 and CVE-2023-35944.
-  * OMSAgent for Azure monitor updated to 3.1.11
-  * Cluster Autoscaler images are releasing new versions for 1.25.x, 1.26.x, 1.27.x.
+  * [Windows CNS](https://github.com/Azure/azure-container-networking/releases) updated to v1.4.44.4
+  * Envoy Proxy (part of OSM and Istio) has been updated to [1.26.4](https://github.com/envoyproxy/envoy/releases/tag/v1.26.4) to fix CVE-2023-35941 and CVE-2023-35944.
+  * OMSAgent for Azure monitor updated to [3.1.11](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#06082023--:~:text=Release%20History-,08/03/2023,-%2D)
+  * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/releases) images are releasing new versions for 1.25.x, 1.26.x, 1.27.x.
   * Azure File CSI Driver has been updated to [v1.28.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.1) on AKS 1.27.
-  * Updated wasm containerd shims to v0.8.0, and added wasm worker server shim.
+  * Updated [wasm containerd shims](https://github.com/deislabs/containerd-wasm-shims/releases) to v0.8.0, and added wasm worker server shim.
   * Kappie agent updated to v0.0.9.1
   * Cloud provider Azure versions are bumped to [v1.25.17](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.17), [v1.26.13](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.13), [v1.27.7](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.7) for the corresponding patch versions with the following changes: Health probe port can be any port assigned by customer, Increase limit for TCP Idle Timeout to 100 minutes, Virtual node will always exists.
   * Azure Monitor Metrics addon image updated in [07-28-2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-28-2023) release
-   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.01.0.txt). 
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.01.0.txt). 
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202308.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202308.01.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202308.01.0](vhd-notes/AzureLinux/202308.01.0.txt).
 
