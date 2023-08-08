@@ -10,8 +10,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * The pod security policy feature was deprecated on 1st August 2023 and removed since AKS version 1.25. We recommend you migrate to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) or [Azure Policy](https://learn.microsoft.com/azure/aks/policy-reference) to stay within Azure support.
 
 ### Release notes
-
+* Preview Features
+  * [Network Observability add-on](https://learn.microsoft.com/azure/aks/network-observability-overview) plugin is a new public preview feature that will scrape useful metrics from Kubernetes workloads and emit actionable networking observability data into industry standard Prometheus format, which can then be visualized in Grafana.
 * Behavioral changes
+  * New built-in [policy](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2Fe1352e44-d34d-4e4d-a22e-451a15f759a1) for planned maintenance.
   * Customers will now be able to use [node public IP](https://learn.microsoft.com/azure/aks/use-node-public-ips) with [authorized IP ranges](https://learn.microsoft.com/azure/aks/api-server-authorized-ip-ranges) and [API Server VNet integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration). Previously this functionality was blocked.
   * Customers can now install [Azure Service Mesh](https://learn.microsoft.com/azure/aks/istio-deploy-addon) on AKS clusters with Cilium.
   * Configure exponential backoff in calls from the [Cilium daemonset](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) to the Kubernetes apiserver in Azure CNI Powered by Cilium to improve recovery from OOM kills. 
@@ -28,7 +30,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/releases) images are releasing new versions for 1.25.x, 1.26.x, 1.27.x.
   * Azure File CSI Driver has been updated to [v1.28.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.1) on AKS 1.27.
   * Updated [wasm containerd shims](https://github.com/deislabs/containerd-wasm-shims/releases) to v0.8.0, and added wasm worker server shim.
-  * Kappie agent updated to v0.0.9.1
   * Cloud provider Azure versions are bumped to [v1.25.17](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.17), [v1.26.13](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.13), [v1.27.7](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.7) for the corresponding patch versions with the following changes: Health probe port can be any port assigned by customer, Increase limit for TCP Idle Timeout to 100 minutes, Virtual node will always exists.
   * Azure Monitor Metrics addon image updated in [07-28-2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-28-2023) release
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.01.0.txt). 
