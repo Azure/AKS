@@ -12,7 +12,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Behavioral changes
-  * API structure for AutoscalerProfile has been updated.
   * Customers will now be able to use [node public IP](https://learn.microsoft.com/azure/aks/use-node-public-ips) with [authorized IP ranges](https://learn.microsoft.com/azure/aks/api-server-authorized-ip-ranges) and [API Server VNet integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration). Previously this functionality was blocked.
   * Customers can now install [Azure Service Mesh](https://learn.microsoft.com/azure/aks/istio-deploy-addon) on AKS clusters with Cilium.
   * Configure exponential backoff in calls from the [Cilium daemonset](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) to the Kubernetes apiserver in Azure CNI Powered by Cilium to improve recovery from OOM kills. 
