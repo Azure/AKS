@@ -8,7 +8,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * No new clusters can be created with Azure AD Integration (legacy). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to AKS-managed Azure AD automatically starting from 1st Dec. 2023. We recommend to update your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
 
-
 ### Release notes
 * Features
   * [Azure Container Networking Interface (CNI) Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) now fully supports Windows Server 2019 and 2022.
@@ -25,7 +24,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.10.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.10.0.txt). 
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202308.10.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202308.10.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202308.10.0](vhd-notes/AzureLinux/202308.10.0.txt).
-
 
 ## Release 2023-08-06
 
