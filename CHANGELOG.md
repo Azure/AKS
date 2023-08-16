@@ -1,5 +1,29 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-08-13
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/en-us/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/en-us/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+
+### Release notes
+* Features
+  * [Azure Container Networking Interface (CNI) Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) now fully supports Windows Server 2019 and 2022.
+  
+* Behavioral changes
+  * Azure monitor metrics addon image is reverted from [07-28-2023 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-28-2023) back to the [06-26-2023 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-26-2023) because 07-28-2023 release contains an issue that configmap processing is broken for $ in regex fields.
+  * [Automate the creation](https://learn.microsoft.com/en-us/azure/aks/internal-lb#create-a-private-link-service-connection) and connection of a [Private Link Service](https://learn.microsoft.com/azure/private-link/private-link-service-overview) to an Azure LoadBalancer, only requiring users to create Private Endpoint connections for private connectivity.
+
+* Component Updates
+  * AKS Image cleaner eraser image bumped to [v1.2.0](https://github.com/eraser-dev/eraser/releases/tag/v1.2.0).
+  * Linux Network Policy Manager （NPM） version bumped to [v1.4.45.1](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.45.1) for [nftables performance improvements](https://github.com/Azure/azure-container-networking/pull/1969) and security patches.
+  * ACI connector addon (virtual node) bumped to [v1.6.0](https://github.com/virtual-kubelet/azure-aci/releases/tag/v1.6.0).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.10.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.10.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202308.10.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202308.10.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202308.10.0](vhd-notes/AzureLinux/202308.10.0.txt).
+
 ## Release 2023-08-06
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
