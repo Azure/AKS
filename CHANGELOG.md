@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral changes
   * Container Insights Logs Addon (e.g. Monitoring addon) property is migrated from `AddonProfiles` to `Cluster profile`.
   * Azure monitor metrics addon image is reverted from 07-28-2023 release back to the [06-26-2023 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-26-2023)
-  * Through an annotation, the creation of a [Private Link Service](https://cloud-provider-azure.sigs.k8s.io/topics/pls-integration/) automates to the Azure LoadBalancer, requiring users to only create Private Endpoint connections for private connectivity.
+  * [Automate the creation](https://cloud-provider-azure.sigs.k8s.io/topics/pls-integration/) and connection of a [Private Link Service](https://learn.microsoft.com/azure/private-link/private-link-service-overview) to an Azure LoadBalancer, only requiring users to create Private Endpoint connections for private connectivity.
 
 * Component Updates
   * AKS Image cleaner eraser image bumped to [v1.2.0](https://github.com/eraser-dev/eraser/releases/tag/v1.2.0)
