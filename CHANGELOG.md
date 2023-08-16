@@ -14,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   
 * Behavioral changes
   * Azure monitor metrics addon image is reverted from [07-28-2023 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-28-2023) back to the [06-26-2023 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-26-2023) because 07-28-2023 release contains an issue that configmap processing is broken for $ in regex fields.
-  * [Automate the creation](https://cloud-provider-azure.sigs.k8s.io/topics/pls-integration/) and connection of a [Private Link Service](https://learn.microsoft.com/azure/private-link/private-link-service-overview) to an Azure LoadBalancer, only requiring users to create Private Endpoint connections for private connectivity.
+  * [Automate the creation](https://learn.microsoft.com/en-us/azure/aks/internal-lb#create-a-private-link-service-connection) and connection of a [Private Link Service](https://learn.microsoft.com/azure/private-link/private-link-service-overview) to an Azure LoadBalancer, only requiring users to create Private Endpoint connections for private connectivity.
 
 * Component Updates
   * AKS Image cleaner eraser image bumped to [v1.2.0](https://github.com/eraser-dev/eraser/releases/tag/v1.2.0).
