@@ -9,12 +9,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
-* Please review the following CVEs and instructions in the linked issues to see if these vulnerabilities impact your cluster - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871). If your clusters are impacted, please follow the updates on these issues on mitigation.
+* Please review the following CVEs and instructions in the linked issues to see if these vulnerabilities impact your cluster - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871). If your clusters are impacted, please follow mitigation releated updates on these issues.
 
 ### Release notes
 
 * Features
-  * [Azure AD workload identity with AKS](https://learn.microsoft.com/azure/aks/workload-identity-overview) has been made available in the following regions - eastus, australiacentral, australiaeast, brazilsouth, canadacentral, centralindia, eastasia, eastus2, francecentral, germanywestcentral, japaneast, jioindiawest, koreacentral, northcentralus, northeurope, norwayeast, qatarcentral, southafricanorth, swedencentral, switzerlandnorth, uaenorth, ukwest, westus2
+  * [Azure AD workload identity with AKS](https://learn.microsoft.com/azure/aks/workload-identity-overview) has been made available in the following regions - `eastus, australiacentral, australiaeast, brazilsouth, canadacentral, centralindia, eastasia, eastus2, francecentral, germanywestcentral, japaneast, jioindiawest, koreacentral, northcentralus, northeurope, norwayeast, qatarcentral, southafricanorth, swedencentral, switzerlandnorth, uaenorth, ukwest, westus2`.
   * networkPolicy to 'none' as a default value if unspecified when creating a cluster. Setting networkPolicy to 'none' is blocked for API versions prior to 2023-09-02-preview.
   
 * Behavioral changes
