@@ -10,11 +10,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
 * Please review the following CVEs that impact all Windows node pools in AKS clusters - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871). Please update your Windows nodes to the VHD version 230809 as mentioned in these issues.
+* To avoid disruptions stemming from unmanaged Canonical nightly security updates, AKS will disable unmanaged Canonical nightly updates by 2 September 2023
+on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the node OS upgrade channel feature. AKS strongly recommends proactively moving to auto-upgrade node-image or node OS upgrade channel - SecurityPatch; you can set maintenance windows for these channels.
 
 ### Release notes
 
 * Features
-  * Image Cleaner [https://learn.microsoft.com/azure/aks/image-cleaner] is now Generally Available (GA).
+  * Image Cleaner [https://learn.microsoft.com/azure/aks/image-cleaner] is now generally available.
+  * [Planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance) is now generally available.
   * [Azure AD workload identity with AKS](https://learn.microsoft.com/azure/aks/workload-identity-overview) has been made available in the following regions - `eastus, australiacentral, australiaeast, brazilsouth, canadacentral, centralindia, eastasia, eastus2, francecentral, germanywestcentral, japaneast, jioindiawest, koreacentral, northcentralus, northeurope, norwayeast, qatarcentral, southafricanorth, swedencentral, switzerlandnorth, uaenorth, ukwest, westus2`.
   * networkPolicy to 'none' (no network policy engine is installed) as a default value if unspecified when creating a cluster. Setting networkPolicy to 'none' is blocked for API versions prior to 2023-09-02-preview.
   
