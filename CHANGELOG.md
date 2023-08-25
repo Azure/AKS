@@ -1,20 +1,56 @@
 # Azure Kubernetes Service Changelog
 
+
+
+## Release 2023-08-20
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+* Please review the following CVEs that impact all Windows node pools in AKS clusters - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871). Please update your Windows nodes to the VHD version 230809 as mentioned in these issues.
+* To avoid disruptions stemming from unmanaged Canonical nightly security updates, AKS will disable unmanaged Canonical nightly updates by 2 September 2023
+on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the [node OS upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) channel feature. AKS strongly recommends proactively moving to [auto-upgrade node-image](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster) or [node OS upgrade channel - SecurityPatch](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image); you can set [maintenance windows](https://learn.microsoft.com/azure/aks/planned-maintenance) for these channels.
+
+### Release notes
+
+* Features
+  * Image Cleaner [https://learn.microsoft.com/azure/aks/image-cleaner] is now generally available.
+  * [Planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance) is now generally available.
+  * [Azure AD workload identity with AKS](https://learn.microsoft.com/azure/aks/workload-identity-overview) has been made available in the following regions - `eastus, australiacentral, australiaeast, brazilsouth, canadacentral, centralindia, eastasia, eastus2, francecentral, germanywestcentral, japaneast, jioindiawest, koreacentral, northcentralus, northeurope, norwayeast, qatarcentral, southafricanorth, swedencentral, switzerlandnorth, uaenorth, ukwest, westus2`.
+  * networkPolicy to 'none' (no network policy engine is installed) as a default value if unspecified when creating a cluster. Setting networkPolicy to 'none' is blocked for API versions prior to 2023-09-02-preview.
+  
+* Behavioral changes
+  * `Microsoft.ContainerService/locations/{location}/kubernetesVersions` operation will now return `isDefault: true` on default version.
+
+* Component Updates
+  * Azure Monitor container insights addon updated to [08/17/2023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#08172023--) release.
+  * Updated Azure Monitor metrics addon image to [08/11/2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-08-11-2023) release.
+  * Updated Azure Disk CSI driver to [v1.26.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.6) on AKS versions >= 1.24.0 and < 1.27. Updated Azure Disk CSI driver to [v1.28.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.2) on AKS versions >= 1.27.0.
+  * Updated Azure File CSI driver to [v1.24.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.4) on AKS versions >= 1.24.0 and < 1.26. Updated Azure Disk CSI driver to [v1.26.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.4) on AKS versions >= 1.26.0.
+  * Updated [Azure CNS](https://github.com/Azure/azure-container-networking) to [v1.4.44.4](https://github.com/Azure/azure-container-networking/compare/v1.4.44.3...v1.4.44.4)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.16.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.16.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202308.16.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202308.16.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202308.16.0](vhd-notes/AzureLinux/202308.16.0.txt).
+
+
 ## Release 2023-08-13
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
 
-* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/en-us/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/en-us/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
 
 ### Release notes
+
 * Features
   * [Azure Container Networking Interface (CNI) Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) now fully supports Windows Server 2019 and 2022.
   
 * Behavioral changes
   * Azure monitor metrics addon image is reverted from [07-28-2023 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-28-2023) back to the [06-26-2023 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-26-2023) because 07-28-2023 release contains an issue that configmap processing is broken for $ in regex fields.
-  * [Automate the creation](https://learn.microsoft.com/en-us/azure/aks/internal-lb#create-a-private-link-service-connection) and connection of a [Private Link Service](https://learn.microsoft.com/azure/private-link/private-link-service-overview) to an Azure LoadBalancer, only requiring users to create Private Endpoint connections for private connectivity.
+  * [Automate the creation](https://learn.microsoft.com/azure/aks/internal-lb#create-a-private-link-service-connection) and connection of a [Private Link Service](https://learn.microsoft.com/azure/private-link/private-link-service-overview) to an Azure LoadBalancer, only requiring users to create Private Endpoint connections for private connectivity.
 
 * Component Updates
   * AKS Image cleaner eraser image bumped to [v1.2.0](https://github.com/eraser-dev/eraser/releases/tag/v1.2.0).
@@ -36,6 +72,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * The pod security policy feature was deprecated on 1st August 2023 and removed since AKS version 1.25. We recommend you migrate to [pod security admission controller](https://learn.microsoft.com/azure/aks/use-psa) or [Azure Policy](https://learn.microsoft.com/azure/aks/policy-reference) to stay within Azure support.
 
 ### Release notes
+
 * Preview Features
   * [Network Observability add-on](https://learn.microsoft.com/azure/aks/network-observability-overview) plugin is a new public preview feature that will scrape useful metrics from Kubernetes workloads and emit actionable networking observability data into industry standard Prometheus format, which can then be visualized in Grafana.
 * Behavioral changes
