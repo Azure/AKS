@@ -17,8 +17,9 @@ on clusters that haven’t specified an update option explicitly, mapping to the
   * Previously AKS returned only 1 random node's failure even if multiple nodes had drain failures, in the error response. Now all the node drain failures are appended to the error response and returned for easier troubleshooting.
 
 * Bug Fixes
-  * Customers using Azure Monitor Managed Prometheus Service for AKS Clusters may have experienced issues with metrics add-on being disabled, missing metrics and alerts, incase both Container Insights log and Managed Prometheus are enabled on the clusters. These [hotfixes](https://github.com/Azure/prometheus-collector/blob/main/Hotfix-417488465-08272023.md) fix that issue.
+  * Customers using Azure Monitor Managed Prometheus Service for AKS Clusters may have experienced issues with metrics add-on being disabled, missing metrics and alerts, in case both Container Insights log and Managed Prometheus are enabled on the clusters. These [hotfixes](https://github.com/Azure/prometheus-collector/blob/main/Hotfix-417488465-08272023.md) fix that issue.
   * A bug was fixed that prevented clusters using [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) from [starting after being stopped](https://learn.microsoft.com/azure/aks/start-stop-cluster?tabs=azure-cli).
+  * A bug has been fixed in which errors may have occurred during Put operations on node pools. This was because of the AKS Put operations on managed cluster failed and the managed control plane did not start.
 
 * Component Updates
   * Updated Azure File CSI driver to [v1.24.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.5) on AKS versions >= 1.24.0 and < 1.26.
