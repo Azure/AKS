@@ -12,8 +12,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the [node OS upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) channel feature. AKS strongly recommends proactively moving to [auto-upgrade node-image](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster) or [node OS upgrade channel - SecurityPatch](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image); you can set [maintenance windows](https://learn.microsoft.com/azure/aks/planned-maintenance) for these channels.
 
 ### Release notes
-
-* Features
   
 * Behavioral changes
   * Previously AKS returned only 1 random node's failure even if multiple nodes had drain failures, in the error response. Now all the node drain failures are appended to the error response and returned for easier troubleshooting.
