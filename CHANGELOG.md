@@ -1,6 +1,33 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-08-27
 
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+* Please review the following CVEs that impact all Windows node pools in AKS clusters - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871). Please update your Windows nodes to the VHD version 230809 as mentioned in these issues.
+* To avoid disruptions stemming from unmanaged Canonical nightly security updates, AKS will disable unmanaged Canonical nightly updates by 2 September 2023
+on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the [node OS upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) channel feature. AKS strongly recommends proactively moving to [auto-upgrade node-image](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster) or [node OS upgrade channel - SecurityPatch](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image); you can set [maintenance windows](https://learn.microsoft.com/azure/aks/planned-maintenance) for these channels.
+
+### Release notes
+  
+* Behavioral changes
+  * Previously AKS returned only 1 random node's failure even if multiple nodes had drain failures, in the error response. Now all the node drain failures are appended to the error response and returned for easier troubleshooting.
+
+* Bug Fixes
+  * Customers using Azure Monitor Managed Prometheus Service for AKS Clusters may have experienced issues with metrics add-on being disabled, missing metrics and alerts, in case both Container Insights log and Managed Prometheus are enabled on the clusters. These [hotfixes](https://github.com/Azure/prometheus-collector/blob/main/Hotfix-417488465-08272023.md) fix that issue.
+  * A bug was fixed that prevented clusters using [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) from [starting after being stopped](https://learn.microsoft.com/azure/aks/start-stop-cluster?tabs=azure-cli).
+
+* Component Updates
+  * Updated Azure File CSI driver to [v1.24.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.5) on AKS versions >= 1.24.0 and < 1.26.
+  * Bump [cloud-controller-manager image](https://cloud-provider-azure.sigs.k8s.io/blog/) v1.25.18, v1.26.14, v1.27.8 and v1.28.0.
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.22.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.22.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202308.22.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202308.22.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202308.22.0](vhd-notes/AzureLinux/202308.22.0.txt).
+  * AKS Windows 2019 image has been updated to [17763.4737.230809](vhd-notes/AKSWindows/2019/17763.4737.230809.txt).
+  * AKS Windows 2022 image has been updated to [20348.1906.230809](vhd-notes/AKSWindows/2022/20348.1906.230809.txt).
 
 ## Release 2023-08-20
 
@@ -33,7 +60,6 @@ on clusters that haven’t specified an update option explicitly, mapping to the
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.16.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.16.0.txt). 
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202308.16.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202308.16.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202308.16.0](vhd-notes/AzureLinux/202308.16.0.txt).
-
 
 ## Release 2023-08-13
 
