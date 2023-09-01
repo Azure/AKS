@@ -1,17 +1,18 @@
 # Revert Kubernetes 1.25 to cgroup v1
 
-JDK 10 introduced ```UseContainerSupport``` which provided support for running Java applications within containers. 
+As cgroup v2 is GA in 1.25+, and is also the default on Ubuntu 22.04, customers may have to downgrade to cgroups v1 due to compatibility issues with older software.
 
-The Java runtime will use the cgroup filesystem to understand the memory and cpu availability.
+To perform a cgroups version downgrade on your nodes, use this [Daemonset](./revert-cgroup-v1.yaml).
 
-With the introduction of cgroup v2, the location of these files has changed and Java applications prior to JDK 15 will exhibit significant memory consumption which may make your environments unstable.
-
-As cgroup v2 is GA in 1.25, and is also the default on Ubuntu 22.04, customers should migrate their applications to JDK 15+.
-
-An alternative temporary solution is to revert the cgroup version on your nodes using this  [Daemonset](./revert-cgroup-v1.yaml).
-
-
-
-## IMPORTANT NOTE
+## Important note
 
 The Daemonset by default will apply to all nodes in your cluster and will reboot them to apply the cgroup change.  Please set a nodeSelector to control how this gets applied.
+
+## Java related issues
+
+If you observe memory issues with Java-based systems and products, you may have to update your JDK installation to a newer minor version that supports cgroups v2.
+
+* JDK 8: 1.8.0_372 or later
+* JDK 11: 11.0.18 or later
+
+If updating the JDK is not an option, an alternative is by downgrading to cgroups v1.
