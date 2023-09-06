@@ -7,21 +7,22 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
-* OSsku=cblmariner (Mariner 1.0) reached end of life on July 31, and is no longer receiving security updates, in accordance with Mariner's 2 year lifecycle for major versions. Please migrate to OSsku=azurelinux (Mariner 2.0). Read more on [Mariner 2.0][https://microsoft.github.io/CBL-Mariner/announcing-mariner-2.0/]
-* To avoid disruptions stemming from unmanaged Canonical nightly security updates, AKS will disable unmanaged Canonical nightly updates by 2 September 2023
-on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the [node OS upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) channel feature. AKS strongly recommends proactively moving to [auto-upgrade node-image](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster) or [node OS upgrade channel - SecurityPatch](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image); you can set [maintenance windows](https://learn.microsoft.com/azure/aks/planned-maintenance) for these channels.
+* AKS 1.28 preview [version][https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1280] is now available.
+* To avoid disruptions stemming from unmanaged Canonical nightly security updates, AKS will disable unmanaged Canonical nightly updates by 2 September 2023, on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the [node OS upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) channel feature. AKS strongly recommends proactively moving to [auto-upgrade node-image](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster) or [node OS upgrade channel - SecurityPatch](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image); you can set [maintenance windows](https://learn.microsoft.com/azure/aks/planned-maintenance) for these channels.
+*[Node OS Upgrade Channel - NodeImage](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) is now generally available.
 
 ### Release notes
   
 * Behavioral changes
-  * [Outbound IP][https://learn.microsoft.com/en-us/azure/aks/outbound-rules-control-egress] can now be a combination of ip/ipprefix and managed ones.
-  * Added v1 version for Group Managed Service Accounts (gmsacredentialspec) CRDs. [Reference][https://github.com/kubernetes-sigs/windows-gmsa/commit/2f2f42f1a31fce00caf74b85d6a7b52f9eec2797]
-  * Now customers can disable OutboundNAT for Windows nodes as long as the cluster's outbound type is not Load Balancer. This [change][https://learn.microsoft.com/en-us/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview] enables customers to DisableOutboundNAT in conjunction with User Defined Routes (UDR) and Azure firewall. Before the modification, customers could only disable OutboundNAT for Windows nodes when the cluster's outbound type was NAT Gateway. 
-  * Updated Windows gmsa[https://learn.microsoft.com/en-us/azure/aks/use-group-managed-service-accounts] webhook to v0.7.1[https://github.com/kubernetes-sigs/windows-gmsa/tree/v0.7.1] which supports multi-arch (amd64 and arm64).
-  
+  * [Outbound IP](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) can now be a combination of ip/ipprefix and managed ones.
+  * Added v1 version for Group Managed Service Accounts (gmsacredentialspec) CRDs. [Reference](https://github.com/kubernetes-sigs/windows-gmsa/commit/2f2f42f1a31fce00caf74b85d6a7b52f9eec2797).
+  * Now customers can disable OutboundNAT for Windows nodes as long as the cluster's outbound type is not Load Balancer. This [change](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview) enables customers to disable OutboundNAT in conjunction with User Defined Routes (UDR) and Azure firewall. Before the modification, customers could only disable OutboundNAT for Windows nodes when the cluster's outbound type was NAT Gateway. 
+  * Updated Windows [gmsa](https://learn.microsoft.com/azure/aks/use-group-managed-service-accounts) webhook to [v0.7.1](https://github.com/kubernetes-sigs/windows-gmsa/tree/v0.7.1) which supports multi-arch (amd64 and arm64).
+  * The taint added by AKS remediator will change from remediator.aks.microsoft.com/unschedulable to remediator.kubernetes.azure.com/unschedulable.
+  * After you update [SSH key](https://learn.microsoft.com/azure/aks/node-access#update-ssh-public-key-on-an-existing-aks-cluster-preview), AKS doesn't automatically [reimage](https://learn.microsoft.com/azure/aks/node-image-upgrade#upgrade-all-node-images-in-all-node-pools) your node pool, you can choose anytime to perform the reimage operation . Only after reimage is complete, does the update SSH key operation take effect.
 * Component Updates
-  * [Image Cleaner][https://learn.microsoft.com/en-us/azure/aks/image-cleaner] now has eraser version bumped to [v1.2.1][https://github.com/eraser-dev/eraser/releases/tag/v1.2.1]
-  * Bumped version of Azure Workload Identity to [1.1.0][https://github.com/Azure/azure-workload-identity/releases/tag/v1.1.0].
+  * [Image Cleaner](https://learn.microsoft.com/en-us/azure/aks/image-cleaner) now has eraser version bumped to [v1.2.1](https://github.com/eraser-dev/eraser/releases/tag/v1.2.1).
+  * Bumped version of Azure Workload Identity to [1.1.0](https://github.com/Azure/azure-workload-identity/releases/tag/v1.1.0).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202308.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202308.28.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202308.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202308.28.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202308.28.0](vhd-notes/AzureLinux/202308.28.0.txt).
