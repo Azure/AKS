@@ -11,7 +11,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 * Preview Features
-  * AKS 1.28 preview [version](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1280) is now available.
+  * AKS 1.28 [version](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1280) is now available in preview.
   * Now customers can disable OutboundNAT for Windows nodes as long as the cluster's outbound type is not Load Balancer. This [change](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview) enables customers to disable OutboundNAT in conjunction with User Defined Routes (UDR) and Azure firewall. Before the modification, customers could only disable OutboundNAT for Windows nodes when the cluster's outbound type was NAT Gateway. 
 * Features
   * [Node OS Upgrade Channel - NodeImage](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) is now generally available.
