@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral changes
   * Update admissions enforcer to ignore "kubernetes.azure.com/managedby" and "control-plane" namespaces to fix [this issue](https://github.com/Azure/AKS/issues/1771).
   * "kubernetes.azure.com/managedby" label added to aks managed namespaces (kube-system, gatekeeper-system, tigera-system, calico-system)
-  * Removing autoupgrade block for stopped nodepool. Note this is only for nodepools and not stopped clusters. Currently we have pre-checks in RP to block PutManagedCluster if the cluster is stopped.
+  * Stopped nodepools will be upgraded during an Auto Upgrade operation.  The upgrade will apply to nodes when the nodepool is started.
   * Added priorityClassName system-node-critical property to all KEDA add-on pods to fix [this issue](https://github.com/Azure/AKS/issues/3780).
   * Update Konnectivity agent to rotate certificate if CA is not expired but the certificate has expired.
   * We will now check that your cluster has less than 400 nodes when an upgrade operation is requests and using Kubenet (400 being the node limit for Kubenet).
