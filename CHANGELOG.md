@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  
 * Component Updates
   * Upgrade Azure Disk CSI version to [v1.28.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.3) on K8S 1.27
-  * Upgrade Azure File CSI version to [v1.28.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.3) on K8S 1.27, [v1.26.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.6) on K8S 1.26, [v1.24.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.24.7) on K8S 1.25
+  * Upgrade Azure File CSI version to [v1.28.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.3) on K8S 1.27, [v1.26.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.6) on K8S 1.26, [v1.24.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.7) on K8S 1.25
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202309.06.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.06.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202309.06.0](vhd-notes/AzureLinux/202309.06.0.txt).
