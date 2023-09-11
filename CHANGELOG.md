@@ -1,5 +1,33 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-09-10
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* Asia East has now been changed to the 2nd release region. New release changes will reach to Asia East after US West Central, and before UK South.   Follow this via [AKS-Release-Tracker](https://releases.aks.azure.com/).
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+* To avoid disruptions stemming from unmanaged Canonical nightly security updates, AKS will disable unmanaged Canonical nightly updates by 2 September 2023, on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the [node OS upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) channel feature. AKS strongly recommends proactively moving to [auto-upgrade node-image](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster) or [node OS upgrade channel - SecurityPatch or NodeImage options](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image); you can set [maintenance windows](https://learn.microsoft.com/azure/aks/planned-maintenance) for these channels.
+
+### Release notes 
+* Features
+  * Enable [HonorPVReclaimPolicy](https://kubernetes.io/blog/2021/12/15/kubernetes-1-23-prevent-persistentvolume-leaks-when-deleting-out-of-order/ ) for Azure Disk CSI driver 1.28
+ 
+* Component Updates
+  * Upgrade Azure Disk CSI version to [v1.28.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.3) on K8S 1.27
+  * Upgrade Azure File CSI version to [v1.28.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.3) on K8S 1.27, [v1.26.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.6) on K8S 1.26, [v1.24.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.24.7) on K8S 1.25
+
+* Behavioral changes
+  * Update admissions enforcer to ignore "kubernetes.azure.com/managedby" and "control-plane" namespaces to fix [this issue](https://github.com/Azure/AKS/issues/1771).
+  * "kubernetes.azure.com/managedby" label added to aks managed namespaces (kube-system, gatekeeper-system, tigera-system, calico-system)
+  * Removing autoupgrade block for stopped nodepool. Note this is only for nodepools and not stopped clusters. Currently we have pre-checks in RP to block PutManagedCluster if the cluster is stopped.
+  * Added priorityClassName system-node-critical property to all KEDA add-on pods to fix [this issue](https://github.com/Azure/AKS/issues/3780).
+  * Update Konnectivity agent to rotate certificate if CA is not expired but the certificate has expired.
+  * We will now check that your cluster has less than 400 nodes when an upgrade operation is requests and using Kubenet (400 being the node limit for Kubenet).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202309.06.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.06.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202309.06.0](vhd-notes/AzureLinux/202309.06.0.txt).
+
 ## Release 2023-09-03
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
