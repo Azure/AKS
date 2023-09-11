@@ -16,6 +16,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * Upgrade Azure Disk CSI version to [v1.28.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.3) on K8S 1.27
   * Upgrade Azure File CSI version to [v1.28.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.3) on K8S 1.27, [v1.26.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.6) on K8S 1.26, [v1.24.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.24.7) on K8S 1.25
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202309.06.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.06.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202309.06.0](vhd-notes/AzureLinux/202309.06.0.txt).
 
 * Behavioral changes
   * Update admissions enforcer to ignore "kubernetes.azure.com/managedby" and "control-plane" namespaces to fix [this issue](https://github.com/Azure/AKS/issues/1771).
@@ -24,9 +27,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Added priorityClassName system-node-critical property to all KEDA add-on pods to fix [this issue](https://github.com/Azure/AKS/issues/3780).
   * Update Konnectivity agent to rotate certificate if CA is not expired but the certificate has expired.
   * We will now check that your cluster has less than 400 nodes when an upgrade operation is requests and using Kubenet (400 being the node limit for Kubenet).
-  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202309.06.0.txt).
-  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.06.0.txt).
-  * Azure Linux image has been updated to [AzureLinux-202309.06.0](vhd-notes/AzureLinux/202309.06.0.txt).
 
 ## Release 2023-09-03
 
