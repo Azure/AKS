@@ -6,10 +6,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
-* To avoid disruptions stemming from unmanaged Canonical nightly security updates, AKS will disable unmanaged Canonical nightly updates by 2 September 2023, on clusters that haven’t specified an update option explicitly, mapping to the option `None` in the [node OS upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image) channel feature. AKS strongly recommends proactively moving to [auto-upgrade node-image](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster) or [node OS upgrade channel - SecurityPatch or NodeImage options](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image); you can set [maintenance windows](https://learn.microsoft.com/azure/aks/planned-maintenance) for these channels.
 
 ### Release notes 
-* Features
+
+* Behavioral changes
+  * Update admissions enforcer to ignore "kubernetes.azure.com/managedby" and "control-plane" namespaces to fix [this issue](https://github.com/Azure/AKS/issues/1771).
+  * "kubernetes.azure.com/managedby" label added to aks managed namespaces (kube-system, gatekeeper-system, tigera-system, calico-system)
+  * Stopped nodepools will be upgraded during an Auto Upgrade operation.  The upgrade will apply to nodes when the nodepool is started.
+  * Added priorityClassName system-node-critical property to all KEDA add-on pods to fix [this issue](https://github.com/Azure/AKS/issues/3780).
+  * We will now check that your cluster has less than 400 nodes when an upgrade operation is requested and using Kubenet (400 being the node limit for Kubenet).
+
+* Bug Fixes
   * Enable [HonorPVReclaimPolicy](https://kubernetes.io/blog/2021/12/15/kubernetes-1-23-prevent-persistentvolume-leaks-when-deleting-out-of-order/) for Azure Disk CSI driver 1.28, fixing an issue where in some Bound Persistent Volume (PV) – Persistent Volume Claim (PVC) pairs, the ordering of PV-PVC deletion determines whether the PV delete reclaim policy is honored.
  
 * Component Updates
@@ -19,12 +26,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.06.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202309.06.0](vhd-notes/AzureLinux/202309.06.0.txt).
 
-* Behavioral changes
-  * Update admissions enforcer to ignore "kubernetes.azure.com/managedby" and "control-plane" namespaces to fix [this issue](https://github.com/Azure/AKS/issues/1771).
-  * "kubernetes.azure.com/managedby" label added to aks managed namespaces (kube-system, gatekeeper-system, tigera-system, calico-system)
-  * Stopped nodepools will be upgraded during an Auto Upgrade operation.  The upgrade will apply to nodes when the nodepool is started.
-  * Added priorityClassName system-node-critical property to all KEDA add-on pods to fix [this issue](https://github.com/Azure/AKS/issues/3780).
-  * We will now check that your cluster has less than 400 nodes when an upgrade operation is requested and using Kubenet (400 being the node limit for Kubenet).
 
 ## Release 2023-09-03
 
