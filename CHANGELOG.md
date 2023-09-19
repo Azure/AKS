@@ -1,5 +1,27 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-09-17
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+
+### Release notes 
+* Behavioral changes
+  * After you set the [node OS auto-upgrade channel](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-image#using-node-os-auto-upgrade) to "None", AKS doesn't automatically reimage nodes in your node pools. But when you set the node OS auto-upgrade channel to "Unmanaged", AKS will reimage all nodes in your node pools.
+
+* Features
+  * [HTTP Proxy](https://learn.microsoft.com/en-us/azure/aks/http-proxy#updating-proxy-configurations) can now be updated post clusters creation.
+
+* Component Updates
+  * Azure Monitor container insights addon updated to [09/15/2023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#09152023--) release.
+  * Updated Azure Monitor metrics addon image to [09/11/2023](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-9-11-2023) release.
+  * AKS Windows 2019 image has been updated to [17763.4851.230914](vhd-notes/AKSWindows/2019/17763.4851.230914.txt).
+  * AKS Windows 2022 image has been updated to [20348.1970.230914](vhd-notes/AKSWindows/2022/20348.1970.230914.txt).
+  * Updated Windows Azure CNI to [v1.5.6.1](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.6.1).
+
+
 ## Release 2023-09-10
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
