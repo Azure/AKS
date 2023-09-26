@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features
   * Load Balancer TCP reset can now be desabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
-  * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) is a new Public Preview feature that allows you to sign container images via a process that ensures their authenticity and integrity.
+  * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) allows you to sign container images via a process that ensures their authenticity and integrity.
     
 * Bug Fixes 
   * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade event to make them more readable
