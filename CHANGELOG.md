@@ -4,14 +4,20 @@
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
+### Announcements
+
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+
 ### Release notes 
 * Behavioral changes
   * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type. Before, only VM SKUs that did not support ephemeral OS disks had this default.
 
 * Features
-  * Load Balancer TCP reset can now be desabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"*. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520) in preview
   * Configurable resource group for the Prvate Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4675).
   * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4639)
+
+* Preview Features
+  * Load Balancer TCP reset can now be desabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
 
 * Bug Fixes 
   * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade events.
