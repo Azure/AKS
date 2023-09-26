@@ -13,13 +13,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type. Before, only VM SKUs that did not support ephemeral OS disks had this default.
 
 * Features
-  * Configurable resource group for the Prvate Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4675).
+  * Configurable resource group for the Private Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4675).
   * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4639)
 
 * Preview Features
   * Load Balancer TCP reset can now be desabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
-  * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) is now in Public Preview
-
+  * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) is a new Public Preview feature that allows you to sign container images via a process that ensures their authenticity and integrity.
+    
 * Bug Fixes 
   * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade events.
   * Fix for the possibility of duplicate podCIDR allocation when node PodCIDR patch request fails. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4568)
