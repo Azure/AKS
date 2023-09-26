@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features
   * Load Balancer TCP reset can now be desabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
-  * Image Integrity is now in Public Preview
+  * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) is now in Public Preview
 
 * Bug Fixes 
   * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade events.
@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Security Publisher image version has been updated to 1.0.67 from 1.0.64 which includes memory utilizaiton improvements
   * Cilium version has been updated to [1.13.5](https://github.com/cilium/cilium/releases/tag/v1.13.7) for AKS clusters with kubernetes versions 1.28 or greater
   * Azure File CSI driver updated to version [v1.24.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.9) for clusters with kubernetes version [1.225]"(https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7), v1.26.7 for clusters with kubernetes version 1.26 and [v.1.28.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.4) for clusters with kubernetes version 1.27
-  * Hotfix:There were 3 CVE's in the upstream Kuberentes related to Insufficient input sanitiztion which leads to provige escalation. AKS Patched the AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3 and CVEs - [cve-2023-3676]([https://access.redhat.com/security/cve/cve-2023-3676](https://github.com/Azure/AKS/issues/3869)) and [cve-2023-3955](https://github.com/Azure/AKS/issues/3870), [cve-2023-3893](https://github.com/Azure/AKS/issues/3871)
+  * Hotfix: There were 3 CVE's in the upstream Kuberentes related to insufficient input sanitiztion which leads to privilege escalation. AKS Patched the AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3. CVE links - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871)
 
  
 ## Release 2023-09-17
