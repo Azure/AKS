@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) is a new Public Preview feature that allows you to sign container images via a process that ensures their authenticity and integrity.
     
 * Bug Fixes 
-  * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade events.
+  * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade event to make them more readable
   * Fix for the possibility of duplicate podCIDR allocation when node PodCIDR patch request fails. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4568)
   * Fix for the Private Link Service (PLS) creation failure that can occur if the customer selects a subnet name or PLS name that is too long. [Upstream Link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4538)
 
