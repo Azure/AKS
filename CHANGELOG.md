@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2023-09-25
+## Release 2023-09-24
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -17,11 +17,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4639)
 
 * Preview Features
-  * Load Balancer TCP reset can now be desabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
+  * Load Balancer TCP reset can now be disabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
   * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) allows you to sign container images via a process that ensures their authenticity and integrity.
     
 * Bug Fixes 
-  * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade event to make them more readable
   * Fix for the possibility of duplicate podCIDR allocation when node PodCIDR patch request fails. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4568)
   * Fix for the Private Link Service (PLS) creation failure that can occur if the customer selects a subnet name or PLS name that is too long. [Upstream Link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4538)
 
