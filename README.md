@@ -21,7 +21,7 @@ with AKS. For other tools, products and services see the [Upstream Azure Compute
 * AKS hybrid deployment options: https://aka.ms/aks-hybrid
 * AKS Release Notes: https://aka.ms/aks/releasenotes
 * AKS Preview Features: https://aka.ms/aks/preview-features
-* AKS Public Office Hours: https://aka.ms/akspublicofficehours
+* AKS Public Community Channel: https://twitter.com/theakscommunity
 * Updates about the service, including new features and new Azure regions:
   [AKS feed in Azure Updates](https://azure.microsoft.com/updates/?product=kubernetes-service)
 
