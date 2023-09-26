@@ -10,19 +10,19 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * Load Balancer TCP reset can now be desabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"*. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520) in preview
-  * Configurable resource group for the Prvate Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotaion. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4675).
+  * Configurable resource group for the Prvate Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4675).
   * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4639)
 
 * Bug Fixes 
   * A bug was fixed to improve the formatting of Kubernetes events such as cluster upgrade events.
-  * Fix for the possiblility of duplicate podCIDR allocation when node PodCIDR patch request fails. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4568)
+  * Fix for the possibility of duplicate podCIDR allocation when node PodCIDR patch request fails. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4568)
   * Fix for the Private Link Service (PLS) creation failure that can occur if the customer selects a subnet name or PLS name that is too long. [Upstream Link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4538)
 
 * Component Updates
-  * Security Publisher image version has been upadted to 1.0.67 from 1.0.64 which includes memory utilizaiton imrovements
+  * Security Publisher image version has been updated to 1.0.67 from 1.0.64 which includes memory utilizaiton imrovements
   * Cilium version has been updated to [1.13.5](https://github.com/cilium/cilium/releases/tag/v1.13.7) for AKS clusters with kubernetes versions 1.28 or greater
   * Azure File CSI driver updated to version [v1.24.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.9) for clusters with kubernetes version [1.225]"(https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7), v1.26.7 for clusters with kubernetes version 1.26 and [v.1.28.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.4) for clusters with kubernetes version 1.27
-  * Hotfix: Patching teh AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3 and CVEs - [cve-2023-3676](https://access.redhat.com/security/cve/cve-2023-3676) and [cve-2023-3955](https://access.redhat.com/security/cve/cve-2023-3955)
+  * Hotfix: Patching the AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3 and CVEs - [cve-2023-3676](https://access.redhat.com/security/cve/cve-2023-3676) and [cve-2023-3955](https://access.redhat.com/security/cve/cve-2023-3955)
 
  
 
