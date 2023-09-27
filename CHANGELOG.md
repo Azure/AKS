@@ -10,7 +10,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes 
 * Behavioral changes
-  * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type. Before, only VM SKUs that did not support ephemeral OS disks had this default.
+  * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type as compared to Standard HDD previously.
 
 * Features
   * Configurable resource group for the Private Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4675).
@@ -27,8 +27,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * Microsoft Defender Publisher container (part of defender for containers solution) image version has been updated to 1.0.67 from 1.0.64 which improves memory utilizaiton to reduce pod restarts due to OOMKills 
   * Cilium version has been updated to [1.13.5](https://github.com/cilium/cilium/releases/tag/v1.13.7) for AKS clusters with kubernetes versions 1.28 or greater
-  * Azure File CSI driver updated to version [v1.24.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.9) for clusters with kubernetes version [1.25]"(https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7), v1.26.7 for clusters with kubernetes version 1.26 and [v.1.28.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.4) for clusters with kubernetes version 1.27
+  * Azure File CSI driver updated to version [v1.24.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.9) for clusters with kubernetes version [1.25](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7), [v1.26.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7) for clusters with kubernetes version 1.26 and [v.1.28.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.4) for clusters with kubernetes version 1.27
   * Hotfix: There were 3 CVE's in the upstream Kubernetes related to insufficient input sanitiztion which leads to privilege escalation. AKS Patched the AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3. CVE links - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202309.26.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.26.0.txt.
+  * Azure Linux image has been updated to [AzureLinux-202309.26.0](vhd-notes/AzureLinux/202309.26.0.txt)
 
  
 ## Release 2023-09-17
