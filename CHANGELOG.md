@@ -11,10 +11,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 * Behavioral changes
   * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type as compared to Standard HDD previously.
+  * [Azure Kubernetes Clusters should enable node os auto-upgrade - Microsoft Azure (Audit)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F04408ca5-aa10-42ce-8536-98955cdddd4c) policy to include  the [Configure Node OS Auto upgrade on Azure Kubernetes Cluster - Microsoft Azure (DINE)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F40f1aee2-4db4-4b74-acb1-c6972e24cca8) policy to allow customers to enforce that Node OS Auto Upgrade is configured on a cluster, where before they could only Audit that a cluster was configured without Node OS Auto Upgrade.
 
 * Features
-  * Configurable resource group for the Private Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4675).
-  * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4639)
+  * Configurable resource group for the Private Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Cloud Provider docs link](https://cloud-provider-azure.sigs.k8s.io/topics/pls-integration/).
+  * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [Cloud Provider docs link](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#custom-load-balancer-health-probe-for-port)
 
 * Preview Features
   * Load Balancer TCP reset can now be disabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
