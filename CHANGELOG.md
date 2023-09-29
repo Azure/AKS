@@ -13,22 +13,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type as compared to Standard HDD previously.
   * [Azure Kubernetes Clusters should enable node os auto-upgrade - Microsoft Azure (Audit)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F04408ca5-aa10-42ce-8536-98955cdddd4c) policy to include  the [Configure Node OS Auto upgrade on Azure Kubernetes Cluster - Microsoft Azure (DINE)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F40f1aee2-4db4-4b74-acb1-c6972e24cca8) policy to allow customers to enforce that Node OS Auto Upgrade is configured on a cluster, where before they could only Audit that a cluster was configured without Node OS Auto Upgrade.
 
-* Features
-  * Configurable resource group for the Private Link Service (PLS) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation. [Cloud Provider docs link](https://cloud-provider-azure.sigs.k8s.io/topics/pls-integration/).
-  * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [Cloud Provider docs link](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#custom-load-balancer-health-probe-for-port)
-
 * Preview Features
-  * Load Balancer TCP reset can now be disabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
   * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) allows you to sign container images via a process that ensures their authenticity and integrity.
     
 * Bug Fixes 
-  * Fix for the Private Link Service (PLS) creation failure that can occur if the customer selects a subnet name or PLS name that is too long. [Upstream Link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4538)
+  * Fix for the [Private Link Service (PLS)](https://learn.microsoft.com/en-us/azure/aks/private-clusters?tabs=azure-portal) creation failure that can occur if the customer selects a subnet name or PLS name that is too long. 
 
 * Component Updates
   * Microsoft Defender Publisher container (part of defender for containers solution) image version has been updated to 1.0.67 from 1.0.64 which improves memory utilizaiton to reduce pod restarts due to OOMKills 
   * Cilium version has been updated to [1.13.5](https://github.com/cilium/cilium/releases/tag/v1.13.7) for AKS clusters with kubernetes versions 1.28 or greater
   * Azure File CSI driver updated to version [v1.24.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.9) for clusters with kubernetes version [1.25](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7), [v1.26.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7) for clusters with kubernetes version 1.26 and [v.1.28.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.4) for clusters with kubernetes version 1.27
-  * Hotfix: There were 3 CVE's in the upstream Kubernetes related to insufficient input sanitiztion which leads to privilege escalation. AKS Patched the AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3. CVE links - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871)
+  * Hotfix: There were 3 CVE's in the upstream Kubernetes related to insufficient input sanitiztion which leads to privilege escalation. AKS Patched the AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3. CVE links - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871). Update your AKS cluster's node images if the cluster does not have [node OS auto-upgrade](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-image#using-node-os-auto-upgrade) feature enabled.
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202309.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202309.26.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.26.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202309.26.0](vhd-notes/AzureLinux/202309.26.0.txt)
