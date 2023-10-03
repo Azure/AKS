@@ -7,12 +7,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+* The [vertical pod autoscaling (VPA)](https://learn.microsoft.com/en-us/azure/aks/vertical-pod-autoscaler) add-on for AKS is now generally available. 
 
 ### Release notes 
 
 * Features
   * [H100 GPUs (accelerated compute instances)](https://learn.microsoft.com/en-us/azure/virtual-machines/nd-h100-v5-series) are now supported on AKS, with two current SKU offerings: Standard_ND96isr_v5 and Standard_ND96is_v5.
-  * Support for IP address changes for [Azure Blob NFS mounts](https://github.com/Azure/AZNFS-mount) on AKS 1.27+.
+  * Support for IP address changes for [Azure Blob NFS mounts](https://learn.microsoft.com/en-us/azure/storage/blobs/network-file-system-protocol-support-how-to#step-5-install-the-aznfs-mount-helper-package) on AKS 1.27+.
 
 * Bug Fixes 
   * Fix for some events during an upgrade such as "Deleting node" not appearing in kubectl get events.
@@ -21,17 +22,16 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral Changes
   * The pod CPU request from [ama-metrics](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview) daemonsets will be reduced in Windows from 500m to 150m and in Linux from 75m to 50m.
-  * If your VM SKU does not support ephemeral or Premium SSD OS disks, AKS will now use Standard SSD as the default OS disk type as compared to Standard HDD previously.
   * Public CIDRs, including those from placing the service/pod CIDR in the multicast address space, will be rejected by AKS to improve cluster connectivity. 
   * If the ama-logs add-on is enabled, host port 28330 will be mounted to the ama-logs daemonset in order to facilitate syslog collection.
-  * To reduce [vertical pod autoscaling (VPA)](https://learn.microsoft.com/en-us/azure/aks/vertical-pod-autoscaler) out of memory (OOM) errors, the vpa-recommender CPU limit will increase to 1000m, memory limit to 2000Mi, and memory request to 800Mi from 200m, 1000m, and 500Mi respectively.
+  * To reduce vertical pod autoscaling (VPA) out of memory (OOM) errors, the vpa-recommender CPU limit will increase to 1000m, memory limit to 2000Mi, and memory request to 800Mi from 200m, 1000m, and 500Mi respectively.
   * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes-preview).
   * The default [max surge](https://learn.microsoft.com/en-us/azure/virtual-machines/nd-h100-v5-series) value during upgrades will be changed from 1 to 10% for AKS 1.28+ on new clusters to improve upgrade latency. 
   * Enabled support worklflows with update/patch access to validating and mutating webhookconfigurations, list/get access to volumeattachments, and get access to image integrity CRDs - policy, certificatestore, verifier, and store.
 
 * Component Updates
   * Linux Network Policy Manager (NPM) version has been rebuilt to [v1.4.45.2](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.45.2), containing patches for Ubuntu CVEs.
-  * ip-masq-agent-v2 onboarded to semantic versioning and has been udpated to [v0.1.8](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.8).
+  * ip-masq-agent-v2 onboarded to semantic versioning and has been updated to [v0.1.8](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.8).
   * Upgraded Azure File CSI driver to [v1.24.10](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.10) on AKS 1.25, [v1.26.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.8) on AKS 1.26, and [v1.28.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.5) on AKS 1.27.
   * Blob CSI driver upgraded to [v1.22.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.2) on AKS 1.27+ to support AZNFS mount helper. 
 
