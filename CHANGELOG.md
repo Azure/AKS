@@ -8,7 +8,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
 
-
 ### Release notes 
 
 * Features
@@ -29,7 +28,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * To reduce vertical pod autoscaling (VPA) out of memory (OOM) errors, the vpa-recommender CPU limit will increase to 1000m, memory limit to 2000Mi, and memory request to 800Mi from 200m, 1000m, and 500Mi respectively.
   * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes-preview).
   * The default [max surge](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#customize-node-surge-upgrade) value during upgrades will be changed from 1 to 10% for AKS 1.28+ on new clusters to improve upgrade latency. 
-
 
 * Component Updates
   * Linux Network Policy Manager (NPM) version has been rebuilt to [v1.4.45.2](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.45.2), containing patches for Ubuntu CVEs.
