@@ -7,18 +7,20 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
-* The [vertical pod autoscaling (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) add-on for AKS is now generally available. 
+
 
 ### Release notes 
 
 * Features
   * [H100 GPUs (accelerated compute instances)](https://learn.microsoft.com/azure/virtual-machines/nd-h100-v5-series) are now supported on AKS, with two current SKU offerings: Standard_ND96isr_v5 and Standard_ND96is_v5.
   * Support for IP address changes for [Azure Blob NFS mounts](https://learn.microsoft.com/azure/storage/blobs/network-file-system-protocol-support-how-to#step-5-install-the-aznfs-mount-helper-package) on AKS 1.27+.
+  * Configurable resource group for the [Private Link Service (PLS)](https://learn.microsoft.com/azure/aks/internal-lb?tabs=set-service-annotations#create-a-private-link-service-connection) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation.
+  * The [vertical pod autoscaling (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) add-on for AKS is now generally available. 
 
 * Bug Fixes 
   * Fix for some events during an upgrade such as "Deleting node" not appearing in kubectl get events.
   * Fix for metricsDefinition operation not exposed in Azure China.
-  * Fix for [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/releases) condition where nodes that VPA pods are scheduled to could not be evicted.
+  * Fix for [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.28.0) condition where nodes that VPA pods are scheduled to could not be evicted.
 
 * Behavioral Changes
   * The pod CPU request from [ama-metrics](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview) daemonsets will be reduced in Windows from 500m to 150m and in Linux from 75m to 50m.
@@ -27,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * To reduce vertical pod autoscaling (VPA) out of memory (OOM) errors, the vpa-recommender CPU limit will increase to 1000m, memory limit to 2000Mi, and memory request to 800Mi from 200m, 1000m, and 500Mi respectively.
   * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes-preview).
   * The default [max surge](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#customize-node-surge-upgrade) value during upgrades will be changed from 1 to 10% for AKS 1.28+ on new clusters to improve upgrade latency. 
-  * Enabled support worklflows with update/patch access to validating and mutating webhookconfigurations, list/get access to volumeattachments, and get access to image integrity CRDs - policy, certificatestore, verifier, and store.
+
 
 * Component Updates
   * Linux Network Policy Manager (NPM) version has been rebuilt to [v1.4.45.2](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.45.2), containing patches for Ubuntu CVEs.
