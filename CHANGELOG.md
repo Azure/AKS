@@ -59,8 +59,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Cilium version has been updated to [1.13.5](https://github.com/cilium/cilium/releases/tag/v1.13.7) for AKS clusters with kubernetes versions 1.28 or greater
   * Azure File CSI driver updated to version [v1.24.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.9) for clusters with kubernetes version [1.25](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7), [v1.26.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.7) for clusters with kubernetes version 1.26 and [v.1.28.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.4) for clusters with kubernetes version 1.27
   * Hotfix: There were 3 CVE's in the upstream Kubernetes related to insufficient input sanitiztion which leads to privilege escalation. AKS Patched the AKS cluster nodes for clusters version 1.24.9, 1.24.10, 1.24.15, 1.25.5, 1.25.6, 1.25.11, 1.26.0, 1.26.3, 1.26.6, 1.27.3. CVE links - [CVE-2023-3676](https://github.com/Azure/AKS/issues/3869), [CVE-2023-3955](https://github.com/Azure/AKS/issues/3870), and [CVE-2023-3893](https://github.com/Azure/AKS/issues/3871). Update your AKS cluster's node images if the cluster does not have [node OS auto-upgrade](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-image#using-node-os-auto-upgrade) feature enabled.
-  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202309.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202309.26.0.txt).
-  * Azure Linux image has been updated to [AzureLinux-202309.26.0](vhd-notes/AzureLinux/202309.26.0.txt)
 
  
 ## Release 2023-09-17
