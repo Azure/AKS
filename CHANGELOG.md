@@ -1,5 +1,41 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-10-01
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+
+### Release notes 
+
+* Features
+  * [H100 GPUs (accelerated compute instances)](https://learn.microsoft.com/azure/virtual-machines/nd-h100-v5-series) are now supported on AKS, with two current SKU offerings: Standard_ND96isr_v5 and Standard_ND96is_v5.
+  * Support for IP address changes for [Azure Blob NFS mounts](https://learn.microsoft.com/azure/storage/blobs/network-file-system-protocol-support-how-to#step-5-install-the-aznfs-mount-helper-package) on AKS 1.27+.
+  * Configurable resource group for the [Private Link Service (PLS)](https://learn.microsoft.com/azure/aks/internal-lb?tabs=set-service-annotations#create-a-private-link-service-connection) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation.
+  * The [vertical pod autoscaling (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) add-on for AKS is now generally available. 
+  * [Bring your own keys (BYOK)](https://learn.microsoft.com/azure/aks/azure-disk-customer-managed-keys#register-customer-managed-key-preview-feature) support to encrypt Azure Ephemeral disks is now generally available in AKS.
+
+* Bug Fixes 
+  * Fix for some events during an upgrade such as "Deleting node" not appearing in kubectl get events.
+  * Fix for [metricDefinitions](https://learn.microsoft.com/rest/api/monitor/metric-definitions/list?tabs=HTTP) operation not exposed in Azure China.
+  * Fix for [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.28.0) condition where nodes that VPA pods are scheduled to could not be evicted.
+
+* Behavioral Changes
+  * The pod CPU request from [ama-metrics](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview) daemonsets will be reduced in Windows from 500m to 150m and in Linux from 75m to 50m.
+  * AKS will now validate, and block if necessary, service CIDRs placed in [public and multicast IP address ranges](https://learn.microsoft.com/azure/virtual-network/virtual-networks-faq#what-address-ranges-can-i-use-in-my-virtual-networks).
+  * If the ama-logs add-on is enabled, host port 28330 will be mounted to the ama-logs daemonset in order to facilitate syslog collection.
+  * To reduce vertical pod autoscaling (VPA) out of memory (OOM) errors, the vpa-recommender CPU limit will increase to 1000m, memory limit to 2000Mi, and memory request to 800Mi from 200m, 1000m, and 500Mi respectively.
+  * The default [max surge](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#customize-node-surge-upgrade) value during upgrades will be changed from 1 to 10% for AKS 1.28+ on new clusters to improve upgrade latency. 
+
+* Component Updates
+  * Linux Network Policy Manager (NPM) version has been rebuilt to [v1.4.45.2](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.45.2), containing patches for Ubuntu CVEs.
+  * ip-masq-agent-v2 onboarded to semantic versioning and has been updated to [v0.1.8](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.8).
+  * Upgraded Azure File CSI driver to [v1.24.10](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.10) on AKS 1.25, [v1.26.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.8) on AKS 1.26, and [v1.28.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.5) on AKS 1.27.
+  * Blob CSI driver upgraded to [v1.22.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.2) on AKS 1.27+ to support AZNFS mount helper. 
+
+
 ## Release 2023-09-24
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
@@ -1816,7 +1852,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](http://aka.ms/aks
   * Update cloud-controller-manager versions to v1.24.2, v1.23.14, v1.1.17, v1.0.21 for Kubernetes 1.24, 1.23, 1.22, and 1.21 -
     * A new annotation is added in order to specify the PublicIP Prefix for creating IP of LB-service.beta. kubernetes.io/azure-pip-prefix-id: "/subscriptions/8ecadfc9-ffff-4ea4-ffff-0d9f87e4d7c8/resourceGroups/lodrem/providers/Microsoft.Network/publicIPPrefixes/bb" [#1848](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1848).
     * Fix unexpected managed PLS deletion issue when ILB subnet is specified. [#1835](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1835)
-    * Fix: avoid unnessary NSG updating on service reconciling [#1850](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1850)
+    * Fix: avoid unnecessary NSG updating on service reconciling [#1850](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1850)
     * Fix: panic when create private endpoint using azurefile NFS [#1816](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1816)
     * Remove redundant restriction on pls autoApproval and visibility.User can specify a list of  subscriptions for visibility (e.g. "sub1 sub2") and a subset of this list for autoApproval (e.g. "sub1"). [#1867](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/1867)
 * Component Updates
@@ -3199,7 +3235,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-24 for p
   * Fixed Auto Scaling issues with 1.19 Preview Clusters where no image is found for a distro to scale from.
   * A previous release defaulted to Gen2 VHDs for Kubernetes versions below 1.18.0. This implicitly changed the Ubuntu version from 16.04 to 18.04 for users still below 1.18.0. This has been fixed and users will only receive Gen2 VHDs for Kubernetes versions greater than or equal to 1.18.0.
   * Fixed AuthorizationFailed errors on cluster deletion operations to better expose to users.
-  * Fixed case senstivity problem when specifying "--os-type"
+  * Fixed case sensitivity problem when specifying "--os-type"
   * Fixed an Error Handling issue when provisioning node pools with Ephemeral OS and a VM size with no cache disk.
   * Fixed an issue with Azure Policy pods not getting scheduled with CriticalAddonsOnly taint [GithubIssue](https://github.com/Azure/AKS/issues/1963)
 
@@ -3224,7 +3260,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-17 for p
   * Cluster Start/Stop is now [GA](https://docs.microsoft.com/azure/aks/start-stop-cluster).
 * Preview Features
   * AKS now supports Private Clusters created with a custom DNS zone (BYO DNS zone). Read more [here](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone).
-  * AKS now allows you to re-use your standard LoadBalancer outbound IP (created by AKS) as Inbound IP to your services (and vice-versa) from Kubernetes v1.20+.
+  * AKS now allows you to reuse your standard LoadBalancer outbound IP (created by AKS) as Inbound IP to your services (and vice-versa) from Kubernetes v1.20+.
   * AKS now supports re-using the same Load Balancer IP across multiple services from Kubernetes v1.20+.
 * Behavioral Change
   * The AKS default storage class behavior now will be to delay the creation of a Persistent Volume until a pod is created. Allowing the Persistent Volume to be created in the same zone as the pod. Read more [here](https://docs.microsoft.com/azure/aks/azure-disk-csi#create-a-custom-storage-class).
