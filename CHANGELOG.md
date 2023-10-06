@@ -15,10 +15,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Support for IP address changes for [Azure Blob NFS mounts](https://learn.microsoft.com/azure/storage/blobs/network-file-system-protocol-support-how-to#step-5-install-the-aznfs-mount-helper-package) on AKS 1.27+.
   * Configurable resource group for the [Private Link Service (PLS)](https://learn.microsoft.com/azure/aks/internal-lb?tabs=set-service-annotations#create-a-private-link-service-connection) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation.
   * The [vertical pod autoscaling (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) add-on for AKS is now generally available. 
+  * [Bring your own keys (BYOK)](https://learn.microsoft.com/azure/aks/azure-disk-customer-managed-keys#register-customer-managed-key-preview-feature) support to encrypt Azure Ephemeral disks is now generally available in AKS.
 
 * Bug Fixes 
   * Fix for some events during an upgrade such as "Deleting node" not appearing in kubectl get events.
-  * Fix for metricsDefinition operation not exposed in Azure China.
+  * Fix for [metricDefinitions](https://learn.microsoft.com/rest/api/monitor/metric-definitions/list?tabs=HTTP) operation not exposed in Azure China.
   * Fix for [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.28.0) condition where nodes that VPA pods are scheduled to could not be evicted.
 
 * Behavioral Changes
@@ -26,7 +27,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS will now validate, and block if necessary, service CIDRs placed in [public and multicast IP address ranges](https://learn.microsoft.com/azure/virtual-network/virtual-networks-faq#what-address-ranges-can-i-use-in-my-virtual-networks).
   * If the ama-logs add-on is enabled, host port 28330 will be mounted to the ama-logs daemonset in order to facilitate syslog collection.
   * To reduce vertical pod autoscaling (VPA) out of memory (OOM) errors, the vpa-recommender CPU limit will increase to 1000m, memory limit to 2000Mi, and memory request to 800Mi from 200m, 1000m, and 500Mi respectively.
-  * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes-preview).
   * The default [max surge](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#customize-node-surge-upgrade) value during upgrades will be changed from 1 to 10% for AKS 1.28+ on new clusters to improve upgrade latency. 
 
 * Component Updates
