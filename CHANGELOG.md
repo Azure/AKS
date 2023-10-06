@@ -11,7 +11,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 
 * Features
-  * [H100 GPUs (accelerated compute instances)](https://learn.microsoft.com/azure/virtual-machines/nd-h100-v5-series) are now supported on AKS, with two current SKU offerings: Standard_ND96isr_v5 and Standard_ND96is_v5.
   * Support for IP address changes for [Azure Blob NFS mounts](https://learn.microsoft.com/azure/storage/blobs/network-file-system-protocol-support-how-to#step-5-install-the-aznfs-mount-helper-package) on AKS 1.27+.
   * Configurable resource group for the [Private Link Service (PLS)](https://learn.microsoft.com/azure/aks/internal-lb?tabs=set-service-annotations#create-a-private-link-service-connection) creation using the *"ServiceAnnotationPLSResourceGroup = "service.beta.kubernetes.io/azure-pls-resource-group"* annotation.
   * The [vertical pod autoscaling (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) add-on for AKS is now generally available. 
