@@ -13,15 +13,18 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [Cloud Provider docs link](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#custom-load-balancer-health-probe-for-port)
   * Load Balancer TCP reset can now be disabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
 
+* Bug Fixes
+  * Microsoft Defender has been updated to support for kernel version 6.2 or higher.
+
 * Behavioral Changes
   * With the [release](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10042023--) of Container Insights 3.1.14, default 1-year tokens will be set to 1-hour expiry and refreshed at 10 minutes.
   * A warning has been added for clusters utilizing dual-stack networking and outbound type user-defined routing if the associated route table does not have a default IPv6 route in place.
-  * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes-preview).
+  * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes).
+  * Customers can now [disable Windows GMSA](https://learn.microsoft.com/en-us/azure/aks/use-group-managed-service-accounts#disable-gmsa-on-an-existing-cluster) on an existing cluster.
 
 * Component Updates
   * Windows CNI has been updated to v1.4.39.1 for Azure CNI Overlay and Azure CNI with dynamic allocation.
   * Azure Monitor Metrics for AKS has been updated. Please see their [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md?plain=1#L3) for full details.
-  * Microsoft Defender has been updated to support for kernel version 6.2 or higher.
 
 
 ## Release 2023-10-01
