@@ -24,7 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Component Updates
   * Windows CNI has been updated to v1.4.39.1 for Azure CNI Overlay and Azure CNI with dynamic allocation.
-  * Azure Monitor Metrics for AKS has been updated. Please see their [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md?plain=1#L3) for full details.
+  * Azure Monitor Metrics for AKS has been updated to image version 6.7.7. Please see their [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md?plain=1#L3) for full details.
 
 
 ## Release 2023-10-01
