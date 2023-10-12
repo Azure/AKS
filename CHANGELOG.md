@@ -12,6 +12,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Features
   * Support customizing probe config when *externalTrafficPolicy* = *local* and *health_probe_port* annotation is defined for service port. [Cloud Provider docs link](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#custom-load-balancer-health-probe-for-port)
   * Load Balancer TCP reset can now be disabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
+  * Node OS Auto Upgrade now has a [built-in Policy Definition](https://learn.microsoft.com/en-us/azure/aks/policy-reference#microsoftcontainerservice) that can be used to validate and enforce whether it is enabled on a cluster.
 
 * Bug Fixes
   * Microsoft Defender for Containers has been updated to image version 1.3.81 to support kernel versions 6.2 or higher.
