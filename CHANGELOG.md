@@ -14,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Load Balancer TCP reset can now be disabled with a service annotaiton *"service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset=true"* in preview. [Upstream link](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4520)
 
 * Bug Fixes
-  * Microsoft Defender has been updated to support for kernel version 6.2 or higher.
+  * Microsoft Defender for Containers has been updated to image version 1.3.81 to support kernel versions 6.2 or higher.
 
 * Behavioral Changes
   * With the [release](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10042023--) of Container Insights 3.1.14, default 1-year tokens will be set to 1-hour expiry and refreshed at 10 minutes.
