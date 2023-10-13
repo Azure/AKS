@@ -73,7 +73,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * After you set the [node OS auto-upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-image#using-node-os-auto-upgrade) to "None", AKS doesn't automatically reimage nodes in your node pools. But when you set the node OS auto-upgrade channel to "Unmanaged", AKS will reimage all nodes in your node pools.
 
 * Features
-  * [HTTP Proxy](https://learn.microsoft.com/azure/aks/http-proxy#updating-proxy-configurations) can now be updated post clusters creation.
+  * [HTTP Proxy URLs](https://learn.microsoft.com/azure/aks/http-proxy#updating-proxy-configurations) can now be updated post cluster creation.
 
 * Component Updates
   * Azure Monitor container insights addon updated to [09/15/2023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#09152023--) release.
