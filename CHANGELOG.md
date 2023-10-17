@@ -20,7 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral Changes
   * With the [release](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10042023--) of Container Insights 3.1.14, default 1-year tokens will be set to 1-hour expiry and refreshed at 10 minutes.
-  * A warning has been added for clusters utilizing dual-stack networking and outbound type user-defined routing if the associated route table does not have a default IPv6 route in place.
+  * A warning has been added for clusters utilizing dual-stack networking and outbound type user-defined routing if the associated route table does not have a default IPv6 route in place. Visit [Dual-stack kubenet networking](https://learn.microsoft.com/en-us/azure/aks/configure-kubenet-dual-stack) for full details.
   * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes).
   * Customers can now [disable Windows GMSA](https://learn.microsoft.com/en-us/azure/aks/use-group-managed-service-accounts#disable-gmsa-on-an-existing-cluster) on an existing cluster.
 
