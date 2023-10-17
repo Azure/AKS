@@ -11,11 +11,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 
 * Bug Fixes 
-  * Fix for preventing [cilium-operator](https://learn.microsoft.com/en-us/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
+  * Fix for preventing [cilium-operator](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
   * Fix for - [CVE-2023-44487](https://www.cve.org/CVERecord?id=CVE-2023-44487) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
-  * Fix for AKS Not Honoring/ Returning [PrivateEndpointConnection](https://learn.microsoft.com/en-us/azure/aks/private-clusters?tabs=azure-portal#use-a-private-endpoint-connection) description field
-  * Fis for PUT on ManagedCluster allowing more than the [maximum tag limit](https://learn.microsoft.com/en-us/Azure/azure-resource-manager/management/tag-resources#limitations) of 50 in some rare cases
-  * Fix for Failure to create multiple agent pools concurrently when using the same PodSubnetID- [Dynamic IP Allocation mode](https://learn.microsoft.com/en-us/azure/aks/configure-azure-cni-dynamic-ip-allocation)
+  * Fix for AKS Not Honoring/ Returning [PrivateEndpointConnection](https://learn.microsoft.com/azure/aks/private-clusters?tabs=azure-portal#use-a-private-endpoint-connection) description field
+  * Fix for PUT on ManagedCluster allowing more than the [maximum tag limit](https://learn.microsoft.com/Azure/azure-resource-manager/management/tag-resources#limitations) of 50 in some rare cases
+  * Fix for Failure to create multiple agent pools concurrently when using the same PodSubnetID- [Dynamic IP Allocation mode](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation)
 
 * Behavioral Changes
   * Disable creation of new nodepools with OSSKU cblmariner as CBL-Mariner 1.0 is end of life
@@ -105,7 +105,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 * Behavioral changes
   * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type as compared to Standard HDD previously.
-  * [Azure Kubernetes Clusters should enable node os auto-upgrade - Microsoft Azure (Audit)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F04408ca5-aa10-42ce-8536-98955cdddd4c) policy to include  the [Configure Node OS Auto upgrade on Azure Kubernetes Cluster - Microsoft Azure (DINE)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F40f1aee2-4db4-4b74-acb1-c6972e24cca8) policy to allow customers to enforce that Node OS Auto Upgrade is configured on a cluster, where before they could only Audit that a cluster was configured without Node OS Auto Upgrade.
+  * [Azure Kubernetes Clusters should enable node os auto-upgrade - Microsoft Azure (Audit)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F04408ca5-aa10-42ce-8536-98955cdddd4c) policy to include  the [Configure Node OS Auto upgrade on Azure Kubernetes Cluster - Microsoft Azure (DINE)](https://ms.portal.azure.com/view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F40f1aee2-4db4-4b74-acb1-c6972e24cca8) policy to allow customers to enforce that Node OS Auto Upgrade is configured on a cluster, where before they could only Audit that a cluster was configured without Node OS Auto Upgrade.
 
 * Preview Features
   * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) allows you to sign container images via a process that ensures their authenticity and integrity.
