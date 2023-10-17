@@ -10,8 +10,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 
 * Features
-  * Node OS Auto Upgrade now has a [built-in Policy Definition](https://learn.microsoft.com/en-us/azure/aks/policy-reference#microsoftcontainerservice) that can be used to validate and enforce whether it is enabled on a cluster.
-  * The AKS vscode extension has released four new features which include a brand new user experience for cluster create and visual kubectl commands as well as several internal enhancements. To read more and engage with the team directly, visit the [GitHub repository](https://github.com/Azure/vscode-aks-tools/releases/tag/1.3.15)
+  * [Stop cluster upgrades automatically on API breaking changes](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes) is now generally available.
+  * The AKS vscode extension has released four new features: A brand new user experience for cluster create and visual kubectl commands as well as several internal enhancements. To read more and engage with the team directly, visit the [GitHub repository](https://github.com/Azure/vscode-aks-tools/releases/tag/1.3.15)
 
 * Bug Fixes
   * Microsoft Defender for Containers has been updated to image version 1.3.81 to support kernel versions 6.2 or higher.
@@ -19,8 +19,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral Changes
   * With the [release](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10042023--) of Container Insights 3.1.14, default 1-year tokens will be set to 1-hour expiry and refreshed at 10 minutes.
   * A warning has been added for clusters utilizing dual-stack networking and outbound type user-defined routing if the associated route table does not have a default IPv6 route in place. Visit [Dual-stack kubenet networking](https://learn.microsoft.com/en-us/azure/aks/configure-kubenet-dual-stack) for full details.
-  * All control plane upgrades to AKS 1.26+ will enforce deprecated API usage validation. You can bypass this check and frontend pdb validation with [forceUpgrade](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes).
   * Customers can now [disable Windows GMSA](https://learn.microsoft.com/en-us/azure/aks/use-group-managed-service-accounts#disable-gmsa-on-an-existing-cluster) on an existing cluster.
+  * Node OS Auto Upgrade now has a [built-in Policy Definition](https://learn.microsoft.com/en-us/azure/aks/policy-reference#microsoftcontainerservice) that can be used to validate and enforce whether it is enabled on an AKS cluster.
 
 * Component Updates
   * Windows CNI has been updated to v1.4.39.1 for Azure CNI Overlay and Azure CNI with dynamic allocation.
