@@ -1,5 +1,33 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-10-08
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+
+### Release notes 
+
+* Features
+  * [Stop cluster upgrades automatically on API breaking changes](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli#stop-cluster-upgrades-automatically-on-api-breaking-changes) is now generally available.
+  * The AKS vscode extension has released four new features: A brand new user experience for cluster create and visual kubectl commands as well as several internal enhancements. To read more and engage with the team directly, visit the [GitHub repository](https://github.com/Azure/vscode-aks-tools/releases/tag/1.3.15)
+
+* Bug Fixes
+  * Microsoft Defender for Containers has been updated to image version 1.3.81 to support kernel versions 6.2 or higher.
+
+* Behavioral Changes
+  * With the [release](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10042023--) of Container Insights 3.1.14, default 1-year tokens will be set to 1-hour expiry and refreshed at 10 minutes.
+  * A warning has been added for clusters utilizing dual-stack networking and outbound type user-defined routing if the associated route table does not have a default IPv6 route in place. Visit [Dual-stack kubenet networking](https://learn.microsoft.com/en-us/azure/aks/configure-kubenet-dual-stack) for full details.
+  * Customers can now [disable Windows GMSA](https://learn.microsoft.com/en-us/azure/aks/use-group-managed-service-accounts#disable-gmsa-on-an-existing-cluster) on an existing cluster.
+  * Node OS Auto Upgrade now has a [built-in Policy Definition](https://learn.microsoft.com/en-us/azure/aks/policy-reference#microsoftcontainerservice) that can be used to validate and enforce whether it is enabled on an AKS cluster.
+
+* Component Updates
+  * Windows CNI has been updated to v1.4.39.1 for Azure CNI Overlay and Azure CNI with dynamic allocation.
+  * Azure Monitor Metrics for AKS has been updated to image version 6.7.7. Please see their [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md?plain=1#L3) for full details.
+  * The AKS vscode extension [v1.3.15](https://github.com/Azure/vscode-aks-tools/releases/tag/1.3.15) has been released 
+
+
 ## Release 2023-10-01
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
