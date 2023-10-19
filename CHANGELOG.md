@@ -98,7 +98,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ## Release 2023-09-24
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/)
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
 
