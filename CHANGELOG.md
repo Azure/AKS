@@ -10,7 +10,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes 
 * Feature 
-  * Customise the [load balancer health probe] (https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe)
+  * Customise the [load balancer health probe](https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe)
 * Bug Fixes 
   * Fix for preventing [cilium-operator](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
   * Fix for - [CVE-2023-44487](https://github.com/Azure/AKS/issues/3947) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
