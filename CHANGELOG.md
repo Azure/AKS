@@ -9,7 +9,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
 
 ### Release notes 
-
+* Feature 
+  * Customise the [load balancer health probe] (https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe)
 * Bug Fixes 
   * Fix for preventing [cilium-operator](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
   * Fix for - [CVE-2023-44487](https://github.com/Azure/AKS/issues/3947) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
@@ -23,6 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  
 * Component Updates
   * Updates ama-logs addon to version 3.1.15 [10/13/2023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md)
+  * [CVE-2023-29332](https://github.com/Azure/AKS/issues/3904) Please update your AKS VHD to at least VHD version 230801 as mentioned in the issue
   * Azure Linux image has been updated to [Azure Linux - 202310.09.0](vhd-notes/AzureLinux/202310.09.0.txt)
   * Azure Windows 2019 Image has been updated to [Azure Windows - 17763.4974.231011](vhd-notes/AKSWindows/2019/17763.4974.231011.txt)
   * Azure Windows 2022 Image has been updated to [Azure Windows - 20348.2031.231011](vhd-notes/AKSWindows/2022/20348.2031.231011.txt)
@@ -105,7 +107,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 * Behavioral changes
   * If your VM SKU does not support ephemeral or PremiumSSD OS disks, AKS will now use StandardSSD as the default OS disk type as compared to Standard HDD previously.
-  * [Azure Kubernetes Clusters should enable node os auto-upgrade - Microsoft Azure (Audit)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F04408ca5-aa10-42ce-8536-98955cdddd4c) policy to include  the [Configure Node OS Auto upgrade on Azure Kubernetes Cluster - Microsoft Azure (DINE)](https://ms.portal.azure.com/view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F40f1aee2-4db4-4b74-acb1-c6972e24cca8) policy to allow customers to enforce that Node OS Auto Upgrade is configured on a cluster, where before they could only Audit that a cluster was configured without Node OS Auto Upgrade.
+  * [Azure Kubernetes Clusters should enable node os auto-upgrade - Microsoft Azure (Audit)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F04408ca5-aa10-42ce-8536-98955cdddd4c) policy to include  the [Configure Node OS Auto upgrade on Azure Kubernetes Cluster - Microsoft Azure (DINE)](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F40f1aee2-4db4-4b74-acb1-c6972e24cca8) policy to allow customers to enforce that Node OS Auto Upgrade is configured on a cluster, where before they could only Audit that a cluster was configured without Node OS Auto Upgrade.
 
 * Preview Features
   * [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) allows you to sign container images via a process that ensures their authenticity and integrity.
