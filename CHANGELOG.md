@@ -12,7 +12,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Bug Fixes 
   * Fix for preventing [cilium-operator](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
-  * Fix for - [CVE-2023-44487](https://www.cve.org/CVERecord?id=CVE-2023-44487) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
+  * Fix for - [CVE-2023-44487](https://github.com/Azure/AKS/issues/3947) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
   * Fix for AKS Not Honoring/ Returning [PrivateEndpointConnection](https://learn.microsoft.com/azure/aks/private-clusters?tabs=azure-portal#use-a-private-endpoint-connection) description field
   * Fix for PUT on ManagedCluster allowing more than the [maximum tag limit](https://learn.microsoft.com/Azure/azure-resource-manager/management/tag-resources#limitations) of 50 in some rare cases
   * Fix for Failure to create multiple agent pools concurrently when using the same PodSubnetID- [Dynamic IP Allocation mode](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation)
@@ -61,7 +61,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ## Release 2023-10-01
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/)
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
 
@@ -96,7 +96,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ## Release 2023-09-24
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/)
 
 ### Announcements
 
