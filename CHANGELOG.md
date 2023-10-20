@@ -27,7 +27,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Azure Linux image has been updated to [Azure Linux - 202310.09.0](vhd-notes/AzureLinux/202310.09.0.txt)
   * Azure Windows 2019 Image has been updated to [Azure Windows - 17763.4974.231011](vhd-notes/AKSWindows/2019/17763.4974.231011.txt)
   * Azure Windows 2022 Image has been updated to [Azure Windows - 20348.2031.231011](vhd-notes/AKSWindows/2022/20348.2031.231011.txt)
-  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.09.0.txt)
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202310.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202310.09.0.txt)
 
 ## Release 2023-10-08
