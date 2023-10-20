@@ -1,10 +1,40 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-10-15
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+* [CVE-2023-29332](https://github.com/Azure/AKS/issues/3904) Microsoft Azure Kubernetes Service Elevation of Privilege Vulnerability. An attacker who successfully exploited this vulnerability could gain Cluster Administrator privileges. Please update your AKS VHD to at least VHD version 230801 as mentioned in the issue
+
+### Release notes 
+* Feature 
+  * AKS supports to use annotations to configure the [load balancer health probe](https://learn.microsoft.com/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe) for different service ports
+* Bug Fixes 
+  * Fix for preventing [cilium-operator](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
+  * Fix for - [CVE-2023-44487](https://github.com/Azure/AKS/issues/3947) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
+  * Fix for AKS Not Honoring/ Returning [PrivateEndpointConnection](https://learn.microsoft.com/azure/aks/private-clusters?tabs=azure-portal#use-a-private-endpoint-connection) description field
+  * Fix for PUT on ManagedCluster allowing more than the [maximum tag limit](https://learn.microsoft.com/Azure/azure-resource-manager/management/tag-resources#limitations) of 50 in some rare cases
+  * Fix for Failure to create multiple agent pools concurrently when using the same PodSubnetID- [Dynamic IP Allocation mode](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation)
+
+* Behavioral Changes
+  * Change in Key Vault error codes - KeyVaultEncryptKeyFailed will now be KeyVaultEncryptFailed and KeyVaultDecryptKeyFailed will now be KeyVaultDecryptFailed
+ 
+* Component Updates
+  * Updates ama-logs addon to version 3.1.15 [10/13/2023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md)
+  * Azure Linux image has been updated to [Azure Linux - 202310.09.0](vhd-notes/AzureLinux/202310.09.0.txt)
+  * Azure Windows 2019 Image has been updated to [Azure Windows - 17763.4974.231011](vhd-notes/AKSWindows/2019/17763.4974.231011.txt)
+  * Azure Windows 2022 Image has been updated to [Azure Windows - 20348.2031.231011](vhd-notes/AKSWindows/2022/20348.2031.231011.txt)
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202310.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202310.09.0.txt)
+
 ## Release 2023-10-08
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
+
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
 
 ### Release notes 
@@ -26,6 +56,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Windows CNI has been updated to v1.4.39.1 for Azure CNI Overlay and Azure CNI with dynamic allocation.
   * Azure Monitor Metrics for AKS has been updated to image version 6.7.7. Please see their [release notes](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md?plain=1#L3) for full details.
   * The AKS vscode extension [v1.3.15](https://github.com/Azure/vscode-aks-tools/releases/tag/1.3.15) has been released 
+
 
 
 ## Release 2023-10-01
