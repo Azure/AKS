@@ -7,11 +7,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
-* [CVE-2023-29332](https://github.com/Azure/AKS/issues/3904) Please update your AKS VHD to at least VHD version 230801 as mentioned in the issue
+* [CVE-2023-29332](https://github.com/Azure/AKS/issues/3904) Microsoft Azure Kubernetes Service Elevation of Privilege Vulnerability. An attacker who successfully exploited this vulnerability could gain Cluster Administrator privileges. Please update your AKS VHD to at least VHD version 230801 as mentioned in the issue
 
 ### Release notes 
 * Feature 
-  * AKS supports to use annotations to configure the [load balancer health probe](https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe) for different service ports
+  * AKS supports to use annotations to configure the [load balancer health probe](https://learn.microsoft.com/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe) for different service ports
 * Bug Fixes 
   * Fix for preventing [cilium-operator](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
   * Fix for - [CVE-2023-44487](https://github.com/Azure/AKS/issues/3947) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
@@ -20,7 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix for Failure to create multiple agent pools concurrently when using the same PodSubnetID- [Dynamic IP Allocation mode](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation)
 
 * Behavioral Changes
-  * Change error codes KeyVaultEncryptKeyFailed to KeyVaultEncryptFailed and KeyVaultDecryptKeyFailed to KeyVaultDecryptFailed
+  * Change in Key Vault error codes - KeyVaultEncryptKeyFailed will now be KeyVaultEncryptFailed and KeyVaultDecryptKeyFailed will now be KeyVaultDecryptFailed
  
 * Component Updates
   * Updates ama-logs addon to version 3.1.15 [10/13/2023](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md)
