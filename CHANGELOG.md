@@ -11,7 +11,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes 
 * Feature 
-  * Customise the [load balancer health probe](https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe)
+  * AKS supports to use annotations to configure the [load balancer health probe](https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard#customize-the-load-balancer-health-probe) for different service ports
 * Bug Fixes 
   * Fix for preventing [cilium-operator](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)  from restarting unmanaged coredns pods
   * Fix for - [CVE-2023-44487](https://github.com/Azure/AKS/issues/3947) - The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly
@@ -20,7 +20,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix for Failure to create multiple agent pools concurrently when using the same PodSubnetID- [Dynamic IP Allocation mode](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation)
 
 * Behavioral Changes
-  * Disable creation of new nodepools with OSSKU cblmariner as CBL-Mariner 1.0 is end of life
   * Change error codes KeyVaultEncryptKeyFailed to KeyVaultEncryptFailed and KeyVaultDecryptKeyFailed to KeyVaultDecryptFailed
  
 * Component Updates
