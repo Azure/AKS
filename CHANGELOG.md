@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2023-10-23
+## Release 2023-10-22
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -12,20 +12,23 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes 
 * Features
-  * Bumped cloud-controller-manager image to v1.28.2, v1.27.10, v1.26.16 and v1.25.20. Release notes: https://cloud-provider-azure.sigs.k8s.io/blog/  
+  * Bumped cloud-controller-manager image to v1.28.2, v1.27.10, v1.26.16 and v1.25.20. [Release notes](https://cloud-provider-azure.sigs.k8s.io/blog/).
   * Added RBAC permissions to CNS for handling swiftv2 CRD resources("multitenantpodnetworkconfigs", "podnetworkinstances" and "podnetworks"). Note that swiftv2 flow is still under development and is not done yet. This change was done to unblock swiftv2 development.
   * Omsagent addon can now be interacted with using helm commands. The default value is set to true for omsagent addon v2 migration. 
   * The default Fleet agent is now set to the new version (v1beta1), supporting the latest release in [Fleet](https://github.com/Azure/fleet).
+  * Enabled overlay Windows dropgz for 3 acntestsubs.
+  * Bumped dropgz to v0.0.11 for k8s 1.28.0+.
+  * Upgraded Windows CNI for podsubnet and overlay to v1.4.39.2.
 
 * Bug Fixes 
   * Fix for some abnormal slow put mc/agentpool operations, caused by hanging connections.
   * Fix for some throttling issue by increasing secrets store AKV provider cpu limit from 50m to 100m.
-  * Fix for CVE by upgrading Azure file driver version to v1.24.11 on AKS 1.25.
+  * Fix for CVE by upgrading Azure file driver version to v1.24.11 on AKS 1.25. [Release notes](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.11).
   
 * Component Updates
-  * Enabled overlay Windows dropgz for 3 acntestsubs.
-  * Bumped dropgz to v0.0.11 for k8s 1.28.0+.
-  * Upgraded Windows CNI for podsubnet and overlay to v1.4.39.2.
+  * AKS Mariner image has been updated to [AKSMariner-202310.19.0](vhd-notes/AKSMariner/202310.19.0.txt).
+  * Azure Linux image has been updated to [Azure Linux - 202310.19.0](vhd-notes/AzureLinux/202310.19.0.txt)
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.19.0.txt)
 
 ## Release 2023-10-15
 
