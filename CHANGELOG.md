@@ -8,11 +8,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Kubernetes 1.25 is being deprecated at the end of January 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy).
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
-* AKS Ubuntu version 202310.09.0 brings [kernel 6.2](https://github.com/Azure/AgentBaker/blob/008c851046747b18aa781319f7c8fa3da60daec7/vhdbuilder/release-notes/AKSUbuntu/gen2/2204containerd/202310.09.0.txt#L888) to the VHD, from [kernel 5.15](https://github.com/Azure/AgentBaker/blob/008c851046747b18aa781319f7c8fa3da60daec7/vhdbuilder/release-notes/AKSUbuntu/gen2/2204containerd/202310.04.0.txt#L881).
 
 ### Release notes 
 * Features
-  * Added RBAC permissions to CNS for handling swiftv2 CRD resources("multitenantpodnetworkconfigs", "podnetworkinstances" and "podnetworks"). Note that swiftv2 flow is still under development and is not done yet. This change was done to unblock swiftv2 development.
+  * Introduced `acn-multitenancy-editor` ClusterRole to give azure-cns permissions on "multitenantpodnetworkconfigs", "podnetworkinstances", and "podnetworks" resources.
   * Omsagent addon can now be interacted with using helm commands. The default value is set to true for omsagent addon v2 migration. 
 
 * Bug Fixes 
