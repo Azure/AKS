@@ -6,19 +6,15 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* Kubernetes 1.25 is being deprecated end of January 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy).
+* Kubernetes 1.25 is being deprecated at the end of January 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy).
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
-* [CVE-2023-29332](https://github.com/Azure/AKS/issues/3904) Microsoft Azure Kubernetes Service Elevation of Privilege Vulnerability. An attacker who successfully exploited this vulnerability could gain Cluster Administrator privileges. Please update your AKS VHD to at least VHD version 230801 as mentioned in the issue
 
 ### Release notes 
 * Features
-  * Bumped cloud-controller-manager image to v1.28.2, v1.27.10, v1.26.16 and v1.25.20. [Release notes](https://cloud-provider-azure.sigs.k8s.io/blog/).
   * Added RBAC permissions to CNS for handling swiftv2 CRD resources("multitenantpodnetworkconfigs", "podnetworkinstances" and "podnetworks"). Note that swiftv2 flow is still under development and is not done yet. This change was done to unblock swiftv2 development.
   * Omsagent addon can now be interacted with using helm commands. The default value is set to true for omsagent addon v2 migration. 
   * The default Fleet agent is now set to the new version (v1beta1), supporting the latest release in [Fleet](https://github.com/Azure/fleet).
-  * Enabled overlay Windows dropgz for 3 acntestsubs.
   * Bumped dropgz to v0.0.11 for k8s 1.28.0+.
-  * Upgraded Windows CNI for podsubnet and overlay to v1.4.39.2.
 
 * Bug Fixes 
   * Fix for some abnormal slow put mc/agentpool operations, caused by hanging connections.
@@ -26,6 +22,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix for CVE by upgrading Azure file driver version to v1.24.11 on AKS 1.25. [Release notes](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.11).
   
 * Component Updates
+  * Bumped cloud-controller-manager image to v1.28.2, v1.27.10, v1.26.16 and v1.25.20. [Release notes](https://cloud-provider-azure.sigs.k8s.io/blog/).
+  * Updated Windows podsubnet and overlay CNI with signed version (v1.4.39.2) of v1.4.39.1.
   * AKS Mariner image has been updated to [AKSMariner-202310.19.0](vhd-notes/AKSMariner/202310.19.0.txt).
   * Azure Linux image has been updated to [Azure Linux - 202310.19.0](vhd-notes/AzureLinux/202310.19.0.txt)
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.19.0.txt)
