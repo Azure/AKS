@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes 
   * Fix for some abnormal slow put mc/agentpool operations, caused by hanging connections.
   * Fix for some throttling issue by increasing secrets store AKV provider cpu limit from 50m to 100m.
-  * Fix for CVE by upgrading Azure file driver version to v1.24.11 on AKS 1.25. [Release notes](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.11).
+  * Fix for CVE by upgrading Azure file driver version to [v1.24.11](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.11) on AKS 1.25.
   * Fix for Azure CNI Overlay when using Linux Kernel 6.2+ and K8s 1.28+.
 
   
