@@ -7,7 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * Kubernetes 1.25 is being deprecated at the end of January 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy).
-* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from 1st Dec. 2023. We recommend updating your cluster with AKS-managed Azure AD before 1 Dec 2023. This way you can manage the API server downtime during non-business hours.
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from December 1st, 2023. We recommend updating your cluster with AKS-managed Azure AD before December 1st, 2023. This way you can manage the API server downtime during non-business hours.
 
 ### Release notes 
 * Features
@@ -21,11 +21,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix for Azure CNI Overlay when using Linux Kernel 6.2+ and K8s 1.28+. This fix prevents the CNI from setting up pod networking incorrectly.
 
 * Component Updates
-  * Bumped cloud-controller-manager image to v1.28.2, v1.27.10, v1.26.16 and v1.25.20. [Release notes](https://cloud-provider-azure.sigs.k8s.io/blog/).
-  * Updated Windows podsubnet and overlay CNI with signed version (v1.4.39.2) of v1.4.39.1.
+  * Bumped cloud-controller-manager image to [v1.28.2](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.2), [v1.27.10](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.10), [v1.26.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.16) and [v1.25.20](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.20).
+  * Updated Windows podsubnet and overlay CNI with signed version (v1.4.39.2) from v1.4.39.1.
   * AKS Mariner image has been updated to [AKSMariner-202310.19.0](vhd-notes/AKSMariner/202310.19.0.txt).
-  * Azure Linux image has been updated to [Azure Linux - 202310.19.0](vhd-notes/AzureLinux/202310.19.0.txt)
-  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.19.0.txt)
+  * Azure Linux image has been updated to [Azure Linux - 202310.19.0](vhd-notes/AzureLinux/202310.19.0.txt).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.19.0.txt).
 
 ## Release 2023-10-15
 
