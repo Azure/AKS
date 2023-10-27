@@ -18,9 +18,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix for some abnormal slow put mc/agentpool operations, caused by hanging connections.
   * Fix for some throttling issue by increasing secrets store AKV provider cpu limit from 50m to 100m.
   * Fix for CVE by upgrading Azure file driver version to [v1.24.11](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.11) on AKS 1.25.
-  * Fix for Azure CNI Overlay when using Linux Kernel 6.2+ and K8s 1.28+.
+  * Fix for Azure CNI Overlay when using Linux Kernel 6.2+ and K8s 1.28+. This fix prevents the CNI from setting up pod networking incorrectly.
 
-  
 * Component Updates
   * Bumped cloud-controller-manager image to v1.28.2, v1.27.10, v1.26.16 and v1.25.20. [Release notes](https://cloud-provider-azure.sigs.k8s.io/blog/).
   * Updated Windows podsubnet and overlay CNI with signed version (v1.4.39.2) of v1.4.39.1.
