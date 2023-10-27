@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Omsagent addon can now be interacted with using helm commands. The default value is set to true for omsagent addon v2 migration. 
 
 * Bug Fixes 
-  * Fix for some abnormal slow put mc/agentpool operations, caused by hanging connections.
+  * Fix for some abnormal slow put mc/agentpool operations caused by hanging connections.
   * Fix for some throttling issue by increasing secrets store AKV provider cpu limit from 50m to 100m.
   * Fix for CVE by upgrading Azure file driver version to [v1.24.11](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.24.11) on AKS 1.25.
   * Fix for Azure CNI Overlay when using Linux Kernel 6.2+ and K8s 1.28+. This fix prevents the CNI from setting up pod networking incorrectly.
