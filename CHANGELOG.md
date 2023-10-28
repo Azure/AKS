@@ -12,7 +12,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 * Features
   * Introduced `acn-multitenancy-editor` ClusterRole to give azure-cns permissions on "multitenantpodnetworkconfigs", "podnetworkinstances", and "podnetworks" resources.
-  * Omsagent addon can now be interacted with using helm commands. The default value is set to true for omsagent addon v2 migration. 
 
 * Bug Fixes 
   * Fix for some abnormal slow put mc/agentpool operations caused by hanging connections.
