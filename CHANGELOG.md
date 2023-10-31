@@ -54,7 +54,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * Bumped cloud-controller-manager image to [v1.28.2](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.2), [v1.27.10](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.10), [v1.26.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.16) and [v1.25.20](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.20).
   * Updated Windows podsubnet and overlay CNI with signed version (v1.4.39.2) from v1.4.39.1.
-  * AKS Mariner image has been updated to [AKSMariner-202310.19.0](vhd-notes/AKSMariner/202310.19.0.txt).
   * Azure Linux image has been updated to [Azure Linux - 202310.19.0](vhd-notes/AzureLinux/202310.19.0.txt).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.19.0.txt).
 
