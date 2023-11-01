@@ -15,21 +15,21 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes 
 
 * Bug Fixes 
-  * Fix for when an update with the identity property is issued on an existing AKS Fleet with MSI.
   * Corrected issue where on tainted/dedicated system pools the Vertical Pod Autoscaler (VPA) deployment could end up on non-system pools.
   * Fix for issue where a Certificate Authority bundle mismatch could produce an update on the image version of the VPA webhook.
   * Fix where pod age is now calculated from cluster creation time rather than cluster stop time for [managed cluster start/stop](https://learn.microsoft.com/en-us/azure/aks/start-stop-cluster?tabs=azure-cli).
-  * In AKS with Azure CNI, there is possible deadlock scenario where Container Network Service (CNS) API is not available. [Aync Delete](https://github.com/Azure/azure-container-networking/tree/master/docs/feature/async-delete) fixes this deadlock issue. The CNI calls to CNS to release an IP address from a Pod asynchronously with a failsafe in such a way that if CNS is unavailable, it can recover these events when it does eventually start.
-  * Fix for Windows NPM crashes in k8s 1.28 with Containerd 1.7. Bug was a result Windows NPM DaemonSet referencing a file that did not exist in its current directory.[Containerd 1.7](https://github.com/Azure/AKS/issues/3975).
+  * Fix for possible [deadlock scenario between Container Network Service and Azure CNI](https://github.com/Azure/azure-container-networking/tree/master/docs/feature/async-delete) where pod IPs would not release on pod delete and new pods would not get an IP.
+  * Fix for Windows NPM crashes in k8s 1.28 with Containerd 1.7. Bug was a result of Windows NPM DaemonSet referencing a file that did not exist in its current directory.[Containerd 1.7](https://github.com/Azure/AKS/issues/3975).
   * Fixed fleet clusters, so they will now be correctly set to NRG-Lockdown RestrictionLevel Restricted, instead of Unspecified. Additionally, fleet clusters within one of the undesired Unspecified states will be fixed on reconcile.
 * Behavioral Change
   * All AKS managed namespaces now have a "kubernetes.azure.com/managedby:" AKS label. 
   * VPA updater and recommender resource requests and limits can now be configured by customer to avoid OOMkill or resource wastage.
   * Fix to prevent conflict between Open Service Mesh and AKS Admission Enforcer.
+  * Fix to improve response time and reduce long mc/agentpool operation latency.
  * [Windows Disable Outbound NAT (Preview)](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview:~:text=identity%20%24IDENTITY_ID-,Disable%20OutboundNAT%20for%20Windows%20(preview),-Windows%20OutboundNAT%20can) now supports WS2019 and WS2022.
+* Component Updates
   * Microsoft Defender for Cloud publisher image has been updated to 1.0.68 (now distroless)
   * Microsoft Defender for Cloud OldFileCleaner image has been updated to 1.4.68
-* Component Updates
   * Azure Linux image has been updated to [Azure Linux - 202310.26.0](vhd-notes/AzureLinux/202310.26.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202310.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202310.26.0.txt).
 
