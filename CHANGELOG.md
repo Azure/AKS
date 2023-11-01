@@ -24,7 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral Change
   * All AKS managed namespaces now have a "kubernetes.azure.com/managedby:" AKS label. 
   * VPA updater and recommender resource requests and limits can now be configured by customer to avoid OOMkill or resource wastage.
-  * Fix to prevent Open Service Mesh control plane dependency upgrades from fighting with AKS admission controller.
+  * Fix to prevent Open Service Mesh control plane from fighting with AKS admission enforcer.
  * [Windows Disable Outbound NAT (Preview)](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview:~:text=identity%20%24IDENTITY_ID-,Disable%20OutboundNAT%20for%20Windows%20(preview),-Windows%20OutboundNAT%20can) now supports WS2019 and WS2022.
   * Starting from Kubernetes version 1.29.0, Azure Linux AKS clusters deployed will be cgroupV2 by default, and existing Azure Linux AKS clusters will change from cgroupV1 to cgroupV2 when upgraded to Kubernetes version 1.29.0+.
   * Microsoft Defender for Cloud publisher image has been updated to 1.0.68 (now distroless)
