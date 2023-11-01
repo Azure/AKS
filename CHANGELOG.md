@@ -28,9 +28,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * [Windows Disable Outbound NAT (Preview)](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview:~:text=identity%20%24IDENTITY_ID-,Disable%20OutboundNAT%20for%20Windows%20(preview),-Windows%20OutboundNAT%20can) now supports WS2019 and WS2022.
   * Starting from Kubernetes version 1.29.0, Azure Linux AKS clusters deployed will be cgroupV2 by default, and existing Azure Linux AKS clusters will change from cgroupV1 to cgroupV2 when upgraded to Kubernetes version 1.29.0+.
   * Microsoft Defender for Cloud publisher image has been updated to 1.0.68 (now distroless)
-  * Microsoft Defender for Cloud OldFileClearner image has been updated to 1.4.68
+  * Microsoft Defender for Cloud OldFileCleaner image has been updated to 1.4.68
 * Component Updates
-  * AKS Mariner image has been updated to [AKSMariner-202310.19.0](vhd-notes/AKSMariner/202310.19.0.txt).
   * Azure Linux image has been updated to [Azure Linux - 202310.26.0](vhd-notes/AzureLinux/202310.26.0.txt).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.26.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202310.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202310.26.0.txt).
