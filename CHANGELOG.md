@@ -14,18 +14,19 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * AKS sent out an advisory regarding [CVE-2023-29332](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-29332) on September 13, 2023, which impacts AKS agent nodes. Recommended mitigation is to upgrade AKS cluster and AKS node image. If impacted clusters are not upgraded, AKS will apply mitigation on customer's next cluster update operation including node OS updates and node rolling upgrades, which may cause workload disruption. 
 
 ### Release notes 
-
+* Preview Features
+  *[Windows Disable Outbound NAT (Preview)](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview:~:text=identity%20%24IDENTITY_ID-,Disable%20OutboundNAT%20for%20Windows%20(preview),-Windows%20OutboundNAT%20can) now supports WS2019 and WS2022.
 * Bug Fixes 
   * Corrected issue where on tainted/dedicated system pools the Vertical Pod Autoscaler (VPA) deployment could end up on non-system pools.
   * Fix for issue where a Certificate Authority bundle mismatch could produce an update on the image version of the VPA webhook.
   * Fix for possible [deadlock scenario between Container Network Service and Azure CNI](https://github.com/Azure/azure-container-networking/tree/master/docs/feature/async-delete) where pod IPs would not release on pod delete and new pods would not get an IP.
   * Fix for Windows NPM crashes in k8s 1.28 with Containerd 1.7. Bug was a result of Windows NPM DaemonSet referencing a file that did not exist in its current directory.[Containerd 1.7](https://github.com/Azure/AKS/issues/3975).
-  * Fixed fleet clusters, so they will now be correctly set to NRG-Lockdown RestrictionLevel Restricted, instead of Unspecified. Additionally, fleet clusters within one of the undesired Unspecified states will be fixed on reconcile.
+  * Fix for fleet clusters, so they will now be correctly set to NRG-Lockdown RestrictionLevel Restricted, instead of Unspecified. Additionally, fleet clusters within one of the undesired Unspecified states will be fixed on reconcile.
+  * Fix to prevent conflict between Open Service Mesh and AKS Admission Enforcer.
+  * Fix to improve response time and reduce long mc and agentpool operation latency.
 * Behavioral Change
   * All AKS managed namespaces now have a "kubernetes.azure.com/managedby:" AKS label. 
-  * Fix to prevent conflict between Open Service Mesh and AKS Admission Enforcer.
-  * Fix to improve response time and reduce long mc/agentpool operation latency.
- * [Windows Disable Outbound NAT (Preview)](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview:~:text=identity%20%24IDENTITY_ID-,Disable%20OutboundNAT%20for%20Windows%20(preview),-Windows%20OutboundNAT%20can) now supports WS2019 and WS2022.
+  * For exceptional cases, AKS now allows customer to update the requests and limits of VPA Updater and Recommender pods.
 * Component Updates
   * Microsoft Defender for Cloud publisher image has been updated to 1.0.68 (now distroless)
   * Microsoft Defender for Cloud OldFileCleaner image has been updated to 1.4.68
