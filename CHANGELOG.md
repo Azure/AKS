@@ -25,7 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix to prevent conflict between Open Service Mesh and AKS Admission Enforcer.
   * Fix to improve response time and reduce long mc and agentpool operation latency.
 * Behavioral Change
-  * All AKS managed namespaces now have a "kubernetes.azure.com/managedby:" AKS label. 
+  * All AKS managed namespaces now have a ["kubernetes.azure.com/managedby:" AKS label](https://github.com/Azure/AKS/issues/1417). 
   * For exceptional cases, AKS now allows customer to update the requests and limits of VPA Updater and Recommender pods.
 * Component Updates
   * Microsoft Defender for Cloud publisher image has been updated to 1.0.68 (now distroless)
