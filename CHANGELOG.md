@@ -1,5 +1,39 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2023-10-29
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Kubernetes 1.25 is being deprecated at the end of January 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy).
+* No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from December 1st, 2023. We recommend updating your cluster with AKS-managed Azure AD before December 1st, 2023. This way you can manage the API server downtime during non-business hours.
+* Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support this. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
+* [Windows containerd v1.7](https://github.com/Azure/AKS/issues/3975) will be the default container runtime for k8s v1.28+ on AKS Windows nodes. Windows Host Process (HPC) containers is GA in Windows containerd v1.7 and it has some [breaking changes](https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/1981-windows-privileged-container-support#container-mounts).
+* Starting Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* AKS sent out an advisory regarding [CVE-2023-29332](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-29332) on September 13, 2023, which impacts AKS agent nodes. Recommended mitigation is to upgrade AKS cluster and AKS node image. If impacted clusters are not upgraded, AKS will apply mitigation on customer's next cluster update operation including node OS updates and node rolling upgrades, which may cause workload disruption. 
+
+### Release notes 
+* Preview Features
+  * [Windows Disable Outbound NAT (Preview)](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows-preview:~:text=identity%20%24IDENTITY_ID-,Disable%20OutboundNAT%20for%20Windows%20(preview),-Windows%20OutboundNAT%20can) now supports WS2019 and WS2022.
+* Bug Fixes 
+  * Corrected issue where on tainted/dedicated system pools the Vertical Pod Autoscaler (VPA) deployment could end up on non-system pools.
+  * Fix for issue where a Certificate Authority bundle mismatch could produce an update on the image version of the VPA webhook.
+  * Fix for possible [deadlock scenario between Container Network Service and Azure CNI](https://github.com/Azure/azure-container-networking/tree/master/docs/feature/async-delete) where pod IPs would not release on pod delete and new pods would not get an IP.
+  * Fix for Windows NPM crashes in k8s 1.28 with Containerd 1.7. Bug was a result of Windows NPM DaemonSet referencing a file that did not exist in its current directory.[Containerd 1.7](https://github.com/Azure/AKS/issues/3975).
+  * Fix for fleet clusters, so they will now be correctly set to NRG-Lockdown RestrictionLevel Restricted, instead of Unspecified. Additionally, fleet clusters within one of the undesired Unspecified states will be fixed on reconcile.
+  * Fix to prevent conflict between Open Service Mesh and AKS Admission Enforcer.
+  * Fix to improve response time and reduce long mc and agentpool operation latency.
+* Behavioral Change
+  * All AKS managed namespaces now have a ["kubernetes.azure.com/managedby:" AKS label](https://github.com/Azure/AKS/issues/1417). 
+  * For exceptional cases, AKS now allows customer to update the requests and limits of VPA Updater and Recommender pods.
+* Component Updates
+  * Microsoft Defender for Cloud publisher image has been updated to 1.0.68 (now distroless)
+  * Microsoft Defender for Cloud OldFileCleaner image has been updated to 1.4.68
+  * Azure Linux image has been updated to [Azure Linux - 202310.26.0](vhd-notes/AzureLinux/202310.26.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202310.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202310.26.0.txt).
+
+
 ## Release 2023-10-22
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
@@ -22,7 +56,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates
   * Bumped cloud-controller-manager image to [v1.28.2](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.2), [v1.27.10](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.10), [v1.26.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.16) and [v1.25.20](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.20).
   * Updated Windows podsubnet and overlay CNI with signed version (v1.4.39.2) from v1.4.39.1.
-  * AKS Mariner image has been updated to [AKSMariner-202310.19.0](vhd-notes/AKSMariner/202310.19.0.txt).
   * Azure Linux image has been updated to [Azure Linux - 202310.19.0](vhd-notes/AzureLinux/202310.19.0.txt).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202310.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202310.19.0.txt).
 
