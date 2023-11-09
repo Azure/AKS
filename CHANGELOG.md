@@ -6,15 +6,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* Kubernetes 1.28 is GA and 1.25 will not be deprecated until the end of January 2024.  This means that 4 versions will be GA during this time.
+* Kubernetes 1.28 is GA.
+* KEDA addon is GA.
 * Kubernetes 1.25 is being deprecated at the end of January 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy).
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from December 1st, 2023. We recommend updating your cluster with AKS-managed Azure AD before December 1st, 2023. This way you can manage the API server downtime during non-business hours.
 * Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support this. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
 * [Windows containerd v1.7](https://github.com/Azure/AKS/issues/3975) will be the default container runtime for k8s v1.28+ on AKS Windows nodes. Windows Host Process (HPC) containers is GA in Windows containerd v1.7 and it has some [breaking changes](https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/1981-windows-privileged-container-support#container-mounts).
 * Starting Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
-* AKS sent out an advisory regarding [CVE-2023-29332](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-29332) on September 13, 2023, which impacts AKS agent nodes. Recommended mitigation is to upgrade AKS cluster and AKS node image. If impacted clusters are not upgraded, AKS will apply mitigation on customer's next cluster update operation including node OS updates and node rolling upgrades, which may cause workload disruption. 
 * [AKS Trusted Access](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is now GA and enabled by default.
-* Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, the Azure Policy Add-On will now no longer support this. The Azure Policy Add-On will report `InvalidConstraint/Template` compliance reason code for detected errors after constraint template admission.
 
 ### Release notes
 
@@ -23,22 +22,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes 
   * Under some conditions it was possible to set `max_surge=0` which may interfere with upgrades.  Now `max_surge` must be > 0.  See [Customize node surge upgrade](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale#cluster-upgrade-considerations-and-best-practices) for more information about the setting.
   * In some occasions, PUT operations on managedClusters or agentPools see long latency in the operations.  This fixes one of a few scenarios.
-  * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will not be block for managedClusters in a non-terminal provisioningState.
+  * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
 * Behavioral Change
   * Updates to optimize the kube-reserved eviction thresholds available in 1.28
-  * Update [gatekeeper to v3.13.3](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.13.3) and policy addon 1.2.1
-    * Azure Policy Changes
-      * Introduce warn for policies, available in select upcoming built-in policy experiences
-      * Show an exempt ComplianceReasonCode in the portal for exempt policies.
   * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
-  * Updates to apiserver to use max value for memory limit if the suggested value is larger.
   * Added a check for initialization taints that are added on agent pools, only allowing CriticalAddonsOnly taints or soft taints
-  * Enable `UnauthenticatedHTTP2DOSMitigation`` for api server to address potential HTTP2 DOS attack.  For the following versions:
-    * 1.28.3 or up till 1.29.0
-    * 1.27.7 or up till 1.28.0
-    * 1.26.10 or up till 1.27.0
-    * 1.25.15 or up till 1.26.0
-  * Preview feature registration is no longer required for the KEDA addon
 * Component Updates
   * Update the aks-app-routing-operator to [version 0.0.7](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#007---2023-11-04) which includes notable changes in [version 0.0.6](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#006---2023-10-27).
     * This update has 3 CVE fixes for the nginx ingress controller.
@@ -50,22 +38,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
       * The `whitelist-source-range` annotation has been renamed to `allowlist-source-range`. Both are currently supported but it is recommended to move to the new annotation `allowlist-source-range`.
     * The `custom-http-errors` annotation now only supports errors between 400 and 599.
   * Azure Monitor Metrics [November release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-11-03-2023)
-  * KEDA no longer supports addon manager v1.  Charts will move to the v2 addon folder.
-  * Update envoy image version to v1.27.2.  This addresses a bug in the current version that causes the pod to crash with Segment fault.  Additional changes to apiproxy resource limits which addresses resource starvation on large clusters.
+  * Update [gatekeeper to v3.13.3](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.13.3) and policy addon 1.2.1
+    * Azure Policy Changes
+      * Introduce warn for policies, available in select upcoming built-in policy experiences
+      * Show an exempt ComplianceReasonCode in the portal for exempt policies.
   * Update Azure Disk CSI driver version to v1.29.1 on AKS 1.28, to v1.28.4 on AKS 1.27, to v1.26.7 on AKS 1.26 and 1.25
   * Update Azure File CSI driver version to v1.29.1 on AKS 1.28, to v1.28.6 on AKS 1.27, to v1.26.9 on AKS 1.26 and 1.25
   * Update Azure Blob CSI driver version to v1.23.1 on AKS 1.28, to v1.22.3 on AKS 1.27, to v1.21.5 on AKS 1.26 and 1.25
   * Update cloud-controller-manager image to v1.27.11, v1.26.17, v1.25.22 ([release notes](https://cloud-provider-azure.sigs.k8s.io/blog/))
-    * Fix: deleting a VMMS erroroneously considered a shutdown [4840](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4804)
-    * Fix: VM name should be obtained from NIC.VirtualMachine.ID instead of NIC name [4878](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4878)
-    * Fix: public IP address name should be case-insensitive when querying cache [4861](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4861)
-    * Fix: refresh the load balancer object after updating backend pools to prevent etag mismatch error [4853](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4853)
-    * Fix: do not tag unmanaged route table [4794](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4794) 
-    * Fix: [CVE-2023-45142](https://nvd.nist.gov/vuln/detail/CVE-2023-45142) ([4854](https://github.com/kubernetes-sigs/cloud-provider-azure/pull/4854))
   * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7a
   * Update to dropgz v0.0.15 to include azure-ipam v0.0.6
   * apiVersion 2023-11-01 will GA support for `nodeSoakDurationInMinutes`
-  * Update [agentbaker](https://github.com/Azure/AgentBaker) version to v0.20231026.0 
   * Azure Linux image has been updated to [Azure Linux - 202311.07.0](vhd-notes/AzureLinux/202311.07.0.txt).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202311.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202311.07.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202311.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202311.07.0.txt).
@@ -1123,7 +1106,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * [Azure Backup for AKS](https://azure.microsoft.com/updates/backupforakspublicpreview/) Public Preview is now available.
   * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) Public Preview is now available in ALL Azure Public Cloud Regions.
-  * [Trusted Access](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is now in Public Preview.
 * Bug Fix
   * Fixed issue with Linux node outbound connectivity failing due to HTTP_PROXY/HTTPS_PROXY not fully respected.
   * Fix to allow a stopped AKS cluster to rotate certificates.
