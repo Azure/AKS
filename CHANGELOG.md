@@ -6,27 +6,27 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* Kubernetes 1.28 is GA.
-* KEDA addon is GA.
 * Kubernetes 1.25 is being deprecated at the end of January 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy).
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from December 1st, 2023. We recommend updating your cluster with AKS-managed Azure AD before December 1st, 2023. This way you can manage the API server downtime during non-business hours.
 * Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support this. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
 * [Windows containerd v1.7](https://github.com/Azure/AKS/issues/3975) will be the default container runtime for k8s v1.28+ on AKS Windows nodes. Windows Host Process (HPC) containers is GA in Windows containerd v1.7 and it has some [breaking changes](https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/1981-windows-privileged-container-support#container-mounts).
 * Starting Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
-* [AKS Trusted Access](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is now GA and enabled by default.
 
 ### Release notes
 
+* Features
+  * Kubernetes 1.28 is GA.
+  * KEDA addon is GA.
+  * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7a
 * Preview Features
   * [dropgz](https://github.com/Azure/azure-container-networking/tree/master/dropgz) is enabled for Windows for the overlay subnet feature, in 2 regions: eastus2euap and centraluseuap
+  * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
 * Bug Fixes 
   * Under some conditions it was possible to set `max_surge=0` which may interfere with upgrades.  Now `max_surge` must be > 0.  See [Customize node surge upgrade](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale#cluster-upgrade-considerations-and-best-practices) for more information about the setting.
   * In some occasions, PUT operations on managedClusters or agentPools see long latency in the operations.  This fixes one of a few scenarios.
   * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
 * Behavioral Change
   * Updates to optimize the kube-reserved eviction thresholds available in 1.28
-  * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
-  * Added a check for initialization taints that are added on agent pools, only allowing CriticalAddonsOnly taints or soft taints
 * Component Updates
   * Update the aks-app-routing-operator to [version 0.0.7](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#007---2023-11-04) which includes notable changes in [version 0.0.6](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#006---2023-10-27).
     * This update has 3 CVE fixes for the nginx ingress controller.
@@ -46,11 +46,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update Azure File CSI driver version to v1.29.1 on AKS 1.28, to v1.28.6 on AKS 1.27, to v1.26.9 on AKS 1.26 and 1.25
   * Update Azure Blob CSI driver version to v1.23.1 on AKS 1.28, to v1.22.3 on AKS 1.27, to v1.21.5 on AKS 1.26 and 1.25
   * Update cloud-controller-manager image to v1.27.11, v1.26.17, v1.25.22 ([release notes](https://cloud-provider-azure.sigs.k8s.io/blog/))
-  * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7a
   * Update to dropgz v0.0.15 to include azure-ipam v0.0.6
-  * apiVersion 2023-11-01 will GA support for `nodeSoakDurationInMinutes`
   * Azure Linux image has been updated to [Azure Linux - 202311.07.0](vhd-notes/AzureLinux/202311.07.0.txt).
-  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202311.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202311.07.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202311.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202311.07.0.txt).
 
 
