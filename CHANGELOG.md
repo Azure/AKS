@@ -15,15 +15,16 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * Kubernetes 1.28 is GA.
-  * KEDA addon is GA.
+  * Kubernetes 1.28 is [GA](https://azure.microsoft.com/updates/ga-kubernetes-128-support-in-azure-kubernetes-service-aks/)
   * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7a
+  * KEDA addon is [GA](https://azure.microsoft.com/updates/ga-kubernetes-eventdriven-autoscaling-keda-addon-for-aks/)
 * Preview Features
   * [dropgz](https://github.com/Azure/azure-container-networking/tree/master/dropgz) is enabled for Windows for the overlay subnet feature, in 2 regions: eastus2euap and centraluseuap
   * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
 * Bug Fixes 
-  * Under some conditions it was possible to set `max_surge=0` which may interfere with upgrades.  Now `max_surge` must be > 0.  See [Customize node surge upgrade](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale#cluster-upgrade-considerations-and-best-practices) for more information about the setting.
-  * In some occasions, PUT operations on managedClusters or agentPools see long latency in the operations.  This fixes one of a few scenarios.
+  * Incorporated fix for irqbalance [#275](https://github.com/Irqbalance/irqbalance/issues/275) a node image upgrade from 202310.4.0 will resolve the unbalanced IRQs
+  * Under some conditions it was possible to set `max_surge=0` which may interfere with upgrades.  Now `max_surge` must be > 0.  See [Customize node surge upgrade](https://learn.microsoft.com/azure/aks/operator-best-practices-run-at-scale#cluster-upgrade-considerations-and-best-practices) for more information about the setting.
+  * Fixed an issue where PUT operations on managedClusters or agentPools see long latency in the overall operation due to an internal network issue.
   * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
 * Behavioral Change
   * Updates to optimize the kube-reserved eviction thresholds available in 1.28
@@ -42,11 +43,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * Azure Policy Changes
       * Introduce warn for policies, available in select upcoming built-in policy experiences
       * Show an exempt ComplianceReasonCode in the portal for exempt policies.
-  * Update Azure Disk CSI driver version to v1.29.1 on AKS 1.28, to v1.28.4 on AKS 1.27, to v1.26.7 on AKS 1.26 and 1.25
-  * Update Azure File CSI driver version to v1.29.1 on AKS 1.28, to v1.28.6 on AKS 1.27, to v1.26.9 on AKS 1.26 and 1.25
-  * Update Azure Blob CSI driver version to v1.23.1 on AKS 1.28, to v1.22.3 on AKS 1.27, to v1.21.5 on AKS 1.26 and 1.25
+  * Update Azure Disk CSI driver version to [v1.29.1](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.1) on AKS 1.28, to v1.28.4 on AKS 1.27, to v1.26.7 on AKS 1.26 and 1.25
+  * Update Azure File CSI driver version to [v1.29.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.1) on AKS 1.28, to v1.28.6 on AKS 1.27, to v1.26.9 on AKS 1.26 and 1.25
+  * Update Azure Blob CSI driver version to [v1.23.1](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.1) on AKS 1.28, to v1.22.3 on AKS 1.27, to v1.21.5 on AKS 1.26 and 1.25
   * Update cloud-controller-manager image to v1.27.11, v1.26.17, v1.25.22 ([release notes](https://cloud-provider-azure.sigs.k8s.io/blog/))
-  * Update to dropgz v0.0.15 to include azure-ipam v0.0.6
+  * Update to dropgz [v0.0.15](https://github.com/Azure/azure-container-networking/releases/tag/dropgz%2Fv0.0.15) to include azure-ipam v0.0.6
   * Azure Linux image has been updated to [Azure Linux - 202311.07.0](vhd-notes/AzureLinux/202311.07.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202311.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202311.07.0.txt).
 
