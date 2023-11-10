@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [dropgz](https://github.com/Azure/azure-container-networking/tree/master/dropgz) is enabled for Windows for the overlay subnet feature, in 2 regions: eastus2euap and centraluseuap
   * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
 * Bug Fixes 
-  * Under some conditions it was possible to set `max_surge=0` which may interfere with upgrades.  Now `max_surge` must be > 0.  See [Customize node surge upgrade](https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-run-at-scale#cluster-upgrade-considerations-and-best-practices) for more information about the setting.
+  * Under some conditions it was possible to set `max_surge=0` which may interfere with upgrades.  Now `max_surge` must be > 0.  See [Customize node surge upgrade](https://learn.microsoft.com/azure/aks/operator-best-practices-run-at-scale#cluster-upgrade-considerations-and-best-practices) for more information about the setting.
   * In some occasions, PUT operations on managedClusters or agentPools see long latency in the operations.  This fixes one of a few scenarios.
   * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
 * Behavioral Change
