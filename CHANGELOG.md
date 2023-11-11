@@ -19,7 +19,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7a
   * KEDA addon is [GA](https://azure.microsoft.com/updates/ga-kubernetes-eventdriven-autoscaling-keda-addon-for-aks/)
 * Preview Features
-  * [dropgz](https://github.com/Azure/azure-container-networking/tree/master/dropgz) is enabled for Windows for the overlay subnet feature, in 2 regions: eastus2euap and centraluseuap
   * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
 * Bug Fixes 
   * Incorporated fix for irqbalance [#275](https://github.com/Irqbalance/irqbalance/issues/275) a node image upgrade from 202310.4.0 will resolve the unbalanced IRQs
@@ -27,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where PUT operations on managedClusters or agentPools see long latency in the overall operation due to an internal network issue.
   * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
 * Behavioral Change
-  * Updates to optimize the kube-reserved eviction thresholds available in 1.28
+  * Updates to optimize the kube-reserved eviction thresholds (available in 1.28)[https://learn.microsoft.com/en-us/azure/aks/concepts-clusters-workloads#memory]
 * Component Updates
   * Update the aks-app-routing-operator to [version 0.0.7](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#007---2023-11-04) which includes notable changes in [version 0.0.6](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#006---2023-10-27).
     * This update has 3 CVE fixes for the nginx ingress controller.
@@ -38,7 +37,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
       * The AJP protocol is no longer supported.
       * The `whitelist-source-range` annotation has been renamed to `allowlist-source-range`. Both are currently supported but it is recommended to move to the new annotation `allowlist-source-range`.
     * The `custom-http-errors` annotation now only supports errors between 400 and 599.
-  * Azure Monitor Metrics [November release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-11-03-2023)
+  * Azure Monitor Metrics [November release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-11-03-2023) to v.6.8.1
   * Update [gatekeeper to v3.13.3](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.13.3) and policy addon 1.2.1
     * Azure Policy Changes
       * Introduce warn for policies, available in select upcoming built-in policy experiences
