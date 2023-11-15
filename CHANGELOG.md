@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
 * Bug Fixes 
-  * Incorporated fix for irqbalance [#275](https://github.com/Irqbalance/irqbalance/issues/275) a node image upgrade from 202310.4.0 will resolve the unbalanced IRQs
+  * Incorporated fix for irqbalance [#275](https://github.com/Irqbalance/irqbalance/issues/275) a node image upgrade from 202310.19.2 will resolve the unbalanced IRQs
   * Under some conditions it was possible to set `max_surge=0` which may interfere with upgrades.  Now `max_surge` must be > 0.  See [Customize node surge upgrade](https://learn.microsoft.com/azure/aks/operator-best-practices-run-at-scale#cluster-upgrade-considerations-and-best-practices) for more information about the setting.
   * Fixed an issue where PUT operations on managedClusters or agentPools see long latency in the overall operation due to an internal network issue.
   * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
