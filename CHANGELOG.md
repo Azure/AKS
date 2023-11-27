@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * Kubernetes 1.28 is [GA](https://azure.microsoft.com/updates/ga-kubernetes-128-support-in-azure-kubernetes-service-aks/)
-  * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7a
+  * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7
   * KEDA addon is [GA](https://azure.microsoft.com/updates/ga-kubernetes-eventdriven-autoscaling-keda-addon-for-aks/)
 * Preview Features
   * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where PUT operations on managedClusters or agentPools see long latency in the overall operation due to an internal network issue.
   * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
 * Behavioral Change
-  * Updates to optimize the kube-reserved eviction thresholds (available in 1.28)[https://learn.microsoft.com/en-us/azure/aks/concepts-clusters-workloads#memory]
+  * Updates to optimize the kube-reserved eviction thresholds [available in 1.28](https://learn.microsoft.com/en-us/azure/aks/concepts-clusters-workloads#memory)
 * Component Updates
   * Update the aks-app-routing-operator to [version 0.0.7](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#007---2023-11-04) which includes notable changes in [version 0.0.6](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#006---2023-10-27).
     * This update has 3 CVE fixes for the nginx ingress controller.
