@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * Kubernetes 1.28 is [GA](https://azure.microsoft.com/updates/ga-kubernetes-128-support-in-azure-kubernetes-service-aks/)
-  * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7a
+  * Added kubernetes patch versions 1.25.15, 1.26.10, 1.27.7
   * KEDA addon is [GA](https://azure.microsoft.com/updates/ga-kubernetes-eventdriven-autoscaling-keda-addon-for-aks/)
 * Preview Features
   * Cluster network settings can be updated to enable Kubenet -> CNI Overlay migration - available in the [CLI](https://github.com/Azure/azure-cli-extensions/pull/6936)
