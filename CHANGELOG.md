@@ -31,7 +31,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update Eraser version to [v1.2.3](https://github.com/eraser-dev/eraser/releases/tag/v1.2.3). This update has 3 CVE fixes:
       * [CVE-2023-39325](https://github.com/advisories/GHSA-4374-p667-p6c8)
       * [CVE-2023-3978](https://github.com/advisories/GHSA-2wrh-6pvc-2jm9)
-      * [CVE-2023-5043](hhttps://github.com/advisories/GHSA-qppj-fm5r-hxr3)
+      * [CVE-2023-5043](https://github.com/advisories/GHSA-qppj-fm5r-hxr3)
   * Azure Linux image has been updated to [Azure Linux - xxxx](vhd-notes/AzureLinux/xxxx.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-xxxx](vhd-notes/aks-ubuntu/AKSUbuntu-2204/xxxx.txt).
 
