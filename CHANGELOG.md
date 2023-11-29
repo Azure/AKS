@@ -14,18 +14,15 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release notes
 
-* Features
-  * -
-
 * Preview Features
-  * [Artifact Streaming (Preview)](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on node pools
+  * [Artifact Streaming (Preview)](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on node pools.
 
 * Bug Fixes 
   * Under some conditions it was possible to upgrade to Azure CNI Overlay from Kubenet while using the Calico network policy. This scenario is now blocked.
 
 * Behavioral Change
-  * Increased coredns memory limits
-  * Updated AKS add-on affinity to run on system-pool when Node Auto Provisioning is enabled
+  * Increased coredns memory limits.
+  * Updated AKS add-on affinity to run on system-pool when Node Auto Provisioning is enabled.
 
 * Component Updates
   * Update Eraser version to [v1.2.3](https://github.com/eraser-dev/eraser/releases/tag/v1.2.3). This update has 3 CVE fixes:
