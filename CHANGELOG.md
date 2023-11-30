@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2023-11-29
+## Release 2023-12-03
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -23,6 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral Change
   * Increased coredns memory limits.
   * Updated AKS add-on affinity to run on system-pool when Node Auto Provisioning is enabled.
+  * Resource group names, Azure Virtual Network names, and subnet names for clusters with [Azure CNI Overlay networking](https://learn.microsoft.com/azure/aks/azure-cni-overlay) or [Dynamic IP allocation](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation) can't be longer than 63 characters.
 
 * Component Updates
   * Update Eraser version to [v1.2.3](https://github.com/eraser-dev/eraser/releases/tag/v1.2.3). This update has 3 CVE fixes:
