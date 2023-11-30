@@ -11,6 +11,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support this. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
 * [Windows containerd v1.7](https://github.com/Azure/AKS/issues/3975) will be the default container runtime for k8s v1.28+ on AKS Windows nodes. Windows Host Process (HPC) containers is GA in Windows containerd v1.7 and it has some [breaking changes](https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/1981-windows-privileged-container-support#container-mounts).
 * Starting Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* Staring with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
 
 ### Release notes
 
@@ -24,7 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Increased coredns memory limits.
   * Updated AKS add-on affinity to run on system-pool when Node Auto Provisioning is enabled.
   * Resource group names, Azure Virtual Network names, and subnet names for clusters with [Azure CNI Overlay networking](https://learn.microsoft.com/azure/aks/azure-cni-overlay) or [Dynamic IP allocation](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation) can't be longer than 63 characters.
-  * Staring with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
+
 
 * Component Updates
   * Update Eraser version to [v1.2.3](https://github.com/eraser-dev/eraser/releases/tag/v1.2.3). This update has 3 CVE fixes:
