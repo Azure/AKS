@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where PUT operations on managedClusters or agentPools see long latency in the overall operation due to an internal network issue.
   * PATCH operations were allowed on managedClusters in a non-terminal provisioningState.  This could cause an eTag mismatch and inconsistent results or failures.  PATCH operations will now be block for managedClusters in a non-terminal provisioningState.
 * Behavioral Change
-  * Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS 1.29, which previews in January 2024.
+  * Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS Kubernetes minor version 1.29, which previews in January 2024.
 * Component Updates
   * Update the aks-app-routing-operator to [version 0.0.7](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#007---2023-11-04) which includes notable changes in [version 0.0.6](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#006---2023-10-27).
     * This update has 3 CVE fixes for the nginx ingress controller.
