@@ -17,6 +17,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features
   * [Artifact Streaming (Preview)](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on node pools.
+  * Cluster Autoscaler profile parameters ignore-daemonsets-utilization, daemonset-eviction-for-empty-nodes, daemonset-eviction-for-occupied-nodes can now be configured 
+  * Increased memory limit for secrets-store-csi-driver from 200mi to 300mi
+  * 
 
 * Bug Fixes 
   * Under some conditions it was possible to upgrade to Azure CNI Overlay from Kubenet while using the Calico network policy. This scenario is now blocked.
@@ -24,6 +27,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral Change
   * Increased coredns memory limits.
   * Updated AKS add-on affinity to run on system-pool when Node Auto Provisioning is enabled.
+  * Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS Kubernetes minor version 1.29, which previews in January 2024.
   * Resource group names, Azure Virtual Network names, and subnet names for clusters with [Azure CNI Overlay networking](https://learn.microsoft.com/azure/aks/azure-cni-overlay) or [Dynamic IP allocation](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation) can't be longer than 63 characters.
 
 
