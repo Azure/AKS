@@ -18,8 +18,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features
   * [Artifact Streaming (Preview)](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on node pools.
   * Cluster Autoscaler profile parameters ignore-daemonsets-utilization, daemonset-eviction-for-empty-nodes, daemonset-eviction-for-occupied-nodes can now be configured 
-  * Increased memory limit for secrets-store-csi-driver from 200mi to 300mi
-  * 
 
 * Bug Fixes 
   * Under some conditions it was possible to upgrade to Azure CNI Overlay from Kubenet while using the Calico network policy. This scenario is now blocked.
