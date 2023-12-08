@@ -9,10 +9,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Kubernetes 1.25 is being deprecated on January 14, 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). Please upgrade to Kubernetes version 1.26 or above.
 * No new clusters can be created with [Azure AD Integration (legacy)](https://learn.microsoft.com/azure/aks/azure-ad-integration-cli). Existing AKS clusters with Azure Active Directory integration will keep working. All Azure AD Integration (legacy) AKS clusters will be migrated to [AKS-managed Azure AD](https://learn.microsoft.com/azure/aks/managed-azure-ad) automatically starting from December 1st, 2023. We recommend updating your cluster with AKS-managed Azure AD before December 1st, 2023. This way you can manage the API server downtime during non-business hours.
 * Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support this. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
-* [Windows containerd v1.7](https://github.com/Azure/AKS/issues/3975) will be the default container runtime for k8s v1.28+ on AKS Windows nodes. Windows Host Process (HPC) containers is GA in Windows containerd v1.7 and it has some [breaking changes](https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/1981-windows-privileged-container-support#container-mounts).
 * Starting Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
 * Staring with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
-
+* Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS Kubernetes minor version 1.29, which previews in January 2024.
+ 
 ### Release notes
 
 * Preview Features
@@ -26,7 +26,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral Change
   * Increased coredns memory limits.
   * Updated AKS add-on affinity to run on system-pool when Node Auto Provisioning is enabled.
-  * Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS Kubernetes minor version 1.29, which previews in January 2024.
   * Resource group names, Azure Virtual Network names, and subnet names for clusters with [Azure CNI Overlay networking](https://learn.microsoft.com/azure/aks/azure-cni-overlay) or [Dynamic IP allocation](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation) can't be longer than 63 characters.
 
 
@@ -37,7 +36,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
       * [CVE-2023-5043](https://github.com/advisories/GHSA-qppj-fm5r-hxr3)
   * Azure Linux image has been updated to [Azure Linux - 202311.22.0](vhd-notes/AzureLinux/202311.22.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202312.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202312.06.0.txt).
-  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202312.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202312.06.0.txt).
   * Azure Windows 2019 Image has been updated to [Azure Windows 2019 - 17763.5122.231115](vhd-notes/AKSWindows/2019/17763.5122.231115.txt)
   * Azure Windows 2022 Image has been updated to [Azure Windows 2022 - 20348.2113.231115](vhd-notes/AKSWindows/2022/20348.2113.231115.txt)
 
