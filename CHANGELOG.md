@@ -16,9 +16,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Preview Features
-  * [Artifact Streaming (Preview)](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on node pools.
-  * [Cluster Autoscaler profile](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler?tabs=azure-cli#use-the-cluster-autoscaler-profile) parameters ignore-daemonsets-utilization, daemonset-eviction-for-empty-nodes, daemonset-eviction-for-occupied-nodes can now be configured 
-  * [Setting node soak time value](https://learn.microsoft.com/en-us/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-soak-time-value-preview) - Node soak duration helps to stagger a node upgrade in a controlled manner and minimize application downtime during an upgrade
+  * [Artifact Streaming (Preview)](https://learn.microsoft.com/azure/aks/artifact-streaming) can now be enabled on node pools.
+  * [Cluster Autoscaler profile](https://learn.microsoft.com/azure/aks/cluster-autoscaler?tabs=azure-cli#use-the-cluster-autoscaler-profile) parameters ignore-daemonsets-utilization, daemonset-eviction-for-empty-nodes, daemonset-eviction-for-occupied-nodes can now be configured 
+  * [Setting node soak time value](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-soak-time-value-preview) - Node soak duration helps to stagger a node upgrade in a controlled manner and minimize application downtime during an upgrade
 
 * Bug Fixes 
   * Under some conditions it was possible to upgrade to Azure CNI Overlay from Kubenet while using the Calico network policy. This scenario is now blocked.
