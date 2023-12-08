@@ -24,7 +24,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Under some conditions it was possible to upgrade to Azure CNI Overlay from Kubenet while using the Calico network policy. This scenario is now blocked.
 
 * Behavioral Change
-  * Increased coredns memory limits.
   * Updated AKS add-on affinity to run on system-pool when Node Auto Provisioning is enabled.
   * Resource group names, Azure Virtual Network names, and subnet names for clusters with [Azure CNI Overlay networking](https://learn.microsoft.com/azure/aks/azure-cni-overlay) or [Dynamic IP allocation](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation) can't be longer than 63 characters.
 
