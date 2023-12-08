@@ -17,7 +17,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features
   * [Artifact Streaming (Preview)](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on node pools.
-  * Cluster Autoscaler profile parameters ignore-daemonsets-utilization, daemonset-eviction-for-empty-nodes, daemonset-eviction-for-occupied-nodes can now be configured 
+  * [Cluster Autoscaler profile](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler?tabs=azure-cli#use-the-cluster-autoscaler-profile) parameters ignore-daemonsets-utilization, daemonset-eviction-for-empty-nodes, daemonset-eviction-for-occupied-nodes can now be configured 
+  * [Setting node soak time value](https://learn.microsoft.com/en-us/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-soak-time-value-preview) - Node soak duration helps to stagger a node upgrade in a controlled manner and minimize application downtime during an upgrade
 
 * Bug Fixes 
   * Under some conditions it was possible to upgrade to Azure CNI Overlay from Kubenet while using the Calico network policy. This scenario is now blocked.
@@ -34,8 +35,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
       * [CVE-2023-39325](https://github.com/advisories/GHSA-4374-p667-p6c8)
       * [CVE-2023-3978](https://github.com/advisories/GHSA-2wrh-6pvc-2jm9)
       * [CVE-2023-5043](https://github.com/advisories/GHSA-qppj-fm5r-hxr3)
-  * Azure Linux image has been updated to [Azure Linux - xxxx](vhd-notes/AzureLinux/xxxx.txt).
-  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-xxxx](vhd-notes/aks-ubuntu/AKSUbuntu-2204/xxxx.txt).
+  * Azure Linux image has been updated to [Azure Linux - 202311.22.0](vhd-notes/AzureLinux/202311.22.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202312.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202312.06.0.txt).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202312.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202312.06.0.txt).
+  * Azure Windows 2019 Image has been updated to [Azure Windows 2019 - 17763.5122.231115](vhd-notes/AKSWindows/2019/17763.5122.231115.txt)
+  * Azure Windows 2022 Image has been updated to [Azure Windows 2022 - 20348.2113.231115](vhd-notes/AKSWindows/2022/20348.2113.231115.txt)
 
 ## Release 2023-11-05
 
