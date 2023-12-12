@@ -1,6 +1,6 @@
-# **AKS Istio Add-On Performance Guide**
+# **AKS Istio Add-On Performance**
 
-The Istio-based service mesh add-on is logically split into the control plane (Istiod), which manages and configures the Envoy proxies, and the data plane, which is the set of Envoy proxies deployed as sidecars. This guide provides an analysis of the add-on’s control and data plane across the most used network plugins in Azure Kubernetes Service (AKS): Azure CNI, Cilium, Kubenet, and Azure CNI Overlay.
+The Istio-based service mesh add-on is logically split into the control plane (Istiod), which manages and configures the Envoy proxies, and the data plane, which is the set of Envoy proxies deployed as sidecars. This document provides an analysis of the add-on’s control and data plane across the most used network plugins in Azure Kubernetes Service (AKS): Azure CNI, Cilium, Kubenet, and Azure CNI Overlay.
 
 ## Control Plane Performance
 Istiod’s CPU and memory requirements correlate with the rate of deployment and configuration changes as well as the number of proxies connected[<sup>\[1\]</sup>](#1.-control-plane-performance). Therefore, to determine Istiod’s performance in `v1.17`, a single Istiod instance with the default settings: `2 vCPU` and `2 GB` memory is used with horizontal pod autoscaling disabled. The two scenarios tested were:
