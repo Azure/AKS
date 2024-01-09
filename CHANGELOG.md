@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral Change
   * ManagedCluster, AgentPool are now deprecated fields in agentpool goals.
-  * The default ResponseHeaderTimeout (which specifies the amount of time to wait for a server's response headers after fully writing the reuqest, does not include the time to read the request boday) is now set to 55s to prevent abnormal slow operation caused by hanging connection.
+  * The default ResponseHeaderTimeout (which specifies the amount of time to wait for a server's response headers after fully writing the request, does not include the time to read the response body) is now set to 55s to prevent abnormal slow operation caused by hanging connection.
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased to 300Mi.
   * Expanders flag is removed from AutoscalerProfile from November API
   * Config checksum is added to cns daemonset spec will roll CNS pods that need to pick up new config values in azure-cns-configmap, this is to resolve the recent Windows goroutine leak.
