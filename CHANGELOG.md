@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Orchestrator version is moved to new validator removing from server/validation.
 
 * Component Updates
-  * Windows Kubernetes CVE fixes for 3P Windows customers, for: [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch)
+  * Windows Kubernetes CVE fixes for [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch)
   * Update ama-logs addon image to 3.1.16
   * Bumpe cloud-controller-manager image to [v1.25.23](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.23), [v1.26.18](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.18), [v1.27.12](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.12), [v1.28.4](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.4).
   * Bump agentbaker version to v0.20231122.3, v0.20231206.0.
