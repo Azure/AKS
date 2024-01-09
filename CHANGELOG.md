@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix for the wrong MCR URL for Keda in AGC caused by cloud Environment value not being passed to the addon chart.
 
 * Behavioral Change
-  * ManagedCluster, AgentPool are now deprecated fields in agentpool goals.
+  * ManagedCluster, AgentPool are now deprecated fields in agentpool goals. As goal should be including all necessary information. It is genrated from ManagedCluster abnd AgentPool and they should no longer be used.
   * The default ResponseHeaderTimeout (which specifies the amount of time to wait for a server's response headers after fully writing the request, does not include the time to read the response body) is now set to 55s to prevent abnormal slow operation caused by hanging connection.
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased to 300Mi.
   * Expanders flag is removed from AutoscalerProfile from November API
