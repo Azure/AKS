@@ -18,21 +18,18 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix for artifact streaming update related panic when nil and switches testing to use params/test package functions.
   * Fix for LTS to look at AgentPoolResources.
   * Fix for a put MC operation with an API version that doesn't have the servicemeshprofile triggers an "invalid mode" error during RP validations.
+  * Fix for the wrong MCR URL for Keda in AGC caused by cloud Environment value not being passed to the addon chart.
 
 * Behavioral Change
   * ManagedCluster, AgentPool are now deprecated fields in agentpool goals.
-  * The default ResponseHeaderTimeout is now set to 55s to prevent abnormal slow operation caused by hanging connection.
-  * Community images are now added into reduction pipelines for cost saving.
-  * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) is now increased to 300Mi.
-  * Expanders flag is removed from AutoscalerProfile.
-  * Config checksum is added to cns daemonset spec.
-  * Orchestrator version is moved to new validator removing from server/validation.
-
+  * The default ResponseHeaderTimeout (which specifies the amount of time to wait for a server's response headers after fully writing the reuqest, does not include the time to read the request boday) is now set to 55s to prevent abnormal slow operation caused by hanging connection.
+  * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased to 300Mi.
+  * Expanders flag is removed from AutoscalerProfile from November API
+  * Config checksum is added to cns daemonset spec will roll CNS pods that need to pick up new config values in azure-cns-configmap, this is to resolve the recent Windows goroutine leak.
+    
 * Component Updates
   * Windows Kubernetes CVE fixes for [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch)
-  * Update ama-logs addon image to 3.1.16
-  * Bumpe cloud-controller-manager image to [v1.25.23](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.23), [v1.26.18](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.18), [v1.27.12](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.12), [v1.28.4](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.4).
-  * Bump agentbaker version to v0.20231122.3, v0.20231206.0.
+  * Update ama-logs addon image to [3.1.16](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md)
   * Azure Windows 2019 Image has been updated to [Azure Windows - 17763.5206.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2019/17763.5206.231213.txt)
   * Azure Windows 2022 Image has been updated to [Azure Windows - 20348.2159.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2022/20348.2159.231213.txt)
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202401.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202401.03.0.txt).
