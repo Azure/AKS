@@ -1,5 +1,42 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-01-08
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Kubernetes 1.25 is being deprecated on January 14, 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). Please upgrade to Kubernetes version 1.26 or above.
+* Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support this. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
+* Starting Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* Staring with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
+* Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS Kubernetes minor version 1.29, which previews in January 2024.
+ 
+### Release notes
+
+* Bug Fixes 
+  * Fix for artifact streaming update related panic when nil and switches testing to use params/test package functions.
+  * Fix for LTS to look at AgentPoolResources.
+  * Fix for a put MC operation with an API version that doesn't have the servicemeshprofile triggers an "invalid mode" error during RP validations.
+
+* Behavioral Change
+  * ManagedCluster, AgentPool are now deprecated fields in agentpool goals.
+  * The default ResponseHeaderTimeout is now set to 55s to prevent abnormal slow opertion caused by hanging connection.
+  * Community images are now added into reduction pipelines for cost saving.
+  * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) is now increased to 300Mi.
+  * Expanders flag is removed from AutoscalerProfile.
+  * Config checksum is added to cns daemonset spec.
+  * Orchestrator version is moved to new validator removing from server/validation.
+
+* Component Updates
+  * Windows Kubernetes CVE fixes for 3P Windows customers, for: [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch)
+  * Update ama-logs addon image to 3.1.16
+  * Bumpe cloud-controller-manager image to [v1.25.23](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.25.23), [v1.26.18](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.18), [v1.27.12](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.12), [v1.28.4](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.4).
+  * Bump agentbaker version to v0.20231122.3, v0.20231206.0.
+  * Azure Windows 2019 Image has been updated to [Azure Windows - 17763.5206.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2019/17763.5206.231213.txt)
+  * Azure Windows 2022 Image has been updated to [Azure Windows - 20348.2159.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2022/20348.2159.231213.txt)
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202401.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202401.03.0.txt).
+
 ## Release 2023-11-28
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
