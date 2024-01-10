@@ -17,14 +17,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes 
   * Fix for [LTS](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#long-term-support-lts) to look at AgentPoolResources.
   * PUT managedCluster operations on API versions that didn't support serviceMeshProfile resulted in "invalid mode" error response to the API requests. This issue has now been fixed.
-  * Fix for the wrong MCR URL for Keda in AGC caused by cloud Environment value not being passed to the addon chart.
+  * Fix for the wrong MCR URL for Keda in AGC.
 
 * Behavioral Change
   * [Artifact Streaming](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on an existing nodepool.
   * ManagedCluster, AgentPool are now deprecated fields in agentpool goals. As goal should be including all necessary information and is generated from ManagedCluster abnd AgentPool. Thus, they should no longer be used.
   * The default ResponseHeaderTimeout (which specifies the amount of time to wait for a server's response headers after fully writing the request, does not include the time to read the response body) is now set to 55s to prevent abnormal slow operation caused by hanging connection.
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased from 200 Mi to 300Mi.
-  * Expanders flag is removed from AutoscalerProfile from November API
+  * Expanders flag is removed from [AutoscalerProfile](https://learn.microsoft.com/en-us/azure/aks/hybrid/work-with-autoscaler-profiles#profile-settings) from 2023-11-01-preview since it may cause confusion with exsiting Expanders. 
   * Config checksum is added to cns daemonset spec will roll CNS pods that need to pick up new config values in azure-cns-configmap, this is to resolve the recent Windows goroutine leak.
     
 * Component Updates
