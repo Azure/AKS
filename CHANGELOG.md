@@ -7,31 +7,32 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * Kubernetes 1.25 is being deprecated on January 14, 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). Please upgrade to Kubernetes version 1.26 or above.
-* Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support this. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
-* Starting Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
-* Staring with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
-* Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS Kubernetes minor version 1.29, which previews in January 2024.
+* Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
+* Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* Starting with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
+* Changes to reduce the kube-reserved memory reservation and eviction threshold will not be available in 1.28 as previously shared due to a release issue. These optimizations will be releasing with AKS Kubernetes minor version 1.29, which previews in January 2024. See [release calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar:~:text=patched%20and%20supported.-,AKS%20Kubernetes%20release%20calendar,-View%20the%20upcoming).
  
 ### Release notes
 
 * Bug Fixes 
-  * Fix for artifact streaming update related panic when nil and switches testing to use params/test package functions.
-  * Fix for LTS to look at AgentPoolResources.
-  * Fix for a put MC operation with an API version that doesn't have the servicemeshprofile triggers an "invalid mode" error during RP validations.
+  * Fix for [LTS](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#long-term-support-lts) to look at AgentPoolResources.
+  * PUT managedCluster operations on API versions that didn't support serviceMeshProfile resulted in "invalid mode" error response to the API requests. This issue has now been fixed.
   * Fix for the wrong MCR URL for Keda in AGC caused by cloud Environment value not being passed to the addon chart.
 
 * Behavioral Change
+  * [Artifact Streaming](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) can now be enabled on an existing nodepool.
   * ManagedCluster, AgentPool are now deprecated fields in agentpool goals. As goal should be including all necessary information and is generated from ManagedCluster abnd AgentPool. Thus, they should no longer be used.
   * The default ResponseHeaderTimeout (which specifies the amount of time to wait for a server's response headers after fully writing the request, does not include the time to read the response body) is now set to 55s to prevent abnormal slow operation caused by hanging connection.
-  * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased to 300Mi.
+  * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased from 200 Mi to 300Mi.
   * Expanders flag is removed from AutoscalerProfile from November API
   * Config checksum is added to cns daemonset spec will roll CNS pods that need to pick up new config values in azure-cns-configmap, this is to resolve the recent Windows goroutine leak.
     
 * Component Updates
-  * Windows Kubernetes CVE fixes for [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch)
-  * Update ama-logs addon image to [3.1.16](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md)
-  * Azure Windows 2019 Image has been updated to [Azure Windows - 17763.5206.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2019/17763.5206.231213.txt)
-  * Azure Windows 2022 Image has been updated to [Azure Windows - 20348.2159.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2022/20348.2159.231213.txt)
+  * Windows Kubernetes CVE fixes for [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch).
+  * Update ama-logs addon image to [3.1.16](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
+  * Windows Server 2019 image has been updated to [17763.5206.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2019/17763.5206.231213.txt).
+  * Windows Server 2022 Image has been updated to [20348.2159.231213](https://github.com/Azure/AKS/blob/2024-01-08/vhd-notes/AKSWindows/2022/20348.2159.231213.txt).
+  * Azure Linux image has been updated to [Azure Linux - 202401.03.0](vhd-notes/AzureLinux/202401.03.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202401.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202401.03.0.txt).
 
 ## Release 2023-11-28
