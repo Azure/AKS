@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   *  Starting January 2024, the [AI toolchain operator](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for AKS will be made available to set up the GPU infrastructure and deploy OSS models from the Azure CLI in a matter of minutes.
   *  [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) can now be enabled on an existing node pool.
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased from 200 Mi to 300Mi.
-  * [Expanders flag is removed](https://github.com/Azure/azure-rest-api-specs/pull/26440?expand=1&template=data_plane_template.md) from [AutoscalerProfile](https://learn.microsoft.com/azure/aks/hybrid/work-with-autoscaler-profiles#profile-settings) from 2023-11-01-preview API since it may cause confusion with existing Expanders.
+  * Expanders flag is [removed](https://github.com/Azure/azure-rest-api-specs/pull/26440?expand=1&template=data_plane_template.md) from [AutoscalerProfile](https://learn.microsoft.com/azure/aks/hybrid/work-with-autoscaler-profiles#profile-settings) from 2023-11-01-preview API since it may cause confusion with existing Expanders.
     
 * Component Updates
   * Windows Kubernetes CVE fixes for [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch).
