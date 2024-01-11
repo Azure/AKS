@@ -6,6 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
+* [CIS Kubernetes V1.27 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) is published which covers AKS 1.21.x through AKS 1.27.x.
 * Kubernetes 1.25 is being deprecated on January 14, 2024 and support will transition to our [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). Please upgrade to Kubernetes version 1.26 or above.
 * Starting January 2024, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
 * Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
@@ -15,15 +16,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Bug Fixes 
-  * Fix for [LTS](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#long-term-support-lts) to look at AgentPoolResources.
   * PUT managedCluster operations on API versions that didn't support serviceMeshProfile resulted in "invalid mode" error response to the API requests. This issue has now been fixed.
-  * A wrong MCR URL for [KEDA](https://learn.microsoft.com/azure/aks/keda-about) image in Air Gapped Cloud was previously used, which may fail the feature enabling This issue has now been fixed.
+  * A wrong MCR URL for [KEDA](https://learn.microsoft.com/azure/aks/keda-about) image in Air Gapped Cloud was previously used resulting in potential failures in enabling the KEDA addon. This issue has now been fixed.
 
 * Behavioral Change
   * [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) can now be enabled on an existing node pool.
-  * The default ResponseHeaderTimeout (The timeout of http client used by AKS RP, which specifies the amount of time to wait for a server's response headers after fully writing the request, does not include the time to read the response body) is now set to 55s to prevent abnormal slow operation caused by hanging connection.
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased from 200 Mi to 300Mi.
-  * [Expanders flag is removed](https://github.com/Azure/azure-rest-api-specs/pull/26440?expand=1&template=data_plane_template.md) from [AutoscalerProfile](https://learn.microsoft.com/en-us/azure/aks/hybrid/work-with-autoscaler-profiles#profile-settings) from 2023-11-01-preview since it may cause confusion with existing Expanders. 
+  * [Expanders flag is removed](https://github.com/Azure/azure-rest-api-specs/pull/26440?expand=1&template=data_plane_template.md) from [AutoscalerProfile](https://learn.microsoft.com/azure/aks/hybrid/work-with-autoscaler-profiles#profile-settings) from 2023-11-01-preview since it may cause confusion with existing Expanders. 
     
 * Component Updates
   * Windows Kubernetes CVE fixes for [CVE-2023-5528](https://github.com/advisories/GHSA-hq6q-c2x6-hmch).
