@@ -14,14 +14,16 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  
 ### Release notes
 
+* Preview Features
+   *  Starting January 2024, the [AI toolchain operator](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for AKS can now be enabled to set up the GPU infrastructure and deploy OSS models from the Azure CLI in a matter of minutes.
+   *  [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) can now be enabled on an existing node pool.
+  
 * Bug Fixes 
   * PUT managedCluster operations on API versions that didn't support serviceMeshProfile resulted in "invalid mode" error response to the API requests. This issue has now been fixed.
   * A wrong MCR URL for [KEDA](https://learn.microsoft.com/azure/aks/keda-about) image in Air Gapped Cloud was previously used resulting in potential failures in enabling the KEDA addon. This issue has now been fixed.
 
 * Behavioral Change
-  *  Starting with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
-  *  Starting January 2024, the [AI toolchain operator](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for AKS will be made available to set up the GPU infrastructure and deploy OSS models from the Azure CLI in a matter of minutes.
-  *  [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) can now be enabled on an existing node pool.
+  * Starting with the `2024-01-01` and `2024-01-02-preview` APIs, we will begin to reject unknown fields in the request payloads.
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) is now increased from 200 Mi to 300Mi.
   * Expanders flag is [removed](https://github.com/Azure/azure-rest-api-specs/pull/26440?expand=1&template=data_plane_template.md) from [AutoscalerProfile](https://learn.microsoft.com/azure/aks/hybrid/work-with-autoscaler-profiles#profile-settings) from 2023-11-01-preview API since it may cause confusion with existing Expanders.
     
