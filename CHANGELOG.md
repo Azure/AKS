@@ -1,5 +1,40 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-01-14
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+
+* Kubernetes 1.25 has now deprecated and transitioned to [platform support](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). Please upgrade to Kubernetes version 1.26 or above.
+* Due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy Add-On](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks:~:text=exception%20YAML.-,Install%20Azure%20Policy%20Add%2Don%20for%20AKS,-Before%20you%20install) no longer supports the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
+ 
+### Release notes
+
+* Bug Fixes 
+  * Updated Retina Windows crash for k8s 1.28 with containerd 1.7. Containerd 1.7 causes Retina Windows to error with "setkubeconfigpath.ps1 and controller.exe not found on k8s version 1.28". This fix applies to k8s 1.28 and above only.
+  * Fixed missing api-group causing error in the rbac role for AGIC add-on: failed to list *v1beta1.AzureApplicationGatewayRewrite: azureapplicationgatewayrewrites.appgw.ingress.azure.io is forbidden. See [github issue](https://github.com/Azure/application-gateway-kubernetes-ingress/issues/1582).
+  * Fixed bug where tigera-operator default behavior for virtual kubelet anti-affinity was not included. This bug caused failures on startup if a calico-node was scheduled on a virtual node. calico-node daemonset will now be prevented from scheduling on virtual-kubelet nodes in alignment with the default behavior for the [tigera-operator](https://github.com/tigera/operator/blob/c2b027c0a2f9b1f42fba1cb5f31d667530069e0d/pkg/render/node.go#L723-L736). See [github issue](https://github.com/Azure/AKS/issues/3995).
+
+* Behavioral Change
+  * AKS will no longer allow put/delete for privateEndpointConnection when the cluster is being updated. 
+  * AKS will begin rejecting unknown fields starting in the 2024-01-01 API. Previously, unknown fields would have been ignored.
+  * Changes to reduce the kube-reserved memory reservation and eviction threshold are now release with kubernetes v1.29. See changes to the kubelet daemon and memory reservations [here](https://learn.microsoft.com/azure/aks/concepts-clusters-workloads#:~:text=740-,Memory,-Memory%20utilized%20by).
+  * Updated minimum static [cpu limit](https://learn.microsoft.com/azure/aks/developer-best-practices-resource-management#:~:text=Pod%20CPU/Memory%20limits). Previously the minimum limit was set to the max.
+  * Updated max api server cpu limit to 15.
+    
+* Component Updates
+  * Upgrade vpa recommender to v0.12.0 [v0.12.0](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-0.12.0) and enable memory saver on production.
+  * Workload Identity has been updated to [v1.2.0](https://github.com/Azure/azure-workload-identity/releases/tag/v1.2.0)
+  * nmi image version has been updated to v1.8.18 to fix [golang.org/x/net](https://pkg.go.dev/golang.org/x/net) CVEs: CVE-2023-39325,CVE-2023-3978, and CVE-2023-44487
+  * ip-masq-agent-v2 has been updated to [v0.1.9](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.9). This includes updates to Go dependencies and the distroless-ip tables and base image to resolve some CVEs detected by trivy.
+  * Azure Monitor Metrics Add-on has been updated. See [01-09-2024 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-01-09-2024:~:text=for%20AKS%20clusters-,Release%2001%2D09%2D2024,-Linux%20image%20%2D). This includes image updates, build and release improvements, bug fixes, etc.
+  * App Routing version bump to [0.2.0](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md). This includes a number of improvements including better logging, improvements to managed NGINX resources, and a CRD for advanced customer customization. Existing customers are seamlessly upgraded. 
+  * AKS Ubuntu image has been updated to [202401.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202401.09.0.txt).
+  * Azure Linux image has been updated to [202401.09.0](vhd-notes/AKSMariner/202401.09.0.txt).
+  * Windows Server 2019 image has been updated to [17763.5329.240110](vhd-notes/AKSWindows/2019/17763.5329.240110.txt).
+  * Windows Server 2022 image has been updated to [20348.2227.240110](vhd-notes/AKSWindows/2022/20348.2227.240110.txt).
+
 ## Release 2024-01-08
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
