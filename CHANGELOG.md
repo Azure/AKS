@@ -14,6 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * Ability to update an existing [Kubenet based AKS cluster](https://learn.microsoft.com/azure/aks/configure-kubenet) to use [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) is now generally available. More information can be found [here](https://learn.microsoft.com/azure/aks/azure-cni-overlay?tabs=kubectl#upgrade-an-existing-cluster-to-cni-overlay)
+  * The application routing add-on can now manage multiple public and internal NGINX ingress controller. [Advanced ingress controller configuration](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration) is possible via a Custom Resource Definition (CRD).
 
 * Preview features
   * Istio revision 1.19 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade). Default revision of the Istio service mesh add-on for new clusters has been updated to 1.18. Istio 1.17 version is no longer supported.
