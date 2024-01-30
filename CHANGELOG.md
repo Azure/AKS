@@ -32,7 +32,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * api-resources `nodes` and `namespaces` added to `kappie-cluster-reader` ClusterRole
   * [Vertical pod autoscaling](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) charts are updated with following changes:
     * A new containerPort on 8943 named `prometheus`  added to `overlay-vpa-cert-webhook-check` job's `overlay-vpa-webhook-generation` container to expose prometheus metrics
-    * Liveness and readiness probes for addon components
+    * Liveness and readiness probes added for addon components
   * Metrics port 29615 added for Azure File CSI driver on Linux node on AKS 1.28
   * Fixed networking observability agent crashing issue on Windows node pool of AKS clusters version >= 1.28.
   
