@@ -19,6 +19,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Istio revision 1.19 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade). Default revision of the Istio service mesh add-on for new clusters has been updated to 1.18. Istio 1.17 version is no longer supported.
   * Istio based service mesh addon now supports plugin CA to allow users to provide their own certificates and keys for signing workload certificates. More information can be found [here](https://aka.ms/asm-plugin-ca).
   * When troubleshooting AKS nodes, for developers not having access to Kubernetes API but having access to node ARM API, node IP and node name information are now made available in this API. More information on accessing the nodes using the private IPs can be found [here](https://learn.microsoft.com/azure/aks/node-access#create-an-interactive-shell-connection-to-a-node-using-the-ip-address).
+  * The application routing add-on can now manage multiple public and internal NGINX ingress controllers. [Advanced ingress controller configuration](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration) is possible via a Custom Resource Definition (CRD).
 
 * Bug Fixes 
   * When Standard_HB120-16rs_v3 SKU is selected, `singleplacementgroup: true` is now set for VMSS in the node pool.
