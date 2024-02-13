@@ -13,7 +13,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * [Planned Maintainance](https://learn.microsoft.com/azure/aks/planned-maintenance) and [node-image Upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) is available in Azure Portal. 
+  * [Planned Maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance) and [node-image Upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) is available in Azure Portal. 
   * [Associate capacity reservation groups to node pools](https://learn.microsoft.com/azure/aks/manage-node-pools#associate-capacity-reservation-groups-to-node-pools-preview) is now generally available. 
 
 * Preview features
@@ -28,7 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Node Auto Provision can now be enabled when aadProfiles, including ServerAppID, ClientAppID, ServerAppSecret, are being set.
   * Istio-based service mesh add-on's istiod and ingress images updated to 1.18.7-hotfix.20240210 and 1.19.7 for asm-1-18 and asm-1-19 respectively. User needs to restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. Vulnerabilities CVE-2024-23322, CVE-2024-23323, CVE-2024-23324, CVE-2024-23325, and CVE-2024-23327 have been addressed in these patch versions. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
   * Fix typo in KEDA helm chart from keda-admission-webhooks to keda-admission. 
-  * Fix a bug that the id field is mssing in get/list privateEndpointConnections.
+  * Fix a bug that the id field is missing in get/list privateEndpointConnections.
   * ⁠For upgrades using Azure API version prior to 2022-04-01 API, Kubernetes version might fall behind current Kubernetes version which could block GETs/PUTs. This can be solved by doing a PUT with the current Kubernetes version but a fix is being worked on by AKS. 
 
 * Behavioral Change
