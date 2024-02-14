@@ -5,7 +5,7 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-* Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/).
+* Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
 * Kubernetes 1.25 was deprecated on January 14, 2024 and support transitions to [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). Please upgrade to Kubernetes version 1.26 or above.
 * Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
 * All current AKS API versions silently ignore unknown fields. An unknown field is a field that isn't part of the AKS API. AKS API version 2024-01-01, 2024-01-02-preview and all subsequent API versions will change this behavior. Unknown fields in a request will result in the request being rejected with an error stating that the unknown field is not understood. This change only impacts new API versions and won't impact you unless you update to use an API version 2024-01-01 or later. Existing API calls (via Azure Resource Manager templates or otherwise) will continue to function as-is.
@@ -13,30 +13,25 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * [Planned Maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance) and [node-image Upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) is available in Azure Portal. 
+  * [Planned Maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance) and [node-image upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) are available in Azure Portal. 
   * [Associate capacity reservation groups to node pools](https://learn.microsoft.com/azure/aks/manage-node-pools#associate-capacity-reservation-groups-to-node-pools-preview) is now generally available. 
+  * Ability to set a [node soak duration](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-soak-time-value) during upgrade for node pools is now generally available.
 
 * Preview features
   * AKS 1.29 is in preview. 
-  * [Control Plane Metrics (API server, ETCD, Cluster Autoscaler, etc)](https://learn.microsoft.com/azure/aks/monitor-control-plane-metrics) are now available in Managed Prometheus for Public preview. 
+  * [Control Plane Metrics (API server, ETCD, Cluster Autoscaler, etc)](https://learn.microsoft.com/azure/aks/monitor-control-plane-metrics) for AKS now available in preview on [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview). 
  
 
 * Bug Fixes 
-  * Fix the issue that the new CRD "azureapplicationgatewayrewrites.appgw.ingress.azure.io " is not delivered into the overlay cluster. This problem occurs during cluster upgrades.
   * Enable [HonorPVReclaimPolicy](https://kubernetes.io/blog/2021/12/15/kubernetes-1-23-prevent-persistentvolume-leaks-when-deleting-out-of-order/#pv-reclaim-policy-with-kubernetes-v1-23) for CSI drivers on AKS 1.27+. 
-  * Fix preflight validation failure when BYOK is required in vmss node pool setup by Azure Policy.
   * Node Auto Provision can now be enabled when aadProfiles, including ServerAppID, ClientAppID, ServerAppSecret, are being set.
-  * Istio-based service mesh add-on's istiod and ingress images updated to 1.18.7-hotfix.20240210 and 1.19.7 for asm-1-18 and asm-1-19 respectively. User needs to restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. Vulnerabilities CVE-2024-23322, CVE-2024-23323, CVE-2024-23324, CVE-2024-23325, and CVE-2024-23327 have been addressed in these patch versions. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
-  * Fix typo in KEDA helm chart from keda-admission-webhooks to keda-admission. 
   * Fix a bug that the id field is missing in get/list privateEndpointConnections.
-  * ⁠For upgrades using Azure API version prior to 2022-04-01 API, Kubernetes version might fall behind current Kubernetes version which could block GETs/PUTs. This can be solved by doing a PUT with the current Kubernetes version but a fix is being worked on by AKS. 
 
 * Behavioral Change
   * Update the Agentpool Profile protocol to include the new PodIPAllocationMode property.
-  * Enables the ccp-webhook to listen on all interfaces with TLS instead of localhost.
-  * Add agent-identifiers flag to konnectivity agent. 
 
 * Component Updates
+  * Istio-based service mesh add-on's istiod and ingress images updated to 1.18.7-hotfix.20240210 and 1.19.7 for asm-1-18 and asm-1-19 respectively. User needs to restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. Vulnerabilities CVE-2024-23322, CVE-2024-23323, CVE-2024-23324, CVE-2024-23325, and CVE-2024-23327 have been addressed in these patch versions. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
   * For the cloud-provider-node-manager-windows component, the following versions have been updated:
     * v1.29.0 for >=1.29.0 version
     * v1.28.5 for >=1.28.0 version
@@ -45,13 +40,15 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * v1.25.24 for >=1.25.0 version
   * Upgraded konnectivity-agent image version from v0.0.33-hotfix.20221110 to to v0.1.6-hotfix.20240116. 
   * Upgraded Cilium to v1.13.10 for kubernetes v1.28.0+. 
-  * Upgraded Tigera Operator to v1.30.7 from v1.29 preview. 
+  * Upgraded Tigera Operator to [v1.30.7](https://github.com/tigera/operator/releases/tag/v1.30.7), azurefile-csi-driver to [v1.29.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.3), and Microsoft Defender for Cloud to v.2.0.0 starting with Kubernetes v1.29 preview. 
+    * Calico [v3.26.3](https://github.com/projectcalico/calico/releases/tag/v3.26.3) is installed when using Tigera Operator v1.30.7. 
   * Upgraded Network Observability (Retina) to v0.1.3 with minor bug fixes. 
   * Upgraded gatekeeper to [v3.14.0](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.14.0) and policy addon [v1.3.0](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#add-on-versions-available-per-each-aks-cluster-version)
     * Azure Policy Changes
       * Introduces error state for policies in error, enabling them to be distinguished from policies in noncompliant states. 
       * Adds support for v1 constraint templates and use of the excludedNamespaces parameter in mutation policies. 
       * Adds an error status check on constraint templates post-installation.
+  * Upgraded container insights agent to [v3.1.17](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.17).
   * Azure Linux image has been updated to [Azure Linux - 202402.07.0](vhd-notes/AzureLinux/202402.07.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202402.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202402.07.0.txt).
   * Azure Windows 2019 Image has been updated to [Azure Windows 2019 - 17763.5329.240202](vhd-notes/AKSWindows/2019/17763.5329.240202.txt).
