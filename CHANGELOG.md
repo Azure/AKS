@@ -42,7 +42,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Upgraded Tigera Operator to [v1.30.7](https://github.com/tigera/operator/releases/tag/v1.30.7), azurefile-csi-driver to [v1.29.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.3), and Microsoft Defender for Cloud to v.2.0.0 starting with Kubernetes v1.29 preview. 
     * Calico [v3.26.3](https://github.com/projectcalico/calico/releases/tag/v3.26.3) is installed when using Tigera Operator v1.30.7. 
   * Upgraded Network Observability (Retina) to v0.1.3 with minor bug fixes. 
-  * Upgraded gatekeeper to [v3.14.0](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.14.0) and policy addon [v1.3.0](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#add-on-versions-available-per-each-aks-cluster-version)
+  * Upgraded gatekeeper to [v3.14.0](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.14.0) and policy addon [v1.3.0](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#130)
     * Azure Policy Changes
       * Introduces error state for policies in error, enabling them to be distinguished from policies in noncompliant states. 
       * Adds support for v1 constraint templates and use of the excludedNamespaces parameter in mutation policies. 
