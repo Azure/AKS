@@ -14,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * [Planned Maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance) and [node-image upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) are available in Azure Portal. 
-  * [Associate capacity reservation groups to node pools](https://learn.microsoft.com/azure/aks/manage-node-pools#associate-capacity-reservation-groups-to-node-pools-preview) is now generally available. 
+  * [Associate capacity reservation groups to node pools](https://learn.microsoft.com/azure/aks/manage-node-pools#associate-capacity-reservation-groups-to-node-pools) is now generally available. 
   * Ability to set a [node soak duration](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-soak-time-value) during upgrade for node pools is now generally available.
 
 * Preview features
