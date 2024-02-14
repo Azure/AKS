@@ -25,7 +25,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes 
   * Enable [HonorPVReclaimPolicy](https://kubernetes.io/blog/2021/12/15/kubernetes-1-23-prevent-persistentvolume-leaks-when-deleting-out-of-order/#pv-reclaim-policy-with-kubernetes-v1-23) for CSI drivers on AKS 1.27+. 
   * Node Auto Provision can now be enabled when aadProfiles, including ServerAppID, ClientAppID, ServerAppSecret, are being set.
-  * Fix a bug that the id field is missing in get/list privateEndpointConnections.
 
 * Behavioral Change
   * Update the Agentpool Profile protocol to include the new PodIPAllocationMode property.
