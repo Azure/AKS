@@ -17,12 +17,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Ability to set a [node soak duration](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-soak-time-value) during upgrade for node pools is now generally available.
 
 * Preview features
-  * AKS 1.29 is in preview. 
+  * AKS 1.29.0 is in preview. 
   * [Control Plane Metrics (API server, ETCD, Cluster Autoscaler, etc)](https://learn.microsoft.com/azure/aks/monitor-control-plane-metrics) for AKS now available in preview on [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview). 
- 
 
 * Bug Fixes 
-  * Enable [HonorPVReclaimPolicy](https://kubernetes.io/blog/2021/12/15/kubernetes-1-23-prevent-persistentvolume-leaks-when-deleting-out-of-order/#pv-reclaim-policy-with-kubernetes-v1-23) for CSI drivers on AKS 1.27+. 
+  * Enable [HonorPVReclaimPolicy](https://kubernetes.io/blog/2021/12/15/kubernetes-1-23-prevent-persistentvolume-leaks-when-deleting-out-of-order/#pv-reclaim-policy-with-kubernetes-v1-23) for CSI drivers on AKS 1.27+ to align with upstream behavior. 
   * Node Auto Provision can now be enabled when aadProfiles, including ServerAppID, ClientAppID, ServerAppSecret, are being set.
 
 * Behavioral Change
