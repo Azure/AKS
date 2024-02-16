@@ -6,7 +6,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 * Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
-* Kubernetes 1.25 was deprecated on January 14, 2024 and support transitions to [platform support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#platform-support-policy). Please upgrade to Kubernetes version 1.26 or above.
 * Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
 * All current AKS API versions silently ignore unknown fields. An unknown field is a field that isn't part of the AKS API. AKS API version 2024-01-01, 2024-01-02-preview and all subsequent API versions will change this behavior. Unknown fields in a request will result in the request being rejected with an error stating that the unknown field is not understood. This change only impacts new API versions and won't impact you unless you update to use an API version 2024-01-01 or later. Existing API calls (via Azure Resource Manager templates or otherwise) will continue to function as-is.
  
@@ -39,8 +38,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * v1.25.24 for >=1.25.0 version
   * Upgraded konnectivity-agent image version from v0.0.33-hotfix.20221110 to to v0.1.6-hotfix.20240116. 
   * Upgraded Cilium to v1.13.10 for kubernetes v1.28.0+. 
-  * Upgraded Tigera Operator to [v1.30.7](https://github.com/tigera/operator/releases/tag/v1.30.7), azurefile-csi-driver to [v1.29.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.3), and Microsoft Defender for Cloud to v.2.0.0 starting with Kubernetes v1.29 preview. 
+  * Upgraded Tigera Operator to [v1.30.7](https://github.com/tigera/operator/releases/tag/v1.30.7), azurefile-csi-driver to [v1.29.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.3), and Microsoft Defender for Cloud Low Level Collector to v.2.0.0 starting with Kubernetes v1.29 preview. 
     * Calico [v3.26.3](https://github.com/projectcalico/calico/releases/tag/v3.26.3) is installed when using Tigera Operator v1.30.7. 
+    * Microsoft Defender for Cloud Low Level Collector v.2.0.0 includes a new process collection engine, optimized and reduced CPU & Memory usage.
   * Upgraded Network Observability (Retina) to v0.1.3 with minor bug fixes. 
   * Upgraded gatekeeper to [v3.14.0](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.14.0) and policy addon [v1.3.0](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#130)
     * Azure Policy Changes
@@ -48,6 +48,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
       * Adds support for v1 constraint templates and use of the excludedNamespaces parameter in mutation policies. 
       * Adds an error status check on constraint templates post-installation.
   * Upgraded container insights agent to [v3.1.17](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.17).
+  * Upgraded Microsoft Defender for Cloud Security Publisher to 1.0.78 with improved logging, fixed a small bug related to cgroupv2. 
   * Azure Linux image has been updated to [Azure Linux - 202402.07.0](vhd-notes/AzureLinux/202402.07.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202402.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202402.07.0.txt).
   * Azure Windows 2019 Image has been updated to [Azure Windows 2019 - 17763.5329.240202](vhd-notes/AKSWindows/2019/17763.5329.240202.txt).
