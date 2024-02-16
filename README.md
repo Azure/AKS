@@ -66,6 +66,12 @@ this repository must:
 [2]: https://docs.microsoft.com/en-us/azure/aks/support-policies
 
 ## Hiring
-### Engineering
+### PM
 
-- [Senior Software Engineer - Azure Kubernetes Service](https://jobs.careers.microsoft.com/global/en/job/1571321/Senior-Software-Engineer---Azure-Kubernetes-Service)
+### Engineering
+#### US
+
+#### Australia/New Zealand
+
+#### Ireland
+
