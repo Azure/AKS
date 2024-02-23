@@ -74,4 +74,7 @@ this repository must:
 #### Australia/New Zealand
 
 #### Ireland
+* [Principal Software Engineer](https://jobs.careers.microsoft.com/global/en/share/1685977/?utm_source=Job Share&utm_campaign=Copy-job-share)
+* [Senior Software Engineer](https://jobs.careers.microsoft.com/global/en/share/1685498/?utm_source=Job Share&utm_campaign=Copy-job-share)
+* [Software Engineer](https://jobs.careers.microsoft.com/global/en/share/1685937/?utm_source=Job Share&utm_campaign=Copy-job-share)
 
