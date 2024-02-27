@@ -83,7 +83,7 @@ configuration:
       - isNotAssigned
       actions:
       - addReply:
-          reply: Action required from @Azure/aks-pm
+          reply: Action required from @aritraghosh, @julia-yin, @AllenWen-at-Azure
       - addLabel:
           label: 'Needs Attention :wave:'
     - description: 
