@@ -1,5 +1,45 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-02-26
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
+* Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes will be cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* Beginning with AKS support of Kubernetes 1.29 in preview, optimized reservation logic reduces Kube-reserved memory by up to 20% depending on the node configuration and will apply to all clusters. More information can be found [here](https://learn.microsoft.com/azure/aks/concepts-clusters-workloads#memory)
+
+### Release notes
+
+* Preview features
+  * Istio revision asm-1-20 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade). Istio revision asm-1-18 is no longer supported.
+  * PodIPAllocationMode property introduced on node pools for static block allocation in the case of Azure CNI.
+
+* Behavioral change
+  * `ignoreUnfixed` is not set to `false` in [scanner options](https://eraser-dev.github.io/eraser/docs/customization#scanner-options) for [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) so that images with vulnerabilities are deleted even if there is no fix/patch available for it yet.
+  * Label `kubernetes.azure.com/managedby: aks` has been introduced to all managed addon components on cluster.
+
+* Bug fixes
+  * [Pod overhead](https://kubernetes.io/docs/concepts/containers/runtime-class/#pod-overhead) of memory 2Gi added to `kata-cc-isolation` [RuntimeClass](https://kubernetes.io/docs/concepts/containers/runtime-class/) to address issue where too many pods being created to use too much of the node's memory was resulting in random processes being OOM killed.
+  * Fixed issue that was causing PUT operations on AKS clusters that were using [Bring your own Container Network Interface (CNI) plugin](https://learn.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) to fail when the request didn't contain the `networkProfile.podCIDR` property.
+  * In AKS clusters of version >= 1.27.0, fixed a race condition in the iptables mode of kube-proxy that could result in some updates getting lost (for example, when a service gets a new endpoint).
+  * Fixed a race condition that could cause [upgrade from kubenet to Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay?tabs=kubectl#kubenet-cluster-upgrade) to fail.
+
+
+* Component updates
+  * Open Service Mesh upgraded to v1.2.8 with Envoy upgraded to v1.26.7 to address vulnerabilities CVE-2024-23324, CVE-2024-23325, CVE-2024-23322, CVE-2024-23323, and CVE-2024-23327.
+  * For Node Auto Provisioning, Karpenter is upgraded to [v0.33.0](https://github.com/kubernetes-sigs/karpenter/releases/tag/v0.33.0) and its Azure provider is upgraded to [v0.3.0](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.3.0).
+  * Upgraded Azure Disk CSI driver version to [v1.26.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.26.9)  on AKS 1.26, [v1.28.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.6)  on AKS 1.27, [v1.29.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.3)  on AKS 1.28.
+  * Upgraded Azure File CSI driver version to [v1.26.11](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.26.11)  on AKS 1.26, [v1.28.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.8)  on AKS 1.27, [v1.29.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.3)  on AKS 1.28.
+  * Upgraded Azure Blob CSI driver version to [v1.21.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.21.7)  on AKS 1.26, [v1.22.5](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.5)  on AKS 1.27, [v1.23.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.3)  on AKS 1.28.
+  * Upgraded `kappie-agent` Linux and Windows images used in [AKS Network Observability](https://learn.microsoft.com/azure/aks/network-observability-overview) to v0.1.4 and v0.1.3 respectively.
+  * Upgraded ACI provider for the Virtual Kubelet to [v1.6.1](https://github.com/virtual-kubelet/azure-aci/releases/tag/v1.6.1)
+  * Cilium version has been updated to [1.14.4](https://github.com/cilium/cilium/releases/tag/v1.14.4) for AKS clusters with kubernetes versions >= 1.29.0.
+  * Azure Linux image has been updated to [Azure Linux - 202402.12.0](vhd-notes/AzureLinux/202402.12.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202402.12.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202402.12.0.txt).
+  * Azure Windows 2019 Image has been updated to [Azure Windows 2019 - 17763.5458.240218](vhd-notes/AKSWindows/2019/17763.5458.240218.txt).
+  * Azure Windows 2022 Image has been updated to [Azure Windows 2022 - 20348.2322.240218](vhd-notes/AKSWindows/2022/20348.2322.240218.txt).
+
 ## Release 2024-02-07
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
