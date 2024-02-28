@@ -25,7 +25,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * In AKS clusters of version >= 1.27.0, fixed a race condition in the iptables mode of kube-proxy that could result in some updates getting lost (for example, when a service gets a new endpoint).
   * Fixed a race condition that could cause [upgrade from kubenet to Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay?tabs=kubectl#kubenet-cluster-upgrade) to fail.
 
-
 * Component updates
   * Open Service Mesh upgraded to v1.2.8 with Envoy upgraded to v1.26.7 to address vulnerabilities CVE-2024-23324, CVE-2024-23325, CVE-2024-23322, CVE-2024-23323, and CVE-2024-23327.
   * For Node Auto Provisioning, Karpenter is upgraded to [v0.33.0](https://github.com/kubernetes-sigs/karpenter/releases/tag/v0.33.0) and its Azure provider is upgraded to [v0.3.0](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.3.0).
@@ -37,8 +36,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Cilium version has been updated to [1.14.4](https://github.com/cilium/cilium/releases/tag/v1.14.4) for AKS clusters with kubernetes versions >= 1.29.0.
   * Azure Linux image has been updated to [Azure Linux - 202402.12.0](vhd-notes/AzureLinux/202402.12.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202402.12.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202402.12.0.txt).
-  * Azure Windows 2019 Image has been updated to [Azure Windows 2019 - 17763.5458.240218](vhd-notes/AKSWindows/2019/17763.5458.240218.txt).
-  * Azure Windows 2022 Image has been updated to [Azure Windows 2022 - 20348.2322.240218](vhd-notes/AKSWindows/2022/20348.2322.240218.txt).
+  * Windows Server 2019 Image has been updated to [Windows Server 2019 - 17763.5458.240218](vhd-notes/AKSWindows/2019/17763.5458.240218.txt).
+  * Windows Server 2022 Image has been updated to [Windows Server 2022 - 20348.2322.240218](vhd-notes/AKSWindows/2022/20348.2322.240218.txt).
 
 ## Release 2024-02-07
 
