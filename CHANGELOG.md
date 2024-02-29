@@ -12,6 +12,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Preview features
+  * [AI toolchain operator (KAITO) add-on](https://learn.microsoft.com//azure/aks/ai-toolchain-operator) can be enabled to automate large language model (LLM) deployment on your AKS cluster.
   * PodIPAllocationMode property introduced on node pools for static block allocation in the case of Azure CNI.
 
 * Behavioral change
