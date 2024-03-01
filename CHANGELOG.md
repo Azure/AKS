@@ -7,6 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 * Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
 * Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes is cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* AKS patch versions 1.27.9 and 1.28.5 are now available with 1.27.9 used as the default version for new clusters.
 
 ### Release notes
 
@@ -15,7 +16,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview features
   * [AI toolchain operator (KAITO) add-on](https://aka.ms/aks/ai-toolchain-operator) can be enabled to automate large language model (LLM) deployment on your AKS cluster.
-  * [PodIPAllocationMode property introduced on node pools](https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-01-02-preview/managedClusters.json#L3976) for static block allocation in the case of Azure CNI.
 
 * Behavioral change
   * `ignoreUnfixed` is now set to `false` in [scanner options](https://eraser-dev.github.io/eraser/docs/customization#scanner-options) for [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) so that images with vulnerabilities are deleted even if there is no fix/patch available for it yet.
@@ -65,9 +65,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes 
   * Enable [HonorPVReclaimPolicy](https://kubernetes.io/blog/2021/12/15/kubernetes-1-23-prevent-persistentvolume-leaks-when-deleting-out-of-order/#pv-reclaim-policy-with-kubernetes-v1-23) for CSI drivers on AKS 1.27+ to align with upstream behavior. 
   * Node Auto Provision can now be enabled when aadProfiles, including ServerAppID, ClientAppID, ServerAppSecret, are being set.
-
-* Behavioral Change
-  * Update the Agentpool Profile protocol to include the new PodIPAllocationMode property.
 
 * Component Updates
   * Istio-based service mesh add-on's istiod and ingress images updated to 1.18.7-hotfix.20240210 and 1.19.7 for asm-1-18 and asm-1-19 respectively. User needs to restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. Vulnerabilities CVE-2024-23322, CVE-2024-23323, CVE-2024-23324, CVE-2024-23325, and CVE-2024-23327 have been addressed in these patch versions. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
