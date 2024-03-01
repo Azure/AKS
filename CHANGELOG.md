@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview features
   * [AI toolchain operator (KAITO) add-on](https://aka.ms/aks/ai-toolchain-operator) can be enabled to automate large language model (LLM) deployment on your AKS cluster.
-  * PodIPAllocationMode property introduced on node pools for static block allocation in the case of Azure CNI.
+  * [PodIPAllocationMode property introduced on node pools](https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-01-02-preview/managedClusters.json#L3976) for static block allocation in the case of Azure CNI.
 
 * Behavioral change
   * `ignoreUnfixed` is now set to `false` in [scanner options](https://eraser-dev.github.io/eraser/docs/customization#scanner-options) for [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) so that images with vulnerabilities are deleted even if there is no fix/patch available for it yet.
