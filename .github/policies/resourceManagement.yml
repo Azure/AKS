@@ -568,6 +568,20 @@ configuration:
             - Azure/aks-portal
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: False
+     description:
+     - isAction:
+            action: Labeled
+     - if:
+        - hasLabel:
+            label: aks/test
+        then:
+        - mentionUsers:
+            mentionees:
+            - aritraghosh
+            - julia-yin
+            - AllenWen-at-Azure
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: true      
       description: 
     - if:
       - payloadType: Issues
