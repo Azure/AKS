@@ -569,9 +569,9 @@ configuration:
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: False
       description:
-    - isAction:
-            action: Labeled
     - if:
+      - isAction:
+            action: Labeled
       - hasLabel:
             label: aks/test
       then:
