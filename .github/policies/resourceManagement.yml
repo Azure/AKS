@@ -569,12 +569,12 @@ configuration:
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: False
       description:
-     - isAction:
+    - isAction:
             action: Labeled
-     - if:
-        - hasLabel:
+    - if:
+      - hasLabel:
             label: aks/test
-        then:
+      then:
         - mentionUsers:
             mentionees:
             - aritraghosh
