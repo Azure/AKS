@@ -489,10 +489,10 @@ configuration:
         then:
         - mentionUsers:
             mentionees:
-            - immuzz
-            - justindavies
+            - allyford
+            - thecloudtaylor
             replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: False
+            assignMentionees: True
       - if:
         - hasLabel:
             label: storage
@@ -675,6 +675,55 @@ configuration:
              - abubinski
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True       
+      - if:
+        - hasLabel:
+            label: Scale and Performance 
+        then:
+        - mentionUsers:
+            mentionees:
+             - AllenWen-at-Azure
+             - pavneeta
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True     
+      - if:
+        - hasLabel:
+            label: Security
+        then:
+        - mentionUsers:
+            mentionees:
+             - miwithrow
+             - CocoWang-wql
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True   
+      - if:
+        - hasLabel:
+            label: storage
+        then:
+        - mentionUsers:
+            mentionees:
+             - VyabaRamadoss
+             - AllenWen-at-Azure
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True 
+      - if:
+        - hasLabel:
+            label: upgrade
+        then:
+        - mentionUsers:
+            mentionees:
+             - kaarthis
+             - sdesai345
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True 
+      - if:
+        - hasLabel:
+            label: miscellaneous
+        then:
+        - mentionUsers:
+            mentionees:
+             - seguler
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True             
       description:
     - if:
       - isAction:
