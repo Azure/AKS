@@ -349,7 +349,7 @@ configuration:
       - or:
         - payloadType: Issues
       - isAction:
-          action: Opened
+          action: Labeled
       then:
       - if:
         - hasLabel:
@@ -357,10 +357,20 @@ configuration:
         then:
         - mentionUsers:
             mentionees:
+            - ganga1980
+            - saaror
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      - if:
+        - hasLabel:
+            label: addon/ama-metrics
+        then:
+        - mentionUsers:
+            mentionees:
             - vishiy
             - saaror
             replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: False
+            assignMentionees: True
       - if:
         - hasLabel:
             label: addon/policy
@@ -391,11 +401,11 @@ configuration:
             assignMentionees: True
       - if:
         - hasLabel:
-            label: azure/http-app-routing
+            label: addon/app-routing
         then:
         - mentionUsers:
             mentionees:
-            - qpetraroia
+            - sabbour
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
       - if:
@@ -442,8 +452,10 @@ configuration:
         - mentionUsers:
             mentionees:
             - Azure/aks-portal
+            - smsft
+            - aritraghosh
             replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: False
+            assignMentionees: True
       - if:
         - hasLabel:
             label: AzGov
@@ -455,14 +467,13 @@ configuration:
             assignMentionees: False
       - if:
         - hasLabel:
-            label: networking/azcni
+            label: networking
         then:
         - mentionUsers:
             mentionees:
-            - aanandr
-            - phealy
+            - chasewilson
             replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: False
+            assignMentionees: True
       - if:
         - hasLabel:
             label: pod-identity
@@ -526,10 +537,10 @@ configuration:
         then:
         - mentionUsers:
             mentionees:
-            - akshaysngupta
-            - mscatyao
+            - sabbour
+            - jackstromberg
             replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: False
+            assignMentionees: True
       - if:
         - hasLabel:
             label: azure/policy
@@ -568,6 +579,102 @@ configuration:
             - Azure/aks-portal
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: False
+      - if:
+        - hasLabel:
+            label: ai/copilot
+        then:
+        - mentionUsers:
+            mentionees:
+            - wangyira
+            - pavneeta
+            - chandraneel
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      - if:
+        - hasLabel:
+            label: azure/acr
+        then:
+        - mentionUsers:
+            mentionees:
+            - mangalorereshmi
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      - if:
+        - hasLabel:
+            label: azure/application-gateway
+        then:
+        - mentionUsers:
+            mentionees:
+            - sabbour
+            - jackstromberg
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      - if:
+        - hasLabel:
+            label: control-plane
+        then:
+        - mentionUsers:
+            mentionees:
+            - pavneeta
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True                
+      - if:
+        - hasLabel:
+            label: docs 
+        then:
+        - mentionUsers:
+            mentionees:
+            - allyford
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True  
+      - if:
+        - hasLabel:
+            label: fleet
+        then:
+        - mentionUsers:
+            mentionees:
+            - shashankbarsin
+            - phealy
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True  
+      - if:
+        - hasLabel:
+            label: keda
+        then:
+        - mentionUsers:
+            mentionees:
+             - qpetraroia
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True  
+      - if:
+        - hasLabel:
+            label: nodepools
+        then:
+        - mentionUsers:
+            mentionees:
+             - allyford
+             - justindavies
+             - stl327
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True  
+      - if:
+        - hasLabel:
+            label: mesh
+        then:
+        - mentionUsers:
+            mentionees:
+             - shashankbarsin
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True  
+      - if:
+        - hasLabel:
+            label: resiliency
+        then:
+        - mentionUsers:
+            mentionees:
+             - abubinski
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True       
       description:
     - if:
       - isAction:
