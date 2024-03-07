@@ -723,21 +723,7 @@ configuration:
             mentionees:
              - seguler
             replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: True             
-      description:
-    - if:
-      - isAction:
-            action: Labeled
-      - hasLabel:
-            label: aks/test
-      then:
-        - mentionUsers:
-            mentionees:
-            - aritraghosh
-            - julia-yin
-            - AllenWen-at-Azure
-            replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: true      
+            assignMentionees: True               
       description: 
     - if:
       - payloadType: Issues
