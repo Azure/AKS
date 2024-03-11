@@ -42,7 +42,7 @@ configuration:
       - addLabel:
           label: stale
       - addReply:
-          reply: This issue has been automatically marked as stale because it has not had any activity for **21 days**. It will be closed if no further activity occurs **within 15 days of this comment**.
+          reply: This issue has been automatically marked as stale because it has not had any activity for **21 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
     - description: 
       frequencies:
       - hourly:
