@@ -386,7 +386,6 @@ configuration:
         then:
         - mentionUsers:
             mentionees:
-            - peterpogorski
             - justindavies
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: False
@@ -414,8 +413,7 @@ configuration:
         then:
         - mentionUsers:
             mentionees:
-            - akshaysngupta
-            - mscatyao
+            - sabbour
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: False
       - if:
@@ -425,15 +423,6 @@ configuration:
         - mentionUsers:
             mentionees:
             - mayaherskovic
-            replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: False
-      - if:
-        - hasLabel:
-            label: azure/acr
-        then:
-        - mentionUsers:
-            mentionees:
-            - SteveLasker
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: False
       - if:
