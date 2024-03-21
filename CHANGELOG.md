@@ -7,23 +7,41 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 * Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
 * Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes is cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
-* AKS patch versions 1.27.9 and 1.28.5 are now available with 1.27.9 used as the default version for new clusters.
-
+* Changes to kube-reserved memory reservations are now in effect in AKS 1.29. The optimized reservation logic reduces kube-reserved memory by up to 20% depending on the node configuration. For existing 1.29 node pools created prior to 2/26, please perform a node pool update or recreate to see these changes. [Learn more.](https://learn.microsoft.com/azure/aks/concepts-clusters-workloads#memory)
 
 ### Release notes
+
 * Features
+  * Kubernetes 1.29 is [GA](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli).
   * [5,000 Node Limit by Default](https://azure.microsoft.com/en-us/updates/generally-available-azure-kubernetes-service-aks-support-for-5k-node-limit-by-default-for-standard-tier-clusters/) is generally available in AKS. This limit is available for Standard tier and Premium tier clusters.
 
-
 * Preview features
-  * [Deployment Safeguards](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards) on AKS is now available in preview with two levels of configuration: 'Warning' and 'Enforcement'
+  * [Deployment Safeguards](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards) on AKS is now available in preview with two levels of configuration: `Warning` and `Enforcement`
   * [Windows GPU Support](https://learn.microsoft.com/en-us/azure/aks/use-windows-gpu) on AKS is now available in preview.
   * [Trusted Launch Support](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) on AKS is now available in preview.
 
 * Behavioral change
+  * Added new available type for `outbound-type`: `none`.
+  * Workload Identity is now supported as a setting for static PVs on Managed Blob/File CSI drivers in 1.29.
+  * Starting with the `2024-03-01` api, `OSType` will reject unknown inputs.
+  * Added GPU support for new Nvidia ND SKU sizes.
+
 
 * Bug fixes
+  * AgentPool PUT requests with node init taints will no longer fail if the request does not change the field.
+  * Fixed a bug with legacy clusters that blocked all new operations on these clusters.
+  * Fixed a bug where node taints may be overwritten on certain PUT requests.
+  * Fixed a bug where clusters running LTS could get a list of non-LTS versions to upgrade to.
+  * Fixed a bug with Application Gateway Ingress Controller where it is unable to fetch secret objects during cluster upgrade.
+
+
 * Component updates
+  * Upgraded azure-vnet from 1.4.39/1.4.43 to 1.4.52 and 1.5.11 to 1.5.23.
+  * Upgraded [AgentBaker](https://github.com/Azure/AgentBaker) version to v0.20240313.0
+  * Upgraded Linux [Network Policy Manager](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23) from 1.4.45.3 to 1.5.23
+  * AKS clusters running Cilium on 1.27 will be upgraded to Cilium 1.13 due to Cilium 1.12 EOL.
+
+
 
 ## Release 2024-02-26
 
