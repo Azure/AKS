@@ -1,5 +1,30 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-03-17
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
+* Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes is cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* AKS patch versions 1.27.9 and 1.28.5 are now available with 1.27.9 used as the default version for new clusters.
+
+
+### Release notes
+* Features
+  * [5,000 Node Limit by Default](https://azure.microsoft.com/en-us/updates/generally-available-azure-kubernetes-service-aks-support-for-5k-node-limit-by-default-for-standard-tier-clusters/) is generally available in AKS. This limit is available for Standard tier and Premium tier clusters.
+
+
+* Preview features
+  * [Deployment Safeguards](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards) on AKS is now available in preview with two levels of configuration: 'Warning' and 'Enforcement'
+  * [Windows GPU Support](https://learn.microsoft.com/en-us/azure/aks/use-windows-gpu) on AKS is now available in preview.
+  * [Trusted Launch Support](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) on AKS is now available in preview.
+
+* Behavioral change
+
+* Bug fixes
+* Component updates
+
 ## Release 2024-02-26
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
