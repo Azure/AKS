@@ -37,7 +37,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Component updates
   * Upgraded [AgentBaker](https://github.com/Azure/AgentBaker) version to v0.20240313.0
-  * Upgraded [Azure CNI](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23) from 1.4.39/1.4.43 to 1.4.52 and 1.5.11 to 1.5.23.
+  * Upgraded Azure CNI from 1.4.39/1.4.43 to [1.4.52](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.52) and 1.5.11 to [1.5.23](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23).
   * Upgraded Linux [Network Policy Manager](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23) from 1.4.45.3 to 1.5.23
   * AKS clusters running Cilium on 1.27 will be upgraded to Cilium 1.13 due to Cilium 1.12 EOL.
   * Azure Linux image has been updated to [Azure Linux - 202403.19.0](vhd-notes/AzureLinux/202403.19.0.txt).
