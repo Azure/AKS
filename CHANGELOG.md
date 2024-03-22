@@ -27,18 +27,16 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral change
   * Workload Identity is now supported as a setting for static PVs on Managed Blob/File CSI drivers in 1.29.
   * Starting with the `2024-03-01` api, `OSType` will reject unknown inputs.
-  * Added GPU support for new Nvidia ND SKU sizes.
 
 * Bug fixes
-  * Fixed a bug with legacy clusters that blocked all new operations on these clusters.
+  * Fixed a bug where clusters with legacy hard taints on system pools could not run any operations.
   * Fixed a bug where node taints may be overwritten on certain PUT requests.
   * Fixed a bug where clusters running LTS could get a list of non-LTS versions to upgrade to.
   * Fixed a bug with Application Gateway Ingress Controller where it is unable to fetch secret objects during cluster upgrade.
 
 * Component updates
-  * Upgraded [AgentBaker](https://github.com/Azure/AgentBaker) version to v0.20240313.0
   * Upgraded Azure CNI from 1.4.39/1.4.43 to [1.4.52](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.52) and 1.5.11 to [1.5.23](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23).
-  * Upgraded Linux [Network Policy Manager](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23) from 1.4.45.3 to 1.5.23
+  * Upgraded Linux Network Policy Manager from 1.4.45.3 to [1.5.23](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23).
   * AKS clusters with Kubernetes version 1.27 and running Cilium will be upgraded to Cilium 1.13 due to Cilium 1.12 EOL.
   * Azure Linux image has been updated to [Azure Linux - 202403.19.0](vhd-notes/AzureLinux/202403.19.0.txt).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202403.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202403.19.0.txt).
