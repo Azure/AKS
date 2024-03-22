@@ -19,7 +19,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Custom kubelet configuration](https://learn.microsoft.com/azure/aks/custom-node-configuration?tabs=windows-node-pools) is now generally available for Windows on AKS. To request additional kubelet parameters supported by Windows, create a feature request on [AKS Github Issues](https://github.com/Azure/AKS/issues).
 
 * Preview features
-  * [Deployment Safeguards](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards) on AKS is now available in preview with two levels of configuration: `Warning` and `Enforcement`
+  * [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) on AKS is now available in preview with two levels of configuration: `Warning` and `Enforcement`
   * [Windows GPU Support](https://learn.microsoft.com/azure/aks/use-windows-gpu) on AKS is now available in preview.
   * [Trusted Launch Support](https://learn.microsoft.com/azure/aks/use-trusted-launch) on AKS is now available in preview.
 
