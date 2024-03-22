@@ -14,7 +14,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features
   * Kubernetes 1.29 is [GA](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli).
-  * [5,000 Node Limit by Default](https://azure.microsoft.com/en-us/updates/generally-available-azure-kubernetes-service-aks-support-for-5k-node-limit-by-default-for-standard-tier-clusters/) is generally available in AKS. This limit is available for Standard tier and Premium tier clusters.
+  * [5,000 Node Limit by Default](https://azure.microsoft.com/updates/generally-available-azure-kubernetes-service-aks-support-for-5k-node-limit-by-default-for-standard-tier-clusters/) is generally available in AKS. This limit is available for Standard tier and Premium tier clusters.
+  * [Gen 2 VMs](https://learn.microsoft.com/azure/aks/cluster-configuration) are now generally available for Windows on AKS. Azure [Generation 2 (Gen2) virtual machines (VMs)](https://learn.microsoft.com/azure/virtual-machines/generation-2) support key features not supported in generation 1 VMs (Gen1).
+  * [Custom kubelet configuration](https://learn.microsoft.com/azure/aks/custom-node-configuration?tabs=windows-node-pools) is now generally available for Windows on AKS. To request additional kubelet parameters supported by Windows, create a feature request on [AKS Github Issues](https://github.com/Azure/AKS/issues).
 
 * Preview features
   * [Deployment Safeguards](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards) on AKS is now available in preview with two levels of configuration: `Warning` and `Enforcement`
