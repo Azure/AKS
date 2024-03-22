@@ -13,7 +13,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 
 * Features
-  * Kubernetes 1.29 is [GA](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli).
+  * Kubernetes 1.29 is [GA](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli).
   * [5,000 Node Limit by Default](https://azure.microsoft.com/en-us/updates/generally-available-azure-kubernetes-service-aks-support-for-5k-node-limit-by-default-for-standard-tier-clusters/) is generally available in AKS. This limit is available for Standard tier and Premium tier clusters.
 
 * Preview features
