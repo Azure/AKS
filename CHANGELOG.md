@@ -19,7 +19,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview features
   * [Deployment Safeguards](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards) on AKS is now available in preview with two levels of configuration: `Warning` and `Enforcement`
   * [Windows GPU Support](https://learn.microsoft.com/azure/aks/use-windows-gpu) on AKS is now available in preview.
-  * [Trusted Launch Support](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) on AKS is now available in preview.
+  * [Trusted Launch Support](https://learn.microsoft.com/azure/aks/use-trusted-launch) on AKS is now available in preview.
 
 * Behavioral change
   * Added new available type for `outbound-type`: `none`.
