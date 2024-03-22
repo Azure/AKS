@@ -7,6 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 * Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
 * Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes is cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
+* The ContainerService's [ListOrchestratorProfiles](https://learn.microsoft.com/rest/api/aks/container-services/list-orchestrators?view=rest-aks-2019-08-01&tabs=HTTP) API has been deprecated. Please use the ManagedCluster's [ListKubernetesVersion](https://learn.microsoft.com/rest/api/aks/managed-clusters/list-kubernetes-versions?view=rest-aks-2024-01-01&viewFallbackFrom=rest-aks-2023-11-01&tabs=HTTP) API.
 * Changes to kube-reserved memory reservations are now in effect in AKS 1.29. The optimized reservation logic reduces kube-reserved memory by up to 20% depending on the node configuration. For existing 1.29 node pools created prior to 2/26, please perform a node pool update or recreate to see these changes. [Learn more.](https://learn.microsoft.com/azure/aks/concepts-clusters-workloads#memory)
 * On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
 
@@ -24,27 +25,26 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Trusted Launch Support](https://learn.microsoft.com/azure/aks/use-trusted-launch) on AKS is now available in preview.
 
 * Behavioral change
-  * Added new available type for `outbound-type`: `none`.
   * Workload Identity is now supported as a setting for static PVs on Managed Blob/File CSI drivers in 1.29.
   * Starting with the `2024-03-01` api, `OSType` will reject unknown inputs.
   * Added GPU support for new Nvidia ND SKU sizes.
 
-
 * Bug fixes
-  * AgentPool PUT requests with node init taints will no longer fail if the request does not change the field.
   * Fixed a bug with legacy clusters that blocked all new operations on these clusters.
   * Fixed a bug where node taints may be overwritten on certain PUT requests.
   * Fixed a bug where clusters running LTS could get a list of non-LTS versions to upgrade to.
   * Fixed a bug with Application Gateway Ingress Controller where it is unable to fetch secret objects during cluster upgrade.
-
 
 * Component updates
   * Upgraded azure-vnet from 1.4.39/1.4.43 to 1.4.52 and 1.5.11 to 1.5.23.
   * Upgraded [AgentBaker](https://github.com/Azure/AgentBaker) version to v0.20240313.0
   * Upgraded Linux [Network Policy Manager](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.23) from 1.4.45.3 to 1.5.23
   * AKS clusters running Cilium on 1.27 will be upgraded to Cilium 1.13 due to Cilium 1.12 EOL.
-
-
+  * Azure Linux image has been updated to [Azure Linux - 202403.19.0](vhd-notes/AzureLinux/202403.19.0.txt).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202403.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202403.19.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202403.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202403.19.0.txt).
+  * Windows Server 2019 Image has been updated to [Windows Server 2019 - 17763.5576.240316](vhd-notes/AKSWindows/2019/17763.5576.240316.txt).
+  * Windows Server 2022 Image has been updated to [Windows Server 2022 - 20348.2340.240316](vhd-notes/AKSWindows/2022/20348.2340.240316.txt).
 
 ## Release 2024-02-26
 
