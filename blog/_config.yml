@@ -30,18 +30,21 @@ logo: "/assets/images/400x400.png"
 permalink: /:year/:month/:day/:title
 search: true 
 
+# Site theme and skin
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+minimal_mistakes_skin: neon
+
 # Build settings
 include: ["_pages"]
-remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+
+# Jekyll plugins
 plugins:
   - jekyll-feed
   - jekyll-include-cache
   - jekyll-target-blank
 
-minimal_mistakes_skin: neon
-
+## Default front matter
 defaults:
-  # _posts
   - scope:
       path: ""
       type: posts
@@ -54,6 +57,23 @@ defaults:
       related: true
       sidebar:
         nav: "side"
+
+# Footer links that get rendered via _includes/footer.html
+# https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/footer.html
+footer:
+  links:
+    - url: "mailto:brian.redmond@microsoft.com"
+      icon: "fas fa-envelope"
+      label: "Mail"
+    - url: "https://github.com/Azure/AKS"
+      icon: "fab fa-fw fa-github"
+      label: "GitHub"
+    - url: "https://twitter.com/theakscommunity"
+      icon: "fab fa-fw fa-twitter"
+      label: "X"
+    - url: "https://www.youtube.com/@theakscommunity"
+      icon: "fab fa-fw fa-youtube"
+      label: "YouTube"
 
 # Exclude from processing.
 # The following items will not be processed, by default.
