@@ -1,0 +1,36 @@
+main:
+  - title: "Home"
+    url: /
+  - title: "Posts"
+    url: /posts/
+  - title: "Tags"
+    url: /tags/
+  - title: "Releases"
+    url: https://github.com/Azure/AKS/releases
+  - title: "Roadmap"
+    url: https://github.com/Azure/AKS/projects/1
+
+side:     
+  - title: Links
+    children:
+      - title: "Documentation"
+        url: https://learn.microsoft.com/azure/aks
+      - title: "Azure Archictecture Center"
+        url: https://learn.microsoft.com/azure/architecture/reference-architectures/containers/aks-start-here
+      - title: "Landing Zone Accelerator"
+        url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/app-platform/aks/landing-zone-accelerator
+      - title: "Learning Paths"
+        url: https://learn.microsoft.com/training/browse/?products=azure-kubernetes-service
+      - title: "Troubleshooting"
+        url: https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/welcome-azure-kubernetes
+      - title: "FAQ"
+        url: https://learn.microsoft.com/azure/aks/faq
+
+  - title: Contact us
+    children:
+      - title: "GitHub"
+        url: https://github.com/Azure/AKS
+      - title: "X (Twitter)"
+        url: https://twitter.com/theakscommunity
+      - title: "YouTube"
+        url: https://www.youtube.com/@theakscommunity
