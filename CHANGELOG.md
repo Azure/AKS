@@ -10,6 +10,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release Notes
 * Features:
   * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster
+  * [AKS Cost Analysis](https://learn.microsoft.com/azure/aks/cost-analysis) is now generally available. View the aggregated costs for all your AKS clusters and namespaces in a subscription and drill into infrastructure and namespaces costs of a cluster directly in Azure Portal.
 
 * Component Updates: 
   * Bump csi driver to v1.4.2.
