@@ -1,6 +1,6 @@
 Brian Redmond:
   name        : "Brian Redmond"
-  bio         : "What do you want, jewels? I am a very extravagant man."
+  bio         : "That rug really tied the room together."
   avatar      : "https://pbs.twimg.com/profile_images/1061507580202078213/KnOEjBzC_400x400.jpg" # Replace this with your avatar image
   links:
     - label: "Email"
@@ -15,7 +15,7 @@ Brian Redmond:
 
 Jorge Palma:
   name        : "Jorge Palma"
-  bio         : "I ordered what?"
+  bio         : "The human torch was denied a bank loan"
   avatar      : "https://pbs.twimg.com/profile_images/1301683263757455360/W9VCi9oA_400x400.jpg" # Replace this with your avatar image
   links:
     - label: "X"
