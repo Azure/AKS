@@ -1,10 +1,9 @@
 ---
 title: "Sample - Add your title here"
 description: "Sample - Add your description"
-date: 2024-03-28 # date is important. future dates will not be published
-author: Your name # must match the authors.yml in the _data folder
-categories: choose from below
-# General, Operations, Networking, Security, Developer topics, Add-ons
+date: 2050-08-24 # date is important. future dates will not be published
+author: Brian Redmond # must match the authors.yml in the _data folder
+categories: General # General, Operations, Networking, Security, Developer topics, Add-ons
 ---
 
 ## Background
