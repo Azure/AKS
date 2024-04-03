@@ -21,7 +21,7 @@ side:
         url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/app-platform/aks/landing-zone-accelerator
       - title: "Learning Paths"
         url: https://learn.microsoft.com/training/browse/?products=azure-kubernetes-service
-      - title: "Troubleshooting"
+      - title: "Troubleshooting Guides"
         url: https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/welcome-azure-kubernetes
       - title: "Frequently Asked Questions"
         url: https://learn.microsoft.com/azure/aks/faq

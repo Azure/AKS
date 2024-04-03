@@ -12,14 +12,11 @@ $serif      : Georgia, Times, serif;
 $sans-serif : -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial, sans-serif;
 $monospace  : Monaco, Consolas, "Lucida Console", monospace;
 
-.page__meta__desc {
-  font-size: 1rem;
-  font-style: italic; // Add italic style
-}
-
-.page__meta__postedby {
-  // color: mix(#000, $primary-color, 25%);
-}
-
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+
+
+h1, h2, h3, h4, h5, h6 { 
+  margin: 0 0 0 0;
+}
