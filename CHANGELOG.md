@@ -7,6 +7,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 * Force migrating all Image Cleaner clusters to addon v2.
 * On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
+* Support upgrade version skew policy between core node and control plane components from n-1 to n-3 per [Kubernetes v1.28: Planternetes release note.](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/)
+
 
 ### Release Notes
 * Features:
@@ -26,7 +28,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22)
   * Updated cloud-node-manager to version 1.29.3, 1.28.8, 1.27.16, 1.26.22
   * Updated windows gpu device plugin image tag version to 0.0.3
-  * Support upgrade version skew policy between core node and control plane components from n-1 to n-3 per Kubernetes v1.28: Planternetes release note.
   * EnableAdvancedNetworkingObservability helm value that enables Hubble on Cilium when advancedNetworking mc property is enabled and k8s version is 1.29. k8s 1.29 will always be cilium 1.14+, cilium versions are tied to which k8s version here: cilium-agent.yaml.
   
 ## Release 2024-03-17
