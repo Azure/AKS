@@ -1,5 +1,48 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-03-31
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* Force migrating all Image Cleaner clusters to addon v2.
+
+### Release Notes
+* Features:
+  * feat: create ZRS disk by default in built-in storage classes on a multi-zone AKS cluster
+
+* Component Updates: 
+  * Bump csi driver to v1.4.2.
+  * Support upgrade version skew policy between core node and control plane components from n-1 to n-3 per Kubernetes v1.28: Planternetes release note.
+  * Bump cloud-node-manager to 1.29.3, 1.28.8, 1.27.16, 1.26.22
+  * Bump agentbaker version to v0.20240313.1
+  * EnableAdvancedNetworkingObservability helm value that enables Hubble on Cilium when advancedNetworking mc property is enabled and k8s version is 1.29. k8s 1.29 will always be cilium 1.14+, cilium versions are tied to which k8s version here: cilium-agent.yaml.
+  * enable-azure-cni-overlay-dual-stack-windows allow-bypassing-k8s-dual-stack-upgrade-validation (this allows them to upgrade to dual-stack if they are < 1.28, but they will still need to be on k8s 1.26.3) allow-bypassing-cni-overlay-required-for-dual-stack-upgrade (this allows them to upgrade from cni v1 to overlay - we have an e2e test for this but it isn't in master validation)
+  * Bump cloud-controller-manager 1.29.3, 1.28.8, 1.27.16, 1.26.22
+  * Bump Windows image versions to 2024.3B Windows 2019: March 12, 2024—KB5035849 (OS Build 17763.5576). Version: 17763.5576.240316. Windows 2022: March 12, 2024—KB5035857 (OS Build 20348.2340). Gen1 Version: 20348.2340.240316. Gen2 Version: 20348.2340.240316.
+  * CCP plugin reconciliation was missing from the main loop. That already resulted in releases not being effective unless customers trigger PUT MC directly.
+  * enable ccp-webhook-bind-to-all-with-tls toggle for all regions.
+  * Bump agentbaker version to v0.20240319.1
+  * Edit the name of the configmap that reveals to customers their dedicated node status
+  * Setting Operator default to true
+  * This PR will block StopMC operation if illegal webhooks are found. Since this adds to the FrontEnd Validation, it will run in parallel to the original validations.
+  * Previously, the cpu request is 400m, which is considered too high and may affect Pod's scheduling. This PR adjusts the cpu request to 100m, from observation, a normally running adapter only takes 10-30m CPU, so 100m should be a reasonable request.
+  * Updating coredns to use image v1.9.4-hotfix.20240327 on all AKS clusters with version 1.24+. We still use coredns build version v1.9.4, we have only fixed the CVE vulnerabilities on this.
+  * Bump agentbaker version to v0.20240325.0
+  * EnableAdvancedNetworkingObservability helm value that enables Hubble on Cilium when advancedNetworking mc property is enabled and k8s version is 1.29. k8s 1.29 will always be cilium 1.14+, cilium versions are tied to which k8s version here: cilium-agent.yaml.
+  * CX impact: enable fast scaling on westus3.
+  * speed up scaling agentpool operation. scaling agentpool is the PUT AP request which only update agentpool count. For scaling operation, we skip sku validation.
+  * Bump windows gpu device plugin image tag version to 0.0.3
+  * Return BadRequest when calling GetAgentPoolUpgradeProfileOperation for an agentpool using a customized image. Customized images are only used for internal testing. Some partner team may call it by mistakes. Reference: Incident 486354172 : prod eastus Frontend Qos failure for GetAgentPoolUpgradeProfileHandler.GET
+
+* Bug Fixes: 
+  * Fixes AGIC is crashing in USSec due to incorrect value for cloud environment. Changed the logic of determining "AZURECLOUDENVIRONMENT" variable in AGIC to be in line to other addons.
+  * For some customers needing to tune their istiod and ingress gateway's HPA, we need to allow them to customize the values. Also, we need to ensure minreplicas does not go to low to break pdb. asm-1-18, asm-1-19, and asm-1-20 covered by this change
+  * Fix bug where the RP would sometimes normalize the case of networkProfile.loadBalancerSku from whatever case the user input it as such as 'standard' to 'Standard'. Refactored the loadbalancerSKU validation to a new style validator.
+  * Fix meter IDs for 2, 64 and 96 core mem opt vms. Also fix 64 compute.
+  * Fix missing CalicoBlockSize when uninstalling Calico. This fixes a bug that can cause uninstall of Calico to fail.
+  * Fix an issue where node image upgrade or agentpool deletion might result in Node Auto Provisioning stop provisioning new nodes By reconciling ccp plugin Karpenter on AP operations, just like what we are doing with Addons The main difference between them is Addons are on the cluster while CCP plugins are on the CCP One-pager:
+
 ## Release 2024-03-17
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
