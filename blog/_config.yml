@@ -23,25 +23,27 @@ email: brian.redmond@microsoft.com
 description: >- # this means to ignore newlines until "baseurl:"
   "Insights and best practices from the AKS Engineering Team"
 baseurl: "/AKS" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: theakscommunity
 github_username:  theakscommunity
 logo: "/assets/images/400x400.png"
 permalink: /:year/:month/:day/:title
 search: true 
 
-# Build settings
-include: ["_pages"]
+# Site theme and skin
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
-plugins:
-  - jekyll-feed
-  - jekyll-include-cache
-  - jekyll-target-blank
-
 minimal_mistakes_skin: neon
 
+# Build settings
+include: ["_pages"]
+
+# Jekyll plugins
+plugins:
+  - jekyll-feed
+  - jekyll-target-blank
+  - jekyll-include-cache
+
+## Default front matter
 defaults:
-  # _posts
   - scope:
       path: ""
       type: posts
@@ -54,6 +56,23 @@ defaults:
       related: true
       sidebar:
         nav: "side"
+
+# Footer links that get rendered via _includes/footer.html
+# https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/footer.html
+footer:
+  links:
+    - url: "mailto:brian.redmond@microsoft.com"
+      icon: "fas fa-envelope"
+      label: "Mail"
+    - url: "https://github.com/Azure/AKS"
+      icon: "fab fa-fw fa-github"
+      label: "GitHub"
+    - url: "https://twitter.com/theakscommunity"
+      icon: "fab fa-fw fa-twitter"
+      label: "X"
+    - url: "https://www.youtube.com/@theakscommunity"
+      icon: "fab fa-fw fa-youtube"
+      label: "YouTube"
 
 # Exclude from processing.
 # The following items will not be processed, by default.
