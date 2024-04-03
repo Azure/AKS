@@ -22,10 +22,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where node image upgrade or agentpool deletion might result in Node Auto Provisioning stop provisioning new nodes.
 
 * Component Updates: 
-  * Bump csi driver to v1.4.2.
-  * Bump azure-cloud-controller-manager [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22)
-  * Bump cloud-node-manager to 1.29.3, 1.28.8, 1.27.16, 1.26.22
-  * Bump windows gpu device plugin image tag version to 0.0.3
+  * Updated CSI driver to version 1.4.2.
+  * Updated azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22)
+  * Updated cloud-node-manager to version 1.29.3, 1.28.8, 1.27.16, 1.26.22
+  * Updated windows gpu device plugin image tag version to 0.0.3
   * Support upgrade version skew policy between core node and control plane components from n-1 to n-3 per Kubernetes v1.28: Planternetes release note.
   * EnableAdvancedNetworkingObservability helm value that enables Hubble on Cilium when advancedNetworking mc property is enabled and k8s version is 1.29. k8s 1.29 will always be cilium 1.14+, cilium versions are tied to which k8s version here: cilium-agent.yaml.
   
