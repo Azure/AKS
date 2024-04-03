@@ -39,8 +39,8 @@ include: ["_pages"]
 # Jekyll plugins
 plugins:
   - jekyll-feed
-  - jekyll-include-cache
   - jekyll-target-blank
+  - jekyll-include-cache
 
 ## Default front matter
 defaults:
