@@ -3,7 +3,7 @@ title: "Sample - Add your title here"
 description: "Sample - Add your description"
 date: 2050-08-24 # date is important. future dates will not be published
 author: Brian Redmond # must match the authors.yml in the _data folder
-categories: General # General, Operations, Networking, Security, Developer topics, Add-ons
+categories: general # general, operations, networking, security, developer topics, add-ons
 ---
 
 ## Background
