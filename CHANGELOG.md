@@ -5,16 +5,21 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-* Force migrating all Image Cleaner clusters to addon v2.
-* On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
 * Support upgrade version skew policy between core node and control plane components from n-1 to n-3 per [Kubernetes v1.28: Planternetes release note.](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/)
-
+* Starting 1.30 kubernetes version and 1.27 LTS versions the beta apis will be disabled by default. There will be an option provided  to enable explicitly beta apis closer to the 1.30 release. 
+* If you use any programming/ scripting logic to list and  select minor version before creating clusters - please ensure you update the logic to exclude LTS-only versions to avoid any breaks.  Otherwise, if LTS is your path forward please first opt into premium tier and LTS support plan as mentioned in [Long-term support for Azure Kubernetes Service (AKS) - Azure Kubernetes Service | Microsoft](https://learn.microsoft.com/en-us/azure/aks/long-term-support) before the create operation.
+* Calico can now be disabled for an AKS cluster through the update operation more info [here](https://learn.microsoft.com/en-us/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview).
+* On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
 
 ### Release Notes
 * Features:
   * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster
   * [AKS Cost Analysis](https://learn.microsoft.com/azure/aks/cost-analysis) is now generally available. View the aggregated costs for all your AKS clusters and namespaces in a subscription and drill into infrastructure and namespaces costs of a cluster directly in Azure Portal.
-  
+  * [Trusted Access on AKS cluster](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is GA now.
+
+* Preview Features:
+  * [Disable SSH](https://learn.microsoft.com/en-us/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
+
 * Behavioral Changes:
   * We now allow customization of istiod and ingress gateway HPA to enable customers to ensure minreplicas does not go t0o low to break pod disruption budgetes.
 
