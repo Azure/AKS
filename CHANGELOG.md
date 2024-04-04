@@ -13,7 +13,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release Notes
 * Features:
-  * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster
   * [AKS Cost Analysis](https://learn.microsoft.com/azure/aks/cost-analysis) is now generally available. View the aggregated costs for all your AKS clusters and namespaces in a subscription and drill into infrastructure and namespaces costs of a cluster directly in Azure Portal.
   * [Trusted Access on AKS cluster](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is GA now.
 
@@ -22,6 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral Changes:
   * We now allow customization of istiod and ingress gateway HPA to enable customers to ensure minreplicas does not go t0o low to break pod disruption budgetes.
+  * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster
 
 * Bug Fixes: 
   * Fixed AGIC crashing in USSec due to incorrect value for cloud environment. Changed the logic of determining "AZURECLOUDENVIRONMENT" variable in AGIC to be in line to other addons.
