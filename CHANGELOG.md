@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral Changes:
   * We now allow customization of istiod and ingress gateway HPA to enable customers to ensure minreplicas does not go t0o low to break pod disruption budgetes.
-  * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster
+  * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster from AKS 1.29.
 
 * Bug Fixes: 
   * Fixed AGIC crashing in USSec due to incorrect value for cloud environment. Changed the logic of determining "AZURECLOUDENVIRONMENT" variable in AGIC to be in line to other addons.
@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where node image upgrade or agentpool deletion might result in Node Auto Provisioning stop provisioning new nodes.
 
 * Component Updates: 
-  * Updated CSI driver to version 1.4.2.
+  * Updated secrets-store-csi-driver to version 1.4.2.
   * Updated azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22)
   * Updated cloud-node-manager to version 1.29.3, 1.28.8, 1.27.16, 1.26.22
   * Updated windows gpu device plugin image tag version to 0.0.3
