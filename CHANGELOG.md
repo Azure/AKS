@@ -30,9 +30,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Component Updates: 
   * Updated secrets-store-csi-driver to version 1.4.2.
-  * Updated azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22)
-  * Updated cloud-node-manager to version 1.29.3, 1.28.8, 1.27.16, 1.26.22
-  * Updated windows gpu device plugin image tag version to 0.0.3
+  * Updated azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
+  * Updated cloud-node-manager to version 1.29.3, 1.28.8, 1.27.16, 1.26.22.
+  * Updated windows gpu device plugin image tag version to 0.0.3.
   * EnableAdvancedNetworkingObservability helm value that enables Hubble on Cilium when advancedNetworking mc property is enabled and k8s version is 1.29. k8s 1.29 will always be cilium 1.14+, cilium versions are tied to which k8s version here: cilium-agent.yaml.
   
 ## Release 2024-03-17
