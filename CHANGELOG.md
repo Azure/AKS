@@ -20,7 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Disable SSH](https://learn.microsoft.com/en-us/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
 
 * Behavioral Changes:
-  * We now allow customization of istiod and ingress gateway HPA to enable customers to ensure minreplicas does not go t0o low to break pod disruption budgetes.
+  * We now allow customization of istiod and ingress gateway HPA to enable customers to ensure minreplicas does not go too low to break pod disruption budgets.
   * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster from AKS 1.29.
 
 * Bug Fixes: 
@@ -32,7 +32,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated secrets-store-csi-driver to [version 1.4.2](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.2).
   * Updated azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
   * Updated cloud-node-manager to version 1.29.3, 1.28.8, 1.27.16, 1.26.22.
-  * Updated windows gpu device plugin image tag version to 0.0.3.
+  * Updated Windows gpu device plugin image tag version to 0.0.3.
   * EnableAdvancedNetworkingObservability helm value that enables Hubble on Cilium when advancedNetworking mc property is enabled and k8s version is 1.29. k8s 1.29 will always be cilium 1.14+, cilium versions are tied to which k8s version here: cilium-agent.yaml.
   
 ## Release 2024-03-17
