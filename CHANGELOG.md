@@ -21,7 +21,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral Changes:
   * We now allow customization of istiod and ingress gateway HPA to enable customers to ensure minreplicas does not go too low to break pod disruption budgets.
-  * Created ZRS disk by default in built-in storage classes on a multi-zone AKS cluster from AKS 1.29.
 
 * Bug Fixes: 
   * Fixed AGIC crashing in USSec due to incorrect value for cloud environment. Changed the logic of determining "AZURECLOUDENVIRONMENT" variable in AGIC to be in line to other addons.
