@@ -29,10 +29,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where node image upgrade or agentpool deletion might result in Node Auto Provisioning stop provisioning new nodes.
 
 * Component Updates: 
-  * Updated secrets-store-csi-driver to [version 1.4.2](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.2).
-  * Updated azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
-  * Updated cloud-provider-azure to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
-  * EnableAdvancedNetworkingObservability helm value that enables Hubble on Cilium when advancedNetworking mc property is enabled and k8s version is 1.29. k8s 1.29 will always be cilium 1.14+, cilium versions are tied to which k8s version here: cilium-agent.yaml.
+  * Upgraded secrets-store-csi-driver to [version 1.4.2](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.2).
+  * Upgraded azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
+  * Upgraded cloud-provider-azure to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
   
 ## Release 2024-03-17
 
