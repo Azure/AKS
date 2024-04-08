@@ -15,7 +15,7 @@ gem "jekyll", "~> 3.9.5"
 # If you have any plugins, put them here!
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
-  gem "jekyll-target-blank"
+  gem "jekyll-target-blank", "~> 2.0", ">= 2.0.2"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -34,4 +34,4 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 gem "github-pages", group: :jekyll_plugins
 gem "jekyll-include-cache", group: :jekyll_plugins
-gem "webrick"
+gem "webrick", "~> 1.8", ">= 1.8.1"
