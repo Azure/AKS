@@ -23,7 +23,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * We now allow customization of istiod and ingress gateway HPA to enable customers to ensure minreplicas does not go too low to break pod disruption budgets.
 
 * Bug Fixes: 
-  * Fixed AGIC crashing in USSec due to incorrect value for cloud environment. Changed the logic of determining "AZURECLOUDENVIRONMENT" variable in AGIC to be in line to other addons.
   * Fixed missing CalicoBlockSize when uninstalling Calico. This fixes a bug that can cause uninstall of Calico to fail.
   * Fixed an issue where node image upgrade or agentpool deletion might result in Node Auto Provisioning stop provisioning new nodes.
 
