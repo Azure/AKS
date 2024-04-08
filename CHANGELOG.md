@@ -5,7 +5,7 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-* Support upgrade version skew policy between core node and control plane components from n-1 to n-3 per [Kubernetes v1.28: Planternetes release note.](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/)
+* Support upgrade version skew policy between core node and control plane components from n-2 to n-3 per [Kubernetes v1.28: Planternetes release note.](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/)
 * Starting 1.30 kubernetes version and 1.27 LTS versions the beta apis will be disabled by default. There will be an option provided  to enable explicitly beta apis closer to the 1.30 release. 
 * If you use any programming/ scripting logic to list and  select minor version before creating clusters - please ensure you update the logic to exclude LTS-only versions to avoid any breaks.  Otherwise, if LTS is your path forward please first opt into premium tier and LTS support plan as mentioned in [Long-term support for Azure Kubernetes Service (AKS) - Azure Kubernetes Service | Microsoft](https://learn.microsoft.com/en-us/azure/aks/long-term-support) before the create operation.
 * Calico can now be disabled for an AKS cluster through the update operation more info [here](https://learn.microsoft.com/en-us/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview).
