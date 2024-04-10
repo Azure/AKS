@@ -5,7 +5,7 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-* Support upgrade version skew policy between core node and control plane components from n-2 to n-3 per [Kubernetes v1.28: Planternetes release note.](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/)
+* Support upgrade version skew policy between core node and control plane components from n-2 to n-3 per [Kubernetes v1.28: Planternetes release note.](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/) AKS docs available [here](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version).
 * Starting 1.30 kubernetes version and 1.27 LTS versions the beta apis will be disabled by default, when you upgrade to [them(https://learn.microsoft.com/en-us/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin)]. There will be an option provided to enable explicitly beta apis closer to the 1.30 release.
 * If you use any programming/ scripting logic to list and  select minor version before creating clusters - please ensure you update the logic to exclude LTS-only versions to avoid any breaks.  Otherwise, if LTS is your path forward please first opt into premium tier and LTS support plan as mentioned in [Long-term support for Azure Kubernetes Service (AKS) - Azure Kubernetes Service | Microsoft](https://learn.microsoft.com/en-us/azure/aks/long-term-support) before the create operation.
 * On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
@@ -25,7 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes: 
   * Fixed missing CalicoBlockSize when uninstalling Calico. This fixes a bug that can cause the disablement of Calico Network Policies to fail.
   * Fixed an issue where node image upgrade or nodepool deletion might result in node auto provisioning to stop provisioning new nodes.
-  * Fixed bug where the RP would sometimes normalize the case of networkProfile.loadBalancerSku from whatever case the user input it as such as 'standard' to 'Standard'.
+  * Fixed bug where the RP would sometimes normalize the case of networkProfile.loadBalancerSku from the case the user input, such as 'standard' to 'Standard', which may have caused diffs in Terraform state files or other client tools that perform diffs.
 
 * Component Updates: 
   * Upgraded secrets-store-csi-driver to [version 1.4.2](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.2).
