@@ -1,7 +1,7 @@
 ---
 title: "AKS - How we got here"
 description: "An exploration of the past, present, future for Azure Kubernetes Service (AKS)."
-date: 2024-03-15
+date: 2050-08-24
 author: Jorge Palma
 categories: general
 ---
