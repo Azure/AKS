@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features:
   * [Disable SSH](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
-  * Calico can now be disabled for an AKS cluster through the update operation. More info [here](https://learn.microsoft.com/en-us/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview).
+  * Calico can now be disabled for an AKS cluster through the update operation. More info [here](https://learn.microsoft.com/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview).
 
 * Behavioral Changes:
   * Customizations to HorizontalPodAutoscaler (HPA) for `istiod` and Istio ingress gateways are now allowed. User can directly edit the HPAs in aks-istio-system and aks-istio-ingress namespaces to customize the HPA. Note that HPA changes that violate minReplicas specified in the existing PDB will be rejected/reset.
