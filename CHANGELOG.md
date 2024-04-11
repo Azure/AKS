@@ -13,7 +13,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release Notes
 * Features:
   * [AKS Cost Analysis](https://learn.microsoft.com/azure/aks/cost-analysis) is now generally available. View the aggregated costs for all your AKS clusters and namespaces in a subscription and drill into infrastructure and namespaces costs of a cluster directly in Azure Portal.
-  * [Trusted Access on AKS cluster](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is generally available now.
+  * [Trusted Access on AKS cluster](https://learn.microsoft.com/azure/aks/trusted-access-feature) is generally available now.
 
 * Preview Features:
   * [Disable SSH](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
