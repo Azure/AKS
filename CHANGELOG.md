@@ -1,5 +1,38 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-03-31
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* Support upgrade version skew policy between core node and control plane components from n-2 to n-3 to match [related upstream policy change starting Kubernetes version 1.28](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/) AKS docs available [here](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#what-is-the-allowed-difference-in-versions-between-control-plane-and-node-pool).
+* Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
+* On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
+
+### Release Notes
+* Features:
+  * [AKS Cost Analysis](https://learn.microsoft.com/azure/aks/cost-analysis) is now generally available. View the aggregated costs for all your AKS clusters and namespaces in a subscription and drill into infrastructure and namespaces costs of a cluster directly in Azure Portal.
+  * [Trusted Access on AKS cluster](https://learn.microsoft.com/azure/aks/trusted-access-feature) is generally available now.
+
+* Preview Features:
+  * [Disable SSH](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
+  * Calico can now be disabled for an AKS cluster through the update operation. More info [here](https://learn.microsoft.com/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview).
+
+* Behavioral Changes:
+  * Customizations to HorizontalPodAutoscaler (HPA) for `istiod` and Istio ingress gateways are now allowed. User can directly edit the HPAs in aks-istio-system and aks-istio-ingress namespaces to customize the HPA. Note that HPA changes that violate minReplicas specified in the existing PDB will be rejected/reset.
+
+* Bug Fixes: 
+  * Fixed missing CalicoBlockSize when uninstalling Calico. This fixes a bug that can cause the disablement of Calico Network Policies to fail.
+  * Fixed an issue where node image upgrade or nodepool deletion might result in node auto provisioning to stop provisioning new nodes.
+  * Fixed bug where the RP would sometimes normalize the case of networkProfile.loadBalancerSku from the case the user input, such as 'standard' to 'Standard', which may have caused diffs in Terraform state files or other client tools that perform diffs.
+
+* Component Updates: 
+  * Upgraded secrets-store-csi-driver to [version 1.4.2](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.2).
+  * Upgraded azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
+  * Azure Linux image has been updated to [Azure Linux - 202403.25.0](vhd-notes/AzureLinux/202403.25.0.txt).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202403.25.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202403.25.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202403.25.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202403.25.0.txt).
+
 ## Release 2024-03-17
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
