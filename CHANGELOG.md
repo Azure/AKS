@@ -30,6 +30,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates: 
   * Upgraded secrets-store-csi-driver to [version 1.4.2](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.2).
   * Upgraded azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
+  * Azure Linux image has been updated to [Azure Linux - 202403.25.0](vhd-notes/AzureLinux/202403.25.0.txt).
+  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202403.25.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202403.25.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202403.25.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202403.25.0.txt).
 
 ## Release 2024-03-17
 
