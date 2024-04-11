@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Trusted Access on AKS cluster](https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature) is generally available now.
 
 * Preview Features:
-  * [Disable SSH](https://learn.microsoft.com/en-us/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
+  * [Disable SSH](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
   * Calico can now be disabled for an AKS cluster through the update operation. More info [here](https://learn.microsoft.com/en-us/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview).
 
 * Behavioral Changes:
