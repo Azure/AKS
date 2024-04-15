@@ -46,9 +46,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 - Windows Server 2019 Image has been updated to [Windows Server 2019-17763.5696.240410](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.5696.240410.txt)   
 - Windows Server 2022 has been updated to [Windows Server Gen2 20348.2340.240401 ](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd-gen2/20348.2340.240401.txt), [Windows Server Gen1 20348.2340.240401](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2340.240401.txt)
 
-- Azure Linux image has been updated to [Azure Linux 202404.01.0](https://raw.githubusercontent.com/Azure/AgentBaker/master/vhdbuilder/release-notes/AKSCBLMarinerV2/gen2/202404.01.0.txt).
-- AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202404.01.0](https://raw.githubusercontent.com/Azure/AgentBaker/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804containerd/202404.01.0.txt)
-- AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.01.0](https://raw.githubusercontent.com/Azure/AgentBaker/master/vhdbuilder/release-notes/AKSUbuntu/gen1/2204containerd/202404.01.0.txt)
+- Azure Linux image has been updated to [Azure Linux 202404.01.0](vhd-notes/AzureLinux/202404.01.0.txt).
+- AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202404.01.0.txt)
+- AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202404.01.0.txt)
 - Upgraded container insights agent to [v3.1.19](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.19)
 - Upraded Kaito toggle for release [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
 
