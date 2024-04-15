@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 
 * Bug Fixes:
-- Fixes a bug where put agentpool without a specified verison in lts clusters would have an internal error.
+- Fixes a bug where put agentpool without a specified version in lts clusters would have an internal error.
 - Skips verification of the CNI files installed by the Azure CNS daemonset. This change is made to avoid a race condition observed where components like LinkerD and Istio doing CNI chaining mutate the CNI conflict after its written, causing the validation that the file was written correctly to fail.
 - Error message improved  to specify that it is only allowed to update public SSH key in preview API versions.
 
@@ -50,7 +50,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 - AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202404.01.0.txt)
 - AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202404.01.0.txt)
 - Upgraded container insights agent to [v3.1.19](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.19)
-- Upraded Kaito toggle for release [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
+- Upgraded Kaito toggle for release [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
 
 
 
