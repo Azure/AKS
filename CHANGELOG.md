@@ -1,5 +1,32 @@
 # Azure Kubernetes Service Changelog
 
+
+## Release 2024-04-11
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+
+
+### Announcements
+
+
+### Release Notes
+
+* Features:
+* Preview Features:
+
+
+
+
+* Behavioral Changes:
+
+
+* Bug Fixes:
+
+
+* Component Updates: 
+
+
 ## Release 2024-03-31
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
