@@ -1,4 +1,4 @@
-Starting build on  Mon Apr 1 08:09:55 UTC 2024
+Starting build on  Mon Apr 1 08:09:40 UTC 2024
 Components downloaded in this VHD build (some of the below components might get deleted during cluster provisioning if they are not needed):
   - containerd-wasm-shims v0.3.0 v0.5.1 v0.8.0
   - [installed] containerd v1.7.14-1
@@ -140,14 +140,14 @@ kubelet/kubectl downloaded:
 -rwxr-xr-x 1 root root 111812608 Feb 15 09:01 /usr/local/bin/kubelet-1.29.2
 -rwxr-xr-x 1 root root  49704960 Feb 15 09:01 /usr/local/bin/kubectl-1.29.2
 -rwxr-xr-x 1 root root       705 Apr  1 08:09 /usr/local/bin/ci-syslog-watcher.sh
--rwxr-xr-x 1 root root  36014944 Apr  1 08:16 /usr/local/bin/containerd-shim-spin-v0-3-0-v1
--rwxr-xr-x 1 root root  47622592 Apr  1 08:16 /usr/local/bin/containerd-shim-slight-v0-3-0-v1
--rwxr-xr-x 1 root root  45334640 Apr  1 08:19 /usr/local/bin/containerd-shim-spin-v0-5-1-v1
--rwxr-xr-x 1 root root  52232184 Apr  1 08:19 /usr/local/bin/containerd-shim-slight-v0-5-1-v1
--rwxr-xr-x 1 root root  53775024 Apr  1 08:21 /usr/local/bin/containerd-shim-spin-v0-8-0-v1
--rwxr-xr-x 1 root root  60175432 Apr  1 08:21 /usr/local/bin/containerd-shim-slight-v0-8-0-v1
--rwxr-xr-x 1 root root  39369104 Apr  1 08:21 /usr/local/bin/containerd-shim-wws-v0-8-0-v1
--rwxr-xr-x 1 root root  35384960 Apr  1 08:23 /usr/local/bin/bpftrace
+-rwxr-xr-x 1 root root  36014944 Apr  1 08:15 /usr/local/bin/containerd-shim-spin-v0-3-0-v1
+-rwxr-xr-x 1 root root  47622592 Apr  1 08:15 /usr/local/bin/containerd-shim-slight-v0-3-0-v1
+-rwxr-xr-x 1 root root  45334640 Apr  1 08:18 /usr/local/bin/containerd-shim-spin-v0-5-1-v1
+-rwxr-xr-x 1 root root  52232184 Apr  1 08:18 /usr/local/bin/containerd-shim-slight-v0-5-1-v1
+-rwxr-xr-x 1 root root  53775024 Apr  1 08:20 /usr/local/bin/containerd-shim-spin-v0-8-0-v1
+-rwxr-xr-x 1 root root  60175432 Apr  1 08:20 /usr/local/bin/containerd-shim-slight-v0-8-0-v1
+-rwxr-xr-x 1 root root  39369104 Apr  1 08:20 /usr/local/bin/containerd-shim-wws-v0-8-0-v1
+-rwxr-xr-x 1 root root  35384960 Apr  1 08:22 /usr/local/bin/bpftrace
 === Installed Packages Begin
 Listing...
 acr-mirror/now 0.2.9-1 amd64 [installed,local]
@@ -869,12 +869,12 @@ zstd/jammy,now 1.4.8+dfsg-3build1 amd64 [installed,automatic]
 === Installed Packages End
 Disk usage:
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/root        29G   26G  3.6G  88% /
+/dev/root        29G   26G  3.5G  88% /
 tmpfs           3.9G     0  3.9G   0% /dev/shm
-tmpfs           1.6G  832K  1.6G   1% /run
+tmpfs           1.6G  712K  1.6G   1% /run
 tmpfs           5.0M     0  5.0M   0% /run/lock
-/dev/sdb15      105M  6.1M   99M   6% /boot/efi
-/dev/sda1        16G   28K   15G   1% /mnt
+/dev/sda15      105M  6.1M   99M   6% /boot/efi
+/dev/sdb1        16G   28K   15G   1% /mnt
 tmpfs           794M     0  794M   0% /run/user/1000
 === os-release Begin
 PRETTY_NAME="Ubuntu 22.04.4 LTS"
@@ -892,12 +892,12 @@ UBUNTU_CODENAME=jammy
 === os-release End
 Using kernel:
 Linux version 5.15.0-1059-azure (buildd@lcy02-amd64-008) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #67-Ubuntu SMP Sat Mar 9 03:28:53 UTC 2024
-Install completed successfully on  Mon Apr 1 08:48:41 UTC 2024
+Install completed successfully on  Mon Apr 1 08:44:49 UTC 2024
 VSTS Build NUMBER: 20240401.1_master_90595590
 VSTS Build ID: 90595590
 Commit: 5bd39d00413774becd22876ae8c80c6fe74b64d5
 Ubuntu version: 22.04
-Hyperv generation: V1
+Hyperv generation: V2
 Feature flags: None
 Container runtime: containerd
 FIPS enabled: 
