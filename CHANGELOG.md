@@ -5,26 +5,53 @@
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
-
-
 ### Announcements
-
+- [Dual-stack networking (IPv4/IPv6) with CNI Overlay](https://learn.microsoft.com/en-us/azure/aks/azure-cni-overlay?tabs=kubectl#dual-stack-networking) is now generally available (GA) for Linux node pools and does not need the Azure Feature Flag registered on the subscription.
 
 ### Release Notes
 
 * Features:
+
+
 * Preview Features:
 
 
 
 
 * Behavioral Changes:
+-   Clusters running Kubernetes 1.29 or later will have kubernetes.azure.com/managedby=aks  label to tigera-operator deployment in Calico clusters 
+- This introduces the constraint template validation behavior change called out in November's release notes
+[2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches a CVE in the addon.
+- Adds [App routing](https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
+- Toggle OSI clusters with 3.1.17 for autoscale
+- Added permissions to nodes/proxy Kubernetes resource for Microsoft.Security/pricings/microsoft-defender-operator role
+- The service mesh add-on now skips validation of its compatibility with cluster version unless mesh upgrade or cluster upgrade is attempted.
 
 
 * Bug Fixes:
-
+- Fixes a bug where put agentpool without a specified verison in lts clusters would have an internal error.
+- Skips verification of the CNI files installed by the Azure CNS daemonset. This change is made to avoid a race condition observed where components like LinkerD and Istio doing CNI chaining mutate the CNI conflict after its written, causing the validation that the file was written correctly to fail.
+- Error message improved  to specify that it is only allowed to update public SSH key in preview API versions.
 
 * Component Updates: 
+- Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4)  on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1)  on AKS 1.29
+- Upgraded Azure Blob CSI driver to [v1.23.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.4)  on AKS 1.28 and 1.29
+- Upgraded extension manager to [v1.15.3](https://github.com/azure-core/ClusterConfigurationAgent/releases/tag/v1.15.3)
+- Azure Monitor Metrics April release to [v.6.8.7](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-08-2024)
+- Istio revision asm-1-21 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade)
+- Bump Windows containerd v1.7 to v1.7.14 in k8s v1.28+
+- Bump Windows image versions to 2024.03B 
+   - Cached new image version for csi, cni, containerinsights, cloud-node-manager.
+   - Security Intelligence Update for Microsoft Defender Antivirus is upgraded from 1.407.466.0 to 1.407.870.0.
+- Windows Server 2019 Image has been updated to [Windows Server 2019-17763.5696.240410](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.5696.240410.txt)   
+- Windows Server 2022 has been updated to [Windows Server Gen2 20348.2340.240401 ](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd-gen2/20348.2340.240401.txt), [Windows Server Gen1 20348.2340.240401](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2340.240401.txt)
+
+- Azure Linux image has been updated to [Azure Linux 202404.01.0](https://raw.githubusercontent.com/Azure/AgentBaker/master/vhdbuilder/release-notes/AKSCBLMarinerV2/gen2/202404.01.0.txt).
+- AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202404.01.0](https://raw.githubusercontent.com/Azure/AgentBaker/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804containerd/202404.01.0.txt)
+- AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.01.0](https://raw.githubusercontent.com/Azure/AgentBaker/master/vhdbuilder/release-notes/AKSUbuntu/gen1/2204containerd/202404.01.0.txt)
+- Upgraded container insights agent to [v3.1.19](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.19)
+- Upraded Kaito toggle for release [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
+
 
 
 ## Release 2024-03-31
