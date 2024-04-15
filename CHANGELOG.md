@@ -26,6 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 - Toggle OSI clusters with 3.1.17 for autoscale
 - Added permissions to nodes/proxy Kubernetes resource for Microsoft.Security/pricings/microsoft-defender-operator role
 - The service mesh add-on now skips validation of its compatibility with cluster version unless mesh upgrade or cluster upgrade is attempted.
+- Using [Alias Minor Version](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version) is now allowed on preview versions. 
 
 
 * Bug Fixes:
