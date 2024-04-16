@@ -28,7 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavioral Changes:
  * This introduces the constraint template validation behavior change called out in November's release notes
-[2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches a CVE in the addon.
+[2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches  CVE-2024-24786 in the addon.
  * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
  * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
  * The service mesh add-on now skips validation of its compatibility with cluster version unless mesh upgrade or cluster upgrade is attempted.
