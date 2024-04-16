@@ -48,7 +48,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202404.01.0.txt)
  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202404.01.0.txt)
  * Upgraded Azure Monitor Container Insights image to [v3.1.19](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.19)
- *Upgraded Kaito images to [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
+ * Upgraded Kaito images to [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
 
 ## Release 2024-03-31
 
