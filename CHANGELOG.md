@@ -42,7 +42,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * Upgraded Azure Monitor Metrics April release to [v.6.8.7](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-08-2024)
  * Istio revision asm-1-21 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade)
  * Bump Windows containerd v1.7 to v1.7.14 in k8s v1.28+
- * Published Windows image version  2024.03B on 04/01 and 2024.04B on 04/10
  * Windows Server 2019 Image has been updated to [Windows Server 2019-17763.5696.240410](vhd-notes/AKSWindows/2019/17763.5696.240410.txt)  and  [Windows Server 2019-17763.5576.240401](vhd-notes/AKSWindows/2019/17763.5576.240401.txt)
  * Windows Server 2022 has been updated to [Windows Server 20348.2340.240401 ](vhd-notes/AKSWindows/2022/20348.2402.240410.txt) and [Windows Server 2022-20348.2340.240401](vhd-notes/AKSWindows/2022/20348.2340.240401.txt)
  * Azure Linux image has been updated to [Azure Linux 202404.01.0](vhd-notes/AzureLinux/202404.01.0.txt).
