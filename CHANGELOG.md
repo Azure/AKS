@@ -32,7 +32,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 
 * Bug Fixes:
- *Fixes a bug where put agentpool without a specified version in lts clusters would have an internal error.
+ * Fixes a bug where put agentpool without a specified version in lts clusters would have an internal error.
  * Error message improved to specify that it is only allowed to update public SSH key in preview API versions.
 
 * Component Updates: 
