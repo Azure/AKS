@@ -22,7 +22,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 
 * Behavioral Changes:
- * Clusters running Kubernetes 1.29 or later will have kubernetes.azure.com/managedby=aks  label to tigera-operator deployment in Calico clusters 
  * This introduces the constraint template validation behavior change called out in November's release notes
 [2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches a CVE in the addon.
  * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
@@ -34,6 +33,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes:
  * Fixes a bug where put agentpool without a specified version in lts clusters would have an internal error.
  * Error message improved to specify that it is only allowed to update public SSH key in preview API versions.
+* Clusters running Kubernetes 1.29 or later will have `kubernetes.azure.com/managedby=aks`  label to tigera-operator deployment in Calico clusters 
 
 * Component Updates: 
  * Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4)  on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1)  on AKS 1.29
