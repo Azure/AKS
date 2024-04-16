@@ -26,7 +26,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * This introduces the constraint template validation behavior change called out in November's release notes
 [2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches a CVE in the addon.
  * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
- * Toggle OSI clusters with 3.1.17 for autoscale
  * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
  * The service mesh add-on now skips validation of its compatibility with cluster version unless mesh upgrade or cluster upgrade is attempted.
  * Using [Alias Minor Version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version) is now allowed on preview versions. 
