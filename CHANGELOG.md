@@ -26,7 +26,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed an issue where node image upgrade or nodepool deletion might result in node auto provisioning to stop provisioning new nodes.
   * Fixed bug where the RP would sometimes normalize the case of networkProfile.loadBalancerSku from the case the user input, such as 'standard' to 'Standard', which may have caused diffs in Terraform state files or other client tools that perform diffs.
 
-* Component Updates: 
+* Component Updates:
+  * Upgraded coredns to [v1.9.4-hotfix.20240327](https://github.com/aks-lts/coredns/releases/tag/v1.9.4-hotfix.20240327) to fix a couple CVEs in golang.org packages.
   * Upgraded secrets-store-csi-driver to [version 1.4.2](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.2).
   * Upgraded azure-cloud-controller-manager to version [1.29.3](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.3), [1.28.8](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.8), [1.27.16](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.16), [1.26.22](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.26.22).
   * Azure Linux image has been updated to [Azure Linux - 202403.25.0](vhd-notes/AzureLinux/202403.25.0.txt).
