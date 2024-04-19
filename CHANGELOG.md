@@ -21,20 +21,16 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
  * [Dual-stack networking (IPv4/IPv6) with CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay?tabs=kubectl#dual-stack-networking) is now generally available (GA) for Linux node pools and does not need the Azure Feature Flag registered on the subscription.
- * The service mesh add-on now skips validation of its compatibility with cluster version unless mesh upgrade or cluster upgrade is attempted.
- * Using [Alias Minor Version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version) is now allowed on preview versions. 
+
 
 * Preview Features:
-
+ * Using [Alias Minor Version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version) is now allowed on preview versions. 
 
 * Behavioral Changes:
  * This introduces the constraint template validation behavior change called out in November's release notes
 [2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches  CVE-2024-24786 in the addon.
  * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
  * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
- * The service mesh add-on now skips validation of its compatibility with cluster version unless mesh upgrade or cluster upgrade is attempted.
- * Using [Alias Minor Version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version) is now allowed on preview versions. 
-
 
 * Bug Fixes:
  * Fixes a bug where put agentpool without a specified version in LTS clusters would have an internal error.
@@ -44,7 +40,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates: 
  * Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4) on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1) on AKS 1.29
  * Upgraded Azure Blob CSI driver to [v1.23.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.4) on AKS 1.28 and 1.29
- * Upgraded extension manager to [v1.15.3](https://github.com/azure-core/ClusterConfigurationAgent/releases/tag/v1.15.3)
  * Upgraded Azure Monitor Metrics April release to [v.6.8.7](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-08-2024)
  * Istio revision asm-1-21 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade)
  * Bump Windows containerd v1.7 to v1.7.14 in k8s v1.28+
