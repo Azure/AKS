@@ -20,34 +20,34 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release Notes
 
 * Features:
- * [Dual-stack networking (IPv4/IPv6) with CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay?tabs=kubectl#dual-stack-networking) is now generally available (GA) for Linux node pools.
- * Using [Alias Minor Version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version) is now allowed on preview versions. 
+  * [Dual-stack networking (IPv4/IPv6) with CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay?tabs=kubectl#dual-stack-networking) is now generally available (GA) for Linux node pools.
+  * Using [Alias Minor Version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#alias-minor-version) is now allowed on preview versions. 
 
 * Preview Features:
- 
+
 * Behavioral Changes:
- * This introduces the constraint template validation behavior change called out in November's release notes
+  * This introduces the constraint template validation behavior change called out in November's release notes
 [2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches  CVE-2024-24786 in the addon.
- * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
- * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
+  * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
+  * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
 
 * Bug Fixes:
- * Fixes a bug where a PUT operation(Update) on nodepool without a specified version in LTS clusters would have an internal error.
- * Error message improved to specify that it is only allowed to update public SSH key in preview API versions.
- * Clusters running Kubernetes 1.29 or later will have `kubernetes.azure.com/managedby=aks`  label to tigera-operator deployment in Calico clusters 
+  * Fixes a bug where a PUT operation(Update) on nodepool without a specified version in LTS clusters would have an internal error.
+  * Error message improved to specify that it is only allowed to update public SSH key in preview API versions.
+  * Clusters running Kubernetes 1.29 or later will have `kubernetes.azure.com/managedby=aks`  label to tigera-operator deployment in Calico clusters 
 
 * Component Updates: 
- * Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4) on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1) on AKS 1.29
- * Upgraded Azure Blob CSI driver to [v1.23.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.4) on AKS 1.28 and 1.29
- * Upgraded Azure Monitor Metrics April release to [v.6.8.7](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-08-2024)
- * Istio revision asm-1-21 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade)
- * Upgraded Windows containerd v1.7 to v1.7.14 in k8s v1.28+
- * Windows Server 2019 Image has been updated to [Windows Server 2019-17763.5696.240410](vhd-notes/AKSWindows/2019/17763.5696.240410.txt)  and  [Windows Server 2019-17763.5576.240401](vhd-notes/AKSWindows/2019/17763.5576.240401.txt)
- * Windows Server 2022 has been updated to [Windows Server 20348.2340.240410](vhd-notes/AKSWindows/2022/20348.2402.240410.txt) and [Windows Server 2022-20348.2340.240401](vhd-notes/AKSWindows/2022/20348.2340.240401.txt)
- * Azure Linux image has been updated to [Azure Linux 202404.01.0](vhd-notes/AzureLinux/202404.01.0.txt)
- * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202404.01.0.txt)
- * Upgraded Azure Monitor Container Insights image to [v3.1.19](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.19)
- * Upgraded Kaito images to [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
+  * Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4) on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1) on AKS 1.29
+  * Upgraded Azure Blob CSI driver to [v1.23.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.4) on AKS 1.28 and 1.29
+  * Upgraded Azure Monitor Metrics April release to [v.6.8.7](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-08-2024)
+  * Istio revision asm-1-21 is now available with Istio-based service mesh add-on. More information on performing canary upgrade for the new minor revision of Istio can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade)
+  * Upgraded Windows containerd v1.7 to v1.7.14 in k8s v1.28+
+  * Windows Server 2019 Image has been updated to [Windows Server 2019-17763.5696.240410](vhd-notes/AKSWindows/2019/17763.5696.240410.txt)  and  [Windows Server 2019-17763.5576.240401](vhd-notes/AKSWindows/2019/17763.5576.240401.txt)
+  * Windows Server 2022 has been updated to [Windows Server 20348.2340.240410](vhd-notes/AKSWindows/2022/20348.2402.240410.txt) and [Windows Server 2022-20348.2340.240401](vhd-notes/AKSWindows/2022/20348.2340.240401.txt)
+  * Azure Linux image has been updated to [Azure Linux 202404.01.0](vhd-notes/AzureLinux/202404.01.0.txt)
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.01.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202404.01.0.txt)
+  * Upgraded Azure Monitor Container Insights image to [v3.1.19](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.19)
+  * Upgraded Kaito images to [v0.2.2](https://github.com/Azure/kaito/releases/tag/v0.2.2)
 
 ## Release 2024-03-31
 
