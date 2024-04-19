@@ -11,7 +11,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
 * On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
 * Kubernetes version 1.32 is the next [Long Term Support Version](https://learn.microsoft.com/azure/aks/long-term-support) after 1.27. Customers will get a minimum 6 months of overlap between 1.27 LTS and 1.32 LTS versions to plan upgrades.
-* Kubernetes version 1.26 is now deprecated. Refer to  for [platform support](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) timeline.
+* Kubernetes version 1.26 is now removed. Refer to  for [platform support](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) timeline.
 * In 2020 Docker enacted a Rate Limiting policy for all users. In-order to assist customers with the change, Microsoft worked directly with Docker to prevent users of Microsoft Azure from being impacted. However, beginning on June 30th, 2024, Azure customers will begin to be impacted by this limit. In-order for customers to mitigate the potential effects of this limit. We recommend customers begin to use the Artifact Cache feature within Azure Container Registry or sign up for a Docker Subscription.  More information is available [here](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/best-practices-for-using-azure-container-registry-and-docker-hub/ba-p/4068979)
 
 
@@ -32,7 +32,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
 
 * Bug Fixes:
- * Fixes a bug where put nodepool without a specified version in LTS clusters would have an internal error.
+ * Fixes a bug where a PUT operation(Update) on nodepool without a specified version in LTS clusters would have an internal error.
  * Error message improved to specify that it is only allowed to update public SSH key in preview API versions.
  * Clusters running Kubernetes 1.29 or later will have `kubernetes.azure.com/managedby=aks`  label to tigera-operator deployment in Calico clusters 
 
