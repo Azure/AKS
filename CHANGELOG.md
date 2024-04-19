@@ -42,7 +42,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Clusters running Kubernetes 1.29 or later will have `kubernetes.azure.com/managedby=aks`  label to tigera-operator deployment in Calico clusters 
 
 * Component Updates: 
- * Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4)  on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1)  on AKS 1.29
+ * Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4) on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1) on AKS 1.29
  * Upgraded Azure Blob CSI driver to [v1.23.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.4)  on AKS 1.28 and 1.29
  * Upgraded extension manager to [v1.15.3](https://github.com/azure-core/ClusterConfigurationAgent/releases/tag/v1.15.3)
  * Upgraded Azure Monitor Metrics April release to [v.6.8.7](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-08-2024)
