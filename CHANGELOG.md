@@ -39,7 +39,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes:
  * Fixes a bug where put agentpool without a specified version in LTS clusters would have an internal error.
  * Error message improved to specify that it is only allowed to update public SSH key in preview API versions.
-* Clusters running Kubernetes 1.29 or later will have `kubernetes.azure.com/managedby=aks`  label to tigera-operator deployment in Calico clusters 
+  * Clusters running Kubernetes 1.29 or later will have `kubernetes.azure.com/managedby=aks`  label to tigera-operator deployment in Calico clusters 
 
 * Component Updates: 
  * Upgraded Azure file CSI driver to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4)  on AKS 1.28, [v1.30.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.1)  on AKS 1.29
