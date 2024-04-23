@@ -6,7 +6,6 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-* AKS will be fixing a behavior where manually added Labels, Taints and Annotations are incorrectly copied to surged upgrade nodes. To ensure any Label or Taint is present in new nodes please use the [Labels and/or Taints](https://learn.microsoft.com/azure/aks/use-labels) functionality provided by AKS. 
 * Support upgrade version skew policy between core node and control plane components from n-2 to n-3 to match [related upstream policy change starting Kubernetes version 1.28](https://kubernetes.io/blog/2023/08/15/kubernetes-v1-28-release/). AKS docs available [here](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#what-is-the-allowed-difference-in-versions-between-control-plane-and-node-pool).
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
 * On 15 March 2027, Windows Server 2022 will be retired when Kubernetes 1.34 reaches the end of platform support. You won't be able to create new Windows Server 2022 node pools on Kubernetes 1.35 and above. We encourage you to make the switch before 15 March 2027 to gain the richer benefits of [Windows Server 2025](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/introducing-windows-server-2025/ba-p/4026374) or Windows Server [Annual Channel](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248). These new Windows OS versions will be supported on AKS before Windows Server 2022 is retired. For more updates, see our [AKS public roadmap](https://github.com/Azure/AKS/projects/1).
@@ -25,6 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 [2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches  CVE-2024-24786 in the addon.
   * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
   * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
+  * AKS will be fixing a behavior where manually added Labels, Taints and Annotations are incorrectly copied to surged upgrade nodes. To ensure any Label or Taint is present in new nodes please use the [Labels and/or Taints](https://learn.microsoft.com/azure/aks/use-labels) functionality provided by AKS. 
 
 * Bug Fixes:
   * Fixes a bug where a PUT operation(Update) on nodepool without a specified version in LTS clusters would have an internal error.
