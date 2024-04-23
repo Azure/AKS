@@ -67,6 +67,9 @@ this repository must:
 
 ## Hiring
 ### PM
+#### Australia/New Zealand
+* [Senior Technical Program Manager - Kubernetes Networking](https://jobs.careers.microsoft.com/global/en/share/1691905/)
+* [Technical Program Manager - Kubernetes Networking](https://jobs.careers.microsoft.com/global/en/share/1691890/)
 
 ### Engineering
 #### US
