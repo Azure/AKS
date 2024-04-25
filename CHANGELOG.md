@@ -22,7 +22,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral Changes:
   * This introduces the constraint template validation behavior change called out in November's release notes
 [2023-11-28](https://github.com/Azure/AKS/releases/tag/2023-11-28) . It also improves cleanup of the addon, as called out in  Issue [#3541](https://github.com/Azure/AKS/issues/3541) , and patches  CVE-2024-24786 in the addon.
-  * Adds [App routing](https://learn.microsoft.com/azure/aks/app-routing?tabs=default%2Cdeploy-app-default) to excluded namespaces for policy when the addon is enabled
   * Added resource  `nodes/proxy` to  `microsoft-defender-operator` role
   * AKS will be fixing a behavior where manually added Labels, Taints and Annotations are incorrectly copied to surged upgrade nodes. To ensure any Label or Taint is present in new nodes please use the [Labels and/or Taints](https://learn.microsoft.com/azure/aks/use-labels) functionality provided by AKS. 
 
