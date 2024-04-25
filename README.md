@@ -75,6 +75,10 @@ this repository must:
 #### US
 
 #### Australia/New Zealand
+* [Principal Software Engineer Manager](https://jobs.careers.microsoft.com/global/en/job/1711880/Principal-Software-Engineer-Manager)
+* [Principal Software Engineer](https://jobs.careers.microsoft.com/global/en/job/1712342/Principal-Software-Engineer)
+* [Senior Software Engineer](https://jobs.careers.microsoft.com/global/en/job/1711660/Senior-Software-Engineer)
+* [Software Engineer II](https://jobs.careers.microsoft.com/global/en/job/1711291/Software-Engineer-II)
 
 #### Ireland
 * [Principal Software Engineer](https://jobs.careers.microsoft.com/global/en/share/1685977)
