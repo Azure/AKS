@@ -56,6 +56,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Features:
   * [AKS Cost Analysis](https://learn.microsoft.com/azure/aks/cost-analysis) is now generally available. View the aggregated costs for all your AKS clusters and namespaces in a subscription and drill into infrastructure and namespaces costs of a cluster directly in Azure Portal.
   * [Trusted Access on AKS cluster](https://learn.microsoft.com/azure/aks/trusted-access-feature) is generally available now.
+  * [Host Network NSG Control](https://learn.microsoft.com/azure/aks/use-node-public-ips#allow-host-port-connections-and-add-node-pools-to-application-security-groups) is now generally available.
+  * [IP Based Load Balancer](https://learn.microsoft.com/azure/aks/load-balancer-standard#change-the-inbound-pool-type) is now generally available.
+  * [Public IP Tags](https://learn.microsoft.com/azure/aks/use-node-public-ips#use-public-ip-tags-on-node-public-ips) is now generally available.
 
 * Preview Features:
   * [Disable SSH](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) is in preview now. Users can disable/enable the SSH access on nodepool level. 
