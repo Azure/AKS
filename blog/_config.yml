@@ -29,9 +29,17 @@ logo: "/assets/images/400x400.png"
 permalink: /:year/:month/:day/:title
 search: true 
 
+# Google Analytics
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "G-0KL1BCPPEE"
+    anonymize_ip: false # default
+
 # Site theme and skin
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 minimal_mistakes_skin: neon
+og_image: /assets/images/400x400.png
 
 # Build settings
 include: ["_pages"]
