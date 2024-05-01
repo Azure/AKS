@@ -42,7 +42,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Upgraded Azure File CSI driver to [v1.29.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.7) on AKS 1.27 and to [v1.29.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.4) on AKS 1.28 on Windows nodes.
   * Upgraded Azure Blob CSI driver to [v1.24.1](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.1) on AKS 1.28 and to [v1.22.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.6) on AKS 1.27.
   * Upgraded Azure workload identity to [v1.2.2](https://github.com/Azure/azure-workload-identity/releases/tag/v1.2.2).
-  * Upgraded Azure Monitor Container Insights image to [v3.1.20]https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#04222024--)
+  * Upgraded Azure Monitor Container Insights image to [v3.1.20](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#04222024--)
 
 ## Release 2024-04-11
 
