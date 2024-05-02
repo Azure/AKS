@@ -12,12 +12,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Kubernetes version 1.32 is the next [Long Term Support Version](https://learn.microsoft.com/azure/aks/long-term-support) after 1.27. Customers will get a minimum 6 months of overlap between 1.27 LTS and 1.32 LTS versions to plan upgrades.
 * Kubernetes version 1.26 is now removed. Refer to  for [platform support](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) timeline.
 * In 2020 Docker enacted a Rate Limiting policy for all users. In-order to assist customers with the change, Microsoft worked directly with Docker to prevent users of Microsoft Azure from being impacted. However, beginning on June 30th, 2024, Azure customers will begin to be impacted by this limit. In-order for customers to mitigate the potential effects of this limit. We recommend customers begin to use the Artifact Cache feature within Azure Container Registry or sign up for a Docker Subscription.  More information is available [here](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/best-practices-for-using-azure-container-registry-and-docker-hub/ba-p/4068979)
+* If you use any programming/scripting logic to list and select minor version of Kubernetes before creating clusters with the `ListKubernetesVersions` API, note that starting from Kubernetes v1.27, the API returns `SupportPlan` as `[KubernetesOfficial, AKSLongTermSupport]`. Please ensure you update any logic to exclude `AKSLongTermSupport` versions to avoid any breaks and choose `KubernetesOfficial` support plan versions.  Otherwise, if LTS is indeed your path forward please first opt-into the Premium tier and the `AKSLongTermSupport` support plan versions from the `ListKubernetesVersions` API before creating clusters.  Refer [long term supprt](https://learn.microsoft.com//azure/aks/long-term-support) for more information.
 * AKS patch version 1.29.4 is now available.
 
 ### Release Notes
 
 * Features:
-  * With this release, Azure Linux 2.0 is a supported OS for AKS Long Term Support (LTS) with v1.27. Learn more about [Azure Linux and LTS](https://aka.ms/aks-azurelinux-lts). 
+  * With this release, Azure Linux 2.0 is a supported OS for AKS Long Term Support (LTS) with v1.27. Learn more about [Azure Linux and LTS](https://aka.ms/aks-azurelinux-lts).
+  * You can now get insight into the progress of any ongoing operation, such as create, upgrade, and scale, using any preview API version after `2024-01-02-preview` using the Get/List operations call. Refer to [Long running operations on an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/azure/aks/manage-abort-operations?tabs=azure-cli) for more information.
     
 * Behavioral Changes:
   * Manually added Labels, Taints, and Annotations on nodes will no longer be copied to nodes during surged upgrade. To ensure any Label or Taint is present in new nodes please use the [Labels and/or Taints](https://learn.microsoft.com/azure/aks/use-labels) functionality provided by AKS. 
