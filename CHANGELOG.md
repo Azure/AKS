@@ -45,6 +45,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Upgraded Azure Blob CSI driver to [v1.24.1](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.1) on AKS 1.28 and to [v1.22.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.6) on AKS 1.27.
   * Upgraded Azure workload identity to [v1.2.2](https://github.com/Azure/azure-workload-identity/releases/tag/v1.2.2).
   * Upgraded Azure Monitor Container Insights image to [v3.1.20](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#04222024--)
+  * Windows Server 2019 has been updated to [Windows Server 17763.5696.240423](vhd-notes/AKSWindows/2022/17763.5696.240423.txt).
+  * Windows Server 2022 has been updated to [Windows Server 20348.2402.240423](vhd-notes/AKSWindows/2022/20348.2402.240423.txt).
+  * Azure Linux image has been updated to [Azure Linux 202404.16.0](vhd-notes/AzureLinux/202404.16.0.txt)
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202404.16.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202404.16.0.txt)
 
 ## Release 2024-04-11
 
