@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed a bug in clusters that use [Node Autoprovisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) for stateful workloads deployments that use availability zones.
   * Fixed a bug in clusters that use [Node Autoprovisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) and managed identity to authenticate Azure Container Registry.
   * Fixed an issue for clusters older than v1.20.X where Cluster Autoscaler cannot be started or reconciled.
-  * Fixed an issue where the `agentPoolProfiles` property was getting wiped on Azure CNI Overlay clusters using pod identity.
+  * Fixed an issue where clusters using Pod Identity would fail to migrate to Azure CNI.
   * Fixed a bug where in some cases the `azureMonitorProfile` would be overwritten.
   * The Istio-based service mesh add-on components can now tolerate running on the system node pools with the `CriticalAddonsOnly` taint.
 
