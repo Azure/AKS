@@ -31,7 +31,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed a bug in clusters that use [Node Autoprovisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) and managed identity to authenticate Azure Container Registry.
   * Fixed an issue for clusters older than v1.20.X where Cluster Autoscaler cannot be started or reconciled.
   * Fixed an issue where clusters using Pod Identity would fail to migrate to Azure CNI.
-  * The Istio-based service mesh add-on components can now tolerate running on the system node pools with the `CriticalAddonsOnly` taint.
+  * The Istio-based service mesh add-on components can now tolerate running on the [system node pools](https://learn.microsoft.com/azure/aks/use-system-pools?tabs=azure-cli#system-and-user-node-pools) with the `CriticalAddonsOnly` taint.
 
 * Component Updates: 
   * Upgraded Kubernetes Secrets Store CSI Driver to [v1.4.3](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.3) and Azure Key Vault Provider for Secrets Store CSI Driver to [v1.5.2](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.5.2)  
