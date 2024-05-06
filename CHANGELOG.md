@@ -17,6 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Features:
   * With this release, Azure Linux 2.0 becomes a supported OS for AKS Long Term Support (LTS) with v1.27. Learn more about [Azure Linux and LTS](https://aka.ms/aks-azurelinux-lts).
   * You can now get insight into the progress of any ongoing operation, such as create, upgrade, and scale, using any preview API version after `2024-01-02-preview` using the Get/List operations call. Refer to [Long running operations on an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/azure/aks/manage-abort-operations?tabs=azure-cli) for more information.
+  * Native sidecar support for Istio-based service mesh add-on is now available in preview.
     
 * Behavioral Changes:
   * Manually added Labels, Taints, and Annotations on nodes will no longer be copied to nodes during surged upgrade. To ensure any Label or Taint is present in new nodes please use the [Labels and/or Taints](https://learn.microsoft.com/azure/aks/use-labels) functionality provided by AKS. 
