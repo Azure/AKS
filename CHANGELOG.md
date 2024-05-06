@@ -21,6 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral Changes:
   * Manually added Labels, Taints, and Annotations on nodes will no longer be copied to nodes during surged upgrade. To ensure any Label or Taint is present in new nodes please use the [Labels and/or Taints](https://learn.microsoft.com/azure/aks/use-labels) functionality provided by AKS. 
   * The Istio-based service mesh add-on now skips validation of its compatibility with cluster version unless mesh upgrade or cluster upgrade is attempted.
+  * Effective starting with Kubernetes version 1.29, when you deploy Azure Kubernetes Service (AKS) clusters across multiple availability zones, AKS now utilizes zone-redundant storage (ZRS) to create managed disks within built-in storage classes. ZRS ensures synchronous replication of your Azure managed disk across multiple Azure availability zones in your chosen region. This redundancy strategy enhances the resilience of your applications and safeguards your data against datacenter failures. Refer to [Storage concept](https://learn.microsoft.com/en-us/azure/aks/concepts-storage#storage-classes) for more information.
   
 * Bug Fixes:
   * Fixed a bug that incorrectly calculated number of free IPs in a subnet when upgrading an agent pool using Azure CNI with Dynamic IP allocation.
