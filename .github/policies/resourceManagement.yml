@@ -570,7 +570,7 @@ configuration:
             assignMentionees: False
       - if:
         - hasLabel:
-            label: mesh
+            label: service-mesh
         then:
         - mentionUsers:
             mentionees:
