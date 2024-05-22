@@ -16,7 +16,7 @@ Brian Redmond:
 Jorge Palma:
   name        : "Jorge Palma"
   bio         : "Jorge is the Principal PM Lead for the Azure Kubernetes Service."
-  avatar      : "https://pbs.twimg.com/profile_images/1301683263757455360/W9VCi9oA_400x400.jpg" # Replace this with your avatar image
+  avatar      : "https://pbs.twimg.com/profile_images/1793008492804227072/rAuLXlqY_400x400.jpg" # Replace this with your avatar image
   links:
     - label: "X"
       icon: "fab fa-fw fa-twitter"
@@ -24,6 +24,9 @@ Jorge Palma:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/jpalma21"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/palma21"
 
 Kaarthikeyan Subramanian:
   name        : "Kaarthikeyan Subramanian"
