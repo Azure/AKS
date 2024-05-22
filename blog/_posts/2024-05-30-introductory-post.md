@@ -6,6 +6,7 @@ author: Coco Wang
 categories: security # general, operations, networking, security, developer topics, add-ons
 ---
 Workloads deployed on an Azure Kubernetes Service (AKS) cluster often need to access Azure backing resources, such as Azure Key Vault, databases, or AI services like Azure OpenAI Service. Users are required to manually configure [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview) or Managed Identities so their AKS workloads can securely access these protected resources.
+
 The [Service Connector](https://learn.microsoft.com/en-us/azure/service-connector/overview) integration greatly simplifies the connection configuration experience for AKS workloads and Azure backing services. Service Connector takes care of authentication and network configurations securely and follows Azure best practices, so you can focus on your application code without worrying about your infrastructure connectivity.
  
 ![image](https://github.com/CocoWang-wql/AKS/assets/45681473/8c146088-0bd9-4095-a0c2-c802a135b4c2)
@@ -22,8 +23,11 @@ Before, in order to [connect from AKS pods to a private Azure backing services](
 Now, Service Connector performs steps 2 to 5 automatically. Additionally, for Azure services without public access, Service Connector creates private connection components such as private link, private endpoint, DNS record, etc.   
 You can create a connection in the Service Connection blade within AKS.
 ![image](https://github.com/CocoWang-wql/AKS/assets/45681473/8cb37a39-9e1b-4423-9ffa-9a928fd7d486)
+Click create and select the target service, authentication method, and networking rule. The connection will then be automatically set up. 
 
-Click create and select the target service, authentication method, and networking rule. The connection will then be automatically set up. Here are a few helpful links to for you to learn more about Service Connector.
+In addition to Azure portal, Service Connector also supports [Azure CLI](https://learn.microsoft.com/en-us/azure/service-connector/quickstart-cli-aks-connection?tabs=Using-access-key).
+
+Service Connector on AKS cluster is currently in preview. Here are a few helpful links to for you to learn more about Service Connector.
 -	[Create a service connection in an AKS cluster from the Azure portal](https://learn.microsoft.com/en-us/azure/service-connector/quickstart-portal-aks-connection?tabs=UMI)
 -	[Tutorial: Connect to Azure OpenAI Service in AKS using a connection string (preview)](https://aka.ms/service-connector-aks-openai-connection-string)
 -	[Tutorial: Connect to Azure OpenAI Service in AKS using Workload Identity (preview)](https://aka.ms/service-connector-aks-openai-workload-identity)
