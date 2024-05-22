@@ -4,6 +4,7 @@ description: "An exploration of the past, present, future for Azure Kubernetes S
 date: 2024-05-21
 author: Jorge Palma
 categories: general
+classes: wide
 ---
 
 ## Introduction
