@@ -47,3 +47,15 @@ Paul Yu:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/pauldotyu"
+
+Coco Wang:
+  name        : "Coco Wang"
+  bio         : "Coco is an AKS Product Manager and mainly works on AKS security capability, AI-based security remediation plan."
+  avatar      : "https://pbs.twimg.com/profile_images/1791779839114092544/Lj9jvCTG_400x400.jpg" # Replace this with your avatar image
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:coco.wang@microsoft.com"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/coco-wang-2399041b6/"
