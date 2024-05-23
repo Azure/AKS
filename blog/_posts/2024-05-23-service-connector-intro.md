@@ -1,7 +1,7 @@
 ---
 title: "Service Connector Introduction"
 description: "Simplify Your Azure Kubernetes Service Connection Configuration with Service Connector"
-date: 2024-05-30
+date: 2024-05-23
 author: Coco Wang
 categories: security # general, operations, networking, security, developer topics, add-ons
 ---
