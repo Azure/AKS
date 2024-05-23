@@ -12,7 +12,7 @@ The [Service Connector](https://learn.microsoft.com/en-us/azure/service-connecto
 ![image](https://github.com/CocoWang-wql/AKS/assets/45681473/8c146088-0bd9-4095-a0c2-c802a135b4c2)
 Service Connector Action Breakdown     
 
-Before, in order to [connect from AKS pods to a private Azure backing services](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) using workload identity, users needed to perform the following actions manually:
+Before Service Connector, in order to [connect from AKS pods to a private Azure backing services](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) using workload identity, users needed to perform the following actions manually:
 1.	Create a managed identity
 2.	Retrieve the OIDC issuer URL
 3.	Create Kubernetes service account
