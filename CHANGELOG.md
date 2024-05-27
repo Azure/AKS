@@ -32,7 +32,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    
 * Bug Fixes:
   * Metrics server v0.6.3 will be used to prevent frequent OOMKills on Metric server.
-  * Allowing nodeclaim zones to enable to NodeClaims and nodes creation on [Node Auto Provisioning](https://learn.microsoft.com/en-us/azure/aks/node-autoprovision)  for workloads with zone affinity constraints.
+  * Allowing zonal NodeClaims to facilitate NodeClaims and node creation on [Node Auto Provisioning](https://learn.microsoft.com/en-us/azure/aks/node-autoprovision) for workloads with zone affinity constraints.
   * SSHAccess of nodepool will not be reset from Disabled to LocalUser by partial put. Put operation will be blocked with 400 error code.
   * Fixed bug where the eTag property in 2024-02-02preview, 2024-03-02-preview, and 2024-04-02-preview APIs was returned with the wrong case (returned etag, should have been eTag).
   * Patch version 1.28.9 fixes [Bug - OpenAPI handler fails on duplicated path](https://github.com/kubernetes/kubernetes/issues/122668). 
@@ -41,7 +41,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Istio-based service mesh add-on revision asm-1-19 has been upgraded to patch v1.19.10, asm-1-20 has been upgraded to patch v.1.20.6, and asm-1-21 has been upgraded to patch v1.21.2. Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade).
   * Linux addon-token-adapter image is updated to v240510.2.
   * Preview API 2021-11-01 preview will be removed.
-  * Managed Prometheus image version updated to [images:6.8.12-main-05-21-2024*](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md).
+  * Managed Prometheus image version updated to [images:6.8.12-main-05-21-2024](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md).
   * Update Policy addon to v1.4.
   * Update cloud node manager to v1.30.0 on AKS 1.30+, v1.29.4 on AKS 1.29+, v1.28.9 on AKS 1.28+, v1.27.17 on AKS 1.27+.
   * Update [aks app routing operator image](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023---2024-04-22) to v0.2.3.
