@@ -14,14 +14,15 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
   * Generally Available - AKS supports [disabling Windows OutboundNAT](https://learn.microsoft.com/en-us/azure/aks/nat-gateway#disable-outboundnat-for-windows).
-  * Public Preview - [Native sidecars](https://learn.microsoft.com/en-us/azure/aks/istio-native-sidecar) under Istio-based service mesh addon in AKS.
-  * Public Preview - [AKS Automatic](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic).
   * Generally Available - [Automated Deployments](https://learn.microsoft.com/en-us/azure/aks/automated-deployments).
   * Generally Available - [Security patch channel](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli) for VHD updates.
-  * Public Preview Deployment Safeguards now supports mutations in Enforcement mode. 
-  * Allow disabling NPM for existing clusters with "networkPolicy=none" for stable api version 2024-05-01.
-
+  * Public Preview - Deployment Safeguards now supports [mutations in Enforcement mode](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards). 
+  * Public Preview - [Native sidecars](https://learn.microsoft.com/en-us/azure/aks/istio-native-sidecar) under Istio-based service mesh addon in AKS.
+  * Public Preview - [AKS Automatic](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic).
+  * Public Preview - [Node Initialization Taints](https://learn.microsoft.com/en-us/azure/aks/use-node-taints#use-node-initialization-taints-preview)
+ 
 * Behavioral Changes:
+  * Allow disabling NPM for existing clusters with "networkPolicy=none" for stable api version 2024-05-01. 
   * Minimum supported k8s version for advancedNetworking is 1.21.0 and minimum supported k8s version for cilium clusters with advancedNetworking is 1.29.0.
   * Disk Detach must complete before [node image auto upgrade](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-os-image) starts.
   * Default network policy is "networkPolicy=none" when network policy is not set on new clusters starting from API version 2024-05-01.
