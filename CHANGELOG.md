@@ -13,38 +13,37 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
   * Generally Available - AKS supports [disabling Windows OutboundNAT](https://learn.microsoft.com/en-us/azure/aks/nat-gateway#disable-outboundnat-for-windows).
-  * Generally Available - [Automated Deployments](https://learn.microsoft.com/en-us/azure/aks/automated-deployments).
-  * Generally Available - [Security patch channel](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli) for VHD updates.
-  * Public Preview - Deployment Safeguards now supports [mutations in Enforcement mode](https://learn.microsoft.com/en-us/azure/aks/deployment-safeguards). 
-  * Public Preview - [Native sidecars](https://learn.microsoft.com/en-us/azure/aks/istio-native-sidecar) under Istio-based service mesh addon in AKS.
-  * Public Preview - [AKS Automatic](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic).
-  * Public Preview - [Node Initialization Taints](https://learn.microsoft.com/en-us/azure/aks/use-node-taints#use-node-initialization-taints-preview)
+  * Generally Available - [Automated Deployments](https://learn.microsoft.com/azure/aks/automated-deployments).
+  * Generally Available - [Security patch channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli) for VHD updates.
+  * Public Preview - Deployment Safeguards now supports [mutations in Enforcement mode](https://learn.microsoft.com/azure/aks/deployment-safeguards). 
+  * Public Preview - [Native sidecars](https://learn.microsoft.com/azure/aks/istio-native-sidecar) under Istio-based service mesh addon in AKS.
+  * Public Preview - [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic).
+  * Public Preview - [Node Initialization Taints](https://learn.microsoft.com/azure/aks/use-node-taints#use-node-initialization-taints-preview)
  
 * Behavioral Changes:
   * Allow disabling NPM for existing clusters with "networkPolicy=none" for stable api version 2024-05-01. 
   * Minimum supported k8s version for advancedNetworking is 1.21.0 and minimum supported k8s version for cilium clusters with advancedNetworking is 1.29.0.
-  * [Node upgrade (reimage)](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-node-os-image) will wait for disk detach to complete (to prevent very slow disk detach).
+  * [Node upgrade (reimage)](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) will wait for disk detach to complete (to prevent very slow disk detach).
   * Default network policy is "networkPolicy=none" when network policy is not set on new clusters starting from API version 2024-05-01.
   * Block GetOsOptions operation in 2024-05-01/2024-05-02-preview API or later - [Github Issue 4261](https://github.com/Azure/AKS/issues/4261).
-  * [Advanced Container Netwrking Services](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview) can only be enabled on cilium clusters with k8s v1.29.0 onwards.
-  * Customized apiserver subnet must be empty when migrating a cluster to enable [apiserver-vnet-integration](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration). If the subnet has resources in it, the migration won't be allowed.
+  * [Advanced Container Netwrking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) can only be enabled on cilium clusters with k8s v1.29.0 onwards.
+  * Customized apiserver subnet must be empty when migrating a cluster to enable [apiserver-vnet-integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration). If the subnet has resources in it, the migration won't be allowed.
    
 * Bug Fixes:
   * Metrics server v0.6.3 will be used to prevent frequent OOMKills on Metric server.
-  * Allowing zonal NodeClaims to facilitate NodeClaims and node creation on [Node Auto Provisioning](https://learn.microsoft.com/en-us/azure/aks/node-autoprovision) for workloads with zone affinity constraints.
+  * Allowing zonal NodeClaims to facilitate NodeClaims and node creation on [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) for workloads with zone affinity constraints.
   * SSHAccess of nodepool will not be reset from Disabled to LocalUser by partial put. Put operation will be blocked with 400 error code.
   * Fixed bug where the eTag property in 2024-02-02preview, 2024-03-02-preview, and 2024-04-02-preview APIs was returned with the wrong case (returned etag, should have been eTag).
   * Patch version 1.28.9 fixes [Bug - OpenAPI handler fails on duplicated path](https://github.com/kubernetes/kubernetes/issues/122668). 
 
 * Component Updates: 
-  * Istio-based service mesh add-on revision asm-1-19 has been upgraded to patch v1.19.10, asm-1-20 has been upgraded to patch v.1.20.6, and asm-1-21 has been upgraded to patch v1.21.2. Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade).
-  * Linux and Windows  addon-token-adapter image is updated to mcr.microsoft.com/aks/msi/addon-token-adapter:master.240510.2
-  * Preview API 2021-11-01 preview will be removed.
+  * Istio-based service mesh add-on revision asm-1-19 has been upgraded to patch v1.19.10, asm-1-20 has been upgraded to patch v.1.20.6, and asm-1-21 has been upgraded to patch v1.21.2. Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
+  * Linux and Windows addon-token-adapter image for Azure monitoring metrics is updated to mcr.microsoft.com/aks/msi/addon-token-adapter:master.240510.2. The updated image patches [CVE-2023-4911](https://www.cve.org/CVERecord?id=CVE-2023-4911)  
   * Managed Prometheus image version updated to [images:6.8.12-main-05-21-2024](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md).
-  * Update Policy addon to v1.4.
-  * Update cloud node manager to v1.30.0 on AKS 1.30+, v1.29.4 on AKS 1.29+, v1.28.9 on AKS 1.28+, v1.27.17 on AKS 1.27+.
+  * Update [Policy addon to v1.4](https://learn.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#add-on-versions-available-per-each-aks-cluster-version) for all clusters on kubernetes version >= v1.25.
+  * Update cloud node manager to v1.30.0 on AKS 1.30+, v1.29.4 on AKS 1.29+, v1.28.9 on AKS 1.28+, v1.27.17 on AKS 1.27+. Refer [AKS version matrix for cloud node manager](https://github.com/kubernetes-sigs/cloud-provider-azure#aks-version-matrix)
   * Update [aks app routing operator image](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023---2024-04-22) to v0.2.3.
-  * Upgrade Azure File CSI driver to v1.28.10  on AKS 1.27, v1.29.5  on AKS 1.28, v1.30.2  on AKS 1.29.
+  * Upgrade Azure File CSI driver to v1.28.10  on AKS 1.27, v1.29.5  on AKS 1.28, v1.30.2  on AKS 1.29. Refer -[Azure File CSI driver](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases)
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202405.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202405.20.0.txt).
   * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202405.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202405.20.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202405.20.0](vhd-notes/AzureLinux/202405.20.0.txt).
