@@ -39,7 +39,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Component Updates: 
   * Istio-based service mesh add-on revision asm-1-19 has been upgraded to patch v1.19.10, asm-1-20 has been upgraded to patch v.1.20.6, and asm-1-21 has been upgraded to patch v1.21.2. Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade).
-  * Linux addon-token-adapter image is updated to v240510.2.
+  * Linux and Windows  addon-token-adapter image is updated to mcr.microsoft.com/aks/msi/addon-token-adapter:master.240510.2
   * Preview API 2021-11-01 preview will be removed.
   * Managed Prometheus image version updated to [images:6.8.12-main-05-21-2024](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md).
   * Update Policy addon to v1.4.
