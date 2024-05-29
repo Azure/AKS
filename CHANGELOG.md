@@ -17,18 +17,22 @@ For details on what AKS supported operating systems support Federal Information 
   * Generally Available - AKS supports [disabling Windows OutboundNAT](https://learn.microsoft.com/azure/aks/nat-gateway#disable-outboundnat-for-windows).
   * Generally Available - [Automated Deployments](https://learn.microsoft.com/azure/aks/automated-deployments).
   * Generally Available - [Security patch channel](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli) for VHD updates.
+  * Generally Available - [Azure Kubernetes Fleet Manager workload orchestration](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/quickstart-resource-propagation)
+  * AKS Patch version 1.28.9 is now available. It fixes [Bug - OpenAPI handler fails on duplicated path](https://github.com/kubernetes/kubernetes/issues/122668). 
 
 * Preview Features  
   * Deployment Safeguards now supports [mutations in Enforcement mode](https://learn.microsoft.com/azure/aks/deployment-safeguards). 
-  * [Native sidecars](https://learn.microsoft.com/azure/aks/istio-native-sidecar) under Istio-based service mesh addon in AKS.
+  * Enable [Native sidecars](https://learn.microsoft.com/azure/aks/istio-native-sidecar) mode for Istio-based service mesh addon in AKS.
   * [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic). Visit the [AKS engineering blog](https://aka.ms/aks/hello-automatic) post.
   * [Node Initialization Taints](https://learn.microsoft.com/azure/aks/use-node-taints#use-node-initialization-taints-preview).
+  * [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) can be enabled on Cilium-enabled clusters with Kubernetes v1.29.0 or greater, and on Retina-enabled clusters with Kubernetes v1.21.0 or greater for Advanced Network Observability.
+  * Allow [disabling NPM](https://learn.microsoft.com/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview) for existing clusters with "networkPolicy=none" for stable api version 2024-05-01. 
+  * [Property-based scheduling](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/intelligent-resource-placement) in Azure Kubernetes Fleet Manager.
+  * [Cluster resource overrides](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/cluster-resource-override) in Azure Kubernetes Fleet Manager.
  
 * Behavioral Changes:
-  * Allow [disabling NPM](https://learn.microsoft.com/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview) for existing clusters with "networkPolicy=none" for stable api version 2024-05-01. 
   * [Node upgrade (reimage)](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) will wait for disk detach to complete (to prevent very slow disk detach).
   * Default [network policy](https://learn.microsoft.com/azure/aks/use-network-policies) is "networkPolicy=none" when network policy is not set on new clusters starting from API version 2024-05-01. This means that Network Policy Manager (NPM) is disabled. 
-  * [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) can be enabled on Cilium-enabled clusters with Kubernetes v1.29.0 or greater, and on Retina-enabled clusters with Kubernetes v1.21.0 or greater for Advanced Network Observability.
   * Customized apiserver subnet must be empty when migrating a cluster to enable [apiserver-vnet-integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration). If the subnet has resources in it, the migration won't be allowed.
    
 * Bug Fixes:
@@ -36,7 +40,7 @@ For details on what AKS supported operating systems support Federal Information 
   * [Allowing zonal NodeClaims to facilitate NodeClaims and node creation](https://github.com/Azure/karpenter-provider-azure/issues/339) on [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) for workloads with zone affinity constraints. 
   * Fixed a bug where the [SSHAccess property of a node pool](https://learn.microsoft.com/azure/aks/manage-ssh-node-access) would be reset to LocalUser(SSHAccess:LocalUser) on a partial put. Henceforth, SSHAccess property will retain the current value (SSHAccess:current value).
   * Fixed bug where the eTag property in 2024-02-02 preview, 2024-03-02 preview, and 2024-04-02 preview APIs was returned with the wrong case (returned etag, should have been eTag).
-  * Patch version 1.28.9 fixes [Bug - OpenAPI handler fails on duplicated path](https://github.com/kubernetes/kubernetes/issues/122668). 
+
 
 * Component Updates: 
   * Istio-based service mesh add-on revision asm-1-19 has been upgraded to patch v1.19.10, asm-1-20 has been upgraded to patch v.1.20.6, and asm-1-21 has been upgraded to patch v1.21.2. Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
@@ -47,7 +51,6 @@ For details on what AKS supported operating systems support Federal Information 
   * Updated AKS App Routing operator image to [v0.2.3](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023---2024-04-22).
   * Updated Azure File CSI driver to [v1.28.10](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.10)  on AKS 1.27, [v1.29.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.5)  on AKS 1.28, [v1.30.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.2) on AKS 1.29.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202405.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202405.20.0.txt).
-  * AKS Ubuntu 18.04 image has been updated to [AKSUbuntu-1804-202405.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-1804/202405.20.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202405.20.0](vhd-notes/AzureLinux/202405.20.0.txt).
   * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.5820.240516](vhd-notes/AKSWindows/2019/17763.5820.240516.txt).
   * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2461.240516](vhd-notes/AKSWindows/2022/20348.2461.240516.txt).
