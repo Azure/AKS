@@ -20,7 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features  
   * Deployment Safeguards now supports [mutations in Enforcement mode](https://learn.microsoft.com/azure/aks/deployment-safeguards). 
   * [Native sidecars](https://learn.microsoft.com/azure/aks/istio-native-sidecar) under Istio-based service mesh addon in AKS.
-  * [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic).
+  * [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic). Visit the [AKS engineering blog](https://aka.ms/aks/hello-automatic) post 
   * [Node Initialization Taints](https://learn.microsoft.com/azure/aks/use-node-taints#use-node-initialization-taints-preview)
  
 * Behavioral Changes:
