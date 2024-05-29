@@ -51,7 +51,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.5820.240516](vhd-notes/AKSWindows/2019/17763.5820.240516.txt).
   * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2461.240516](vhd-notes/AKSWindows/2022/20348.2461.240516.txt).
  
-
 ## Release 2024-04-28
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
