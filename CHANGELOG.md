@@ -20,8 +20,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features  
   * Deployment Safeguards now supports [mutations in Enforcement mode](https://learn.microsoft.com/azure/aks/deployment-safeguards). 
   * [Native sidecars](https://learn.microsoft.com/azure/aks/istio-native-sidecar) under Istio-based service mesh addon in AKS.
-  * [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic). Visit the [AKS engineering blog](https://aka.ms/aks/hello-automatic) post 
-  * [Node Initialization Taints](https://learn.microsoft.com/azure/aks/use-node-taints#use-node-initialization-taints-preview)
+  * [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic). Visit the [AKS engineering blog](https://aka.ms/aks/hello-automatic) post.
+  * [Node Initialization Taints](https://learn.microsoft.com/azure/aks/use-node-taints#use-node-initialization-taints-preview).
  
 * Behavioral Changes:
   * Allow [disabling NPM](https://learn.microsoft.com/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview) for existing clusters with "networkPolicy=none" for stable api version 2024-05-01. 
@@ -33,7 +33,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes:
   * Metrics server v0.6.3 will be used to prevent frequent OOMKills on Metric server.
   * [Allowing zonal NodeClaims to facilitate NodeClaims and node creation](https://github.com/Azure/karpenter-provider-azure/issues/339) on [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) for workloads with zone affinity constraints. 
-  * Fixed a bug where the [SSHAccess property of a node pool](https://learn.microsoft.com/azure/aks/manage-ssh-node-access) would be reset to LocalUser(SSHAccess:LocalUser) on a partial put. Henceforth, SSHAccess property will retain the current value (SSHAccess:current value)
+  * Fixed a bug where the [SSHAccess property of a node pool](https://learn.microsoft.com/azure/aks/manage-ssh-node-access) would be reset to LocalUser(SSHAccess:LocalUser) on a partial put. Henceforth, SSHAccess property will retain the current value (SSHAccess:current value).
   * Fixed bug where the eTag property in 2024-02-02 preview, 2024-03-02 preview, and 2024-04-02 preview APIs was returned with the wrong case (returned etag, should have been eTag).
   * Patch version 1.28.9 fixes [Bug - OpenAPI handler fails on duplicated path](https://github.com/kubernetes/kubernetes/issues/122668). 
 
@@ -42,7 +42,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Linux and Windows addon-token-adapter image for Azure monitoring metrics is updated to mcr.microsoft.com/aks/msi/addon-token-adapter:master.240510.2. The updated image patches [CVE-2023-4911](https://www.cve.org/CVERecord?id=CVE-2023-4911),[CVE-2024-2961](https://www.cve.org/CVERecord?id=CVE-2024-2961), [CVE-2024-33599](https://www.cve.org/CVERecord?id=CVE-2024-33599), [CVE-2024-33600](https://www.cve.org/CVERecord?id=CVE-2024-33600), [CVE-2024-33601](https://www.cve.org/CVERecord?id=CVE-2024-33601), [CVE-2024-33602](https://www.cve.org/CVERecord?id=CVE-2024-33602), [CVE-2023-3446](https://www.cve.org/CVERecord?id=CVE-2023-3446), [CVE-2023-3817](https://www.cve.org/CVERecord?id=CVE-2023-3817), [CVE-2023-3446](https://www.cve.org/CVERecord?id=CVE-2023-3446), [CVE-2023-3817](https://www.cve.org/CVERecord?id=CVE-2023-3817). 
   * Managed Prometheus image version updated to [images:6.8.12-main-05-21-2024](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md).
   * Azure Policy addon has been updated to [v1.4.0](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#140) for all clusters on Kubernetes version >= v1.25.
-  * Updated cloud node manager to [v1.30.0](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.0) on AKS 1.30+, [v1.29.4](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.4) on AKS 1.29+, [v1.28.9](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.9) on AKS 1.28+, [v1.27.17](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.17) on AKS 1.27+. Refer [AKS version matrix for cloud node manager](https://github.com/kubernetes-sigs/cloud-provider-azure#aks-version-matrix)
+  * Updated cloud node manager to [v1.30.0](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.0) on AKS 1.30+, [v1.29.4](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.4) on AKS 1.29+, [v1.28.9](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.9) on AKS 1.28+, [v1.27.17](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.17) on AKS 1.27+. Refer [AKS version matrix for cloud node manager](https://github.com/kubernetes-sigs/cloud-provider-azure#aks-version-matrix).
   * Updated AKS App Routing operator image to [v0.2.3](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023---2024-04-22).
   * Updated Azure File CSI driver to [v1.28.10](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.10)  on AKS 1.27, [v1.29.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.5)  on AKS 1.28, [v1.30.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.2) on AKS 1.29.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202405.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202405.20.0.txt).
