@@ -231,12 +231,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 * Starting in March, due to Gatekeeper Upstream removing validation for constraint template contents at create/update time, [the Azure Policy addon](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#install-azure-policy-add-on-for-aks) will now no longer support the validation for constraint template. The Azure Policy Add-On will report [‘InvalidConstraint/Template’ compliance reason code](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons) for detected errors after constraint template admission. This change does not impact [other compliance reason codes](https://learn.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#aks-resource-provider-mode-compliance-reasons). Customers are encouraged to continue to follow best practices when updating Azure Policy for Kubernetes definitions (i.e. [Gator CLI](https://open-policy-agent.github.io/gatekeeper/website/docs/gator/)).
 * Starting with Kubernetes 1.29, the default cgroups implementation on Azure Linux AKS nodes is cgroupsv2. Older versions of Java, .NET and NodeJS do not support memory querying v2 memory constraints and this will lead to out of memory (OOM) issues for workloads. Please test your applications for cgroupsv2 compliance, and read the [FAQ](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/aks-increased-memory-usage-cgroup-v2) for cgroupsv2.
-* AKS patch versions 1.27.9 and 1.28.5 are now available with 1.27.9 used as the default version for new clusters.
 
 ### Release notes
 
 * Features
   * [Istio-based service mesh addon for AKS](https://learn.microsoft.com/azure/aks/istio-about) is now generally available.
+  * AKS patch versions 1.27.9 and 1.28.5 are now available with 1.27.9 used as the default version for new clusters.
 
 * Preview features
   * [AI toolchain operator (KAITO) add-on](https://aka.ms/aks/ai-toolchain-operator) can be enabled to automate large language model (LLM) deployment on your AKS cluster.
