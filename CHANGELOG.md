@@ -28,7 +28,7 @@ For details on what AKS supported operating systems support Federal Information 
   * [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) can be enabled on Cilium-enabled clusters with Kubernetes v1.29.0 or greater, and on Retina-enabled clusters with Kubernetes v1.21.0 or greater for Advanced Network Observability.
   * Allow [disabling NPM](https://learn.microsoft.com/azure/aks/use-network-policies#uninstall-azure-network-policy-manager-or-calico-preview) for existing clusters with "networkPolicy=none" for stable api version 2024-05-01. 
   * [Property-based scheduling](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/intelligent-resource-placement) in Azure Kubernetes Fleet Manager.
-  * [Cluster resource overrides](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/cluster-resource-override) in Azure Kubernetes Fleet Manager.
+  * [Cluster resource overrides](https://learn.microsoft.com/azure/kubernetes-fleet/cluster-resource-override) in Azure Kubernetes Fleet Manager.
   * [Service Connector on AKS cluster](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/simplify-your-azure-kubernetes-service-connection-configuration/ba-p/4151594). It simplifies the connection configuration experience for AKS workloads and Azure backing services such as [Azure Key Vault](https://learn.microsoft.com/azure/service-connector/tutorial-python-aks-keyvault-csi-driver), [Storage account](https://learn.microsoft.com/azure/service-connector/tutorial-python-aks-storage-workload-identity) and [Azure OpenAI](https://learn.microsoft.com/azure/service-connector/tutorial-python-aks-openai-workload-identity).
  
 * Behavioral Changes:
