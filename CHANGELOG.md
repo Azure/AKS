@@ -32,11 +32,11 @@ For details on what AKS supported operating systems support Federal Information 
  
 * Behavioral Changes:
   * [Node upgrade (reimage)](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image) will wait for disk detach to complete (to prevent very slow disk detach).
-  * Default [network policy](https://learn.microsoft.com/azure/aks/use-network-policies) is "networkPolicy=none" when network policy is not set on new clusters starting from API version 2024-05-01. This means that Network Policy Manager (NPM) is disabled. 
+  * Default [network policy](https://learn.microsoft.com/azure/aks/use-network-policies) is "networkPolicy=none" when network policy is not set on new clusters starting from API version 2024-05-01.
   * Customized apiserver subnet must be empty when migrating a cluster to enable [apiserver-vnet-integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration). If the subnet has resources in it, the migration won't be allowed.
    
 * Bug Fixes:
-  * Metrics server v0.6.3 will be used to prevent frequent OOMKills on Metric server.
+  * Metrics Server v0.6.3 will be used to prevent frequent OOMKills, reverting from v0.7.1.
   * [Allowing zonal NodeClaims to facilitate NodeClaims and node creation](https://github.com/Azure/karpenter-provider-azure/issues/339) on [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) for workloads with zone affinity constraints. 
   * Fixed a bug where the [SSHAccess property of a node pool](https://learn.microsoft.com/azure/aks/manage-ssh-node-access) would be reset to LocalUser(SSHAccess:LocalUser) on a partial put. Henceforth, SSHAccess property will retain the current value (SSHAccess:current value).
   * Fixed bug where the eTag property in 2024-02-02 preview, 2024-03-02 preview, and 2024-04-02 preview APIs was returned with the wrong case (returned etag, should have been eTag).
