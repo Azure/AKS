@@ -1,0 +1,77 @@
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script id="gtagScript">
+  console.log('Setting up dataLayer object before consent banner code')
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'ad_storage': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500,
+  });
+  gtag('js', new Date());
+  gtag('config', '{{ site.analytics.google.tracking_id }}', { 'anonymize_ip': {{ site.analytics.google.anonymize_ip | default: false }}});
+</script>
+<style>
+  #consentBanner {
+    padding: 0.5rem 1rem;
+    display: none;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: calc(100vw);
+    background: #222;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  #consentBanner button {
+    background-color: #9F62EB;
+    color: #fff6fb;
+    border: 1px solid #323030;
+    border-radius: 4px;
+  }
+</style>
+<div id="consentBanner">
+  <span>We use third party cookies and scripts to understand site usage and give you the best experience.
+  </span>
+  <br />
+  <button id="grantButton">Accept</button>
+  <button id="denyButton">Reject</button>
+</div>
+<script>
+  console.log('Setting up consent banner code')
+  grantButton.addEventListener("click", function() {
+    localStorage.setItem("consentGranted", "true");
+    // Update the consent status in the dataLayer
+    function gtag() { dataLayer.push(arguments); }
+    gtag('consent', 'update', {
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      ad_storage: 'granted',
+      analytics_storage: 'granted'
+    });
+    console.log('Hiding consent banner after granting consent');
+    document.getElementById("consentBanner").style.display = "none";
+  });
+
+  denyButton.addEventListener("click", function() {
+    localStorage.setItem("consentGranted", "false");
+    console.log('Hiding consent banner after denying consent');
+    document.getElementById("consentBanner").style.display = "none";
+  });
+
+  // if localStoage "consentGranted" is not set, show the consent banner
+  if (!localStorage.getItem("consentGranted")) {
+    console.log('Showing consent banner')
+    document.getElementById("consentBanner").style.display = "block";
+  }
+
+  // Load gtag.js script.
+  var gtagScript = document.createElement('script');
+  gtagScript.async = true;
+  gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id={{ site.analytics.google.tracking_id }}';
+
+  var firstScript = document.getElementById('gtagScript');
+  firstScript.parentNode.insertBefore(gtagScript,firstScript);
+</script>
