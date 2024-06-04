@@ -1,6 +1,5 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script id="gtagScript">
-  console.log('Setting up dataLayer object before consent banner code')
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
   gtag('consent', 'default', {
@@ -35,14 +34,11 @@
   }
 </style>
 <div id="consentBanner">
-  <span>We use third party cookies and scripts to understand site usage and give you the best experience.
-  </span>
-  <br />
+  <div>We use third party cookies and scripts to understand site usage and give you the best experience.</div>
   <button id="grantButton">Accept</button>
   <button id="denyButton">Reject</button>
 </div>
 <script>
-  console.log('Setting up consent banner code')
   grantButton.addEventListener("click", function() {
     localStorage.setItem("consentGranted", "true");
     // Update the consent status in the dataLayer
@@ -53,19 +49,18 @@
       ad_storage: 'granted',
       analytics_storage: 'granted'
     });
-    console.log('Hiding consent banner after granting consent');
+    // Hide the consent banner
     document.getElementById("consentBanner").style.display = "none";
   });
 
   denyButton.addEventListener("click", function() {
     localStorage.setItem("consentGranted", "false");
-    console.log('Hiding consent banner after denying consent');
+    // Hide the consent banner
     document.getElementById("consentBanner").style.display = "none";
   });
 
-  // if localStoage "consentGranted" is not set, show the consent banner
+  // If localStoage "consentGranted" is not set, show the consent banner
   if (!localStorage.getItem("consentGranted")) {
-    console.log('Showing consent banner')
     document.getElementById("consentBanner").style.display = "block";
   }
 
