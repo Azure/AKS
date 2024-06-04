@@ -164,4 +164,4 @@ The integration of native sidecar support in Istio 1.20 and its inclusion in the
 
 This feature was made possible through the collaborative efforts of the AKS traffic team, the AKS Add-on team, and the Istio community. Special thanks to Niranjan Shankar, Shashank Barsin and all other AKS traffic team members; Robbie Zhang from the AKS CCP and Add-on team; and Brian Redmond for his guidance on this blog.
 
-For more detailed information, you can refer to the [Istio-based service mesh add-on for Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/istio-native-sidecar). If you have any question with regard to this preview feature, please leave us an issue here: https://github.com/Azure/AKS/issues.
+For more detailed information, you can refer to the [Istio-based service mesh add-on for Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/istio-native-sidecar). If you have any question with regard to this preview feature, please leave us an issue here: https://github.com/Azure/AKS/issues.
