@@ -23,7 +23,7 @@ with AKS. For other tools, products and services see the [Upstream Azure Compute
 * AKS Community YouTube: <https://www.youtube.com/@theakscommunity>
 * AKS Public Community Channel: <https://twitter.com/theakscommunity>
 * Updates about the service, including new features and new Azure regions:
-  [AKS feed in Azure Updates](https://azure.microsoft.com/updates/?product=kubernetes-service)
+  [AKS RSS feed in Azure Updates](https://azurecomcdn.azureedge.net/updates/feed/?product=kubernetes-service)
 * AKS hybrid deployment options: <https://aka.ms/aks-hybrid>
 
 ## Code of conduct
