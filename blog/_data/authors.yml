@@ -59,3 +59,18 @@ Coco Wang:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/coco-wang-2399041b6/"
+
+Fuyuan Bie:
+  name        : "Fuyuan Bie"
+  bio         : "Fuyuan is an AKS Engineering Manager leading AKS traffic team."
+  avatar      : "https://pbs.twimg.com/profile_images/1797844413038944256/NvmI75Cv_400x400.jpg" # Replace this with your avatar image
+  links:
+    - label: "X"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://twitter.com/biefy"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/biefy"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/biefy"
