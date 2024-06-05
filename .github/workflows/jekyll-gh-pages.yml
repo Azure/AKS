@@ -28,6 +28,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Replace tracking_id
+        run: |
+          sed -i 's/<GTAG_ID>/${{ secrets.GTAG_ID }}/g' blog/_config.yml
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build with Jekyll

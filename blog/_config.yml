@@ -33,7 +33,7 @@ search: true
 analytics:
   provider: "google-gtag"
   google:
-    tracking_id: "G-0KL1BCPPEE"
+    tracking_id: "<GTAG_ID>"
     anonymize_ip: false # default
 
 # Site theme and skin
