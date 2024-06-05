@@ -44,3 +44,13 @@ $base0f: #00f769;
   font-style: oblique;
   margin-bottom: 0.1rem;
 }
+
+::selection {
+  background: lighten(#9F62EB, 25%) !important;
+  color: #000 !important;
+}
+
+::-moz-selection {
+  background: lighten(#9F62EB, 25%) !important;
+  color: #000 !important;
+}
