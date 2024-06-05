@@ -46,11 +46,15 @@ $base0f: #00f769;
 }
 
 ::selection {
-  background: lighten(#9F62EB, 25%) !important;
+  background: lighten($primary-color, 25%) !important;
   color: #000 !important;
 }
 
 ::-moz-selection {
-  background: lighten(#9F62EB, 25%) !important;
+  background: lighten($primary-color, 25%) !important;
   color: #000 !important;
+}
+
+.nav__list .nav__items a:hover {
+  color: $primary-color !important;
 }
