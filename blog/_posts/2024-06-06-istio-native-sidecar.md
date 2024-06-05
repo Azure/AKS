@@ -22,6 +22,8 @@ Read more about this feature from [Kubernetes blog](https://kubernetes.io/blog/2
 
 With the release of Istio 1.20, native sidecar support has been introduced, offering a streamlined approach to managing sidecar proxies. This integration reduces the overhead and complexity associated with sidecar injection, providing efficient management of sidecar life cycles.
 
+Read more about Istio native sidecar support from [Istio blog](https://istio.io/latest/blog/2023/native-sidecars/).
+
 ## Where Native Sidecar Does not Help
 
 While native sidecar support addresses many challenges, it does not assist with egress traffic as much as with ingress traffic. This is because within the lifecycle of a pod, application containers are terminated after sidecar containers, leaving no effective way to notify the application container that the pod is being terminated before the native sidecar is stopped. Consequently, in-flight egress traffic from the application container may experience disruptions during pod restarts.
@@ -30,23 +32,7 @@ While native sidecar support addresses many challenges, it does not assist with 
 
 ### Enabling Istio Native Sidecar Support in AKS
 
-Currently, native sidecar support is a preview feature on Istio addon for AKS.  To enable this feature, you need to explicitly enroll an Azure preview feature named `IstioNativeSidecarModePreview`. Once registered, all clusters under the current subscription will be using Istio native sidecar.
-
-```bash
-az feature register --namespace Microsoft.ContainerService --name IstioNativeSidecarModePreview
-```
-
-It will take a few minutes to finish registration. Run the following command to check registration status:
-
-```bash
-az feature show --namespace Microsoft.ContainerService --name IstioNativeSidecarModePreview
-```
-
-Once the registration status shows `Registered`, refresh Azure feature registration for AKS.
-
-```bash
-az provider register --namespace Microsoft.ContainerService
-```
+Since this is currently a preview feature, we need to follow [these instructions](https://learn.microsoft.com/en-us/azure/aks/istio-native-sidecar#before-you-begin) to register `IstioNativeSidecarModePreview` preview feature.
 
 ### Create an AKS cluster with Istio add-on
 
@@ -175,4 +161,4 @@ The integration of native sidecar support in Istio 1.20 and its inclusion in the
 
 This feature was made possible through the collaborative efforts of the AKS traffic team, the AKS Add-on team, and the Istio community. Special thanks to Niranjan Shankar, Shashank Barsin and all other AKS traffic team members for the collaboration; Robbie Zhang for the help given from AKS CCP and Add-on team; and Brian Redmond for his guidance on this blog and last but not least Paul Yu for the review.
 
-For more detailed information, you can refer to the [Istio-based service mesh add-on for Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/istio-native-sidecar). If you have any question with regard to this preview feature, please leave us an issue here: https://github.com/Azure/AKS/issues.
+If you have any question with regard to this preview feature, please leave us an issue here: https://github.com/Azure/AKS/issues.
