@@ -8,8 +8,6 @@ categories:
   - addons
 ---
 
-## Overview
-
 We're excited to announce the public preview of native sidecar support for Istio add-on for Azure Kubernetes Service (AKS). This blog post will guide you through the fundamentals of Kubernetes native sidecars, the integration of native sidecar support in Istio add-on, the benefits of this feature, how to enable it, and a demo showcasing its advantages.
 
 ## Understanding Kubernetes Native Sidecars
