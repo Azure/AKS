@@ -1,9 +1,11 @@
 ---
 title: "Introducing Native Sidecar Support for Istio addon on AKS"
-description: "This blog talks about native sidecar support for Istio addon on AKS."
+description: "Explore native sidecar support for the Istio add-on in Azure Kubernetes Service (AKS). Learn its benefits, how to enable it, and see a practical demo."
 date: 2024-06-06
 author: Fuyuan Bie
-categories: mesh
+categories:
+  - networking
+  - addons
 ---
 
 ## Overview
@@ -12,15 +14,19 @@ We're excited to announce the public preview of native sidecar support for Istio
 
 ## Understanding Kubernetes Native Sidecars
 
-In Kubernetes, the sidecar pattern is used to extend the functionality of applications running in pods. Sidecar containers are responsible for auxiliary tasks such as logging, proxying, and monitoring. Typically, managing sidecar lifecycle required special configurations, which could be complex and error-prone. Kubernetes native sidecar support addresses these challenges by making sidecar management a built-in feature, simplifying the process and enhancing reliability.
+In Kubernetes, the sidecar pattern is used to extend the functionality of applications running in pods. Sidecar containers are responsible for auxiliary tasks such as logging, proxying, and monitoring. Typically, managing sidecar lifecycle required special configurations, which could be complex and error-prone. Developers must understand the lifecycle interactions of containers within a Kubernetes pod to avoid unexpected behaviors. They cannot safely assume that sidecars will be ready before their application or expect a specific shutdown order. Additionally, for jobs, the primary job container must terminate the sidecars.
+
+Starting from Kubernetes v1.28, native sidecar support becomes a builtin feature. On AKS, starting from v1.29, this feature is turned on.
+
+Read more about this feature from [Kubernetes blog](https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/).
 
 ## Native Sidecar Support in Istio 1.20+
 
-With the release of Istio 1.20, native sidecar support has been introduced, offering a streamlined approach to managing sidecar proxies. This integration reduces the overhead and complexity associated with sidecar injection, providing efficient management of sidecar lifecycles.
+With the release of Istio 1.20, native sidecar support has been introduced, offering a streamlined approach to managing sidecar proxies. This integration reduces the overhead and complexity associated with sidecar injection, providing efficient management of sidecar life cycles.
 
 ## Where Native Sidecar Does not Help
 
-While native sidecar support addresses many challenges, it does not assist with egress traffic as much as with ingress traffic. This is because application containers are terminated after sidecar containers, leaving no effective way to notify the application container that the pod is being terminated before the native sidecar is stopped. Consequently, in-flight egress traffic from the application container may experience disruptions during pod restarts.
+While native sidecar support addresses many challenges, it does not assist with egress traffic as much as with ingress traffic. This is because within the lifecycle of a pod, application containers are terminated after sidecar containers, leaving no effective way to notify the application container that the pod is being terminated before the native sidecar is stopped. Consequently, in-flight egress traffic from the application container may experience disruptions during pod restarts.
 
 ## Try it out!
 
@@ -50,32 +56,32 @@ Create a new AKS cluster and connect to it. Kubernetes 1.29+ is required in orde
 
 ```bash
 az group create \
-  --name native_sidecar_test_rg \
+  --name native-sidecar-test-rg \
   --location eastus
 
 az aks create \
-  --resource-group native_sidecar_test_rg \
-  --name native_sidecar_test \
+  --resource-group native-sidecar-test-rg \
+  --name native-sidecar-test \
   --kubernetes-version 1.29 \
   --enable-asm \
   --revision asm-1-21 \
   --location eastus
 
 az aks get-credentials \
-  --resource-group native_sidecar_test_rg \
-  --name native_sidecar_test \
+  --resource-group native-sidecar-test-rg \
+  --name native-sidecar-test \
   --overwrite-existing
 ```
 
 ### Deploy a sample application
 
 Let's deploy a sample application to test Istio native sidecar.
+
 ```bash
 kubectl label namespace default istio.io/rev=asm-1-21 --overwrite
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/master/samples/httpbin/httpbin.yaml
 ```
-
-Check application pod:
+Wait for the pod to be in "Running" status then check application pod.
 
 ```bash
 kubectl get pods -o "custom-columns=NAME:.metadata.name,INIT:.spec.initContainers[*].name,CONTAINERS:.spec.containers[*].name"
@@ -83,7 +89,7 @@ kubectl get pods -o "custom-columns=NAME:.metadata.name,INIT:.spec.initContainer
 
 We can see `istio-proxy` now becomes an init container. A native sidecar is an init container.
 
-```log
+```text
 NAME                      INIT                     CONTAINERS
 httpbin-598f48c6d-nwx67   istio-init,istio-proxy   httpbin
 ```
@@ -120,9 +126,16 @@ One benefit of native sidecar support is that Kubernetes properly manages the si
 
    We can see, when the pod starts, istio-proxy as an init container starts before the application container. It gives enough time for istio-proxy to warm up before serving traffic.
 
-   istio-proxy used 9 seconds to get ready.
+   Check sidecar logs.
 
-   ```log
+   ```bash
+   POD_ID=$(kubectl get pod -l app=httpbin -o jsonpath='{.items[0].metadata.name}')
+   kubectl logs $POD_ID -c istio-proxy
+   ```
+
+   Sidecar container istio-proxy used 9 seconds to get ready.
+
+   ```text
    2024-06-04T05:07:02.138613Z    info    cache    returned workload trust anchor from cache    ttl=23h59m59.861388298s
    2024-06-04T05:07:10.904779Z    info    Readiness succeeded in 9.015247842s
    2024-06-04T05:07:10.905752Z    info    Envoy proxy is ready
@@ -139,7 +152,7 @@ One benefit of native sidecar support is that Kubernetes properly manages the si
 
    At the termination time, sidecar get killed before the application container.  This gives sidecar time to drain inflight traffic before terminating the application container.
 
-   ```log
+   ```text
    2024-06-04T05:36:58.999684Z    info    handling /drain, starting drain
    2024-06-04T05:36:58.999753Z    info    Agent draining proxy
    2024-06-04T05:36:59.579419Z    info    Status server has successfully terminated
@@ -162,6 +175,6 @@ The integration of native sidecar support in Istio 1.20 and its inclusion in the
 
 ## Credits
 
-This feature was made possible through the collaborative efforts of the AKS traffic team, the AKS Add-on team, and the Istio community. Special thanks to Niranjan Shankar, Shashank Barsin and all other AKS traffic team members; Robbie Zhang from the AKS CCP and Add-on team; and Brian Redmond for his guidance on this blog.
+This feature was made possible through the collaborative efforts of the AKS traffic team, the AKS Add-on team, and the Istio community. Special thanks to Niranjan Shankar, Shashank Barsin and all other AKS traffic team members for the collaboration; Robbie Zhang for the help given from AKS CCP and Add-on team; and Brian Redmond for his guidance on this blog and last but not least Paul Yu for the review.
 
 For more detailed information, you can refer to the [Istio-based service mesh add-on for Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/istio-native-sidecar). If you have any question with regard to this preview feature, please leave us an issue here: https://github.com/Azure/AKS/issues.
