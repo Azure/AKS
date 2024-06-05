@@ -39,8 +39,7 @@
   <button id="denyButton">Reject</button>
 </div>
 <script>
-  grantButton.addEventListener("click", function() {
-    localStorage.setItem("consentGranted", "true");
+  function updateConsentStatus() {
     // Update the consent status in the dataLayer
     function gtag() { dataLayer.push(arguments); }
     gtag('consent', 'update', {
@@ -49,6 +48,11 @@
       ad_storage: 'granted',
       analytics_storage: 'granted'
     });
+  }
+
+  grantButton.addEventListener("click", function() {
+    localStorage.setItem("consentGranted", "true");
+    updateConsentStatus();
     // Hide the consent banner
     document.getElementById("consentBanner").style.display = "none";
   });
@@ -58,12 +62,7 @@
     // Hide the consent banner
     document.getElementById("consentBanner").style.display = "none";
   });
-
-  // If localStoage "consentGranted" is not set, show the consent banner
-  if (!localStorage.getItem("consentGranted")) {
-    document.getElementById("consentBanner").style.display = "block";
-  }
-
+  
   // Load gtag.js script.
   var gtagScript = document.createElement('script');
   gtagScript.async = true;
@@ -71,4 +70,12 @@
 
   var firstScript = document.getElementById('gtagScript');
   firstScript.parentNode.insertBefore(gtagScript,firstScript);
+
+  // If localStoage "consentGranted" is not set, show the consent banner
+  if (!localStorage.getItem("consentGranted")) {
+    document.getElementById("consentBanner").style.display = "block";
+  } else if (localStorage.getItem("consentGranted") === "true") {
+    // If localStorage "consentGranted" is set to true, update the consent status
+    updateConsentStatus();
+  }
 </script>
