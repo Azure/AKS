@@ -64,6 +64,14 @@ defaults:
       related: true
       sidebar:
         nav: "side"
+      classes: wide
+  - scope:
+      path: ""
+      type: pages
+    values:
+      sidebar:
+        nav: "side"
+      classes: wide
 
 # Footer links that get rendered via _includes/footer.html
 # https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/footer.html

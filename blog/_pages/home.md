@@ -2,8 +2,6 @@
 title: "Welcome!"
 layout: home
 permalink: /
-sidebar:
-  nav: "side"
 ---
 
 This Blog is a home for content directly from the Azure Kubernetes Service (AKS) Engineering and Product Management Team.
