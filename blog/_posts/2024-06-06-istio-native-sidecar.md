@@ -32,7 +32,7 @@ While native sidecar support addresses many challenges, it does not assist with 
 
 ### Enabling Istio Native Sidecar Support in AKS
 
-Since this is currently a preview feature, we need to follow [these instructions](https://learn.microsoft.com/en-us/azure/aks/istio-native-sidecar#before-you-begin) to register `IstioNativeSidecarModePreview` preview feature.
+Since this is currently a preview feature, we need to follow [these instructions](https://learn.microsoft.com/azure/aks/istio-native-sidecar#before-you-begin) to register `IstioNativeSidecarModePreview` preview feature.
 
 ### Create an AKS cluster with Istio add-on
 
