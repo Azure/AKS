@@ -578,12 +578,10 @@ configuration:
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
       description:
-    - if:
-      - isAction:
-            action: Labeled
-      - hasLabel:
+      - if:
+       - hasLabel:
             label: ai/copilot
-      then:
+       then:
         - mentionUsers:
             mentionees:
             - wangyira
