@@ -4,7 +4,6 @@ description: "Hello AKS Automatic, a new experience for AKS!"
 date: 2024-05-22
 author: Jorge Palma
 categories: general
-classes: wide
 ---
 
 ## AKS Automatic
