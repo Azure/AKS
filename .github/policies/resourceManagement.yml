@@ -31,7 +31,7 @@ configuration:
       - isIssue
       - isOpen
       - noActivitySince:
-          days: 60
+          days: 21
       - isNotLabeledWith:
           label: stale
       - isNotLabeledWith:
@@ -42,7 +42,7 @@ configuration:
       - addLabel:
           label: stale
       - addReply:
-          reply: This issue has been automatically marked as stale because it has not had any activity for **60 days**. It will be closed if no further activity occurs **within 15 days of this comment**.
+          reply: This issue has been automatically marked as stale because it has not had any activity for **21 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
     - description: 
       frequencies:
       - hourly:
@@ -83,7 +83,7 @@ configuration:
       - isNotAssigned
       actions:
       - addReply:
-          reply: Action required from @Azure/aks-pm
+          reply: Action required from @aritraghosh, @julia-yin, @AllenWen-at-Azure
       - addLabel:
           label: 'Needs Attention :wave:'
     - description: 
@@ -570,8 +570,20 @@ configuration:
             assignMentionees: False
       - if:
         - hasLabel:
-            label: ai/copilot
+            label: service-mesh
         then:
+        - mentionUsers:
+            mentionees:
+            - azure/aks-traffic
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      description:
+    - if:
+      - isAction:
+            action: Labeled
+      - hasLabel:
+            label: ai/copilot
+      then:
         - mentionUsers:
             mentionees:
             - wangyira

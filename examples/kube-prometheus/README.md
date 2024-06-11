@@ -1,4 +1,4 @@
-# Monitoring AKS with Promethues
+# Monitoring AKS with Prometheus
 
 This example demonstrates how to setup monitoring for an AKS cluster using
 [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) as a starting point. Minor

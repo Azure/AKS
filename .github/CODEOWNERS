@@ -1,0 +1,6 @@
+# AKS CODEOWNERS
+# Global Owners
+*  @palma21 @Azure/aks-pm @Azure/aks-leads
+
+# CODEOWNERS file
+/.github/CODEOWNERS @palma21

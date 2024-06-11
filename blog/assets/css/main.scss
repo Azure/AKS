@@ -1,0 +1,46 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@charset "utf-8";
+
+/* system colors */
+$primary-color: #9F62EB;
+
+/* system typefaces */
+$serif      : Georgia, Times, serif;
+$sans-serif : "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial, sans-serif;
+$monospace  : "Roboto Mono", Monaco, Consolas, "Lucida Console", monospace;
+
+/* dracula syntax highlighting (base16) */
+/* https://github.com/dracula/base16-dracula-scheme */
+/* https://mmistakes.github.io/minimal-mistakes/docs/stylesheets/#dracula */
+$base00: #282936;
+$base01: #3a3c4e;
+$base02: #4d4f68;
+$base03: #626483;
+$base04: #62d6e8;
+$base05: #e9e9f4;
+$base06: #f1f2f8;
+$base07: #f7f7fb;
+$base08: #ea51b2;
+$base09: #b45bcf;
+$base0a: #00f769;
+$base0b: #ebff87;
+$base0c: #a1efe4;
+$base0d: #62d6e8;
+$base0e: #b45bcf;
+$base0f: #00f769;
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+
+.page__meta {
+  margin-top: 0;
+}
+
+.page__meta-description {
+  font-size: 0.8rem;
+  font-style: oblique;
+  margin-bottom: 0.1rem;
+}
