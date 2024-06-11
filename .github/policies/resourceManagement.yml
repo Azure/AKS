@@ -577,7 +577,6 @@ configuration:
             - azure/aks-traffic
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
-      description:
       - if:
         - hasLabel:
             label: ai/copilot
