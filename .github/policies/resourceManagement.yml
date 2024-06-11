@@ -579,9 +579,9 @@ configuration:
             assignMentionees: True
       description:
       - if:
-       - hasLabel:
+        - hasLabel:
             label: ai/copilot
-       then:
+        then:
         - mentionUsers:
             mentionees:
             - wangyira
