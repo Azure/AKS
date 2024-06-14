@@ -18,11 +18,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS version [1.30](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/) is available in preview. 
 
 * Behavioral Changes:
-  * asm-1-19 is no longer supported. If this revision is in use, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
+  * Azure Service Mesh-1-19 is no longer supported. If this revision is in use, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
 
 * Bug Fixes:
   * CoreDNS has been updated to use image [v1.9.4-hotfix.20240520](https://github.com/aks-lts/coredns/tree/release-1.9) on all AKS clusters above version 1.24. This updated image addresses [CVE vulnerabilities](https://github.com/aks-lts/coredns/commit/ba698d28c2ab8d9db0951592be631885e4134e5).
-  * Cilium has been upgraded to version 1.14.10 for K8s version 1.29+. This patch upgrade fixes a bug [where the host network is broken and remains broken even if the underlying interface goes up again](https://github.com/cilium/cilium/issues/18706).
+  * Updated cilium to version 1.14.10 for K8s version 1.29+, to fix the issue [where the host network is broken and remains broken even if the underlying interface goes up again](https://github.com/cilium/cilium/issues/18706).
   * Removes the post-upgrade annotation on [hubble-generate-cert](https://github.com/cilium/cilium/blob/aa10df3a4c6a9e7bd947a4a32613cedf22b3731d/Documentation/gettingstarted/hubble-configuration.rst#L81) Job. On each aks cluster reconcile, the helm chart revision is incremented which counts as an upgrade. Each time the helm chart is upgraded or installed this job will restart. This change fixes that to not restart on helm chart upgrades and successfully clean up.
    * Windows containerd has been upgraded from v1.7.14 to v1.7.17 in K8s v1.28+. This upgrade fixes two bugs resulting in a wrong [default path](https://github.com/Azure/AKS/issues/4196) and a [deadlock issue](https://github.com/containerd/ttrpc/issues/72#issuecomment-2105545516).
    * Made few fixes for [AKS Edge zone support](https://learn.microsoft.com/en-us/azure/aks/edge-zones?tabs=azure-resource-manager) -
@@ -31,7 +31,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
       * Fixed a related bug where even when the user has specified `EdgeZone`, we were mistakenly resuming edgezone.
    
 * Component Updates:
-  * Changing [cilium operator](https://docs.cilium.io/en/stable/internals/cilium_operator/) tolerations to match cilium-agent. Adding tolerations for NoExecute and NoSchedule. This should fix race in upgrades where cilium-operator cannot schedule due to node taint.
+  * Changing [cilium operator](https://docs.cilium.io/en/stable/internals/cilium_operator/) tolerations to match cilium-agent. Adding tolerations for NoExecute and NoSchedule. This should fix a race condition in upgrades, where cilium-operator cannot schedule due to node taint.
   * Retina Enterprise and Operator image update [v0.0.8](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.0.8).
   * Updated linux cni versions to [v1.4.54](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.54) and [v1.5.28](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.28).
   * Gatekeeper is updated to [3.16](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.16.3) for kubernetes versions 1.27+.
