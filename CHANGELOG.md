@@ -6,8 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
-* Starting 1.27 every third kubernetes version release will now be a [Long Term Support](https://learn.microsoft.com/en-us/azure/aks/long-term-support) version in AKS. In place upgrade from one LTS to the next LTS shall be available 6 months before end of life of first LTS version. 
-* We will start emitting [Kubernetes events](https://learn.microsoft.com/en-us/azure/aks/events?tabs=azure-cli)for greater visibility into node auto-repair.The events will be emitted when node remediation is initiated, completed, and if the node is still in NotReady state after remediation is performed.
+
 
 ### Release Notes
 
@@ -19,7 +18,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS version [1.30](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/) is available in preview. 
 
 * Behavioral Changes:
-  * Beginning in k8s 1.30, the default networking configuration in new clusters will be [Azure CNI Overlay](https://aka.ms/aks/azure-cni-overlay).
   * asm-1-19 is no longer supported. If this revision is in use, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
 
 * Bug Fixes:
