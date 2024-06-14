@@ -25,7 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated cilium to version 1.14.10 for K8s version 1.29+, to fix the issue [where the host network is broken and remains broken even if the underlying interface goes up again](https://github.com/cilium/cilium/issues/18706).
   * Removes the post-upgrade annotation on [hubble-generate-cert](https://github.com/cilium/cilium/blob/aa10df3a4c6a9e7bd947a4a32613cedf22b3731d/Documentation/gettingstarted/hubble-configuration.rst#L81) Job. On each aks cluster reconcile, the helm chart revision is incremented which counts as an upgrade. Each time the helm chart is upgraded or installed this job will restart. This change fixes that to not restart on helm chart upgrades and successfully clean up.
    * Windows containerd has been upgraded from v1.7.14 to v1.7.17 in K8s v1.28+. This upgrade fixes two bugs resulting in a wrong [default path](https://github.com/Azure/AKS/issues/4196) and a [deadlock issue](https://github.com/containerd/ttrpc/issues/72#issuecomment-2105545516).
-   * Made few fixes for [AKS Edge zone support](https://learn.microsoft.com/en-us/azure/aks/edge-zones?tabs=azure-resource-manager) -
+   * Fixed the following issues for [AKS Edge zone support](https://learn.microsoft.com/en-us/azure/aks/edge-zones?tabs=azure-resource-manager) -
       * Fixed bug where clusters with ExtendedLocation set would accept create AgentPool with AvailabilityZones even though AvailabilityZones aren't supported in ExtendedLocation mode. 
       * Fixed bug where we accepted edgezone case, when it should have been `EdgeZone`.
       * Fixed a related bug where even when the user has specified `EdgeZone`, we were mistakenly resuming edgezone.
