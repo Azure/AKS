@@ -1,5 +1,48 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-06-09
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240609. 
+
+### Announcements
+* Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
+* Starting 1.27 every third kubernetes version release will now be a [Long Term Support](https://learn.microsoft.com/en-us/azure/aks/long-term-support) version in AKS. In place upgrade from one LTS to the next LTS shall be available 6 months before end of life of first LTS version. 
+* We will start emitting [Kubernetes events](https://learn.microsoft.com/en-us/azure/aks/events?tabs=azure-cli)for greater visibility into node auto-repair.The events will be emitted when node remediation is initiated, completed, and if the node is still in NotReady state after remediation is performed.
+
+### Release Notes
+
+* Features:
+  * Generally Available - [Security Patch channel - Live patching mechanism](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli) for VHD updates.
+  * AKS Patch version [1.27.13](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v12713) is now available. 
+
+* Preview Features:
+  * AKS version [1.30](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/) is available in preview. 
+
+* Behavioral Changes:
+  * Beginning in k8s 1.30, the default networking configuration in new clusters will be [Azure CNI Overlay](https://aka.ms/aks/azure-cni-overlay).
+  * asm-1-19 is no longer supported. If this revision is in use, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
+
+* Bug Fixes:
+  * Updating coredns to use image v1.9.4-hotfix.20240520 (https://github.com/aks-lts/coredns/tree/release-1.9)  on all AKS clusters with version 1.24+. We still use coredns build version v1.9.4, we have only fixed the (CVE vulnerabilities)[https://github.com/aks-lts/coredns/commit/ba698d28c2ab8d9db0951592be631885e4134e5b] on this.
+  * Replacing cilium 1.14.4 with new patch 1.14.10 for k8s 1.29+ fixes the [issue](https://github.com/cilium/cilium/issues/18706).
+  * Removes the post-upgrade annotation on [hubble-generate-cert](https://github.com/cilium/cilium/blob/aa10df3a4c6a9e7bd947a4a32613cedf22b3731d/Documentation/gettingstarted/hubble-configuration.rst#L81) Job. On each aks cluster reconcile, the helm chart revision is incremented which counts as an upgrade. Each time the   helm chart is upgraded or installed this job will restart. This change fixes that to not restart on helm chart upgrades and successfully clean up.
+   * Bumped Windows containerd v1.7.14 to v1.7.17 in k8s v1.28+. Fixes issues [4196](https://github.com/Azure/AKS/issues/4196) and [72](https://github.com/containerd/ttrpc/issues/72#issuecomment-2105545516).
+   * Made few fixes for [AKS Edge zone support](https://learn.microsoft.com/en-us/azure/aks/edge-zones?tabs=azure-resource-manager)- Fixed bug where clusters with ExtendedLocation set would accept create AgentPool with AvailabilityZones even though AvailabilityZones aren't supported in ExtendedLocation mode. Also fixed bug where we accepted edgezone case, when it should have been EdgeZone, and a related bug where even when the user specified EdgeZone we would mistakenly resume edgezone.
+   
+
+* Component Updates:
+  * Changing [cilium operator](https://docs.cilium.io/en/stable/internals/cilium_operator/) tolerations to match cilium-agent. Adding tolerations for NoExecute and NoSchedule. This should fix race in upgrades where cilium-operator cannot schedule due to node taint.
+  * Retina Enterprise and Operator image update [v0.0.8](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.0.8).
+  * Updated linux cni versions to [v1.4.54](https://github.com/Azure/azure-container-networking/releases/tag/v1.4.54) and [v1.5.28](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.28).
+  * Gatekeeper is updated to [3.16](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.16.3) for kubernetes versions 1.27+.
+  * Updated Cilium to [v1.13.13](https://github.com/cilium/cilium/releases/tag/v1.13.13) for Kubernetes v1.28.0+.
+  * Upgrade azure disk csi-drivers to [1.29.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.6) on AKS 1.28 and 1.29. 
+  * Updated the aks app routing operator nginx version from 1.9 to [1.10](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-1).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202406.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202406.07.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202406.07.0](vhd-notes/AzureLinux/202406.07.0.txt).
+  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.5936.240612](vhd-notes/AKSWindows/2019/17763.5936.240612.txt).
+  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2527.240612](vhd-notes/AKSWindows/2022/20348.2527.240612.txt).
+ 
 ## Release 2024-05-13
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
