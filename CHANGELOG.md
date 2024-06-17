@@ -6,18 +6,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
-
+* Istio service mesh addon revision asm-1-19 is no longer supported. If you are still using this revision on your cluster, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
 
 ### Release Notes
 
 * Features:
   * Generally Available - [Security Patch channel - Live patching mechanism](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli) for VHD updates.
   * AKS Patch version [1.27.13](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v12713) is now available. 
-  * Istio service mesh addon revision asm-1-19 is no longer supported. If you are still using this revision on your cluster, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
 
 * Preview Features:
   * AKS version [1.30](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/) is available in preview. 
-  
+    
  * Bug Fixes:
   * CoreDNS has been updated to use image [v1.9.4-hotfix.20240520](https://github.com/aks-lts/coredns/tree/release-1.9) on all AKS clusters above version 1.24. This updated image addresses [CVE vulnerabilities](https://github.com/aks-lts/coredns/commit/ba698d28c2ab8d9db0951592be631885e4134e5).
   * Updated cilium to version 1.14.10 for K8s version 1.29+, to fix the issue [where the host network is broken and remains broken even if the underlying interface goes up again](https://github.com/cilium/cilium/issues/18706).
