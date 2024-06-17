@@ -13,11 +13,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Features:
   * Generally Available - [Security Patch channel - Live patching mechanism](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli) for VHD updates.
   * AKS Patch version [1.27.13](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v12713) is now available. 
+  * Istio service mesh addon revision asm-1-19 is no longer supported. If you are still using this revision on your cluster, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
 
 * Preview Features:
   * AKS version [1.30](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/) is available in preview. 
-  * Istio service mesh addon revision asm-1-19 is no longer supported. If you are still using this revision on your cluster, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
- 
+  
  * Bug Fixes:
   * CoreDNS has been updated to use image [v1.9.4-hotfix.20240520](https://github.com/aks-lts/coredns/tree/release-1.9) on all AKS clusters above version 1.24. This updated image addresses [CVE vulnerabilities](https://github.com/aks-lts/coredns/commit/ba698d28c2ab8d9db0951592be631885e4134e5).
   * Updated cilium to version 1.14.10 for K8s version 1.29+, to fix the issue [where the host network is broken and remains broken even if the underlying interface goes up again](https://github.com/cilium/cilium/issues/18706).
@@ -26,8 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
    * Fixed the following issues for [AKS Edge zone support](https://learn.microsoft.com/azure/aks/edge-zones?tabs=azure-resource-manager) -
       * Fixed bug where clusters with ExtendedLocation set would accept create node pool with availability zones even though availability zones aren't supported in ExtendedLocation mode. 
       * Fixed bug where `edgezone` was previously being wrongly accepted in small case. Only `EdgeZone` is accepted.
-  
-   
+     
 * Component Updates:
   * Changing [cilium operator](https://docs.cilium.io/en/stable/internals/cilium_operator/) tolerations to match cilium-agent. Adding tolerations for NoExecute and NoSchedule. This should fix a race condition in upgrades, where cilium-operator cannot schedule due to node taint.
   * Retina Enterprise and Operator image update [v0.0.8](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.0.8).
