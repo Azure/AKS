@@ -14,7 +14,7 @@ We're excited to announce the public preview of native sidecar support for Istio
 
 In Kubernetes, the sidecar pattern is used to extend the functionality of applications running in pods. Sidecar containers are responsible for auxiliary tasks such as logging, proxying, and monitoring. Typically, managing sidecar lifecycle required special configurations, which could be complex and error-prone. Developers must understand the lifecycle interactions of containers within a Kubernetes pod to avoid unexpected behaviors. They cannot safely assume that sidecars will be ready before their application or expect a specific shutdown order. Additionally, for jobs, the primary job container must terminate the sidecars.
 
-Starting from Kubernetes v1.28, native sidecar support becomes a builtin feature. On AKS, starting from v1.29, this feature is turned on.
+On AKS, starting from v1.29, this feature is turned on.
 
 Read more about this feature from [Kubernetes blog](https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/).
 
@@ -27,6 +27,8 @@ Read more about Istio native sidecar support from [Istio blog](https://istio.io/
 ## Where Native Sidecar Does not Help
 
 While native sidecar support addresses many challenges, it does not assist with egress traffic as much as with ingress traffic. This is because within the lifecycle of a pod, application containers are terminated after sidecar containers, leaving no effective way to notify the application container that the pod is being terminated before the native sidecar is stopped. Consequently, in-flight egress traffic from the application container may experience disruptions during pod restarts.
+
+For such cases, service developers would still have to expect such disruptions and handle them properly inside their services.
 
 ## Try it out!
 
@@ -156,9 +158,5 @@ One benefit of native sidecar support is that Kubernetes properly manages the si
 ## Conclusion
 
 The integration of native sidecar support in Istio 1.20 and its inclusion in the AKS Istio addon marks a significant advancement in simplifying and enhancing service mesh deployment and management. This feature provides substantial benefits, including improved performance, simplified configuration, and operational efficiency. We are committed to providing state-of-the-art features that empower our users to build resilient and scalable applications on AKS.
-
-## Credits
-
-This feature was made possible through the collaborative efforts of the AKS traffic team, the AKS Add-on team, and the Istio community. Special thanks to Niranjan Shankar, Shashank Barsin and all other AKS traffic team members for the collaboration; Robbie Zhang for the help given from AKS CCP and Add-on team; and Brian Redmond for his guidance on this blog and last but not least Paul Yu for the review.
 
 If you have any question with regard to this preview feature, please leave us an issue here: https://github.com/Azure/AKS/issues.
