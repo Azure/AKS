@@ -134,7 +134,7 @@ One benefit of native sidecar support is that Kubernetes properly manages the si
    | 2m28s | Normal | Created | pod/httpbin-9c5fdf746-hzmsf | Created container httpbin |
    | 2m28s | Normal | Started | pod/httpbin-9c5fdf746-hzmsf | Started container httpbin |
 
-   At the termination time, sidecar get killed before the application container.  This gives sidecar time to drain inflight traffic before terminating the application container.
+   At the termination time, sidecar gets killed before the application container.  This gives sidecar time to drain inflight traffic before terminating the application container.
 
    ```text
    2024-06-04T05:36:58.999684Z    info    handling /drain, starting drain
