@@ -1,10 +1,46 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2024-06-09
+## Release 2024-06-27
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240609. 
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240627.
 
 ### Announcements
+
+* Starting 1.30 Kubernetes version and 1.27 LTS versions, beta APIs will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta APIs closer to the 1.30 release.
+* 1.30 is the next LTS version after 1.27. Customers will have at least 6 months of migration time available between 1.27 LTS to 1.30 LTS i.e before the 1.27 LTS goes End of Life by July 2025. Refer [long term support](https://learn.microsoft.com//azure/aks/long-term-support) for more information.
+
+### Release Notes
+
+* Features:
+  * AKS patch versions 1.29.5, 1.28.10, 1.27.14 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+  
+* Bug Fixes:
+  * Fixed a [bug](https://github.com/Azure/AKS/issues/4292) that previously didn't allow switching from non-LTS K8s version to [LTS](https://learn.microsoft.com/azure/aks/long-term-support) K8s version when upgrading the cluster. For example, you can now upgrade from 1.26 to 1.27 while switching to LTS.
+  * Related to the above, also fixed a bug where previously it was not possible to upgrade from an LTS K8s version to non-LTS K8s version. For example, you can now upgrade from 1.27 LTS to 1.28.
+
+* Behavior Change
+  * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) has been updated from 300Mi to 500Mi.
+  * Base CPU and memory for metrics-server container are set to 150M and 100Mi respectively on clusters with K8s version >= 1.30.0. More information on metrics server scaling can be found [here](https://learn.microsoft.com/azure/aks/use-metrics-server-vertical-pod-autoscaler).
+
+     
+* Component Updates:
+  * Linux Network Policy Manager has been upgraded from v1.5.23 to [v.1.5.29](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.29) to address [CVE-2024-28085](https://nvd.nist.gov/vuln/detail/CVE-2024-28085).
+  * Upgraded Azure workload identity to [v1.3.0](https://github.com/Azure/azure-workload-identity/releases/tag/v1.3.0).
+  * Upgraded ip-masq-agent-v2 to [v0.1.11](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.11) having fixes for [CVE-2024-2961](https://nvd.nist.gov/vuln/detail/CVE-2024-2961) and [CVE-2024-33599](https://nvd.nist.gov/vuln/detail/CVE-2024-33599).
+  * Upgraded Azure Monitor Container Insights image to [v3.1.22](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.22)
+  * Upgraded Azure CNS to [v1.6.0](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.0) for 1.30 version clusters.
+  * Istio-based service mesh add-on revision asm-1-19 has been upgraded to patch v1.19.10-hotfix.20240528, asm-1-20 has been upgraded to patch v1.20.7, and asm-1-21 has been upgraded to patch v1.21.3. These contain fixes for [CVE-2024-34362](https://nvd.nist.gov/vuln/detail/CVE-2024-34362), [CVE-2024-32974](https://nvd.nist.gov/vuln/detail/CVE-2024-32974), [CVE-2024-32975](https://nvd.nist.gov/vuln/detail/CVE-2024-32975), [CVE-2024-34363](https://nvd.nist.gov/vuln/detail/CVE-2024-34363), [CVE-2024-34364](https://nvd.nist.gov/vuln/detail/CVE-2024-34364), [CVE-2024-32976](https://nvd.nist.gov/vuln/detail/CVE-2024-32976), [CVE-2024-23326](https://nvd.nist.gov/vuln/detail/CVE-2024-23326).
+  Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202406.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202406.19.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202406.19.0](vhd-notes/AzureLinux/202406.19.0.txt).
+  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2529.240621](vhd-notes/AKSWindows/2022/20348.2529.240621.txt).
+
+## Release 2024-06-09
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240609.
+
+### Announcements
+
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
 * Istio service mesh addon revision asm-1-19 is no longer supported. If you are still using this revision on your cluster, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
 * 1.30 is the next LTS version after 1.27. Customers will have at least 6 months of migration time available between 1.27 LTS to 1.30 LTS i.e before the 1.27 LTS goes End of Life by July 2025. Refer [long term support](https://learn.microsoft.com//azure/aks/long-term-support) for more information.
@@ -20,7 +56,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features:
   * AKS version [1.30](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/) is available in preview. 
     
- * Bug Fixes:
+* Bug Fixes:
   * Updated cilium to version 1.14.10 for K8s version 1.29+, to fix the issue [where the host network is broken and remains broken even if the underlying interface goes up again](https://github.com/cilium/cilium/issues/18706).
   * Removes the post-upgrade annotation on [hubble-generate-cert](https://github.com/cilium/cilium/blob/aa10df3a4c6a9e7bd947a4a32613cedf22b3731d/Documentation/gettingstarted/hubble-configuration.rst#L81) Job. On each aks cluster reconcile, the helm chart revision is incremented which counts as an upgrade. Each time the helm chart is upgraded or installed this job will restart. This change fixes that to not restart on helm chart upgrades and successfully clean up.
    * Fixed two bugs resulting in a wrong [default path](https://github.com/Azure/AKS/issues/4196) and a [deadlock issue](https://github.com/containerd/ttrpc/issues/72#issuecomment-2105545516).
