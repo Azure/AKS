@@ -13,6 +13,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
   * AKS patch versions 1.29.5, 1.28.10, 1.27.14 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+
+* Preview feature:
+  * [Windows Server Annual Channel for Containers](https://techcommunity.microsoft.com/t5/windows-server-news-and-best/windows-server-annual-channel-for-containers/ba-p/3866248) is now in public preview on Azure Kubernetes Service (AKS). More information can be found [here](https://aka.ms/aks/windowsannualchannel).
   
 * Bug Fixes:
   * Fixed a [bug](https://github.com/Azure/AKS/issues/4292) that previously didn't allow switching from non-LTS K8s version to [LTS](https://learn.microsoft.com/azure/aks/long-term-support) K8s version when upgrading the cluster. For example, you can now upgrade from 1.26 to 1.27 while switching to LTS.
