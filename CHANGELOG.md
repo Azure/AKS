@@ -7,7 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta APIs will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta APIs closer to the 1.30 release.
-* 1.30 is the next LTS version after 1.27. Customers will have at least 6 months of migration time available between 1.27 LTS to 1.30 LTS i.e before the 1.27 LTS goes End of Life by July 2025. Refer [long term support](https://learn.microsoft.com//azure/aks/long-term-support) for more information.
+* 1.30 is the next LTS version after 1.27. Customers will have at least 6 months of migration time available between 1.27 LTS to 1.30 LTS i.e before the 1.27 LTS goes End of Life by July 2025. Refer [long term support](https://learn.microsoft.com/azure/aks/long-term-support) for more information.
 
 ### Release Notes
 
@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior Change
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) has been updated from 300Mi to 500Mi.
-  * Base CPU and memory for metrics-server container are set to 150M and 100Mi respectively on clusters with K8s version >= 1.30.0. More information on metrics server scaling can be found [here](https://learn.microsoft.com/azure/aks/use-metrics-server-vertical-pod-autoscaler).
+  * Base CPU and memory for metrics-server container are updated from 44M to 150M and 51Mi to 100Mi respectively on clusters with K8s version >= 1.30.0. More information on metrics server scaling can be found [here](https://learn.microsoft.com/azure/aks/use-metrics-server-vertical-pod-autoscaler).
 
      
 * Component Updates:
@@ -46,7 +46,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta apis will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta apis closer to the 1.30 release.
 * Istio service mesh addon revision asm-1-19 is no longer supported. If you are still using this revision on your cluster, please upgrade for continued support. More information about mesh upgrades and version support can be found [here](https://aka.ms/asm-aks-upgrade-docs).
-* 1.30 is the next LTS version after 1.27. Customers will have at least 6 months of migration time available between 1.27 LTS to 1.30 LTS i.e before the 1.27 LTS goes End of Life by July 2025. Refer [long term support](https://learn.microsoft.com//azure/aks/long-term-support) for more information.
+* 1.30 is the next LTS version after 1.27. Customers will have at least 6 months of migration time available between 1.27 LTS to 1.30 LTS i.e before the 1.27 LTS goes End of Life by July 2025. Refer [long term support](https://learn.microsoft.com/azure/aks/long-term-support) for more information.
 * Container Insights has automatically migrated from legacy authentication to managed authentication on AKS clusters where the Container Insights addon was enabled with legacy authentication. This migration occurs when any feature, such as the cost-analysis addon or authorized IP ranges, is enabled using the preview API version 2023-07-02-preview or later. This unintended migration has caused monitoring to break, this issue has been fixed for new clusters. To mitigate this issue on existing clusters, re-onboarding or re-configuring of Container Insights is required.
 * Released improvements to [planned maintenance schedule](https://learn.microsoft.com/azure/aks/planned-maintenance), so that there are no missed or delayed windows. Also you no longer have to wait for 24 hours between the creation or update of a maintenance configuration and the scheduled start time, this will now only take few minutes going forward. 
 
