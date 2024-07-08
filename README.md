@@ -64,7 +64,7 @@ this repository must:
   * This includes YAML files/deployments, scripts to reproduce, exact commands used, screenshots, etc.
 
 [1]: https://azure.microsoft.com/support/options/
-[2]: https://docs.microsoft.com/en-us/azure/aks/support-policies
+[2]: https://docs.microsoft.com/azure/aks/support-policies
 
 ## Hiring
 ### PM
