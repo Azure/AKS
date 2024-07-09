@@ -7,7 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * Starting 1.30 Kubernetes version and 1.27 LTS versions, beta APIs will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta APIs closer to the 1.30 release.
-* 1.30 is the next LTS version after 1.27. Upgrade from 1.27 LTS to 1.30 LTS will be possible starting January 2025 thus providing a  6 months upgrade window before 1.27 LTS goes End of Life in July 2025. More information about AKS LTS is available [here](https://learn.microsoft.com/azure/aks/long-term-support).
+* 1.30 is the next LTS version after 1.27. Upgrade from 1.27 LTS to 1.30 LTS will be possible starting August 2024. More information about AKS LTS is available [here](https://learn.microsoft.com/azure/aks/long-term-support).
 
 ### Release Notes
 
