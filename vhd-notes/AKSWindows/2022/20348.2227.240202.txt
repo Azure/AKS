@@ -63,7 +63,7 @@ Installed Updates
 	2024-01 Cumulative Update for Microsoft server operating system version 21H2 for x64-based Systems (KB5034129)
 
 Windows Update Registry Settings
-	https://docs.microsoft.com/en-us/windows/deployment/update/waas-wu-settings
+	https://docs.microsoft.com/windows/deployment/update/waas-wu-settings
 	HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
 	HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
 		NoAutoUpdate : 1

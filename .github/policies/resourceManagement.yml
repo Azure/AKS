@@ -337,7 +337,7 @@ configuration:
             Hi there :wave: AKS bot here. This issue has been tagged as needing a support request so that the AKS support and engineering teams have a look into this particular cluster/issue.
 
 
-            Follow the steps [here](https://azure.microsoft.com/en-us/support/create-ticket/) to create a support ticket for Azure Kubernetes Service and the cluster discussed in this issue.
+            Follow the steps [here](https://azure.microsoft.com/support/create-ticket/) to create a support ticket for Azure Kubernetes Service and the cluster discussed in this issue.
 
 
             Please do mention this issue in the case description so our teams can coordinate to help you.

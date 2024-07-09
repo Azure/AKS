@@ -6,8 +6,8 @@ This quick start is using [kuard](https://github.com/kubernetes-up-and-running/k
 
 ## Before you begin
 * Install [kubectl](https://kubernetes.io/docs/tasks/tools/).
-* Create a fleet with three members: `aks-member-1`, `aks-member-2`, and `aks-member-3` using [Azure CNI networking](https://review.learn.microsoft.com/en-us/azure/aks/configure-azure-cni).
-* Member clusters **MUST** reside either in the same virtual network, or [peered](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview) virtual networks such that pods from different clusters can communicate directly with each other using pod IPs.
+* Create a fleet with three members: `aks-member-1`, `aks-member-2`, and `aks-member-3` using [Azure CNI networking](https://review.learn.microsoft.com/azure/aks/configure-azure-cni).
+* Member clusters **MUST** reside either in the same virtual network, or [peered](https://docs.microsoft.com/azure/virtual-network/virtual-network-peering-overview) virtual networks such that pods from different clusters can communicate directly with each other using pod IPs.
 * Download `kubeconfig` file for your hub cluster as `hub` using: 
 
   `az fleet get-credentials -g ${GROUP} -n ${FLEET} --file hub`
