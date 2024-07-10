@@ -25,7 +25,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavior Change
   * The memory limit for [Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver) has been updated from 300Mi to 500Mi.
   * Base CPU and memory for metrics-server container are updated from 44M to 150M and 51Mi to 100Mi respectively on clusters with K8s version >= 1.30.0. More information on metrics server scaling can be found [here](https://learn.microsoft.com/azure/aks/use-metrics-server-vertical-pod-autoscaler).
-  * Creation of clusters with konnectivity and private Key Management Service (KMS) plugin based encryption of etcd using Azure Key Vault is no longer supported. Only clusters with API Server VNet Integration (preview) tunnel are allowed to be used along with KMS encrypted etcd clusters based on private Azure Key Vault.
      
 * Component Updates:
   * Linux Network Policy Manager has been upgraded from v1.5.23 to [v.1.5.29](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.29) to address [CVE-2024-28085](https://nvd.nist.gov/vuln/detail/CVE-2024-28085).
