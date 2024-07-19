@@ -16,6 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS version 1.30 is now GA.
   * AKS patch versions 1.30.2, 1.30.1, 1.29.6, 1.28.11, 1.27.15, are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
   * Under [Istio add-on](https://learn.microsoft.com/azure/aks/istio-about) for AKS, the add-on now supports EnvoyFilter of the type Lua `(type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua)`. While this `EnvoyFilter` is allowed, any issue arising from the Lua script itself is not supported. Other `EnvoyFilter` types currently remain blocked.
+  * A new tutorial has been released on how to [securely scale your applications using the KEDA add-on and workload identity](https://learn.microsoft.com/azure/aks/keda-workload-identity).
 
 * Preview feature:
   * CNI Overlay dual-stack (IPv4/IPv6) is now available on Windows Agent Pools.
@@ -31,8 +32,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Component Updates:
   * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) patches have been bumped to v1.29.5 and v1.30.4.
   * coreDNS has been updated to use image  v1.9.4-hotfix.20240704 to fix CVE vulnerabilities.
-  * Istio add-on has been bumped to include v1.21.3-hotfix.20240626 and v1.22.1-hotfix.20240626 to fix datadog tracer zero-day crash.
-  * KEDA add-on has been updated to v2.14.0 on AKS v1.30.
+  * [Istio add-on](https://learn.microsoft.com/azure/aks/istio-about) has been bumped to include v1.21.3-hotfix.20240626 and v1.22.1-hotfix.20240626 to fix datadog tracer zero-day crash.
+  * [KEDA add-on](https://learn.microsoft.com/azure/aks/keda-about) has been updated to v2.14.0 on AKS v1.30.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.08.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.08.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202407.08.0](vhd-notes/AzureLinux/202407.08.0.txt).
 
