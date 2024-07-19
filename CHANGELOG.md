@@ -1,5 +1,42 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-07-16
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240716.
+
+### Announcements
+
+* Starting 1.30 Kubernetes version and 1.27 LTS versions, beta APIs will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta APIs closer to the 1.30 release.
+* 1.30 is the next LTS version after 1.27. Upgrade from 1.27 LTS to 1.30 LTS will be possible starting August 2024. More information about AKS LTS is available [here](https://learn.microsoft.com/azure/aks/long-term-support).
+* 1.27 community supported has ended. The ability to exit [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) on 1.27 is blocked. To exit, upgrade to 1.28 and disable LTS with the `az aks upgrade` command.
+
+### Release Notes
+
+* Features:
+  * AKS version 1.30 is now GA.
+  * AKS patch versions 1.30.2, 1.30.1, 1.29.6, 1.28.11, 1.27.15, are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+  * Under [Istio add-on](https://learn.microsoft.com/azure/aks/istio-about) for AKS, the add-on now supports EnvoyFilter of the type Lua `(type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua)`. While this `EnvoyFilter` is allowed, any issue arising from the Lua script itself is not supported. Other `EnvoyFilter` types currently remain blocked.
+
+* Preview feature:
+  * CNI Overlay dual-stack (IPv4/IPv6) is now available on Windows Agent Pools.
+  
+* Bug Fixes:
+  * Update iptables rules in clusters with Azure NetworkPolicy Manager to block pod access to wireserver.
+  * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) has released patch v1.29.5 and v1.30.4 to fix a bug which prevents scaling from zero of selected SKUs.
+  * A bug regarding App Routing's [placeholderPod](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023-patch-1---2024-07-10) not properly cleaning up has been fixed.
+
+* Behavior Change
+  * AKS Automatic clusters now use Azure Linux for Node Auto Provision dynamic nodes.
+     
+* Component Updates:
+  * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) patches have been bumped to v1.29.5 and v1.30.4.
+  * coreDNS has been updated to use image  v1.9.4-hotfix.20240704 to fix CVE vulnerabilities.
+  * Istio add-on has been bumped to include v1.21.3-hotfix.20240626 and v1.22.1-hotfix.20240626 to fix datadog tracer zero-day crash.
+  * KEDA add-on has been updated to v2.14.0 on AKS v1.30.
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.08.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.08.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202407.08.0](vhd-notes/AzureLinux/202407.08.0.txt).
+
+
 ## Release 2024-06-27
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240627.
