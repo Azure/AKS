@@ -24,7 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Existing node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [aka.ms/aks/updatefips](https://aka.ms/aks/updatefips) for more information.
   
 * Bug Fixes:
-  * Update iptables rules in clusters with Azure NetworkPolicy Manager to block pod access to wireserver.
+  * Updated iptables rules in clusters with Azure Network Policy Manager to block pod access to wireserver.
   * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) has released patch v1.29.5 and v1.30.4 to fix a bug which prevents scaling from zero of selected SKUs.
   * A bug regarding App Routing's [placeholderPod](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023-patch-1---2024-07-10) not properly cleaning up has been fixed.
 
