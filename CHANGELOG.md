@@ -17,6 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS patch versions 1.30.2, 1.30.1, 1.29.6, 1.28.11, 1.27.15, are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
   * [Istio add-on for AKS](https://learn.microsoft.com/azure/aks/istio-about) now supports EnvoyFilter of the type Lua `(type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua)`. While this `EnvoyFilter` is allowed, any issue arising from the Lua script itself is not supported. Other `EnvoyFilter` types currently remain blocked.
   * A new tutorial has been released on how to [securely scale your applications using the KEDA add-on and workload identity](https://learn.microsoft.com/azure/aks/keda-workload-identity).
+  * The ability to migrate your existing Ubuntu node pools to Azure Linux by changing the [OS SKU of the node pool](https://learn.microsoft.com/azure/azure-linux/tutorial-azure-linux-migration?tabs=azure-cli#in-place-os-sku-migration-preview) is now GA.
 
 * Preview feature:
   * CNI Overlay dual-stack (IPv4/IPv6) is now available on Windows Agent Pools.
@@ -37,7 +38,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [KEDA add-on](https://learn.microsoft.com/azure/aks/keda-about) has been updated to v2.14.0 on AKS v1.30.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.08.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.08.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202407.08.0](vhd-notes/AzureLinux/202407.08.0.txt).
-
 
 ## Release 2024-06-27
 
