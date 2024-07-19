@@ -20,6 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview feature:
   * CNI Overlay dual-stack (IPv4/IPv6) is now available on Windows Agent Pools.
+  * Existing node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [aka.ms/aks/updatefips](https://aka.ms/aks/updatefips) for more information.
   
 * Bug Fixes:
   * Update iptables rules in clusters with Azure NetworkPolicy Manager to block pod access to wireserver.
