@@ -6,9 +6,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* Starting 1.30 Kubernetes version and 1.27 LTS versions, beta APIs will be disabled by default, when you upgrade to [them](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#before-you-begin). There will be an option provided to explicitly enable beta APIs closer to the 1.30 release.
 * 1.30 is the next LTS version after 1.27. Upgrade from 1.27 LTS to 1.30 LTS will be possible starting August 2024. More information about AKS LTS is available [here](https://learn.microsoft.com/azure/aks/long-term-support).
 * 1.27 community supported has ended. To exit [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) upgrade to 1.28 and disable LTS with the `az aks upgrade` command.
+* A new tutorial has been released on how to [securely scale your applications using the KEDA add-on and workload identity](https://learn.microsoft.com/azure/aks/keda-workload-identity).
 
 ### Release Notes
 
@@ -16,7 +16,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS version 1.30 is now GA.
   * AKS patch versions 1.30.2, 1.30.1, 1.29.6, 1.28.11, 1.27.15, are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
   * [Istio add-on for AKS](https://learn.microsoft.com/azure/aks/istio-about) now supports EnvoyFilter of the type Lua `(type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua)`. While this `EnvoyFilter` is allowed, any issue arising from the Lua script itself is not supported. Other `EnvoyFilter` types currently remain blocked.
-  * A new tutorial has been released on how to [securely scale your applications using the KEDA add-on and workload identity](https://learn.microsoft.com/azure/aks/keda-workload-identity).
   * The ability to migrate your existing Ubuntu node pools to Azure Linux by changing the [OS SKU of the node pool](https://learn.microsoft.com/azure/azure-linux/tutorial-azure-linux-migration?tabs=azure-cli#in-place-os-sku-migration-preview) is now GA.
 
 * Preview feature:
@@ -25,16 +24,15 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   
 * Bug Fixes:
   * Updated iptables rules in clusters with Azure Network Policy Manager to block pod access to wireserver.
-  * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) has released patch v1.29.5 and v1.30.4 to fix a bug which prevents scaling from zero of selected SKUs.
   * A bug regarding App Routing's [placeholderPod](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023-patch-1---2024-07-10) not properly cleaning up has been fixed.
 
 * Behavior Change
   * AKS Automatic clusters now use Azure Linux for Node Auto Provision dynamic nodes.
      
 * Component Updates:
-  * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) patches have been bumped to v1.29.5 and v1.30.4.
-  * coreDNS has been updated to use image  v1.9.4-hotfix.20240704 to fix CVE vulnerabilities.
-  * [Istio add-on](https://learn.microsoft.com/azure/aks/istio-about) has been bumped to include v1.21.3-hotfix.20240626 and v1.22.1-hotfix.20240626 to fix datadog tracer zero-day crash.
+  * AKS has released new patches v1.29.5 and v1.30.4 for [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) to fix a bug which prevents scaling from zero of selected SKUs.
+  * coreDNS has been updated to use image v1.9.4-hotfix.20240704 to fix CVE vulnerabilities.
+  * [Istio add-on](https://learn.microsoft.com/azure/aks/istio-about) has been bumped to include v1.21.3-hotfix.20240626 and v1.22.1-hotfix.20240626 to fix [datadog tracer zero-day crash](https://github.com/envoyproxy/envoy/security/advisories/GHSA-8mq4-c2v5-3h39).
   * [KEDA add-on](https://learn.microsoft.com/azure/aks/keda-about) has been updated to [v2.14.0](https://github.com/kedacore/keda/releases/tag/v2.14.0) on AKS v1.30.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.08.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.08.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202407.08.0](vhd-notes/AzureLinux/202407.08.0.txt).
