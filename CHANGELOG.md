@@ -35,7 +35,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Cluster Autoscaler](https://github.com/kubernetes/autoscaler) patches have been bumped to v1.29.5 and v1.30.4.
   * coreDNS has been updated to use image  v1.9.4-hotfix.20240704 to fix CVE vulnerabilities.
   * [Istio add-on](https://learn.microsoft.com/azure/aks/istio-about) has been bumped to include v1.21.3-hotfix.20240626 and v1.22.1-hotfix.20240626 to fix datadog tracer zero-day crash.
-  * [KEDA add-on](https://learn.microsoft.com/azure/aks/keda-about) has been updated to v2.14.0 on AKS v1.30.
+  * [KEDA add-on](https://learn.microsoft.com/azure/aks/keda-about) has been updated to [v2.14.0](https://github.com/kedacore/keda/releases/tag/v2.14.0) on AKS v1.30.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.08.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.08.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202407.08.0](vhd-notes/AzureLinux/202407.08.0.txt).
 
