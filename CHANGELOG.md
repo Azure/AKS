@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated iptables rules in clusters with Azure Network Policy Manager to block pod access to wireserver.
   * A bug regarding App Routing's [placeholderPod](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023-patch-1---2024-07-10) not properly cleaning up has been fixed.
 
-* Behavior Change
+* Behavior Change:
   * AKS Automatic clusters now use Azure Linux for Node Auto Provision dynamic nodes.
      
 * Component Updates:
