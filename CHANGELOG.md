@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Istio add-on for AKS](https://learn.microsoft.com/azure/aks/istio-about) now supports EnvoyFilter of the type Lua `(type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua)`. While this `EnvoyFilter` is allowed, any issue arising from the Lua script itself is not supported. Other `EnvoyFilter` types currently remain blocked.
   * The ability to migrate your existing Ubuntu node pools to Azure Linux by changing the [OS SKU of the node pool](https://learn.microsoft.com/azure/azure-linux/tutorial-azure-linux-migration?tabs=azure-cli#in-place-os-sku-migration-preview) is now GA.
 
-* Preview feature:
+* Preview features:
   * CNI Overlay dual-stack (IPv4/IPv6) is now available on Windows Agent Pools.
   * Existing node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [aka.ms/aks/updatefips](https://aka.ms/aks/updatefips) for more information.
   
