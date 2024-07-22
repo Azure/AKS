@@ -9,6 +9,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * 1.30 is the next LTS version after 1.27. Upgrade from 1.27 LTS to 1.30 LTS will be possible starting August 2024. More information about AKS LTS is available [here](https://learn.microsoft.com/azure/aks/long-term-support).
 * 1.27 community supported has ended. To exit [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) upgrade to 1.28 and disable LTS with the `az aks upgrade` command.
 * A new tutorial has been released on how to [securely scale your applications using the KEDA add-on and workload identity](https://learn.microsoft.com/azure/aks/keda-workload-identity).
+* Running `az aks get-versions` now returns all patch versions for AKS version. As each supported minor version can support any number of patches at a given time. To learn more about AKS versioning, please read the [official documentation](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy).
 
 ### Release Notes
 
