@@ -26,6 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fixes:
   * Updated iptables rules in clusters with Azure Network Policy Manager to block pod access to wireserver.
   * A bug regarding App Routing's [placeholderPod](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#023-patch-1---2024-07-10) not properly cleaning up has been fixed.
+  * A [regression in kube-scheduler impacting Kubernetes versions 1.27.14, 1.28.10, 1.29.5](https://github.com/Azure/AKS/issues/4434) has been fixed in new patch versions 1.30.2, 1.30.1, 1.29.6, 1.28.11, 1.27.15. If you are on the affected patch versions. Please follow release [v20240716](https://releases.aks.azure.com/) and upgrade your AKS version once the release is in your region.
 
 * Behavior Change:
   * AKS Automatic clusters now use Azure Linux for Node Auto Provision dynamic nodes.
