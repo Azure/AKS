@@ -37,6 +37,8 @@ configuration:
       - isNotLabeledWith:
           label: feature-request
       - isNotLabeledWith:
+          label: enhancement
+      - isNotLabeledWith:
           label: bug
       actions:
       - addLabel:
@@ -248,6 +250,8 @@ configuration:
           days: 7
       - isNotLabeledWith:
           label: feature-request
+      - isNotLabeledWith:
+          label: enhancement        
       - isNotLabeledWith:
           label: stale
       actions:
