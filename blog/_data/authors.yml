@@ -59,3 +59,15 @@ Coco Wang:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/coco-wang-2399041b6/"
+
+Pavneet Ahluwalia:
+  name        : "Pavneet Ahluwalia"
+  bio         : "Pavneet is a Principal PM Lead for the Azure Kubernetes Service. "
+  avatar      : "https://media.licdn.com/dms/image/C5603AQE7tPDi6rZOOA/profile-displayphoto-shrink_400_400/0/1611457406736?e=1727308800&v=beta&t=26aGnsAzSAjVPGwD7CzxlreIGV_Xv81ZpVDXk5VwnNo" # Replace this with your avatar image
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:paahluwalia@microsoft.com"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/pavneetsingh/"
