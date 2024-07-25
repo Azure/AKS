@@ -1,8 +1,8 @@
 ---
-title: "Sample - Add your title here"
-description: "Sample - Add your description"
-date: 2050-08-24 # date is important. future dates will not be published
-author: Brian Redmond # must match the authors.yml in the _data folder
+title: "AKS - Things you wish you knew!"
+description: "List of features and configuraitons that make your life easier in running your workloads on AKS in produciton environments "
+date: 2024-007-24 # date is important. future dates will not be published
+autho: Pavneet Ahluwalia # must match the authors.yml in the _data folder
 categories: general # general, operations, networking, security, developer topics, add-ons
 ---
 
