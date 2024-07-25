@@ -11,7 +11,7 @@ categories:
 ## Background
 
 Networking, Observability and Upgrades are among the most common topics of discussions that we face with customers on AKS. Users have a number of options for these on AKS and they often wonder what are the best features to adopt for the same and what are AKS's recommended options.
-Furthermore, we have seen a common patterns in majority of the support issues that customers create and the conversations that we have with customers. *So, we wanted to share some of those common mistakes that customers make and what are the right settings and features for customers to use to make running AKS in production at scale easier.* 
+Furthermore, we have seen a common patterns in majority of the support issues that customers create and the conversations that we have with customers, where they are either not using best practice configuraiton or features, in-turn making life harder for themselves. *So, we wanted to share some of those common mistakes that customers make and what are the right settings and features for customers to use to make running AKS in production at scale easier.* 
 If you are new to AKS, you should skip this and first check out our new offering [AKS Automatic] - that lets you create and manage production-ready clusters with minimal effort and added confidence. 
 
 ## AKS Auto Upgrades
