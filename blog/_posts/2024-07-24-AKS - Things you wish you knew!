@@ -36,13 +36,21 @@ No. of VMs : >3
 
 When using VM SKUs that do not support ephemeral OS disks, be sure to set a high performance tier for your managed disks to ensure sufficient I/O throughput for your critical addons and processes.
 
-## AKS Diagnostic Settings
+## AKS Diagnostic Settings and recommended alerts
+Troubleshooting issues in Kubernetes can be hard, Users often struggle with pinpointing performance issues, security threats, and operational glitches within their clusters. Part of the problem is ensuring that the right set of metrics, logs , events are captured and stored in a easy to query mannger. 
+AKS Diagnostics setting centralizes the enablement and data collection experience into a single view, leveraging built in data collection, storage and visualization tools in Azure Monitor and Log Analytics.
+With a few clicks, you can select which logs are collected such as k8s audit logs, control plane logs and audit admin logs; you can select the destination in which to store that data - from log analytics workspace, cold storage to third-part montiroing solutions and you can also configure the granularity of the logs to resoruce level logs. 
 
+![image](blog/assets/images/thigns you wish you knew 0 disgnotics1.png)
+![image](blog/assets/images/things you wish you knew -diagnostics2.png)
+
+## Azure Portal - Diagnose and Solve\
+Staying with the theme of troubleshooting, 
 
 ## AKS Overlay CNI with Cilium Network Policies
 
 
-## Azure Portal - Diagnose and Solve
+
 
 
 ## Summary
