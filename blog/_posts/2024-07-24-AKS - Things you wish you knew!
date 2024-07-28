@@ -1,0 +1,51 @@
+---
+title: "AKS:Things you wish you knew!"
+description: "List of features and configuraitons that make your life easier in running your workloads on AKS in produciton environments"
+date: 2024-07-24 # date is important. future dates will not be published
+autho: Pavneet Ahluwalia # must match the authors.yml in the _data folder
+categories: 
+ - operations
+ - general
+---
+
+## Background
+
+Networking, Observability and Upgrades are among the most common topics of discussions that we face with customers on AKS. Users have a number of options for these on AKS and they often wonder what are the best features to adopt for the same and what are AKS's recommended options.
+Furthermore, we have seen a common patterns in majority of the support issues that customers create and the conversations that we have with customers, where they are either not using best practice configuraiton or features, in-turn making life harder for themselves. *So, we wanted to share some of those common mistakes that customers make and what are the right settings and features for customers to use to make running AKS in production at scale easier.* 
+If you are new to AKS, you should skip this and first check out our new offering [AKS Automatic] - that lets you create and manage production-ready clusters with minimal effort and added confidence. 
+
+## AKS Auto Upgrades
+Kubernetes upgrades like any change event can be hard to manage, especially when you are running multiple clusters across your fleet or you are falling behind on the n-3 supported versions. It is important to maintain a secure Kuberntes environment by applying the latest security patches, while ensuring your applicaitons and workloads do not see any disruption that can have an impact on the business.
+AKS Cluster auto-upgrade provides a "set once and forget" mechanism that yields tangible time and operational cost benefits. Azure Kubernetes Service (AKS) auto-upgrade feature addresses the critical challenge of maintaining up-to-date Kubernetes clusters without manual intervention. By automating the upgrade process, it ensures that clusters receive the latest security patches, bug fixes, and new features, significantly reducing the risk of vulnerabilities and operational issues associated with outdated software.
+It provides you with the flexibility to schedule your upgrades on a specific, repeatable cadnece to ensure critical business is not effected, and allows you to pick from 4 upgrade channels "none". "patch", "stable" and "rapid" so that you can controls the timing of the upgrade. To learn more visit [here](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster?tabs=azure-cli)
+
+Enable Auto-upgrade on your new or existing clusters today:
+
+![image](blog/assets/images/THings you wish you knew - upgrade.png)
+
+## System pool VM SKU and Managed Disk Performance Tiers
+AKS clusters have two types of nodepool. System pool, which is meant to run the system processes, addons and critical compoenets such as coredns, metrics-server, Konnectivity agents etc and the User pool, which are meant to run the user's worklaod applications. 
+One of the most common mistakes that we see users make , is that since they are not running thier user workload on the system pool, they will try to save cost by chosing the smallest possible VM SKUs for system pools, often even 2 core VMS. While that might work at very small scale, that is not the recommended guidance and users are essentially are settting themselves up for failure and pain later, impacting business and ultimately revenue.
+By not providing sufficeint resoruces for your system component pods, users can run into issues such as dns resulition issues(Coredns), loss of metrics and alerting(metrics-server), control plane response latency or failures (Konnectivity) due to resource starvation for these critical components or even node failure, forcing them to spend time diagnosing and mitigating easily avoidable issues.
+For these reasons, we recommend using a minimum of 4 core VMs in general with 3 nodes for system pool, and at larger scale (think +1,000 nodes and +10,0000) use 16 core VMs. 
+
+###Ideal recommendaiton for system pool:
+VM SKU: Standard_D8ds_v5
+OS disk type: Ephemeral
+No. of VMs : >3 
+
+When using VM SKUs that do not support ephemeral OS disks, be sure to set a high performance tier for your managed disks to ensure sufficient I/O throughput for your critical addons and processes.
+
+## AKS Diagnostic Settings
+
+
+## AKS Overlay CNI with Cilium Network Policies
+
+
+## Azure Portal - Diagnose and Solve
+
+
+## Summary
+
+
+[AKS Automatic](blog/_posts/2024-05-22-aks-automatic.md)
