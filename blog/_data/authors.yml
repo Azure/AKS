@@ -63,7 +63,7 @@ Coco Wang:
 Saurabh Sharma:
   name        : "Saurabh Sharma"
   bio         : "Product Manager for Cloud Native Storage initiatives"
-  avatar      : "" # Replace this with your avatar image
+  avatar      : "https://x.com/thesrb05/photo" # Replace this with your avatar image
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
