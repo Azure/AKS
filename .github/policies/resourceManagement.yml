@@ -527,7 +527,16 @@ configuration:
         - mentionUsers:
             mentionees:
             - sabbour
-            - jackstromberg
+            - JackStromberg
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      - if:
+        - hasLabel:
+            label: AGC
+        then:
+        - mentionUsers:
+            mentionees:
+            - JackStromberg
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
       - if:
