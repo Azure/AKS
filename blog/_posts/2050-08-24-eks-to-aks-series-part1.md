@@ -1,22 +1,22 @@
 ---
-title: "New Documentation Series for Moving Workloads from EKS to AKS"
+title: "Step-by-Step: EKS to AKS by example"
 description: "This article guides you through replicating an Amazon Web Services (AWS) Elastic Kubernetes Service (EKS) event-driven workflow (EDW) workload using KEDA and Karpenter in Azure Kubernetes Service (AKS)."
 date: 2050-08-24
 author: Kenneth Kilty
-categories: general # general, operations, networking, security, developer topics, add-ons
+categories: general
 ---
 
 ## Introduction
 
-Many Azure customers often operate their workloads across multiple cloud providers, especially with SaaS workloads. SaaS providers need to be able to accommodate the cloud preferences of their customers. Kubernetes plays a central role in multi-cloud workloads due to its ability to provide a consistent and portable environment across different cloud providers.
+Many companies use multiple clouds for their workloads. These companies need to accommodate the cloud preferences of their customers. Kubernetes plays a central role in multi-cloud workloads due to its ability to provide a consistent and portable environment across different cloud providers.
 
-We’re excited to announce the first in a new documentation series designed specifically for customers already using Amazon EKS, to help them replicate their workloads to AKS: [Replicate an AWS event-driven workflow (EDW) workload with KEDA and Karpenter in Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview)
+We’re excited to announce the first in a new documentation series designed specifically for customers already using Amazon EKS, to help them replicate or migrate their workloads to AKS: [Replicate an AWS event-driven workflow (EDW) workload with KEDA and Karpenter in Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview)
 
-Moving a workload from another managed Kubernetes offering to AKS can be challenging. This series aims to provide a holistic, end-to-end experience by example to help ease that process. The samples in this series begin with infrastructure and code on EKS and end with equivalently functional code on AKS, with an emphasis on explaining the conceptual differences between AWS and Azure throughout.
+Moving a workload from another managed Kubernetes offering to AKS can be challenging. This series aims to provide a holistic, end-to-end experience by example to help ease that process. The samples in this series begin with infrastructure and code on EKS and end with equivalently functional infrastructure and code on AKS, while explaining the conceptual differences between AWS and Azure throughout.
 
 ## An EKS to AKS Replication Scenario
 
-This new article guides you through replicating an Amazon Web Services (AWS) Elastic Kubernetes Service (EKS) event-driven workflow (EDW) workload using [KEDA](https://keda.sh/) and [Karpenter](https://karpenter.sh/) in Azure Kubernetes Service (AKS). In the spirit keeping the workload as multi-cloud as possible, this guide prioritizes minimizing the changes needed to get the workload running on Azure.
+This new [article](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview) guides you through replicating an Amazon Web Services (AWS) Elastic Kubernetes Service (EKS) event-driven workflow (EDW) workload using [KEDA](https://keda.sh/) and [Karpenter](https://karpenter.sh/) in Azure Kubernetes Service (AKS). In the spirit keeping the workload as portable as possible, this guide prioritizes minimizing the changes needed to get the workload running on Azure.
 
 In this first article, the workload implements the competing consumers pattern with a producer/consumer app, facilitating efficient data processing by separating data production from data consumption. KEDA is used to scale pods running consumer processing, while AKS managed Karpenter autoscale Kubernetes nodes through the new AKS [Node Autoprovisioning (NAP)](https://learn.microsoft.com/en-gb/azure/aks/node-autoprovision) feature currently available in preview.
 
