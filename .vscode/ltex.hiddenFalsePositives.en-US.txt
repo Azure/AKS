@@ -1,0 +1,1 @@
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QWe're excited to announce the first in a new documentation series to help new AKS customers replicate their workloads from Amazon EKS to AKS: Replicate an AWS event-driven workflow (EDW) workload with KEDA and Karpenter in Azure Kubernetes Service (AKS)\\E$"}
