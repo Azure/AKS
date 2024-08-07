@@ -1,5 +1,5 @@
 ---
-title: "EKS to AKS: A New Guidance Series"
+title: "EKS to AKS By Example: A New Series"
 description: "Learn how to migrate Amazon EKS workloads to Azure AKS using KEDA and Karpenter in this comprehensive guide."
 date: 2050-08-24
 author: Kenneth Kilty
