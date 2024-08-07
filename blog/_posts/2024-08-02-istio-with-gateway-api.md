@@ -31,7 +31,7 @@ Here's a high-level overview of what we'll be doing to leverage the Gateway API 
 1. Provision [AKS cluster with Istio enabled](https://learn.microsoft.com/azure/aks/istio-deploy-addon#install-mesh-during-cluster-creation?WT.mc_id=containers-146848-pauyu)
 1. Provision [AKS managed Istio external ingress gateway](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#enable-external-ingress-gateway?WT.mc_id=containers-146848-pauyu)
 1. Install [Gateway API CRDs](https://gateway-api.sigs.k8s.io/guides/#installing-gateway-api)
-1. Deploy a new [Gateway](https://gateway-api.sigs.k8s.io/concepts/api-overview/#gateway) resource in the aks-istio-ingress namespace and make sure it points to the aks-istio-ingressgateway-external service - this is the key!
+1. Deploy a new [Gateway](https://gateway-api.sigs.k8s.io/concepts/api-overview/#gateway) resource in the `aks-istio-ingress` namespace and configure it to program the existing AKS-managed Istio Ingress Gateway - this is the key!
 1. Deploy [HTTPRoute](https://gateway-api.sigs.k8s.io/concepts/api-overview/#httproute) resource that uses the new Gateway
 
 Before you begin, you'll need to make sure you have access to an Azure subscription and have the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli?WT.mc_id=containers-146848-pauyu) and [kubectl](https://kubernetes.io/docs/tasks/tools/) installed.
