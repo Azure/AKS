@@ -1,6 +1,6 @@
 ---
-title: "Step-by-Step: EKS to AKS by example"
-description: "This article guides you through replicating an Amazon Web Services (AWS) Elastic Kubernetes Service (EKS) event-driven workflow (EDW) workload using KEDA and Karpenter in Azure Kubernetes Service (AKS)."
+title: "EKS to AKS: A New Guidance Series"
+description: "Learn how to migrate Amazon EKS workloads to Azure AKS using KEDA and Karpenter in this comprehensive guide."
 date: 2050-08-24
 author: Kenneth Kilty
 categories: general
@@ -14,7 +14,7 @@ We’re excited to announce the first in a new documentation series designed spe
 
 Moving a workload from another managed Kubernetes offering to AKS can be challenging. This series aims to provide a holistic, end-to-end experience by example to help ease that process. The samples in this series begin with infrastructure and code on EKS and end with equivalently functional infrastructure and code on AKS, while explaining the conceptual differences between AWS and Azure throughout.
 
-## An EKS to AKS Replication Scenario
+## EKS to AKS - Event Driven Workflow Scenario
 
 This new [article](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview) guides you through replicating an Amazon Web Services (AWS) Elastic Kubernetes Service (EKS) event-driven workflow (EDW) workload using [KEDA](https://keda.sh/) and [Karpenter](https://karpenter.sh/) in Azure Kubernetes Service (AKS). In the spirit keeping the workload as portable as possible, this guide prioritizes minimizing the changes needed to get the workload running on Azure.
 
@@ -30,4 +30,4 @@ You can either clone the AWS EKS sample and follow along with the guide, or read
 
 ## Summary
 
-We hope this new series is helpful for customers coming to AKS from EKS, and we'd love your feedback and ideas for additional guides and scenarios that you encounter. Stay tuned for future posts where we will dive into additional scenarios for other common cloud native workloads.
+Learn how to migrate Amazon EKS workloads to Azure AKS using KEDA and Karpenter in this comprehensive guide. Gain insights into the platform differences, re-architect the workload, update application code, prepare for deployment, and deploy the workload in AKS.
