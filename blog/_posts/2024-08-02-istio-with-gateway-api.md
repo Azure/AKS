@@ -216,7 +216,7 @@ az group delete --name $RG_NAME
 
 ## Summary
 
-We can see that the Gateway API is a powerful new API that provides a standardized way to configure traffic routing in Kubernetes. It is a big step forward from the Ingress and Service Mesh APIs and provides a way to express traffic routing configurations that were previously only possible via custom Ingress annotations. The Gateway API is portable and can be used with many different implementations including Istio. In this article, you learned how you can install the Gateway API CRDs into your AKS cluster and use the Gateway API to manage the AKS-managed Istio external ingress gateway.
+We can see that the Gateway API is a powerful new API that provides a standardized way to configure traffic routing in Kubernetes. It is a big step forward from the Ingress and service mesh APIs and provides a way to express traffic routing configurations that were previously only possible via custom Ingress annotations. The Gateway API is portable and can be used with many different implementations including Istio. In this article, you learned how you can install the Gateway API CRDs into your AKS cluster and use the Gateway API to manage the AKS-managed external Istio Ingress Gateway.
 
 Many resource types and features of Gateway API have graduated to GA with other parts of the API still evolving. If you'd like to get involved in the Gateway API project, head over to the [Gateway API GitHub repository](https://github.com/kubernetes-sigs/gateway-api) for more information.
 
