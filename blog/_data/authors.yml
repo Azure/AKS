@@ -71,3 +71,15 @@ Saurabh Sharma:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/saurabh0501"
+
+Kenneth Kilty:
+  name        : "Kenneth Kilty"
+  bio         : "Technical Program Manager for Cloud Native Platforms"
+  avatar      : "https://www.kenkilty.com/profilepic.jpg"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/kennethkilty/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/KenKilty"
