@@ -31,6 +31,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * `GOMAXPROCS` for coredns has been set to equal CPU limit to avoid throttling.
   * In Azure CNI, `init-cni-dropgz` initContainer has been renamed to `cni-installer`.
   * Validation for minimum 5 minutes has been introduced for [drain timeout value](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-drain-timeout-value) to prevent drain issues during upgrade.
+  * `query` label removed from `dns` metrics in [Advanced Network Observability](https://learn.microsoft.com/azure/aks/advanced-network-observability-concepts?tabs=non-cilium#features-of-advanced-network-observability).
 
 * Component updates:
   * To address scheduler issues fixed in this upstream [change](https://github.com/kubernetes/kubernetes/pull/124933), 1.27.15, 1.28.11, 1.29.6 schedulers versions will be used for Kubernetes versions 1.27.14, 1.28.10, 1.29.5 respectively.
@@ -42,7 +43,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Azure Disk CSI driver to [v1.28.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.9) on AKS 1.27 and to [v1.29.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.7)) on AKS 1.28 and 1.29.
   * Updated Azure File CSI driver to [v1.28.11](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.11) on AKS 1.27, to [v1.29.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.6) on AKS 1.28, and to [v1.30.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.3) on AKS 1.29.
   * Updated Ratify image used in [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) to [v1.2.0](https://github.com/ratify-project/ratify/releases/tag/v1.2.0).
-  * Updated Cilium version has been updated to [1.14.12](https://github.com/cilium/cilium/releases/tag/v1.14.12) for AKS clusters with kubernetes versions >= 1.29.0.
+  * Updated Cilium version has been updated to [1.14.12](https://github.com/cilium/cilium/releases/tag/v1.14.12) for AKS versions >= 1.29.0 where .
   * Istio-based service mesh add-on revision asm-1-21 has been upgraded to patch [v1.21.4](https://github.com/istio/istio/releases/tag/1.21.4) and revision asm-1-22 has been upgraded to patch [v1.22.2](https://github.com/istio/istio/releases/tag/1.22.2). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
   * Updated Windows Kubernetes packages in all AKS versions to address [CVE-2024-5321](https://nvd.nist.gov/vuln/detail/CVE-2024-5321).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.29.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.29.0.txt).
