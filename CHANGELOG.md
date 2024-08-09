@@ -17,9 +17,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Istio add-on now only allows `EnvoyFilter`s of the types Lua, local rate limiting, and gzip compression.
   * [Telemetry API v1](https://istio.io/latest/blog/2024/v1-apis/#telemetry-api) is now available for the Istio based service mesh add-on.
   * The [AKS extension for Visual Studio Code](https://learn.microsoft.com/azure/aks/aks-extension-vs-code) now supports the ability to attach an ACR to your cluster, generate Kubernetes deployment files, generate Dockerfiles, and generate GitHub Actions.
-
-* Preview features:
-  * Dual-stack networking support for Azure CNI powered by Cilium is now in public preview.
   
 * Bug fixes:
   * Fixed a bug where sometimes `NodePublicIPPrefixID` could show unset on a cluster even though it was set.
@@ -32,6 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * In Azure CNI, `init-cni-dropgz` initContainer has been renamed to `cni-installer`.
   * Validation for minimum 5 minutes has been introduced for [drain timeout value](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-drain-timeout-value) to prevent drain issues during upgrade.
   * `query` label removed from `dns` metrics in [Advanced Network Observability](https://learn.microsoft.com/azure/aks/advanced-network-observability-concepts?tabs=non-cilium#features-of-advanced-network-observability).
+  * [Control plane only AKS upgrades](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-upgrade) will now reconcile node pools to desired state. For example, previously let's say a user did did a Kubernetes upgrade and network plugin mode transiton to overlay where a reimaging of the nodes was required, but it wasn't done as nodes were skipped. Going ahead nodes will be reconciled in these circumstances.
 
 * Component updates:
   * To address scheduler issues fixed in this upstream [change](https://github.com/kubernetes/kubernetes/pull/124933), 1.27.15, 1.28.11, 1.29.6 schedulers versions will be used for Kubernetes versions 1.27.14, 1.28.10, 1.29.5 respectively.
@@ -40,10 +38,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Azure Monitor Container Insights image to [v3.1.23](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.23).
   * Azure Monitor managed service for Prometheus images updated to [07-19-2024 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-19-2024).
   * Updated Eraser version to [v1.3.1](https://github.com/eraser-dev/eraser/releases/tag/v1.3.1) for [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner).
-  * Updated Azure Disk CSI driver to [v1.28.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.9) on AKS 1.27 and to [v1.29.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.7)) on AKS 1.28 and 1.29.
+  * Updated Azure Disk CSI driver to [v1.28.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.9) on AKS 1.27 and to [v1.29.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.7) on AKS 1.28 and 1.29.
   * Updated Azure File CSI driver to [v1.28.11](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.28.11) on AKS 1.27, to [v1.29.6](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.6) on AKS 1.28, and to [v1.30.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.3) on AKS 1.29.
   * Updated Ratify image used in [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) to [v1.2.0](https://github.com/ratify-project/ratify/releases/tag/v1.2.0).
-  * Updated Cilium version has been updated to [1.14.12](https://github.com/cilium/cilium/releases/tag/v1.14.12) for AKS versions >= 1.29.0 where .
+  * Updated Cilium version has been updated to [1.14.12](https://github.com/cilium/cilium/releases/tag/v1.14.12) for AKS cluster with versions >= 1.29 and [Advanced Network Observability](https://learn.microsoft.com/azure/aks/advanced-network-observability-concepts?tabs=non-cilium#features-of-advanced-network-observability) enabled.
   * Istio-based service mesh add-on revision asm-1-21 has been upgraded to patch [v1.21.4](https://github.com/istio/istio/releases/tag/1.21.4) and revision asm-1-22 has been upgraded to patch [v1.22.2](https://github.com/istio/istio/releases/tag/1.22.2). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
   * Updated Windows Kubernetes packages in all AKS versions to address [CVE-2024-5321](https://nvd.nist.gov/vuln/detail/CVE-2024-5321).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.29.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.29.0.txt).
