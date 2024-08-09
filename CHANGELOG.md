@@ -6,7 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* KEDA 2.15 contains a breaking change which removes pod identity support. While the [AKS add-on for KEDA](https://learn.microsoft.com/en-us/azure/aks/keda-about) is not currently running KEDA 2.15, if you use pod identity, we recommend you move over to workload identity for your authentication. The KEDA addon will be updated to KEDA 2.15 on AKS clusters with K8s version >= v1.31. [Learn more](https://learn.microsoft.com/en-us/azure/aks/keda-workload-identity) on how to securely scale your applications with workload identity.
+* KEDA 2.15 contains a breaking change which removes pod identity support. While the [AKS add-on for KEDA](https://learn.microsoft.com//azure/aks/keda-about) is not currently running KEDA 2.15, if you use pod identity, we recommend you move over to workload identity for your authentication. The KEDA addon will be updated to KEDA 2.15 on AKS clusters with K8s version >= v1.31. [Learn more](https://learn.microsoft.com//azure/aks/keda-workload-identity) on how to securely scale your applications with workload identity.
 
 ### Release Notes
 
