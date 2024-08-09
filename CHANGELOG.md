@@ -24,6 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug fixes:
   * Fixed a bug where sometimes `NodePublicIPPrefixID` could show unset on a cluster even though it was set.
   * Previously, as part of Istio addon canary upgrade, users had to manually copy their edits to HorizontalPodAutoscaler from old revision to new revision. This has been fixed so that changes done to Horizontal Pod Autoscaler will be automatically copied for the newer revision.
+  * Added validation that if a LTS cluster has a node pool on non-LTS version, upgrade to the next LTS version is blocked.
 
 * Behavior change:
   * When [Advanced Networking Observability](https://learn.microsoft.com/azure/aks/advanced-network-observability-concepts?tabs=non-cilium) is enabled, increased memory limit of 700Mi (from 400Mi) is used for retina-agent.
