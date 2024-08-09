@@ -6,6 +6,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
+* KEDA 2.15 contains a breaking change which removes pod identity support. While the [AKS add-on for KEDA](https://learn.microsoft.com/en-us/azure/aks/keda-about) is not currently running KEDA 2.15, if you use pod identity, we recommend you move over to workload identity for your authentication. The KEDA addon will be updated to KEDA 2.15 on AKS clusters with K8s version >= v1.31. [Learn more](https://learn.microsoft.com/en-us/azure/aks/keda-workload-identity) on how to securely scale your applications with workload identity.
+
 ### Release Notes
 
 * Features:
@@ -14,6 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS patch versions 1.30.3, 1.29.7, 1.28.12, 1.27.16 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
   * Istio add-on now only allows `EnvoyFilter`s of the types Lua, local rate limiting, and gzip compression.
   * [Telemetry API v1](https://istio.io/latest/blog/2024/v1-apis/#telemetry-api) is now available for the Istio based service mesh add-on.
+  * The [AKS extension for Visual Studio Code](https://learn.microsoft.com/azure/aks/aks-extension-vs-code) now supports the ability to attach an ACR to your cluster, generate Kubernetes deployment files, generate Dockerfiles, and generate GitHub Actions.
 
 * Preview features:
   * Dual-stack networking support for Azure CNI powered by Cilium is now in public preview.
@@ -22,14 +25,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed a bug where sometimes `NodePublicIPPrefixID` could show unset on a cluster even though it was set.
   * Previously, as part of Istio addon canary upgrade, users had to manually copy their edits to HorizontalPodAutoscaler from old revision to new revision. This has been fixed so that changes done to Horizontal Pod Autoscaler will be automatically copied for the newer revision.
 
-
 * Behavior change:
   * When [Advanced Networking Observability](https://learn.microsoft.com/azure/aks/advanced-network-observability-concepts?tabs=non-cilium) is enabled, increased memory limit of 700Mi (from 400Mi) is used for retina-agent.
   * `GOMAXPROCS` for coredns has been set to equal CPU limit to avoid throttling.
   * In Azure CNI, `init-cni-dropgz` initContainer has been renamed to `cni-installer`.
   * Validation for minimum 5 minutes has been introduced for [drain timeout value](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-drain-timeout-value) to prevent drain issues during upgrade.
 
-     
 * Component updates:
   * To address scheduler issues fixed in this upstream [change](https://github.com/kubernetes/kubernetes/pull/124933), 1.27.15, 1.28.11, 1.29.6 schedulers versions will be used for Kubernete versions 1.27.14, 1.28.10, 1.29.5 respectively.
   * Updated Azure Blob CSI driver to [v1.22.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.7) on AKS version 1.27.
