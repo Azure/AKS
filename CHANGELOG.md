@@ -6,7 +6,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* KEDA 2.15 contains a breaking change which removes pod identity support. While the [AKS add-on for KEDA](https://learn.microsoft.com//azure/aks/keda-about) is not currently running KEDA 2.15, if you use pod identity, we recommend you move over to workload identity for your authentication. The KEDA addon will be updated to KEDA 2.15 on AKS clusters with K8s version >= v1.31. [Learn more](https://learn.microsoft.com//azure/aks/keda-workload-identity) on how to securely scale your applications with workload identity.
+* AKS will be upgrading the KEDA addon to KEDA 2.15 on AKS clusters with K8s versions >=1.31. KEDA 2.15 brings multiple breaking changes. The breaking changes are listed below:
+  * The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com//azure/aks/keda-workload-identity). 
+  * The removal of [Azure Data Explorer 'metadata.clientSecret' as it was not safe for managing secrets](https://github.com/kedacore/keda/issues/4514).
+  * Removal of the [deprecated metricName from trigger metadata section](https://github.com/kedacore/keda/issues/4240). If you are using metricName today, Please use trigger.name to optionally name your trigger. 
 
 ### Release Notes
 
