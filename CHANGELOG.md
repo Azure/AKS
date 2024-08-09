@@ -44,6 +44,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Ratify image used in [Image Integrity](https://learn.microsoft.com/azure/aks/image-integrity) to [v1.2.0](https://github.com/ratify-project/ratify/releases/tag/v1.2.0).
   * Updated Cilium version has been updated to [1.14.12](https://github.com/cilium/cilium/releases/tag/v1.14.12) for AKS clusters with kubernetes versions >= 1.29.0.
   * Istio-based service mesh add-on revision asm-1-21 has been upgraded to patch [v1.21.4](https://github.com/istio/istio/releases/tag/1.21.4) and revision asm-1-22 has been upgraded to patch [v1.22.2](https://github.com/istio/istio/releases/tag/1.22.2). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
+  * Updated Windows Kubernetes packages in all AKS versions to address [CVE-2024-5321](https://nvd.nist.gov/vuln/detail/CVE-2024-5321).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202407.29.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202407.29.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202407.29.0](vhd-notes/AzureLinux/202407.29.0.txt).
   * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6054.240716](vhd-notes/AKSWindows/2019/17763.6054.240716.txt).
