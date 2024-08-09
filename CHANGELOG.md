@@ -32,7 +32,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Validation for minimum 5 minutes has been introduced for [drain timeout value](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-drain-timeout-value) to prevent drain issues during upgrade.
 
 * Component updates:
-  * To address scheduler issues fixed in this upstream [change](https://github.com/kubernetes/kubernetes/pull/124933), 1.27.15, 1.28.11, 1.29.6 schedulers versions will be used for Kubernete versions 1.27.14, 1.28.10, 1.29.5 respectively.
+  * To address scheduler issues fixed in this upstream [change](https://github.com/kubernetes/kubernetes/pull/124933), 1.27.15, 1.28.11, 1.29.6 schedulers versions will be used for Kubernetes versions 1.27.14, 1.28.10, 1.29.5 respectively.
   * Updated Azure Blob CSI driver to [v1.22.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.7) on AKS version 1.27.
   * For Node Auto Provisioning, Azure provider of Karpenter is upgraded to [v0.5.1](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.5.1).
   * Updated Azure Monitor Container Insights image to [v3.1.23](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.23).
