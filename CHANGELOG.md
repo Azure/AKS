@@ -35,7 +35,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * `query` label removed from `dns` metrics in [Advanced Network Observability](https://learn.microsoft.com/azure/aks/advanced-network-observability-concepts?tabs=non-cilium#features-of-advanced-network-observability).
   * [Control plane only AKS upgrades](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-upgrade) will now reconcile node pools to desired state. For example, previously let's say a user did did a Kubernetes upgrade and network plugin mode transition to overlay where a reimaging of the nodes was required, but it wasn't done as nodes were skipped. Going ahead nodes will be reconciled in these circumstances.
   
-
 * Component updates:
   * To address scheduler issues fixed in this upstream [change](https://github.com/kubernetes/kubernetes/pull/124933), 1.27.15, 1.28.11, 1.29.6 schedulers versions will be used for Kubernetes versions 1.27.14, 1.28.10, 1.29.5 respectively.
   * Updated Azure Blob CSI driver to [v1.22.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.22.7) on AKS version 1.27.
