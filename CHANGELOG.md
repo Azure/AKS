@@ -20,6 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Istio add-on now only allows `EnvoyFilter`s of the types Lua, local rate limiting, and gzip compression.
   * [Telemetry API v1](https://istio.io/latest/blog/2024/v1-apis/#telemetry-api) is now available for the Istio based service mesh add-on.
   * The [AKS extension for Visual Studio Code](https://learn.microsoft.com/azure/aks/aks-extension-vs-code) now supports the ability to attach an ACR to your cluster, generate Kubernetes deployment files, generate Dockerfiles, and generate GitHub Actions.
+  * The [ignore-daemonsets-utilization, daemonset-eviction-for-empty-nodes, and daemonset-eviction-for-occupied-nodes parameters](https://learn.microsoft.com/azure/aks/cluster-autoscaler?tabs=azure-cli#cluster-autoscaler-profile-settings) on the cluster autoscaler profile are GA from API version 2024-05-01 onwards. If you are using the CLI to update these flags, please ensure you are using version 2.63 or later.
   
 * Bug fixes:
   * Fixed a bug where sometimes `NodePublicIPPrefixID` could show unset on a cluster even though it was set.
@@ -33,6 +34,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Validation for minimum 5 minutes has been introduced for [drain timeout value](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli#set-node-drain-timeout-value) to prevent drain issues during upgrade.
   * `query` label removed from `dns` metrics in [Advanced Network Observability](https://learn.microsoft.com/azure/aks/advanced-network-observability-concepts?tabs=non-cilium#features-of-advanced-network-observability).
   * [Control plane only AKS upgrades](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-upgrade) will now reconcile node pools to desired state. For example, previously let's say a user did did a Kubernetes upgrade and network plugin mode transition to overlay where a reimaging of the nodes was required, but it wasn't done as nodes were skipped. Going ahead nodes will be reconciled in these circumstances.
+  
 
 * Component updates:
   * To address scheduler issues fixed in this upstream [change](https://github.com/kubernetes/kubernetes/pull/124933), 1.27.15, 1.28.11, 1.29.6 schedulers versions will be used for Kubernetes versions 1.27.14, 1.28.10, 1.29.5 respectively.
