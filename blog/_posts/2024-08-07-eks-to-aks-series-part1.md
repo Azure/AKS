@@ -10,7 +10,7 @@ categories: general
 
 Many companies use multiple clouds for their workloads. These companies need to accommodate the cloud preferences of their customers. Kubernetes plays a central role in multi-cloud workloads due to its ability to provide a consistent and portable environment across different cloud providers.
 
-We’re excited to announce the first in a new documentation series designed specifically for customers already using Amazon EKS, to help them replicate or migrate their workloads to AKS: [Replicate an AWS event-driven workflow (EDW) workload with KEDA and Karpenter in Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview)
+We would like to share the first in a new documentation series designed specifically for customers already using Amazon EKS, to help them replicate or migrate their workloads to AKS: [Replicate an AWS event-driven workflow (EDW) workload with KEDA and Karpenter in Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview)
 
 Moving a workload from another managed Kubernetes offering to AKS can be challenging. This series aims to provide a holistic, end-to-end experience by example to help ease that process. The samples in this series begin with infrastructure and code on EKS and end with equivalently functional infrastructure and code on AKS, while explaining the conceptual differences between AWS and Azure throughout.
 
