@@ -16,7 +16,7 @@ Even with Kubernetes’ portable API, moving between clouds can be challenging. 
 
 ## EKS to AKS - Event Driven Workflow Scenario
 
-This new [article](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview) guides you through replicating an Amazon Web Services (AWS) Elastic Kubernetes Service (EKS) event-driven workflow (EDW) workload using [KEDA](https://keda.sh/) and [Karpenter](https://karpenter.sh/) in Azure Kubernetes Service (AKS). In the spirit keeping the workload as portable as possible, this guide prioritizes minimizing the changes needed to get the workload running on Azure.
+This new [article](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview) guides you through replicating an EKS event-driven workflow (EDW) workload using [KEDA](https://keda.sh/) and [Karpenter](https://karpenter.sh/) in Azure Kubernetes Service (AKS). In the spirit keeping the workload as portable as possible, this guide prioritizes minimizing the changes needed to get the workload running on Azure.
 
 In this first article, the workload implements the competing consumers pattern with a producer/consumer app, facilitating efficient data processing by separating data production from data consumption. KEDA is used to scale pods running consumer processing, while AKS managed Karpenter autoscale Kubernetes nodes through the new AKS [Node Autoprovisioning (NAP)](https://learn.microsoft.com/en-gb/azure/aks/node-autoprovision) feature currently available in preview.
 
