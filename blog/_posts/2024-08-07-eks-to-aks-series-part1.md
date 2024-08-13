@@ -12,7 +12,7 @@ Many companies use multiple clouds for their workloads. These companies need to 
 
 We would like to share the first in a new documentation series designed specifically for customers already using Amazon EKS, to help them replicate or migrate their workloads to AKS: [Replicate an AWS event-driven workflow (EDW) workload with KEDA and Karpenter in Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/eks-edw-overview)
 
-Moving a workload from another managed Kubernetes offering to AKS can be challenging. This series aims to provide a holistic, end-to-end experience by example to help ease that process. The samples in this series begin with infrastructure and code on EKS and end with equivalently functional infrastructure and code on AKS, while explaining the conceptual differences between AWS and Azure throughout.
+Even with Kubernetes’ portable API, moving between clouds can be challenging. Each cloud has its own unique concepts, behaviors, and quirks that will seem unfamiliar when you’re accustomed to another cloud’s approach. This is not unlike the experience of learning a new language or visiting a new country for the first time. This series will be local guide to the world of Azure. The samples in this series begin with infrastructure and code on EKS and end with equivalently functional infrastructure and code on AKS, while explaining the conceptual differences between AWS and Azure throughout.
 
 ## EKS to AKS - Event Driven Workflow Scenario
 
