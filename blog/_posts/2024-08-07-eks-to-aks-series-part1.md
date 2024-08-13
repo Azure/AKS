@@ -30,4 +30,4 @@ You can either clone the AWS EKS sample and follow along with the guide, or read
 
 ## Summary
 
-Learn how to migrate Amazon EKS workloads to Azure AKS using KEDA and Karpenter in this comprehensive guide. Gain insights into the platform differences, re-architect the workload, update application code, prepare for deployment, and deploy the workload in AKS.
+Our next article will explore a common EKS workload pattern for protecting an n-tier web/mobile application with a WAF, and the process of replicating this workload into Azure using EKS and other services. We are interested to hear about the migration challenges and scenarios you encounter, so we can continue to enhance the features and documentation for AKS to ease the transition from other clouds to Azure. Please share your ideas and needs using one of the contact methods below.
