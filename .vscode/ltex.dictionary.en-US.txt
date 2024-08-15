@@ -1,4 +1,0 @@
-EKS
-KEDA
-Karpenter
-Autoprovisioning
