@@ -3,7 +3,13 @@ title: "Using AKS-managed Istio External Ingress Gateway with Gateway API"
 description: "Learn how to use the Gateway API to manage the Istio external ingress gateway on AKS."
 date: 2024-08-06
 author: Paul Yu
-categories: networking, operations, add-ons
+categories:
+- networking
+- operations
+- add-ons
+tags:
+- istio 
+- gateway-api
 ---
 
 ## Introduction
