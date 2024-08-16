@@ -45,7 +45,13 @@ For the most part, the `Workspace` resource is similar as before. Here, we see t
 
 > Note: Be sure to check out this [quickstart guide](https://learn.microsoft.com/azure/quotas/quickstart-increase-quota-portal) on how to request quota increase in the Azure Portal, if you have never done that before.
 
-Fine-tuning jobs will run using default tuning configurations defined by KAITO; however, you can optionally create a ConfigMap in your cluster and reference it as your config in the tuning spec. You can configure default parameters to change your fine-tuning result as outlined in this doc: https://github.com/Azure/kaito/tree/main/docs/tuning#categorized-key-parameters
+After deploying the tuning workspace, KAITO will create a Job workload in the same namespace as the workspace and run to completion. A common perception is that model training job would take a long time – well, yes it can be multiple hours even for fine-tuning. You can track the tuning progress in the Job pod log, reported by the number of steps completed out of the total. 
+
+> If you are curious to know how the total steps are calculated, here is the formula: 
+> `total steps = number of epochs * (number of samples in dataset / batch size)`, where the number of epochs and batch size are configurable parameters. 
+
+KAITO allows users to apply a custom ConfigMap to overwrite most of the tuning parameters used by the tuning job. We should be careful about changing those parameters though. For example, increasing the batch size, i.e., leveraging higher data parallelism, will reduce the tuning time but use more GPU memory, and require better GPUs in general. 
+
 
 When the fine-tuning job is complete, the result, which is often referred to as an **adapter**, will be packaged as a container image and stored in the specified output location. The adapter image is lightweight, portable, conveniently version controlled, and can be pulled into a new inferencing service!
 
