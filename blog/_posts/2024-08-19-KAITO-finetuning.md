@@ -51,7 +51,7 @@ Fine-tuning jobs will run using default tuning configurations defined by KAITO; 
 
 After deploying the KAITO workspace, KAITO will create a `Job` workload in the same namespace as the workspace and run to completion. This can take several hours depending on the size of your input model and dataset.  Once the fine-tuning job is complete, an adapter result will be stored in the output location specified in your workspace tuning output settings. This adapter layer is stored as a container image, holding a subset of updated weights of your model based on what it learned from your input dataset. As a result, the image is lightweight, portable, conveniently version controlled, and can be pulled into new inferencing jobs!
 
-To use your new fine-tuned adapter, the inference workspace can now accept one or more adapters whose strength values can be adjusted (default of 1.0) to customize model behavior. 
+To use our new fine-tuned adapter, the inference workspace will now accept one or more adapters to customize model behavior.
 
 Here is an example of what a fine-tuned inference workspace looks like:
 
