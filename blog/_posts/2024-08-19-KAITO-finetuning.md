@@ -14,7 +14,7 @@ With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0) of
 
 All you have to do is specify your model preset and tuning method, data set, and container registry details - KAITO will automate the rest and provide a lightweight output to pull into new inferencing jobs!
 
-**Fine-tune a Phi-3 model with KAITO**
+## Fine-tuning a foundation model is sometimes necessary
 
 Let’s look at what fine-tuning looks like with KAITO. We’ll use Phi-3-mini for our sample deployment. The `Phi-3-mini-128K` model is a robust and high-performing option that’s also a convenient size for fine-tuning, so we’ll use that as an example. With KAITO v0.3.0 or higher, there is an additional tuning property added to the `Workspace` specification. Within the tuning property, you can specify additional information for the tuning job such as a preset configuration for the base model, fine-tuning method using LoRA or QLoRA, input datasets, and output location for the adapter.
 
