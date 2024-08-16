@@ -354,6 +354,8 @@ configuration:
       - if:
         - hasLabel:
             label: addon/container-insights
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -364,6 +366,8 @@ configuration:
       - if:
         - hasLabel:
             label: addon/ama-metrics
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -374,6 +378,8 @@ configuration:
       - if:
         - hasLabel:
             label: addon/policy
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -383,6 +389,8 @@ configuration:
       - if:
         - hasLabel:
             label: addon/virtual-nodes
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -392,6 +400,8 @@ configuration:
       - if:
         - hasLabel:
             label: addon/k8s-dashboard
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -401,6 +411,8 @@ configuration:
       - if:
         - hasLabel:
             label: addon/app-routing
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -410,6 +422,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/application-gateway
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -419,6 +433,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/security-center
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -428,6 +444,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/confidentialCompute
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -437,6 +455,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/portal
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -448,6 +468,8 @@ configuration:
       - if:
         - hasLabel:
             label: AzGov
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -457,6 +479,8 @@ configuration:
       - if:
         - hasLabel:
             label: networking
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -466,6 +490,8 @@ configuration:
       - if:
         - hasLabel:
             label: pod-identity
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -475,6 +501,8 @@ configuration:
       - if:
         - hasLabel:
             label: windows
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -485,6 +513,8 @@ configuration:
       - if:
         - hasLabel:
             label: storage
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -494,6 +524,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/oms
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -504,6 +536,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/log-analytics
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -514,6 +548,8 @@ configuration:
       - if:
         - hasLabel:
             label: AzChina
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -523,6 +559,8 @@ configuration:
       - if:
         - hasLabel:
             label: addon/agic
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -533,6 +571,8 @@ configuration:
       - if:
         - hasLabel:
             label: AGC
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -542,6 +582,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/policy
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -551,6 +593,8 @@ configuration:
       - if:
         - hasLabel:
             label: upstream/helm
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -561,6 +605,8 @@ configuration:
       - if:
         - hasLabel:
             label: upstream/gatekeeper
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -571,6 +617,8 @@ configuration:
       - if:
         - hasLabel:
             label: client/portal
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -580,6 +628,8 @@ configuration:
       - if:
         - hasLabel:
             label: service-mesh
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -589,6 +639,8 @@ configuration:
       - if:
         - hasLabel:
             label: ai/copilot
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -600,6 +652,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/acr
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -609,6 +663,8 @@ configuration:
       - if:
         - hasLabel:
             label: azure/application-gateway
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -619,6 +675,8 @@ configuration:
       - if:
         - hasLabel:
             label: control-plane
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -628,6 +686,8 @@ configuration:
       - if:
         - hasLabel:
             label: docs 
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -637,6 +697,8 @@ configuration:
       - if:
         - hasLabel:
             label: fleet
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -647,6 +709,8 @@ configuration:
       - if:
         - hasLabel:
             label: keda
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -656,6 +720,8 @@ configuration:
       - if:
         - hasLabel:
             label: nodepools
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -667,6 +733,8 @@ configuration:
       - if:
         - hasLabel:
             label: mesh
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -676,6 +744,8 @@ configuration:
       - if:
         - hasLabel:
             label: resiliency
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -685,6 +755,8 @@ configuration:
       - if:
         - hasLabel:
             label: Scale and Performance 
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -695,6 +767,8 @@ configuration:
       - if:
         - hasLabel:
             label: Security
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -705,6 +779,8 @@ configuration:
       - if:
         - hasLabel:
             label: storage
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -715,6 +791,8 @@ configuration:
       - if:
         - hasLabel:
             label: upgrade
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
@@ -725,6 +803,8 @@ configuration:
       - if:
         - hasLabel:
             label: miscellaneous
+        - not:
+            isAssignedToSomeone
         then:
         - mentionUsers:
             mentionees:
