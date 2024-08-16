@@ -53,7 +53,16 @@ tuning:
     imagePushSecret: myregistrysecret
 ```
 
-For the most part, the `Workspace` resource is similar as before. Here, we see that KAITO recommends a minimum GPU VM SKU of “Standard_NC24ads_A100_v4” for the tuning job.  You can update the `instanceType` to a larger GPU VM SKU, but either way, you should make sure there’s enough GPU quota in your Azure subscription prior to deploying applying the workspace to your AKS cluster. 
+The tuning property specifies the minimum information required for starting a tuning job, including:
+
+**Preset**: indicates the target model for tuning (KAITO uses preset configurations to generate all Kubernetes sources needed to run the Job). 
+**Method**: users can choose LoRA or QLoRA (quantized LoRA, for lower GPU memory usage) as the tuning method. 
+**Input**: for flexibility, the tuning input can be a URL (for a public dataset), or images (for a private dataset).
+**Output**: where the adapter is stored, as a container image or any other storage type supported by Kubernetes.
+
+> The choice of GPU SKU is critical since model fine-tuning normally requires more GPU memory compared to model inference. To avoid GPU Out-Of-Memory, NVIDIA A100 or higher tier GPUs are recommended. 
+
+You can check out the [KAITO tuning API](https://github.com/Azure/kaito/tree/main/docs/tuning) for more details and troubleshooting tips!
 
 
 After deploying the tuning workspace, KAITO will create a Job workload in the same namespace as the workspace and run to completion. A common perception is that model training job would take a long time – well, yes it can be multiple hours even for fine-tuning. You can track the tuning progress in the Job pod log, reported by the number of steps completed out of the total. 
