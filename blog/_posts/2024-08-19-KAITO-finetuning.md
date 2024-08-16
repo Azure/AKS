@@ -17,7 +17,8 @@ With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), K
 
 Let’s experiment with [Phi-3-mini-128K](https://huggingface.co/microsoft/Phi-3-medium-128k-instruct), a robust and high-performing model that’s a bit smaller in size than your average LLM. We’ll use the following [chatbot UI tool](https://streamlit.io/), connected to a Phi-3 inference service deployed by KAITO, and ask a basic question about AKS:
 
-Here’s an example of what the fine-tuning workspace looks like when training on a dataset found on HuggingFace:
+![Screenshot of untuned model response](/blog/assets/images/kaito_untuned_phi3_response.png)
+*Screenshot of un-tuned model response*
 
 ```bash
 apiVersion: kaito.sh/v1alpha1
