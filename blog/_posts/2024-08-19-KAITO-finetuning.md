@@ -20,6 +20,17 @@ Let’s experiment with [Phi-3-mini-128K](https://huggingface.co/microsoft/Phi-3
 ![Screenshot of untuned model response](/blog/assets/images/kaito_untuned_phi3_response.png)
 *Screenshot of un-tuned model response*
 
+Uh oh! That is **NOT** the answer we were expecting – we’d expect the model to know more about Kubernetes and cloud technologies. This foundation model was trained on a mix of synthetic data and public websites, so it doesn’t recognize AKS as Azure Kubernetes Service, and got creative in answering the question to the best of its ability. This is a well-known problem in the AI community and various fine-tuning techniques have been invented to enhance model accuracy using domain-specific knowledge. In our specific use case, we need the Phi-3 model to have more knowledge of Kubernetes and cloud platforms.
+
+## KAITO can help with model fine-tuning
+
+KAITO supports Low-Rank Adaption (LoRA), the most common parameter-efficient fine-tuning technique, which significantly lowers the GPU requirement for tuning a language model. With LoRA, fine-tuning an LLM in a single GPU is possible! 
+
+Let’s start the journey of fine-tuning the Phi-3 model using KAITO.
+
+First, we need an input dataset, so we’ll use this [public dataset](https://huggingface.co/datasets/ishaansehgal99/kubernetes-reformatted-remove-outliers) that is optimized for knowledge about Kubernetes and cloud platforms. To use this dataset in KAITO, we can specify it in the new tuning property in the workspace API. 
+
+Here’s an example of what the fine-tuning workspace looks like when using a public dataset from HuggingFace:
 ```bash
 apiVersion: kaito.sh/v1alpha1
 kind: Workspace
