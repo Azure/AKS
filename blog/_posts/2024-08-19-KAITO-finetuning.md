@@ -87,7 +87,11 @@ Great! After updating our inference endpoint to leverage the new adapter, let’
 ![Screenshot of tuned model response](/blog/assets/images/kaito_tuned_phi3_response.png)
 *Screenshot of tuned model response*
 
-You can see in the two screenshots above, that the base `phi-3-mini-128k-instruct` model with no fine-tuning wasn’t quite sure of what the user means by “AKS”. However, with a little bit of fine-tuning with a [dataset](https://huggingface.co/datasets/ishaansehgal99/kubernetes-reformatted-remove-outliers) optimized for Kubernetes and cloud platforms, it is quickly able to discern that the user is looking for an answer related to Kubernetes and provides a better response. There is still a bit of work to do when it comes to prompt engineering and/or fine-tuning tweaks but it’s clearly on the right path!
+That definitely looks more accurate – the fine-tuned model quickly discerned that we’re looking for an answer related to Kubernetes and provided a much better response. However, there’s always room to improve the model’s accuracy for domain specific questions. We can improve upon or find new input datasets to create new tuning adapters. This iterative tuning process can be done by repeating the steps described above.
+
+## Other options to make models smarter
+
+Retrieval-Augmented Generation (RAG) is another common technique used to improve the inference accuracy of foundation models. Compared to LoRA fine-tuning, RAG eliminates the need of training Jobs to generate adapters. It has a more complicated workflow with additional components like a vector database, indexing and query servers, etc. The good news is that RAG support with a simple user experience is in KAITO’s roadmap. 🚀
 
 **Summary**
 
