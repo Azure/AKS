@@ -15,7 +15,7 @@ With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), K
 
 ## Fine-tuning a foundation model is sometimes necessary
 
-Let’s look at what fine-tuning looks like with KAITO. We’ll use Phi-3-mini for our sample deployment. The `Phi-3-mini-128K` model is a robust and high-performing option that’s also a convenient size for fine-tuning, so we’ll use that as an example. With KAITO v0.3.0 or higher, there is an additional tuning property added to the `Workspace` specification. Within the tuning property, you can specify additional information for the tuning job such as a preset configuration for the base model, fine-tuning method using LoRA or QLoRA, input datasets, and output location for the adapter.
+Let’s experiment with [Phi-3-mini-128K](https://huggingface.co/microsoft/Phi-3-medium-128k-instruct), a robust and high-performing model that’s a bit smaller in size than your average LLM. We’ll use the following [chatbot UI tool](https://streamlit.io/), connected to a Phi-3 inference service deployed by KAITO, and ask a basic question about AKS:
 
 Here’s an example of what the fine-tuning workspace looks like when training on a dataset found on HuggingFace:
 
