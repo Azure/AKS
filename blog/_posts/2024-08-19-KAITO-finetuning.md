@@ -1,7 +1,7 @@
 ---
 title: "Fine tune language models with KAITO on AKS"
 description: "Make your AI model even smarter, in just a few steps"
-date: 2024-08-19
+date: 2024-08-23
 author: Sachi Desai
 categories: AI
 ---
