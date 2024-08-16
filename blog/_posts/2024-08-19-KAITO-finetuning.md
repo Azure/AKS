@@ -47,7 +47,11 @@ For the most part, the `Workspace` resource is similar as before. Here, we see t
 
 Fine-tuning jobs will run using default tuning configurations defined by KAITO; however, you can optionally create a ConfigMap in your cluster and reference it as your config in the tuning spec. You can configure default parameters to change your fine-tuning result as outlined in this doc: https://github.com/Azure/kaito/tree/main/docs/tuning#categorized-key-parameters
 
-> Note: If you choose to pull and push from private registries, you must create a Kubernetes “docker-registry” secret and reference it as your `imagePullSecret`/`imagePushSecret`.
+When the fine-tuning job is complete, the result, which is often referred to as an **adapter**, will be packaged as a container image and stored in the specified output location. The adapter image is lightweight, portable, conveniently version controlled, and can be pulled into a new inferencing service!
+
+After submitting your tuning workspace manifest, go get yourself a drink or a snack. 😉
+
+![Three hours later](/blog/assets/images/three_hours_later_image.png)
 
 ## Now that tuning is done, how can we quickly see the result?
 
