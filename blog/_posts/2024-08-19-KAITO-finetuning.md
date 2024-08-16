@@ -81,7 +81,6 @@ As new inference requests come in, they’ll flow through the model that merges 
 Great! After updating our inference endpoint to leverage the new adapter, let’s ask the same question and check the response from the fine-tuned phi-3-mini-128k-instruct model:
 
 
-![Screenshot of untuned model response](/blog/assets/images/kaito_untuned_phi3_response.png)
 *Screenshot of un-tuned model response*
 
 ![Screenshot of tuned model response](/blog/assets/images/kaito_tuned_phi3_response.png)
