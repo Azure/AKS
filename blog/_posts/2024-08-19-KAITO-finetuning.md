@@ -12,7 +12,6 @@ You may have heard of the [Kubernetes AI Toolchain Operator](https://github.com/
 
 With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), KAITO has expanded the supported model library to include the Phi-3 model, but the biggest (and most exciting) addition is the ability to fine-tune open-source models. Why should you be excited about fine-tuning? Well, it’s because fine-tuning is one way of giving your foundation model additional training using a specific dataset to enhance accuracy, which ultimately improves the interaction with end-users.
 
-All you have to do is specify your model preset and tuning method, data set, and container registry details - KAITO will automate the rest and provide a lightweight output to pull into new inferencing jobs!
 
 ## Fine-tuning a foundation model is sometimes necessary
 
