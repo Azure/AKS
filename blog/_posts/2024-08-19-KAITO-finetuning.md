@@ -49,7 +49,8 @@ Fine-tuning jobs will run using default tuning configurations defined by KAITO; 
 
 > Note: If you choose to pull and push from private registries, you must create a Kubernetes “docker-registry” secret and reference it as your `imagePullSecret`/`imagePushSecret`.
 
-After deploying the KAITO workspace, KAITO will create a `Job` workload in the same namespace as the workspace and run to completion. This can take several hours depending on the size of your input model and dataset.  Once the fine-tuning job is complete, an adapter result will be stored in the output location specified in your workspace tuning output settings. This adapter layer is stored as a container image, holding a subset of updated weights of your model based on what it learned from your input dataset. As a result, the image is lightweight, portable, conveniently version controlled, and can be pulled into new inferencing jobs!
+## Now that tuning is done, how can we quickly see the result?
+
 
 To use our new fine-tuned adapter, the inference workspace will now accept one or more adapters to customize model behavior.
 
