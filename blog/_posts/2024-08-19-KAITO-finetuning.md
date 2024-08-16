@@ -43,7 +43,6 @@ tuning:
 
 For the most part, the `Workspace` resource is similar as before. Here, we see that KAITO recommends a minimum GPU VM SKU of “Standard_NC24ads_A100_v4” for the tuning job.  You can update the `instanceType` to a larger GPU VM SKU, but either way, you should make sure there’s enough GPU quota in your Azure subscription prior to deploying applying the workspace to your AKS cluster. 
 
-> Note: Be sure to check out this [quickstart guide](https://learn.microsoft.com/azure/quotas/quickstart-increase-quota-portal) on how to request quota increase in the Azure Portal, if you have never done that before.
 
 After deploying the tuning workspace, KAITO will create a Job workload in the same namespace as the workspace and run to completion. A common perception is that model training job would take a long time – well, yes it can be multiple hours even for fine-tuning. You can track the tuning progress in the Job pod log, reported by the number of steps completed out of the total. 
 
