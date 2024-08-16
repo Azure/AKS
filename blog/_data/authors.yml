@@ -72,14 +72,14 @@ Saurabh Sharma:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/saurabh0501"
 
-Sachi Desai:
-  name        : "Sachi Desai"
-  bio         : "Sachi is a Product Manager and focuses on optimizing AI/ML, GPU workloads, and scheduler on Azure Kubernetes Service."
-  avatar      : "https://pbs.twimg.com/profile_images/1823766164818026498/mglVVQnn_400x400.jpg" # Replace this with your avatar image
+Kenneth Kilty:
+  name        : "Kenneth Kilty"
+  bio         : "Technical Program Manager for Cloud Native Platforms"
+  avatar      : "https://www.kenkilty.com/profilepic.jpg"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
-      url: "https://linkedin.com/in/sachi-desai"
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:sachidesai@microsoft.com"
+      url: "https://www.linkedin.com/in/kennethkilty/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/KenKilty"
