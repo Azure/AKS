@@ -93,7 +93,7 @@ That definitely looks more accurate – the fine-tuned model quickly discerned t
 
 Retrieval-Augmented Generation (RAG) is another common technique used to improve the inference accuracy of foundation models. Compared to LoRA fine-tuning, RAG eliminates the need of training Jobs to generate adapters. It has a more complicated workflow with additional components like a vector database, indexing and query servers, etc. The good news is that RAG support with a simple user experience is in KAITO’s roadmap. 🚀
 
-**Summary**
+## Summary
 
 Users expect LLMs to stay on task and provide accurate answers. While foundation models on their own have a wealth of knowledge, they often need to be refined for specific tasks. This can be achieved by leveraging techniques like fine-tuning or RAG, but the process of implementing these techniques is not always straightforward. As you saw, with KAITO, it becomes **really easy**. All you need to do is specify an input dataset, a GPU SKU, and off it goes! KAITO will take care of the rest. Its adapter design makes it very portable to attach to multiple workspaces or even attach multiple adapters to a single workspace. In the end, we can see that the inference and tuning workspaces along with adapters can become fundamental building blocks in your overall ML workflow.
 
