@@ -81,7 +81,6 @@ After submitting your tuning workspace manifest, go get yourself a drink or a sn
 
 ## Now that tuning is done, how can we quickly see the result?
 
-
 To use our new fine-tuned adapter, the inference workspace will now accept one or more adapters to customize model behavior.
 
 Here is an example of what a fine-tuned inference workspace looks like:
