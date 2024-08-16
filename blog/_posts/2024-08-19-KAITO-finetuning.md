@@ -63,7 +63,6 @@ The tuning property specifies the minimum information required for starting a tu
 
 You can check out the [KAITO tuning API](https://github.com/Azure/kaito/tree/main/docs/tuning) for more details and troubleshooting tips!
 
-
 After deploying the tuning workspace, KAITO will create a Job workload in the same namespace as the workspace and run to completion. A common perception is that model training job would take a long time – well, yes it can be multiple hours even for fine-tuning. You can track the tuning progress in the Job pod log, reported by the number of steps completed out of the total. 
 
 > If you are curious to know how the total steps are calculated, here is the formula: 
