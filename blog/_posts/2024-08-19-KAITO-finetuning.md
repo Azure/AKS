@@ -6,7 +6,7 @@ author: Sachi Desai
 categories: AI
 ---
 
-**Introduction**
+## Introduction
 
 You may have heard of the [Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito/tree/main) (KAITO) announced at Ignite 2023 and KubeCon Europe this year. The open source project has gained popularity in recent months by introducing a streamlined approach to AI model deployment and flexible infrastructure provisioning on Kubernetes.
 
