@@ -77,7 +77,8 @@ inference:
       strength: "1.0"
 ```
 
-As new inference requests come in, they'll flow through the model and adapters so the response will be altered based on new training data and adjusted based on the strength of each adapter. 
+As new inference requests come in, they’ll flow through the model that merges the adapters and the response will be affected by the newly trained data. 
+Great! After updating our inference endpoint to leverage the new adapter, let’s ask the same question and check the response from the fine-tuned phi-3-mini-128k-instruct model:
 
 Here is an example of what an un-tuned `phi-3-mini-128k-instruct` model response looks like, versus a fine-tuned `phi-3-mini-128k-instruct` model:
 
