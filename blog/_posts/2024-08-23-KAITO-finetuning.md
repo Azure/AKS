@@ -80,7 +80,7 @@ After deploying the tuning workspace, KAITO will create a Job workload in the sa
 > If you are curious to know how the total steps are calculated, here is the formula: 
 > `total steps = number of epochs * (number of samples in dataset / batch size)`, where the number of epochs and batch size are configurable parameters. 
 
-KAITO allows users to apply a custom ConfigMap to overwrite most of the tuning parameters used by the tuning job. We should be careful about changing those parameters though. For example, increasing the batch size, i.e., leveraging higher data parallelism, will reduce the tuning time but use more GPU memory, and require better GPUs in general. 
+KAITO allows users to apply a custom ConfigMap to overwrite most of the tuning parameters used by the tuning job. We should be careful about changing those parameters though. For example, increasing the batch size, i.e., leveraging higher data parallelism, will reduce the tuning time but use more GPU memory, and may require higher performing GPUs in general. 
 
 When the fine-tuning job is complete, the result, which is often referred to as an **adapter**, will be packaged as a container image and stored in the specified output location. The adapter image is lightweight, portable, conveniently version controlled, and can be added to new inferencing workspaces!
 
