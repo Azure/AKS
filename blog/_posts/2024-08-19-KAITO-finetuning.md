@@ -129,3 +129,6 @@ We’re just getting started and would love your feedback. To learn more about K
 - [Concepts - Fine-tuning language models for AI and machine learning workflows](https://learn.microsoft.com/azure/aks/concepts-fine-tune-language-models)
 - [Concepts - Small and large language models](https://learn.microsoft.com/azure/aks/concepts-ai-ml-language-models)
 - [KAITO Roadmap](https://github.com/orgs/Azure/projects/669)
+
+## Acknowledgements
+Huge thanks to [Paul Yu](https://www.linkedin.com/in/yupaul) for co-authoring this blog and providing valuable feedback on KAITO since the early stages of the project!
