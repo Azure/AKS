@@ -2,7 +2,14 @@
 layout: archive-notitle
 ---
 
-<h1>{{ page.taxonomy | capitalize }} </h1>
+<h1>
+  {% if page.taxonomy.size <= 2 %}
+  {{ page.taxonomy | upcase }}
+  {% else %}
+  {{ page.taxonomy | capitalize }}
+  {% endif %}
+</h1>
+
 {{ page.taxonomy_description }}
 
 {% assign entries_layout = page.entries_layout | default: 'list' %}

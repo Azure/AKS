@@ -11,7 +11,15 @@
         <li><a href="{{ site.baseurl }}/categories">Browse all</a></li>
         {% for category in site.categories %}
         {% capture category_name %}{{ category | first }}{% endcapture %}
-        <li><a href="{{ site.baseurl }}/category/{{ category_name | slugize}}">{{ category_name | capitalize }}</a></li>
+        <li>
+          <a href="{{ site.baseurl }}/category/{{ category_name | slugize}}">
+          {% if category_name.size <= 2 %}
+          {{ category_name | upcase }}
+          {% else %}
+          {{ category_name | capitalize }}
+          {% endif %}
+          </a>
+        </li>
         {% endfor %}
       </ul>
     </li>
