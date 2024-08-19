@@ -36,6 +36,7 @@ First, we need an input dataset, so we’ll use a [public dataset](https://huggi
 To use the data set in KAITO, we can specify it in the new **tuning** property in the workspace API. 
 
 Here’s an example of what the fine-tuning workspace looks like when using a public dataset from HuggingFace:
+
 ```bash
 apiVersion: kaito.sh/v1alpha1
 kind: Workspace
