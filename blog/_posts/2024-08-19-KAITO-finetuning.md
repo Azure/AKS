@@ -106,7 +106,6 @@ inference:
         image: myregistry.azurecr.io/adapters/myadapter:0.0.1
         imagePullSecrets:
           - myregistrysecret
-      strength: "1.0"
 ```
 
 As new inference requests come in, they’ll flow through the model that merges the adapters and the response will be affected by the newly trained data. 
