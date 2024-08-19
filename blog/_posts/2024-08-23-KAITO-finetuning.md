@@ -33,7 +33,7 @@ Let’s start the journey of fine-tuning the Phi-3 model using KAITO.
 
 First, we need an input dataset, so we’ll use a [public dataset](https://huggingface.co/datasets/sidddddddddddd/kubernetes) that is optimized for knowledge about Kubernetes and cloud platforms. (Note: this is the original data set which we copied and reformatted using [these instructions](https://github.com/Azure/kaito/tree/main/docs/tuning#input-dataset-format) from the HuggingFace trainer library.) 
 
-To use the data set in KAITO, we can specify it in the new `tuning` property in the workspace API. 
+To use the data set in KAITO, we can specify it in the new **tuning** property in the workspace API. 
 
 Here’s an example of what the fine-tuning workspace looks like when using a public dataset from HuggingFace:
 ```bash
