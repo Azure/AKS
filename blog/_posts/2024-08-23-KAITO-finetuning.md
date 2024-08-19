@@ -18,7 +18,7 @@ With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), K
 
 ## Fine-tuning a foundation model is sometimes necessary
 
-Let’s experiment with [Phi-3-mini-128K](https://huggingface.co/microsoft/Phi-3-medium-128k-instruct), a robust and high-performing model that’s a bit smaller in size than your average LLM. We’ll use the following [chatbot UI tool](https://streamlit.io/), connected to a Phi-3 inference service deployed by KAITO, and ask a basic question about AKS:
+Let’s experiment with [Phi-3-Mini-128K-Instruct](https://huggingface.co/microsoft/Phi-3-mini-128k-instruct), a robust and high-performing model that’s a bit smaller in size than your average LLM. We’ll use a custom [Streamlit](https://streamlit.io/) chat UI app, connected to a Phi-3 inference service deployed by KAITO, and ask a basic question about AKS:
 
 ![Screenshot of untuned model response](/blog/assets/images/kaito_untuned_phi3_response.png)
 _Screenshot of un-tuned model response_
