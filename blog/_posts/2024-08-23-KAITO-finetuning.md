@@ -79,7 +79,7 @@ After deploying the tuning workspace, KAITO will create a Job workload in the sa
 
 KAITO allows users to apply a custom ConfigMap to overwrite most of the tuning parameters used by the tuning job. We should be careful about changing those parameters though. For example, increasing the batch size, i.e., leveraging higher data parallelism, will reduce the tuning time but use more GPU memory, and require better GPUs in general. 
 
-When the fine-tuning job is complete, the result, which is often referred to as an **adapter**, will be packaged as a container image and stored in the specified output location. The adapter image is lightweight, portable, conveniently version controlled, and can be pulled into a new inferencing service!
+When the fine-tuning job is complete, the result, which is often referred to as an **adapter**, will be packaged as a container image and stored in the specified output location. The adapter image is lightweight, portable, conveniently version controlled, and can be added to new inferencing workspaces!
 
 After submitting your tuning workspace manifest, go get yourself a drink or a snack. 😉
 
