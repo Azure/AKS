@@ -59,6 +59,7 @@ The tuning property specifies the minimum information required for starting a tu
 **Method**: users can choose LoRA or QLoRA (quantized LoRA, for lower GPU memory usage) as the tuning method. 
 
 **Input**: for flexibility, the tuning input can be a URL (for a public dataset), or images (for a private dataset).
+
 **Output**: where the adapter is stored, as a container image or any other storage type supported by Kubernetes.
 
 > The choice of GPU SKU is critical since model fine-tuning normally requires more GPU memory compared to model inference. To avoid GPU Out-Of-Memory, NVIDIA A100 or higher tier GPUs are recommended. 
