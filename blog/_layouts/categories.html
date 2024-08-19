@@ -17,7 +17,13 @@ layout: archive
       {% if category[1].size == i %}
         <li>
           <a href="#{{ category[0] | slugify }}">
-            <strong>{{ category[0] | capitalize }}</strong> <span class="taxonomy__count">{{ i }}</span>
+            <strong>
+              {% if category[0].size <= 2 %}
+              {{ category[0] | upcase }}
+              {% else %}
+              {{ category[0] | capitalize }}
+              {% endif %}
+            </strong> <span class="taxonomy__count">{{ i }}</span>
           </a>
         </li>
       {% endif %}
@@ -30,7 +36,13 @@ layout: archive
   {% for category in site.categories %}
     {% if category[1].size == i %}
       <section id="{{ category[0] | slugify | downcase }}" class="taxonomy__section">
-        <h2 class="archive__subtitle">{{ category[0] | capitalize }}</h2>
+        <h2 class="archive__subtitle">
+          {% if category[0].size <= 2 %}
+          {{ category[0] | upcase }}
+          {% else %}
+          {{ category[0] | capitalize }}
+          {% endif %}
+        </h2>
         <div class="entries-{{ entries_layout }}">
           {% for post in category.last %}
             {% include archive-single.html type=entries_layout %}
