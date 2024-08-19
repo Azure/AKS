@@ -117,7 +117,7 @@ Great! After updating our inference endpoint to leverage the new adapter, let’
 
 
 ![Screenshot of tuned model response](/blog/assets/images/kaito_tuned_phi3_response.png)
-*Screenshot of tuned model response*
+_Screenshot of tuned model response_
 
 That definitely looks more accurate – the fine-tuned model quickly discerned that we’re looking for an answer related to Kubernetes and provided a much better response. However, there’s always room to improve the model’s accuracy for domain specific questions. We can improve upon or find new input datasets to create new tuning adapters. This iterative tuning process can be done by repeating the steps described above.
 
