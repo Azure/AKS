@@ -14,7 +14,7 @@ tags:
 
 You may have heard of the [Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito/tree/main) (KAITO) announced at Ignite 2023 and KubeCon Europe this year. The open source project has gained popularity in recent months by introducing a streamlined approach to AI model deployment and flexible infrastructure provisioning on Kubernetes.
 
-With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), KAITO has expanded the supported model library to include the Phi-3 model, but the biggest (and most exciting) addition is the ability to fine-tune open-source models. Why should you be excited about fine-tuning? Well, it’s because fine-tuning is one way of giving your foundation model additional training using a specific dataset to enhance accuracy, which ultimately improves the interaction with end-users. (Another way to increase model accuracy is Retrieval-Augmented Generation (RAG), which we touch on briefly in this [section](#"Stay"-"tuned"-to-make-models-smarter), coming soon to KAITO).
+With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), KAITO has expanded the supported model library to include the Phi-3 model, but the biggest (and most exciting) addition is the ability to fine-tune open-source models. Why should you be excited about fine-tuning? Well, it’s because fine-tuning is one way of giving your foundation model additional training using a specific dataset to enhance accuracy, which ultimately improves the interaction with end-users. (Another way to increase model accuracy is Retrieval-Augmented Generation (RAG), which we touch on briefly in this [section](#Stay-tuned-to-make-models-smarter), coming soon to KAITO).
 
 ## Fine-tuning a foundation model is sometimes necessary
 
@@ -88,7 +88,6 @@ After submitting your tuning workspace manifest, go get yourself a drink or a sn
 
 ![Three hours later](/AKS/assets/images/kaito-blog/spongebob-transition-3-hours-later.jpg)
 
-
 ## Better results with fine-tuned workspaces
 
 To use our new fine-tuned adapter, the inference workspace will now accept one or more adapters to customize model behavior.
@@ -125,7 +124,7 @@ _Screenshot of tuned model response_
 
 That definitely looks more accurate – the fine-tuned model quickly discerned that we’re looking for an answer related to Kubernetes and provided a much better response. However, there’s always room to improve the model’s accuracy for domain specific questions. We can improve upon or find new input datasets to create new tuning adapters. This iterative tuning process can be done by repeating the steps described above.
 
-## "Stay tuned" to make models smarter
+## Stay tuned to make models smarter
 
 Retrieval-Augmented Generation (RAG) is another common technique used to improve the inference accuracy of foundation models. Compared to LoRA fine-tuning, RAG eliminates the need of training jobs to generate adapters. It has a more complicated workflow with additional components like a vector database, indexing and query servers, etc. The good news is that RAG support with a simple user experience is in KAITO’s roadmap. 🚀
 
