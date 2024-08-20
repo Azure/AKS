@@ -86,7 +86,7 @@ When the fine-tuning job is complete, the result, which is often referred to as 
 
 After submitting your tuning workspace manifest, go get yourself a drink or a snack. 😉
 
-![Three hours later](/AKS/assets/images/kaito-blog/spongebob-transition-3-hours-later.jpg)
+![Three hours later](/AKS/assets/images/fine-tuning-language-models-with-kaito/spongebob-transition-3-hours-later.jpg)
 
 ## Better results with fine-tuned workspaces
 
