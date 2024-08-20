@@ -119,7 +119,7 @@ As new inference requests come in, they’ll flow through the model that merges 
 
 Great! After updating our inference endpoint to leverage the new adapter, let’s ask the same question and check the response from the fine-tuned phi-3-mini-128k-instruct model:
 
-![Screenshot of tuned model response](/AKS/assets/images/kaito-blog/fine-tuned-lm-with-kaito.png)
+![Screenshot of tuned model response](/AKS/assets/images/fine-tuning-language-models-with-kaito/fine-tuned-lm-with-kaito.png)
 _Screenshot of tuned model response_
 
 That definitely looks more accurate – the fine-tuned model quickly discerned that we’re looking for an answer related to Kubernetes and provided a much better response. However, there’s always room to improve the model’s accuracy for domain specific questions. We can improve upon or find new input datasets to create new tuning adapters. This iterative tuning process can be done by repeating the steps described above.
