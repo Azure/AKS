@@ -14,7 +14,7 @@ tags:
 
 You may have heard of the [Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito/tree/main) (KAITO) announced at Ignite 2023 and KubeCon Europe this year. The open source project has gained popularity in recent months by introducing a streamlined approach to AI model deployment and flexible infrastructure provisioning on Kubernetes.
 
-With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), KAITO has expanded the supported model library to include the Phi-3 model, but the biggest (and most exciting) addition is the ability to fine-tune open-source models. Why should you be excited about fine-tuning? Well, it’s because fine-tuning is one way of giving your foundation model additional training using a specific dataset to enhance accuracy, which ultimately improves the interaction with end-users.
+With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), KAITO has expanded the supported model library to include the Phi-3 model, but the biggest (and most exciting) addition is the ability to fine-tune open-source models. Why should you be excited about fine-tuning? Well, it’s because fine-tuning is one way of giving your foundation model additional training using a specific dataset to enhance accuracy, which ultimately improves the interaction with end-users. (Another way to increase model accuracy is Retrieval-Augmented Generation (RAG), which we touch on briefly in this [section](#"Stay tuned"-to-make-models-smarter), coming soon to KAITO).
 
 ## Fine-tuning a foundation model is sometimes necessary
 
