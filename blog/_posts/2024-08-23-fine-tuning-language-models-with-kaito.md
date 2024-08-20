@@ -86,7 +86,7 @@ When the fine-tuning job is complete, the result, which is often referred to as 
 
 After submitting your tuning workspace manifest, go get yourself a drink or a snack. 😉
 
-![Three hours later](https://i.ytimg.com/vi/Qn_PfS8ZsBg/maxresdefault.jpg)
+![Three hours later](/AKS/assets/images/kaito-blog/spongebob-transition-3-hours-later.jpg)
 
 > This particular fine-tuning job took a little over 3 hours, but job completion duration will vary depending on the foundation model and the size of the input dataset.
 
