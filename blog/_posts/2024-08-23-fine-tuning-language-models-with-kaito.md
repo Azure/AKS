@@ -89,7 +89,6 @@ After submitting your tuning workspace manifest, go get yourself a drink or a sn
 ![Three hours later](/AKS/assets/images/kaito-blog/spongebob-transition-3-hours-later.jpg)
 
 
-
 ## Better results with fine-tuned workspaces
 
 To use our new fine-tuned adapter, the inference workspace will now accept one or more adapters to customize model behavior.
