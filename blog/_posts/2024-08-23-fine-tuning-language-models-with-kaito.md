@@ -88,7 +88,6 @@ After submitting your tuning workspace manifest, go get yourself a drink or a sn
 
 ![Three hours later](/AKS/assets/images/kaito-blog/spongebob-transition-3-hours-later.jpg)
 
-> This particular fine-tuning job took a little over 3 hours, but job completion duration will vary depending on the foundation model and the size of the input dataset.
 
 
 ## Better results with fine-tuned workspaces
