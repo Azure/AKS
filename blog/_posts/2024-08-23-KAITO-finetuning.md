@@ -127,7 +127,7 @@ _Screenshot of tuned model response_
 
 That definitely looks more accurate – the fine-tuned model quickly discerned that we’re looking for an answer related to Kubernetes and provided a much better response. However, there’s always room to improve the model’s accuracy for domain specific questions. We can improve upon or find new input datasets to create new tuning adapters. This iterative tuning process can be done by repeating the steps described above.
 
-## Other options to make models smarter
+## "Stay tuned" to make models smarter
 
 Retrieval-Augmented Generation (RAG) is another common technique used to improve the inference accuracy of foundation models. Compared to LoRA fine-tuning, RAG eliminates the need of training jobs to generate adapters. It has a more complicated workflow with additional components like a vector database, indexing and query servers, etc. The good news is that RAG support with a simple user experience is in KAITO’s roadmap. 🚀
 
