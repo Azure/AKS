@@ -20,7 +20,7 @@ With the [v0.3.0 release](https://github.com/Azure/kaito/releases/tag/v0.3.0), K
 
 Let’s experiment with [Phi-3-Mini-128K-Instruct](https://huggingface.co/microsoft/Phi-3-mini-128k-instruct), a robust and high-performing model that’s a bit smaller in size than your average LLM. We’ll use a custom [Streamlit](https://streamlit.io/) chat UI app, connected to a Phi-3 inference service deployed by KAITO, and ask a basic question about AKS:
 
-![Screenshot of untuned model response](/AKS/assets/images/kaito-blog/untuned-lm-with-kaito.png)
+![Screenshot of untuned model response](/AKS/assets/images/fine-tuning-language-models-with-kaito/untuned-lm-with-kaito.png)
 _Screenshot of un-tuned model response_
 
 Uh oh! That is **NOT** the answer we were expecting – we’d expect the model to know more about Kubernetes and cloud technologies. This foundation model was trained on a mix of synthetic data and public websites, so it doesn’t recognize AKS as Azure Kubernetes Service, and got creative in answering the question to the best of its ability. This is a well-known problem in the AI community and various fine-tuning techniques have been invented to enhance model accuracy using domain-specific knowledge. In our specific use case, we need the Phi-3 model to have more knowledge of Kubernetes and cloud platforms.
