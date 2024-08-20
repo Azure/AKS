@@ -88,6 +88,9 @@ After submitting your tuning workspace manifest, go get yourself a drink or a sn
 
 ![Three hours later](/blog/assets/images/three_hours_later_image.png)
 
+> This particular fine-tuning job took a little over 3 hours, but job completion duration will vary depending on the foundation model and the size of the input dataset.
+
+
 ## Better results with fine-tuned workspaces
 
 To use our new fine-tuned adapter, the inference workspace will now accept one or more adapters to customize model behavior.
