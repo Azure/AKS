@@ -63,13 +63,10 @@ tuning:
 
 The tuning property specifies the minimum information required for starting a tuning job, including:
 
-**Preset**: indicates the target model for tuning (KAITO uses preset configurations to generate all Kubernetes sources needed to run the Job). 
-
-**Method**: users can choose LoRA or QLoRA (quantized LoRA, for lower GPU memory usage) as the tuning method. 
-
-**Input**: for flexibility, the tuning input can be a URL (for a public dataset), or images (for a private dataset).
-
-**Output**: where the adapter is stored, as a container image or any other storage type supported by Kubernetes.
+- `preset`: indicates the target model for tuning (KAITO uses preset configurations to generate all Kubernetes sources needed to run the Job). 
+- `method`: users can choose LoRA or QLoRA (quantized LoRA, for lower GPU memory usage) as the tuning method. 
+- `input`: for flexibility, the tuning input can be a URL (for a public dataset), or images (for a private dataset).
+- `output`: where the adapter is stored, as a container image or any other storage type supported by Kubernetes.
 
 > The choice of GPU SKU is critical since model fine-tuning normally requires more GPU memory compared to model inference. To avoid GPU Out-Of-Memory, NVIDIA A100 or higher tier GPUs are recommended. 
 
