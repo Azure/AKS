@@ -35,7 +35,7 @@ First, we need an input dataset, so we’ll use a [public dataset](https://huggi
 
 > This is the original dataset which we selected and reformatted using [these instructions](https://github.com/Azure/kaito/tree/main/docs/tuning#input-dataset-format) from the HuggingFace trainer library.
 
-To use the data set in KAITO, we can specify it in the new **tuning** property in the workspace API. 
+To use the data set in KAITO, we can specify it in the new `tuning` property in the workspace API. 
 
 Here’s an example of what the fine-tuning workspace looks like when using a public dataset from HuggingFace:
 
