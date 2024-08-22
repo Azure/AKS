@@ -27,7 +27,7 @@ Uh oh! That is **NOT** the answer we were expecting – we’d expect the model 
 
 ## KAITO can help with model fine-tuning
 
-KAITO supports Low-Rank Adaption (LoRA) and Quantized LoRA (QLoRA), the [most common](https://arxiv.org/pdf/2402.16141) parameter-efficient fine-tuning techniques, which significantly lower the GPU requirement for tuning a language model. With LoRA, fine-tuning an LLM in a single GPU is possible! 
+KAITO supports Low-Rank Adaptation (LoRA) and Quantized LoRA (QLoRA), the [most common](https://arxiv.org/pdf/2402.16141) parameter-efficient fine-tuning techniques, which significantly lower the GPU requirement for tuning a language model. With LoRA, fine-tuning an LLM in a single GPU is possible! 
 
 Let’s start the journey of fine-tuning the Phi-3 model using KAITO.
 
