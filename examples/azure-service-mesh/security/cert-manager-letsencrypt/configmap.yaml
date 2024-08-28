@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: istio-shared-configmap-<asm-revision>
+  namespace: aks-istio-system
+data:
+  mesh: |-
+    accessLogFile: /dev/stdout
+    ingressService: aks-istio-ingressgateway-external
+    ingressSelector: aks-istio-ingressgateway-external
