@@ -4,7 +4,9 @@ metadata:
   name: istio
 spec:
   controller: istio.io/ingress-controller
+
 ---
+
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
