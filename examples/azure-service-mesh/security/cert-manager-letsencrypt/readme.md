@@ -68,7 +68,7 @@ reviews-v2-7d79d5bd5d-8zzqd       2/2     Running   0          2m41s
 reviews-v3-7dbcdcbc56-m8dph       2/2     Running   0          2m41s
 ```
 ### 3. Configure ingress gateway and virtual service
-```
+```shell
 kubectl apply -f gateway.yaml
 kubectl apply -f virtualservice.yaml
 ```
@@ -93,15 +93,16 @@ kubectl apply -f configmap.yaml
 ```
 
 ### 5. Install cert-manager
-```
+```shell
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.2/cert-manager.yaml
 ```
 this installs cert-manager in its own namespace `cert-manager`
 
 #### Validate cert-manager pods
-```
+```shell
 kubectl get po -n cert-manager
-
+```
+```console
 NAME                                     READY   STATUS    RESTARTS   AGE
 cert-manager-6fd987499c-xmf44            1/1     Running   0          72s
 cert-manager-cainjector-5b94bd6f-jw644   1/1     Running   0          72s
@@ -110,7 +111,7 @@ cert-manager-webhook-575479ff47-d87pf    1/1     Running   0          72s
 
 ### 6. Setup cluster-issuer and Certificate resources
 Set your email address in `cluster-issuer.yaml` that you'd like to register with ACME server.
-```
+```shell
 kubectl apply -f cluster-issuer.yaml
 kubectl apply -f certificate.yaml
 ```
@@ -130,7 +131,7 @@ sh.helm.release.v1.asm-igx-aks-istio-ingressgateway-external.v113   helm.sh/rele
 ### Validate https request to productpage service
 Verify that the productpage can be accessed via the HTTPS endpoint
 
-```
+```shell
 curl -v https://test.dev.azureservicemesh.io/productpage | grep -o "<title>.*</title>"
 ```
 this should print `<title>Simple Bookstore App</title>`
@@ -140,9 +141,10 @@ this should print `<title>Simple Bookstore App</title>`
 ```dig +short A test.dev.azureservicemesh.io``` should return the configured ip address ```4.153.8.39``` in the example.
 
 2. check certificate resource readiness
-```
+```shell
 kubectl get certificate -n aks-istio-ingress
-
+```
+```console
 NAME                         READY   SECRET           AGE
 bookinfo-letsencrypt-certs   False   bookinfo-certs   2m5s
 ```
