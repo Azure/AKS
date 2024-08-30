@@ -291,7 +291,7 @@ configuration:
       - addReply:
           reply: Thanks for reaching out. I'm closing this issue as it was marked resolved and it hasn't had activity for 3 days. If it continues please reply or open a support ticket.
       - closeIssue
-    - description: 
+    - description: close the issue with code merged label without activities in 21 days.
       frequencies:
       - hourly:
           hour: 6
@@ -304,7 +304,20 @@ configuration:
       actions:
       - addReply:
           reply: Thanks for reaching out. I'm closing this issue as it was marked with "code merged" and it hasn't had activity for 21 days.
-      - closeIssue      
+      - closeIssue
+    - description: label issues with SLA warning if issues are not closed after 7 days.
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isOpen
+      - created:
+          before: 7
+      - hasLabel:
+          label: bug
+      actions:
+      - addLabel:
+          label: SLA
     eventResponderTasks:
     - if:
       - payloadType: Issue_Comment
