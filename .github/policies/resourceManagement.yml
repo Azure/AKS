@@ -291,6 +291,20 @@ configuration:
       - addReply:
           reply: Thanks for reaching out. I'm closing this issue as it was marked resolved and it hasn't had activity for 3 days. If it continues please reply or open a support ticket.
       - closeIssue
+    - description: 
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isOpen
+      - hasLabel:
+          label: resolution/code-merged
+      - noActivitySince:
+          days: 21
+      actions:
+      - addReply:
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "code merged" and it hasn't had activity for 21 days.
+      - closeIssue      
     eventResponderTasks:
     - if:
       - payloadType: Issue_Comment
