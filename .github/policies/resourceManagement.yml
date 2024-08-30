@@ -38,6 +38,10 @@ configuration:
           label: feature-request
       - isNotLabeledWith:
           label: bug
+      - isNotLabeledWith:
+          label: enhancement
+      - isNotLabeledWith:
+          label: announcement
       actions:
       - addLabel:
           label: stale
@@ -248,6 +252,10 @@ configuration:
           days: 7
       - isNotLabeledWith:
           label: feature-request
+      - isNotLabeledWith:
+          label: enhancement
+      - isNotLabeledWith:
+          label: announcement
       - isNotLabeledWith:
           label: stale
       actions:
