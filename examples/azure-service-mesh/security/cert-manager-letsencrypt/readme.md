@@ -1,6 +1,6 @@
-# Cert-Manager Let's Encrypt Integration with Azure Service Mesh (ASM)
+# Cert-Manager Let's Encrypt Integration with Istio-based service mesh add-on
 
-This document contains instructions on how to integrate Istio based service mesh add-on for AKS with cert-manager and obtain letsencrypt certificates for setting up secure ingress gateways. 
+This document contains instructions on how to integrate Istio-based service mesh add-on for AKS with cert-manager and obtain letsencrypt certificates for setting up secure ingress gateways. 
 
 ## Objectives
 * Deploy bookinfo demo app, expose a secure HTTPS service using simple TLS.
@@ -91,6 +91,9 @@ Create a ConfigMap with the name `istio-shared-configmap-<asm-revision>` in the 
 ```shell
 kubectl apply -f configmap.yaml
 ```
+
+> [!Note]  
+> Kubernetes ingress for Istio-based service mesh is an `allowed` feature. More details on configuration options [here](https://learn.microsoft.com/en-us/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations)
 
 ### 5. Install cert-manager
 ```shell
