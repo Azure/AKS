@@ -1,6 +1,6 @@
 # Cert-Manager Let's Encrypt Integration with Azure Service Mesh (ASM)
 
-This document contains instructions on how to integrate Azure Servicemesh with Cert-Manager and obtain letsencrypt certificates. 
+This document contains instructions on how to integrate Istio based service mesh add-on for AKS with cert-manager and obtain letsencrypt certificates for setting up secure ingress gateways. 
 
 ## Objectives
 * Deploy bookinfo demo app, expose a secure HTTPS service using simple TLS.
