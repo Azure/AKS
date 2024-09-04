@@ -1,5 +1,45 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-08-27
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240827.
+
+### Announcements
+
+* 
+
+### Release Notes
+
+* Features:
+  * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
+
+* Bug fixes:
+  * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
+  * For AGC Windows clusters, fix customenv-file from C:\\k\\akscustom.json to C:\\k\\azurestackcloud.json so that aks-secret-store-provider-azure-windows pod could come up.
+  * Fix a bug where users could not stop/start AgentPools using the PowerState field in the 2020-09-01, 2020-11-01, 2020-12-01, 2021-02-01, 2021-03-01 API versions.
+  * Fix bug to block non-VMSS (VirtualMachineScaleSets) agent pools in the Automatic SKU validation process.
+
+* Behavior change:
+  * [Trusted launch for Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) user will receive Trusted Launch image upon creating a nodepool with vTPM or secure boot enabled.
+  * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526.
+  * When [API Server VNet Integration (Preview)](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration) is enabled, all in-cluster traffic from pod to apiserver won't go through ILB.
+  * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
+  * For [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, creating non-VMSS (VirtualMachineScaleSets) agent pools are blocked.
+  * Allow creation of AgentPools without Count field specified if autoscaler enabled.
+
+* Component updates:
+  * Updated Azure Disk CSI driver to [v1.30.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.2) on AKS 1.30.
+  * Update Blob Disk CSI driver to [v1.24.2][https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.2] on AKS 1.30.
+  * Istio-based service mesh add-on revision asm-1-20 has been upgraded to patch [v1.20.8](https://istio.io/latest/news/releases/1.20.x/announcing-1.20.8/), revision asm-1-21 has been upgraded to patch [v1.21.5](https://istio.io/latest/news/releases/1.21.x/announcing-1.21.5/), and revision asm-1-22 has been upgraded to patch [v1.22.3](https://istio.io/latest/news/releases/1.22.x/announcing-1.22.3/). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade#patch-version-upgrade).
+  * AKS Windows Server 23H2 image has been updated to [AKSWindows-23H2-25398.1009.240805](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/23H2/25398.1009.240805.txt).
+  * AKS Windows Server 23H2-gen2 image has been updated to [AKSWindows-23H2-gen2-25398.1009.240805](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/23H2-gen2/25398.1009.240805.txt).
+  * Updated AKS App Routing operator image to [0.2.1-patch-3](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-3) for AKS cluster with K8s versions <1.30 to address CVE in ExternalDNS.
+  * Updated Azure Policy addon to [v1.7.0](https://learn.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#170).
+  * Updated Windows containerd to [v1.7.20](https://github.com/containerd/containerd/releases/tag/v1.7.20) in AKS cluster with K8s versions >= v1.28.
+  * Upgraded Kubernetes Secrets Store CSI Driver to [v1.5.3](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.3).
+  * Upgraded Kubernetes Secrets Store CSI Driver to [v1.4.4](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.4) and Azure Key Vault Provider for Secrets Store CSI Driver to [v1.5.3](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.5.3)
+  * Upgraded Azure CNI to [1.5.32](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.32).
+
 ## Release 2024-08-05
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240805.
