@@ -7,13 +7,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * AKS version 1.27 is now deprecated, onboard to LTS if you still need to operate on 1.27.
-* [Trusted launch for AKS](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) is now GA. 
+* [Trusted launch for AKS](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) is now GA.
+* The attestation report for [CIS Kubernetes V1.9.0 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) is published which covers AKS 1.27.x through AKS 1.29.x.
 
 ### Release Notes
 
 * Bug fixes:
   * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
-  * For AGC Windows clusters, fix customenv-file from C:\\k\\akscustom.json to C:\\k\\azurestackcloud.json so that aks-secret-store-provider-azure-windows pod could come up.
   * Fix a bug where users could not stop/start AgentPools using the PowerState field in the 2020-09-01, 2020-11-01, 2020-12-01, 2021-02-01, 2021-03-01 API versions.
   * Fix bug to block non-VMSS (VirtualMachineScaleSets) agent pools in the Automatic SKU validation process.
   * Fix bug to ensure correct default network plugin settings for Kubernetes clusters using VMAS.
@@ -23,15 +23,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix bug to ensure AnnotationControlled is correctly populated by default when creating AKS clusters with app routing enabled, and to ensureAnnotationControlled is an accepted value for the default nginx ingress controller config for AKS clusters with K8s versions <1.30.
   * Fix bug for [karpenter](https://github.com/Azure/karpenter-poc/issues/639).![image](https://github.com/user-attachments/assets/0957724f-dc1e-4dc0-8864-4ccca8cf61b1)
 
-
 * Behavior change:
   * Cluster Stop operations will be blocked if the customer has any illegal webhooks:
     * If APIGroups is wildcard, and Resources is in the criticalResources or wildcard, the webhook will be blocked.
     * If Resources is wildcard, and APIGroups is in the criticalApiGroups or wildcard, the webhook will be blocked.
-  * [Trusted launch for Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) user will receive Trusted Launch image upon creating a nodepool with vTPM or secure boot enabled.
-  * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526.
+  * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526. Before this change user cannot access wireserver port 80, but port 32526 is accessible.
   * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
-  * For [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, creating non-VMSS (VirtualMachineScaleSets) agent pools are blocked.
   * Allow creation of AgentPools without Count field specified if autoscaler enabled.
   * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
   * Azure Linux 2.0 on Kubernetes version 1.30 LTS will be blocked until Azure Linux 3.0 is released and supported.
@@ -39,6 +36,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AGIC addon has been assigned the network contributor role.
 
 * Component updates:
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/2204containerd/202408.27.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202408.27.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSCBLMarinerV2/gen2/202408.27.0.txt). 
   * Azure Disk CSI driver has been upgraded to [v1.30.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.3) on AKS 1.30, [V1.29.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.8) on AKS 1.28, [1.28.1](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.10) on AKS 1.27.
   * Azure Blob Disk CSI driver has been upgraded to [v1.24.3][https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.3] on AKS 1.30, [v1.23.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.7) on AKS 1.29 and 1.28.
   * Azure File CSI driver has been upgraded to [v1.30.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.5) on AKS 1.30 and 1.29, [v1.29.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.7) on AKS 1.28.
