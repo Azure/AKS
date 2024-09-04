@@ -27,7 +27,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * If Resources is wildcard, and APIGroups is in the criticalApiGroups or wildcard, the webhook will be blocked.
   * [Trusted launch for Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) user will receive Trusted Launch image upon creating a nodepool with vTPM or secure boot enabled.
   * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526.
-  * When [API Server VNet Integration (Preview)](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration) is enabled, all in-cluster traffic from pod to apiserver won't go through ILB.
   * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
   * For [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, creating non-VMSS (VirtualMachineScaleSets) agent pools are blocked.
   * Allow creation of AgentPools without Count field specified if autoscaler enabled.
