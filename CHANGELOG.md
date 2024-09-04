@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix bug of public IP on VMSS dropped after upgrade node image or reset service principal operation.
   * Fix bug (#4282)[https://github.com/Azure/AKS/issues/4282] to remove duplicated toleration from Calico components.
   * Fix bug to ensure AnnotationControlled is correctly populated by default when creating AKS clusters with app routing enabled, and to ensureAnnotationControlled is an accepted value for the default nginx ingress controller config for AKS clusters with K8s versions <1.30.
-  * Fix bug for [karpenter](https://github.com/Azure/karpenter-poc/issues/639).![image](https://github.com/user-attachments/assets/0957724f-dc1e-4dc0-8864-4ccca8cf61b1)
+  * Fix bug for [karpenter](https://github.com/Azure/karpenter-poc/issues/639).
 
 * Behavior change:
   * Cluster Stop operations will be blocked if the customer has any illegal webhooks:
