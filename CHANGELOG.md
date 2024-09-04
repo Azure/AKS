@@ -33,7 +33,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
   * Azure Linux 2.0 on Kubernetes version 1.30 LTS will be blocked until Azure Linux 3.0 is released and supported.
   * KMS v1 is blocked for AKS cluster with K8s version >=1.31.
-  * AGIC addon has been assigned the network contributor role.
+  * [AGIC addon](https://learn.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
 
 * Component updates:
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/2204containerd/202408.27.0.txt).
@@ -42,13 +42,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Azure Blob Disk CSI driver has been upgraded to [v1.24.3][https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.3] on AKS 1.30, [v1.23.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.7) on AKS 1.29 and 1.28.
   * Azure File CSI driver has been upgraded to [v1.30.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.5) on AKS 1.30 and 1.29, [v1.29.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.7) on AKS 1.28.
   * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6189.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.6189.240814.txt).
-  * AKS Windows Server 23H2 image has been updated to [AKSWindows-2022-20348.2655.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2655.240814.txt).
+  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2655.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2655.240814.txt).
   * AKS Windows Server 23H2 image has been updated to [AKSWindows-23H2-25398.1085.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/23H2/25398.1085.240814.txt).
   * AKS App Routing operator image has been updated to [v0.2.3-patch-2](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-2) for AKS cluster with K8s versions >=1.30, [v0.2.1-patch-4](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-4) for AKS cluster with K8s versions <1.30 to address CVEs.
   * Windows containerd has been updated to [v1.7.20](https://github.com/containerd/containerd/releases/tag/v1.7.20) in AKS cluster with K8s versions >= v1.28.
   * Kubernetes Secrets Store CSI Driver has been updated to [v1.5.3](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.3).
   * Kubernetes Secrets Store CSI Driver has been updated to [v1.4.4](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.4) and Azure Key Vault Provider for Secrets Store CSI Driver to [v1.5.3](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.5.3)
-  * AGIC addon image has been updated to [v1.7.5](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.7.5).
+  * [AGIC addon image](https://learn.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview) has been updated to [v1.7.5](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.7.5).
   * Retina Enterprise and Operator image has been updated to [v0.0.9](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.0.9).
   * azure-cloud-controller-manager has been updated to version [v1.30.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.5), [v1.29.9](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.9), [v1.28.11](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.11), [v1.27.19](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.19).
   * KEDA addon has been updated to [v2.14.1](https://github.com/kedacore/keda/releases/tag/v2.14.1) for Kubernetes = 1.30.
