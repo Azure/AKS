@@ -6,39 +6,54 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* 
+* AKS version 1.27 is now deprecated, onboard to LTS if you still need to operate on 1.27.
 
 ### Release Notes
-
-* Features:
-  * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
 
 * Bug fixes:
   * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
   * For AGC Windows clusters, fix customenv-file from C:\\k\\akscustom.json to C:\\k\\azurestackcloud.json so that aks-secret-store-provider-azure-windows pod could come up.
   * Fix a bug where users could not stop/start AgentPools using the PowerState field in the 2020-09-01, 2020-11-01, 2020-12-01, 2021-02-01, 2021-03-01 API versions.
   * Fix bug to block non-VMSS (VirtualMachineScaleSets) agent pools in the Automatic SKU validation process.
+  * Fix bug to ensure correct default network plugin settings for Kubernetes clusters using VMAS.
+  * Fix bug for intermittent precondition failures when applying an AKS Bicep deployment on the pod subnet delegation.
+  * Fix bug of public IP on VMSS dropped after upgrade node image or reset service principal operation.
+  * Fix bug (#4282)[https://github.com/Azure/AKS/issues/4282] to remove duplicated toleration from Calico components.
+  * Fix bug to ensure AnnotationControlled is correctly populated by default when creating AKS clusters with app routing enabled, and to ensureAnnotationControlled is an accepted value for the default nginx ingress controller config for AKS clusters with K8s versions <1.30.
 
 * Behavior change:
+  * Cluster Stop operations will be blocked if the customer has any illegal webhooks:
+    * If APIGroups is wildcard, and Resources is in the criticalResources or wildcard, the webhook will be blocked.
+    * If Resources is wildcard, and APIGroups is in the criticalApiGroups or wildcard, the webhook will be blocked.
   * [Trusted launch for Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) user will receive Trusted Launch image upon creating a nodepool with vTPM or secure boot enabled.
   * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526.
   * When [API Server VNet Integration (Preview)](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration) is enabled, all in-cluster traffic from pod to apiserver won't go through ILB.
   * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
   * For [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, creating non-VMSS (VirtualMachineScaleSets) agent pools are blocked.
   * Allow creation of AgentPools without Count field specified if autoscaler enabled.
+  * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
+  * Azure Linux 2.0 on Kubernetes version 1.30 LTS will be blocked until Azure Linux 3.0 is released and supported.
+  * KMS v1 is blocked for AKS cluster with K8s version >=1.31.
+  * AGIC addon has been assigned the network contributor role.
 
 * Component updates:
-  * Updated Azure Disk CSI driver to [v1.30.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.2) on AKS 1.30.
-  * Update Blob Disk CSI driver to [v1.24.2][https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.2] on AKS 1.30.
+  * Azure Disk CSI driver has been upgraded to [v1.30.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.3) on AKS 1.30, [V1.29.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.8) on AKS 1.28, [1.28.1](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.10) on AKS 1.27.
+  * Azure Blob Disk CSI driver has been upgraded to [v1.24.3][https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.3] on AKS 1.30, [v1.23.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.7) on AKS 1.29 and 1.28.
+  * Azure File CSI driver has been upgraded to [v1.30.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.5) on AKS 1.30 and 1.29, [v1.29.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.7) on AKS 1.28.
+  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6189.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.6189.240814.txt).
+  * AKS Windows Server 23H2 image has been updated to [AKSWindows-2022-20348.2655.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2655.240814.txt).
+  * AKS Windows Server 23H2 image has been updated to [AKSWindows-23H2-25398.1085.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/23H2/25398.1085.240814.txt).
+  * AKS App Routing operator image has been updated to [v0.2.3-patch-2](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-2) for AKS cluster with K8s versions >=1.30, [v0.2.1-patch-4](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-4) for AKS cluster with K8s versions <1.30 to address CVEs.
+  * Windows containerd has been updated to [v1.7.20](https://github.com/containerd/containerd/releases/tag/v1.7.20) in AKS cluster with K8s versions >= v1.28.
+  * Kubernetes Secrets Store CSI Driver has been updated to [v1.5.3](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.3).
+  * Kubernetes Secrets Store CSI Driver has been updated to [v1.4.4](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.4) and Azure Key Vault Provider for Secrets Store CSI Driver to [v1.5.3](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.5.3)
+  * AGIC addon image has been updated to [v1.7.5](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.7.5).
+  * Retina Enterprise and Operator image has been updated to [v0.0.9](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.0.9).
+  * azure-cloud-controller-manager has been updated to version [v1.30.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.5), [v1.29.9](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.9), [v1.28.11](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.11), [v1.27.19](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.19).
+  * KEDA addon has been updated to [v2.14.1](https://github.com/kedacore/keda/releases/tag/v2.14.1) for Kubernetes = 1.30.
+  * Azure Policy addon has been updated to [v1.7.0](https://learn.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#170).
   * Istio-based service mesh add-on revision asm-1-20 has been upgraded to patch [v1.20.8](https://istio.io/latest/news/releases/1.20.x/announcing-1.20.8/), revision asm-1-21 has been upgraded to patch [v1.21.5](https://istio.io/latest/news/releases/1.21.x/announcing-1.21.5/), and revision asm-1-22 has been upgraded to patch [v1.22.3](https://istio.io/latest/news/releases/1.22.x/announcing-1.22.3/). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade#patch-version-upgrade).
-  * AKS Windows Server 23H2 image has been updated to [AKSWindows-23H2-25398.1009.240805](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/23H2/25398.1009.240805.txt).
-  * AKS Windows Server 23H2-gen2 image has been updated to [AKSWindows-23H2-gen2-25398.1009.240805](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/23H2-gen2/25398.1009.240805.txt).
-  * Updated AKS App Routing operator image to [0.2.1-patch-3](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-3) for AKS cluster with K8s versions <1.30 to address CVE in ExternalDNS.
-  * Updated Azure Policy addon to [v1.7.0](https://learn.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#170).
-  * Updated Windows containerd to [v1.7.20](https://github.com/containerd/containerd/releases/tag/v1.7.20) in AKS cluster with K8s versions >= v1.28.
-  * Upgraded Kubernetes Secrets Store CSI Driver to [v1.5.3](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.3).
-  * Upgraded Kubernetes Secrets Store CSI Driver to [v1.4.4](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.4) and Azure Key Vault Provider for Secrets Store CSI Driver to [v1.5.3](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.5.3)
-  * Upgraded Azure CNI to [1.5.32](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.32).
+  * Calico [v3.28.1](https://github.com/projectcalico/calico/releases/tag/v3.28.1) is supported for AKS cluster with K8s versions 1.30.
 
 ## Release 2024-08-05
 
