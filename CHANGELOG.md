@@ -47,7 +47,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202408.27.0.txt).
   * Azure Linux image has been updated to [AzureLinux-202408.27.0](vhd-notes/AzureLinux/202408.27.0.txt). 
   * Azure Disk CSI driver has been upgraded to [v1.30.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.3) on AKS 1.30, [V1.29.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.8) on AKS 1.28, [1.28.1](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.10) on AKS 1.27.
-  * Azure Blob Disk CSI driver has been upgraded to [v1.24.3][https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.3] on AKS 1.30, [v1.23.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.7) on AKS 1.29 and 1.28.
+  * Azure Blob Disk CSI driver has been upgraded to [v1.24.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.3) on AKS 1.30, [v1.23.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.7) on AKS 1.29 and 1.28.
   * Azure File CSI driver has been upgraded to [v1.30.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.5) on AKS 1.30 and 1.29, [v1.29.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.7) on AKS 1.28.
   * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6189.240814](vhd-notes/AKSWindows/2019/17763.6189.240814.txt).
   * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2655.240814](vhd-notes/AKSWindows/2022/20348.2655.240814.txt).
