@@ -1,26 +1,29 @@
 # Cert-Manager Let's Encrypt Integration with Istio-based service mesh add-on
 
-This document contains instructions on how to integrate Istio-based service mesh add-on for AKS with cert-manager and obtain letsencrypt certificates for setting up secure ingress gateways. 
+This document contains instructions on how to integrate Istio-based service mesh add-on for AKS with cert-manager and obtain let's encrypt certificates for setting up secure ingress gateways. 
 
 ## Objectives
 * Deploy bookinfo demo app, expose a secure HTTPS service using simple TLS.
-* Demonstrate HTTPS connections for Azure Service Mesh workloads using Cert-Manager and letsencrypt as the certificate authority.
+* Demonstrate HTTPS connections for Azure Service Mesh workloads using cert-manager and let's encrypt as the certificate authority.
 
 ## Before you begin
-* Install Install Azure Servicemesh.
-* Enable external ingressgateway.
-* Enable sidecar injection on the default namespace. 
-
+* [Install](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-addon#install-istio-add-on) Istio-based service mesh add-on on your cluster.
 ```shell
 az aks mesh enable -g <rg-name> -n <cluster-name>
+```
+* [Enable external ingressgateway](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-ingress#enable-external-ingress-gateway)
+```shell
 az aks mesh enable-ingress-gateway -g <rg-name> -n <cluster-name> --ingress-gateway-type external
+```
+* [Enable sidecar injection](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-addon#enable-sidecar-injection) on the default namespace. 
+```shell
 revision=$(az aks show --resource-group <rg-name> --name <cluster-name> --query 'serviceMeshProfile.istio.revisions[0]' -o tsv)
 kubectl label namespace default istio.io/rev=$revision
 ```
 
 ## Steps
 ### 1. Setup DNS record
-Setup a DNS record for the external-ip address for the external ingressgateway service. In this example, I set up 4.153.8.39 with test.dev.azureservicemesh.io
+Setup a DNS record for the external-ip address for the external ingressgateway service with your cloud provider. In this example, I set up 4.153.8.39 with test.dev.azureservicemesh.io
 ```shell
 kubectl get svc -n aks-istio-ingress
 ```
@@ -93,7 +96,8 @@ kubectl apply -f configmap.yaml
 ```
 
 > [!Note]  
-> Kubernetes ingress for Istio-based service mesh is an `allowed` feature. More details on configuration options [here](https://learn.microsoft.com/en-us/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations)
+> Kubernetes ingress for Istio-based service mesh is an `allowed` feature. More details on configuration options [here](https://learn.microsoft.com/en-us/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations)  
+> cert-manager is not supported by Microsoft, more info can be found [here](https://cert-manager.io/)
 
 ### 5. Install cert-manager
 ```shell
@@ -143,7 +147,7 @@ this should print `<title>Simple Bookstore App</title>`
 1. Verify that the DNS record has propagated
 ```dig +short A test.dev.azureservicemesh.io``` should return the configured ip address ```4.153.8.39``` in the example.
 
-2. check certificate resource readiness
+2. Check certificate resource readiness.
 ```shell
 kubectl get certificate -n aks-istio-ingress
 ```
@@ -172,7 +176,7 @@ Events:
   Normal  Requested  14m   cert-manager-certificates-request-manager  Created new CertificateRequest resource "bookinfo-letsencrypt-certs-1"
 ```
 
-3. check certificaterequest resource.
+3. Check certificaterequest resource readiness.
 ```shell
 kubectl describe certificaterequest bookinfo-letsencrypt-certs-1 -n aks-istio-ingress
 ```
@@ -198,7 +202,7 @@ Events:
   Normal  OrderCreated        6m57s  cert-manager-certificaterequests-issuer-acme        Created Order resource aks-istio-ingress/bookinfo-letsencrypt-certs-1-507153367
   ```
 
-4. check order resource.
+4. Check order resource readiness.
 ```shell
 kubectl describe order bookinfo-letsencrypt-certs-1-507153367 -n aks-istio-ingress
 ```
@@ -216,7 +220,7 @@ Events:
   Normal  Created  11m   cert-manager-orders  Created Challenge resource "bookinfo-letsencrypt-certs-1-507153367-692923294" for domain "test.dev.azureservicemesh.io"
 ```
 
-5. check challenge resource.
+5. Check challenge resource readiness.
 ```shell
 kubectl describe challenge bookinfo-letsencrypt-certs-1-507153367-692923294 -n aks-istio-ingress
 ```
@@ -243,7 +247,7 @@ Status: You can refer to the 'Reason' field to further diagnose the root cause.
 
 In the above example, HTTP-01 challenge propagation failed as `test.dev.azureservicemesh.io/.well-known/acme-challenge/hGsAXbL_uHSCL2tAvkh34d0AUmwuCfAge-ThVX0QfIA` could not be resolved and resulted in `404` instead of `200`.
 
-6. check ingress resource
+6. Check ingress resource.
 cert-manager configures an ingress resource, sets up a node port service automatically to route the ACME challenge requests.
 ```shell
 kubectl describe ing -n aks-istio-ingress
