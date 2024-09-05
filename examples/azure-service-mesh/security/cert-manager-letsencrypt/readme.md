@@ -7,7 +7,7 @@ This document contains instructions on how to integrate Istio-based service mesh
 * Demonstrate HTTPS connections for Azure Service Mesh workloads using Cert-Manager and letsencrypt as the certificate authority.
 
 ## Before you begin
-* Install Install Azure Servicemesh.
+* Install Istio-based service mesh add-on on your cluster
 * Enable external ingressgateway.
 * Enable sidecar injection on the default namespace. 
 
