@@ -6,11 +6,18 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* AKS version 1.27 is now deprecated, onboard to LTS if you still need to operate on 1.27.
-* [Trusted launch for AKS](https://learn.microsoft.com/en-us/azure/aks/use-trusted-launch) is now GA.
+* AKS version 1.27 is now deprecated, onboard to [Long-term support for AKS versions](https://learn.microsoft.com/en-us/azure/aks/long-term-support) if you still need to operate on 1.27.
+* [Trusted launch for AKS](https://learn.microsoft.com/azure/aks/use-trusted-launch) is now generally available.
 * The attestation report for [CIS Kubernetes V1.9.0 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) is published which covers AKS 1.27.x through AKS 1.29.x.
+* AKS will be upgrading the KEDA addon to more recent KEDA versions. The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
+  * **KEDA 2.15** for Kubernetes >=1.31: The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com/azure/aks/keda-workload-identity). 
+  * **KEDA 2.14** for Kubernetes = 1.30: The removal of [Azure Data Explorer 'metadata.clientSecret' as it was not safe for managing secrets](https://github.com/kedacore/keda/issues/4514).
+  * **KEDA 2.14** for Kubernetes = 1.30: Removal of the [deprecated metricName from trigger metadata section](https://github.com/kedacore/keda/issues/4240). The two impacted Azure Scalers are Azure Blob Scaler and Azure Log Analytics Scaler. If you are using `metricName` today, please move `metricName` outside of trigger metadata section  to`trigger.name` in the trigger section to optionally name your trigger. To view an example of what this would look like, please view the open [GitHub issue](https://github.com/Azure/AKS/issues/4471).
 
 ### Release Notes
+
+* Features:
+  * [Trusted launch for AKS](https://learn.microsoft.com/azure/aks/use-trusted-launch) is now generally available.
 
 * Bug fixes:
   * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
@@ -20,7 +27,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix bug for intermittent precondition failures when applying an AKS Bicep deployment on the pod subnet delegation.
   * Fix bug of public IP on VMSS dropped after upgrade node image or reset service principal operation.
   * Fix bug (#4282)[https://github.com/Azure/AKS/issues/4282] to remove duplicated toleration from Calico components.
-  * Fix bug to ensure AnnotationControlled is correctly populated by default when creating AKS clusters with app routing enabled, and to ensureAnnotationControlled is an accepted value for the default nginx ingress controller config for AKS clusters with K8s versions <1.30.
+  * Fix bug to ensure `AnnotationControlled` is correctly populated by default when creating AKS clusters with app routing enabled, and to ensure `AnnotationControlled` is an accepted value for the [default nginx ingress controller config](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=bicep#control-the-default-nginx-ingress-controller-configuration) for AKS clusters with K8s versions <1.30.
   * Fix bug for [karpenter](https://github.com/Azure/karpenter-poc/issues/639).
 
 * Behavior change:
