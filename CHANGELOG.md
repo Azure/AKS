@@ -18,6 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
   * [Trusted launch for AKS](https://learn.microsoft.com/azure/aks/use-trusted-launch) is now generally available.
+  * Existing Linux node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [aka.ms/aks/updatefips](aka.ms/aks/updatefips) for more information.
 
 * Bug fixes:
   * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
@@ -28,19 +29,19 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix bug of public IP on VMSS dropped after upgrade node image or reset service principal operation.
   * Fix bug (#4282)[https://github.com/Azure/AKS/issues/4282] to remove duplicated toleration from Calico components.
   * Fix bug to ensure `AnnotationControlled` is correctly populated by default when creating AKS clusters with app routing enabled, and to ensure `AnnotationControlled` is an accepted value for the [default nginx ingress controller config](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=bicep#control-the-default-nginx-ingress-controller-configuration) for AKS clusters with K8s versions <1.30.
-  * Fix bug for [karpenter](https://github.com/Azure/karpenter-poc/issues/639).
+  * Fix bug for [Cluster Autoscaler](https://github.com/Azure/AKS/issues/4286) that requires an implementation of the `HasInstance` method on AKS. This implementation prevents the Cluster Autoscaler from stalling during scale-up due to node scale-down issues. 
 
 * Behavior change:
   * Cluster Stop operations will be blocked if the customer has any illegal webhooks:
     * If APIGroups is wildcard, and Resources is in the criticalResources or wildcard, the webhook will be blocked.
     * If Resources is wildcard, and APIGroups is in the criticalApiGroups or wildcard, the webhook will be blocked.
   * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526. Before this change user cannot access wireserver port 80, but port 32526 is accessible.
-  * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/en-us/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
+  * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
   * Allow creation of AgentPools without Count field specified if autoscaler enabled.
   * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
   * Azure Linux 2.0 on Kubernetes version 1.30 LTS will be blocked until Azure Linux 3.0 is released and supported.
   * KMS v1 is blocked for AKS cluster with K8s version >=1.31.
-  * [AGIC addon](https://learn.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
+  * [Application Gateway Ingress Controller addon](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
 
 * Component updates:
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/2204containerd/202408.27.0.txt).
@@ -60,7 +61,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * azure-cloud-controller-manager has been updated to version [v1.30.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.5), [v1.29.9](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.9), [v1.28.11](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.11), [v1.27.19](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.19).
   * KEDA addon has been updated to [v2.14.1](https://github.com/kedacore/keda/releases/tag/v2.14.1) for Kubernetes = 1.30.
   * Azure Policy addon has been updated to [v1.7.0](https://learn.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#170).
-  * Istio-based service mesh add-on revision asm-1-20 has been upgraded to patch [v1.20.8](https://istio.io/latest/news/releases/1.20.x/announcing-1.20.8/), revision asm-1-21 has been upgraded to patch [v1.21.5](https://istio.io/latest/news/releases/1.21.x/announcing-1.21.5/), and revision asm-1-22 has been upgraded to patch [v1.22.3](https://istio.io/latest/news/releases/1.22.x/announcing-1.22.3/). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade#patch-version-upgrade).
+  * Istio-based service mesh add-on revision asm-1-20 has been upgraded to patch [v1.20.8](https://istio.io/latest/news/releases/1.20.x/announcing-1.20.8/), revision asm-1-21 has been upgraded to patch [v1.21.5](https://istio.io/latest/news/releases/1.21.x/announcing-1.21.5), and revision asm-1-22 has been upgraded to patch [v1.22.3](https://istio.io/latest/news/releases/1.22.x/announcing-1.22.3). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade#patch-version-upgrade).
   * Calico [v3.28.1](https://github.com/projectcalico/calico/releases/tag/v3.28.1) is supported for AKS cluster with K8s versions 1.30.
 
 ## Release 2024-08-05
