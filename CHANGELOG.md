@@ -27,7 +27,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix bug to ensure correct default network plugin settings for Kubernetes clusters using VMAS.
   * Fix bug for intermittent precondition failures when applying an AKS Bicep deployment on the pod subnet delegation.
   * Fix bug of public IP on VMSS dropped after upgrade node image or reset service principal operation.
-  * Fix bug (#4282)[https://github.com/Azure/AKS/issues/4282] to remove duplicated toleration from Calico components.
+  * Fix bug https://github.com/Azure/AKS/issues/4282 to remove duplicated toleration from Calico components.
   * Fix bug to ensure `AnnotationControlled` is correctly populated by default when creating AKS clusters with app routing enabled, and to ensure `AnnotationControlled` is an accepted value for the [default nginx ingress controller config](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=bicep#control-the-default-nginx-ingress-controller-configuration) for AKS clusters with K8s versions <1.30.
   * Fix bug for [Cluster Autoscaler](https://github.com/Azure/AKS/issues/4286) that requires an implementation of the `HasInstance` method on AKS. This implementation prevents the Cluster Autoscaler from stalling during scale-up due to node scale-down issues. 
 
