@@ -44,14 +44,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Application Gateway Ingress Controller addon](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
 
 * Component updates:
-  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/2204containerd/202408.27.0.txt).
-  * Azure Linux image has been updated to [AzureLinux-202408.27.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSCBLMarinerV2/gen2/202408.27.0.txt). 
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202408.27.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202408.27.0](vhd-notes/AzureLinux/202408.27.0.txt). 
   * Azure Disk CSI driver has been upgraded to [v1.30.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.3) on AKS 1.30, [V1.29.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.8) on AKS 1.28, [1.28.1](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.10) on AKS 1.27.
   * Azure Blob Disk CSI driver has been upgraded to [v1.24.3][https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.3] on AKS 1.30, [v1.23.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.7) on AKS 1.29 and 1.28.
   * Azure File CSI driver has been upgraded to [v1.30.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.5) on AKS 1.30 and 1.29, [v1.29.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.7) on AKS 1.28.
-  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6189.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.6189.240814.txt).
-  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2655.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2655.240814.txt).
-  * AKS Windows Server 23H2 image has been updated to [AKSWindows-23H2-25398.1085.240814](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/23H2/25398.1085.240814.txt).
+  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6189.240814](vhd-notes/AKSWindows/2019/17763.6189.240814.txt).
+  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2655.240814](vhd-notes/AKSWindows/2022/20348.2655.240814.txt).
+  * AKS Windows Server 23H2 image has been updated to [AKSWindows-23H2-25398.1085.240814](vhd-notes/AKSWindows/23H2/25398.1085.240814.txt).
   * AKS App Routing operator image has been updated to [v0.2.3-patch-2](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-2) for AKS cluster with K8s versions >=1.30, [v0.2.1-patch-4](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-4) for AKS cluster with K8s versions <1.30 to address CVEs.
   * Windows containerd has been updated to [v1.7.20](https://github.com/containerd/containerd/releases/tag/v1.7.20) in AKS cluster with K8s versions >= v1.28.
   * Kubernetes Secrets Store CSI Driver has been updated to [v1.5.3](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.3).
