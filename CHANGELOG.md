@@ -22,7 +22,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Bug fixes:
   * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
-  * Fix a bug where users could not stop/start AgentPools using the PowerState field in the 2020-09-01, 2020-11-01, 2020-12-01, 2021-02-01, 2021-03-01 API versions.
   * Fix bug to block non-VMSS (VirtualMachineScaleSets) agent pools in the Automatic SKU validation process.
   * Fix bug to ensure correct default network plugin settings for Kubernetes clusters using VMAS.
   * Fix bug for intermittent precondition failures when applying an AKS Bicep deployment on the pod subnet delegation.
@@ -42,6 +41,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Azure Linux 2.0 on Kubernetes version 1.30 LTS will be blocked until Azure Linux 3.0 is released and supported.
   * KMS v1 is blocked for AKS cluster with K8s version >=1.31.
   * [Application Gateway Ingress Controller addon](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
+  * Reject user to set the `PowerState` field instead of ignoring it for API versions that do not support the filed. Impacted API versions are 2020-09-01, 2020-11-01, 2020-12-01, 2021-02-01 and 2021-03-01.
 
 * Component updates:
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202408.27.0.txt).
