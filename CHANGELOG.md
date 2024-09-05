@@ -39,7 +39,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Allow creation of AgentPools without Count field specified if autoscaler enabled.
   * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
   * Azure Linux 2.0 on Kubernetes version 1.30 LTS will be blocked until Azure Linux 3.0 is released and supported.
-  * KMS v1 is blocked for AKS cluster with K8s version >=1.31.
   * [Application Gateway Ingress Controller addon](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
 
 * Component updates:
