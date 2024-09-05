@@ -6,7 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* AKS version 1.27 is now deprecated, onboard to [Long-term support for AKS versions](https://learn.microsoft.com/en-us/azure/aks/long-term-support) if you still need to operate on 1.27.
+* AKS version 1.27 is now deprecated. Enable [long-term support for AKS versions](https://learn.microsoft.com/azure/aks/long-term-support) if you still need to operate on 1.27.
 * [Trusted launch for AKS](https://learn.microsoft.com/azure/aks/use-trusted-launch) is now generally available.
 * The attestation report for [CIS Kubernetes V1.9.0 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) is published which covers AKS 1.27.x through AKS 1.29.x.
 * AKS will be upgrading the KEDA addon to more recent KEDA versions. The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
