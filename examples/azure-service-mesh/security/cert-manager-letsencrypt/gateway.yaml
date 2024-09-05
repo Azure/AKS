@@ -12,7 +12,7 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - "test.dev.azureservicemesh.io"
+        - "test.dev.azureservicemesh.io" # this should match your DNS name
     - port:
         number: 443
         name: https-bookinfo

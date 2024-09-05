@@ -23,7 +23,9 @@ kubectl label namespace default istio.io/rev=$revision
 
 ## Steps
 ### 1. Setup DNS record
-Setup a DNS record for the external-ip address for the external ingressgateway service with your cloud provider. In this example, I set up 4.153.8.39 with test.dev.azureservicemesh.io
+Set up a DNS record for the `EXTERNAL-IP` address of the external ingressgateway service with your cloud provider. In this example, we are setting up the DNS record for `4.153.8.39` with `test.dev.azureservicemesh.io`.
+
+Run the following command to retrieve the external IP address of the ingress gateway:
 ```shell
 kubectl get svc -n aks-istio-ingress
 ```
@@ -71,6 +73,7 @@ reviews-v2-7d79d5bd5d-8zzqd       2/2     Running   0          2m41s
 reviews-v3-7dbcdcbc56-m8dph       2/2     Running   0          2m41s
 ```
 ### 3. Configure ingress gateway and virtual service
+Before deploying the `virtualservice` and `gateway` resources, make sure to update the `hosts` files to match your own DNS name.
 ```shell
 kubectl apply -f gateway.yaml
 kubectl apply -f virtualservice.yaml

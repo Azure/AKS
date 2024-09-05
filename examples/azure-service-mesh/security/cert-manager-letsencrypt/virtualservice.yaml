@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   hosts:
-  - test.dev.azureservicemesh.io
+  - test.dev.azureservicemesh.io # this should match your DNS name
   gateways:
   - bookinfo-gateway
   http:
