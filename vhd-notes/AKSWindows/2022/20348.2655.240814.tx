@@ -1,0 +1,305 @@
+﻿Build Number: 20240814.1_v20240814_100630093
+Build Id:     100630093
+Build Repo:   https://github.com/Azure/AgentBaker
+Build Branch: windows/v20240814
+Commit:       4df43cc52459ccc85501a385a048fae9538ca4c5
+
+VHD ID:      b1c52ef6-4af3-417d-8fa7-b7d442a257b5
+
+System Info
+	OS Name        : Windows Server 2022 Datacenter
+	OS Version     : 20348.2655
+	OS InstallType : Server Core
+
+Allowed security protocols: SystemDefault
+
+Installed Features
+
+Display Name                                            Name                       Install State
+------------                                            ----                       -------------
+[X] File and Storage Services                           FileAndStorage-Services        Installed
+    [X] Storage Services                                Storage-Services               Installed
+[X] Hyper-V                                             Hyper-V                        Installed
+[X] .NET Framework 4.8 Features                         NET-Framework-45-Fea...        Installed
+    [X] .NET Framework 4.8                              NET-Framework-45-Core          Installed
+    [X] WCF Services                                    NET-WCF-Services45             Installed
+        [X] TCP Port Sharing                            NET-WCF-TCP-PortShar...        Installed
+[X] BitLocker Drive Encryption                          BitLocker                      Installed
+[X] Containers                                          Containers                     Installed
+[X] Enhanced Storage                                    EnhancedStorage                Installed
+[X] Microsoft Defender Antivirus                        Windows-Defender               Installed
+[X] Remote Server Administration Tools                  RSAT                           Installed
+    [X] Role Administration Tools                       RSAT-Role-Tools                Installed
+        [X] Hyper-V Management Tools                    RSAT-Hyper-V-Tools             Installed
+            [X] Hyper-V Module for Windows PowerShell   Hyper-V-PowerShell             Installed
+[X] System Data Archiver                                System-DataArchiver            Installed
+[X] Windows PowerShell                                  PowerShellRoot                 Installed
+    [X] Windows PowerShell 5.1                          PowerShell                     Installed
+[X] WoW64 Support                                       WoW64-Support                  Installed
+
+
+
+Installed Packages
+	DirectX.Configuration.Database~~~~0.0.1.0
+	Downlevel.NLS.Sorting.Versions.Server~~~~0.0.1.0
+	Language.Basic~~~en-US~0.0.1.0
+	Language.Speech~~~en-US~0.0.1.0
+	Language.TextToSpeech~~~en-US~0.0.1.0
+	Microsoft.Windows.MSPaint~~~~0.0.1.0
+	Microsoft.Windows.Notepad~~~~0.0.1.0
+	Microsoft.Windows.WordPad~~~~0.0.1.0
+	OpenSSH.Client~~~~0.0.1.0
+	OpenSSH.Server~~~~0.0.1.0
+
+Installed QFEs
+	KB5041948 : Update          : https://support.microsoft.com/kb/5041948
+	KB5041160 : Security Update : https://support.microsoft.com/kb/5041160
+	KB5041590 : Security Update : https://support.microsoft.com/kb/5041590
+
+Installed Updates
+	Update for Windows Defender Antivirus antimalware platform - KB4052623 (Version 4.18.2001.10)
+	Update for Microsoft Defender Antivirus antimalware platform - KB4052623 (Version 4.18.24070.5) - Current Channel (Broad)
+	2024-08 Cumulative Update for .NET Framework 3.5, 4.8 and 4.8.1 for Microsoft server operating system version 21H2 for x64 (KB5042349)
+	Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.417.114.0) - Current Channel (Broad)
+
+Windows Update Registry Settings
+	https://docs.microsoft.com/en-us/windows/deployment/update/waas-wu-settings
+	HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+	HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+		NoAutoUpdate : 1
+	HKLM:\SYSTEM\CurrentControlSet\Services\hns\State
+		EnableCompartmentNamespace : 1
+		HnsPolicyUpdateChange : 1
+		HnsNatAllowRuleUpdateChange : 1
+		HnsAclUpdateChange : 1
+		HnsNpmRefresh : 1
+		HnsNodeToClusterIpv6 : 1
+		HNSNpmIpsetLimitChange : 1
+		HNSLbNatDupRuleChange : 1
+		HNSUpdatePolicyForEndpointChange : 1
+		HNSFixExtensionUponRehydration : 1
+		RemoveSourcePortPreservationForRest : 1
+		FwPerfImprovementChange : 1
+		CleanupReservedPorts : 1
+		OverrideReceiveRoutingForLocalAddressesIpv4 : 1
+		OverrideReceiveRoutingForLocalAddressesIpv6 : 1
+		HnsPreallocatePortRange : 1
+	HKLM:\SYSTEM\CurrentControlSet\Services\wcifs
+	HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides
+		2629306509 : 1
+		3508525708 : 1
+		1995963020 : 1
+		189519500 : 1
+		3398685324 : 1
+		87798413 : 1
+		4289201804 : 1
+		1355135117 : 1
+		2214038156 : 1
+		1673770637 : 1
+		527922829 : 1
+		2193453709 : 1
+		3331554445 : 1
+		1327590028 : 1
+		1114842764 : 1
+		4154935436 : 1
+		124082829 : 1
+		3744292492 : 1
+		3838270605 : 1
+		851795084 : 1
+		26691724 : 1
+		3834988172 : 1
+		1535854221 : 1
+		3632636556 : 1
+		1552261773 : 1
+		4186914956 : 1
+		3173070476 : 1
+		3958450316 : 1
+		2540111500 : 1
+		50261647 : 1
+		1475968140 : 1
+		747051149 : 1
+		260097166 : 1
+	HKLM:\SYSTEM\CurrentControlSet\Services\VfpExt\Parameters
+		VfpEvenPodDistributionIsEnabled : 1
+		VfpIpv6DipsPrintingIsEnabled : 1
+		VfpNotReuseTcpOneWayFlowIsEnabled : 1
+	HKLM:\SYSTEM\CurrentControlSet\Control\Windows Containers
+		DeltaHivePolicy : 2
+
+ContainerD Info
+Version: ctr github.com/containerd/containerd v1.6.21+azure
+
+Images:
+REF                                                                                                                                    TYPE                                                      DIGEST                                                                  SIZE      PLATFORMS                                          LABELS                          
+mcr.microsoft.com/azuremonitor/containerinsights/ciprod:win-3.1.23                                                                     application/vnd.docker.distribution.manifest.list.v2+json sha256:4cce85d7552d136d7f6050644f5dade086e95fb6c0204b1020259cdce5549262 3.4 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/azuremonitor/containerinsights/ciprod@sha256:4cce85d7552d136d7f6050644f5dade086e95fb6c0204b1020259cdce5549262        application/vnd.docker.distribution.manifest.list.v2+json sha256:4cce85d7552d136d7f6050644f5dade086e95fb6c0204b1020259cdce5549262 3.4 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cni:v1.5.26                                                                                application/vnd.oci.image.index.v1+json                   sha256:00a0f7d2e438650d82b2e4a6a5f91eed0a0ed34f913740f5f6d2c5db77fff282 191.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cni@sha256:00a0f7d2e438650d82b2e4a6a5f91eed0a0ed34f913740f5f6d2c5db77fff282                application/vnd.oci.image.index.v1+json                   sha256:00a0f7d2e438650d82b2e4a6a5f91eed0a0ed34f913740f5f6d2c5db77fff282 191.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns:v1.4.52                                                                                application/vnd.oci.image.index.v1+json                   sha256:eb2c068081c82e0dbeedd357e6270194e9537b41ae50e8bee6bee028066b9a75 1.7 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns:v1.5.26                                                                                application/vnd.oci.image.index.v1+json                   sha256:6dd5329e781e004b22bcbbeb04fa232f2af1b4a19298fc1197194fb9934edd98 1.8 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns:v1.5.32                                                                                application/vnd.oci.image.index.v1+json                   sha256:9a10fd3374197754a13015e70b3a8089c521d76d4782c335a0fa3ae5cdb8d07e 1.9 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns:v1.6.0                                                                                 application/vnd.oci.image.index.v1+json                   sha256:2a8eb42ddff1ebfe69721c48a6d893d192c59ff2a834be2b443819b91394da8a 1.9 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns@sha256:2a8eb42ddff1ebfe69721c48a6d893d192c59ff2a834be2b443819b91394da8a                application/vnd.oci.image.index.v1+json                   sha256:2a8eb42ddff1ebfe69721c48a6d893d192c59ff2a834be2b443819b91394da8a 1.9 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns@sha256:6dd5329e781e004b22bcbbeb04fa232f2af1b4a19298fc1197194fb9934edd98                application/vnd.oci.image.index.v1+json                   sha256:6dd5329e781e004b22bcbbeb04fa232f2af1b4a19298fc1197194fb9934edd98 1.8 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns@sha256:9a10fd3374197754a13015e70b3a8089c521d76d4782c335a0fa3ae5cdb8d07e                application/vnd.oci.image.index.v1+json                   sha256:9a10fd3374197754a13015e70b3a8089c521d76d4782c335a0fa3ae5cdb8d07e 1.9 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-cns@sha256:eb2c068081c82e0dbeedd357e6270194e9537b41ae50e8bee6bee028066b9a75                application/vnd.oci.image.index.v1+json                   sha256:eb2c068081c82e0dbeedd357e6270194e9537b41ae50e8bee6bee028066b9a75 1.7 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-npm:v1.5.5                                                                                 application/vnd.oci.image.index.v1+json                   sha256:aa753c012ef50c17f3bd77333f7018d9d6b0608b16659fcbc7c843e5316a04b7 1.3 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/azure-npm@sha256:aa753c012ef50c17f3bd77333f7018d9d6b0608b16659fcbc7c843e5316a04b7                application/vnd.oci.image.index.v1+json                   sha256:aa753c012ef50c17f3bd77333f7018d9d6b0608b16659fcbc7c843e5316a04b7 1.3 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/cni-dropgz:v0.1.4                                                                                application/vnd.oci.image.index.v1+json                   sha256:281afe61f26f29cb8016cb61a3109bc1659125f10fc1a7db50a346a8149b3392 169.1 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/cni-dropgz:v0.2.0                                                                                application/vnd.oci.image.index.v1+json                   sha256:2d11020c11b83f771fd34994ead928e80137f6db27f9f0482c8761c87bf9d2d2 192.2 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/cni-dropgz@sha256:281afe61f26f29cb8016cb61a3109bc1659125f10fc1a7db50a346a8149b3392               application/vnd.oci.image.index.v1+json                   sha256:281afe61f26f29cb8016cb61a3109bc1659125f10fc1a7db50a346a8149b3392 169.1 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/containernetworking/cni-dropgz@sha256:2d11020c11b83f771fd34994ead928e80137f6db27f9f0482c8761c87bf9d2d2               application/vnd.oci.image.index.v1+json                   sha256:2d11020c11b83f771fd34994ead928e80137f6db27f9f0482c8761c87bf9d2d2 192.2 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/azure/secrets-store/provider-azure:v1.5.2                                                                        application/vnd.docker.distribution.manifest.list.v2+json sha256:e4b9705d0dd1dceb76665f2d8f25968f4323c10ded0ef843eedb931674d9f37f 123.4 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/azure/secrets-store/provider-azure:v1.5.3                                                                        application/vnd.docker.distribution.manifest.list.v2+json sha256:b3b267c7bead172914736eef094c0de452b88baa75aef3139b095237c31311be 123.2 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/azure/secrets-store/provider-azure@sha256:b3b267c7bead172914736eef094c0de452b88baa75aef3139b095237c31311be       application/vnd.docker.distribution.manifest.list.v2+json sha256:b3b267c7bead172914736eef094c0de452b88baa75aef3139b095237c31311be 123.2 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/azure/secrets-store/provider-azure@sha256:e4b9705d0dd1dceb76665f2d8f25968f4323c10ded0ef843eedb931674d9f37f       application/vnd.docker.distribution.manifest.list.v2+json sha256:e4b9705d0dd1dceb76665f2d8f25968f4323c10ded0ef843eedb931674d9f37f 123.4 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.28.10-windows-hp                                                                 application/vnd.docker.distribution.manifest.list.v2+json sha256:c55befa55a13a388cf137d32fa345789c937d1ba96739d65375b804ed971e1d6 27.7 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.28.9-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:9e300a997cd78da18c2683edddfc79f2f066a5a0719da808d0fd51bcdfec13cc 27.8 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.29.7-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:635e34aaf44e96a30d1e17582e4420a77d979a4ade9f969420ae13d546491d0a 28.7 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.29.8-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:1b6415e5de5b868e14002ced097f288cb4b2409e54dd2de0a9ad105eaf6e6821 28.6 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.30.2-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:51024b084c339fe7ed237bf237a5d1de8b2f460e0f8636e264e4c68ea9c2ccd8 33.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi:v1.30.3-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:09c993e002a35662fcde77cf73fa02aabd70c0856355c782480b237319980557 33.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi@sha256:09c993e002a35662fcde77cf73fa02aabd70c0856355c782480b237319980557             application/vnd.docker.distribution.manifest.list.v2+json sha256:09c993e002a35662fcde77cf73fa02aabd70c0856355c782480b237319980557 33.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi@sha256:1b6415e5de5b868e14002ced097f288cb4b2409e54dd2de0a9ad105eaf6e6821             application/vnd.docker.distribution.manifest.list.v2+json sha256:1b6415e5de5b868e14002ced097f288cb4b2409e54dd2de0a9ad105eaf6e6821 28.6 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi@sha256:51024b084c339fe7ed237bf237a5d1de8b2f460e0f8636e264e4c68ea9c2ccd8             application/vnd.docker.distribution.manifest.list.v2+json sha256:51024b084c339fe7ed237bf237a5d1de8b2f460e0f8636e264e4c68ea9c2ccd8 33.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi@sha256:635e34aaf44e96a30d1e17582e4420a77d979a4ade9f969420ae13d546491d0a             application/vnd.docker.distribution.manifest.list.v2+json sha256:635e34aaf44e96a30d1e17582e4420a77d979a4ade9f969420ae13d546491d0a 28.7 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi@sha256:9e300a997cd78da18c2683edddfc79f2f066a5a0719da808d0fd51bcdfec13cc             application/vnd.docker.distribution.manifest.list.v2+json sha256:9e300a997cd78da18c2683edddfc79f2f066a5a0719da808d0fd51bcdfec13cc 27.8 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azuredisk-csi@sha256:c55befa55a13a388cf137d32fa345789c937d1ba96739d65375b804ed971e1d6             application/vnd.docker.distribution.manifest.list.v2+json sha256:c55befa55a13a388cf137d32fa345789c937d1ba96739d65375b804ed971e1d6 27.7 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.28.11-windows-hp                                                                 application/vnd.docker.distribution.manifest.list.v2+json sha256:8f57544b5bf9a7aa32a29ddfacc628181636be883f04f5ab9338ab76c308cd1d 14.5 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.28.12-windows-hp                                                                 application/vnd.docker.distribution.manifest.list.v2+json sha256:b18ea2378e2ea56fac226d73a0cbadcafcf56c83213ef7c780386f804b67edad 14.5 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.29.6-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:9cac0659d4d6716bd1543d54f2dbb1f848e5b31fe895d8ab8f305ca5aa432413 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.29.7-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:f6cb707c490d7afee85d967a95024894c975741577cee7d827e9ba193eed6c40 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.30.3-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:30ce602c8928227e3eafe766c99ae970a8dc9eb6dc6a82ed82982bbf7093ac1d 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.30.5-windows-hp                                                                  application/vnd.docker.distribution.manifest.list.v2+json sha256:e407c900be9c53b6782ffd977b34c6603ad30a4b5181d1c59e6d52228c196e48 17.3 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi@sha256:30ce602c8928227e3eafe766c99ae970a8dc9eb6dc6a82ed82982bbf7093ac1d             application/vnd.docker.distribution.manifest.list.v2+json sha256:30ce602c8928227e3eafe766c99ae970a8dc9eb6dc6a82ed82982bbf7093ac1d 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi@sha256:8f57544b5bf9a7aa32a29ddfacc628181636be883f04f5ab9338ab76c308cd1d             application/vnd.docker.distribution.manifest.list.v2+json sha256:8f57544b5bf9a7aa32a29ddfacc628181636be883f04f5ab9338ab76c308cd1d 14.5 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi@sha256:9cac0659d4d6716bd1543d54f2dbb1f848e5b31fe895d8ab8f305ca5aa432413             application/vnd.docker.distribution.manifest.list.v2+json sha256:9cac0659d4d6716bd1543d54f2dbb1f848e5b31fe895d8ab8f305ca5aa432413 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi@sha256:b18ea2378e2ea56fac226d73a0cbadcafcf56c83213ef7c780386f804b67edad             application/vnd.docker.distribution.manifest.list.v2+json sha256:b18ea2378e2ea56fac226d73a0cbadcafcf56c83213ef7c780386f804b67edad 14.5 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi@sha256:e407c900be9c53b6782ffd977b34c6603ad30a4b5181d1c59e6d52228c196e48             application/vnd.docker.distribution.manifest.list.v2+json sha256:e407c900be9c53b6782ffd977b34c6603ad30a4b5181d1c59e6d52228c196e48 17.3 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi@sha256:f6cb707c490d7afee85d967a95024894c975741577cee7d827e9ba193eed6c40             application/vnd.docker.distribution.manifest.list.v2+json sha256:f6cb707c490d7afee85d967a95024894c975741577cee7d827e9ba193eed6c40 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar:v2.10.1                                                                 application/vnd.docker.distribution.manifest.list.v2+json sha256:b3bbd7a6171bff15eeefd137316fa16415aa6a4c817e5ec609662793093b3526 121.5 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar:v2.11.0                                                                 application/vnd.docker.distribution.manifest.list.v2+json sha256:a6cb5c4f889bd05b98dbae86fa430451fd98341dedc685223089ee8351b4cbdc 123.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar@sha256:a6cb5c4f889bd05b98dbae86fa430451fd98341dedc685223089ee8351b4cbdc application/vnd.docker.distribution.manifest.list.v2+json sha256:a6cb5c4f889bd05b98dbae86fa430451fd98341dedc685223089ee8351b4cbdc 123.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/csi-node-driver-registrar@sha256:b3bbd7a6171bff15eeefd137316fa16415aa6a4c817e5ec609662793093b3526 application/vnd.docker.distribution.manifest.list.v2+json sha256:b3bbd7a6171bff15eeefd137316fa16415aa6a4c817e5ec609662793093b3526 121.5 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/livenessprobe:v2.12.0                                                                             application/vnd.docker.distribution.manifest.list.v2+json sha256:c762188c45d1b9bc9144b694b85313d5e49c741935a81d5b94fd7db978a40ae1 123.7 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/livenessprobe:v2.13.0                                                                             application/vnd.docker.distribution.manifest.list.v2+json sha256:b6af2120f4a8f7a135235d7ea242b85b9de50a260768c86ce3cd1f551096ada1 123.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/livenessprobe@sha256:b6af2120f4a8f7a135235d7ea242b85b9de50a260768c86ce3cd1f551096ada1             application/vnd.docker.distribution.manifest.list.v2+json sha256:b6af2120f4a8f7a135235d7ea242b85b9de50a260768c86ce3cd1f551096ada1 123.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/livenessprobe@sha256:c762188c45d1b9bc9144b694b85313d5e49c741935a81d5b94fd7db978a40ae1             application/vnd.docker.distribution.manifest.list.v2+json sha256:c762188c45d1b9bc9144b694b85313d5e49c741935a81d5b94fd7db978a40ae1 123.7 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver:v1.4.3                                                                       application/vnd.docker.distribution.manifest.list.v2+json sha256:e840856efd9b63416eacaaa0428b22c89b0e2ff76800e95acf4c0f41d95bad8b 139.1 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver:v1.4.4                                                                       application/vnd.docker.distribution.manifest.list.v2+json sha256:322f103b5181564a8bfbc745aebbde5a888c331d5615f26f4fbe6452e278a729 138.6 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver@sha256:322f103b5181564a8bfbc745aebbde5a888c331d5615f26f4fbe6452e278a729      application/vnd.docker.distribution.manifest.list.v2+json sha256:322f103b5181564a8bfbc745aebbde5a888c331d5615f26f4fbe6452e278a729 138.6 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes-csi/secrets-store/driver@sha256:e840856efd9b63416eacaaa0428b22c89b0e2ff76800e95acf4c0f41d95bad8b      application/vnd.docker.distribution.manifest.list.v2+json sha256:e840856efd9b63416eacaaa0428b22c89b0e2ff76800e95acf4c0f41d95bad8b 139.1 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.27.17                                                                     application/vnd.docker.distribution.manifest.list.v2+json sha256:f7ba1998387e669f148b70e5ca7269d75fd9e10cd638ae107f8da0540f6d0ac1 128.2 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.27.19                                                                     application/vnd.docker.distribution.manifest.list.v2+json sha256:ca83d032ccad63a41394e8c05391c72f79bece20f29156b4928498a2baba6823 127.8 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.28.11                                                                     application/vnd.docker.distribution.manifest.list.v2+json sha256:0d50766bd56f20812073d00a973d64fb49cc6f7b4a23484b521c3e34abe31984 128.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.28.9                                                                      application/vnd.docker.distribution.manifest.list.v2+json sha256:65285c13cc3eced1005a1c6c5f727570d781ac25f421a9e5cf169de8d7e1d6a9 128.7 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.29.4                                                                      application/vnd.docker.distribution.manifest.list.v2+json sha256:e967e4ed4175f1c5ae66ce1200a22932508da6576bb30aec418f2711259601b9 131.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.29.9                                                                      application/vnd.docker.distribution.manifest.list.v2+json sha256:175d52f1d48d1b947823974166bcdd403c0644c5bca6f7275a3087d29fe8f36d 130.9 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.30.0                                                                      application/vnd.docker.distribution.manifest.list.v2+json sha256:77130d502210db5482178e28d3d34fe12776dd6cfb6d66b75108f0e082656dca 131.7 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager:v1.30.5                                                                      application/vnd.docker.distribution.manifest.list.v2+json sha256:16203c47820604328950e7b7bbf6fd103aec51e1c13c2a3689546e0ba6119b2c 131.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:0d50766bd56f20812073d00a973d64fb49cc6f7b4a23484b521c3e34abe31984      application/vnd.docker.distribution.manifest.list.v2+json sha256:0d50766bd56f20812073d00a973d64fb49cc6f7b4a23484b521c3e34abe31984 128.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:16203c47820604328950e7b7bbf6fd103aec51e1c13c2a3689546e0ba6119b2c      application/vnd.docker.distribution.manifest.list.v2+json sha256:16203c47820604328950e7b7bbf6fd103aec51e1c13c2a3689546e0ba6119b2c 131.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:175d52f1d48d1b947823974166bcdd403c0644c5bca6f7275a3087d29fe8f36d      application/vnd.docker.distribution.manifest.list.v2+json sha256:175d52f1d48d1b947823974166bcdd403c0644c5bca6f7275a3087d29fe8f36d 130.9 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:65285c13cc3eced1005a1c6c5f727570d781ac25f421a9e5cf169de8d7e1d6a9      application/vnd.docker.distribution.manifest.list.v2+json sha256:65285c13cc3eced1005a1c6c5f727570d781ac25f421a9e5cf169de8d7e1d6a9 128.7 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:77130d502210db5482178e28d3d34fe12776dd6cfb6d66b75108f0e082656dca      application/vnd.docker.distribution.manifest.list.v2+json sha256:77130d502210db5482178e28d3d34fe12776dd6cfb6d66b75108f0e082656dca 131.7 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:ca83d032ccad63a41394e8c05391c72f79bece20f29156b4928498a2baba6823      application/vnd.docker.distribution.manifest.list.v2+json sha256:ca83d032ccad63a41394e8c05391c72f79bece20f29156b4928498a2baba6823 127.8 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:e967e4ed4175f1c5ae66ce1200a22932508da6576bb30aec418f2711259601b9      application/vnd.docker.distribution.manifest.list.v2+json sha256:e967e4ed4175f1c5ae66ce1200a22932508da6576bb30aec418f2711259601b9 131.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/azure-cloud-node-manager@sha256:f7ba1998387e669f148b70e5ca7269d75fd9e10cd638ae107f8da0540f6d0ac1      application/vnd.docker.distribution.manifest.list.v2+json sha256:f7ba1998387e669f148b70e5ca7269d75fd9e10cd638ae107f8da0540f6d0ac1 128.2 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/pause:3.9-hotfix-20230808                                                                             application/vnd.docker.distribution.manifest.list.v2+json sha256:8923a59bc6d236cd0d961878885351e5b2101832f63dadcc4f8175b4324eb2ea 293.6 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/oss/kubernetes/pause@sha256:8923a59bc6d236cd0d961878885351e5b2101832f63dadcc4f8175b4324eb2ea                         application/vnd.docker.distribution.manifest.list.v2+json sha256:8923a59bc6d236cd0d961878885351e5b2101832f63dadcc4f8175b4324eb2ea 293.6 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+mcr.microsoft.com/windows/nanoserver:ltsc2022                                                                                          application/vnd.docker.distribution.manifest.list.v2+json sha256:244113e50a678a25a63930780f9ccafd22e1a37aa9e3d93295e4cebf0f170a11 111.4 MiB windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/windows/nanoserver@sha256:244113e50a678a25a63930780f9ccafd22e1a37aa9e3d93295e4cebf0f170a11                           application/vnd.docker.distribution.manifest.list.v2+json sha256:244113e50a678a25a63930780f9ccafd22e1a37aa9e3d93295e4cebf0f170a11 111.4 MiB windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/windows/servercore/iis:latest                                                                                        application/vnd.docker.distribution.manifest.list.v2+json sha256:997717ee58e3c9c00bec5eb94ec3f22ac1443667795b7dbe8cc6819ef7b44307 2.0 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/windows/servercore/iis@sha256:997717ee58e3c9c00bec5eb94ec3f22ac1443667795b7dbe8cc6819ef7b44307                       application/vnd.docker.distribution.manifest.list.v2+json sha256:997717ee58e3c9c00bec5eb94ec3f22ac1443667795b7dbe8cc6819ef7b44307 2.0 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/windows/servercore:ltsc2022                                                                                          application/vnd.docker.distribution.manifest.list.v2+json sha256:a57f79008ec0110877d5907787095c413fae1c27cccf1473bc9646fd7325febe 1.9 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+mcr.microsoft.com/windows/servercore@sha256:a57f79008ec0110877d5907787095c413fae1c27cccf1473bc9646fd7325febe                           application/vnd.docker.distribution.manifest.list.v2+json sha256:a57f79008ec0110877d5907787095c413fae1c27cccf1473bc9646fd7325febe 1.9 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+sha256:020089e377ea6a046947d5e567b56818faacecbca0a9a94f700882d20ff7f5f2                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:a57f79008ec0110877d5907787095c413fae1c27cccf1473bc9646fd7325febe 1.9 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+sha256:04cc0b6770e783c99c488cd86cd21ffd21417445ded210735ba8f8507f431747                                                                application/vnd.oci.image.index.v1+json                   sha256:eb2c068081c82e0dbeedd357e6270194e9537b41ae50e8bee6bee028066b9a75 1.7 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:0688d76b3e834ce4f23ac5c0b7c305c3869e2d78826e94e772397178e845ad4c                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:b18ea2378e2ea56fac226d73a0cbadcafcf56c83213ef7c780386f804b67edad 14.5 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:0ac4b9b9796d048a0865cef1bb8b8b1e50edb3441318e5beeb825a4d5232ba33                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:30ce602c8928227e3eafe766c99ae970a8dc9eb6dc6a82ed82982bbf7093ac1d 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:0bcdb87da6b93a8c99d46b9bb778c5f487263cce231760f8844020b81366328a                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:b6af2120f4a8f7a135235d7ea242b85b9de50a260768c86ce3cd1f551096ada1 123.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:2350ac6bb476f14871e4bed41f129c7b26dea86bf3bf920ba4072e36825f14c2                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:322f103b5181564a8bfbc745aebbde5a888c331d5615f26f4fbe6452e278a729 138.6 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:24e33fce3f227b531ec3f78744b052aabe51ec7ccf7392f932c870fa515778a3                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:1b6415e5de5b868e14002ced097f288cb4b2409e54dd2de0a9ad105eaf6e6821 28.6 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:282d9447ecf5a2175b88b82bc056b484daa3b6e27a8559b26c3d03c96052f3b8                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:f7ba1998387e669f148b70e5ca7269d75fd9e10cd638ae107f8da0540f6d0ac1 128.2 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+sha256:2e4acf924740c84184cf39566dafa2aa1eeec9a25a33f4715862c6b99ba94494                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:77130d502210db5482178e28d3d34fe12776dd6cfb6d66b75108f0e082656dca 131.7 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+sha256:46e389e92c70f047fc987bea69ef913c441b66852ac9925de0574010d6626d99                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:ca83d032ccad63a41394e8c05391c72f79bece20f29156b4928498a2baba6823 127.8 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+sha256:4ef30c86aa731d3784482513da8e4e952acb7d9eec04ac0aef835140e0937e4a                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:a6cb5c4f889bd05b98dbae86fa430451fd98341dedc685223089ee8351b4cbdc 123.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:5ac14a8f28aae6eff0ef73bff0e02d0c0e7f99f4b803b3ee0a9743d55c4ce2fe                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:9e300a997cd78da18c2683edddfc79f2f066a5a0719da808d0fd51bcdfec13cc 27.8 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:6710c1d6cb8beb5b9e849712989dcca7d4b821058b39d6bfd0e11321f06ed1af                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:8923a59bc6d236cd0d961878885351e5b2101832f63dadcc4f8175b4324eb2ea 293.6 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:6d53a307ad2a9cf0033f675a0071d89b404a11afb041e1945ed0c9ea5292e70f                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:e967e4ed4175f1c5ae66ce1200a22932508da6576bb30aec418f2711259601b9 131.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+sha256:6f2cdebb2cf8c6869476090eea091023ddf59c2d5235205d3d4694daed9fac0c                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:e407c900be9c53b6782ffd977b34c6603ad30a4b5181d1c59e6d52228c196e48 17.3 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:70138a16be47b98776e96a1ce4099909670f5bd3e8fcc33c8551333e6b7c9043                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:9cac0659d4d6716bd1543d54f2dbb1f848e5b31fe895d8ab8f305ca5aa432413 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:7022ab8b9293dc036c8d3451a9bce63088839e4f7bc87a4b6dff65ed7b39a641                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:175d52f1d48d1b947823974166bcdd403c0644c5bca6f7275a3087d29fe8f36d 130.9 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+sha256:733a1cacb001a0a85ba25af5b053771c9dc6a58433c182038e11697536abca5b                                                                application/vnd.oci.image.index.v1+json                   sha256:aa753c012ef50c17f3bd77333f7018d9d6b0608b16659fcbc7c843e5316a04b7 1.3 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:7517008acf45e7dafd920d18ae384234bb35aa830daff688c80e68aee5bcea52                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:635e34aaf44e96a30d1e17582e4420a77d979a4ade9f969420ae13d546491d0a 28.7 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:8b4fb6973ed732113e6ec2ee04619794656fd70d2a8c444103590e92961ef1ac                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:8f57544b5bf9a7aa32a29ddfacc628181636be883f04f5ab9338ab76c308cd1d 14.5 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:90ea208a6093249bd0b3cb7fb99ce7b26c9a8c69c76df15c167e49fa9a301164                                                                application/vnd.oci.image.index.v1+json                   sha256:6dd5329e781e004b22bcbbeb04fa232f2af1b4a19298fc1197194fb9934edd98 1.8 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:94f58c75787296e6921f27354239866b3e247f587256ed167cdd62f4e1ef0d99                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:c55befa55a13a388cf137d32fa345789c937d1ba96739d65375b804ed971e1d6 27.7 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:978f987d5186a5e845de7f09211684d6cb6b8099915230357ff68d2a20326641                                                                application/vnd.oci.image.index.v1+json                   sha256:9a10fd3374197754a13015e70b3a8089c521d76d4782c335a0fa3ae5cdb8d07e 1.9 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:a4a32bc9b496958228ecc64dc6cc67017777feb45df73931cd09944d87fc8f45                                                                application/vnd.oci.image.index.v1+json                   sha256:281afe61f26f29cb8016cb61a3109bc1659125f10fc1a7db50a346a8149b3392 169.1 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:af24c47ac3f76c75007df5127d157e9a9e22c927713862c24c61e65e97cf92bc                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:51024b084c339fe7ed237bf237a5d1de8b2f460e0f8636e264e4c68ea9c2ccd8 33.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:b26a2b5fbaa52a1ba32365b67690e3a0cffdbf9be2a8a938586e5681298f6cf4                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:0d50766bd56f20812073d00a973d64fb49cc6f7b4a23484b521c3e34abe31984 128.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+sha256:b3610143178df17d30b86aa7876318ee1972f50abe7cb218e5596ec30afbe2a6                                                                application/vnd.oci.image.index.v1+json                   sha256:00a0f7d2e438650d82b2e4a6a5f91eed0a0ed34f913740f5f6d2c5db77fff282 191.8 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:b684fe15bd09d9a58ca0218bb91c735437ff2b80c6f24639dc8a647637e838f2                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:f6cb707c490d7afee85d967a95024894c975741577cee7d827e9ba193eed6c40 16.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:b8778d139340ae99a21e7cb889147bf355400f3f57a8149277ca7546b0ed4f93                                                                application/vnd.oci.image.index.v1+json                   sha256:2a8eb42ddff1ebfe69721c48a6d893d192c59ff2a834be2b443819b91394da8a 1.9 GiB   linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:c3830d66facee030f57bdcd5329ea4c1b3fa0c206c5d3605e03744ddb120d51e                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:16203c47820604328950e7b7bbf6fd103aec51e1c13c2a3689546e0ba6119b2c 131.3 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+sha256:c4ebfae6c0e428cf9e4f71bd73def9eb2cfbaf8c2f7a18c336b6a21f14744dd6                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:e840856efd9b63416eacaaa0428b22c89b0e2ff76800e95acf4c0f41d95bad8b 139.1 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:c6d65b09d332b22441be9c9627500813ef8e1f8d8e274415e9a9efcdebdc6a78                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:b3bbd7a6171bff15eeefd137316fa16415aa6a4c817e5ec609662793093b3526 121.5 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:c9e17ee4d80e8d7025337960606299f494b4ffc00d10c0648db2fb9bcdbbdfd5                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:b3b267c7bead172914736eef094c0de452b88baa75aef3139b095237c31311be 123.2 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:d95d73e12a6d2765e4889f55f9470b8b3a2d5b4e71d77efe133320bd76f970c0                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:c762188c45d1b9bc9144b694b85313d5e49c741935a81d5b94fd7db978a40ae1 123.7 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:e16330daa452a98655ba4a440b318de3c9e538bc8c2903d7e897f913ff115a23                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:e4b9705d0dd1dceb76665f2d8f25968f4323c10ded0ef843eedb931674d9f37f 123.4 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:e538af9d47e7c1cf26148a3619b65f52964d4883746077e574cf46b35cb66708                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:09c993e002a35662fcde77cf73fa02aabd70c0856355c782480b237319980557 33.9 MiB  windows/amd64                                      io.cri-containerd.image=managed 
+sha256:e74c496ebec90ba0721ed1ade67ee947a5b1b344026a11fd2d36d01cb9cb9776                                                                application/vnd.oci.image.index.v1+json                   sha256:2d11020c11b83f771fd34994ead928e80137f6db27f9f0482c8761c87bf9d2d2 192.2 MiB linux/amd64,linux/arm64,windows/amd64              io.cri-containerd.image=managed 
+sha256:e82f76d7080851ee8fead794e4eb957de1150f1a84270fa5d660e14582782ce2                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:244113e50a678a25a63930780f9ccafd22e1a37aa9e3d93295e4cebf0f170a11 111.4 MiB windows/amd64                                      io.cri-containerd.image=managed 
+sha256:e8e18746eb0d8af9bc348fde043049c63c52c4ba14a21bd25e0eed0737369b08                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:997717ee58e3c9c00bec5eb94ec3f22ac1443667795b7dbe8cc6819ef7b44307 2.0 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+sha256:ea7e5a23a371a8f738384016331c5ca07725e70803c15d3b213c028f164fc3d9                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:4cce85d7552d136d7f6050644f5dade086e95fb6c0204b1020259cdce5549262 3.4 GiB   windows/amd64                                      io.cri-containerd.image=managed 
+sha256:f9d95126d866d4eacc4cf3142a7c49435900e24553c87ef911752412d75297b3                                                                application/vnd.docker.distribution.manifest.list.v2+json sha256:65285c13cc3eced1005a1c6c5f727570d781ac25f421a9e5cf169de8d7e1d6a9 128.7 MiB linux/amd64,linux/arm/v7,linux/arm64,windows/amd64 io.cri-containerd.image=managed 
+
+Cached Files:
+
+File                                                                                         Sha256                                                           SizeBytes
+----                                                                                         ------                                                           ---------
+c:\akse-cache\aks-windows-cse-scripts-v0.0.44.zip                                            5EA85F6EB940A9BC2A975E79AC976E7621061DB0B2415E14BE3F864440A76619    354328
+c:\akse-cache\aks-windows-cse-scripts-v0.0.45.zip                                            7865C67836A24DD50262DF4C98F26EB71935553472C0416F768277EF003154F7    350133
+c:\akse-cache\windows-gmsa-ccgakvplugin-v1.1.5.zip                                           844BFA33F77BDEBA529D353C79A6B361640B0909E6092C572C51AA7A881494EF    484167
+c:\akse-cache\calico\calico-windows-v3.24.0.zip                                              B45231820799B752DFF198111E767FCA846AC7074A91315B0DBA6C44A27FFD6E  77667630
+c:\akse-cache\containerd\containerd-v1.6.21-azure.1-windows-amd64.tar.gz                     3C4F24768A8725BB521CA5BC56D15AD992F823E0C0AF5A6F27975DC05641DA18  79298632
+c:\akse-cache\containerd\containerd-v1.7.17-azure.1-windows-amd64.tar.gz                     DC082E2D7B058BBE08EB5ACC680FE159FC5376508E8E919740EE99A6C26FB3E1  90350160
+c:\akse-cache\containerd\containerd-v1.7.20-azure.1-windows-amd64.tar.gz                     BBEF63A3AF33DAD5BF9CE155B04B32F62AD6323DCF5B9F19D4284C70FD9FEB13  90303750
+c:\akse-cache\credential-provider\azure-acr-credential-provider-windows-amd64-v1.29.2.tar.gz D1C7A3E7167361E95D30D30048AC9C380DD72F5056762F7181908B352BE039FF   6528429
+c:\akse-cache\credential-provider\azure-acr-credential-provider-windows-amd64-v1.30.0.tar.gz 8C0BD6676D4B4C60C7B98A676B2EA5A479AEC73AACBD1FB7DC22F5A4E5864D06   6578796
+c:\akse-cache\csi-proxy\csi-proxy-v1.1.2-hotfix.20230807.tar.gz                              68DDDC7A16F2655F5EE7E76AFA631C52AA1D34FA2063F59264B43FAA45C4B7C0   7539942
+c:\akse-cache\private-packages\mapping.json                                                  F0E0A5845DA66FBAF0C9B01F82F2A8934BD290E89A8629F5E54DCE6B8224A47E      6090
+c:\akse-cache\private-packages\v1.27.1-hotfix.20240712-1int.zip                              E037957C840A738C6DCFA817955710BE5A3D1D416B177A2C7AB00B87CF3286BA  63343147
+c:\akse-cache\private-packages\v1.27.13-hotfix.20240712-1int.zip                             680F446A36B047A403854FA2FADF0B4ECC9F7FE145CB3286E6416C000F8DF060  64573553
+c:\akse-cache\private-packages\v1.27.14-hotfix.20240712-1int.zip                             D36DC584788688C7001284C57F03F537586A2AF0D5C8C66C5E135E8F10A847F3  64572628
+c:\akse-cache\private-packages\v1.27.15-hotfix.20240712-1int.zip                             B837E147C33D3B7D3F18C781CC110EF80335BD2B1A41225589B7D07EB684D62F  64574227
+c:\akse-cache\private-packages\v1.27.3-hotfix.20240712-1int.zip                              510D6E37243DD8D0291930F61B950AABBF98BC55230D7B4EEBDA19C8D6507DC0  63316346
+c:\akse-cache\private-packages\v1.27.7-hotfix.20240712-1int.zip                              CDDCB0603B561748EA9008DC7A4E4C4DFF3DB6811A6F2F5F3E66E8032097E6F4  63351857
+c:\akse-cache\private-packages\v1.27.9-hotfix.20240712-1int.zip                              B9C30F7BCD58E409EB574FC36ABB4A0E337884FF5FD7B80B92A89D834D01B2DA  63995517
+c:\akse-cache\private-packages\v1.28.0-hotfix.20240712-1int.zip                              3AE26EE18247BB08E98AB48C930884F85699A877E6F5EA47CE58337AD50DB30E  65124745
+c:\akse-cache\private-packages\v1.28.10-hotfix.20240712-1int.zip                             EC9E24EE60C6B1F35EF9A640C1C6B09DAD647D9638D5AE4AAB9B8309C608FF98  65811714
+c:\akse-cache\private-packages\v1.28.11-hotfix.20240712-1int.zip                             79830E04F95C22A379295C29D4016079234630ABBF579DD9BF60D1F6E7931E21  65810707
+c:\akse-cache\private-packages\v1.28.3-hotfix.20240712-1int.zip                              C00DD56C16FB441FC79A877572FF6E5F830E288CCA447CC4B55391AB131B73B8  65149580
+c:\akse-cache\private-packages\v1.28.5-hotfix.20240712-1int.zip                              7DCFC5C041EC562ACBF77EB5C6CFF185FE519A8ABF43DD22935382BBE8A4E320  65197308
+c:\akse-cache\private-packages\v1.28.9-hotfix.20240712-1int.zip                              F90B2A4FE5B9985A09E0D59E31E6ED841D61E43D533B1D1CF56F384E24B50C1D  65809531
+c:\akse-cache\private-packages\v1.29.0-hotfix.20240712-1int.zip                              9BAA2974398FAE44E127D3F7ECC45A5D27D6441977714BC946FB680341EFF864  66611064
+c:\akse-cache\private-packages\v1.29.2-hotfix.20240712-1int.zip                              BD9EE4B29844835F554D1B32D820A22D4A648898A841626807725F5917DE3BE8  66624191
+c:\akse-cache\private-packages\v1.29.4-hotfix.20240712-1int.zip                              4BD56A5F438CA63EF28706C28966F8E4AF0420CB170209ECC7AA34A7E7B18FF4  66752051
+c:\akse-cache\private-packages\v1.29.5-hotfix.20240712-1int.zip                              137023A647BA6784CCD764BBBC75BB12D49F264B996A465F96543705718B19F4  66752200
+c:\akse-cache\private-packages\v1.29.6-hotfix.20240712-1int.zip                              EFCBCEC749257E70B8E0B96D10815B0BAE4F99AFF79249C003090EBA829F1325  66758562
+c:\akse-cache\private-packages\v1.30.0-hotfix.20240712-1int.zip                              9D9DBA19F0E034FEAACAE5C12069EF5D02B1C63653C639AE7E350268AB2FD1A7  65089626
+c:\akse-cache\private-packages\v1.30.1-hotfix.20240712-1int.zip                              05368D6D1E60E527DE25B1029EFA080063DE8152D6975A0359F86EB1ED7E4C07  65086794
+c:\akse-cache\private-packages\v1.30.2-hotfix.20240712-1int.zip                              F07667E63BDCB388EFEA1E5DE9CF1F39983AFB1FDD48F740EC0581EC4D4B7B6F  65107509
+c:\akse-cache\tools\DU.zip                                                                   5AA85919CE064A93FDBBCBA405AE9CBDFC923D0FF8B521BB9007F7693559921C    537373
+c:\akse-cache\win-k8s\v1.27.16-1int.zip                                                      16BE82BC9484B292DB2535D6CFAE6968A38999FAAC8E2EA8D646A4442B04A102  64951464
+c:\akse-cache\win-k8s\v1.28.12-1int.zip                                                      9556ADBE6B65B0ACC70BB812838C75F8ABE92BE2FA0D34E8E1D752C1821CC942  66204382
+c:\akse-cache\win-k8s\v1.29.7-1int.zip                                                       4FA3CFF51270D03DD6E4D47EE110D8FFF5AD85B3E9E0E8F92E635CA112EA6470  67149184
+c:\akse-cache\win-k8s\v1.30.3-1int.zip                                                       CFD0A5856DB125B3BAE47544E12F65D7A12EDB7BC5110C6E14CA19F6002BEEBD  65110852
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-overlay-windows-amd64-v1.4.54.zip                  75374BDEEE7477F9FD2B7A187B25B29E6D1DC2C3E872BBD7C62684A634679A12  52741270
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-swift-windows-amd64-v1.4.54.zip                    7BCFB9DDE38B127868BCB18651110DFFD55C2A50D77526E980C9E20A67B51E1B  52741302
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-windows-amd64-v1.5.28.zip                          74F5DEF3C13F89C259F8D5F9ED2750AC71C71C1717FE54D94CA06FC07514D22B  78444562
+c:\akse-cache\win-vnet-cni\azure-vnet-cni-windows-amd64-v1.5.32.zip                          4F51B47CB350A4EFECA8B33B3E9D3ECF60AD49E96235DA5CC44E2E5BFD7F86AD 103233534
+
+
+
