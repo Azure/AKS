@@ -73,7 +73,7 @@ reviews-v2-7d79d5bd5d-8zzqd       2/2     Running   0          2m41s
 reviews-v3-7dbcdcbc56-m8dph       2/2     Running   0          2m41s
 ```
 ### 3. Configure ingress gateway and virtual service
-Before deploying the `virtualservice` and `gateway` resources, make sure to update the `hosts` files to match your own DNS name.
+Before deploying the `virtualservice` and `gateway` resources, make sure to update the host name to match your own DNS name.
 ```shell
 kubectl apply -f gateway.yaml
 kubectl apply -f virtualservice.yaml
