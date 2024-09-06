@@ -6,6 +6,10 @@ This document contains instructions on how to integrate Istio-based service mesh
 * Deploy bookinfo demo app, expose a secure HTTPS service using simple TLS.
 * Demonstrate HTTPS connections for Azure Service Mesh workloads using cert-manager and let's encrypt as the certificate authority.
 
+> [!Note]  
+> Kubernetes ingress for Istio-based service mesh is an `allowed` feature. More details on configuration options [here](https://learn.microsoft.com/en-us/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations)  
+> [cert-manager](https://cert-manager.io/) and [let's encrypt](https://letsencrypt.org/) are not supported by Microsoft.
+
 ## Before you begin
 * [Install](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-addon#install-istio-add-on) Istio-based service mesh add-on on your cluster.
 ```shell
@@ -23,7 +27,8 @@ kubectl label namespace default istio.io/rev=$revision
 
 ## Steps
 ### 1. Setup DNS record
-Set up a DNS record for the `EXTERNAL-IP` address of the external ingressgateway service with your cloud provider. In this example, we are setting up the DNS record for `4.153.8.39` with `test.dev.azureservicemesh.io`.
+Set up a DNS record for the `EXTERNAL-IP` address of the external ingressgateway service with your cloud provider.   
+In this example, we [set up the DNS record](https://learn.microsoft.com/en-us/azure/dns/dns-operations-recordsets-portal) for `4.153.8.39` with `test.dev.azureservicemesh.io` on azure portal.
 
 Run the following command to retrieve the external IP address of the ingress gateway:
 ```shell
@@ -97,10 +102,6 @@ Create a ConfigMap with the name `istio-shared-configmap-<asm-revision>` in the 
 ```shell
 kubectl apply -f configmap.yaml
 ```
-
-> [!Note]  
-> Kubernetes ingress for Istio-based service mesh is an `allowed` feature. More details on configuration options [here](https://learn.microsoft.com/en-us/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations)  
-> cert-manager is not supported by Microsoft, more info can be found [here](https://cert-manager.io/)
 
 ### 5. Install cert-manager
 ```shell
