@@ -16,7 +16,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release Notes
 
 * Features:
-  * [Trusted launch for AKS](https://learn.microsoft.com/azure/aks/use-trusted-launch) is now generally available.
   * Existing Linux node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [documentation](https://learn.microsoft.com/azure/aks/enable-fips-nodes#update-an-existing-node-pool-to-enable-or-disable-fips) for more information.
 
 * Bug fixes:
