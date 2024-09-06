@@ -91,7 +91,7 @@ kubectl apply -f virtualservice.yaml
 
 Send an HTTP request to access the productpage service
 ```shell
-curl -vs http://test.dev.azureservicemesh.io/productpage | grep -o "<title>.*</title>"
+curl -sS http://test.dev.azureservicemesh.io/productpage | grep -o "<title>.*</title>"
 ```
 
 this should print `<title>Simple Bookstore App</title>`
@@ -144,7 +144,7 @@ sh.helm.release.v1.asm-igx-aks-istio-ingressgateway-external.v113   helm.sh/rele
 Verify that the productpage can be accessed via the HTTPS endpoint
 
 ```shell
-curl -v https://test.dev.azureservicemesh.io/productpage | grep -o "<title>.*</title>"
+curl -sS https://test.dev.azureservicemesh.io/productpage | grep -o "<title>.*</title>"
 ```
 this should print `<title>Simple Bookstore App</title>`
 
