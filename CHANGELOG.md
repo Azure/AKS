@@ -28,6 +28,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix bug to ensure `AnnotationControlled` is correctly populated by default when creating AKS clusters with app routing enabled, and to ensure `AnnotationControlled` is an accepted value for the [default nginx ingress controller config](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=bicep#control-the-default-nginx-ingress-controller-configuration) for AKS clusters with K8s versions <1.30.
   * Fix bug for [Cluster Autoscaler](https://github.com/Azure/AKS/issues/4286) that requires an implementation of the `HasInstance` method on AKS. This implementation prevents the Cluster Autoscaler from stalling during scale-up due to node scale-down issues.
   * Fix bug https://github.com/Azure/azure-service-operator/issues/3220 to allow creation of AgentPools without `Count` field specified if autoscaler enabled.
+  * Fix bug to accept user to set the `PowerState` field for API versions that do not support the filed. Impacted API versions are 2020-09-01, 2020-11-01, 2020-12-01, 2021-02-01 and 2021-03-01.
 
 * Behavior change:
   * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526. Before this change user cannot access wireserver port 80, but port 32526 is accessible.
