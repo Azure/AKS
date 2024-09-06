@@ -7,7 +7,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * AKS version 1.27 is now deprecated. Enable [long-term support for AKS versions](https://learn.microsoft.com/azure/aks/long-term-support) if you still need to operate on 1.27.
-* [Trusted launch for AKS](https://learn.microsoft.com/azure/aks/use-trusted-launch) is now generally available.
 * The attestation report for [CIS Kubernetes V1.9.0 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) is published which covers AKS 1.27.x through AKS 1.29.x.
 * AKS will be upgrading the KEDA addon to more recent KEDA versions. The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
   * **KEDA 2.15** for Kubernetes >=1.31: The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com/azure/aks/keda-workload-identity). 
@@ -18,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
   * [Trusted launch for AKS](https://learn.microsoft.com/azure/aks/use-trusted-launch) is now generally available.
-  * Existing Linux node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [aka.ms/aks/updatefips](aka.ms/aks/updatefips) for more information.
+  * Existing Linux node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [documentation](https://learn.microsoft.com/azure/aks/enable-fips-nodes#update-an-existing-node-pool-to-enable-or-disable-fips) for more information.
 
 * Bug fixes:
   * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
@@ -28,15 +27,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fix bug of public IP on VMSS dropped after upgrade node image or reset service principal operation.
   * Fix bug https://github.com/Azure/AKS/issues/4282 to remove duplicated toleration from Calico components.
   * Fix bug to ensure `AnnotationControlled` is correctly populated by default when creating AKS clusters with app routing enabled, and to ensure `AnnotationControlled` is an accepted value for the [default nginx ingress controller config](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=bicep#control-the-default-nginx-ingress-controller-configuration) for AKS clusters with K8s versions <1.30.
-  * Fix bug for [Cluster Autoscaler](https://github.com/Azure/AKS/issues/4286) that requires an implementation of the `HasInstance` method on AKS. This implementation prevents the Cluster Autoscaler from stalling during scale-up due to node scale-down issues. 
+  * Fix bug for [Cluster Autoscaler](https://github.com/Azure/AKS/issues/4286) that requires an implementation of the `HasInstance` method on AKS. This implementation prevents the Cluster Autoscaler from stalling during scale-up due to node scale-down issues.
+  * Fix bug https://github.com/Azure/azure-service-operator/issues/3220 to allow creation of AgentPools without `Count` field specified if autoscaler enabled.
 
 * Behavior change:
-  * Cluster Stop operations will be blocked if the customer has any illegal webhooks:
-    * If APIGroups is wildcard, and Resources is in the criticalResources or wildcard, the webhook will be blocked.
-    * If Resources is wildcard, and APIGroups is in the criticalApiGroups or wildcard, the webhook will be blocked.
   * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526. Before this change user cannot access wireserver port 80, but port 32526 is accessible.
   * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
-  * Allow creation of AgentPools without Count field specified if autoscaler enabled.
   * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
   * Azure Linux 2.0 on Kubernetes version 1.30 LTS will be blocked until Azure Linux 3.0 is released and supported.
   * [Application Gateway Ingress Controller addon](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
@@ -52,7 +48,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS Windows Server 23H2 image has been updated to [AKSWindows-23H2-25398.1085.240814](vhd-notes/AKSWindows/23H2/25398.1085.240814.txt).
   * AKS App Routing operator image has been updated to [v0.2.3-patch-2](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-2) for AKS cluster with K8s versions >=1.30, [v0.2.1-patch-4](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-4) for AKS cluster with K8s versions <1.30 to address CVEs.
   * Windows containerd has been updated to [v1.7.20](https://github.com/containerd/containerd/releases/tag/v1.7.20) in AKS cluster with K8s versions >= v1.28.
-  * Kubernetes Secrets Store CSI Driver has been updated to [v1.5.3](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.3).
   * Kubernetes Secrets Store CSI Driver has been updated to [v1.4.4](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.4) and Azure Key Vault Provider for Secrets Store CSI Driver to [v1.5.3](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.5.3)
   * [Application Gateway Ingress Controller add-on](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) image has been updated to [v1.7.5](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.7.5).
   * Retina Enterprise and Operator image has been updated to [v0.0.9](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.0.9).
