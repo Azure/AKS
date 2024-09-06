@@ -100,7 +100,7 @@ this should print `<title>Simple Bookstore App</title>`
 Create a ConfigMap with the name `istio-shared-configmap-<asm-revision>` in the `aks-istio-system` namespace to set `ingressService` and `ingressSelector`. For example, if your cluster is running asm-1-21 revision of mesh, then the ConfigMap needs to be named as istio-shared-configmap-asm-1-21. Mesh configuration has to be provided within the data section under mesh.
 
 ```shell
-kubectl apply -f configmap.yaml
+cat configmap.yaml | sed -e "s/<asm-revision>/${revision}/" |  kubectl apply -f -
 ```
 
 ### 5. Install cert-manager
@@ -123,10 +123,11 @@ cert-manager-webhook-575479ff47-d87pf    1/1     Running   0          72s
 ### 6. Setup cluster-issuer and Certificate resources
 Set your email address in `cluster-issuer.yaml` that you'd like to register with ACME server.
 ```shell
-kubectl apply -f cluster-issuer.yaml
+EMAIL=email
+cat cluster-issuer.yaml | sed  -e "s/your-email-addr@domain.com/${EMAIL}/" | kubectl apply -f -
 kubectl apply -f certificate.yaml
 ```
-This should create k8s secret `bookinfo-certs` in `aks-istio-ingress` ns as requested by the certificate resource created above.
+This should create k8s secret `bookinfo-certs` in `aks-istio-ingress` namespace as requested by the certificate resource created above.
 
 ```shell
 kubectl get secret -n aks-istio-ingress
