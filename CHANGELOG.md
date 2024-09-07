@@ -1,5 +1,60 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-08-27
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240827.
+
+### Announcements
+
+* AKS version 1.27 is now deprecated. Enable [long-term support for AKS versions](https://learn.microsoft.com/azure/aks/long-term-support) if you still need to operate on 1.27.
+* The attestation report for [CIS Kubernetes V1.9.0 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) is published which covers AKS 1.27.x through AKS 1.29.x.
+* AKS will be upgrading the KEDA addon to more recent KEDA versions. The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
+  * **KEDA 2.15** for Kubernetes >=1.31: The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com/azure/aks/keda-workload-identity). 
+  * **KEDA 2.14** for Kubernetes = 1.30: The removal of [Azure Data Explorer 'metadata.clientSecret' as it was not safe for managing secrets](https://github.com/kedacore/keda/issues/4514).
+  * **KEDA 2.14** for Kubernetes = 1.30: Removal of the [deprecated metricName from trigger metadata section](https://github.com/kedacore/keda/issues/4240). The two impacted Azure Scalers are Azure Blob Scaler and Azure Log Analytics Scaler. If you are using `metricName` today, please move `metricName` outside of trigger metadata section  to`trigger.name` in the trigger section to optionally name your trigger. To view an example of what this would look like, please view the open [GitHub issue](https://github.com/Azure/AKS/issues/4471).
+
+### Release Notes
+
+* Features:
+  * Existing Linux node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [documentation](https://learn.microsoft.com/azure/aks/enable-fips-nodes#update-an-existing-node-pool-to-enable-or-disable-fips) for more information.
+
+* Bug fixes:
+  * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
+  * Fix bug to block non-VMSS (VirtualMachineScaleSets) agent pools in the Automatic SKU validation process.
+  * Fix bug to ensure correct default network plugin settings for Kubernetes clusters using VMAS.
+  * Fix bug for intermittent precondition failures when applying an AKS Bicep deployment on the pod subnet delegation.
+  * Fix bug of public IP on VMSS dropped after upgrade node image or reset service principal operation.
+  * Fix bug https://github.com/Azure/AKS/issues/4282 to remove duplicated toleration from Calico components.
+  * Fix bug to ensure `AnnotationControlled` is correctly populated by default when creating AKS clusters with app routing enabled, and to ensure `AnnotationControlled` is an accepted value for the [default nginx ingress controller config](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=bicep#control-the-default-nginx-ingress-controller-configuration) for AKS clusters with K8s versions <1.30.
+  * Fix bug for [Cluster Autoscaler](https://github.com/Azure/AKS/issues/4286) that requires an implementation of the `HasInstance` method on AKS. This implementation prevents the Cluster Autoscaler from stalling during scale-up due to node scale-down issues.
+  * Fix bug https://github.com/Azure/azure-service-operator/issues/3220 to allow creation of AgentPools without `Count` field specified if autoscaler enabled.
+  * Fix bug to accept user to set the `PowerState` field for API versions that do not support the filed. Impacted API versions are 2020-09-01, 2020-11-01, 2020-12-01, 2021-02-01 and 2021-03-01.
+
+* Behavior change:
+  * For non-host network pods running on AKS nodes, they cannot access wireserver(168.63.129.16) port 32526. Before this change user cannot access wireserver port 80, but port 32526 is accessible.
+  * When deploying an [AKS Automatic (preview)](https://learn.microsoft.com/azure/aks/intro-aks-automatic) cluster, user do not need to register extra feature flags for related preview features, such as APIServerVnetIntegration, NRGLockdown, NodeAutoProvisioning, and Safeguards.
+  * CBL-Mariner 1.0 is end of life, creation of new nodepools with OSSKU cblmariner is disabled.
+  * [Application Gateway Ingress Controller addon](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) has been assigned the network contributor role.
+
+* Component updates:
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202408.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202408.27.0.txt).
+  * Azure Linux image has been updated to [AzureLinux-202408.27.0](vhd-notes/AzureLinux/202408.27.0.txt). 
+  * Azure Disk CSI driver has been upgraded to [v1.30.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.3) on AKS 1.30, [V1.29.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.8) on AKS 1.28, [1.28.1](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.28.10) on AKS 1.27.
+  * Azure Blob Disk CSI driver has been upgraded to [v1.24.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.3) on AKS 1.30, [v1.23.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.7) on AKS 1.29 and 1.28.
+  * Azure File CSI driver has been upgraded to [v1.30.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.5) on AKS 1.30 and 1.29, [v1.29.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.7) on AKS 1.28.
+  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6189.240814](vhd-notes/AKSWindows/2019/17763.6189.240814.txt).
+  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2655.240814](vhd-notes/AKSWindows/2022/20348.2655.240814.txt).
+  * AKS App Routing operator image has been updated to [v0.2.3-patch-2](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-2) for AKS cluster with K8s versions >=1.30, [v0.2.1-patch-4](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-4) for AKS cluster with K8s versions <1.30 to address CVEs.
+  * Windows containerd has been updated to [v1.7.20](https://github.com/containerd/containerd/releases/tag/v1.7.20) in AKS cluster with K8s versions >= v1.28.
+  * Kubernetes Secrets Store CSI Driver has been updated to [v1.4.4](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.4) and Azure Key Vault Provider for Secrets Store CSI Driver to [v1.5.3](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.5.3)
+  * [Application Gateway Ingress Controller add-on](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) image has been updated to [v1.7.5](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.7.5).
+  * Retina Enterprise and Operator image has been updated to [v0.0.9](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.0.9).
+  * azure-cloud-controller-manager has been updated to version [v1.30.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.5), [v1.29.9](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.9), [v1.28.11](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.11), [v1.27.19](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.27.19).
+  * KEDA addon has been updated to [v2.14.1](https://github.com/kedacore/keda/releases/tag/v2.14.1) for Kubernetes = 1.30.
+  * Azure Policy addon has been updated to [v1.7.0](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#170).
+  * Istio-based service mesh add-on revision asm-1-20 has been upgraded to patch [v1.20.8](https://istio.io/latest/news/releases/1.20.x/announcing-1.20.8/), revision asm-1-21 has been upgraded to patch [v1.21.5](https://istio.io/latest/news/releases/1.21.x/announcing-1.21.5), and revision asm-1-22 has been upgraded to patch [v1.22.3](https://istio.io/latest/news/releases/1.22.x/announcing-1.22.3). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade#patch-version-upgrade).
+  * Calico [v3.28.1](https://github.com/projectcalico/calico/releases/tag/v3.28.1) is supported for AKS cluster with K8s versions 1.30.
+
 ## Release 2024-08-05
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240805.
