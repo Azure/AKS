@@ -4,7 +4,7 @@ This document contains instructions on how to integrate Istio-based service mesh
 
 ## Objectives
 * Deploy bookinfo demo app, expose a secure HTTPS service using simple TLS.
-* Demonstrate HTTPS connections for Azure Service Mesh workloads using cert-manager and let's encrypt as the certificate authority.
+* Demonstrate HTTPS connections for Istio-based service mesh workloads using cert-manager and let's encrypt as the certificate authority.
 
 > [!Note]  
 > Kubernetes ingress for Istio-based service mesh is an `allowed` feature. More details on configuration options [here](https://learn.microsoft.com/en-us/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations)  
