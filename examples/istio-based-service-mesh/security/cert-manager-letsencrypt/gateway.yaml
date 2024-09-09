@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+  namespace: default
+spec:
+  selector:
+    istio: aks-istio-ingressgateway-external
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "test.dev.azureservicemesh.io" # this should match your DNS name
+    - port:
+        number: 443
+        name: https-bookinfo
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: "bookinfo-certs" # this should match the Certificate secretName
+      hosts:
+        - "test.dev.azureservicemesh.io" # this should match a DNS name in the Certificate
