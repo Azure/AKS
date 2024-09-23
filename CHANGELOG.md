@@ -34,7 +34,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * All revisions of [Azure Service Mesh](https://learn.microsoft.com/azure/aks/servicemesh-about) use zipkin as the default tracer config.
   * [Cost-analysis-agent](https://learn.microsoft.com/azure/aks/cost-analysis) image upgraded from v0.0.16 to v0.0.17.
   * Updated windows image to [retina-agent]() from kappie-agent. Updated [retina](https://learn.microsoft.com/azure/aks/network-observability-overview) linux to v0.0.15.
-  * Update agentbaker  version to v0.20240909.0.
   * Updated [ip-masq-agent](https://github.com/Azure/ip-masq-agent-v2/compare/v0.1.11...v0.1.13) to v0.1.13 to address [CVEs](). 
   * Updated [aci connector addon](https://learn.microsoft.com/azure/aks/virtual-nodes) to v1.6.2 and init-validation to v0.3.0.
   * Updated Azure Disk CSI driver version to [v1.29.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.9)  on AKS 1.28, 1.29, v1.30.4  on AKS 1.30.
