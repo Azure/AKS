@@ -39,7 +39,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Azure Disk CSI driver version to [v1.29.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.9)  on AKS 1.28, 1.29, v1.30.4  on AKS 1.30.
   * Updated Azure File CSI driver to v1.29.8 on AKS 1.28.
   * Updated [tigera operator to v1.30.11](https://github.com/tigera/operator/releases/tag/v1.30.11) and [calico to v3.26.5](https://github.com/projectcalico/calico/releases/tag/v3.26.5) for versions running on k8s 1.29 and 1.30 to address CVE patches.
-  * Updated Extension Manager to [v1.18.3](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/10782116).
   * Retina Enterprise and Operator image update [v0.1.0](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.0)
   * Updated the Windows containerd version from v1.6.21 to v1.6.35 for kubernetes version less than 1.28
 
