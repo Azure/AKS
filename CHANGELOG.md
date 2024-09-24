@@ -11,6 +11,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * **KEDA 2.15** for Kubernetes >=1.31: The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com/azure/aks/keda-workload-identity). 
   * **KEDA 2.14** for Kubernetes = 1.30: The removal of [Azure Data Explorer 'metadata.clientSecret' as it was not safe for managing secrets](https://github.com/kedacore/keda/issues/4514).
   * **KEDA 2.14** for Kubernetes = 1.30: Removal of the [deprecated metricName from trigger metadata section](https://github.com/kedacore/keda/issues/4240). The two impacted Azure Scalers are Azure Blob Scaler and Azure Log Analytics Scaler. If you are using `metricName` today, please move `metricName` outside of trigger metadata section  to`trigger.name` in the trigger section to optionally name your trigger. To view an example of what this would look like, please view the open [GitHub issue](https://github.com/Azure/AKS/issues/4471).
+* AKS will no longer support the GPU image (preview) to provision GPU-enabled AKS nodes. Starting on Jan 10, 2025 you will no longer be able to create new GPU-enabled node pools with the GPU image. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in AKS GPU node pool documentation
 
 ### Release Notes
 
@@ -40,7 +41,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated [tigera operator to v1.30.11](https://github.com/tigera/operator/releases/tag/v1.30.11) and [calico to v3.26.5](https://github.com/projectcalico/calico/releases/tag/v3.26.5) for versions running on k8s 1.29 and 1.30 to address CVE patches.
   *  Updated the [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) Image tag for fixing the [bug](https://github.com/Azure/AKS/issues/4525) that causes cilium pods to crash in ACNS enabled AKS clusters
   * Retina Enterprise and Operator image update [v0.1.0](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.0)
-  * Updated the Windows containerd version from v1.6.21 to v1.6.35 for kubernetes version less than 1.28
+  * Updated the Windows containerd version from v1.6.21 to [v1.6.35](https://github.com/containerd/containerd/releases/tag/v1.6.35) for kubernetes version  <1.28
+  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2700.240911](vhd-notes/AKSWindows/2022/20348.2700.240911.txt)
+  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6293.240911](vhd-notes/AKSWindows/2019/17763.6293.240911.txt)
+  * Azure Linux image has been updated to [Azure Linux-202409.09.0](vhd-notes/AzureLinux/202409.09.0.txt)
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.09.0.txt)
 
 
 ## Release 2024-08-27
