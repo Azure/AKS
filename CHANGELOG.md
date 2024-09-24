@@ -7,8 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * AKS version 1.27 is now deprecated. Enable [long-term support for AKS versions](https://learn.microsoft.com/azure/aks/long-term-support) if you still need to operate on 1.27.
-* The attestation report for [CIS Kubernetes V1.9.0 Benchmark](https://learn.microsoft.com/azure/aks/cis-kubernetes) is published which covers AKS 1.27.x through AKS 1.29.x.
-* AKS will be upgrading the KEDA addon to more recent KEDA versions. The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
+* AKS will be upgrading the KEDA addon to more recent [KEDA versions](https://github.com/kedacore/keda/releases). The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
   * **KEDA 2.15** for Kubernetes >=1.31: The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com/azure/aks/keda-workload-identity). 
   * **KEDA 2.14** for Kubernetes = 1.30: The removal of [Azure Data Explorer 'metadata.clientSecret' as it was not safe for managing secrets](https://github.com/kedacore/keda/issues/4514).
   * **KEDA 2.14** for Kubernetes = 1.30: Removal of the [deprecated metricName from trigger metadata section](https://github.com/kedacore/keda/issues/4240). The two impacted Azure Scalers are Azure Blob Scaler and Azure Log Analytics Scaler. If you are using `metricName` today, please move `metricName` outside of trigger metadata section  to`trigger.name` in the trigger section to optionally name your trigger. To view an example of what this would look like, please view the open [GitHub issue](https://github.com/Azure/AKS/issues/4471).
@@ -19,26 +18,27 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * AKS patch versions 1.28.13, 1.29.8, 1.30.4 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 
 * Bug fixes:
-  * Updated the ACNS Image tag for fixing the [bug](https://github.com/Azure/AKS/issues/4525) that causes cilium pods to creash in ACNS enabled AKS clusters
   * Bug fix to address the issue where the OSDiskSize validator throws an error if the existing agent pool does not have a default value set
   
 * Behavior change:
   * Abandoned cluster will be deallocated with status `Failed(Deallocated)` instead of `Succeeded (Stopped)`.
   * PDB drain errors will now include additional PDB debug message and appropriate original error instead of generic "API call to Kubernetes API Server failed" error message.
   * Updated [Azure NPM version to v1.5.36](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.36) to address race condition in Azure NPM Linux which can occur when editing/deleting a NetworkPolicy with "enough" rules. The race can result in unexpected connectivity for traffic to/from Pods on the impacted Node. NPM will now auto-restart to mitigate the issue ~15 seconds after if it enters a broken state caused by the race.
-  * In k8s 1.31, we will default to parallel image pulling, by setting the kubelet flag --serialize-image-pulls = false(default value is true)
-  * Lowering Linux Azure NPM's CPU request from 250m to 50m. This addresses [Github Issue 2792](https://github.com/Azure/AKS/issues/2792)
-  * Konnectivity + Private Keyvault will not be allowed starting from kubernetes version 1.31
+  * In k8s 1.31, we will change default value of kubelet flag --serialize-image-pulls = false. This enables parallel image pulling as the default mechanism
+  * Lowering Linux Azure NPM's CPU request from 250m to 50m. This addresses [Github Issue 2792](https://github.com/Azure/AKS/issues/2792
+  *Clusters using the [Key Management Service (KMS)](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption) plugin based on Azure Key Vault with a private endpoint and konnectivity tunnel may run into a deadlock issue resulting in `apiserver` becoming unreachable. Clusters using this configuration will not be allowed starting Kubernetes version >= 1.31
+  * Allow Istio add-on users to add the [customizations to the Ingress gateway](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-annotation-customization)
 
 * Component updates:
   * All revisions of [Azure Service Mesh](https://learn.microsoft.com/azure/aks/servicemesh-about) use zipkin as the default tracer config.
   * [Cost-analysis-agent](https://learn.microsoft.com/azure/aks/cost-analysis) image upgraded from v0.0.16 to v0.0.17.
-  * Updated windows image to [retina-agent]() from kappie-agent. Updated [retina](https://learn.microsoft.com/azure/aks/network-observability-overview) linux to v0.0.15.
+  * Updated windows image to [retina-agent]() from kappie-agent. Updated [retina](https://github.com/microsoft/retina/releases/tag/v0.0.15) linux to v0.0.15.
   * Updated [ip-masq-agent](https://github.com/Azure/ip-masq-agent-v2/compare/v0.1.11...v0.1.13) to v0.1.13 to address [CVEs](). 
   * Updated [aci connector addon](https://learn.microsoft.com/azure/aks/virtual-nodes) to v1.6.2 and init-validation to v0.3.0.
-  * Updated Azure Disk CSI driver version to [v1.29.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.9)  on AKS 1.28, 1.29, v1.30.4  on AKS 1.30.
-  * Updated Azure File CSI driver to v1.29.8 on AKS 1.28.
+  * Updated Azure Disk CSI driver version to [v1.29.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.9)  on AKS 1.28, 1.29, and to [v1.30.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.4) on AKS 1.30.
+  * Updated Azure File CSI driver to [v1.29.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases) on AKS 1.28.
   * Updated [tigera operator to v1.30.11](https://github.com/tigera/operator/releases/tag/v1.30.11) and [calico to v3.26.5](https://github.com/projectcalico/calico/releases/tag/v3.26.5) for versions running on k8s 1.29 and 1.30 to address CVE patches.
+  *  Updated the [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) Image tag for fixing the [bug](https://github.com/Azure/AKS/issues/4525) that causes cilium pods to crash in ACNS enabled AKS clusters
   * Retina Enterprise and Operator image update [v0.1.0](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.0)
   * Updated the Windows containerd version from v1.6.21 to v1.6.35 for kubernetes version less than 1.28
 
