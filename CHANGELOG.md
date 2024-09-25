@@ -6,12 +6,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* AKS version 1.27 is now deprecated. Enable [long-term support for AKS versions](https://learn.microsoft.com/azure/aks/long-term-support) if you still need to operate on 1.27.
+* AKS version 1.30 is now available as a [Long term support version](https://learn.microsoft.com/azure/aks/long-term-support) .
 * AKS will be upgrading the KEDA addon to more recent [KEDA versions](https://github.com/kedacore/keda/releases). The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
   * **KEDA 2.15** for Kubernetes >=1.31: The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com/azure/aks/keda-workload-identity). 
   * **KEDA 2.14** for Kubernetes = 1.30: The removal of [Azure Data Explorer 'metadata.clientSecret' as it was not safe for managing secrets](https://github.com/kedacore/keda/issues/4514).
   * **KEDA 2.14** for Kubernetes = 1.30: Removal of the [deprecated metricName from trigger metadata section](https://github.com/kedacore/keda/issues/4240). The two impacted Azure Scalers are Azure Blob Scaler and Azure Log Analytics Scaler. If you are using `metricName` today, please move `metricName` outside of trigger metadata section  to`trigger.name` in the trigger section to optionally name your trigger. To view an example of what this would look like, please view the open [GitHub issue](https://github.com/Azure/AKS/issues/4471).
-* AKS will no longer support the GPU image (preview) to provision GPU-enabled AKS nodes. Starting on Jan 10, 2025 you will no longer be able to create new GPU-enabled node pools with the GPU image. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in AKS GPU node pool documentation
+* AKS will no longer support the [GPU image (preview)](https://github.com/Azure/AKS/issues/4472) to provision GPU-enabled AKS nodes. Starting on Jan 10, 2025 you will no longer be able to create new GPU-enabled node pools with the GPU image. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in [AKS GPU node pool documentation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#confirm-that-gpus-are-schedulable).
+* Starting on January 1, 2025, [invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings:["User", "System"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-02-01&tabs=HTTP#agentpoolmode), or ["Gateway"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-06-02-preview&tabs=HTTP#agentpoolmode).
+Note: “Gateway” is currently in the preview API.
 
 ### Release Notes
 
@@ -22,30 +24,34 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Bug fix to address the issue where the OSDiskSize validator throws an error if the existing agent pool does not have a default value set
   
 * Behavior change:
-  * Abandoned cluster will be deallocated with status `Failed(Deallocated)` instead of `Succeeded (Stopped)`.
+  * Abandoned cluster will be [deallocated with status `Failed(Deallocated)` instead of `Succeeded (Stopped)`](https://learn.microsoft.com/azure/aks/support-policies#:~:text=Stopped%2C%20deallocated%2C%20and%20Not%20Ready%20nodes).
   * PDB drain errors will now include additional PDB debug message and appropriate original error instead of generic "API call to Kubernetes API Server failed" error message.
   * Updated [Azure NPM version to v1.5.36](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.36) to address race condition in Azure NPM Linux which can occur when editing/deleting a NetworkPolicy with "enough" rules. The race can result in unexpected connectivity for traffic to/from Pods on the impacted Node. NPM will now auto-restart to mitigate the issue ~15 seconds after if it enters a broken state caused by the race.
-  * In k8s 1.31, we will change default value of kubelet flag --serialize-image-pulls = false. This enables parallel image pulling as the default mechanism
-  * Lowering Linux Azure NPM's CPU request from 250m to 50m. This addresses [Github Issue 2792](https://github.com/Azure/AKS/issues/2792
-  *Clusters using the [Key Management Service (KMS)](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption) plugin based on Azure Key Vault with a private endpoint and konnectivity tunnel may run into a deadlock issue resulting in `apiserver` becoming unreachable. Clusters using this configuration will not be allowed starting Kubernetes version >= 1.31
-  * Allow Istio add-on users to add the [customizations to the Ingress gateway](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-annotation-customization)
+  * In Kubernetes version 1.31, we will change default value of kubelet flag --serialize-image-pulls = false. This enables parallel image pulling as the default mechanism.
+  * Lowering Linux Azure NPM's CPU request from 250m to 50m. This addresses [Github Issue 2792](https://github.com/Azure/AKS/issues/2792.
+  *Clusters using the [Key Management Service (KMS)](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption) plugin based on Azure Key Vault with a private endpoint and konnectivity tunnel may run into a deadlock issue resulting in `apiserver` becoming unreachable. Clusters using this configuration will not be allowed starting Kubernetes version >= 1.31.
+  * Allow Istio add-on users to add the [customizations to the Ingress gateway](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-annotation-customization).
+  * Busybox will be removed from [kube-proxy](https://learn.microsoft.com/azure/aks/configure-kube-proxy) init container. This will eliminate the need for security updates on busybox.
 
 * Component updates:
+  * Release notes 08-27-2024 mentions Calico [v3.28.1](https://github.com/projectcalico/calico/releases/tag/v3.28.1) being supported for AKS cluster with K8s versions 1.30. This change was reverted from the 08-27-2024 release but will go out in this release.
   * All revisions of [Azure Service Mesh](https://learn.microsoft.com/azure/aks/servicemesh-about) use zipkin as the default tracer config.
   * [Cost-analysis-agent](https://learn.microsoft.com/azure/aks/cost-analysis) image upgraded from v0.0.16 to v0.0.17.
-  * Updated windows image to [retina-agent]() from kappie-agent. Updated [retina](https://github.com/microsoft/retina/releases/tag/v0.0.15) linux to v0.0.15.
-  * Updated [ip-masq-agent](https://github.com/Azure/ip-masq-agent-v2/compare/v0.1.11...v0.1.13) to v0.1.13 to address [CVEs](). 
+  * Updated [retina](https://github.com/microsoft/retina/releases/tag/v0.0.15) linux to v0.0.15.
+  * Updated [ip-masq-agent](https://github.com/Azure/ip-masq-agent-v2/compare/v0.1.11...v0.1.13) to v0.1.13 to address [CVE-2024-24790](https://nvd.nist.gov/vuln/detail/CVE-2024-24790), [CVE-2023-45288](https://nvd.nist.gov/vuln/detail/CVE-2023-45288), [CVE-2023-45289](https://nvd.nist.gov/vuln/detail/CVE-2023-45289), [CVE-2023-45290](https://nvd.nist.gov/vuln/detail/CVE-2023-45290), [CVE-2024-24783](https://nvd.nist.gov/vuln/detail/CVE-2024-24783), [CVE-2024-24784](https://nvd.nist.gov/vuln/detail/CVE-2024-24784), [CVE-2024-24785](https://nvd.nist.gov/vuln/detail/CVE-2024-24785), [CVE-2024-24789](https://nvd.nist.gov/vuln/detail/CVE-2024-24789), [CVE-2024-24791](https://nvd.nist.gov/vuln/detail/CVE-2024-24791), [CVE-2024-5321](https://nvd.nist.gov/vuln/detail/CVE-2024-5321). 
+  * Updated [CNI versions to v1.5.35 and v1.6.5. Updated CNS versions to v1.5.35 and v1.6.5](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.5).
+  * Updated azureclients to 1.7.4 for vnet_client. This fixes the bug that causes cluster creation to fail when creating a new cluster with multiple agent pools that use the [Dynamic Pod IP Allocation feature (podsubnet)](https://learn.microsoft.com/azure/aks/configure-azure-cni-dynamic-ip-allocation).
   * Updated [aci connector addon](https://learn.microsoft.com/azure/aks/virtual-nodes) to v1.6.2 and init-validation to v0.3.0.
   * Updated Azure Disk CSI driver version to [v1.29.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.9)  on AKS 1.28, 1.29, and to [v1.30.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.4) on AKS 1.30.
   * Updated Azure File CSI driver to [v1.29.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases) on AKS 1.28.
   * Updated [tigera operator to v1.30.11](https://github.com/tigera/operator/releases/tag/v1.30.11) and [calico to v3.26.5](https://github.com/projectcalico/calico/releases/tag/v3.26.5) for versions running on k8s 1.29 and 1.30 to address CVE patches.
-  *  Updated the [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) Image tag for fixing the [bug](https://github.com/Azure/AKS/issues/4525) that causes cilium pods to crash in ACNS enabled AKS clusters
-  * Retina Enterprise and Operator image update [v0.1.0](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.0)
-  * Updated the Windows containerd version from v1.6.21 to [v1.6.35](https://github.com/containerd/containerd/releases/tag/v1.6.35) for kubernetes version  <1.28
-  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2700.240911](vhd-notes/AKSWindows/2022/20348.2700.240911.txt)
-  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6293.240911](vhd-notes/AKSWindows/2019/17763.6293.240911.txt)
-  * Azure Linux image has been updated to [Azure Linux-202409.09.0](vhd-notes/AzureLinux/202409.09.0.txt)
-  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.09.0.txt)
+  *  Updated the [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) Image tag for fixing the [bug](https://github.com/Azure/AKS/issues/4525) that causes cilium pods to crash in ACNS enabled AKS clusters.
+  * Retina Enterprise and Operator image update [v0.1.0](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.0).
+  * Updated the Windows containerd version from v1.6.21 to [v1.6.35](https://github.com/containerd/containerd/releases/tag/v1.6.35) for Kubernetes version < 1.28.
+  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2700.240911](vhd-notes/AKSWindows/2022/20348.2700.240911.txt).
+  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6293.240911](vhd-notes/AKSWindows/2019/17763.6293.240911.txt).
+  * Azure Linux image has been updated to [Azure Linux-202409.09.0](vhd-notes/AzureLinux/202409.09.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.09.0.txt).
 
 
 ## Release 2024-08-27
