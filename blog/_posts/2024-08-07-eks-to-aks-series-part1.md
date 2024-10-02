@@ -31,3 +31,7 @@ You can either clone the AWS EKS sample and follow along with the guide, or read
 ## Looking Forward
 
 Our next article will explore a common EKS workload pattern for protecting an n-tier web/mobile application with a WAF, and the process of replicating this workload into Azure using EKS and other services. We are interested to hear about the migration challenges and scenarios you encounter, so we can continue to enhance the features and documentation for AKS to ease the transition from other clouds to Azure. Please share your ideas and needs using one of the contact methods below.
+
+Don’t forget to subscribe to our [Really Simple Syndication (RSS) feed](https://azure.github.io/AKS/feed.xml) to stay tuned for upcoming posts in the series!
+
+Until next time ✌️
