@@ -1,5 +1,52 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2024-10-06
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241006`.
+
+### Announcements
+
+* AKS version 1.30 is now available as a [Long term support version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) and AKS version 1.28 End of Life is Jan, 15 2025.
+* AKS will be upgrading the KEDA addon to more recent [KEDA versions](https://github.com/kedacore/keda/releases). The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes which are listed below:
+  * **KEDA 2.15** for Kubernetes >=1.31: The removal of [Pod Identity support](https://github.com/kedacore/keda/issues/5035). If you use pod identity, we recommend you move over to [workload identity for your authentication](https://learn.microsoft.com/azure/aks/keda-workload-identity). 
+  * **KEDA 2.14** for Kubernetes = 1.30: The removal of [Azure Data Explorer 'metadata.clientSecret' as it was not safe for managing secrets](https://github.com/kedacore/keda/issues/4514).
+  * **KEDA 2.14** for Kubernetes = 1.30: Removal of the [deprecated metricName from trigger metadata section](https://github.com/kedacore/keda/issues/4240). The two impacted Azure Scalers are Azure Blob Scaler and Azure Log Analytics Scaler. If you are using `metricName` today, please move `metricName` outside of trigger metadata section  to`trigger.name` in the trigger section to optionally name your trigger. To view an example of what this would look like, please view the open [GitHub issue](https://github.com/Azure/AKS/issues/4471).
+* AKS will no longer support the [GPU image (preview)](https://github.com/Azure/AKS/issues/4472) to provision GPU-enabled AKS nodes. Starting on Jan 10, 2025 you will no longer be able to create new GPU-enabled node pools with the GPU image. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in [AKS GPU node pool documentation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#confirm-that-gpus-are-schedulable).
+* Starting on January 1, 2025, [invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings:["User", "System"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-02-01&tabs=HTTP#agentpoolmode), or ["Gateway"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-06-02-preview&tabs=HTTP#agentpoolmode).
+
+### Release Notes
+
+* Features:
+  * [Trusted launch](https://learn.microsoft.com/azure/aks/use-trusted-launch), which improves the security of generation 2 virtual machines (VMs) by protecting against advanced and persistent attack techniques is now generally available.
+  * AKS patch versions `1.30.7`, `1.29.11`, `1.28.13`, `1.27.21`, `1.26.22`, and `1.25.24` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information..
+
+* Preview features:
+  * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now available in preview. 
+  * You can now specify the default Seccomp profile applied to all workloads by setting the `seccompDefault` on [customized node configuration](https://learn.microsoft.com/azure/aks/custom-node-configuration?tabs=linux-node-pools#linux-kubelet-custom-configuration).  value of `RuntimeDefault` will apply the default from the container's runtime which restricts certain system calls for improved security.
+  * You can now [specify the GPU driver type (preview)](https://learn.microsoft.com/azure/aks/use-windows-gpu) when creating a new AKS Windows GPU Nodepool using the `--driver-type` flag.
+    
+* Bug fixes:
+  * Bug fix to address an issue where Calico pods were stuck in Terminating state.
+  * Fixed a race condition when editing a NetPol or deleting then re-adding it for netpols without CIDR handle.
+  * Fixed a race condition between Cilium and Retina CRDs for Cilium (when Retina is updating to Cilium).
+ 
+* Behavior change:
+  * Deprecated API detection will now only show usage on non-readonly verbs.
+  * Starting with AKS version 1.31, nodes will now [pull container images in a parallel](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/availability-performance/container-image-pull-performance) by default. In versions prior to 1.31, the pull type will remain serialized.
+
+* Component updates:
+  * Updated CNI and CNS versions to [`v1.6.7`](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.7).    
+  * Updated Azure Network Policy Manager (NPM) to [`v1.5.37`](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.37).
+  * Updated Azure Policy addon to [`v1.7.1`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#171).
+  * Updated konnectivity-agent image version to `v0.30.3-hotfix.20240819`.
+  * Updated containerd-spin-shim to [`v0.15.1`](https://github.com/spinkube/containerd-shim-spin/releases/tag/v0.15.1).
+  * Updated Istio-based service mesh add-on revision `asm-1-23` to patch [`v1.23.1`](https://istio.io/latest/news/releases/1.23.x/announcing-1.23.1). `asm-1-20` is now unsupported. Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade#patch-version-upgrade).
+  * Updated Cilium to [`v1.14.15-241002`](https://github.com/cilium/cilium/releases/tag/v1.14.15).
+  * Updated Calico to [`v3.28.1`](https://github.com/projectcalico/calico/blob/v3.28.1/release-notes/v3.28.1-release-notes.md).
+  * Updated ama-logs to [`v3.1.24`](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10072024--).
+  * Azure Linux image has been updated to [Azure Linux-202409.30.0](vhd-notes/AzureLinux/202409.30.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.30.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.30.0.txt).
+    
 ## Release 2024-09-18
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as v20240918.
@@ -2206,7 +2253,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * Ubuntu 22.04 for AMD and ARM64 architectures will be the default host.
     * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
 * Bug Fixes
-  * Updated the AKS WS2022 images with 2022.10C. This update addresses an issue that causes Host Network Service to stop working, creating traffic interruptions. This fix will also be included in the AKS Windows2019 images with 2022.11B. Please see the release notes in https://github.com/Azure/AgentBaker/pull/2380 .
+  * Updated the AKS WS2022 images with 2022.10C. This update addresses an issue that causes Host Network Service to stop working, creating traffic interruptions. This fix will also be included in the AKS Windows2019 images with 2022.11B. Please see the release notes in https://github.com/Azure//pull/2380 .
 * Behavior Changes
   * AKS plans to disable "JobTrackingWithFinalizers" APISever feature for k8s version "1.23" in all regions. There is a bug in this feature. 1.23 by default turned on the feature and 1.24+ turned it off.
   * The fields Cloud, Environment, UnderlayClass, and UnderlayName will no longer be available in customers' log analytics workspaces.
@@ -2971,7 +3018,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcements
 
-* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
+* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure//blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
 * From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
 * Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
