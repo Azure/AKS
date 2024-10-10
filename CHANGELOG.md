@@ -43,6 +43,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Cilium to [`v1.14.15-241002`](https://github.com/cilium/cilium/releases/tag/v1.14.15).
   * Updated Calico to [`v3.28.1`](https://github.com/projectcalico/calico/blob/v3.28.1/release-notes/v3.28.1-release-notes.md).
   * Updated ama-logs to [`v3.1.24`](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10072024--).
+  * Updated NVIDIA container runtime for Ubuntu Linux GPU node pools to address [NVD - CVE-2024-0132](https://nvd.nist.gov/vuln/detail/CVE-2024-0132).
   * Azure Linux image has been updated to [Azure Linux-202409.30.0](vhd-notes/AzureLinux/202409.30.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.30.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.30.0.txt).
     
