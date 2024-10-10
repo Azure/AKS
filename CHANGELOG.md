@@ -22,7 +22,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview features:
   * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now available in preview. 
-  * You can now specify the default Seccomp profile applied to all workloads by setting the `seccompDefault` on [customized node configuration](https://learn.microsoft.com/azure/aks/custom-node-configuration?tabs=linux-node-pools#linux-kubelet-custom-configuration).  value of `RuntimeDefault` will apply the default from the container's runtime which restricts certain system calls for improved security.
   * You can now [specify the GPU driver type (preview)](https://learn.microsoft.com/azure/aks/use-windows-gpu) when creating a new AKS Windows GPU Nodepool using the `--driver-type` flag.
     
 * Bug fixes:
@@ -31,7 +30,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed a race condition between Cilium and Retina CRDs for Cilium (when Retina is updating to Cilium).
  
 * Behavior change:
-  * Deprecated API detection will now only show usage on non-readonly verbs.
+  * Deprecated API detection will now [only show usage on non-readonly verbs](https://learn.microsoft.com/azure/aks/stop-cluster-upgrade-api-breaking-changes).
   * Starting with AKS version 1.31, nodes will now [pull container images in a parallel](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/availability-performance/container-image-pull-performance) by default. In versions prior to 1.31, the pull type will remain serialized.
 
 * Component updates:
@@ -2253,7 +2252,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * Ubuntu 22.04 for AMD and ARM64 architectures will be the default host.
     * Windows Server 2022 will be the default Windows host. Important, old windows 2019 containers will not work on windows server 2022 hosts.
 * Bug Fixes
-  * Updated the AKS WS2022 images with 2022.10C. This update addresses an issue that causes Host Network Service to stop working, creating traffic interruptions. This fix will also be included in the AKS Windows2019 images with 2022.11B. Please see the release notes in https://github.com/Azure//pull/2380 .
+  * Updated the AKS WS2022 images with 2022.10C. This update addresses an issue that causes Host Network Service to stop working, creating traffic interruptions. This fix will also be included in the AKS Windows2019 images with 2022.11B. Please see the release notes in https://github.com/Azure/AgentBaker/pull/2380 .
 * Behavior Changes
   * AKS plans to disable "JobTrackingWithFinalizers" APISever feature for k8s version "1.23" in all regions. There is a bug in this feature. 1.23 by default turned on the feature and 1.24+ turned it off.
   * The fields Cloud, Environment, UnderlayClass, and UnderlayName will no longer be available in customers' log analytics workspaces.
@@ -3018,7 +3017,7 @@ This release is rolling out to all regions - estimated time for completed roll o
 
 ### Announcements
 
-* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure//blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
+* Upgrade your AKS Ubuntu 18.04 worker nodes to VHD version [2022.03.20](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/1804/2022.03.20.txt) or newer to address [CVE-2022-0492](https://github.com/Azure/AKS/issues/2834) and [CVE-2022-23648](https://github.com/Azure/AKS/issues/2821).
 * From Kubernetes 1.23, containerd will be the default container runtime for Windows node pools. Docker support will be deprecated in Kubernetes 1.24. You are advised to test your workloads before Docker deprecation happens by following the documentation [here](https://docs.microsoft.com/azure/aks/windows-container-cli#add-a-windows-server-node-pool-with-containerd-preview).
 * Starting with 1.24 the default format of clusterUser credential for AAD enabled clusters will be ‘exec’, which requires [kubelogin](https://github.com/Azure/kubelogin) binary in the execution PATH. If you are using Azure CLI, it will prompt users to download kubelogin. There will be no behavior change for non-AAD clusters, or AAD clusters whose version is older than 1.24. Existing downloaded kubeconfig will still work. We provide an optional query parameter ‘format’ when getting clusterUser credential to overwrite the default behavior change, you can explicitly specify format to ‘azure’ to get old format kubeconfig.
 * Starting in Kubernetes 1.23 AKS Metrics server deployment will start having 2 pods instead of 1 for HA, which will increase the memory requests of the system by 54Mb.
