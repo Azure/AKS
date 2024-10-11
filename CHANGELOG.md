@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     
 * Bug fixes:
   * Bug fix to address an issue where Calico pods were stuck in Terminating state.
-  * Fixed a race condition when editing a NetPol or deleting then re-adding it for netpols without CIDR handle.
+  * Fixed a race condition in Azure Network Policy when editing or deleting then re-adding a network policy without a CIDR handle.
   * Fixed a race condition between Cilium and Retina CRDs for Cilium (when Retina is updating to Cilium).
   * Bug fix for certificate rotation in the gMSA webhook.
   * Bug fix for Advanced Network Observability where the Retina operator didn't have proper permissions.
