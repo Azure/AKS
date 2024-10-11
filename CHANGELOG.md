@@ -30,7 +30,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavior change:
   * Deprecated API detection will now [only show usage on non-readonly verbs (ie: not GET/LIST/WATCH)](https://learn.microsoft.com/azure/aks/stop-cluster-upgrade-api-breaking-changes).
   * Starting with AKS version 1.31, nodes will now [pull container images in a parallel](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/availability-performance/container-image-pull-performance) by default. In versions prior to 1.31, the pull type will remain serialized.
-  * When cloud-node-manager-windows enables HPC, A Windows DaemonSet will be deployed to initialize kube-proxy.
+  * When cloud-node-manager-windows enables [Windows HostProcess containers](https://learn.microsoft.com/azure/aks/use-windows-hpc), a Windows DaemonSet will be deployed to initialize kube-proxy.
 
 * Component updates:
   * Updated CNI and CNS versions to [`v1.6.7`](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.7).    
