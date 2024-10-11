@@ -7,6 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * AKS version 1.30 is now available as a [Long term support version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) and AKS version 1.28 End of Life is Jan, 15 2025.
+* Upgrade from LTS 1.27 to LTS 1.30 is now supported. 
 * AKS will be upgrading the KEDA addon to more recent [KEDA versions](https://github.com/kedacore/keda/releases). The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes. View the [troubleshooting guide](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/extensions/changes-in-kubernetes-event-driven-autoscaling-add-on-214-215) to learn how to mitigate these breaking changes.
 * AKS will no longer support the [GPU image (preview)](https://github.com/Azure/AKS/issues/4472) to provision GPU-enabled AKS nodes. Starting on Jan 10, 2025 you will no longer be able to create new GPU-enabled node pools with the GPU image. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in [AKS GPU node pool documentation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#confirm-that-gpus-are-schedulable).
 * Starting on January 1, 2025, [invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings:["User", "System"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-02-01&tabs=HTTP#agentpoolmode), or ["Gateway"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-06-02-preview&tabs=HTTP#agentpoolmode).
@@ -15,7 +16,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
   * [Trusted launch](https://learn.microsoft.com/azure/aks/use-trusted-launch), which improves the security of generation 2 virtual machines (VMs) by protecting against advanced and persistent attack techniques is now generally available.
-  * AKS patch versions `1.30.7`, `1.29.11`, `1.28.13`, `1.27.21`, `1.26.22`, and `1.25.24` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information..
 
 * Preview features:
   * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now available in preview. 
@@ -27,7 +27,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed a race condition between Cilium and Retina CRDs for Cilium (when Retina is updating to Cilium).
  
 * Behavior change:
-  * Deprecated API detection will now [only show usage on non-readonly verbs](https://learn.microsoft.com/azure/aks/stop-cluster-upgrade-api-breaking-changes).
+  * Deprecated API detection will now [only show usage on non-readonly verbs (ie: not GET/LIST/WATCH)](https://learn.microsoft.com/azure/aks/stop-cluster-upgrade-api-breaking-changes).
   * Starting with AKS version 1.31, nodes will now [pull container images in a parallel](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/availability-performance/container-image-pull-performance) by default. In versions prior to 1.31, the pull type will remain serialized.
 
 * Component updates:
@@ -40,7 +40,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Cilium to [`v1.14.15-241002`](https://github.com/cilium/cilium/releases/tag/v1.14.15).
   * Updated Calico to [`v3.28.1`](https://github.com/projectcalico/calico/blob/v3.28.1/release-notes/v3.28.1-release-notes.md).
   * Updated ama-logs to [`v3.1.24`](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10072024--).
-  * Updated NVIDIA container runtime for Ubuntu Linux GPU node pools to address [NVD - CVE-2024-0132](https://nvd.nist.gov/vuln/detail/CVE-2024-0132).
+  * Updated azure-cloud-controller-manager to versions [`v1.31.1`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.1), [`v1.30.7`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.7), [`v1.29.11`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.11), [`v1.28.13`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.13) .
+  * Azure Linux image has been updated to [Azure Linux - 202403.25.0](vhd-notes/AzureLinux/202403.25.0.txt).
   * Azure Linux image has been updated to [Azure Linux-202409.30.0](vhd-notes/AzureLinux/202409.30.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.30.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.30.0.txt).
     
