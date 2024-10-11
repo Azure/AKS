@@ -25,6 +25,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Bug fix to address an issue where Calico pods were stuck in Terminating state.
   * Fixed a race condition when editing a NetPol or deleting then re-adding it for netpols without CIDR handle.
   * Fixed a race condition between Cilium and Retina CRDs for Cilium (when Retina is updating to Cilium).
+  * Bug fix for certificate rotation in the gMSA webhook.
  
 * Behavior change:
   * Deprecated API detection will now [only show usage on non-readonly verbs (ie: not GET/LIST/WATCH)](https://learn.microsoft.com/azure/aks/stop-cluster-upgrade-api-breaking-changes).
@@ -40,10 +41,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Cilium to [`v1.14.15-241002`](https://github.com/cilium/cilium/releases/tag/v1.14.15).
   * Updated Calico to [`v3.28.1`](https://github.com/projectcalico/calico/blob/v3.28.1/release-notes/v3.28.1-release-notes.md).
   * Updated ama-logs to [`v3.1.24`](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10072024--).
-  * Updated azure-cloud-controller-manager to versions [`v1.31.1`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.1), [`v1.30.7`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.7), [`v1.29.11`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.11), [`v1.28.13`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.13) .
-  * Azure Linux image has been updated to [Azure Linux - 202403.25.0](vhd-notes/AzureLinux/202403.25.0.txt).
-  * Azure Linux image has been updated to [Azure Linux-202409.30.0](vhd-notes/AzureLinux/202409.30.0.txt).
-  * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.30.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.30.0.txt).
+  * Updated azure-cloud-controller-manager to versions [`v1.31.1`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.1), [`v1.30.7`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.7), [`v1.29.11`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.11), [`v1.28.13`](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.28.13).
+  * Updated overlay-vpa to `v1.2.1` for Kubernetes 1.31.0+ and `v1.0.0` for Kubernetes 1.27.0+.
+  * Azure Linux image has been updated to [`Azure Linux-202403.25.0`](vhd-notes/AzureLinux/202403.25.0.txt).
+  * Azure Linux image has been updated to [`Azure Linux-202409.30.0`](vhd-notes/AzureLinux/202409.30.0.txt).
+  * AKS Ubuntu 22.04 image has been updated to [`AKSUbuntu-202409.30.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.30.0.txt).
     
 ## Release 2024-09-18
 
