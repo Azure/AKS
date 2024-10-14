@@ -15,7 +15,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release Notes
 
 * Features:
-  * [Trusted launch](https://learn.microsoft.com/azure/aks/use-trusted-launch), which improves the security of generation 2 virtual machines (VMs) by protecting against advanced and persistent attack techniques is now generally available.
 
 * Preview features:
   * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now available in preview. 
