@@ -14,8 +14,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release Notes
 
-* Features:
-
 * Preview features:
   * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now available in preview. 
   * You can now [specify the GPU driver type (preview)](https://learn.microsoft.com/azure/aks/use-windows-gpu) when creating a new AKS Windows GPU Nodepool using the `--driver-type` flag.
