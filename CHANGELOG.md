@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview features:
   * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now available in preview. 
-  * You can now [specify the GPU driver type (preview)](https://learn.microsoft.com/azure/aks/use-windows-gpu) when creating a new AKS Windows GPU Nodepool using the `--driver-type` flag.
+  * You can now [specify the GPU driver type](https://learn.microsoft.com/azure/aks/use-windows-gpu) when creating a new AKS Windows GPU Nodepool using the `--driver-type` flag.
       * You can now assign a [static egress gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) node pool to provide a stable egress IP for your pods. 
 * Bug fixes:
   * Bug fix to address an issue where Calico pods were stuck in Terminating state.
