@@ -82,7 +82,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Busybox will be removed from [kube-proxy](https://learn.microsoft.com/azure/aks/configure-kube-proxy) init container. This will eliminate the need for security updates on busybox.
 
 * Component updates:
-  * Release notes 08-27-2024 mentions Calico [v3.28.1](https://github.com/projectcalico/calico/releases/tag/v3.28.1) being supported for AKS cluster with K8s versions 1.30. This change was reverted from the 08-27-2024 release but will go out in this release.
   * All revisions of [Azure Service Mesh](https://learn.microsoft.com/azure/aks/servicemesh-about) use zipkin as the default tracer config.
   * [Cost-analysis-agent](https://learn.microsoft.com/azure/aks/cost-analysis) image upgraded from v0.0.16 to v0.0.17.
   * Updated [retina](https://github.com/microsoft/retina/releases/tag/v0.0.15) linux to v0.0.15.
@@ -93,14 +92,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Updated Azure Disk CSI driver version to [v1.29.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.29.9)  on AKS 1.28, 1.29, and to [v1.30.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.4) on AKS 1.30.
   * Updated Azure File CSI driver to [v1.29.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases) on AKS 1.28.
   * Updated [tigera operator to v1.30.11](https://github.com/tigera/operator/releases/tag/v1.30.11) and [calico to v3.26.5](https://github.com/projectcalico/calico/releases/tag/v3.26.5) for versions running on k8s 1.29 and 1.30 to address CVE patches.
-  *  Updated the [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) Image tag for fixing the [bug](https://github.com/Azure/AKS/issues/4525) that causes cilium pods to crash in Advanced Container Networking Service enabled AKS clusters.
+  * Updated the [Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) Image tag for fixing the [bug](https://github.com/Azure/AKS/issues/4525) that causes cilium pods to crash in Advanced Container Networking Service enabled AKS clusters.
   * Retina Enterprise and Operator image update [v0.1.0].
   * Updated the Windows containerd version from v1.6.21 to [v1.6.35](https://github.com/containerd/containerd/releases/tag/v1.6.35) for Kubernetes version < 1.28.
   * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.2700.240911](vhd-notes/AKSWindows/2022/20348.2700.240911.txt).
   * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6293.240911](vhd-notes/AKSWindows/2019/17763.6293.240911.txt).
   * Azure Linux image has been updated to [Azure Linux-202409.09.0](vhd-notes/AzureLinux/202409.09.0.txt).
   * AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-202409.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202409.09.0.txt).
-
 
 ## Release 2024-08-27
 
