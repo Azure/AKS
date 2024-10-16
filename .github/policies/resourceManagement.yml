@@ -485,6 +485,23 @@ configuration:
         - mentionUsers:
             mentionees:
             - chasewilson
+            - paulgmiller
+            - quantumn-a5
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      - if:
+        - hasLabel:
+            label: Cilium
+        - not:
+            isAssignedToSomeone
+        then:
+        - mentionUsers:
+            mentionees:
+            - chasewilson
+            - paulgmiller
+            - wedaly
+            - quantumn-a5
+            - tamilmani1989
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
       - if:
