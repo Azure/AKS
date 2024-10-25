@@ -702,8 +702,7 @@ configuration:
         then:
         - mentionUsers:
             mentionees:
-            - shashankbarsin
-            - phealy
+            - sjwaight
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True  
       - if:
