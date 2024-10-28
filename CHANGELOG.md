@@ -46,6 +46,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
  TO UPDATE:
   * upgrade blob csi driver versions upgrade to v1.22.9 on aks 1.27
   * Bumped envoy version to 1.28.7
+  * Update DNC, DNC-RC and DNC Cleanup Service to 2024.10.11.1 release version
   * upgrade CSI driver versions upgrade Azure Disk CSI driver version to v1.28.11 on aks 1.27, v1.29.10 on aks 1.28, 1.29, v1.30.5 on aks 1.30 upgrade Azure File CSI driver version to v1.28.13 on aks 1.27, v1.29.9 on aks 1.28, v1.30.6 on aks 1.29, 1.30 upgrade Blob CSI driver version to v1.23.9 on aks 1.28, 1.29, v1.24.5 on aks 1.30
   * cost-analysis-agent image upgraded from v0.0.17 to v0.0.18
   * AKS Windows Server 2022 image has been updated to TODO.
