@@ -17,7 +17,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
 ### Release Notes
 
 * Features:
-  * AKS patch versions 1.28.13, 1.29.8, 1.30.4 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+  * AKS patch versions 1.28.14, 1.29.9, 1.30.5 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
   * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now generally available. Please check the release tracker for when your region will receive the GA update. Some regions may not receive this update until later in November.
   * The first official patch version of LTS 1.27 is being released.
  
@@ -31,6 +31,8 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
   * You can now fine-tune supported models on KAITO version [0.3.1](https://github.com/Azure/kaito/releases/tag/v0.3.1) with the AI toolchain operator add-on on your AKS cluster.
 
 * Component updates:
+  * The KEDA addon will be bumped to version 1.15 on AKS 1.32 instead of AKS 1.31.
+ 
 
 ## Release 2024-10-06
 
