@@ -29,9 +29,29 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
  
 * Behavior change:
   * You can now fine-tune supported models on KAITO version [0.3.1](https://github.com/Azure/kaito/releases/tag/v0.3.1) with the AI toolchain operator add-on on your AKS cluster.
-
+  * Beta APIs will be disabled for newly created clusters after November 30, 2024.
+  * Virtual Machine nodepools will not be able to use custom VNets when if the cluster is using system-assigned identity.
+  * LTS no longer do defaulting on autoUpgrader profile.
+  * This release adds the below plugin blocks to coredns corefile by default.
+    * `template ANY ANY reddog.microsoft.com {      rcode NXDOMAIN    }`
+    * `template ANY ANY internal.cloudapp.net {      match "^(?:+.){4,}internal.cloudapp.net.$"      rcode NXDOMAIN      fallthrough    }`
+    * The first plugin block is designed to return NXDOMAIN for queries to reddog.microsoft.com domain. This is useful to prevent coredns from sending queries to AzureDNS for reddog.microsoft.com domain.
+    * The second plugin block is designed to return NXDOMAIN for queries to internal.cloudapp.net domain, except for domains with the required number of components following this pattern: ..*.internal.cloudapp.net. Example - Allowed: aks-agentpool-xxxx-vmssxxxxxx.xxxxxx.xx.internal.cloudapp.net . Example - Not allowed: test.aks-agentpool-xxxx-vmssxxxxxx.xxxxxx.xx.internal.cloudapp.net
+  
 * Component updates:
   * The KEDA addon will be bumped to version 1.15 on AKS 1.32 instead of AKS 1.31.
+  * The CoreDNS addon will use v1.9.4-2 for all existing clusters and clusters created for versions up until 1.30. For kubernetes version 1.31+, CoreDNS will use v1.11.3-2
+  * The Image Cleaner addon will now use v1.4.0
+
+ TO UPDATE:
+  * upgrade blob csi driver versions upgrade to v1.22.9 on aks 1.27
+  * Bumped envoy version to 1.28.7
+  * upgrade CSI driver versions upgrade Azure Disk CSI driver version to v1.28.11 on aks 1.27, v1.29.10 on aks 1.28, 1.29, v1.30.5 on aks 1.30 upgrade Azure File CSI driver version to v1.28.13 on aks 1.27, v1.29.9 on aks 1.28, v1.30.6 on aks 1.29, 1.30 upgrade Blob CSI driver version to v1.23.9 on aks 1.28, 1.29, v1.24.5 on aks 1.30
+  * cost-analysis-agent image upgraded from v0.0.17 to v0.0.18
+  * AKS Windows Server 2022 image has been updated to TODO.
+  * AKS Windows Server 2019 image has been updated to TODO.
+  * Azure Linux image has been updated to TODO.
+  * AKS Ubuntu 22.04 image has been updated to TODO.
  
 
 ## Release 2024-10-06
