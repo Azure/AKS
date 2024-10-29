@@ -256,6 +256,8 @@ configuration:
       - isNotLabeledWith:
           label: feature-request
       - isNotLabeledWith:
+           label: enhancement           
+      - isNotLabeledWith:
           label: stale
       actions:
       - addLabel:
