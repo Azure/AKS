@@ -8,7 +8,7 @@ where:
 configuration:
   resourceManagementConfiguration:
     scheduledSearches:
-    - description: 
+    - description: Close stale issues - 7 days inactivity
       frequencies:
       - hourly:
           hour: 6
@@ -23,13 +23,14 @@ configuration:
       - closeIssue
       - addReply:
           reply: This issue will now be closed because it hasn't had any activity for 7 days after stale. ${issueAuthor} feel free to comment again on the next 7 days to reopen or open a new issue after that time if you still have a question/issue or suggestion.
-    - description: 
+    - description: Mark issues stale that are not assigned to anyone and are not labeled with selected labels - 21 days inactivity
       frequencies:
       - hourly:
           hour: 6
       filters:
       - isIssue
       - isOpen
+      - isNotAssigned
       - noActivitySince:
           days: 21
       - isNotLabeledWith:
@@ -38,12 +39,18 @@ configuration:
           label: feature-request
       - isNotLabeledWith:
           label: bug
+      - isNotLabeledWith:
+          label: enhancement
+      - isNotLabeledWith:
+          label: announcement
+      - isNotLabeledWith:
+          label: under-investigation   
       actions:
       - addLabel:
           label: stale
       - addReply:
-          reply: This issue has been automatically marked as stale because it has not had any activity for **21 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-    - description: 
+          reply: This unassigned issue has been automatically marked as stale because it has not had any activity for **21 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
+    - description: Close issues marked as duplicates - daily
       frequencies:
       - hourly:
           hour: 6
@@ -58,7 +65,7 @@ configuration:
       - addReply:
           reply: This issue has been marked as duplicate and has not had any activity for **1 day**. It will be closed for housekeeping purposes.
       - closeIssue
-    - description: 
+    - description: Mark as needing attention (general) - 5 days
       frequencies:
       - daily:
           time: 9:0
@@ -86,7 +93,7 @@ configuration:
           reply: Action required from @aritraghosh, @julia-yin, @AllenWen-at-Azure
       - addLabel:
           label: 'Needs Attention :wave:'
-    - description: 
+    - description: Issues marked as triage with no activity for 2 days - notify AKS PM
       frequencies:
       - hourly:
           hour: 6
@@ -103,7 +110,7 @@ configuration:
           label: action-required
       - addReply:
           reply: Triage required from @Azure/aks-pm ${assignees}
-    - description: 
+    - description: Notify AKS Leads for attention - 15 days
       frequencies:
       - hourly:
           hour: 6
@@ -120,7 +127,7 @@ configuration:
       actions:
       - addReply:
           reply: Issue needing attention of @Azure/aks-leads
-    - description: 
+    - description: Notify AKS PM for labelling - weekly
       frequencies:
       - weekday:
           day: Wednesday
@@ -132,7 +139,7 @@ configuration:
       actions:
       - addReply:
           reply: '@Azure/aks-pm issue needs labels'
-    - description: 
+    - description: Add action-required label to issues needing attention - 25 days inactivity
       frequencies:
       - hourly:
           hour: 6
@@ -167,7 +174,7 @@ configuration:
       actions:
       - addLabel:
           label: action-required
-    - description: 
+    - description: Add action-required label to feature-request issues - 180 days inactivity
       frequencies:
       - hourly:
           hour: 6
@@ -180,7 +187,7 @@ configuration:
       actions:
       - addLabel:
           label: action-required
-    - description: 
+    - description: Mark as stale open "Needs Information" issues - 7 days inactivity
       frequencies:
       - daily:
           time: 1:0
@@ -193,7 +200,7 @@ configuration:
       actions:
       - addLabel:
           label: stale
-    - description: 
+    - description: Mark as stale open "Needs Author Feedback" issues - 7 days inactivity
       frequencies:
       - daily:
           time: 1:0
@@ -206,7 +213,7 @@ configuration:
       actions:
       - addLabel:
           label: stale
-    - description: 
+    - description: Close issues marked as "Answer Provided" - 2 days inactivity
       frequencies:
       - hourly:
           hour: 6
@@ -220,7 +227,7 @@ configuration:
       - addReply:
           reply: Thanks for reaching out. I'm closing this issue as it was marked with "Answer Provided" and it hasn't had activity for 2 days.
       - closeIssue
-    - description: 
+    - description: Close issues marked as "Fix Released" - 7 days inactivity
       frequencies:
       - hourly:
           hour: 12
@@ -234,7 +241,7 @@ configuration:
       - addReply:
           reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" and it hasn't had activity for 7 days.
       - closeIssue
-    - description: 
+    - description: Mark issues labeled with "Support Request" as stale - 7 days inactivity
       frequencies:
       - hourly:
           hour: 6
@@ -255,8 +262,8 @@ configuration:
           label: stale
       - addReply:
           reply: Case being worked with Microsoft Support, adding stale label for automatic closure if not other reports are added.
-    - description: 
-      frequencies:
+    - description: Close issues marked as "Shipped" - 7 days inactivity
+      frequencies: 
       - hourly:
           hour: 12
       filters:
@@ -269,7 +276,7 @@ configuration:
       - addReply:
           reply: Thank you for the feature request. I'm closing this issue as this feature has shipped and it hasn't had activity for 7 days.
       - closeIssue
-    - description: 
+    - description: Daily - Close issues marked as "Other Resolution" - 3 days inactivity
       frequencies:
       - hourly:
           hour: 12
@@ -303,7 +310,7 @@ configuration:
           label: Needs Author Feedback
       - removeLabel:
           label: Needs Information
-      description: 
+      description: When a comment is added to an open issue by the issue author, add the action-required label and remove the Needs Information and Needs Author Feedback labels.
     - if:
       - payloadType: Issues
       - not:
@@ -317,7 +324,7 @@ configuration:
       then:
       - removeLabel:
           label: stale
-      description: 
+      description: When a stale issue has any activity (other than closing) remove the stale label.
     - if:
       - payloadType: Issue_Comment
       - hasLabel:
@@ -325,7 +332,7 @@ configuration:
       then:
       - removeLabel:
           label: stale
-      description: 
+      description: When a stale issue has a comment, remove the stale label.
     - if:
       - payloadType: Issues
       - labelAdded:
@@ -344,7 +351,7 @@ configuration:
 
 
             Thank you!
-      description: 
+      description: When an issue is labeled with SR-Support Request, add a reply with instructions on how to create a support ticket.
     - if:
       - or:
         - payloadType: Issues
@@ -485,6 +492,23 @@ configuration:
         - mentionUsers:
             mentionees:
             - chasewilson
+            - paulgmiller
+            - quantumn-a5
+            replyTemplate: ${mentionees} would you be able to assist?
+            assignMentionees: True
+      - if:
+        - hasLabel:
+            label: Cilium
+        - not:
+            isAssignedToSomeone
+        then:
+        - mentionUsers:
+            mentionees:
+            - chasewilson
+            - paulgmiller
+            - wedaly
+            - quantumn-a5
+            - tamilmani1989
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
       - if:
@@ -810,7 +834,7 @@ configuration:
              - seguler
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True               
-      description: 
+      description: When certain lables are added to an issue, mention the appropriate team members to assist.
     - if:
       - payloadType: Issues
       - isAssignedToSomeone
@@ -825,7 +849,7 @@ configuration:
       then:
       - addReply:
           reply: Action required from ${assignees}.
-      description: 
+      description: If an issue is assigned and has the action-required label, mention the assignee.
     - if:
       - payloadType: Issues
       - isOpen
@@ -858,7 +882,7 @@ configuration:
           label: action-required
       - removeLabel:
           label: 'Needs Attention :wave:'
-      description: 
+      description: Any activity on an issue will remove the action-required and Needs Attention labels if they are present.
     - if:
       - payloadType: Issue_Comment
       - isOpen
@@ -898,7 +922,7 @@ configuration:
       then:
       - addLabel:
           label: resolution/shipped
-      description: 
+      description: When a comment is added to an open issue without the bug label and the comment contains "Released/Shipped/Fixed on release", add the resolution/shipped label.
     - if:
       - payloadType: Issue_Comment
       - isOpen
@@ -910,6 +934,6 @@ configuration:
       then:
       - addLabel:
           label: resolution/fix-released
-      description: 
+      description: When a comment is added to an open issue with the bug label and the comment contains "Released/Shipped/Fixed on release", add the resolution/fix-released label.
 onFailure: 
-onSuccess: 
+onSuccess:
