@@ -17,7 +17,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
 ### Release Notes
 
 * Features:
-  ** AKS patch versions 1.28.14, 1.29.9, 1.30.5 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+  * AKS patch versions 1.28.14, 1.29.9, 1.30.5 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
   * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now generally available. Please check the release tracker for when your region will receive the GA update. Some regions may not receive this update until later in November.
   * The first official patch version of AKS LTS 1.27, 1.27.100, is being released.
  
@@ -41,16 +41,16 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
   * gMSA support is updated to version [v0.10.0](https://github.com/kubernetes-sigs/windows-gmsa/releases/tag/v0.10.0), adding support for random hostnames and fixing [an issue with multiple containers invalidating domain trusts.](https://github.com/microsoft/Windows-Containers/issues/405)
   * [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) has been upgraded to [v1.4.0-1](https://github.com/eraser-dev/eraser/releases/tag/v1.4.0).
   * The following Azure CSI drivers have been updated:
-    * Azure Blob CSI Driver: v1.22.9 for AKS 1.27, v1.23.9 for AKS 1.28 and 1.29, and v1.24.5 for AKS 1.30+
-    * Azure Disk CSI Driver: v1.28.11 for AKS 1.27, v1.19.10 for AKS 1.28 and 1.29, and v1.30.5 for AKS 1.30+
-    * Azure Files CSI Driver: v1.28.13 for AKS 1.27, v1.29.9 for AKS 1.28, v1.30.6 for AKS 1.29+
+    * [Azure Blob CSI Driver](https://github.com/kubernetes-sigs/blob-csi-driver/releases): v1.22.9 for AKS 1.27, v1.23.9 for AKS 1.28 and 1.29, and v1.24.5 for AKS 1.30+
+    * [Azure Disk CSI Driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases): v1.28.11 for AKS 1.27, v1.19.10 for AKS 1.28 and 1.29, and v1.30.5 for AKS 1.30+
+    * [Azure Files CSI Driver](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases): v1.28.13 for AKS 1.27, v1.29.9 for AKS 1.28, v1.30.6 for AKS 1.29+
   * Azure Monitor for Containers has been upgraded to [3.1.24](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#10072024--).
   * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6414.241010](vhd-notes/AKSWindows/2019/17763.6414.241010.txt).
   * AKS Windows Server 2022 image has been updated to [AKSWindows-20348.2762.241009](vhd-notes/AKSWindows/2022/20348.2700.240911.txt).
   * AKS Azure Linux image has been updated to [202410.27.0](vhd-notes/AzureLinux/202410.27.0.txt).
   * AKS Ubuntu image has been updated to [202410.27.0](vhd-notes/aks-ubuntu/202410.27.0.txt).
   * cost-analysis-agent image has been updated to v0.0.18
-  * ip-masq-agent image has been updated to v0.1.14
+  * ip-masq-agent image has been updated to [v0.1.14](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.14)
 
 ## Release 2024-10-06
 
