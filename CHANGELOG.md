@@ -7,7 +7,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 
 * AKS version 1.28 End of Life is Jan, 15 2025.
-* AKS will be upgrading the KEDA addon to more recent [KEDA versions](https://github.com/kedacore/keda/releases). The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.31, KEDA 2.14 for Kubernetes v1.30. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes. View the [troubleshooting guide](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/extensions/changes-in-kubernetes-event-driven-autoscaling-add-on-214-215) to learn how to mitigate these breaking changes.
+* AKS will be upgrading the KEDA addon to more recent [KEDA versions](https://github.com/kedacore/keda/releases). The AKS team has added KEDA 2.15 on AKS clusters with K8s versions >=1.32, KEDA 2.14 for Kubernetes v1.30 and v1.31. KEDA 2.15 and KEDA 2.14 will introduce multiple breaking changes. View the [troubleshooting guide](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/extensions/changes-in-kubernetes-event-driven-autoscaling-add-on-214-215) to learn how to mitigate these breaking changes.
 * AKS will no longer support the [GPU image (preview)](https://github.com/Azure/AKS/issues/4472) to provision GPU-enabled AKS nodes. Starting on Jan 10, 2025 you will no longer be able to create new GPU-enabled node pools with the GPU image. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in [AKS GPU node pool documentation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#confirm-that-gpus-are-schedulable).
 * Starting on January 1, 2025, [invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings:["User", "System"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-02-01&tabs=HTTP#agentpoolmode), or ["Gateway"](https://learn.microsoft.com/rest/api/aks/agent-pools/create-or-update?view=rest-aks-2024-06-02-preview&tabs=HTTP#agentpoolmode).
 * AKS will start to block new cluster creation with basic load balancer in January 2025. Basic Load Balancer will be deprecated September 31 2025 and affected clusters must be migrated to the Standard Load Balancer prior to that date. Refer to [BLB deprecation announcement](
@@ -22,7 +22,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
   * The first official patch version of AKS LTS 1.27, 1.27.100, is being released.
  
 * Preview features:
-  * We've added [a new way to optimize your upgrade process drain behavior](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli#optimize-for-undrainable-node-behavior-preview). By default, a node drain failure causes the upgrade operation to fail, leaving the undrained nodes in a schedulable state, this behavior is called `Schedule`. Alternatively, you can select the `Cordon` behavior, which skips nodes that fail to drain by placing them in a quarantined state, labeling them `kubernetes.azure.com/upgrade-status:Quarantined` and proceeds with upgrading the remaining nodes. This ensures that all nodes are either upgraded or quarantined. This approach allows you to troubleshoot drain failures and gracefully manage the quarantined nodes.
+  * We've added [a new way to optimize your upgrade process drain behavior](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#optimize-for-undrainable-node-behavior-preview). By default, a node drain failure causes the upgrade operation to fail, leaving the undrained nodes in a schedulable state, this behavior is called `Schedule`. Alternatively, you can select the `Cordon` behavior, which skips nodes that fail to drain by placing them in a quarantined state, labeling them `kubernetes.azure.com/upgrade-status:Quarantined` and proceeds with upgrading the remaining nodes. This ensures that all nodes are either upgraded or quarantined. This approach allows you to troubleshoot drain failures and gracefully manage the quarantined nodes.
   * You can now [block pod access to the Azure Instance Metadata Service (IMDS) endpoint](https://learn.microsoft.com/azure/aks/imds-restriction) to enhance security.
   * Azure Linux v3 is now in preview for AKS 1.31 clusters. After registering the preview flag `AzureLinuxV3Preview` newly created AzureLinux node pools will receive the v3 image. Existing Azure Linux v2 node pools will not upgrade to v3 and must be recreated to upgrade.
     * NOTE: Azure Linux v3 changes the cryptographic provider to OpenSSL + SymCrypt. The SymCrypt library will operate in FIPS mode but is still in the final stages of the validation process and thus **is not considered to be FIPS-validated at this time**. Do not use this preview with FIPS-enabled node pools if you must use a FIPS-validated cryptographic library.
@@ -30,14 +30,13 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
 * Behavior change:
   * You can now fine-tune supported models on KAITO version [0.3.1](https://github.com/Azure/kaito/releases/tag/v0.3.1) with the AI toolchain operator add-on on your AKS cluster.
   * You can now skip one release [while upgrading Azure Service Mesh](https://learn.microsoft.com/azure/aks/istio-upgrade) as long as the destination release is a supported revision - for example, asm-1-21 can upgrade directly to asm-1-23.
-  * Virtual Machine nodepools will not be able to use custom VNets when if the cluster is using system-assigned identity.
+  * Virtual Machine node pools will not be able to use custom virtual networks when if the cluster is using system-assigned identity.
   * LTS clusters no longer perform defaulting on autoUpgrader profile.
   * AKS CoreDNS configuration will now block all queries ending in `reddog.microsoft.com` and some queries ending in `internal.cloudapp.net` from being forwarded to upstream DNS when they are the result of improper search domain completion. See [the documentation for more details.](https://learn.microsoft.com/azure/aks/coredns-custom#invalid-search-domain-completions-for-internalcloudappnet-and-reddogmicrosoftcom)
   * Azure NPM's CPU request has been lowered from 250m to 50m.
-  * Azure CNI Overlay now checks that the pod CIDR does not conflict with any subnet in the VNet, rather than checking if it conflicts with the VNet address space as a whole.
+  * Azure CNI Overlay now checks that the pod CIDR does not conflict with any subnet in the virtual network, rather than checking if it conflicts with the virtual network address space as a whole.
 
 * Component updates:
-  * The KEDA addon will be bumped to version 1.15 on AKS 1.32 instead of AKS 1.31.
   * gMSA support is updated to version [v0.10.0](https://github.com/kubernetes-sigs/windows-gmsa/releases/tag/v0.10.0), adding support for random hostnames and fixing [an issue with multiple containers invalidating domain trusts.](https://github.com/microsoft/Windows-Containers/issues/405)
   * [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) has been upgraded to [v1.4.0-1](https://github.com/eraser-dev/eraser/releases/tag/v1.4.0).
   * The following Azure CSI drivers have been updated:
@@ -51,6 +50,9 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
   * AKS Ubuntu image has been updated to [202410.27.0](vhd-notes/aks-ubuntu/202410.27.0.txt).
   * cost-analysis-agent image has been updated to v0.0.18
   * ip-masq-agent image has been updated to [v0.1.14](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.14)
+  * Components in the AKS run-command image have been added and upgraded
+    * New components: jq, awk, grep, xargs
+    * Upgraded: kubectl to v1.30.5, helm to 3.15.4
 
 ## Release 2024-10-06
 
