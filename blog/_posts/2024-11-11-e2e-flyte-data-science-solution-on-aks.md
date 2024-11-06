@@ -92,7 +92,7 @@ Monitoring: [Container Insights](https://learn.microsoft.com/en-us/azure/azure-m
 * Troubleshoot deployment issues faster through Azure Portal
 * Query historical logs using Log Analytics
 
-[insert screenshot of success FlyteAdmin logs retrieval through Log Analytics]
+![image](AKS/assets/images/deploy-data-science-solution-with-flyte/flyte-admin-logs-view-log-analytics.png)
 
 
 [insert image of successful Flyte deployment]
