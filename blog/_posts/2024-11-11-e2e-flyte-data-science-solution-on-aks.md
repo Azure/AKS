@@ -12,7 +12,7 @@ Data is often at the heart of application design and development - it fuels user
 
 In collaboration with [David Espejo](https://www.linkedin.com/in/davidmirror/) and [Shalabh Chaudhri](https://www.linkedin.com/in/shalabhchaudhri/) from [Union.ai](https://www.union.ai/), we’ll dive into an example using one of these tools built on Kubernetes itself, called Flyte. As a data science orchestration platform, Flyte can help you manage and scale out exploratory data analysis (EDA) and machine learning jobs through a simple user interface.
 
-## First off, what is a Flyte cluster?
+## What is a Flyte cluster, and who uses it?
 
 A Flyte cluster provides you an API endpoint to register, compile, and execute ML workflows on Kubernetes, and the main Flyte components (user plane, data plane, and control plane) are implemented as Pods.
 Adopters of Flyte include organizations running large-scale data operations and ML operations, including social media platforms, music/video streaming services, and bioinformatics companies.
