@@ -95,7 +95,7 @@ Monitoring: [Container Insights](https://learn.microsoft.com/en-us/azure/azure-m
 ![image](AKS/assets/images/deploy-data-science-solution-with-flyte/flyte-admin-logs-view-log-analytics.png)
 
 
-[insert image of successful Flyte deployment]
+![image](AKS/assets/images/deploy-data-science-solution-with-flyte/successful-flyte-deployment-on-aks.png)
 
 
 ## What next?
