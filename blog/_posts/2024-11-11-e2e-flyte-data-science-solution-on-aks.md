@@ -77,7 +77,7 @@ Compute: You’ll start with a Standard_D2_v2 CPU node pool of size 1, with [clu
 > [!TIP]
 > To create a GPU-enabled node pool using your `aks.tf` [configuration file](https://github.com/unionai-oss/deploy-flyte/blob/main/environments/azure/flyte-core/aks.tf), update the `gpu_node_pool_count` and `gpu_machine_type` to your desired node count and instance type, respectively, in the `locals` array. If you specify an `accelerator` type, make sure to select a [supported option](https://github.com/flyteorg/flytekit/blob/daeff3f5f0f36a1a9a1f86c5e024d1b76cdfd5cb/flytekit/extras/accelerators.py#L132-L160) for flytekit.
 
-Identity management: Workload identity is enabled for authentication using Azure AD tokens - the `flytepropeller`, `flyteadmin`, and `datacatalog` backend components use one user-assigned MI, while the Flyte task execution pods use a different user-assigned MI.
+Identity management: [Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview?tabs=dotnet) is enabled for authentication using Azure AD tokens - the `flytepropeller`, `flyteadmin`, and `datacatalog` backend components use one user-assigned MI, while the Flyte task execution pods use a separate user-assigned MI.
 
 Networking and security: TLDR: [insert diagram below]
 
