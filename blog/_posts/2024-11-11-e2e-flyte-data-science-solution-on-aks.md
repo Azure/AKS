@@ -15,6 +15,7 @@ In collaboration with [David Espejo](https://www.linkedin.com/in/davidmirror/) a
 ## What is a Flyte cluster, and who uses it?
 
 A Flyte cluster provides you an API endpoint to register, compile, and execute ML workflows on Kubernetes, and the main Flyte components (user plane, data plane, and control plane) are implemented as Pods.
+
 Adopters of Flyte include organizations running large-scale data operations and ML operations, including social media platforms, music/video streaming services, and bioinformatics companies.
 
 With a fully-configured Flyte cluster, you can:
