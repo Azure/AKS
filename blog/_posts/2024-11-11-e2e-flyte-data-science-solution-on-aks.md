@@ -81,7 +81,7 @@ Identity management: [Workload Identity](https://learn.microsoft.com/en-us/azure
 
 Networking and security: TLDR: [insert diagram below]
 
-Automatic upgrades: [TBD]
+Automatic cluster upgrades: AKS cluster [auto-upgrade](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster?tabs=azure-cli#cluster-auto-upgrade-channels) is enabled by default to minimize workload downtime and stay up-to-date on the latest AKS patches. The reference Flyte Terraform plan sets `automatic_upgrade_channel = "stable"`, ensuring that the AKS cluster created will always remain in a [supported version](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster?tabs=azure-cli#best-practices-for-cluster-auto-upgrade) (i.e. within the N-2 rule).
 
 Container image management: Azure Container Registry (ACR) is created out-of-box with permissions for you to:
 * Push all workflow output images to this private ACR, 
