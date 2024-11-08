@@ -119,6 +119,6 @@ Azure Container Registry (ACR) is created out-of-box with permissions for you to
 
 ## What next?
 
-* See Union.ai's blog post about [Flyte on Azure](https://www.union.ai/blog-post/flyte-on-azure-a-reference-implementation)
-* Check out more ML and feature engineering [tutorials with Flyte](https://docs.flyte.org/en/latest/flytesnacks/tutorials/index.html)
-* Learn about [best practices for your MLOps pipelines](https://learn.microsoft.com/en-us/azure/aks/best-practices-ml-ops) on Azure Kubernetes Service 
+* See Union.ai's blog post about [Flyte on Azure](https://www.union.ai/blog-post/flyte-on-azure-a-reference-implementation).
+* Check out more ML and feature engineering [tutorials with Flyte](https://docs.flyte.org/en/latest/flytesnacks/tutorials/index.html).
+* Learn about [best practices for your MLOps pipelines](https://learn.microsoft.com/azure/aks/best-practices-ml-ops) on Azure Kubernetes Service (AKS).
