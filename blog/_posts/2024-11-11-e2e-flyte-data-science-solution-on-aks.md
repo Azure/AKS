@@ -71,28 +71,45 @@ syncresources-767d7fc77b-5mj6n       1/1     Running   0          6m45s
 
 ## Which AKS features are built into my Flyte solution?
 
-Storage: Cost-effective general-purpose v2 Storage Account with Hierarchical Namespace enabled to support the blob storage resource, and a default storage container to store metadata and raw data.
-Your metadata might consist of task inputs/outputs, data serialization format (protocol buffers), etc, while raw data will be unprocessed data and large objects that execution pods read from/write to the storage container.
+### Storage
 
-Compute: You’ll start with a Standard_D2_v2 CPU node pool of size 1, with [cluster autoscaler](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler?tabs=azure-cli) enabled on your AKS cluster to meet workload demands. As your workflow or application submits an increasing number of Flyte tasks, cluster autoscaler will watch for pending pods and scale up your node pool size (in this case, to a maximum of 10 nodes) to minimize downtime due to resource constraints.
+Cost-effective general-purpose v2 Storage Account with Hierarchical Namespace enabled to support the blob storage resource, and a default storage container to store metadata and raw data.
+
+Your metadata might consist of task inputs/outputs, data serialization format (protocol buffers), etc., while raw data will be unprocessed data and large objects that execution pods read from/write to the storage container.
+
+### Compute
+
+You’ll start with a Standard_D2_v2 CPU node pool of size 1, with [cluster autoscaler](https://learn.microsoft.com/azure/aks/cluster-autoscaler) enabled on your AKS cluster to meet workload demands. As your workflow or application submits an increasing number of Flyte tasks, cluster autoscaler will watch for pending pods and scale up your node pool size (in this case, to a maximum of 10 nodes) to minimize downtime due to resource constraints.
 
 > [!TIP]
 > To create a GPU-enabled node pool using your `aks.tf` [configuration file](https://github.com/unionai-oss/deploy-flyte/blob/main/environments/azure/flyte-core/aks.tf), update the `gpu_node_pool_count` and `gpu_machine_type` to your desired node count and instance type, respectively, in the `locals` array. If you specify an `accelerator` type, make sure to select a [supported option](https://github.com/flyteorg/flytekit/blob/daeff3f5f0f36a1a9a1f86c5e024d1b76cdfd5cb/flytekit/extras/accelerators.py#L132-L160) for flytekit.
 
-Identity management: [Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview?tabs=dotnet) is enabled for authentication using Azure AD tokens - the `flytepropeller`, `flyteadmin`, and `datacatalog` backend components use one user-assigned MI, while the Flyte task execution pods use a separate user-assigned MI.
+### Identity management
 
-Networking and security: TLDR: [insert diagram below]
+[Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) is enabled for authentication using Azure AD tokens - the `flytepropeller`, `flyteadmin`, and `datacatalog` backend components use one user-assigned MI, while the Flyte task execution pods use a separate user-assigned MI.
 
-Automatic cluster upgrades: AKS cluster [auto-upgrade](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster?tabs=azure-cli#cluster-auto-upgrade-channels) is enabled by default to minimize workload downtime and stay up-to-date on the latest AKS patches. The reference Flyte Terraform plan sets `automatic_upgrade_channel = "stable"`, ensuring that the AKS cluster created will always remain in a [supported version](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster?tabs=azure-cli#best-practices-for-cluster-auto-upgrade) (i.e. within the N-2 rule).
+### Networking and security
 
-Container image management: Azure Container Registry (ACR) is created out-of-box with permissions for you to:
-* Push all workflow output images to this private ACR, 
-* Pull your custom images through task execution pods from the ACR (otherwise, a default container image is used for each Flyte workflow execution)
+TLDR: [insert diagram below]
 
-Monitoring: [Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-analyze) is configured out-of-box, with system namespace logs and Flyte user workload logs ingested through Azure Monitor pipeline, to help you:
-* Monitor workflow execution details from FlyteAdmin
-* Troubleshoot deployment issues faster through Azure Portal
-* Query historical logs using Log Analytics
+### Automatic cluster upgrades
+
+AKS cluster [auto-upgrade](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#cluster-auto-upgrade-channels) is enabled by default to minimize workload downtime and stay up-to-date on the latest AKS patches. The reference Flyte Terraform plan sets `automatic_upgrade_channel = "stable"`, ensuring that the AKS cluster created will always remain in a [supported version](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#best-practices-for-cluster-auto-upgrade) (i.e. within the N-2 rule).
+
+### Container image management
+
+Azure Container Registry (ACR) is created out-of-box with permissions for you to:
+
+* Push all workflow output images to this private ACR.
+* Pull your custom images through task execution pods from the ACR (otherwise, a default container image is used for each Flyte workflow execution).
+
+### Monitoring
+
+[Container Insights](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-analyze) is configured out-of-box, with system namespace logs and Flyte user workload logs ingested through Azure Monitor pipeline, to help you:
+
+* Monitor workflow execution details from FlyteAdmin.
+* Troubleshoot deployment issues faster through Azure Portal.
+* Query historical logs using Log Analytics.
 
 ![image](AKS/assets/images/deploy-data-science-solution-with-flyte/flyte-admin-logs-view-log-analytics.png)
 
