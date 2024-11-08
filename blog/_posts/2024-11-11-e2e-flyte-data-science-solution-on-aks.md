@@ -18,11 +18,12 @@ A Flyte cluster provides you an API endpoint to register, compile, and execute M
 
 Adopters of Flyte include organizations running large-scale data operations and ML operations, including social media platforms, music/video streaming services, and bioinformatics companies.
 
-With a fully-configured Flyte cluster, you can:
-* Process and visualize large, dynamic data sets and ensure up-to-date information retrieval
-* Deploy ML workflows
-* Track parallel and sequential Flyte tasks in your ML pipeline
-* …and more
+With a fully configured Flyte cluster, you can:
+
+* Process and visualize large, dynamic data sets and ensure up-to-date information retrieval.
+* Deploy ML workflows.
+* Track parallel and sequential Flyte tasks in your ML pipeline.
+* …and more!
 
 Starting with this [reference implementation](https://www.union.ai/blog-post/flyte-on-azure-a-reference-implementation), you'll be able to take a basic Azure resource group and build an end-to-end data science solution on a working Flyte cluster.
 
