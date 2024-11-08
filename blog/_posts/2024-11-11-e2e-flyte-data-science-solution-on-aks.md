@@ -34,11 +34,11 @@ Starting with this [reference implementation](https://www.union.ai/blog-post/fly
 
 Before you begin, take a look at the [prerequisites](https://github.com/unionai-oss/deploy-flyte/blob/main/environments/azure/flyte-core/README.md#prerequisites) on Azure, including:
 
-* Azure subscription with at least [Contributor role over all your resources](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#contributor) using Azure RBAC
-* Azure CLI version 2.0 or later installed and configured
-* Terraform version 1.3.7 or later installed
-* Helm version 3.15.4 or later installed
-* Kubernetes command-line client, [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), installed and configured
+* Azure subscription with at least [Contributor role over all your resources](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/privileged#contributor) using Azure RBAC.
+* Azure CLI version 2.0 or later installed and configured.
+* Terraform version 1.3.7 or later installed.
+* Helm version 3.15.4 or later installed.
+* Kubernetes command-line client, [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), installed and configured.
 
 ## Which Flyte back-end components are installed, and what do they do?
 
