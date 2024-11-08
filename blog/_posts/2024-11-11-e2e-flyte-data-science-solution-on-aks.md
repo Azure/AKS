@@ -46,13 +46,13 @@ In your end-to-end solution, each of the following Flyte backend components will
 
 | Flyte component | Description |
 | -- | -- | 
-| Data catalog | Service that simplifies data indexing and allows you to query data artifacts based on metadata and/or tags |
-| Flyte pod webhook | Deployment that creates the Webhook Pod called by ApiServer, when a simple Flyte task launches a Pod |
-| Flyte admin | Main Flyte API that processes client requests, see [API specification](https://docs.flyte.org/en/latest/api/flyteidl/docs/service/service.html#ref-flyteidl-service-admin-proto) |
-| Flyte console | Web user interface for the Flyte platform, hosted in the same Flyte cluster as Admin API |
-| Flyte propeller | Core engine that executes workflows within the Flyte data plane |
-| Flyte scheduler | Cloud-agnostic native scheduler for fixed-rate and cron-based schedules, defined at the init time for your workflow and activated/deactivated using FlyteAdmin API |
-| Sync resources | Type of agent that enables request/response services (e.g. APIs) to return outputs |
+| Data catalog | Service that simplifies data indexing and allows you to query data artifacts based on metadata and/or tags. |
+| Flyte pod webhook | Deployment that creates the Webhook Pod called by API Server, when a simple Flyte task launches a Pod. |
+| Flyte admin | Main Flyte API that processes client requests, see [API specification](https://docs.flyte.org/en/latest/api/flyteidl/docs/service/service.html#ref-flyteidl-service-admin-proto). |
+| Flyte console | Web user interface for the Flyte platform, hosted in the same Flyte cluster as Admin API. |
+| Flyte propeller | Core engine that executes workflows within the Flyte data plane .|
+| Flyte scheduler | Cloud-agnostic native scheduler for fixed-rate and cron-based schedules, defined at the init time for your workflow and activated/deactivated using FlyteAdmin API. |
+| Sync resources | Type of agent that enables request/response services (e.g. APIs) to return outputs. |
 
 Once you've applied and generated the reference Flyte Terraform, you'll receive an endpoint to your Flyte cluster and verify a similar output to the status below:
 
