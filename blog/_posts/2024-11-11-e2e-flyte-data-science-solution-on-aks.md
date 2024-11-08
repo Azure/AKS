@@ -28,7 +28,7 @@ With a fully configured Flyte cluster, you can:
 Starting with this [reference implementation](https://www.union.ai/blog-post/flyte-on-azure-a-reference-implementation), you'll be able to take a basic Azure resource group and build an end-to-end data science solution on a working Flyte cluster.
 
 > [!NOTE]
-> This example deploys Flyte as an open-source tool on your cluster, and it is not a managed feature on Azure Kubernetes Service today.
+> This example deploys Flyte as an open-source tool on your cluster. Currently, it's not a managed feature on Azure Kubernetes Service (AKS).
 
 ## Let's get started
 
