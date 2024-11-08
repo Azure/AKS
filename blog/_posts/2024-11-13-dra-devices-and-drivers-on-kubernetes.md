@@ -74,13 +74,13 @@ metadata:
   name: pod
 spec:
   containers:
-  - name: ctr0
+  - name: container0
     image: gpuDriverImage
     command: ["cmd0"]
     resources:
       claims:
       - name: gpu
-  - name: ctr1
+  - name: container1
     image: gpuDriverImage
     command: ["cmd0"]
     resources:
@@ -104,7 +104,7 @@ Here's what each of the components are:
 | Resource slices	| Publish useful information about available CPU, GPU, memory resources in the cluster to help manage and track resource allocation efficiently |
 | Control plane controller	| When the DRA driver provides a control plane controller, it handles the allocation of resources in cooperation with the Kubernetes scheduler. This ensures that resources are allocated based on structured parameters |
 
-The example above demonstrates GPU sharing within a pod; two containers get access to one ResourceClaim object created for this pod.
+The example above demonstrates GPU sharing within a pod, where two containers get access to one ResourceClaim object created for the pod.
 
 The Kubernetes scheduler will try multiple times to identify the right node and let the DRA resource driver(s) know that the node is ready for resource allocation.
 Then the _resourceClaim_ stages record that the resource has been allocated on a particular node, and the scheduler is signaled to run the pod. (This prevents pods from being scheduled onto “unprepared” nodes that cannot accept new resources.)
@@ -126,10 +126,81 @@ Pulling this all together, the key components of DRA look like:
 
 ## Seeing DRA in action
 
-Now, let’s see how the [open-source k8s DRA driver](https://github.com/NVIDIA/k8s-dra-driver/tree/main) works with NVIDIA GPUs on an AKS cluster, specifically how it can provide:
-* Exclusive access to a single GPU when multiple pods ask for it
-* Shared access within a pod with multiple containers, and
+Now, let’s see how the [open-source k8s DRA driver](https://github.com/NVIDIA/k8s-dra-driver/tree/main) works with NVIDIA GPUs on a Kubernetes cluster, specifically how it can provide:
+* Exclusive access to a single GPU when multiple pods ask for it,
+* Shared access within a pod with multiple containers, or
 * Shared access across pods requesting that single GPU.
 
 > [!NOTE]
-> This is an **experimental** demo; the open-source k8s DRA resource driver is under active development and not yet supported for production use on Azure Kubernetes Service.
+> The following is an **experimental** demo on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service.
+<!-- Validating this demo on an AKS cluster currently, will replace in for 'local Kind cluster' in the above Note when completed. -->
+
+We'll start by creating a cluster having a provisioned GPU node with a `Standard_NC4as_T4_v3` (4 vCPUs, 28 GiB memory) instance on Ubuntu Linux 24.04 and a 64GB system disk size. 
+After loading the `"nvcr.io/nvidia/cloud-native/k8s-dra-driver:v0.1.0"` image (that installs the control plane controller and kubelet plugin components) and confirming the `Running` status:
+
+```bash
+NAME                                                            READY      STATUS      RESTARTS    AGE
+nvidia-dra-driver-k8s-dra-driver-controller-7d47546f78-wrtvc    1/1        Running     0           7s
+nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-g42c9           1/1        Running     0           7s
+```
+
+We'll apply the [sample `gpu-test1` demo script](https://github.com/NVIDIA/k8s-dra-driver/tree/main) written by [Kevin Klues](klueska@nvidia.com) from NVIDIA:
+
+```bash
+kubectl apply --filename=demo/specs/quickstart/gpu-test1.yaml
+
+namespace/gpu-test1 created
+pod/pod1 created
+pod/pod2 created
+```
+
+The `Standard_NC4as_T4_v3` VM has only one GPU, so in this scenario two pods are requesting exclusive access to the GPU. One pod will be scheduled and one will remain pending, with statuses looking like:
+
+```bash
+kubectl get pod -A
+
+---
+NAMESPACE      NAME      READY      STATUS      RESTARTS    AGE
+gpu-test1      pod1      1/1        Running     0           4s
+gpu-test1      pod2      0/1        Pending     0           4s
+...
+...
+---
+
+kubectl describe pod -n gpu-test1 pod2 | less
+
+---
+Name:   pod2
+...
+Status: Pending
+...
+Conditions:
+  Type            Status
+  PodScheduled    False
+Volumes: ...
+...
+Events:
+  Type      Reason              Age                From                Message
+  ----      ------              ---                ----                -------
+  Warning   FailedScheduling    23s (x2 over 25s)  default-scheduler   0/2 nodes are available: 1 cannot allocate all claims...
+---
+```
+
+Let's say we delete `pod1`. Now, `pod2` will get exclusive access to the single GPU:
+
+```bash
+kubectl delete pod -n gpu-test1 pod1
+kubectl get pod -A
+
+---
+NAMESPACE      NAME      READY      STATUS      RESTARTS    AGE
+gpu-test1      pod2      1/1        Running     0           56s
+...
+...
+```
+
+Through this example and [many others](https://github.com/NVIDIA/k8s-dra-driver/tree/main), we see how the scheduler is told whether a GPU is fully committed to one workload or split across many workloads. 
+Through further development of such DRA resource drivers, we can start to create fine-grained configurations to share GPU state across containers or pods, or even leverage multi-instance GPU (MIG) efficiently for AI, HPC, and GPU workloads!
+
+## Acknowledgements
+Huge thanks to [Alex Benn](https://www.linkedin.com/in/alex-benn-252b26223/) from the AKS team for testing and validating this DRA demo!
