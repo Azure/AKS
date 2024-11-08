@@ -8,7 +8,7 @@ categories: ai
 
 ## Background
 
-Data is often at the heart of application design and development - it fuels user-centric design, provides insights for feature enhancements, and represents the value of an application as a whole. In that case, shouldn’t we use data science tools and workflows that are flexible and scalable on a platform like Kubernetes, for a range of application types? 
+Data is often at the heart of application design and development; it fuels user-centric design, provides insights for feature enhancements, and represents the value of an application as a whole. In that case, shouldn’t we use data science tools and workflows that are flexible and scalable on a platform like Kubernetes for a range of application types? 
 
 In collaboration with [David Espejo](https://www.linkedin.com/in/davidmirror/) and [Shalabh Chaudhri](https://www.linkedin.com/in/shalabhchaudhri/) from [Union.ai](https://www.union.ai/), we’ll dive into an example using one of these tools built on Kubernetes itself, called Flyte. As a data science orchestration platform, Flyte can help you manage and scale out exploratory data analysis (EDA) and machine learning jobs through a simple user interface.
 
