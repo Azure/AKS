@@ -40,7 +40,7 @@ Before you begin, take a look at the [prerequisites](https://github.com/unionai-
 * Helm version 3.15.4 or later installed
 * Kubernetes command-line client, [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), installed and configured
 
-## Which Flyte backend components are installed, and what do they do?
+## Which Flyte back-end components are installed, and what do they do?
 
 In your end-to-end solution, each of the following Flyte backend components will run on its own pod:
 
