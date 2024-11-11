@@ -115,7 +115,6 @@ Leveraging the Named Resources model, the DRA resource driver can specify:
    
 In the place of arbitrary resource count, an entire object now represents the choice of resource. This object is passed to the scheduler at node start time and may stream updates if resources become unhealthy.
 
-Now you might be wondering, how does the DRA resource driver interact with Kubernetes components other than the scheduler?
 
 Thus, one of the jobs of the DRA resource driver is to “translate” the resource vendor’s parameters into Resource Claim built-in parameters that have a defined type supported by Kubernetes. (This does not introduce any changes to CAS or its current performance.)
 
