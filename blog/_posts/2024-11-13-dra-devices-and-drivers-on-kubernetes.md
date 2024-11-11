@@ -115,7 +115,6 @@ Leveraging the Named Resources model, the DRA resource driver can specify:
    
 In the place of arbitrary resource count, an entire object now represents the choice of resource. This object is passed to the scheduler at node start time and may stream updates if resources become unhealthy.
 
-
 Pulling this all together, the key components of DRA look like:
 
 ![image](AKS/assets/images/dra-devices-drivers-on-kubernetes/dra-driver-diagram.png)
