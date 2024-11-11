@@ -128,7 +128,6 @@ Now, let’s see how the [open-source k8s DRA driver](https://github.com/NVIDIA/
 
 > [!NOTE]
 > The following is an **experimental** demo on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service.
-<!-- Validating this demo on an AKS cluster currently, will replace in for 'local Kind cluster' in the above Note when completed. -->
 
 We'll start by creating a cluster having a provisioned GPU node with a `Standard_NC4as_T4_v3` (4 vCPUs, 28 GiB memory) instance on Ubuntu Linux 24.04 and a 64GB system disk size. 
 After loading the `"nvcr.io/nvidia/cloud-native/k8s-dra-driver:v0.1.0"` image (that installs the control plane controller and kubelet plugin components) and confirming the `Running` status:
