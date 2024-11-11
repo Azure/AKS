@@ -117,7 +117,6 @@ In the place of arbitrary resource count, an entire object now represents the ch
 
 Now you might be wondering, how does the DRA resource driver interact with Kubernetes components other than the scheduler?
 
-Let's take the cluster auto-scaler (CAS), for instance. CAS keeps up with application demands by “reading” the current cluster state to identify pending pods (those unable to be scheduled) due to resource constraints. Then, CAS determines if scaling up the number of nodes will help to get the pod scheduled and running. Through this existing model, CAS cannot “write” or interact with a resource driver to choose a specific type of node for this pod.
 Thus, one of the jobs of the DRA resource driver is to “translate” the resource vendor’s parameters into Resource Claim built-in parameters that have a defined type supported by Kubernetes. (This does not introduce any changes to CAS or its current performance.)
 
 Pulling this all together, the key components of DRA look like:
