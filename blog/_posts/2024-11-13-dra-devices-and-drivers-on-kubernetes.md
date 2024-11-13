@@ -18,7 +18,7 @@ Since Kubernetes does not have native support for special devices like GPUs, the
 
 However, there are some limitations with this device plugin approach, namely:
 
-1.	Granular selection of node resource type can only be made using several node attributes and labels
+1.	Granular selection of a node resource type can only be made using several node attributes and labels
 2.	Without a loopback mechanism, pods can be scheduled on “unprepared” nodes that aren’t ready to accept new resources
 
 As a result, DRA was introduced to address some of these limitations, by ensuring applications receive an adequate number of resources at the right time. The [Dynamic Resource Allocation API](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) generalizes the Persistent Volumes API for generic resources, like GPUs. It allows for resource adjustment based on real-time demand and proper configuration without manual intervention.
