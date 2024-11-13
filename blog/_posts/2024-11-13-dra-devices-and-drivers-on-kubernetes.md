@@ -124,7 +124,7 @@ Pulling this all together, the key components of DRA look like:
 Now, let’s see how the [open-source k8s DRA driver](https://github.com/NVIDIA/k8s-dra-driver/tree/main) works with NVIDIA GPUs on a Kubernetes cluster, specifically how it can provide:
 1.  Exclusive access to a single GPU when multiple pods ask for it,
 2.  Shared access within a pod with multiple containers, or
-* Shared access across pods requesting that single GPU.
+3.  Shared access across pods requesting that single GPU.
 
 > [!NOTE]
 > The following is an **experimental** demo on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service.
