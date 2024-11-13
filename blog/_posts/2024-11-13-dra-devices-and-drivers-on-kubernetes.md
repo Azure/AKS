@@ -127,7 +127,7 @@ Now, let’s see how the [open-source k8s DRA driver](https://github.com/NVIDIA/
 3.  Shared access across pods requesting that single GPU.
 
 > [!NOTE]
-> The following is an **experimental** demo on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service.
+> The following is an **experimental** demo of the **first** scenario on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service.
 
 We'll start by creating a cluster having a provisioned GPU node with a `Standard_NC4as_T4_v3` (4 vCPUs, 28 GiB memory) instance on Ubuntu Linux 24.04 and a 64GB system disk size. 
 After loading the `"nvcr.io/nvidia/cloud-native/k8s-dra-driver:v0.1.0"` image (that installs the control plane controller and kubelet plugin components) and confirming the `Running` status:
