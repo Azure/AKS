@@ -193,7 +193,7 @@ gpu-test1      pod2      1/1        Running     0           56s
 ...
 ```
 
-Through this example and [many others](https://github.com/NVIDIA/k8s-dra-driver/tree/main), we see how the scheduler is told whether a GPU is fully committed to one workload or split across many workloads. 
+Through this example and [many others](https://github.com/NVIDIA/k8s-dra-driver/tree/main), we see how the kube-scheduler is told whether a GPU is fully committed to one workload or split across many workloads. 
 Through further development of such DRA resource drivers, we can start to create fine-grained configurations to share GPU state across containers or pods, or even leverage multi-instance GPU (MIG) efficiently for AI, HPC, and GPU workloads!
 
 ## Acknowledgements
