@@ -10,7 +10,7 @@ categories: ai
 
 Data is often at the heart of application design and development - it fuels user-centric design, provides insights for feature enhancements, and represents the value of an application as a whole. In that case, shouldn’t we use data science tools and workflows that are flexible and scalable on a platform like Kubernetes, for a range of application types?
 
-In collaboration with [David Espejo](https://www.linkedin.com/in/davidmirror/) and [Shalabh Chaudhri](https://www.linkedin.com/in/shalabhchaudhri/) from [Union.ai](https://www.union.ai/), we’ll dive into an example using *Flyte*, a platform built on Kubernetes itself. Flyte can help you manage and scale out data processing and machine learning pipelines through a simple user interface.
+In collaboration with [David Espejo](https://www.linkedin.com/in/davidmirror/) and [Shalabh Chaudhri](https://www.linkedin.com/in/shalabhchaudhri/) from [Union.ai](https://www.union.ai/), we’ll dive into an example using [Flyte](https://flyte.org/), a platform built on Kubernetes itself. Flyte can help you manage and scale out data processing and machine learning pipelines through a simple user interface.
 
 ## What is a Flyte cluster, and who uses it?
 
