@@ -3,7 +3,11 @@ title: "Deploy and 'take Flyte' with an end-to-end ML orchestration solution on 
 description: "Learn about the open-source Flyte tools and how to deploy them securely on Azure Kubernetes Service (AKS)"
 date: 2024-11-20
 author: Sachi Desai
-categories: ai
+categories:
+- ai
+- operations
+tags:
+- flyte
 ---
 
 ## Background
