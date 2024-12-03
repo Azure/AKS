@@ -129,8 +129,8 @@ Following [these steps](https://github.com/unionai-oss/deploy-flyte/blob/main/en
 
 * Check out more ML and feature engineering [tutorials with Flyte](https://docs.flyte.org/en/latest/flytesnacks/tutorials/index.html)
 * Learn about [best practices for your MLOps pipelines](https://learn.microsoft.com/azure/aks/best-practices-ml-ops) on Azure Kubernetes Service (AKS)
-* Explore the Flyte GitHub repository: https://github.com/flyteorg/flyte 
-* Join the #flyte-on-azure Slack channel: https://slack.flyte.org
+* Explore the Flyte GitHub repository: [https://github.com/flyteorg/flyte](https://github.com/flyteorg/flyte)
+* Join the [#flyte-on-azure](https://slack.flyte.org) Slack channel: [https://slack.flyte.org](https://slack.flyte.org)
 
 
 ## Acknowledgements
