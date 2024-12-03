@@ -43,6 +43,8 @@ Before you begin, take a look at the [prerequisites](https://github.com/unionai-
 * Helm version 3.15.4 or later installed.
 * Kubernetes command-line client, [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), installed and configured.
 
+Now, you can deploy the dependencies and install Flyte following [these steps](https://github.com/unionai-oss/deploy-flyte/blob/main/environments/azure/flyte-core/README.md) and come back to this blog for a deep dive of your solution on AKS!
+
 ## Which Flyte back-end components will be installed, and what do they do?
 
 In your end-to-end solution, each of the following Flyte backend components will run on its own pod:
