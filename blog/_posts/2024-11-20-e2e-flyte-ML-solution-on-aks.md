@@ -21,7 +21,7 @@ Adopters of Flyte include organizations running large-scale data operations and 
 With a fully configured Flyte cluster, you can:
 
 * Process and visualize large, dynamic data sets and ensure up-to-date information retrieval
-* Train  ML models with versioning, enabling reproducible experimentation
+* Train ML models with versioning, enabling reproducible experimentation
 * Leverage high levels of parallelism for efficient computations
 * … and more!
 
