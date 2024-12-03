@@ -84,7 +84,7 @@ You’ll start with a single-instance `Standard_D2_v2` CPU node pool, with [clus
 
 ### Identity management
 
-[Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) Federation with Entra ID enables fine-grained security controls to be applied. The `flytepropeller`, `flyteadmin`, and `datacatalog` backend components use one user-assigned MI, while the Flyte task execution pods use a separate user-assigned MI.
+[Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) Federation with Entra ID enables fine-grained security controls to be applied. The `flytepropeller`, `flyteadmin`, and `datacatalog` backend components use one user-assigned MI, while the Flyte task execution pods use a separate user-assigned managed identity (MI).
 
 ### Networking and security
 
