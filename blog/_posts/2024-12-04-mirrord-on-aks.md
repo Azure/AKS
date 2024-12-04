@@ -35,7 +35,7 @@ Some other pros of using mirrord over similar solutions include:
 
 mirrord is cloud agnostic and seamlessly supports AKS. Additionally, the setup process is exceedingly simple: as long as you can access your cluster with `kubectl`, you can run mirrord and start developing with a lightning fast feedback loop.
 
-Next up are a couple of walkthroughs for using the mirrord VSCode plugin to develop parts of the [AKS store demo sample](https://github.com/Azure-Samples/aks-store-demo); the [first example](A practical example: Rust) looks at `product-service`, a Rust application, and [the second](A(nother) practical example: Golang) looks at `makeline-service`, which is written in Go. Feel free to try both or whichever one interests you more. They are completely independent of each other, but I would recommend reading the Rust example even if you only want to follow the Go walkthrough.
+Next up are a couple of walkthroughs for using the mirrord VSCode plugin to develop parts of the [AKS store demo sample](https://github.com/Azure-Samples/aks-store-demo); the [first example](#a-practical-example-rust) looks at `product-service`, a Rust application, and [the second](#another-practical-example-golang) looks at `makeline-service`, which is written in Go. Feel free to try both or whichever one interests you more. They are completely independent of each other, but I would recommend reading the Rust example even if you only want to follow the Go walkthrough.
 
 ## A practical example: Rust
 
