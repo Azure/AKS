@@ -1,0 +1,188 @@
+BEGIN:VCALENDAR
+PRODID:-//Microsoft Corporation//Outlook 16.0 MIMEDIR//EN
+VERSION:2.0
+METHOD:REQUEST
+X-MS-OLK-FORCEINSPECTOROPEN:TRUE
+BEGIN:VTIMEZONE
+TZID:Pacific Standard Time
+BEGIN:STANDARD
+DTSTART:16011104T020000
+RRULE:FREQ=YEARLY;BYDAY=1SU;BYMONTH=11
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:16010311T020000
+RRULE:FREQ=YEARLY;BYDAY=2SU;BYMONTH=3
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE;CN="Webinar AKS Feature Announ";RSVP=TRUE:invalid:nomail
+ATTENDEE;CN="Sanket Bakshi";RSVP=TRUE:mailto:Sanket.Bakshi@microsoft.com
+ATTENDEE;CN="Cory Skimming";RSVP=TRUE:mailto:coryskimming@microsoft.com
+ATTENDEE;CN="Brian Redmond";RSVP=TRUE:mailto:Brian.Redmond@microsoft.com
+ATTENDEE;CN="Jorge Palma";RSVP=TRUE:mailto:Jorge.Palma@microsoft.com
+CLASS:PUBLIC
+CREATED:20241203T181139Z
+DESCRIPTION:Organizers & co-organizers: When making edits to your event\, p
+	lease use Teams. <https://teams.microsoft.com/l/virtualevent/098901a7-31df-4c1f-aac7-5d2d15bae5d8@72f988bf-86f1-41af-91ab-2d7cd011db47>  	\n\nWebinar: AKS Feature Announcements from KubeCon
+	 & Ignite \n\n\nYou’ve been invited to: \n\n\nWebinar: AKS Feature Annou
+	ncements from KubeCon & Ignite \n\nJoin us for a 1 hr webinar event where 
+	we discuss all the recent announcements for the Azure Kubernetes Service (
+	AKS) that were done at the KubeCon North American and Ignite 2024 conferen
+	ces. \n\n \n\nWed\, Dec 11\, 2024 8:00 AM - 9:00 AM (UTC-08:00) Pacific Ti
+	me (US & Canada)\n\n\nWe look forward to having you attend the event!\n\n\
+	n_________________________________________________________________________
+	_______\nMicrosoft Teams Need help? <https://support.microsoft.com/en-us/office/join-a-meeting-in-microsoft-teams-1613bb53-f3fa-431e-85a9-d6a91e3468c9?omkt=en-us&ui=en-us&rs=en-us&ad=us>  \nJoin the meeting now 
+<https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmeetup-join%2F19%3Ameeting_ODY4NmY0Y2YtNTdhNi00YTcxLWFhOGQtMzk4ODdmMDc1MDY0%40thread.v2%2F0%3Fcontext%3D%257b%2522Tid%2522%253a%252272f988bf-86f1-41af-91ab-2d7cd011db47%2522%252c%2522Oid%2522%253a%2522e3e368ba-66aa-4e1b-86f6-63f9c1a9ac62%2522%257d%26anon%3Dtrue&type=meetup-join&deeplinkId=8fa3d4e3-6175-4385-a048-0a86ffb3f17d&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true>  \nMeeting ID: 252 100 961 746 \nPasscode: 3Ue286Rc \
+	n________________________________\n\nDial in by phone \n+1 323-849-4874\,\
+	,611346493# <tel:+13238494874\,\,611346493#>  United States\, Los Angeles 
+	\nFind a local number <https://dialin.teams.microsoft.com/8551f4c1-bea3-441a-8738-69aa517a91c5?id=611346493>  \nPho
+	ne conference ID: 611 346 493# \nFor organizers: Meeting options <https://teams.microsoft.com/meetingOptions/?organizerId=e3e368ba-66aa-4e1b-86f6-63f9c1a9ac62&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47&threadId=19_meeting_ODY4NmY0Y2YtNTdhNi00YTcxLWFhOGQtMzk4ODdmMDc1MDY0@thread.v2&messageId=0&language=en-US>  | Rese
+	t dial-in PIN <https://dialin.teams.microsoft.com/usp/pstnconferencing>  \n__________________________________________
+	______________________________________\n\n\nMicrosoft Privacy Policy <https://privacy.microsoft.com/en-us/data-privacy-notice> \n\n\n\nThis event is powered by Microsoft Teams\, under the dir
+	ection of the meeting organizer. The data processing that occurs for purpo
+	ses of this event is subject to the terms of the meeting organizer. Micros
+	oft Privacy Policy <https://privacy.microsoft.com/privacystatement> \n
+DTEND;TZID="Pacific Standard Time":20241211T090000
+DTSTAMP:20241202T171538Z
+DTSTART;TZID="Pacific Standard Time":20241211T080000
+LAST-MODIFIED:20241203T181139Z
+LOCATION:Microsoft Teams Meeting
+ORGANIZER;CN="Webinar AKS Feature Announ":invalid:nomail
+PRIORITY:5
+SEQUENCE:6
+SUMMARY:Webinar: AKS Feature Announcements from KubeCon & Ignite 
+TRANSP:OPAQUE
+UID:040000008200E00074C5B7101A82E0080000000042159B02DC44DB01000000000000000
+	0100000008FB600D389EB594EBA76D6FA9D87FCA2
+X-ALT-DESC;FMTTYPE=text/html:<html><head>\n<style type="text/css">\n\n    @
+	media screen and (-ms-high-contrast: active)\n	{\n        a \n		{\n       
+	     color: #ffff01 !important\;\n        }\n    }\n\n	.x_responsiveTableC
+	ontainer\n	{\n        background-color: #FAFAFA\;\n        color: #242424 
+	!important\;\n        font-family: 'Segoe UI WestEuropean'\, 'Segoe UI'\, 
+	'Helvetica Neue'\, Helvetica\, Arial\, sans-serif !important\;\n    }\n\n	
+	.x_firstRowInvite\n	{\n		background-color: #EBEBEB !important\;\n	}\n\n	[d
+	ata-ogsc] .x_responsiveTableContainer \n	{\n		color: #FFF !important\;\n	}
+	\n\n	[data-ogsb] .x_responsiveTableContainer \n	{\n		background-color: #24
+	2424 !important\;\n	}\n\n	[data-ogsc] .x_firstRowInvite \n	{\n		background
+	-color: #141414 !important\;\n	}\n		\n</style>\n<meta content="width=devic
+	e-width\, initial-scale=1.0">\n</head>\n<body>\n<table class="x_responsive
+	TableContainer" border="0" cellspacing="0" cellpadding="10" style="max-wid
+	th: 600px\; font-size: 14px\; font-weight: 400\;">\n<tbody>\n<tr>\n<td cla
+	ss="x_firstRowInvite" style="padding-left: 30px !important\;"><small style
+	="font-weight: 400\; font-size: 12px\;"><i><b style="font-weight: 700\;">O
+	rganizers &amp\; co-organizers:</b><span> When making edits to your event\
+	,\n<a href="https://teams.microsoft.com/l/virtualevent/098901a7-31df-4c1f-aac7-5d2d15bae5d8@72f988bf-86f1-41af-91ab-2d7cd011db47" originalsrc="https://teams.microsoft.com/l/v
+	irtualevent/098901a7-31df-4c1f-aac7-5d2d15bae5d8@72f988bf-86f1-41af-91ab-2
+	d7cd011db47" shash="wZONXaz8ocCJLuq10/J6l0/UD0XcAjJOqRvxD7oBA4gGYB/TFMvwoZ
+	0Nr3jNj9ZLUCd8oS5QF+hhZ3VDmSDqGm0yE8hDvDPwu14/R4lWfXMjUj2oFLH84Sg8NAKCJthw
+	x7udxHSa9Ljnev3b6HotTgNAEQHLeHIyTRH0zhwlXiA=" style="color: #5B5FC7\;">\np
+	lease use Teams.</a></span></i></small> </td>\n</tr>\n<tr>\n<td style="pad
+	ding-left:30px !important\;">\n<h2 style="font-size:24px !important\;">Web
+	inar: AKS Feature Announcements from KubeCon &amp\; Ignite\n</h2>\n<p>You
+	’ve been invited to: </p>\n<br>\n<p></p>\n<div>Webinar: AKS Feature Anno
+	uncements from KubeCon &amp\; Ignite </div>\n<div>\n<p>Join us for a 1 hr 
+	webinar event where we discuss all the recent announcements for the Azure 
+	Kubernetes Service (AKS) that were done at the KubeCon North American and 
+	Ignite 2024 conferences.&nbsp\;</p>\n<p>&nbsp\;</p>\n</div>\n<div>Wed\, De
+	c 11\, 2024 8:00 AM - 9:00 AM (UTC-08:00) Pacific Time (US &amp\; Canada)<
+	/div>\n<br>\n<p>We look forward to having you attend the event!</p>\n</td>
+	\n</tr>\n<tr>\n<td style="padding-left:30px !important\;">\n<div><br>\n<di
+	v style="max-width: 520px\; color: #242424\; font-family:'Segoe UI'\,'Helv
+	etica Neue'\,Helvetica\,Arial\,sans-serif" class="me-email-text">\n<div st
+	yle="margin-bottom:24px\;overflow:hidden\;white-space:nowrap\;">__________
+	______________________________________________________________________</di
+	v>\n<div style="margin-bottom: 12px\;"><span class="me-email-text" style="
+	font-size: 24px\;font-weight: 700\; margin-right:12px\;">Microsoft Teams</
+	span>\n<a id="meet_invite_block.action.help" class="me-email-link" style="
+	font-size:14px\; text-decoration:underline\; color: #5B5FC7\;" href="https://aka.ms/JoinTeamsMeeting?omkt=en-US" originalsrc="https://aka.ms/JoinTeamsMeeting?omkt=en-US" shash=
+	"kp4Eubf3wTuWoCXDLa9yM+8Spz2sUJYmIt7srup2ag586PUR1heWLP80ptirTFUVhljbY1CWE
+	m6IS8BxORZycYcoysTGXFSMh52B0fEAGORo449py/OzabKP2UoxF9yjHt6N3MElUS6Dk1wCozR
+	6wzgA3m3BDebA5QMTpBFxXdU=">\nNeed&nbsp\;help?</a> </div>\n<div style="marg
+	in-bottom: 6px\;"><a id="meet_invite_block.action.join_link" title="Meetin
+	g join link" class="me-email-headline" style="font-size: 20px\; font-weigh
+	t:600\; text-decoration: underline\; color: #5B5FC7\;" href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_ODY4NmY0Y2YtNTdhNi00YTcxLWFhOGQtMzk4ODdmMDc1MDY0%40thread.v2/0?context=%7b%22Tid%22%3a%2272f988bf-86f1-41af-91ab-2d7cd011db47%22%2c%22Oid%22%3a%22e3e368ba-66aa-4e1b-86f6-63f9c1a9ac62%22%7d" originalsrc="https://teams.microsoft.com
+	/l/meetup-join/19%3ameeting_ODY4NmY0Y2YtNTdhNi00YTcxLWFhOGQtMzk4ODdmMDc1MD
+	Y0%40thread.v2/0?context=%7b%22Tid%22%3a%2272f988bf-86f1-41af-91ab-2d7cd01
+	1db47%22%2c%22Oid%22%3a%22e3e368ba-66aa-4e1b-86f6-63f9c1a9ac62%22%7d" shas
+	h="nZrZGtm8NWAIW9yH93gjuQ8odSmDHm/UBXACtYnhNpxcgUNmOlFzPQY3JbWzqGBCDn6uhdM
+	OYzQbUYGjX7FZ6Z/kIYqYSF2SUzaMI4in5m0Q7/RTaeBvsRhBaqaXw6dVmBmICtCZlC5O7hHh1
+	zc5DtR/wFHkY5eSa+oe33HTgn0=" target="_blank" rel="noreferrer noopener">Joi
+	n&nbsp\;the&nbsp\;meeting&nbsp\;now</a>\n</div>\n<div style="margin-bottom
+	: 6px\;"><span class="me-email-text-secondary" style="font-size: 14px\; co
+	lor: #616161\;">Meeting ID:\n</span><span class="me-email-text" style="fon
+	t-size: 14px\; color: #242424\;">252 100 961 746</span>\n</div>\n<div styl
+	e="margin-bottom: 24px\;"><span class="me-email-text-secondary" style="fon
+	t-size: 14px\; color: #616161\;">Passcode:\n</span><span class="me-email-t
+	ext" style="font-size: 14px\; color: #242424\;">3Ue286Rc</span>\n</div>\n<
+	div style="margin-bottom: 24px\; max-width: 532px\;">\n<hr style="border: 
+	0\; background: #D1D1D1\; height: 1px\;">\n</div>\n<div>\n<div style="marg
+	in-bottom: 6px\;"><span class="me-email-text" style="font-size: 16px\; col
+	or: #242424\; font-weight: 600\; margin-right: 4px\;">Dial in by phone</sp
+	an>\n</div>\n<div style="margin-bottom: 6px\;"><a id="meet_invite_block.ac
+	tion.join_phone_number1" class="me-email-link" style="font-size: 14px\; te
+	xt-decoration: underline\; color: #5B5FC7\; margin-right: 6px\;" href="tel
+	:+13238494874\,\,611346493#">+1&nbsp\;323-849-4874\,\,611346493#</a>\n<spa
+	n class="me-email-text" style="font-size: 14px\; color: #616161\;">United 
+	States\, Los Angeles</span>\n</div>\n<div style="margin-bottom: 6px\;"><a 
+	id="meet_invite_block.action.join_phone_find_local_number" class="me-email
+	-link" style="font-size: 14px\; text-decoration: underline\; color: #5B5FC
+	7" href="https://dialin.teams.microsoft.com/8551f4c1-bea3-441a-8738-69aa517a91c5?id=611346493" origi
+	nalsrc="https://dialin.teams.microsoft.com/8551f4c1-bea3-441a-8738-69aa517
+	a91c5?id=611346493" shash="g+w2j+xIbRSxiH6BV09lX7lUqDNNkBs1BMaFRT68JQ6/sl8
+	ULVi8SnXUjxyWgExoqOeJkwWdRykR5qZJuP3RyUuNQ4hm1ttkoEqHtUuISm/EEt1ToZw/SsmZD
+	9jWkW1rjUgPOFS8hMF9MTgArNI4zN4AgGelMPVWaK/Ut8m3kFA=">Find&nbsp\;a&nbsp\;lo
+	cal&nbsp\;number</a>\n</div>\n</div>\n<div style="margin-bottom: 24px\;"><
+	span class="me-email-text-secondary" style="font-size: 14px\; color: #6161
+	61\;">Phone conference ID:\n</span><span class="me-email-text" style="font
+	-size: 14px\; color: #242424\;">611 346 493#</span>\n</div>\n<div><span cl
+	ass="me-email-text-secondary" style="font-size: 14px\; color: #616161\;">F
+	or organizers:\n</span><a id="meet_invite_block.action.organizer_meet_opti
+	ons" class="me-email-link" style="font-size: 14px\; text-decoration: under
+	line\; color: #5B5FC7\;" target="_blank" href="https://teams.microsoft.com/meetingOptions/?organizerId=e3e368ba-66aa-4e1b-86f6-63f9c1a9ac62&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47&threadId=19_meeting_ODY4NmY0Y2YtNTdhNi00YTcxLWFhOGQtMzk4ODdmMDc1MDY0@thread.v2&messageId=0&language=en-US" originalsrc
+	="https://teams.microsoft.com/meetingOptions/?organizerId=e3e368ba-66aa-4e
+	1b-86f6-63f9c1a9ac62&amp\;tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47&am
+	p\;threadId=19_meeting_ODY4NmY0Y2YtNTdhNi00YTcxLWFhOGQtMzk4ODdmMDc1MDY0@th
+	read.v2&amp\;messageId=0&amp\;language=en-US" shash="tPXwfGaFa6z3gFcF/G8lC
+	qhye5varn/e6lNuwacNPULohFT/hI9mqI9KoqofCeA8qglpZR+4cBrePs1b6rB+rSKv8vnkUzI
+	dz/nLarOo02luWdFpJecyAQWP2AQzYFOfvJvyfHbbuwHoP9lINfV2ainoGkQCQKijK95+aGDna
+	Ps=" rel="noreferrer noopener">Meeting&nbsp\;options</a>\n<span style="col
+	or: #D1D1D1">|</span> <a id="meet_invite_block.action.organizer_reset_dial
+	in_pin" class="me-email-link" style="font-size: 14px\; text-decoration: un
+	derline\; color: #5B5FC7\;" target="_blank" href="https://dialin.teams.microsoft.com/usp/pstnconferencing" originalsrc="https://dialin.teams.microsoft.com/usp/pstnconferencing"
+	 shash="nvv3SgeGr+XsUmh2avkN7SjncaLunpM5LfOMMfBkydHq40YkGHpgBVp/wtrrWfCS1f
+	WCXcU6b6SDEGgeRfBHnrsLIzz4I66f2cZxNAH+C3P5wfkpZMakEjOKw8a6d1o4uPyO33bBfAf6
+	l5+O8gOaB2JvQoRBjKGL/fmDPE0k128=" rel="noreferrer noopener">\nReset&nbsp\;
+	dial-in&nbsp\;PIN</a> </div>\n<div style="margin-top: 24px\; margin-bottom
+	: 6px\;"></div>\n<div style="margin-bottom: 24px\;"></div>\n<div style="ma
+	rgin-bottom:24px\;overflow:hidden\;white-space:nowrap\;">_________________
+	_______________________________________________________________</div>\n</d
+	iv>\n</div>\n<br>\n<p style="font-weight: 600\;">Microsoft <a href="https://privacy.microsoft.com/en-us/data-privacy-notice" originalsrc="https://privacy.microsoft.com/en-us/da
+	ta-privacy-notice" shash="us5HFRr94JFF3ZSlCNuVRdK0kHPrb2zIp3OhQygo8jBcF2jw
+	FzyOo6aPer9CR0DfTK0i/XT42wE+y7Mgu5MHaSwzMMq9Gj0u4c9EAbxWEryo0D7WIJkuNHvhfv
+	7ipsfh8gSP9pP9oKHuM2O1+4P4riVRWmXSxi6qUIigBVZqOVY=" style="color: #5B5FC7\
+	;">\nPrivacy Policy</a></p>\n<br>\n<div><br>\nThis event is powered by Mic
+	rosoft Teams\, under the direction of the meeting organizer. The data proc
+	essing that occurs for purposes of this event is subject to the terms of t
+	he meeting organizer.\n<a href="https://privacy.microsoft.com/privacystatement" originalsrc="https://pri
+	vacy.microsoft.com/privacystatement" shash="FPpQbV+iy5XxSmFWsVFnzwJnMGE2fk
+	Ov0mMOQt3LuZY36ZS+u38XuhoIanwK1d8wO/bDQPXbVyV4137cOfRqgo89EKhbDwWQwLBgji0E
+	RBQQD4EETxRhOMbUzAlfNdlGhNNqvynfrAS2hI/hdfx8fAe/hGdyjrNjyLTQyuwt66s=" styl
+	e="color: #5B5FC7\;">\nMicrosoft Privacy Policy</a></div>\n</td>\n</tr>\n<
+	/tbody>\n</table>\n</body>\n</html>\n
+X-MICROSOFT-CDO-BUSYSTATUS:TENTATIVE
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+X-MS-OLK-APPTLASTSEQUENCE:6
+X-MS-OLK-APPTSEQTIME:20241202T171538Z
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR
