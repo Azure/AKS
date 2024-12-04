@@ -13,7 +13,7 @@ feature_row2:
   - image_path: /assets/webinars/Dec2024/2024 announcements.png
     alt: "AKS Feature Announcements from KubeCon & Ignite"
     title: "AKS Feature Announcements from KubeCon & Ignite"
-    excerpt: "<strong>When:</strong>December 11th, 8 AM Pacific Time<br>
+    excerpt: "<strong>When:</strong>&nbsp;December 11th, 8 AM Pacific Time<br><br>
     Join us for our first Azure Kubernetes Service (AKS) community call. We'll be reviewing all the exciting announcements and updates from KubeCon North America and Microsoft Ignite. <br><br>
     <strong>Presenter:</strong>
     <br>
