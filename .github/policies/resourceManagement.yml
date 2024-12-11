@@ -360,7 +360,7 @@ configuration:
         - mentionUsers:
             mentionees:
             - ganga1980
-            - saaror
+            - aritraghosh
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
       - if:
@@ -372,7 +372,7 @@ configuration:
         - mentionUsers:
             mentionees:
             - vishiy
-            - saaror
+            - aritraghosh
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True
       - if:
