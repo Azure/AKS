@@ -45,7 +45,6 @@ spec:
                 echo "Using v2, reverting..."
                 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="systemd.unified_cgroup_hierarchy=0"/' /etc/default/grub
                 update-grub
-                kubectl --kubeconfig=/var/lib/kubelet/kubeconfig label node ${HOSTNAME,,} cgroup-version=v1
                 reboot
               else
                 kubectl --kubeconfig=/var/lib/kubelet/kubeconfig label node ${HOSTNAME,,} cgroup-version=v1
@@ -60,7 +59,8 @@ spec:
               memory: 16Mi
           securityContext:
             privileged: true
+      priorityClassName: system-node-critical
       hostNetwork: true
       hostPID: true
       hostIPC: true
-      terminationGracePeriodSeconds: 0
+      terminationGracePeriodSeconds: 30
