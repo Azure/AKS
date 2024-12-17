@@ -1,19 +1,18 @@
 ---
-title: "Webinars"
-layout: custompage
-
+title: "AKS - Community Calls"
+layout: splash
 
 permalink: /webinars/
-date: 2024-12-03T11:48:41-04:00
+date: 2024-12-17T11:48:41-04:00
 header:
   overlay_color: "#000"
-  overlay_image: 
+  overlay_image: /assets/webinars/AKS-CommunityCalls-Banner.png
 excerpt: ""
 
 intro: 
   - excerpt: 'We are excited to invite you to our new public community calls for Azure Kubernetes Service (AKS). These sessions will be a great opportunity to discuss the product roadmap, witness demos of new features, provide feedback, and get your product questions answered. '
 feature_row2:
-  - image_path: /assets/webinars/Jan2025/Jan2025-Vert.png
+  - image_path: /assets/webinars/Jan2025/Jan2025-Square.png
 
     alt: "AKS Monthly Roadmap Update - Jan 2025"
     title: "AKS Monthly Roadmap Update - Jan 2025"
@@ -23,8 +22,8 @@ feature_row2:
     <br>
     <strong>Phill Gibson:</strong>&nbsp; Phill is a Senior Product Manager at Microsoft, specializing in cloud native tools and technology within the open-source division. With a diverse background in software development, systems architecture, consulting, and product management, Phill has contributed to numerous open-source projects throughout his career.
     <br>
-    <a HREF='../assets/webinars/Jan2025/Dec11-Webinar-AKS_Feature_Announcements_from_KubeCon_Ignite .ics'>Add Event to my calendar</a>"
-    url: "https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmeetup-join%2F19%3Ameeting_YjA0NTdiNjItOGU1OS00MTQwLWJlZjUtNjNmYzIzOWYyZTYy%40thread.v2%2F0%3Fcontext%3D%257b%2522Tid%2522%253a%252272f988bf-86f1-41af-91ab-2d7cd011db47%2522%252c%2522Oid%2522%253a%2522e3e368ba-66aa-4e1b-86f6-63f9c1a9ac62%2522%257d%26anon%3Dtrue&type=meetup-join&deeplinkId=dddabe41-bf47-4eca-9e5d-7b9f3540d402&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true"
+    <a HREF='../assets/webinars/Recurring-AKS Community Roadmap Call.ics'>Add Event to my calendar</a>"
+    url: "https://teams.microsoft.com/l/meetup-join/19%3ameeting_YjA0NTdiNjItOGU1OS00MTQwLWJlZjUtNjNmYzIzOWYyZTYy%40thread.v2/0?context=%7b%22Tid%22%3a%2272f988bf-86f1-41af-91ab-2d7cd011db47%22%2c%22Oid%22%3a%22e3e368ba-66aa-4e1b-86f6-63f9c1a9ac62%22%7d"
     btn_label: "Join Now"
     btn_class: "btn--primary"
 
@@ -44,7 +43,8 @@ feature_row3:
     btn_class: "btn--primary"
 ---
 
-{% include feature_row id="intro" type="justified" %}
+
+  {% include feature_row id="intro" type="justified" %}
 
 {% include feature_row id="feature_row2" type="left" %}
 
