@@ -1,16 +1,20 @@
 ---
 title: "Webinars"
-layout: splash
+layout: custompage
+
+
 permalink: /webinars/
 date: 2024-12-03T11:48:41-04:00
 header:
-  overlay_color: "#000000"
+  overlay_color: "#000"
   overlay_image: 
 excerpt: ""
+
 intro: 
   - excerpt: 'We are excited to invite you to our new public community calls for Azure Kubernetes Service (AKS). These sessions will be a great opportunity to discuss the product roadmap, witness demos of new features, provide feedback, and get your product questions answered. '
 feature_row2:
-  - image_path: /assets/webinars/Jan2025/Jan2025-Square.png
+  - image_path: /assets/webinars/Jan2025/Jan2025-Vert.png
+
     alt: "AKS Monthly Roadmap Update - Jan 2025"
     title: "AKS Monthly Roadmap Update - Jan 2025"
     excerpt: "<strong>When:</strong>&nbsp;Jan 15th, 8 AM Pacific Time<br><br>
@@ -26,6 +30,7 @@ feature_row2:
 
 feature_row3:
   - image_path: /assets/webinars/Dec2024/2024 announcements.png
+    
     alt: "AKS Feature Announcements from KubeCon & Ignite"
     title: "AKS Feature Announcements from KubeCon & Ignite"
     excerpt: "<strong>When:</strong>&nbsp;December 11th, 8 AM Pacific Time<br><br>
