@@ -28,7 +28,7 @@ feature_row2:
     btn_class: "btn--primary"
 
 feature_row3:
-  - image_path: /assets/webinars/Dec2024/2024 announcements.png
+  - image_path: /assets/webinars/Dec2024/2024-KubeConAnnouncements.png
     
     alt: "AKS Feature Announcements from KubeCon & Ignite"
     title: "AKS Feature Announcements from KubeCon & Ignite"
