@@ -8,7 +8,8 @@ where:
 configuration:
   resourceManagementConfiguration:
     eventResponderTasks:
-    - if:
+    - description: When certain labels are added to an issue, mention the appropriate team members to assist. 
+      if:
       - or:
         - payloadType: Issues
       - isAction:
@@ -515,6 +516,5 @@ configuration:
              - seguler
             replyTemplate: ${mentionees} would you be able to assist?
             assignMentionees: True               
-      description: When certain labels are added to an issue, mention the appropriate team members to assist.
 onFailure: 
 onSuccess: 
