@@ -8,165 +8,165 @@ where:
 configuration:
   resourceManagementConfiguration:
     eventResponderTasks:
-    - description: When a new announcement is created and not assigned to someone, assign it to the Author
-      if:
-      - payloadType: Issues
-      - isAction:
-          action: Opened
-      - isActivitySender:
-          issueAuthor: True
-      - hasLabel:
-          label: announcement
-      - not:
-        - isAssignedToSomeone
-      then:
-      - assignTo:
-            author: true    
-    - description: When a comment is added to an open issue by the issue author, add the 'action-required' label and remove the 'Needs Information' and 'Needs Author Feedback' labels.
-      if:
-      - payloadType: Issue_Comment
-      - isAction:
-          action: Created
-      - isActivitySender:
-          issueAuthor: True
-      - isOpen
-      - or:
+      - description: When a new announcement is created and not assigned to someone, assign it to the Author
+        if:
+        - payloadType: Issues
+        - isAction:
+            action: Opened
+        - isActivitySender:
+            issueAuthor: True
         - hasLabel:
-            label: Needs Information
-        - hasLabel:
+            label: announcement
+        - not:
+          - isAssignedToSomeone
+        then:
+        - assignTo:
+              author: true    
+      - description: When a comment is added to an open issue by the issue author, add the 'action-required' label and remove the 'Needs Information' and 'Needs Author Feedback' labels.
+        if:
+        - payloadType: Issue_Comment
+        - isAction:
+            action: Created
+        - isActivitySender:
+            issueAuthor: True
+        - isOpen
+        - or:
+          - hasLabel:
+              label: Needs Information
+          - hasLabel:
+              label: Needs Author Feedback
+        then:
+        - addLabel:
+            label: action-required
+        - removeLabel:
             label: Needs Author Feedback
-      then:
-      - addLabel:
-          label: action-required
-      - removeLabel:
-          label: Needs Author Feedback
-      - removeLabel:
-          label: Needs Information
-    - description: When a stale issue has any activity (other than closing) remove the stale label.
-      if:
-      - payloadType: Issues
-      - not:
-          isAction:
-            action: Closed
-      - hasLabel:
-          label: stale
-      - not:
-          labelAdded:
+        - removeLabel:
+            label: Needs Information
+      - description: When a stale issue has any activity (other than closing) remove the stale label.
+        if:
+        - payloadType: Issues
+        - not:
+            isAction:
+              action: Closed
+        - hasLabel:
             label: stale
-      then:
-      - removeLabel:
-          label: stale
-    - description: When a stale issue has a comment, remove the stale label.
-      if:
-      - payloadType: Issue_Comment
-      - hasLabel:
-          label: stale
-      then:
-      - removeLabel:
-          label: stale
-    - description: When an issue is labeled with 'SR-Support Request', add a reply with instructions on how to create a support ticket.
-      if:
-      - payloadType: Issues
-      - labelAdded:
-          label: SR-Support Request
-      - isOpen
-      then:
-      - addReply:
-          reply: >-
-            Hi there :wave: AKS bot here. This issue has been tagged as needing a support request so that the AKS support and engineering teams have a look into this particular cluster/issue.
-
-
-            Follow the steps [here](https://azure.microsoft.com/support/create-ticket/) to create a support ticket for Azure Kubernetes Service and the cluster discussed in this issue.
-
-
-            Please do mention this issue in the case description so our teams can coordinate to help you.
-
-
-            Thank you!
-    - description: When any activity is performed by authorized user on an issue labeled as 'action required' or 'needs attention' then remove these labels.
-      if:
-      - payloadType: Issues
-      - isOpen
-      - or:
+        - not:
+            labelAdded:
+              label: stale
+        then:
+        - removeLabel:
+            label: stale
+      - description: When a stale issue has a comment, remove the stale label.
+        if:
+        - payloadType: Issue_Comment
         - hasLabel:
-            label: 'Needs Attention :wave:'
-        - hasLabel:
+            label: stale
+        then:
+        - removeLabel:
+            label: stale
+      - description: When an issue is labeled with 'SR-Support Request', add a reply with instructions on how to create a support ticket.
+        if:
+        - payloadType: Issues
+        - labelAdded:
+            label: SR-Support Request
+        - isOpen
+        then:
+        - addReply:
+            reply: >-
+              Hi there :wave: AKS bot here. This issue has been tagged as needing a support request so that the AKS support and engineering teams have a look into this particular cluster/issue.
+
+
+              Follow the steps [here](https://azure.microsoft.com/support/create-ticket/) to create a support ticket for Azure Kubernetes Service and the cluster discussed in this issue.
+
+
+              Please do mention this issue in the case description so our teams can coordinate to help you.
+
+
+              Thank you!
+      - description: When any activity is performed by authorized user on an issue labeled as 'action required' or 'needs attention' then remove these labels.
+        if:
+        - payloadType: Issues
+        - isOpen
+        - or:
+          - hasLabel:
+              label: 'Needs Attention :wave:'
+          - hasLabel:
+              label: action-required
+        - or:
+          - activitySenderHasPermission:
+              permission: Write
+          - activitySenderHasAssociation:
+              association: Owner
+          - activitySenderHasAssociation:
+              association: Contributor
+          - activitySenderHasAssociation:
+              association: Collaborator
+          - activitySenderHasPermission:
+              permission: Admin
+          - activitySenderHasAssociation:
+              association: Member
+          - isAction:
+              action: Labeled
+          - isAction:
+              action: Unlabeled
+          - isAction:
+              action: Null
+        then:
+        - removeLabel:
             label: action-required
-      - or:
-        - activitySenderHasPermission:
-            permission: Write
-        - activitySenderHasAssociation:
-            association: Owner
-        - activitySenderHasAssociation:
-            association: Contributor
-        - activitySenderHasAssociation:
-            association: Collaborator
-        - activitySenderHasPermission:
-            permission: Admin
-        - activitySenderHasAssociation:
-            association: Member
-        - isAction:
-            action: Labeled
-        - isAction:
-            action: Unlabeled
-        - isAction:
-            action: Null
-      then:
-      - removeLabel:
-          label: action-required
-      - removeLabel:
-          label: 'Needs Attention :wave:'
-    - description: When a comment is made by authorized user on an issue labeled as 'action required' or 'needs attention' then remove these labels.
-      if:
-      - payloadType: Issue_Comment
-      - isOpen
-      - or:
-        - activitySenderHasPermission:
-            permission: Admin
-        - activitySenderHasPermission:
-            permission: Write
-        - activitySenderHasAssociation:
-            association: Collaborator
-        - activitySenderHasAssociation:
-            association: Owner
-        - activitySenderHasAssociation:
-            association: Contributor
-        - activitySenderHasAssociation:
-            association: Member
-      - or:
-        - hasLabel:
+        - removeLabel:
             label: 'Needs Attention :wave:'
-        - hasLabel:
+      - description: When a comment is made by authorized user on an issue labeled as 'action required' or 'needs attention' then remove these labels.
+        if:
+        - payloadType: Issue_Comment
+        - isOpen
+        - or:
+          - activitySenderHasPermission:
+              permission: Admin
+          - activitySenderHasPermission:
+              permission: Write
+          - activitySenderHasAssociation:
+              association: Collaborator
+          - activitySenderHasAssociation:
+              association: Owner
+          - activitySenderHasAssociation:
+              association: Contributor
+          - activitySenderHasAssociation:
+              association: Member
+        - or:
+          - hasLabel:
+              label: 'Needs Attention :wave:'
+          - hasLabel:
+              label: action-required
+        then:
+        - removeLabel:
             label: action-required
-      then:
-      - removeLabel:
-          label: action-required
-      - removeLabel:
-          label: 'Needs Attention :wave:'
-    - description: If a new comment containing key words is added to an Issue with the 'bug' label, add the resolution/shipped label.
-      if:
-      - payloadType: Issue_Comment
-      - isOpen
-      - not:
-          hasLabel:
+        - removeLabel:
+            label: 'Needs Attention :wave:'
+      - description: If a new comment containing key words is added to an Issue with the 'bug' label, add the resolution/shipped label.
+        if:
+        - payloadType: Issue_Comment
+        - isOpen
+        - not:
+            hasLabel:
+              label: bug
+        - commentContains:
+            pattern: Released/Shipped/Fixed on release
+            isRegex: False
+        then:
+        - addLabel:
+            label: resolution/shipped
+      - description: If a new comment containing key words is added to an Issue with the 'bug' label, add the resolution/fix-released label. 
+        if:
+        - payloadType: Issue_Comment
+        - isOpen
+        - hasLabel:
             label: bug
-      - commentContains:
-          pattern: Released/Shipped/Fixed on release
-          isRegex: False
-      then:
-      - addLabel:
-          label: resolution/shipped
-    - description: If a new comment containing key words is added to an Issue with the 'bug' label, add the resolution/fix-released label. 
-      if:
-      - payloadType: Issue_Comment
-      - isOpen
-      - hasLabel:
-          label: bug
-      - commentContains:
-          pattern: Released/Shipped/Fixed on release
-          isRegex: False
-      then:
-      - addLabel:
-          label: resolution/fix-released
+        - commentContains:
+            pattern: Released/Shipped/Fixed on release
+            isRegex: False
+        then:
+        - addLabel:
+            label: resolution/fix-released
 onFailure: 
 onSuccess: 
