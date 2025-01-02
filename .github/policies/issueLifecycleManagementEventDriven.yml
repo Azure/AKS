@@ -14,7 +14,7 @@ configuration:
           - and:
               - isOpen
               - hasLabel:
-                label: announcement
+                  label: announcement
               - not:
                   and:
                     - isAssignedToSomeone   
