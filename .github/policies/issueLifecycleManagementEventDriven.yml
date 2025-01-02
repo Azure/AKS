@@ -20,7 +20,7 @@ configuration:
                     - isAssignedToSomeone   
         then:
           - assignTo:
-            author: true
+              author: true
       - description: When a comment is added to an open issue by the issue author, add the 'action-required' label and remove the 'Needs Information' and 'Needs Author Feedback' labels.
         if:
           - payloadType: Issue_Comment
