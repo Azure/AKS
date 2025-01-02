@@ -11,15 +11,13 @@ configuration:
       - description: When a new announcement is created and not assigned to someone, assign it to the Author
         if:
           - payloadType: Issues
-          - isAction:
-              action: Created
-          - isActivitySender:
-              issueAuthor: True
           - and:
-            - hasLabel:
-              label: announcement
-            - not:
-              - isAssignedToSomeone      
+              - isOpen
+              - hasLabel:
+                label: announcement
+              - not:
+                  and:
+                    - isAssignedToSomeone   
         then:
           - assignTo:
             author: true
