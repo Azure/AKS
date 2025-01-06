@@ -6,10 +6,11 @@ author: Gemma Tipper # must match the authors.yml in the _data folder
 categories: general # general, operations, networking, security, developer topics, add-ons
 ---
 
->Hi everyone, 
+>Hi everyone,
+>
 >The awesome team at Metalbear recently shared an insightful blog post showcasing how to use mirrord with Azure Kubernetes Service. I'm excited to highlight their work, as the blog dives deep into how mirrord simplifies testing your code directly in a Kubernetes environment. Happy reading! 
 >
->DISCLAIMER. The following blog is authored by MetalBear at the request of Microsoft. Microsoft is publishing a link to this blog in the AKS Engineering Blog as a convenience to its readers, and the inclusion of this link does not imply endorsement by Microsoft of MetalBear, MetalBear products, or any other third party product mentioned therein.
+>DISCLAIMER. The following blog is authored by MetalBear at the request of Microsoft. Microsoft is publishing this blog in the AKS Engineering Blog as a convenience to its readers.
 
 >Quentin Petraroia - Product Manager for Azure Kubernetes Service
 
