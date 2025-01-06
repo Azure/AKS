@@ -1,7 +1,7 @@
 ---
 title: "Mastering the Move: EKS to AKS by Example - Part 2"
 description: "Learn how to replicate an Amazon Elastic Kubernetes Service (EKS) web application with AWS Web Application Firewall (WAF) using Azure Web Application Firewall (WAF) and Azure Application Gateway in Azure Kubernetes Service (AKS)"
-date: 2024-08-01
+date: 2025-01-06
 author: Kenneth Kilty
 categories: general
 ---
