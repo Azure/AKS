@@ -1,0 +1,1 @@
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QThis sample uses a WAF to protect a Yelb web-based application running in a Kubernetes cluster.\\E$"}
