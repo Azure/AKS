@@ -95,3 +95,27 @@ Sachi Desai:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:sachidesai@microsoft.com"
+
+Quentin Petraroia:
+  name        : "Quentin Petraroia"
+  bio         : "Product Manager for Azure Kubernetes Service."
+  avatar      : "https://avatars.githubusercontent.com/u/11465526?s=400&u=48bac61e9a155beb58db79ef06f4db715b5f1b4d&v=4" # Replace this with your avatar image
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/quentin-petraroia-896971a8/"
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:qpetraroia@microsoft.com"
+
+Gemma Tipper:
+  name        : "Gemma Tipper"
+  bio         : "Gemma is a Software Engineer working at MetalBear, writing open source Rust for mirrord."
+  avatar      : "https://avatars.githubusercontent.com/u/58080601?v=4"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/in/gememma"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/gememma"
