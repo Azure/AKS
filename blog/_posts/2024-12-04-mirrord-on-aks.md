@@ -11,7 +11,7 @@ categories: general # general, operations, networking, security, developer topic
 >The awesome team at Metalbear recently shared an insightful blog post showcasing how to use mirrord with Azure Kubernetes Service. I'm excited to highlight their work, as the blog dives deep into how mirrord simplifies testing your code directly in a Kubernetes environment. Happy reading! 
 >
 >DISCLAIMER. The following blog is authored by MetalBear at the request of Microsoft. Microsoft is publishing this blog in the AKS Engineering Blog as a convenience to its readers.
-
+>
 >Quentin Petraroia - Product Manager for Azure Kubernetes Service
 
 ## Introduction
