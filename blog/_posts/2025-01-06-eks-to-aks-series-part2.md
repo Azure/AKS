@@ -8,7 +8,7 @@ categories: general
 
 ## Introduction
 
-Welcome back to our series on migrating Amazon EKS workloads to Azure Kubernetes Service (AKS). In [Part 1](https://azure.github.io/AKS/2024/08/01/eks-to-aks-series-part1) we explored migrating and Event Driven Workload using Karpenter and KEDA from EKS to AKS. Next, we look into a more complex migration scenario with a common Kubernetes workload the [n-tier web application](https://learn.microsoft.com/azure/architecture/guide/architecture-styles/n-tier).
+Welcome back to our series on migrating Amazon Elastic Kubernetes Service (EKS) workloads to Azure Kubernetes Service (AKS). In [Part 1](https://azure.github.io/AKS/2024/08/01/eks-to-aks-series-part1) we explored migrating and Event Driven Workload using Karpenter and KEDA from EKS to AKS. Next, we look into a more complex migration scenario with a common Kubernetes workload the [n-tier web application](https://learn.microsoft.com/azure/architecture/guide/architecture-styles/n-tier).
 
 ## EKS to AKS - Web Application Scenario
 
