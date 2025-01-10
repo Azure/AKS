@@ -8,326 +8,322 @@ where:
 configuration:
   resourceManagementConfiguration:
     scheduledSearches:
-      - description: Stale any open unassigned issue that is not a bug or feature request that has 14 days inactivity - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - isNotAssigned
-        - noActivitySince:
-            days: 14
-        - isNotLabeledWith:
-            label: stale
-        - isNotLabeledWith:
-            label: feature-request
-        - isNotLabeledWith:
-            label: bug
-        actions:
-        - addLabel:
-            label: stale
-        - addReply:
-            reply: This issue has been automatically marked as stale because it has not had any activity for **14 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-      - description: Stale any open unassigned issue that is a bug that has 30 days inactivity - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - isNotAssigned
-        - noActivitySince:
-            days: 30
-        - isNotLabeledWith:
-            label: stale
-        - hasLabel:
-            label: bug
-        actions:
-        - addLabel:
-            label: stale
-        - addReply:
-            reply: This issue has been automatically marked as stale because it has not had any activity for **30 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-      - description: Stale any open unassigned issue that is a feature request without activity for 180 days - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - isNotAssigned
-        - noActivitySince:
-            days: 180
-        - isNotLabeledWith:
-            label: stale
-        - hasLabel:
-            label: feature-request
-        actions:
-        - addLabel:
-            label: stale
-        - addReply:
-            reply: This issue has been automatically marked as stale because it has not had any activity for **180 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-      - description: Stale any issue awaiting further information or author feedback that has had no activity for 7 days - runs daily at 1am
-        frequencies:
-        - daily:
-            time: 1:0
-        filters:
-        - isIssue
-        - isOpen
-        - isNotLabeledWith:
-            label: stale
-        - hasLabel:
-            label: Needs Information
-        - hasLabel:
-            label: Needs Author Feedback
-        - noActivitySince:
-            days: 7
-        actions:
-        - addLabel:
-            label: stale
-      - description: Stale any non-bug or feature request issue that is tagged as requiring Microsoft support that has had no activity for 7 days - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: SR-Support Request
-        - isNotLabeledWith:
-            label: bug
-        - isNotLabeledWith:
-            label: feature-request
-        - isNotLabeledWith:
-            label: stale
-        - noActivitySince:
-            days: 7
-        actions:
-        - addLabel:
-            label: stale
-        - addReply:
-            reply: Case being worked with Microsoft Support, adding stale label for automatic closure if not other reports are added.   
-      - description: Stale any open announcements that have 180 days inactivity - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: announcement
-        - noActivitySince:
-            days: 180
-        - isNotLabeledWith:
-            label: stale
-        actions:
-        - addLabel:
-            label: stale
-        - addReply:
-            reply: This issue has been automatically marked as stale because it has not had any activity for **180 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-      - description: Mark as needing attention and tag members of AKS team - 5 days inactivity - runs several times a day
-        frequencies: 
-        - daily:
-            time: 9:0
-        - daily:
-            time: 12:0
-        - daily:
-            time: 15:0
-        - daily:
-            time: 18:0
-        filters:
-        - isIssue
-        - isOpen
-        - isNotAssigned
-        - hasLabel:
-            label: action-required
-        - noActivitySince:
-            days: 5
-        - isNotLabeledWith:
-            label: Needs Author Feedback
-        - isNotLabeledWith:
-            label: Needs Information
-        - isNotLabeledWith:
-            label: 'Needs Attention :wave:'
-        actions:
-        - addReply:
-            reply: Action required from @aritraghosh, @julia-yin, @AllenWen-at-Azure
-        - addLabel:
-            label: 'Needs Attention :wave:'
-      - description: Notify AKS PMs of issues marked as 'triage' with no activity for 2 days - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: triage
-        - noActivitySince:
-            days: 2
-        - isNotLabeledWith:
-            label: action-required
-        actions:
-        - addLabel:
-            label: action-required
-        - addReply:
-            reply: Triage required from @Azure/aks-pm ${assignees}
-      - description: Notify AKS Leads of 'needs attention' items not waiting on information or author feedback after 14 days inactivity - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: 'Needs Attention :wave:'
-        - noActivitySince:
-            days: 14
-        - isNotLabeledWith:
-            label: Needs Information
-        - isNotLabeledWith:
-            label: Needs Author Feedback
-        actions:
-        - addReply:
-            reply: Issue needing attention of @Azure/aks-leads
-      - description: Notify AKS PMs for issues that are unassigned and unlabeled - runs weekly on Wednesday at 11am
-        frequencies:
-        - weekday:
-            day: Wednesday
-            time: 11:0
-        filters:
-        - isIssue
-        - isOpen
-        - isNotAssigned
-        - hasNoLabel
-        actions:
-        - addReply:
-            reply: '@Azure/aks-pm issue needs labels'
-      - description: Mark as 'action required' any open item without specific labels - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - isNotLabeledWith:
-            label: triage
-        - isNotLabeledWith:
-            label: Needs Information
-        - isNotLabeledWith:
-            label: action-required
-        - isNotLabeledWith:
-            label: announcement
-        - isNotLabeledWith:
-            label: awareness
-        - isNotLabeledWith:
-            label: feature-request
-        - isNotLabeledWith:
-            label: wontfix
-        - isNotLabeledWith:
-            label: Feedback
-        - isNotLabeledWith:
-            label: enhancement
-        - isNotLabeledWith:
-            label: resolution/fix-released
-        - noActivitySince:
-            days: 30
-        - isNotLabeledWith:
-            label: service-updates
-        - isNotLabeledWith:
-            label: resolution/shipped
-        actions:
-        - addLabel:
-            label: action-required
-      - description: Close issue marked as 'answer provided' that has had no activity for 2 days - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: resolution/answer-provided
-        - noActivitySince:
-            days: 2
-        actions:
-        - addReply:
-            reply: Thanks for reaching out. I'm closing this issue as it was marked with "Answer Provided" and it hasn't had activity for 2 days.
-        - closeIssue
-      - description: Close issue marked as 'fix released' that has had no activity for 7 days - runs every 12 hours
-        frequencies:
-        - hourly:
-            hour: 12
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: resolution/fix-released
-        - noActivitySince:
-            days: 7
-        actions:
-        - addReply:
-            reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" and it hasn't had activity for 7 days.
-        - closeIssue
-      - description: Close issue marked as 'shipped' that has and no activity for 7 days - runs every 12 hours
-        frequencies:
-        - hourly:
-            hour: 12
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: resolution/shipped
-        - noActivitySince:
-            days: 7
-        actions:
-        - addReply:
-            reply: Thank you for the feature request. I'm closing this issue as this feature has shipped and it hasn't had activity for 7 days.
-        - closeIssue
-      - description: Close issue marked as 'resolved/other' that has and no activity for 3 days - runs every 12 hours
-        frequencies:
-        - hourly:
-            hour: 12
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: resolution/other
-        - noActivitySince:
-            days: 3
-        actions:
-        - addReply:
-            reply: Thanks for reaching out. I'm closing this issue as it was marked resolved and it hasn't had activity for 3 days. If it continues please reply or open a support ticket.
-        - closeIssue
-      - description: Close issues marked as duplicates after 1 day inactivity - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: resolution/duplicate
-        - noActivitySince:
-            days: 1
-        actions:
-        - addReply:
-            reply: This issue has been marked as duplicate and has not had any activity for **1 day**. It will be closed for housekeeping purposes.
-        - closeIssue
-      - description: Close stale issues after 7 days inactivity - runs every 6 hours
-        frequencies:
-        - hourly:
-            hour: 6
-        filters:
-        - isIssue
-        - isOpen
-        - hasLabel:
-            label: stale
-        - noActivitySince:
-            days: 7
-        actions:
-        - addReply:
-            reply: This issue will now be closed because it hasn't had any activity for 7 days after stale. ${issueAuthor} feel free to comment again on the next 7 days to reopen or open a new issue after that time if you still have a question/issue or suggestion.
-        - closeIssue
+    - description: Mark as needing attention and tag AKS triage team members - 5 days inactivity - runs several times a day
+      frequencies: 
+      - daily:
+          time: 9:0
+      - daily:
+          time: 12:0
+      - daily:
+          time: 15:0
+      - daily:
+          time: 18:0
+      filters:
+      - isIssue
+      - isOpen
+      - isNotAssigned
+      - noActivitySince:
+          days: 5
+      - isNotLabeledWith:
+          label: Needs Author Feedback
+      - isNotLabeledWith:
+          label: Needs Information
+      - isNotLabeledWith:
+          label: 'Needs Attention :wave:'
+      actions:
+      - addReply:
+          reply: Action required from @aritraghosh, @julia-yin, @AllenWen-at-Azure
+      - addLabel:
+          label: 'Needs Attention :wave:'
+    - description: Stale any open unassigned issue that is not a bug or feature request that has 14 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - isNotAssigned
+      - noActivitySince:
+          days: 14
+      - isNotLabeledWith:
+          label: stale
+      - isNotLabeledWith:
+          label: feature-request
+      - isNotLabeledWith:
+          label: bug
+      actions:
+      - addLabel:
+          label: stale
+      - addReply:
+          reply: This issue has been automatically marked as stale because it has not had any activity for **14 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
+    - description: Stale any open issue that is a bug that has 30 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - noActivitySince:
+          days: 30
+      - isNotLabeledWith:
+          label: stale
+      - hasLabel:
+          label: bug
+      actions:
+      - addLabel:
+          label: stale
+      - addReply:
+          reply: This issue has been automatically marked as stale because it has not had any activity for **30 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${assignees}
+    - description: Stale any open issue that is a feature request without activity for 180 days - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - noActivitySince:
+          days: 180
+      - isNotLabeledWith:
+          label: stale
+      - hasLabel:
+          label: feature-request
+      actions:
+      - addLabel:
+          label: stale
+      - addReply:
+          reply: This issue has been automatically marked as stale because it has not had any activity for **180 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${assignees}
+    - description: Stale any issue awaiting further information or author feedback that has had no activity for 7 days - runs daily at 1am
+      frequencies:
+      - daily:
+          time: 1:0
+      filters:
+      - isIssue
+      - isOpen
+      - isNotLabeledWith:
+          label: stale
+      - hasLabel:
+          label: Needs Information
+      - hasLabel:
+          label: Needs Author Feedback
+      - noActivitySince:
+          days: 7
+      actions:
+      - addLabel:
+          label: stale
+    - description: Stale any non-bug or feature request issue that is tagged as requiring Microsoft support that has had no activity for 7 days - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: SR-Support Request
+      - isNotLabeledWith:
+          label: bug
+      - isNotLabeledWith:
+          label: feature-request
+      - isNotLabeledWith:
+          label: stale
+      - noActivitySince:
+          days: 7
+      actions:
+      - addLabel:
+          label: stale
+      - addReply:
+          reply: Case being worked with Microsoft Support, adding stale label for automatic closure if not other reports are added.   
+    - description: Stale any open announcements that have 90 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: announcement
+      - noActivitySince:
+          days: 90
+      - isNotLabeledWith:
+          label: stale
+      actions:
+      - addLabel:
+          label: stale
+      - addReply:
+          reply: This issue has been automatically marked as stale because it has not had any activity for **180 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
+    - description: Notify AKS PMs of issues marked as 'triage' with no activity for 2 days - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: triage
+      - noActivitySince:
+          days: 2
+      - isNotLabeledWith:
+          label: action-required
+      actions:
+      - addLabel:
+          label: action-required
+      - addReply:
+          reply: Triage required from @Azure/aks-pm ${assignees}
+    - description: Notify AKS Leads of 'needs attention' items not waiting on information or author feedback after 14 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: 'Needs Attention :wave:'
+      - noActivitySince:
+          days: 14
+      - isNotLabeledWith:
+          label: Needs Information
+      - isNotLabeledWith:
+          label: Needs Author Feedback
+      actions:
+      - addReply:
+          reply: Issue needing attention of @Azure/aks-leads
+    - description: Notify AKS PMs for issues that are unassigned and unlabeled - runs weekly on Wednesday at 11am
+      frequencies:
+      - weekday:
+          day: Wednesday
+          time: 11:0
+      filters:
+      - isIssue
+      - isOpen
+      - isNotAssigned
+      - hasNoLabel
+      actions:
+      - addReply:
+          reply: '@Azure/aks-pm issue needs labels'
+    - description: Mark as 'action required' any open item without specific labels - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - isNotLabeledWith:
+          label: triage
+      - isNotLabeledWith:
+          label: Needs Information
+      - isNotLabeledWith:
+          label: action-required
+      - isNotLabeledWith:
+          label: announcement
+      - isNotLabeledWith:
+          label: awareness
+      - isNotLabeledWith:
+          label: feature-request
+      - isNotLabeledWith:
+          label: wontfix
+      - isNotLabeledWith:
+          label: Feedback
+      - isNotLabeledWith:
+          label: enhancement
+      - isNotLabeledWith:
+          label: resolution/fix-released
+      - noActivitySince:
+          days: 30
+      - isNotLabeledWith:
+          label: service-updates
+      - isNotLabeledWith:
+          label: resolution/shipped
+      actions:
+      - addLabel:
+          label: action-required
+    - description: Close issue marked as 'answer provided' that has had no activity for 2 days - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: resolution/answer-provided
+      - noActivitySince:
+          days: 2
+      actions:
+      - addReply:
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "Answer Provided" and it hasn't had activity for 2 days.
+      - closeIssue
+    - description: Close issue marked as 'fix released' that has had no activity for 7 days - runs every 12 hours
+      frequencies:
+      - hourly:
+          hour: 12
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: resolution/fix-released
+      - noActivitySince:
+          days: 7
+      actions:
+      - addReply:
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" and it hasn't had activity for 7 days.
+      - closeIssue
+    - description: Close issue marked as 'shipped' that has and no activity for 7 days - runs every 12 hours
+      frequencies:
+      - hourly:
+          hour: 12
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: resolution/shipped
+      - noActivitySince:
+          days: 7
+      actions:
+      - addReply:
+          reply: Thank you for the feature request. I'm closing this issue as this feature has shipped and it hasn't had activity for 7 days.
+      - closeIssue
+    - description: Close issue marked as 'resolved/other' that has and no activity for 3 days - runs every 12 hours
+      frequencies:
+      - hourly:
+          hour: 12
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: resolution/other
+      - noActivitySince:
+          days: 3
+      actions:
+      - addReply:
+          reply: Thanks for reaching out. I'm closing this issue as it was marked resolved and it hasn't had activity for 3 days. If it continues please reply or open a support ticket.
+      - closeIssue
+    - description: Close issues marked as duplicates after 1 day inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: resolution/duplicate
+      - noActivitySince:
+          days: 1
+      actions:
+      - addReply:
+          reply: This issue has been marked as duplicate and has not had any activity for **1 day**. It will be closed for housekeeping purposes.
+      - closeIssue
+    - description: Close stale issues after 7 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: stale
+      - noActivitySince:
+          days: 7
+      actions:
+      - addReply:
+          reply: This issue will now be closed because it hasn't had any activity for 7 days after stale. ${issueAuthor} feel free to comment again on the next 7 days to reopen or open a new issue after that time if you still have a question/issue or suggestion.
+      - closeIssue
 onFailure: 
-onSuccess: 
+onSuccess:
