@@ -12,7 +12,7 @@ Welcome back to our series on migrating Amazon Elastic Kubernetes Service (EKS) 
 
 ## EKS to AKS - Web Application Scenario
 
-This new [article](https://learn.microsoft.com/azure/aks/eks-web-overview) guides you through replicating an Amazon Elastic Kubernetes Service (EKS) web application with AWS Web Application Firewall (WAF) using Azure Web Application Firewall (WAF) and Azure Application Gateway in Azure Kubernetes Service (AKS). This sample uses a WAF to protect a [Yelb](https://github.com/mreferre/yelb/) web-based application running in a Kubernetes cluster.
+This new [article](https://learn.microsoft.com/azure/aks/eks-web-overview) guides you through replicating an application hosted on Amazon EKS with AWS Web Application Firewall (WAF) to Azure. You will learn how to host the application on AKS with Azure WAF and Azure Application Gateway to protect a [Yelb](https://github.com/mreferre/yelb/) web-based application running in a Kubernetes cluster.
 
 In this guide, we explore the deployment process, starting with understanding the conceptual differences between EKS and AKS for the web application workload infrastructure. We then move on to architecting the workload for Azure, updating the application code for compatibility with Azure APIs, and preparing for deployment using the Azure CLI. Finally, we deploy the replicated workload in AKS and test it to ensure it functions as expected.
 
