@@ -119,3 +119,12 @@ Gemma Tipper:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/gememma"
+
+Sanket Bakshi:
+  name        : "Sanket Bakshi"
+  bio         : "Technical Program Manager for Cloud Native Platforms"
+  avatar      : "https://media.licdn.com/dms/image/v2/C4E03AQH38txvkPGIPQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1518066327713?e=1742428800&v=beta&t=T2Cj1iDs-oYCaA1ISi_gQCPHeTzt87N8cZ8yCjSGeEk"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/sanket-bakshi-69a55aa/"
