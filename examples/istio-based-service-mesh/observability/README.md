@@ -1,15 +1,19 @@
 # Telemetry samples
 
-This directory contains sample deployments of observability with self managed prometheus and self managed grafana.
+The addon already have native integration with Azure managed Prometheus and managed Grafana etc. We strongly suggest Azure customers use these managed solutions.
 
-## Install
+Based on artifacts from open source community, this directory contains sample deployments of observability in a self-managed manner.
+
+## Prometheus + Grafana
+
+### Install
 
 ```shell
 kubectl apply prometheus.yaml
 kubectl apply grafana.yaml
 ```
 
-## Test Grafana
+### Test Grafana
 
 ```shell
 kubectl -n aks-istio-system port-forward service/grafana 3000:3000
