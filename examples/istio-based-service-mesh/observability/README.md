@@ -1,6 +1,6 @@
 # Telemetry samples
 
-The addon already have native integration with Azure managed Prometheus and managed Grafana etc. We strongly suggest Azure customers use these managed solutions.
+The addon already has native integration with Azure managed Prometheus and managed Grafana etc. We strongly recommend Azure customers use these managed solutions.
 
 Based on artifacts from the open-source community, this directory contains sample deployments of observability in a **self**-managed scenario.
 
