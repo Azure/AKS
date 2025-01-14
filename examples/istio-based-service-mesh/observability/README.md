@@ -15,4 +15,4 @@ kubectl apply grafana.yaml
 kubectl -n aks-istio-system port-forward service/grafana 3000:3000
 ```
 
-Open http://localhost:3000 in your browser monitor the health status of your mesh.
+Open http://localhost:3000 in your browser to monitor the health status of your mesh.
