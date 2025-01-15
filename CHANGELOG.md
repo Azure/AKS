@@ -5,7 +5,8 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20250106`.
 
 ### Announcements
-
+* AKS Kubernetes version 1.31 is now in GA.
+* 
 ### Release Notes
 * Features:
   * 
@@ -14,8 +15,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavior change:
 
 * Component updates:
-
-
+  * Tigera operator image version has been bumped to v1.34.7 with this release, for clusters running Kubernetes version(and including) v1.30.0. This patches the follwing CVEs detected in the tigera operator - CVE-2021-3999, CVE-2020-1751, CVE-2019-19126, CVE-2021-35942, CVE-2020-1752, CVE-2020-10029, CVE-2019-9169, CVE-2020-6096, CVE-2021-38604, CVE-2018-19591, CVE-2018-20796, CVE-2019-9192, CVE-2021-3326, CVE-2019-6488, CVE-2016-10739, CVE-2019-7309, CVE-2022-23219, CVE-2022-23218, CVE-2019-25013, CVE-2020-27618
+  * [Azure disk-csi driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver) version has been bumped to v1.30.6 for AKS clusters running AKS Kubernetes version +v1.30. This patches the follwoing CVEs - CVE-2024-51744, CVE-2024-50602, CVE-2024-9143, CVE-2019-11255
+  * 
 ## Release 2024-10-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241025`.
