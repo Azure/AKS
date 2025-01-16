@@ -627,6 +627,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavioral change
   * `ignoreUnfixed` is now set to `false` in [scanner options](https://eraser-dev.github.io/eraser/docs/customization#scanner-options) for [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) so that images with vulnerabilities are deleted even if there is no fix/patch available for it yet.
   * Label `kubernetes.azure.com/managedby: aks` has been introduced to all managed addon components on cluster. Related issue can be found [here](https://github.com/Azure/AKS/issues/2683)
+  * In Kubernetes versions >= 1.29, AMA metrics profile automatically enables basic network observability metrics at the node level. This involves installing the Retina agent on your clusters to gather and process network data. To learn more visit [Monitor AKS](https://learn.microsoft.com/en-us/azure/aks/monitor-aks#network-observability)
 
 * Bug fixes
   * [Pod overhead](https://kubernetes.io/docs/concepts/containers/runtime-class/#pod-overhead) of memory 2Gi added to `kata-cc-isolation` [RuntimeClass](https://kubernetes.io/docs/concepts/containers/runtime-class/) to address issue where too many pods being created to use too much of the node's memory was resulting in random processes being OOM killed.
