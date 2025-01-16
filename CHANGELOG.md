@@ -23,7 +23,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Azure disk-csi driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver) version has been bumped to v1.30.6 for AKS clusters running AKS Kubernetes version +v1.30. This patches the follwoing CVEs - CVE-2024-51744, CVE-2024-50602, CVE-2024-9143, CVE-2019-11255
   * Bumping the Azure CNI version from v1.4.56 to v1.4.58 for AKS clusters (K8s version) This patches the CVE regarding grpc 1.52.0 (CVE ID)
   * Reverting CNS version from 1.6.18 to 1.6.13 for Windoows nodepools due to a bug causing intermittetent issues with Azure CNI podsubnet and overlay. .......(Github issue if available)......
-  * Cilium container image verison bumped to v1.14.15-241024 for AKS clusters running k8s version ........ This patches the CVE 
+  * Cilium container image verison bumped to v1.14.15-241024 for AKS clusters running k8s version ........ This patches the CVE
+  *  AKS Windows Server 2022 image has been updated to [v20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2966.241218.txt)
+  *  AKS Windows Server 2019 image has been updated to [17763.6659.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.6659.241218.txt)
+  *  AKS Windows Server 2022 gen2 image has been updated to [20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd-gen2/20348.2966.241218.txt)
+  *  App routing operator updated to [0.2.1-patch-6 ](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-6)for K8s < 1.30 and which upgrades external-dns to version 0.15.0 fixing a number of CVEs  (CVE-2023-39325, GHSA-m425-mq94-257g, CVE-2024-24790, CVE-2023-39325, CVE-2023-45283, CVE-2023-45288, CVE-2024-34156)
+  *  App routing operator updated to [0.2.3-patch-3](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-3) for K8s >= 1.30 which fixes an issue where Open Service Mesh would not reload correctly on Nginx deployment updates. The Prometheus metrics endpoint has now been moved to a separate Service called nginx-metrics behind a ClusterIP. Prometheus scraping will continue to work as expected.
+  *  Cost-analysis-agent image upgraded from v0.0.18 to v0.0.19. this upgrades the [golang-jwt](github.com/golang-jwt/jwt/v4) dependency in cost-analysis-agent to patch CVE-2024-51744
+  *  [Promtheus collector](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md) for Azure monitor managed prometheus addon verison bumped from 6.10.1-main-10-04-2024-77dcfe3d to 6.11.0-main-10-21-2024-91ec49e3. This fixes a bug where the minimal igestion profile keep list was not being honored. 
 ## Release 2024-10-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241025`.
