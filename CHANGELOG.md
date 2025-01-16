@@ -23,6 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Azure disk-csi driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver) version has been bumped to v1.30.6 for AKS clusters running AKS Kubernetes version +v1.30. This patches the follwoing CVEs - CVE-2024-51744, CVE-2024-50602, CVE-2024-9143, CVE-2019-11255
   * Bumping the Azure CNI version from v1.4.56 to v1.4.58 for AKS clusters (K8s version) This patches the CVE regarding grpc 1.52.0 (CVE ID)
   * Reverting CNS version from 1.6.18 to 1.6.13 for Windoows nodepools due to a bug causing intermittetent issues with Azure CNI podsubnet and overlay. .......(Github issue if available)......
+  * Cilium container image verison bumped to v1.14.15-241024 for AKS clusters running k8s version ........ This patches the CVE 
 ## Release 2024-10-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241025`.
