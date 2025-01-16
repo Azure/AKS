@@ -5,19 +5,24 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20250106`.
 
 ### Announcements
+* AKS Kubernetes verison 1.28 is deprecated as of this release, post this you will not be able to create new AKS clusters with version 1.28. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 * AKS Kubernetes version 1.31 is now in GA.
-* 
+* AKS Kubernetes patch versions 1.29.11, 1.30.7, 1.31.2 amd 1.31.3 are also available with this release.
+* AKS LTS version 1.27.101 available in all regions since December 2024. This patches the kubelet CVE-2024-10220
+* AKS no longer supports the [GPU image (preview)](https://github.com/Azure/AKS/issues/4472) to provision GPU-enabled AKS nodes. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in [AKS GPU node pool documentation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#confirm-that-gpus-are-schedulable).
+* [Kubernetes version 1.32 is the last version that supports Windows Server 2019](https://github.com/Azure/AKS/issues/4268). You will not be able to create new or upgrade existing Windows Server 2019 node pools to kubernetes version 1.33+. Follow the detailed steps [in AKS documentation](https://aka.ms/aks/ws2019-migration) to transition to Windows Server 2022 or any newly supported Windows Server version by that date. After 1 March 2026, Windows Server 2019 won't be supported.
 ### Release Notes
 * Features:
   * 
 * Preview features:
 
 * Behavior change:
-
+  * [Invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will now be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings: "User", "System", or "Gateway".
 * Component updates:
   * Tigera operator image version has been bumped to v1.34.7 with this release, for clusters running Kubernetes version(and including) v1.30.0. This patches the follwing CVEs detected in the tigera operator - CVE-2021-3999, CVE-2020-1751, CVE-2019-19126, CVE-2021-35942, CVE-2020-1752, CVE-2020-10029, CVE-2019-9169, CVE-2020-6096, CVE-2021-38604, CVE-2018-19591, CVE-2018-20796, CVE-2019-9192, CVE-2021-3326, CVE-2019-6488, CVE-2016-10739, CVE-2019-7309, CVE-2022-23219, CVE-2022-23218, CVE-2019-25013, CVE-2020-27618
   * [Azure disk-csi driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver) version has been bumped to v1.30.6 for AKS clusters running AKS Kubernetes version +v1.30. This patches the follwoing CVEs - CVE-2024-51744, CVE-2024-50602, CVE-2024-9143, CVE-2019-11255
-  * 
+  * Bumping the Azure CNI version from v1.4.56 to v1.4.58 for AKS clusters (K8s version) This patches the CVE regarding grpc 1.52.0 (CVE ID)
+  * Reverting CNS version from 1.6.18 to 1.6.13 for Windoows nodepools due to a bug causing intermittetent issues with Azure CNI podsubnet and overlay. .......(Github issue if available)......
 ## Release 2024-10-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241025`.
