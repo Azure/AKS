@@ -14,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release Notes
 * Features:
   * [Advanced Container Networking Service](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview?tabs=cilium) (ACNS) is Generally Available.
-  * Istio proxy v2 version bumped from 1.22.5 to 1.22.6, from 1.23.2 to 1.23.4
+   
 * Preview features:
 
 * Behavior change:
@@ -38,7 +38,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   *  Retina enterprise and operator image verison bumped to 0.1.3, please find more details [here](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.3)
   *  Retine basic image version bumped to [v0.0.17](https://github.com/microsoft/retina/releases/tag/v0.0.17) which patches the following CVEs: CVE-2024-37307, CVE-2024-42486, CVE-2024-42487, CVE-2024-42488, CVE-2024-47825, and CVE-2023-45288
   *  NPM image version bumped to v1.5.39 to fix potential connectivity issues for clusters with "azure" network policy manager on nodes with high scale of iptables rules and CVE-2024-34155, CVE-2024-34156, and CVE-2024-34158
-  *  
+  *  Istio proxy v2 version bumped from 1.22.5 to 1.22.6, from 1.23.2 to 1.23.4
 ## Release 2024-10-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241025`.
