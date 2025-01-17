@@ -14,7 +14,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Release Notes
 * Features:
-  * [Advanced Container Networking Service](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview?tabs=cilium) (ACNS) is Generally Available.
+  * [Advanced Container Networking Service](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview?tabs=cilium) (ACNS) is Generally Available.
    
 * Preview features:
   * SeccompDefault is now an available parameter in custom node configuration. For more information on enabling seccomp profiles, see [Secure container access to resources](https://learn.microsoft.com/azure/aks/secure-container-access).
