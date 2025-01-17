@@ -21,8 +21,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior change:
   * [Invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will now be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings: "User", "System", or "Gateway".
-  * [Bug Fix] GPU bootstrapping issue impacting GPU provisioning with Node Auto Provision has been fixed. Refer [here](https://github.com/Azure/karpenter-provider-azure/pull/587) for details.
-  * [Bug Fix] Bug pertaining to NVMe SKUs (ex: V6 Azure VMs) which caused provisioning failure with Node Auto Provisioning(NAP) has been fix, currently NVMe VMs are not supported with NAP and will be excluded from karpentar considerations. Please see list of supported VMs [here](https://github.com/Azure/karpenter-provider-azure/blob/main/designs/gpu-selection-and-bootstrap.md#supported-gpu-skus-and-expected-drivers)
+ 
+* Bug Fix: 
+  * GPU bootstrapping issue impacting GPU provisioning with Node Auto Provision has been fixed. Refer [here](https://github.com/Azure/karpenter-provider-azure/pull/587) for details.
+  * Bug pertaining to NVMe SKUs (ex: V6 Azure VMs) which caused provisioning failure with Node Auto Provisioning(NAP) has been fix, currently NVMe VMs are not supported with NAP and will be excluded from karpentar considerations. Please see list of supported VMs [here](https://github.com/Azure/karpenter-provider-azure/blob/main/designs/gpu-selection-and-bootstrap.md#supported-gpu-skus-and-expected-drivers)
+    
 * Component updates:
   * Tigera operator image version has been bumped to v1.34.7 with this release, for clusters running Kubernetes version(and including) v1.30.0. This patches the follwing CVEs detected in the tigera operator - CVE-2021-3999, CVE-2020-1751, CVE-2019-19126, CVE-2021-35942, CVE-2020-1752, CVE-2020-10029, CVE-2019-9169, CVE-2020-6096, CVE-2021-38604, CVE-2018-19591, CVE-2018-20796, CVE-2019-9192, CVE-2021-3326, CVE-2019-6488, CVE-2016-10739, CVE-2019-7309, CVE-2022-23219, CVE-2022-23218, CVE-2019-25013, CVE-2020-27618 . PLease find more CVE details in [National Vulnerability Database search](https://nvd.nist.gov/vuln/search)
   * Azure Disks CSI driver version has been bumped to [v1.30.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.6) for AKS clusters running AKS Kubernetes version +v1.30. This patches the follwoing CVEs - CVE-2024-51744, CVE-2024-50602, CVE-2024-9143, CVE-2019-11255
