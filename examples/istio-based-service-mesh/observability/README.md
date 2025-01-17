@@ -9,8 +9,8 @@ Based on artifacts from the open-source community, this directory contains sampl
 ### Install
 
 ```shell
-kubectl apply prometheus.yaml
-kubectl apply grafana.yaml
+kubectl apply -f prometheus.yaml
+kubectl apply -f grafana.yaml
 ```
 
 ### Test Grafana
