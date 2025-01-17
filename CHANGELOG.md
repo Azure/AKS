@@ -16,6 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Advanced Container Networking Service](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview?tabs=cilium) (ACNS) is Generally Available.
    
 * Preview features:
+  * SeccompDefault is now an available parameter in custom node configuration. For more information on enabling seccomp profiles, see [Secure container access to resources](https://learn.microsoft.com/azure/aks/secure-container-access).
 
 * Behavior change:
   * [Invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will now be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings: "User", "System", or "Gateway".
