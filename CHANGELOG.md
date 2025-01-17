@@ -25,15 +25,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Bug Fix: 
   * GPU bootstrapping issue impacting GPU provisioning with Node Auto Provision has been fixed. Refer [here](https://github.com/Azure/karpenter-provider-azure/pull/587) for details.
   * Bug pertaining to NVMe SKUs (ex: V6 Azure VMs) which caused provisioning failure with Node Auto Provisioning(NAP) has been fix, currently NVMe VMs are not supported with NAP and will be excluded from karpentar considerations. Please see list of supported VMs [here](https://github.com/Azure/karpenter-provider-azure/blob/main/designs/gpu-selection-and-bootstrap.md#supported-gpu-skus-and-expected-drivers)
+  * Fixed an issue in v1.31 where Cluster Autoscaler did not respond to external changes in Spot VMSS count (e.g., evictions), leading to scale-up failures. See more details [Github Issue 7373](https://github.com/kubernetes/autoscaler/issues/7373)
+  * Fix for this windows nodes CNS pods restarting [Github issue](https://github.com/Azure/AKS/issues/4679) This is resolved by bypassing the startup script and using the Pod InClusterConfig instead of a static kubeconfig when CNS is running on AKS >1.27.
     
 * Component updates:
   * Tigera operator image version has been bumped to v1.34.7 with this release, for clusters running Kubernetes version(and including) v1.30.0. This patches the follwing CVEs detected in the tigera operator - CVE-2021-3999, CVE-2020-1751, CVE-2019-19126, CVE-2021-35942, CVE-2020-1752, CVE-2020-10029, CVE-2019-9169, CVE-2020-6096, CVE-2021-38604, CVE-2018-19591, CVE-2018-20796, CVE-2019-9192, CVE-2021-3326, CVE-2019-6488, CVE-2016-10739, CVE-2019-7309, CVE-2022-23219, CVE-2022-23218, CVE-2019-25013, CVE-2020-27618 . Please find more CVE details in [National Vulnerability Database search](https://nvd.nist.gov/vuln/search)
   * Azure Disks CSI driver version has been bumped to [v1.30.6](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.6) for AKS clusters running AKS Kubernetes version +v1.30. This patches the follwoing CVEs - CVE-2024-51744, CVE-2024-50602, CVE-2024-9143, CVE-2019-11255
   * Bumping the Azure CNI version from v1.4.56 to v1.4.58 for AKS clusters (K8s version) This patches the CVE regarding grpc 1.52.0 (CVE ID)
-  * Reverting CNS version from 1.6.18 to 1.6.13 for Windoows nodepools due to a bug causing intermittetent issues with Azure CNI podsubnet and overlay. .......(Github issue if available)......
+  * Reverting CNS version from 1.6.18 to 1.6.13 for Windoows nodepools due to a bug causing intermittetent issues with Azure CNI podsubnet and overlay.
   * Cilium container image verison bumped to v1.14.15-241024 for AKS clusters running k8s version greater than v1.29.
-  * AKS Azure Linux image has been updated to 202501.12.0.
-  * AKS Ubuntu image has been updated to 202501.12.0.
+  * AKS Azure Linux image has been updated to [202501.12.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSAzureLinux/gen2/202501.12.0.txt)
+  * AKS Ubuntu image has been updated to [202501.12.0.](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen1/2204containerd/202501.12.0.txt)
   *  AKS Windows Server 2022 image has been updated to [v20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2966.241218.txt)
   *  AKS Windows Server 2019 image has been updated to [17763.6659.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.6659.241218.txt)
   *  AKS Windows Server 2022 gen2 image has been updated to [20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd-gen2/20348.2966.241218.txt)
@@ -45,7 +47,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   *  Retina enterprise and operator image verison bumped to 0.1.3, please find more details [here](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.3)
   *  Retine basic image version bumped to [v0.0.17](https://github.com/microsoft/retina/releases/tag/v0.0.17) which patches the following CVEs: CVE-2024-37307, CVE-2024-42486, CVE-2024-42487, CVE-2024-42488, CVE-2024-47825, and CVE-2023-45288
   *  NPM image version bumped to v1.5.39 to fix potential connectivity issues for clusters with "azure" network policy manager on nodes with high scale of iptables rules and CVE-2024-34155, CVE-2024-34156, and CVE-2024-34158
-  *  Istio proxy v2 version bumped from 1.22.5 to 1.22.6, from 1.23.2 to 1.23.4
+  * Istio-based service mesh add-on revision asm-1-23 has been upgraded to patch [v1.23.4](https://istio.io/latest/news/releases/1.23.x/announcing-1.23.4/), revision asm-1-22 has been upgraded to patch [v1.22.7](https://istio.io/latest/news/releases/1.22.x/announcing-1.22.7/), and revision asm-1-22 has been upgraded to patch [v1.22.3](https://istio.io/latest/news/releases/1.22.x/announcing-1.22.3). Users can restart the workload pods to trigger re-injection of the newer patch version of istio-proxy. More information can be found [here](https://learn.microsoft.com/azure/aks/istio-upgrade#patch-version-upgrade). Vulnerability CVE-2024-41110 and CVE-2024-53271 has been addressed in the patch version 1.23.4 and 1.22.7.
+
 ## Release 2024-10-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241025`.
