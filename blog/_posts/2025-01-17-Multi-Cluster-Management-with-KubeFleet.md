@@ -7,7 +7,7 @@ categories: general
 ---
 
 
-In the ever-evolving world of cloud-native technologies, managing multiple Kubernetes clusters efficiently is a significant challenge. KubeFleet is a groundbreaking solution designed to streamline and enhance the management of applications running across multiple Kubernetes clusters. This open-source project was recently accepted as a [CNCF sandbox project](https://github.com/cncf/sandbox/issues/307). This was a journey 3 years in making! 
+In the ever-evolving world of cloud native technologies, managing multiple Kubernetes clusters efficiently is a challenge. KubeFleet makes it easier and more efficient to manage applications running across multiple Kubernetes clusters.. This open-source project was recently accepted as a [CNCF sandbox project](https://github.com/cncf/sandbox/issues/307). This was a journey 3 years in making! 
 
 Managing multiple Kubernetes clusters introduces several challenges such as -  
 
