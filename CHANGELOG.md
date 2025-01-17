@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * [Invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will now be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings: "User", "System", or "Gateway".
  
 * Bug Fix: 
-  * GPU bootstrapping issue impacting GPU provisioning with Node Auto Provision has been fixed. Refer [here](https://github.com/Azure/karpenter-provider-azure/pull/587) for details.
+  * GPU bootstrapping issue impacting GPU provisioning with Node Auto Provision has been fixed. Refer [Github issue](https://github.com/Azure/karpenter-provider-azure/pull/587) for more details.
   * Bug pertaining to NVMe SKUs (ex: V6 Azure VMs) which caused provisioning failure with Node Auto Provisioning(NAP) has been fix, currently NVMe VMs are not supported with NAP and will be excluded from karpentar considerations. Please see list of supported VMs [here](https://github.com/Azure/karpenter-provider-azure/blob/main/designs/gpu-selection-and-bootstrap.md#supported-gpu-skus-and-expected-drivers)
   * Fixed an issue in v1.31 where Cluster Autoscaler did not respond to external changes in Spot VMSS count (e.g., evictions), leading to scale-up failures. See more details [Github Issue 7373](https://github.com/kubernetes/autoscaler/issues/7373)
   * Fix for this windows nodes CNS pods restarting [Github issue](https://github.com/Azure/AKS/issues/4679) This is resolved by bypassing the startup script and using the Pod InClusterConfig instead of a static kubeconfig when CNS is running on AKS >1.27.
