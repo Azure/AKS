@@ -5,7 +5,7 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20250106`.
 
 ### Announcements
-* AKS Kubernetes verison 1.28 is deprecated by Jan 30, 2025. Kindly upgrade your clusters to 1.29 version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+* AKS Kubernetes version 1.28 is deprecated by Jan 30, 2025. Kindly upgrade your clusters to 1.29 version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 * AKS Kubernetes version 1.31 is now in GA.
 * AKS Kubernetes patch versions 1.29.11, 1.30.7, 1.31.2, and 1.31.3 are now available.
 * AKS LTS version 1.27.101 available in all regions since December 2024. This patches the kubelet CVE-2024-10220
