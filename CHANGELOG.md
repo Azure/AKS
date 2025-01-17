@@ -29,6 +29,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Bumping the Azure CNI version from v1.4.56 to v1.4.58 for AKS clusters (K8s version) This patches the CVE regarding grpc 1.52.0 (CVE ID)
   * Reverting CNS version from 1.6.18 to 1.6.13 for Windoows nodepools due to a bug causing intermittetent issues with Azure CNI podsubnet and overlay. .......(Github issue if available)......
   * Cilium container image verison bumped to v1.14.15-241024 for AKS clusters running k8s version greater than v1.29.
+  * AKS Azure Linux image has been updated to 202501.12.0.
+  * AKS Ubuntu image has been updated to 202501.12.0.
   *  AKS Windows Server 2022 image has been updated to [v20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2966.241218.txt)
   *  AKS Windows Server 2019 image has been updated to [17763.6659.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.6659.241218.txt)
   *  AKS Windows Server 2022 gen2 image has been updated to [20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd-gen2/20348.2966.241218.txt)
