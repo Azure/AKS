@@ -18,19 +18,23 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior change:
   * [Invalid values sent to the Azure AKS API for the properties.mode field of AKS AgentPools will now be rejected](https://github.com/Azure/AKS/issues/4468). Prior to this change, unknown modes were assumed to be User. The only valid values for this field are the (case-sensitive) strings: "User", "System", or "Gateway".
+  * [Bug Fix] GPU bootstrapping issue impacting GPU provisioning with Node Auto Provision has been fixed. Refer [here](https://github.com/Azure/karpenter-provider-azure/pull/587) for details.
+  * [Bug Fix] Bug pertaining to NVMe SKUs (ex: V6 Azure VMs) which caused provisioning failure with Node Auto Provisioning(NAP) has been fix, currently NVMe VMs are not supported with NAP and will be excluded from karpentar considerations. Please see list of supported VMs [here](https://github.com/Azure/karpenter-provider-azure/blob/main/designs/gpu-selection-and-bootstrap.md#supported-gpu-skus-and-expected-drivers)
 * Component updates:
   * Tigera operator image version has been bumped to v1.34.7 with this release, for clusters running Kubernetes version(and including) v1.30.0. This patches the follwing CVEs detected in the tigera operator - CVE-2021-3999, CVE-2020-1751, CVE-2019-19126, CVE-2021-35942, CVE-2020-1752, CVE-2020-10029, CVE-2019-9169, CVE-2020-6096, CVE-2021-38604, CVE-2018-19591, CVE-2018-20796, CVE-2019-9192, CVE-2021-3326, CVE-2019-6488, CVE-2016-10739, CVE-2019-7309, CVE-2022-23219, CVE-2022-23218, CVE-2019-25013, CVE-2020-27618
   * [Azure disk-csi driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver) version has been bumped to v1.30.6 for AKS clusters running AKS Kubernetes version +v1.30. This patches the follwoing CVEs - CVE-2024-51744, CVE-2024-50602, CVE-2024-9143, CVE-2019-11255
   * Bumping the Azure CNI version from v1.4.56 to v1.4.58 for AKS clusters (K8s version) This patches the CVE regarding grpc 1.52.0 (CVE ID)
   * Reverting CNS version from 1.6.18 to 1.6.13 for Windoows nodepools due to a bug causing intermittetent issues with Azure CNI podsubnet and overlay. .......(Github issue if available)......
-  * Cilium container image verison bumped to v1.14.15-241024 for AKS clusters running k8s version ........ This patches the CVE
+  * Cilium container image verison bumped to v1.14.15-241024 for AKS clusters running k8s version greater than v1.29.
   *  AKS Windows Server 2022 image has been updated to [v20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.2966.241218.txt)
   *  AKS Windows Server 2019 image has been updated to [17763.6659.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2019-containerd/17763.6659.241218.txt)
   *  AKS Windows Server 2022 gen2 image has been updated to [20348.2966.241218](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSWindows/2022-containerd-gen2/20348.2966.241218.txt)
   *  App routing operator updated to [0.2.1-patch-6 ](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-6)for K8s < 1.30 and which upgrades external-dns to version 0.15.0 fixing a number of CVEs  (CVE-2023-39325, GHSA-m425-mq94-257g, CVE-2024-24790, CVE-2023-39325, CVE-2023-45283, CVE-2023-45288, CVE-2024-34156)
   *  App routing operator updated to [0.2.3-patch-3](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-3) for K8s >= 1.30 which fixes an issue where Open Service Mesh would not reload correctly on Nginx deployment updates. The Prometheus metrics endpoint has now been moved to a separate Service called nginx-metrics behind a ClusterIP. Prometheus scraping will continue to work as expected.
   *  Cost-analysis-agent image upgraded from v0.0.18 to v0.0.19. this upgrades the [golang-jwt](github.com/golang-jwt/jwt/v4) dependency in cost-analysis-agent to patch CVE-2024-51744
-  *  [Promtheus collector](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md) for Azure monitor managed prometheus addon verison bumped from 6.10.1-main-10-04-2024-77dcfe3d to 6.11.0-main-10-21-2024-91ec49e3. This fixes a bug where the minimal igestion profile keep list was not being honored. 
+  *  [Promtheus collector](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md) for Azure monitor managed prometheus addon verison bumped from 6.10.1-main-10-04-2024-77dcfe3d to 6.11.0-main-10-21-2024-91ec49e3. This fixes a bug where the minimal igestion profile keep list was not being honored.
+  *  Application Gateway ingress controller addon version bumped from 1.7.4 to 1.7.6. This patches the following CVEs .......
+  *  Retina enterprise and operator image verison bumped to 0.1.3, please find more details [here](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.3)
 ## Release 2024-10-25
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20241025`.
