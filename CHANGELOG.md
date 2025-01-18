@@ -6,10 +6,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 * AKS Kubernetes version 1.28 is deprecated by Jan 30, 2025. Kindly upgrade your clusters to 1.29 version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
-* AKS Kubernetes version 1.31 is now in GA.
 
 ### Release Notes
 * Features:
+  * AKS Kubernetes version 1.31 is now in GA.
   * AKS Kubernetes patch versions 1.29.11, 1.30.7, 1.31.2, and 1.31.3 are now available.
   * AKS LTS version 1.27.101 available in all regions since December 2024. This patches the kubelet [CVE-2024-10220](https://nvd.nist.gov/vuln/detail/CVE-2024-10220)
   * [Advanced Container Networking Service](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview?tabs=cilium) (ACNS) is Generally Available.
@@ -27,7 +27,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * GPU bootstrapping issue impacting GPU provisioning with Node Auto Provision has been fixed. Refer [Github issue](https://github.com/Azure/karpenter-provider-azure/pull/587) for more details.
   * Fixed an issue in v1.31 where Cluster Autoscaler did not respond to external changes in Spot VMSS based nodepool's node count (e.g., evictions), leading to scale-up failures. Refer [Github Issue 7373](https://github.com/kubernetes/autoscaler/issues/7373) for more details.
   * Resolved an issue [(NotFound error message)](https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/error-not-found?tabs=bicep#symptoms) when querying a VM which has been deleted, which results in the NodeClaim being stuck in notReady state resulting in the NodeClaim not being deleted.
-  * Fixed the windows nodes CNS pods restarting [Github issue](https://github.com/Azure/AKS/issues/4679). This is resolved by bypassing the startup script and using the Pod InClusterConfig instead of a static kubeconfig when CNS is running on AKS >1.27.
+  * Fixed the windows nodes CNS pods restarting [Github issue](https://github.com/Azure/AKS/issues/4679) observed in clusters running on AKS +v1.27 Kubernetes version.
     
 * Component updates:
   * Tigera operator image version has been bumped to [v1.34.7](https://github.com/tigera/operator/releases/tag/v1.34.7) with this release, for clusters running Kubernetes version (and including) v1.30.0. This patches the following CVEs detected in the tigera operator - [CVE-2021-3999](https://nvd.nist.gov/vuln/detail/CVE-2021-3999), [CVE-2020-1751](https://nvd.nist.gov/vuln/detail/CVE-2020-1751), [CVE-2019-19126](https://nvd.nist.gov/vuln/detail/CVE-2019-19126), [CVE-2021-35942](https://nvd.nist.gov/vuln/detail/CVE-2021-35942), [CVE-2020-1752](https://nvd.nist.gov/vuln/detail/CVE-2020-1752), [CVE-2020-10029](https://nvd.nist.gov/vuln/detail/CVE-2020-10029), [CVE-2019-9169](https://nvd.nist.gov/vuln/detail/CVE-2019-9169), [CVE-2020-6096](https://nvd.nist.gov/vuln/detail/CVE-2020-6096), [CVE-2021-38604](https://nvd.nist.gov/vuln/detail/CVE-2021-38604), [CVE-2018-19591](https://nvd.nist.gov/vuln/detail/CVE-2018-19591), [CVE-2018-20796](https://nvd.nist.gov/vuln/detail/CVE-2018-20796), [CVE-2019-9192](https://nvd.nist.gov/vuln/detail/CVE-2019-9192), [CVE-2021-3326](https://nvd.nist.gov/vuln/detail/CVE-2021-3326), [CVE-2019-6488](https://nvd.nist.gov/vuln/detail/CVE-2019-6488), [CVE-2016-10739](https://nvd.nist.gov/vuln/detail/CVE-2016-10739), [CVE-2019-7309](https://nvd.nist.gov/vuln/detail/CVE-2019-7309), [CVE-2022-23219](https://nvd.nist.gov/vuln/detail/CVE-2022-23219), [CVE-2022-23218](https://nvd.nist.gov/vuln/detail/CVE-2022-23218), [CVE-2019-25013](https://nvd.nist.gov/vuln/detail/CVE-2019-25013), [CVE-2020-27618](https://nvd.nist.gov/vuln/detail/CVE-2020-27618).
