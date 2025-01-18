@@ -66,23 +66,4 @@ this repository must:
 [1]: https://azure.microsoft.com/support/options/
 [2]: https://docs.microsoft.com/azure/aks/support-policies
 
-## Hiring
-### PM
-#### Australia/New Zealand
-* [Senior Technical Program Manager - Kubernetes Networking](https://jobs.careers.microsoft.com/global/en/share/1691905/)
-* [Technical Program Manager - Kubernetes Networking](https://jobs.careers.microsoft.com/global/en/share/1691890/)
-
-### Engineering
-#### US
-
-#### Australia/New Zealand
-* [Principal Software Engineer Manager](https://jobs.careers.microsoft.com/global/en/job/1711880/Principal-Software-Engineer-Manager)
-* [Principal Software Engineer](https://jobs.careers.microsoft.com/global/en/job/1712342/Principal-Software-Engineer)
-* [Senior Software Engineer](https://jobs.careers.microsoft.com/global/en/job/1711660/Senior-Software-Engineer)
-* [Software Engineer II](https://jobs.careers.microsoft.com/global/en/job/1711291/Software-Engineer-II)
-
-#### Ireland
-* [Principal Software Engineer](https://jobs.careers.microsoft.com/global/en/share/1685977)
-* [Senior Software Engineer](https://jobs.careers.microsoft.com/global/en/share/1685498)
-* [Software Engineer](https://jobs.careers.microsoft.com/global/en/share/1685937)
 
