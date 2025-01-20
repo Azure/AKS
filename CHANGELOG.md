@@ -73,6 +73,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
   * [GitHub Copilot](https://azure.microsoft.com/products/github/Copilot) for Azure now supports [AKS commands](https://learn.microsoft.com/azure/aks/aks-extension-ghcopilot-plugins).
   * You can now skip one release [while upgrading Azure Service Mesh](https://learn.microsoft.com/azure/aks/istio-upgrade) as long as the destination release is a supported revision - for example, asm-1-21 can upgrade directly to asm-1-23.
   * You can now fine-tune supported models on KAITO version [0.3.1](https://github.com/Azure/kaito/releases/tag/v0.3.1) with the AI toolchain operator add-on on your AKS cluster.
+  * Advanced Container Networking Services (ACNS) is now Generally Availabe. To earn more please see the [ACNS Documentation](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview?tabs=cilium). 
 
 * Preview features:
   * We've added [a new way to optimize your upgrade process drain behavior](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#optimize-for-undrainable-node-behavior-preview). By default, a node drain failure causes the upgrade operation to fail, leaving the undrained nodes in a schedulable state, this behavior is called `Schedule`. Alternatively, you can select the `Cordon` behavior, which skips nodes that fail to drain by placing them in a quarantined state, labeling them `kubernetes.azure.com/upgrade-status:Quarantined` and proceeds with upgrading the remaining nodes. This ensures that all nodes are either upgraded or quarantined. This approach allows you to troubleshoot drain failures and gracefully manage the quarantined nodes.
@@ -86,6 +87,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
   * AKS CoreDNS configuration will now block all queries ending in `reddog.microsoft.com` and some queries ending in `internal.cloudapp.net` from being forwarded to upstream DNS when they are the result of improper search domain completion. See [the documentation for more details.](https://learn.microsoft.com/azure/aks/coredns-custom#invalid-search-domain-completions-for-internalcloudappnet-and-reddogmicrosoftcom)
   * Azure NPM's CPU request has been lowered from 250m to 50m.
   * Azure CNI Overlay now checks that the pod CIDR does not conflict with any subnet in the virtual network, rather than checking if it conflicts with the virtual network address space as a whole.
+  * Azure CNI Overlay is now the default networking configuration for AKS clusters. This means, when runnging `az aks create --name TestCluster --Resource-Group TestGroup`, by default, Azure CNI Overlay will be the CNI for the cluster. Other networking configurations are still availble with definition.
 
 * Component updates:
   * gMSA support is updated to version [v0.10.0](https://github.com/kubernetes-sigs/windows-gmsa/releases/tag/v0.10.0), adding support for random hostnames and fixing [an issue with multiple containers invalidating domain trusts.](https://github.com/microsoft/Windows-Containers/issues/405)
