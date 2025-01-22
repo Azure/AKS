@@ -24,7 +24,7 @@ In this blog post, we'll delve into what KubeFleet is, its key features, and how
 ## What is KubeFleet? 
 
 KubeFleet is an open-source, multi-cluster Kubernetes resource management solution developed by Microsoft Azure. It provides a robust framework for orchestrating and distributing Kubernetes resources representing configs (e.g., roles, bindings, quotas, policies) and applications (e.g., deployments, services) across a fleet of Kubernetes clusters. Whether you're managing clusters on-premises, in the cloud, or in a hybrid environment, KubeFleet offers the tools you need to ensure seamless operations. 
-KubeFleet is designed to be cloud provider agnostic. This allows KubeFleet to manage clusters across cloud providers and on-perm. It also supports provider mode that allows each adapter to provide their customized plug-ins like resource price.
+KubeFleet is designed to be cloud provider agnostic. This allows KubeFleet to manage clusters across cloud providers and on-prem. It also supports provider mode that allows each adapter to provide their customized plug-ins like resource price.
 
 ## Key Features of KubeFleet 
 
