@@ -19,7 +19,7 @@ Managing multiple Kubernetes clusters can be challenging, with issues like -
 The team in AKS created the open source [KubeFleet](https://github.com/Azure/fleet) project specifically to help kubernetes users manage multiple Kubernetes clusters easier and more efficiently. We also build a managed service called 
 [Azure Kubernetes Fleet Manager] (https://learn.microsoft.com/azure/kubernetes-fleet/overview) on top of KubeFleet to provide a managed experience with full Azure support and multi-cluster traffic management capabilities.
 
-This open-source project was recently accepted as a [CNCF sandbox project](https://github.com/cncf/sandbox/issues/307). This was a journey 3 years in making! In this blog post, we'll delve into what KubeFleet is, its key features, and how it can benefit your organization.  
+This open-source project was recently accepted as a [CNCF sandbox project](https://aka.ms/aks/kubefleet/cncfsandboxissue). This was a journey 3 years in making! In this blog post, we'll delve into what KubeFleet is, its key features, and how it can benefit your organization.  
 
 ## What is KubeFleet? 
 
