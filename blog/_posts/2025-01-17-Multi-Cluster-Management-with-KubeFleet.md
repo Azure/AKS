@@ -7,7 +7,7 @@ categories: general
 ---
 
 
-In the ever-evolving world of cloud native technologies, managing multiple Kubernetes clusters efficiently is a challenge. KubeFleet makes it easier and more efficient to manage applications running across multiple Kubernetes clusters.. This open-source project was recently accepted as a [CNCF sandbox project](https://github.com/cncf/sandbox/issues/307). This was a journey 3 years in making! 
+In the ever-evolving world of cloud native technologies, managing multiple Kubernetes clusters efficiently is a challenge. KubeFleet makes it easier and more efficient to manage applications running across multiple Kubernetes clusters.. This open-source project was recently accepted as a [CNCF sandbox project](https://aka.ms/aks/kubefleet/cncfsandboxissue). This was a journey 3 years in making! 
 
 Managing multiple Kubernetes clusters can be challenging, with issues like -  
 
@@ -42,7 +42,7 @@ KubeFleet is designed to be cloud provider agnostic. This allows KubeFleet to ma
 
 KubeFleet operates on a hub-and-spoke model, where a central hub cluster hosts the control plane, and member clusters are part of the fleet. The hub cluster manages the orchestration and coordination of resources across the member clusters. This architecture ensures that all clusters in the fleet are managed consistently and efficiently. 
 
-![KubeFleet Architecture!](https://github.com/Azure/fleet/raw/main/docs/concepts/Components/architecture.jpg)
+![KubeFleet Architecture!](https://aka.ms/aks/kubefleet/architectureimage)
 
 
 ## Benefits of Using KubeFleet 
