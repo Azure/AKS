@@ -36,7 +36,7 @@ kro introduces the concept of a ResourceGraphDefinition, which specifies how a s
 
 ## Get started with kro
 
-While we work to get kro ready for production, you can help shape its evolution. We’re already thinking ahead in our roadmap and will soon be sharing more details. We’re collaborating on [GitHub - kro-run/kro: kro | Kube Resource Orchestrator](https://github.com/kro-run/kro) and communicating in the [#kro channel](https://kubernetes.slack.com/archives/C081TMY9D6Y) on [Kubernetes Slack](https://communityinviter.com/apps/kubernetes/community), so join us there for updates.
+While we work to get kro ready for production, you can help shape its evolution. We’re already thinking ahead in our roadmap and will soon be sharing more details. We’re collaborating on [GitHub](https://github.com/kro-run/kro) and communicating in the [#kro channel](https://kubernetes.slack.com/archives/C081TMY9D6Y) on [Kubernetes Slack](https://communityinviter.com/apps/kubernetes/community), so join us there for updates.
 
 Our choice to work in the open means that you can have confidence that we’re considering the community’s input and creating a structure for participation via open governance. If you’d like to help create a foundational tool from the ground up, with the benefit of having your needs informing the earliest decisions, we would be thrilled to have you build the kro project in the community with us!
 
