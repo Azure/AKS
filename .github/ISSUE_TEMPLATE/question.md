@@ -10,5 +10,7 @@ assignees: ''
 **Describe scenario**
 A clear and concise description of what your scenario is.
 
+Optional: Set the appropriate GitHub label(s) to indicate the AKS feature or area your question relates to.
+
 **Question**
 Your question

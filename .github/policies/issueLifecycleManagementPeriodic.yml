@@ -1,14 +1,14 @@
 id: issueLifecycleManagementPeriodic
 name: GitOps.PullRequestIssueManagement
 description: Manage issue lifecycle via periodic parsing of issues
-owner: 
+owner: Azure/aks-pm
 resource: repository
 disabled: false
 where: 
 configuration:
   resourceManagementConfiguration:
     scheduledSearches:
-    - description: Mark as needing attention and tag AKS triage team members - 5 days inactivity - runs several times a day
+    - description: Mark as 'needs attention' and tag AKS triage team members - 5 days inactivity - runs several times a day
       frequencies: 
       - daily:
           time: 9:0
@@ -35,6 +35,91 @@ configuration:
           reply: Action required from @aritraghosh, @julia-yin, @AllenWen-at-Azure
       - addLabel:
           label: 'Needs Attention :wave:'
+    - description: Mark as 'action required' any open item without certain labels - 30 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - isNotLabeledWith:
+          label: triage
+      - isNotLabeledWith:
+          label: Needs Information
+      - isNotLabeledWith:
+          label: action-required
+      - isNotLabeledWith:
+          label: announcement
+      - isNotLabeledWith:
+          label: awareness
+      - isNotLabeledWith:
+          label: feature-request
+      - isNotLabeledWith:
+          label: wontfix
+      - isNotLabeledWith:
+          label: Feedback
+      - isNotLabeledWith:
+          label: enhancement
+      - isNotLabeledWith:
+          label: resolution/fix-released
+      - noActivitySince:
+          days: 30
+      - isNotLabeledWith:
+          label: service-updates
+      - isNotLabeledWith:
+          label: resolution/shipped
+      actions:
+      - addLabel:
+          label: action-required
+    - description: Notify AKS PMs of issues marked as 'triage' with no activity for 2 days - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: triage
+      - noActivitySince:
+          days: 2
+      - isNotLabeledWith:
+          label: action-required
+      actions:
+      - addLabel:
+          label: action-required
+      - addReply:
+          reply: Triage required from @Azure/aks-pm ${assignees}
+    - description: Notify AKS PMs for issues that are unassigned and unlabeled - runs weekly on Wednesday at 11am
+      frequencies:
+      - weekday:
+          day: Wednesday
+          time: 11:0
+      filters:
+      - isIssue
+      - isOpen
+      - isNotAssigned
+      - hasNoLabel
+      actions:
+      - addReply:
+          reply: '@Azure/aks-pm issue needs labels'
+    - description: Notify AKS Leads of 'needs attention' items not waiting on information or author feedback after 14 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: 'Needs Attention :wave:'
+      - noActivitySince:
+          days: 14
+      - isNotLabeledWith:
+          label: Needs Information
+      - isNotLabeledWith:
+          label: Needs Author Feedback
+      actions:
+      - addReply:
+          reply: Issue needing attention of @Azure/aks-leads
     - description: Stale any open unassigned issue that is not a bug or feature request that has 14 days inactivity - runs every 6 hours
       frequencies:
       - hourly:
@@ -56,24 +141,6 @@ configuration:
           label: stale
       - addReply:
           reply: This issue has been automatically marked as stale because it has not had any activity for **14 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-    - description: Stale any open issue that is a bug that has 30 days inactivity - runs every 6 hours
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isOpen
-      - noActivitySince:
-          days: 30
-      - isNotLabeledWith:
-          label: stale
-      - hasLabel:
-          label: bug
-      actions:
-      - addLabel:
-          label: stale
-      - addReply:
-          reply: This issue has been automatically marked as stale because it has not had any activity for **30 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${assignees}
     - description: Stale any open issue that is a feature request without activity for 180 days - runs every 6 hours
       frequencies:
       - hourly:
@@ -150,91 +217,6 @@ configuration:
           label: stale
       - addReply:
           reply: This issue has been automatically marked as stale because it has not had any activity for **180 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-    - description: Notify AKS PMs of issues marked as 'triage' with no activity for 2 days - runs every 6 hours
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isOpen
-      - hasLabel:
-          label: triage
-      - noActivitySince:
-          days: 2
-      - isNotLabeledWith:
-          label: action-required
-      actions:
-      - addLabel:
-          label: action-required
-      - addReply:
-          reply: Triage required from @Azure/aks-pm ${assignees}
-    - description: Notify AKS Leads of 'needs attention' items not waiting on information or author feedback after 14 days inactivity - runs every 6 hours
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isOpen
-      - hasLabel:
-          label: 'Needs Attention :wave:'
-      - noActivitySince:
-          days: 14
-      - isNotLabeledWith:
-          label: Needs Information
-      - isNotLabeledWith:
-          label: Needs Author Feedback
-      actions:
-      - addReply:
-          reply: Issue needing attention of @Azure/aks-leads
-    - description: Notify AKS PMs for issues that are unassigned and unlabeled - runs weekly on Wednesday at 11am
-      frequencies:
-      - weekday:
-          day: Wednesday
-          time: 11:0
-      filters:
-      - isIssue
-      - isOpen
-      - isNotAssigned
-      - hasNoLabel
-      actions:
-      - addReply:
-          reply: '@Azure/aks-pm issue needs labels'
-    - description: Mark as 'action required' any open item without specific labels - runs every 6 hours
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isOpen
-      - isNotLabeledWith:
-          label: triage
-      - isNotLabeledWith:
-          label: Needs Information
-      - isNotLabeledWith:
-          label: action-required
-      - isNotLabeledWith:
-          label: announcement
-      - isNotLabeledWith:
-          label: awareness
-      - isNotLabeledWith:
-          label: feature-request
-      - isNotLabeledWith:
-          label: wontfix
-      - isNotLabeledWith:
-          label: Feedback
-      - isNotLabeledWith:
-          label: enhancement
-      - isNotLabeledWith:
-          label: resolution/fix-released
-      - noActivitySince:
-          days: 30
-      - isNotLabeledWith:
-          label: service-updates
-      - isNotLabeledWith:
-          label: resolution/shipped
-      actions:
-      - addLabel:
-          label: action-required
     - description: Close issue marked as 'answer provided' that has had no activity for 2 days - runs every 6 hours
       frequencies:
       - hourly:
@@ -250,7 +232,7 @@ configuration:
       - addReply:
           reply: Thanks for reaching out. I'm closing this issue as it was marked with "Answer Provided" and it hasn't had activity for 2 days.
       - closeIssue
-    - description: Close issue marked as 'fix released' that has had no activity for 7 days - runs every 12 hours
+    - description: Close issue marked as 'fix released' or 'shipped' that has had no activity for 7 days - runs every 12 hours
       frequencies:
       - hourly:
           hour: 12
@@ -259,26 +241,13 @@ configuration:
       - isOpen
       - hasLabel:
           label: resolution/fix-released
-      - noActivitySince:
-          days: 7
-      actions:
-      - addReply:
-          reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" and it hasn't had activity for 7 days.
-      - closeIssue
-    - description: Close issue marked as 'shipped' that has and no activity for 7 days - runs every 12 hours
-      frequencies:
-      - hourly:
-          hour: 12
-      filters:
-      - isIssue
-      - isOpen
       - hasLabel:
           label: resolution/shipped
       - noActivitySince:
           days: 7
       actions:
       - addReply:
-          reply: Thank you for the feature request. I'm closing this issue as this feature has shipped and it hasn't had activity for 7 days.
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" or "shipped" and it hasn't had activity for 7 days.
       - closeIssue
     - description: Close issue marked as 'resolved/other' that has and no activity for 3 days - runs every 12 hours
       frequencies:
