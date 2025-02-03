@@ -16,7 +16,7 @@ The IP address plan used for this cluster consists of a VNET, a Subnet (VNET-Loc
 | Address | Description |
 | ------- | ----------- |
 | 172.16.0.1/24 | IP address and netmask (CIDR notation) for the Docker bridge address. |
-| 172.15.8.2 | IP address reserved from the Kubernets Service range used for DNS. |
+| 172.15.8.2 | IP address reserved from the Kubernetes Service range used for DNS. |
 
 ## Environment
 
