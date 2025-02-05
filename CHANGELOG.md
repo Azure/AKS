@@ -2,7 +2,7 @@
 
 ## Release 2025-01-06
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled as `v20250130`.
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250130`.
 
 ### Announcements
 * General support for AKS Kubernetes version 1.28 was deprecated on Jan 30, 2025. Upgrade your clusters to version 1.29 or later. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
@@ -11,8 +11,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release Notes
 * Features:
   * AKS Kubernetes patch versions 1.29.11, 1.30.7 and 1.31.3 are now available.
-  * apiVersion 2025-01-01 will enable additional outbound configurations to allow for servicing of network isolated clusters.
+  * apiVersion 2025-01-01 enables additional outbound configurations to allow for servicing of network isolated clusters.
   * Security patch releases in release tracker, starting with 20250115T000000Z will contain release notes for the release.
+  * Custom subnets can be specified for node use via an update to the AKSNodeClass CRD which adds the vnetSubnetID property
 
 * Preview Features:
   * CNI validation for node autoprovisioner now allows all CNI configurations except for Calico and kubenet.
@@ -21,28 +22,26 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavior change:
   * Proper casing will be enforced on PUT of `Microsoft.ContainerService/managedClusters/agentPools` for the `AgentPoolMode` property. See this [issue](https://github.com/Azure/AKS/issues/4468) for more detail.
   * Change the toggle for cilium nodesubnet support to `true` by default. The feature is still behind a feature flag  `EnableCiliumNodeSubnet`, but with this change, customers can create cilium nodesubnet clusters.
-  * Changes to removes Prometheus port and scrape annotations from Retina Linux and Windows daemonset for basic and advanced. This avoids duplication for customers utilizing Retina.
+  * Changes to remove Prometheus port and scrape annotations from Retina Linux and Windows daemonset for basic and advanced. This avoids duplication for customers utilizing Retina.
   * New clusters will no longer be able to enable the HTTP application routing add-on, which was deprecated.  Note, the HTTP application routing add-on is different than the App Routing addon. See the notice on this migration guide: https://learn.microsoft.com/azure/aks/app-routing-migration
   * The Windows liveness probe for Managed Prometheus has moved to use a health endpoint starting with the image: 6.14.0-main-01-16-2025-8d52acfe. This change makes a backwards compatible change so that older images can still use the batch script for the liveness and the new image will use the health endpoint.
   * The LoadBalancer can now be customized to include `port_*` annotations referenced in the [documentation](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations).  An additional annotation has been added for: `external-dns.alpha.kubernetes.io/hostname`.
 
 * Bug Fix: 
-  * Fixed a typo (tcpKeepAlive - tcpKeepalive) in the istio [meshconfig toggle](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-tcp_keepalive). The typo made the toggle unusable since only toggles in the meshconfig are allowed.
+  * Fixed a casing typo (tcpKeepAlive -> tcpKeepalive) in the istio [meshconfig toggle](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-tcp_keepalive). The typo made the toggle unusable since only toggles in the meshconfig are allowed.
   * Fixed a bug where some AgentPools with `"kubeletDiskType":"OS",` were not validated.
-  * Fixed a bug when create a cluster with a private DNS zone may result in an `InvalidTemplateDeployment` error.
+  * Fixed a bug when creating a cluster with a private DNS zone may result in an `InvalidTemplateDeployment` error.
   * Fixed a race and potential deadlock condition when a Non-Cilium cluster is updating to ACNS Cilium.
   * Added early validation when of valid subnets to block 169.254.0.0/16 (link local) before run-time failures occur.
   * Fixed a breaking change between AppArmor and cilium. Starting on K8s 1.30 and Ubuntu 24.04, cilium containers can fail with error Init:CreateContainerError since AppArmor annotations are no longer supported. This change keeps apparmor annotations for k8s versions below 1.30, and adds the new security context field for k8s versions 1.30 and above. Related PR in upstream cilium charts: [https://github.com/cilium/cilium/pull/32199](https://github.com/cilium/cilium/pull/32199).
-  * Fixed a bug that prevented upgrade from starting if the PDB expected pod count is less than the minAvailable count.
-  * Change to propagate network plugin mode and network dataplane values to karpenter to enable alternate CNIs
-  * Update the AKSNodeClass CRD to add vnetSubnetID and remove imageVersion
+  * Fixed a bug that prevented upgrade from starting if the PDB `expectedPods` count is less than the `minAvailable` count.
   * Fixed an error condition when AKS attempts to remove the taint `disk.csi.azure.com/agent-not-ready=NoExecute` on node startup.  More details: [https://github.com/kubernetes-sigs/azuredisk-csi-driver/pull/2309](https://github.com/kubernetes-sigs/azuredisk-csi-driver/pull/2309)
   * Addressed an issue related to node subnet `IPAM Invoker Add failed with error: Failed to allocate pool` and the associated [agentbaker release](https://github.com/Azure/AgentBaker/pull/5551).
   * Added validation when a cluster migrates to CNI Overlay to block migration when there is a custom ip-masq-agent config in the kube-system namespace.  This prevents loss of connectivity during migration.  See the [AKS documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-aks-ipam-and-dataplane) for more information.
 
 * Component updates:
-  * Cilium v1.14 version from v1.14.18-241220 to v1.14.18-250107 (v1.14.18-1) to include a fix for cilium dual stack upgrades. On upgrades cilium config changes bpf-filter-priority from 1 2 but is not cleaning up the old filters at the old priority and as a result impacts connectivity. This patch will fix this bug, see GH issue in cilium repo for more details https://github.com/cilium/cilium/issues/36172
-  * Update the Azure disk driver version to v1.30.6 on AKS Version 1.30+ to fix CVE using toggle TODO: which CVE?
+  * Cilium v1.14 version from v1.14.18-241220 to v1.14.18-250107 (v1.14.18-1) to include a fix for cilium dual stack upgrades. On upgrades, cilium config changes bpf-filter-priority from 1 to 2 but is not cleaning up the old filters at the old priority and as a result impacts connectivity. This patch will fix this bug, see GH issue in cilium repo for more details https://github.com/cilium/cilium/issues/36172
+  * Update the Azure disk driver version to v1.30.6 on AKS Version 1.30+
   * Update Azure File CSI driver version to v1.29.10 on AKS 1.28
   * Update Azure File CSI driver version to v1.30.7 on AKS 1.29 and 1.30
   * Update Azure File CSI driver version to v1.31.3 on AKS 1.31
@@ -73,21 +72,22 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
     * [CVE-2024-42487](https://nvd.nist.gov/vuln/detail/CVE-2024-42487)
     * [CVE-2024-42488](https://nvd.nist.gov/vuln/detail/CVE-2024-42488)
     * [CVE-2024-47825](https://nvd.nist.gov/vuln/detail/CVE-2024-47825)
-  * Update the cost-analysis-agent image v0.0.19 to v0.0.20.  Upgrades the following dependencies in cost-analysis-agent to fix CVE-2024-45337 and CVE-2024-45338
+  * Update the cost-analysis-agent image v0.0.19 to v0.0.20.  Upgrades the following dependencies in cost-analysis-agent to fix [CVE-2024-45337](https://nvd.nist.gov/vuln/detail/CVE-202445337) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338)
     * [golang.org/x/crypto](http://golang.org/x/crypto) v0.27.0 to v0.31.0
     * [golang.org/x/net](http://golang.org/x/net) v0.29.0 to v0.33.0
     * [golang.org/x/sys](http://golang.org/x/sys) v0.25.0 to v0.28.0
     * [golang.org/x/text](http://golang.org/x/text) v0.18.0 to v0.21.0
-  * coredns image v1.12.0-1 and v1.9.4-5 versions have been built using Dalec framework, published to MCR under oss/v2 path. All AKS clusters with 1.32+ versions will use v1.12.0-1 coredns image version and existing AKS clusters on 1.24+ versions will use v1.9.4-5 coredns image version.
+  * coredns image v1.12.0-1 and v1.9.4-5 versions have been built using Dalec framework, published to MCR under oss/v2 path. All AKS clusters starting with 1.32+ versions will use v1.12.0-1 coredns image version and existing AKS clusters on 1.24+ versions will use v1.9.4-5 coredns image version.
   * Update the ip-masq-agent to v0.1.15 to address [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338) and [CVE-2024-10220](https://nvd.nist.gov/vuln/detail/CVE-2024-10220)
   * Update NPM image to v1.5.41 to fix [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338) in usr/bin/azure-npm (gobinary) and GHSA-xr7q-jx4m-x55m in usr/bin/azure-npm (gobinary).  See the release notes for [v1.5.41](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.41) for more details.
-  * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
-  * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
-  * AKS Windows Server 2022-23H2 image has been updated to [AKSWindows-2022-23H2-25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
-  * AKS Azure Linux 2.0 image has been updated to [202501.28.0](vhd-notes/AzureLinux/202501.28.0.txt).
-  * AKS Azure Linux 3.0 image has been updated to [202501.28.0](vhd-notes/Azurelinuxv3/202501.28.0.txt).
-  * AKS Ubuntu 2204 image has been updated to [202501.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202501.28.0.txt).
-  * AKS Ubuntu 2404 image has been updated to [202501.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202501.28.0.txt).
+  * VHD Updates
+    * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
+    * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
+    * AKS Windows Server 2022-23H2 image has been updated to [AKSWindows-2022-23H2-25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
+    * AKS Azure Linux 2.0 image has been updated to [202501.28.0](vhd-notes/AzureLinux/202501.28.0.txt).
+    * AKS Azure Linux 3.0 image has been updated to [202501.28.0](vhd-notes/Azurelinuxv3/202501.28.0.txt).
+    * AKS Ubuntu 2204 image has been updated to [202501.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202501.28.0.txt).
+    * AKS Ubuntu 2404 image has been updated to [202501.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202501.28.0.txt).
 
 ## Release 2025-01-06
 
