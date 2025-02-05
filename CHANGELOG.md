@@ -51,7 +51,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update Azure Blob CSI driver to v1.23.10 on AKS 1.28, 1.29
   * Update Azure Blob CSI driver to v1.24.6 on AKS 1.30, 1.31
   * Update Workload Identity image version to v1.4.0
-  * Azure Linux V3 sku can now be used with Mariner
   * CNS/CNI updated to v.1.6.18 which includes Cilium nodesubnet support
   * Added Multi-Instance GPU support for standard_nc40ads_h100_v5
   * Update the OMS image to v3.1.25-1
