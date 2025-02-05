@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Bug Fix: 
   * Fixed a typo (tcpKeepAlive - tcpKeepalive) in the istio [meshconfig toggle](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-tcp_keepalive). The typo made the toggle unusable since only toggles in the meshconfig are allowed.
-  * Fixed a bug where some AgentPools with `"kubeletDiskType":"OS",` were not valiated.
+  * Fixed a bug where some AgentPools with `"kubeletDiskType":"OS",` were not validated.
   * Fixed a bug when create a cluster with a private DNS zone may result in an `InvalidTemplateDeployment` error.
   * Fixed an issue where the Karpenter image version was not being set correctly: TODO: confirm w/ Bryce.
   * Fixed a race and potential deadlock condition when a Non-Cilium cluster is updating to ACNS Cilium.
@@ -4387,7 +4387,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-17 for p
 * Preview Features
   * AKS now supports Private Clusters created with a custom DNS zone (BYO DNS zone). Read more [here](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone).
   * AKS now allows you to reuse your standard LoadBalancer outbound IP (created by AKS) as Inbound IP to your services (and vice-versa) from Kubernetes v1.20+.
-  * AKS now supports re-using the same Load Balancer IP across multiple services from Kubernetes v1.20+.
+  * AKS now supports reusing the same Load Balancer IP across multiple services from Kubernetes v1.20+.
 * Behavioral Change
   * The AKS default storage class behavior now will be to delay the creation of a Persistent Volume until a pod is created. Allowing the Persistent Volume to be created in the same zone as the pod. Read more [here](https://docs.microsoft.com/azure/aks/azure-disk-csi#create-a-custom-storage-class).
 * Component Updates
