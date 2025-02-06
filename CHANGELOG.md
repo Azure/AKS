@@ -24,10 +24,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Proper casing will be enforced on PUT of `Microsoft.ContainerService/managedClusters/agentPools` for the `AgentPoolMode` property. See this [issue](https://github.com/Azure/AKS/issues/4468) for more detail.
   * Changes to remove Prometheus port and scrape annotations from Retina Linux and Windows daemonset for basic and advanced. This avoids duplication for customers utilizing Retina.
   * The Windows liveness probe for Managed Prometheus has moved to use a health endpoint starting with the image: 6.14.0-main-01-16-2025-8d52acfe. Older images can still use the script for the liveness and the new image will use the health endpoint.
-TODO: is this public relevant - Aritra
-
-
-
   * The LoadBalancer can now be customized to include `port_*` annotations referenced in the [documentation](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations).  An additional annotation has been added for: `external-dns.alpha.kubernetes.io/hostname`.
 
 * Bug Fix: 
@@ -38,12 +34,7 @@ TODO: is this public relevant - Aritra
   * Fixed a breaking change between AppArmor and cilium. Starting on K8s 1.30 and Ubuntu 24.04, cilium containers can fail with error Init:CreateContainerError since AppArmor annotations are no longer supported. This change keeps apparmor annotations for k8s versions below 1.30, and adds the new security context field for k8s versions 1.30 and above. Related PR in upstream cilium charts: [https://github.com/cilium/cilium/pull/32199](https://github.com/cilium/cilium/pull/32199).
   * Fixed a bug that prevented upgrade from starting if the PDB `expectedPods` count is less than the `minAvailable` count.
   * Fixed an error condition when AKS attempts to remove the taint `disk.csi.azure.com/agent-not-ready=NoExecute` on node startup.  More details: [https://github.com/kubernetes-sigs/azuredisk-csi-driver/pull/2309](https://github.com/kubernetes-sigs/azuredisk-csi-driver/pull/2309)
-  * Addressed an issue related to node subnet `IPAM Invoker Add failed with error: Failed to allocate pool` and the associated [agentbaker release](https://github.com/Azure/AgentBaker/pull/5551).
-TODO: Alexander Lew
-
-
-
-
+  * Addressed an issue related to node subnet `IPAM Invoker Add failed with error: Failed to allocate pool` in the CNI logs and the associated [agentbaker release](https://github.com/Azure/AgentBaker/pull/5551).
   * Added validation when a cluster migrates to CNI Overlay to block migration when there is a custom ip-masq-agent config in the kube-system namespace.  This prevents loss of connectivity during migration.  See the [AKS documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-aks-ipam-and-dataplane) for more information.
 
 * Component updates:
