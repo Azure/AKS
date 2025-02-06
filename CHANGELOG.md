@@ -18,10 +18,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Preview Features:
   * CNI validation for node autoprovisioner now allows all CNI configurations except for Calico and kubenet.
   * AKS Automatic SKU now supports BYO Virtual Networks.
+  * `EnableCiliumNodeSubnet` preview feature provides the ability to create Cilium nodesubnet clusters using Azure CNI Powered by Cilium.
 
 * Behavior change:
   * Proper casing will be enforced on PUT of `Microsoft.ContainerService/managedClusters/agentPools` for the `AgentPoolMode` property. See this [issue](https://github.com/Azure/AKS/issues/4468) for more detail.
-  * Change the toggle for cilium nodesubnet support to `true` by default. The feature is still behind a feature flag  `EnableCiliumNodeSubnet`, but with this change, customers can create cilium nodesubnet clusters.
   * Changes to remove Prometheus port and scrape annotations from Retina Linux and Windows daemonset for basic and advanced. This avoids duplication for customers utilizing Retina.
   * New clusters will no longer be able to enable the HTTP application routing add-on, which was deprecated.  Note, the HTTP application routing add-on is different than the App Routing addon. See the notice on this migration guide: https://learn.microsoft.com/azure/aks/app-routing-migration
   * The Windows liveness probe for Managed Prometheus has moved to use a health endpoint starting with the image: 6.14.0-main-01-16-2025-8d52acfe. This change makes a backwards compatible change so that older images can still use the batch script for the liveness and the new image will use the health endpoint.
