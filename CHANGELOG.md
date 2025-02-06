@@ -60,7 +60,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update agentbaker version to v0.20250122.0
   * Update Cilium v1.16 from v1.16.5-250108 to v1.16.5-250110 (v1.16.5-1) to include a fix for Cilium dual stack upgrades. This will fix [https://github.com/cilium/cilium/issues/36172](https://github.com/cilium/cilium/issues/36172). The following CVEs are included in [v1.16.5](https://github.com/cilium/cilium/releases/tag/v1.16.5)
     * [CVE-2024-52529](https://nvd.nist.gov/vuln/detail/CVE-2024-52529)
-  * The following CVEs were patched in Cilium v.1.14.15
+  * The following CVEs were patched in Cilium v1.14.15
     * [CVE-2024-24789](https://nvd.nist.gov/vuln/detail/CVE-2024-24789)
     * [CVE-2024-24790](https://nvd.nist.gov/vuln/detail/CVE-2024-24790)
     * [CVE-2024-24791](https://nvd.nist.gov/vuln/detail/CVE-2024-24791)
