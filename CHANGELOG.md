@@ -23,7 +23,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Behavior change:
   * Proper casing will be enforced on PUT of `Microsoft.ContainerService/managedClusters/agentPools` for the `AgentPoolMode` property. See this [issue](https://github.com/Azure/AKS/issues/4468) for more detail.
   * Changes to remove Prometheus port and scrape annotations from Retina Linux and Windows daemonset for basic and advanced. This avoids duplication for customers utilizing Retina.
-  * The Windows liveness probe for Managed Prometheus has moved to use a health endpoint starting with the image: 6.14.0-main-01-16-2025-8d52acfe. Older images can still use the script for the liveness and the new image will use the health endpoint.
   * The LoadBalancer can now be customized to include `port_*` annotations referenced in the [documentation](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations).  An additional annotation has been added for: `external-dns.alpha.kubernetes.io/hostname`.
 
 * Bug Fix: 
@@ -76,6 +75,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * coredns image v1.12.0-1 and v1.9.4-5 versions have been built using Dalec framework, published to MCR under oss/v2 path. All AKS clusters starting with 1.32+ versions will use v1.12.0-1 coredns image version and existing AKS clusters on versions 1.24 to 1.32 will use v1.9.4-5 coredns image version.
   * Update the ip-masq-agent-v2 to [v0.1.15](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.15) to address [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338) and [CVE-2024-10220](https://nvd.nist.gov/vuln/detail/CVE-2024-10220)
   * Update NPM image to v1.5.41 to fix [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338) in usr/bin/azure-npm (gobinary) and GHSA-xr7q-jx4m-x55m in usr/bin/azure-npm (gobinary).  See the release notes for [v1.5.41](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.41) for more details.
+  * Update the prometheus collector for azuremonitor to the [01-16-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-01-16-2025) release
   * VHD Updates
     * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
     * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
