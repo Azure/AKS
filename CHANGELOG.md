@@ -35,7 +35,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed a bug that prevented upgrade from starting if the PDB `expectedPods` count is less than the `minAvailable` count.
   * Fixed an error condition when AKS attempts to remove the taint `disk.csi.azure.com/agent-not-ready=NoExecute` on node startup.  More details: [https://github.com/kubernetes-sigs/azuredisk-csi-driver/pull/2309](https://github.com/kubernetes-sigs/azuredisk-csi-driver/pull/2309)
   * Addressed an issue related to node subnet `IPAM Invoker Add failed with error: Failed to allocate pool` in the CNI logs and the associated [agentbaker release](https://github.com/Azure/AgentBaker/pull/5551).
-  * Added validation when a cluster migrates to CNI Overlay to block migration when there is a custom ip-masq-agent config in the kube-system namespace.  This prevents loss of connectivity during migration.  See the [AKS documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-aks-ipam-and-dataplane) for more information.
+  * Added validation when a cluster migrates to CNI Overlay to block migration when there is a custom ip-masq-agent config in the kube-system namespace.  This prevents loss of connectivity during migration.  See the [AKS documentation](https://learn.microsoft.com/azure/aks/upgrade-aks-ipam-and-dataplane) for more information.
 
 * Component updates:
   * Cilium v1.14 version from v1.14.18-241220 to v1.14.18-250107 (v1.14.18-1) to include a fix for cilium dual stack upgrades. On upgrades, cilium config changes bpf-filter-priority from 1 to 2 but is not cleaning up the old filters at the old priority and as a result impacts connectivity. This patch will fix this bug, see GH issue in cilium repo for more details https://github.com/cilium/cilium/issues/36172
@@ -56,7 +56,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update karpenter image version to [0.6.1-aks](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.6.1)
   * Update Cilium v1.16 from v1.16.5-250108 to v1.16.5-250110 (v1.16.5-1) to include a fix for Cilium dual stack upgrades. This will fix [https://github.com/cilium/cilium/issues/36172](https://github.com/cilium/cilium/issues/36172). The following CVEs are included in [v1.16.5](https://github.com/cilium/cilium/releases/tag/v1.16.5)
     * [CVE-2024-52529](https://nvd.nist.gov/vuln/detail/CVE-2024-52529)
-  * The following CVEs were patched in Cilium v.1.14.15
+  * The following CVEs were patched in Cilium v1.14.15
     * [CVE-2024-24789](https://nvd.nist.gov/vuln/detail/CVE-2024-24789)
     * [CVE-2024-24790](https://nvd.nist.gov/vuln/detail/CVE-2024-24790)
     * [CVE-2024-24791](https://nvd.nist.gov/vuln/detail/CVE-2024-24791)
