@@ -378,7 +378,7 @@ EOF
 Now we can deploy the ingress definition. Look out for the following:
 
 1. The 'tls' section maps the inbound TLS request to the appropriate certificate secret
-2. The 'rules' section maps the targeted host name to the backend service that should be targetted
+2. The 'rules' section maps the targeted host name to the backend service that should be targeted
 
 ```bash
 cat <<EOF|kubectl apply -f -
