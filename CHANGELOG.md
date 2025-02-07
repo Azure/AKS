@@ -7,11 +7,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Announcements
 * General support for AKS Kubernetes version 1.28 was deprecated on Jan 30, 2025. Upgrade your clusters to version 1.29 or later. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 * Azure Kubernetes Service will no longer support the [WebAssembly System Interface (WASI) nodepools (preview).](https://learn.microsoft.com/azure/aks/use-wasi-node-pools) Starting on May 5, 2025 you will no longer be able to create new WASI nodepools. If you'd like to run WebAssembly (WASM) workloads, you can [deploy SpinKube to Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/deploy-spinkube) from Azure Marketplace. For more information on this retirement, see [AKS GitHub](https://github.com/Azure/AKS/issues/4770).
+* The open-source project Bridge to Kubernetes will be retired on April 30, 2025. For more information, please see the [Bridge to Kubernetes](https://github.com/Azure/Bridge-To-Kubernetes) repository.
 
 ### Release Notes
 * Features:
   * AKS Kubernetes patch versions 1.29.11, 1.30.7 and 1.31.3 are now available.
-  * apiVersion 2025-01-01 enables additional outbound configurations to allow for servicing of network isolated clusters.
   * Security patch releases in release tracker, starting with 20250115T000000Z will contain release notes for the release.
 
 * Preview Features:
