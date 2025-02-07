@@ -46,7 +46,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update Azure Disk CSI driver to [v1.30.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.7) on AKS 1.30, 1.31
   * Update Azure Blob CSI driver to [v1.23.10](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.23.10) on AKS 1.28, 1.29
   * Update Azure Blob CSI driver to [v1.24.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.6) on AKS 1.30, 1.31
-  * Update Workload Identity image version to v1.4.0
+  * Update Workload Identity image version to [v1.4.0](https://github.com/Azure/azure-workload-identity/releases/tag/v1.4.0)
   * CNS/CNI updated to [v1.6.18](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.18) which includes Cilium nodesubnet support
   * Added Multi-Instance GPU support for standard_nc40ads_h100_v5
   * Update the OMS image to [v3.1.25-1](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.25)
