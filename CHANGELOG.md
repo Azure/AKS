@@ -53,8 +53,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Update secret store driver to [v1.4.7](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.4.7) and akv provider to [v1.6.2](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.6.2).
   * Updates the Retina basic image to v0.0.23 on Linux and Windows: [release notes](https://github.com/microsoft/retina/releases/tag/v0.0.23) 
   * Update karpenter image version to [0.6.1-aks](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.6.1)
-  * Update Cilium v1.16 from v1.16.5-250108 to v1.16.5-250110 (v1.16.5-1) to include a fix for Cilium dual stack upgrades. This will fix [https://github.com/cilium/cilium/issues/36172](https://github.com/cilium/cilium/issues/36172). The following CVEs are included in [v1.16.5](https://github.com/cilium/cilium/releases/tag/v1.16.5)
-    * [CVE-2024-52529](https://nvd.nist.gov/vuln/detail/CVE-2024-52529)
+  * Update Cilium v1.16 from v1.16.5-250108 to v1.16.5-250110 (v1.16.5-1) to include a fix for Cilium dual stack upgrades. This will fix [https://github.com/cilium/cilium/issues/36172](https://github.com/cilium/cilium/issues/36172). Cilium [v1.16.5](https://github.com/cilium/cilium/releases/tag/v1.16.5) also contains fix for [CVE-2024-52529](https://nvd.nist.gov/vuln/detail/CVE-2024-52529).
   * The following CVEs were patched in Cilium v1.14.15
     * [CVE-2024-24789](https://nvd.nist.gov/vuln/detail/CVE-2024-24789)
     * [CVE-2024-24790](https://nvd.nist.gov/vuln/detail/CVE-2024-24790)
