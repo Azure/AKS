@@ -122,7 +122,7 @@ EOF
 az role definition create --role-definition @pl-nsg-role.json
 
 # Assign the role
-# NOTE: New role propegation may take a minute or to, so retry as needed
+# NOTE: New role propagation may take a minute or to, so retry as needed
 az role assignment create \
 --role "Private Link AKS Role" \
 --assignee $CLUSTER_IDENTITY \
@@ -186,7 +186,7 @@ Now, lets create our Azure Key Vault and then create and upload our certificate.
 # Create a key vault name
 KEY_VAULT_NAME=e2elab$RANDOM
 
-# Create the key vaule
+# Create the key value
 az keyvault create --name $KEY_VAULT_NAME --resource-group $RG --location $LOC --enable-rbac-authorization false
 
 # Grant access to the secret for the managed identity
@@ -206,7 +206,7 @@ Both options are totally fine, but have slight differences in approach, which I'
 
 We won't cover all the details of setting up a certificate with App Service Certificates, but you can review the doc [here](https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-app-service-certificate?tabs=portal) for those steps.
 
-When I created the certificate, I told App Svc Certs to store the cert in the Key Vault just created. We'll use the [Key Vault CSI Driver](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) to mount the certificate into the ingress controller, but to do that we need to get the certficate into a format that the CSI driver can read. App Svc Certs stores the certificate in an Azure Key Vault in pfx format as a secret, but for the Key Vault CSI Driver we need it stored as a certificate. We can export the PFX from the Azure Key Vault Secret and then import it as a certificate.
+When I created the certificate, I told App Svc Certs to store the cert in the Key Vault just created. We'll use the [Key Vault CSI Driver](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) to mount the certificate into the ingress controller, but to do that we need to get the certificate into a format that the CSI driver can read. App Svc Certs stores the certificate in an Azure Key Vault in pfx format as a secret, but for the Key Vault CSI Driver we need it stored as a certificate. We can export the PFX from the Azure Key Vault Secret and then import it as a certificate.
 
 ```bash
 APP_CERT_NAME=e2elab
@@ -227,7 +227,7 @@ I'm not going to get into all the specifics of using Certbot with LetsEncrypt, b
 
 1. Get an internet reachable host capable of running a webserver on ports 80 and 443
 2. Create an A-record for your target domain to the public IP of the server. This is required for hostname validation used by Certbot
-3. Run the certbot command as a priviledged user on that web server host mentioned in #1 above
+3. Run the certbot command as a privileged user on that web server host mentioned in #1 above
 
 Here's a sample of the command I used to create a cert with two entries in the certificate Subject Alternate Names:
 
@@ -257,7 +257,7 @@ Great! Now we have our network, cluster, key vault and secrets ready to go. We c
 When you create a certificate in Azure Key Vault and then use the Key Vault CSI driver to access that certificate, you use the 'secret' object type and the certificate name. The returned secret contains the certificate key and crt file using the names tls.key and tls.crt. 
 
 ```bash
-# We'll cat the SecretProviderClass direclty into kubectl
+# We'll cat the SecretProviderClass directly into kubectl
 # You could also just cat it out to a file and use that file to deploy
 cat << EOF | kubectl apply -f -
 apiVersion: secrets-store.csi.x-k8s.io/v1
@@ -375,10 +375,10 @@ spec:
 EOF
 ```
 
-Now we can deploy the ingress defintion. Look out for the following:
+Now we can deploy the ingress definition. Look out for the following:
 
 1. The 'tls' section maps the inbound TLS request to the appropriate certificate secret
-2. The 'rules' section maps the target host name to the backend service that should be targetted
+2. The 'rules' section maps the targeted host name to the backend service that should be targetted
 
 ```bash
 cat <<EOF|kubectl apply -f -
@@ -409,7 +409,7 @@ spec:
 EOF
 ```
 
-Since we haven't set up the Azure Front Door yet, we cant access the app on the public IP yet. We can fake this out, however, with some curl magic. curl lets you call a local endpoint and pretend like you're connecting to a different host name. We'll need this for our ingress certificate to work.
+Since we haven't set up the Azure Front Door yet, we can't access the app on the public IP yet. We can fake this out, however, with some curl magic. curl lets you call a local endpoint and pretend like you're connecting to a different host name. We'll need this for our ingress certificate to work.
 
 First we port-forward and then we'll curl with some special options.
 
