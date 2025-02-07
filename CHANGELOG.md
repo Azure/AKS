@@ -8,6 +8,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * General support for AKS Kubernetes version 1.28 was deprecated on Jan 30, 2025. Upgrade your clusters to version 1.29 or later. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 * Azure Kubernetes Service will no longer support the [WebAssembly System Interface (WASI) nodepools (preview).](https://learn.microsoft.com/azure/aks/use-wasi-node-pools) Starting on May 5, 2025 you will no longer be able to create new WASI nodepools. If you'd like to run WebAssembly (WASM) workloads, you can [deploy SpinKube to Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/deploy-spinkube) from Azure Marketplace. For more information on this retirement, see [AKS GitHub](https://github.com/Azure/AKS/issues/4770).
 * The open-source project Bridge to Kubernetes will be retired on April 30, 2025. For more information, please see the [Bridge to Kubernetes](https://github.com/Azure/Bridge-To-Kubernetes) repository.
+* The HTTP Application Routing add-on (preview) is going to be [retired](https://azure.microsoft.com/updates?id=retirement-http-application-routing-addon-preview-for-aks-will-retire-03032025) on March 3, 2025. You will no longer be able to create clusters that enable the add-on. [Migrate](https://learn.microsoft.com/Azure/AKS/app-routing-migration) to the generally available Application Routing add-on now.
 
 ### Release Notes
 * Features:
@@ -16,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Preview Features:
   * CNI validation for node autoprovisioner now allows all CNI configurations except for Calico and kubenet. See [AKS CNI Overview](https://learn.microsoft.com/azure/aks/concepts-network-cni-overview) for more information.
-  * AKS Automatic SKU now supports BYO Virtual Networks.
+  * AKS Automatic SKU now supports using a [custom virtual network](https://learn.microsoft.com/azure/aks/automatic/quick-automatic-custom-network?pivots=azure-cli).
   * `EnableCiliumNodeSubnet` preview feature provides the ability to create Cilium nodesubnet clusters using Azure CNI Powered by Cilium.
   * When using [NAP](https://learn.microsoft.com/azure/aks/node-autoprovision), custom subnets can be specified for node use via an update to the AKSNodeClass CRD which adds the vnetSubnetID property.
 
@@ -38,7 +39,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Component updates:
   * Cilium v1.14 version from v1.14.18-241220 to v1.14.18-250107 (v1.14.18-1) to include a fix for cilium dual stack upgrades. On upgrades, cilium config changes bpf-filter-priority from 1 to 2 but is not cleaning up the old filters at the old priority and as a result impacts connectivity. This patch will fix this bug, see GH issue in cilium repo for more details https://github.com/cilium/cilium/issues/36172
-  * Update the Azure disk driver version to v1.30.6 on AKS Version 1.30+
   * Update Azure File CSI driver version to [v1.29.10](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.29.10) on AKS 1.28
   * Update Azure File CSI driver version to [v1.30.7](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.7) on AKS 1.29 and 1.30
   * Update Azure File CSI driver version to [v1.31.3](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.31.3) on AKS 1.31
