@@ -4299,7 +4299,7 @@ This release is rolling out to all regions - ETA for conclusion 2021-02-17 for p
 * Preview Features
   * AKS now supports Private Clusters created with a custom DNS zone (BYO DNS zone). Read more [here](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone).
   * AKS now allows you to reuse your standard LoadBalancer outbound IP (created by AKS) as Inbound IP to your services (and vice-versa) from Kubernetes v1.20+.
-  * AKS now supports re-using the same Load Balancer IP across multiple services from Kubernetes v1.20+.
+  * AKS now supports reusing the same Load Balancer IP across multiple services from Kubernetes v1.20+.
 * Behavioral Change
   * The AKS default storage class behavior now will be to delay the creation of a Persistent Volume until a pod is created. Allowing the Persistent Volume to be created in the same zone as the pod. Read more [here](https://docs.microsoft.com/azure/aks/azure-disk-csi#create-a-custom-storage-class).
 * Component Updates
