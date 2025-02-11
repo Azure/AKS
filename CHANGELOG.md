@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior change:
   * Proper casing will be enforced on PUT of `Microsoft.ContainerService/managedClusters/agentPools` for the `AgentPoolMode` property. See this [issue](https://github.com/Azure/AKS/issues/4468) for more detail.
-  * Changes to remove Prometheus port and scrape annotations from Retina Linux and Windows daemonset for basic and advanced. This avoids duplication for customers utilizing Retina.
+  * Removed Prometheus port and scrape annotations from Retina Linux and Windows DaemonSets to avoid double scraping of metrics.
   * The standard load balancer can now be customized to include `port_*` annotations referenced in the [documentation](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations).  An additional annotation has been added for: `external-dns.alpha.kubernetes.io/hostname`.  See this [document](https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard) for more information.
 
 * Bug Fix: 
@@ -78,7 +78,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * VHD Updates
     * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
     * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
-    * AKS Windows Server 2022-23H2 image has been updated to [AKSWindows-2022-23H2-25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
+    * AKS Windows Server Annual Channel 23H2 image has been updated to [AKSWindows-2022-23H2-25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
     * AKS Azure Linux 2.0 image has been updated to [202501.28.0](vhd-notes/AzureLinux/202501.28.0.txt).
     * AKS Azure Linux 3.0 image has been updated to [202501.28.0](vhd-notes/Azurelinuxv3/202501.28.0.txt).
     * AKS Ubuntu 2204 image has been updated to [202501.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202501.28.0.txt).
