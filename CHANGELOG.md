@@ -78,7 +78,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * VHD Updates
     * AKS Windows Server 2019 image has been updated to [AKSWindows-2019-17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
     * AKS Windows Server 2022 image has been updated to [AKSWindows-2022-20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
-    * AKS Windows Server 2022-23H2 image has been updated to [AKSWindows-2022-23H2-25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
+    * AKS Windows Server Annual Channel 23H2 image has been updated to [AKSWindows-2022-23H2-25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
     * AKS Azure Linux 2.0 image has been updated to [202501.28.0](vhd-notes/AzureLinux/202501.28.0.txt).
     * AKS Azure Linux 3.0 image has been updated to [202501.28.0](vhd-notes/Azurelinuxv3/202501.28.0.txt).
     * AKS Ubuntu 2204 image has been updated to [202501.28.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202501.28.0.txt).
