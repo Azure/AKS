@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Behavior change:
   * Proper casing will be enforced on PUT of `Microsoft.ContainerService/managedClusters/agentPools` for the `AgentPoolMode` property. See this [issue](https://github.com/Azure/AKS/issues/4468) for more detail.
-  * Changes to remove Prometheus port and scrape annotations from Retina Linux and Windows daemonset for basic and advanced. This avoids duplication for customers utilizing Retina.
+  * Removed Prometheus port and scrape annotations from Retina Linux and Windows DaemonSets to avoid double scraping of metrics.
   * The LoadBalancer can now be customized to include `port_*` annotations referenced in the [documentation](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations).  An additional annotation has been added for: `external-dns.alpha.kubernetes.io/hostname`.
 
 * Bug Fix: 
