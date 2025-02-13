@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release 2025-01-06
+## Release 2025-01-30
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250130`.
 
