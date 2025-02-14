@@ -146,3 +146,18 @@ Bridget Kromhout:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/bridgetkromhout"
+
+Steve Griffith:
+  name        : "Steve Griffith"
+  bio         : "Steve is a part of the Microsoft App Innovation Global Blackbelt team where helps customers build amazing solutions on Azure's container hosting platforms."
+  avatar      : "https://media.licdn.com/dms/image/v2/D4E03AQFSs7_UG9tu4Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1712869781158?e=1744243200&v=beta&t=DeHBP9Q1D5S4fWVejdVnWJt_7Fl4LujuWX1o2uhkhlA"
+  links:
+    - label: "X"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://x.com/SteveGriffith"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/swgriffith"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/stevewgriffith/"
