@@ -21,7 +21,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 
 * Bug Fixes:
-   * Updated the Istio service mesh add-on to allow multiple operations with the Lua EnvoyFilter.
+   * Resolved an issue with Istio service mesh add-on where having multiple operations with the Lua EnvoyFilter was not allowed.
    *  
 
 
