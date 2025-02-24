@@ -19,6 +19,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Preview Features:
    * AKS Kubernetes version 1.32 is now being rolled out in preview and is expected to reach all regions on or before the end of March. Please use the [az-aks-get-versions](https://learn.microsoft.com/azure/aks?view=azure-cli-latest#az-aks-get-versions) command to accurately capture if Kubernetes version 1.32 is available in your region.
    * You can use the `EnableCiliumNodeSubnet' feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
+   * [Free control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available in preview to monitor the API server and ETCD components, which will be automatically collected by default on your cluster.
 
 * Bug Fixes:
    * Resolved an issue with Istio service mesh add-on where having multiple operations with the Lua EnvoyFilter was not allowed.
