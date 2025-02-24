@@ -15,7 +15,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Preview Features:
    * AKS Kubernetes version 1.32 is now in preview.
-   * [Kubelet serving certificate rotation](https://learn.microsoft.com/Azure/AKS/certificate-rotation) now allows AKS to utilize kubelet server TLS bootstrapping for both bootstrapping and rotating serving certificates signed by the Cluster CA.
    * [Azure Linux v3](https://learn.microsoft.com/azure/azure-linux/) is now in preview for AKS 1.32 clusters.
 
 
