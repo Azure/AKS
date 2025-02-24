@@ -29,7 +29,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Starting in the Karpenter v0.6 image, Node Auto Provisioning (NAP) will bootstrap nodes from Scriptless to AgentBaker using custom data provided by Node Provisioning Service (NPS) and improve the stability of NAP.
 
 * Component Updates:
-   * Beginning in Kubernetes 1.32, AKS uses CNS to install Azure CNI NodeSubnet by default, meaning users will now see the CNS daemonset in their environments with no changes to functionality or required action.
+   * Starting with Kubernetes v1.32, node subnet mode will be installed via a DaemonSet (CNS) instead of AgentBaker. Customers will now see this DaemonSet running in their clusters, aligning node subnet mode with PodSubnet and Overlay CNI for a more uniform architecture and faster security updates.
+   * Updated Windows CNS from v1.6.13 to v1.6.21 and Linux CNS from v1.6.18 to v1.6.21.
+   * Updated Windows CNI and Linux CNI from v1.6.18 to v1.6.21.
+   * Updated [tigera operator to v1.36.3](https://github.com/tigera/operator/releases/tag/v1.36.3) and [calico to v3.29.0](https://github.com/projectcalico/calico/releases/tag/v3.29.0).
    * Node Auto Provisioning has been upgraded to use Karpenter [v0.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.7.2).
    * Updated LTS patch version 1.27.102 for Command Injection affecting Windows nodes to address [CVE-2024-9042](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-9042).
    * Updated the Retina basic image to v0.0.25 for Linux and Windows to address [CVE-2025-23047](https://nvd.nist.gov/vuln/detail/CVE-2025-23047) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338).
