@@ -39,7 +39,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Updated the Retina basic image to v0.0.25 for Linux and Windows to address [CVE-2025-23047](https://nvd.nist.gov/vuln/detail/CVE-2025-23047) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338).
    * Updated the cost-analysis-agent image from v0.0.20 to v0.0.21. Upgrades the following dependencies in cost-analysis-agent to fix [CVE-2024-45341](https://nvd.nist.gov/vuln/detail/CVE-2024-45341) and [CVE-2024-45336](https://nvd.nist.gov/vuln/detail/CVE-2024-45336):
       * github.com/Azure/azure-sdk-for-go/sdk/azcore v1.15.0 to [v1.17.0](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore/CHANGELOG.md#1170-2025-01-07)
-      * github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0 to v1.8.1
+      * github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0 to [v1.8.1](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/CHANGELOG.md#181-2025-01-15)
       * github.com/prometheus/common v0.60.0 to v0.62.0
       * github.com/samber/lo v1.47.0 to v1.49.1
       * github.com/stretchr/testify v1.9.0 to v1.10.0
