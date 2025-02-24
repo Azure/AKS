@@ -22,7 +22,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Bug Fixes:
    * Resolved an issue with Istio service mesh add-on where having multiple operations with the Lua EnvoyFilter was not allowed.
-   *  
+   *  Fixed a bug in Azure CNI Pod Subnet Static Block Allocation mode with Cilium which caused incorrect iptables rules, leading to pod connectivity failures to DNS and IMDS.
 
 
 * Behavior Changes:
