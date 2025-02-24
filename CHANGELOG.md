@@ -1,5 +1,52 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2025-02-20
+
+Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250220`.
+
+### Announcements
+* 
+
+### Release Notes
+* Features:
+   * AKS Kubernetes patch versions 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
+   * 
+
+
+* Preview Features:
+   * AKS Kubernetes version 1.32 is now in preview.
+   * [Kubelet serving certificate rotation](https://learn.microsoft.com/Azure/AKS/certificate-rotation) now allows AKS to utilize kubelet server TLS bootstrapping for both bootstrapping and rotating serving certificates signed by the Cluster CA.
+   * [Azure Linux v3](https://learn.microsoft.com/azure/azure-linux/) is now in preview for AKS 1.32 clusters.
+
+
+* Bug Fixes:
+   * Updated the Istio service mesh add-on to allow multiple operations with the Lua EnvoyFilter.
+   *  
+
+
+* Behavior Changes:
+   * You can now configure the [default ingress controller type](https://learn.microsoft.com/en-us/azure/aks/app-routing) in the AKS application routing add-on.
+   * AKS no longer supports the [GPU image (preview)](https://github.com/Azure/AKS/issues/4472) to provision GPU-enabled AKS nodes. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in [AKS GPU node pool documentation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#confirm-that-gpus-are-schedulable).
+   * Starting in the Karpenter v0.6 image, Node Auto Provisioning (NAP) will bootstrap nodes from Scriptless to AgentBaker using custom data provided by Node Provisioning Service (NPS) and improve the stability of NAP.
+
+* Component Updates:
+   * Beginning in Kubernetes 1.32, AKS uses CNS to install Azure CNI NodeSubnet by default, meaning users will now see the CNS daemonset in their environments with no changes to functionality or required action.
+   * Updated ExtensionManager image version to [v1.22.4](https://github.com/azure-core/ClusterConfigurationAgent/releases/tag/v1.22.4).
+   * For Node Auto Provisioning, the Azure provider of Karpenter is now updated to [v0.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.7.2).
+   * Updated LTS patch version 1.27.102 for Command Injection affecting Windows nodes to address [CVE-2024-9042](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-9042).
+   * Updated the Retina basic image to v0.0.25 for Linux and Windows to address [CVE-2025-23047](https://nvd.nist.gov/vuln/detail/CVE-2025-23047) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338).
+   * Updated the cost-analysis-agent image from v0.0.20 to v0.0.21. Upgrades the following dependencies in cost-analysis-agent to fix [CVE-2024-45341](https://nvd.nist.gov/vuln/detail/CVE-2024-45341) and [CVE-2024-45336](https://nvd.nist.gov/vuln/detail/CVE-2024-45336):
+      * github.com/Azure/azure-sdk-for-go/sdk/azcore v1.15.0 to v1.17.0
+      * github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0 to v1.8.1
+      * github.com/prometheus/common v0.60.0 to v0.62.0
+      * github.com/samber/lo v1.47.0 to v1.49.1
+      * github.com/stretchr/testify v1.9.0 to v1.10.0
+   * addon-resizer image v1.8.23-2 has been built using 
+    the Dalec framework, tested and published to MCR under [oss/v2 path](mcr.microsoft.com/oss/v2/kubernetes/autoscaler/addon-resizer:v1.8.23-2). All AKS clusters will use v1.8.23-2 addon-resizer image version.
+   * Updated Azure File CSI driver liveness probe to v2.15.0 and CSI node driver registrar to v2.13.0 on AKS 1.31 and 1.32.
+   * cluster-proportional-autoscaler (CPA) image v1.9.0-1 has been built using the Dalec framework, tested and published to MCR under [oss/v2 path](mcr.microsoft.com/oss/v2/kubernetes/autoscaler/cluster-proportional-autoscaler:v1.9.0-1). All AKS clusters with 1.27+ version will use v1.8.11-5 CPA image version.
+
+
 ## Release 2025-01-30
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250130`.
@@ -16,7 +63,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Security patch releases in release tracker, starting with 20250115T000000Z will contain release notes for the release.
 
 * Preview Features:
-  * You can now monitor your stateful workloads running on AKS with Azure Container Storage using Azure Monitor managed service for Prometheus in Preview. You can use Azure Monitor managed service for Prometheus to collect Azure Container Storage metrics along with other Prometheus metrics from your AKS cluster. For more information please see (Enable monitoring for Azure Container Storage)[https://learn.microsoft.com/azure/storage/container-storage/enable-monitoring?source=recommendations].
+  * You can now monitor your stateful workloads running on AKS with Azure Container Storage using Azure Monitor managed service for Prometheus in Preview. You can use Azure Monitor managed service for Prometheus to collect Azure Container Storage metrics along with other Prometheus metrics from your AKS cluster. For more information please see [Enable monitoring for Azure Container Storage](https://learn.microsoft.com/azure/storage/container-storage/enable-monitoring?source=recommendations).
   * CNI validation for node autoprovisioner now allows all CNI configurations except for Calico and kubenet. See [AKS CNI Overview](https://learn.microsoft.com/azure/aks/concepts-network-cni-overview) for more information.
   * AKS Automatic SKU now supports using a [custom virtual network](https://learn.microsoft.com/azure/aks/automatic/quick-automatic-custom-network?pivots=azure-cli).
   * When using [NAP](https://learn.microsoft.com/azure/aks/node-autoprovision), custom subnets can be specified for node use via an update to the AKSNodeClass CRD which adds the vnetSubnetID property.
