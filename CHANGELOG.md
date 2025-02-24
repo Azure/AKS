@@ -26,7 +26,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 
 * Behavior Changes:
-   * You can now configure the [default ingress controller type](https://learn.microsoft.com/en-us/azure/aks/app-routing) in the AKS application routing add-on.
    * AKS no longer supports the [GPU image (preview)](https://github.com/Azure/AKS/issues/4472) to provision GPU-enabled AKS nodes. Any attempts to create new node pools with the GPU image (preview) will fail. Alternative options that are supported today and recommended by AKS include the default experience with manual NVIDIA device plugin installation or the NVIDIA GPU Operator, detailed in [AKS GPU node pool documentation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#confirm-that-gpus-are-schedulable).
    * Starting in the Karpenter v0.6 image, Node Auto Provisioning (NAP) will bootstrap nodes from Scriptless to AgentBaker using custom data provided by Node Provisioning Service (NPS) and improve the stability of NAP.
 
