@@ -17,7 +17,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 
 * Preview Features:
-   * AKS Kubernetes version 1.32 is now in preview.
 
 
 * Bug Fixes:
