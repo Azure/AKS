@@ -43,7 +43,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * addon-resizer image v1.8.23-2 has been built using 
     the Dalec framework, tested and published to MCR under [oss/v2 path](mcr.microsoft.com/oss/v2/kubernetes/autoscaler/addon-resizer:v1.8.23-2). All AKS clusters will use v1.8.23-2 addon-resizer image version.
    * Updated Azure File CSI driver liveness probe to v2.15.0 and CSI node driver registrar to v2.13.0 on AKS 1.31 and 1.32.
-   * cluster-proportional-autoscaler (CPA) image v1.9.0-1 has been built using the Dalec framework, tested and published to MCR under [oss/v2 path](mcr.microsoft.com/oss/v2/kubernetes/autoscaler/cluster-proportional-autoscaler:v1.9.0-1). All AKS clusters with 1.27+ version will use v1.8.11-5 CPA image version.
+   * cluster-proportional-autoscaler has been upgraded to v1.9.0-1.
    * Extend the AKS security patch release notes in release tracker to include a package comparison with the current - 1 AKS Ubuntu base image.
    * AKS Azure Linux v2 image has been updated to [202502.09.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSAzureLinux/gen2/202502.09.0.txt).
    * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](https://github.com/Azure/AgentBaker/blob/master/vhdbuilder/release-notes/AKSUbuntu/gen2/2204containerd/202502.09.0.txt).
