@@ -9,6 +9,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Release Notes
 * Features:
+   * Application routing add-on support for [configuring the default NGINX ingress controller visibility](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#control-the-default-ingress-controller-configuration-when-creating-the-cluster) is now generally available in API 2025-02-01.
+
    * AKS Kubernetes patch versions 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
    * 
 
