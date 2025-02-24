@@ -30,7 +30,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Component Updates:
    * Beginning in Kubernetes 1.32, AKS uses CNS to install Azure CNI NodeSubnet by default, meaning users will now see the CNS daemonset in their environments with no changes to functionality or required action.
-   * ExtensionManager has been upgraded to  [v1.22.4](https://github.com/azure-core/ClusterConfigurationAgent/releases/tag/v1.22.4).
    * Node Auto Provisioning has been upgraded to use Karpenter [v0.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.7.2).
    * Updated LTS patch version 1.27.102 for Command Injection affecting Windows nodes to address [CVE-2024-9042](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-9042).
    * Updated the Retina basic image to v0.0.25 for Linux and Windows to address [CVE-2025-23047](https://nvd.nist.gov/vuln/detail/CVE-2025-23047) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338).
