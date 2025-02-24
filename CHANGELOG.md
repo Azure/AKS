@@ -42,7 +42,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
       * github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0 to [v1.8.1](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/CHANGELOG.md#181-2025-01-15)
       * github.com/prometheus/common v0.60.0 to [v0.62.0](https://github.com/prometheus/common/releases/tag/v0.62.0)
       * github.com/samber/lo v1.47.0 to v1.49.1
-      * github.com/stretchr/testify v1.9.0 to v1.10.0
+      * github.com/stretchr/testify v1.9.0 to [v1.10.0](https://github.com/stretchr/testify/releases/tag/v1.10.0)
    * Updated Azure File CSI driver liveness probe to v2.15.0 and CSI node driver registrar to v2.13.0 on AKS 1.31 and 1.32.
    * cluster-proportional-autoscaler has been upgraded to v1.9.0-1.
    * Extend the AKS [security patch release notes](https://releases.aks.azure.com/) in release tracker to include a package comparison with the current - 1 AKS Ubuntu base image.
