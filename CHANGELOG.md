@@ -28,7 +28,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 
 * Behavior Changes:
-   * Starting in the Karpenter v0.6 image, Node Auto Provisioning (NAP) will bootstrap nodes from Scriptless to AgentBaker using custom data provided by Node Provisioning Service (NPS) and improve the stability of NAP.
+   * [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) introduced for `ama-metrics replicaset pod` in the [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview) add-on. More details about the configuration of the Horizontal Pod Autoscaler can be found [here](https://github.com/Azure/prometheus-collector/blob/main/internal/docs/HPA.md).
 
 * Component Updates:
    * Starting with Kubernetes v1.32, node subnet mode will be installed via a DaemonSet (CNS) instead of AgentBaker. Customers will now see this DaemonSet running in their clusters, aligning node subnet mode with PodSubnet and Overlay CNI for a more uniform architecture and faster security updates.
