@@ -43,7 +43,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
       * github.com/prometheus/common v0.60.0 to [v0.62.0](https://github.com/prometheus/common/releases/tag/v0.62.0)
       * github.com/samber/lo v1.47.0 to [v1.49.1](https://github.com/samber/lo/releases/tag/v1.49.1)
       * github.com/stretchr/testify v1.9.0 to [v1.10.0](https://github.com/stretchr/testify/releases/tag/v1.10.0)
-   * cluster-proportional-autoscaler has been upgraded to v1.9.0-1.
    * AKS Azure Linux v2 image has been updated to [202502.09.0](https://github.com/Azure/AKS/blob/master/vhd-notes/AzureLinux/202502.09.0.txt).
    * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](https://github.com/Azure/AKS/blob/master/vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
    * AKS Windows Server 2019 image has been updated to [17763.6775.250117](https://github.com/Azure/AKS/blob/master/vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
