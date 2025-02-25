@@ -5,7 +5,7 @@
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250220`.
 
 ### Announcements
-* AKS Kubernetes version 1.32 is now being rolled out and is expected to reach all regions on or before the end of March. Please use the [az-aks-get-versions](https://learn.microsoft.com/azure/aks?view=azure-cli-latest#az-aks-get-versions) command to accurately capture if Kubernetes version 1.32 is available in your region.
+* AKS Kubernetes version 1.32 is rolling out soon and is expected to reach all regions on or before the end of March. Please use the [az-aks-get-versions](https://learn.microsoft.com/azure/aks?view=azure-cli-latest#az-aks-get-versions) command to accurately capture if Kubernetes version 1.32 is available in your region.
 * HTTP Application Routing (preview) is going to be [retired on March 3, 2025](https://azure.microsoft.com/updates?id=retirement-http-application-routing-addon-preview-for-aks-will-retire-03032025) and AKS will start to block new cluster creation with HTTP Application Routing (preview) enabled. Affected clusters must migrate to the generally available Application Routing add-on prior to that date. Refer to the [migration guide](https://learn.microsoft.com/en-us/azure/aks/app-routing-migration) for more information.
 * Using the GPU VHD image (preview) to provision GPU-enabled AKS nodes was retired on January 10, 2025 and AKS will block creation of new node pools with the GPU VHD image (preview). Follow the detailed steps to [create GPU-enabled node pools](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#use-the-aks-gpu-image-preview) using the alternative supported options.
 
