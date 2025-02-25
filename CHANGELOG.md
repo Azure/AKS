@@ -24,7 +24,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Resolved an [issue](https://github.com/Azure/azure-sdk-for-go/issues/24109) where the updated Azure Table client mishandled untyped numbers, causing static block agent pools to be misidentified as dynamic and leading to operation failures.
    * Fixed a bug in Azure Kubernetes Fleet Manager hubful resource groups by truncating the name to avoid issues with long generated managed resource group names breaking the maximum length of resource groups.
 
-
 * Behavior Changes:
    * [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) introduced for `ama-metrics replicaset pod` in the [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview) add-on. More details about the configuration of the Horizontal Pod Autoscaler can be found [here](https://github.com/Azure/prometheus-collector/blob/main/internal/docs/HPA.md).
 
