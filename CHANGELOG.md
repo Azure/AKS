@@ -1,5 +1,55 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2025-02-20
+
+Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250220`.
+
+### Announcements
+* AKS Kubernetes version 1.32 is rolling out soon and is expected to reach all regions on or before the end of March. Please use the [az-aks-get-versions](https://learn.microsoft.com/azure/aks?view=azure-cli-latest#az-aks-get-versions) command to accurately capture if Kubernetes version 1.32 is available in your region.
+* HTTP Application Routing (preview) is going to be [retired on March 3, 2025](https://azure.microsoft.com/updates?id=retirement-http-application-routing-addon-preview-for-aks-will-retire-03032025) and AKS will start to block new cluster creation with HTTP Application Routing (preview) enabled. Affected clusters must migrate to the generally available Application Routing add-on prior to that date. Refer to the [migration guide](https://learn.microsoft.com/azure/aks/app-routing-migration) for more information.
+* Using the GPU VHD image (preview) to provision GPU-enabled AKS nodes was retired on January 10, 2025 and AKS will block creation of new node pools with the GPU VHD image (preview). Follow the detailed steps to [create GPU-enabled node pools](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#use-the-aks-gpu-image-preview) using the alternative supported options.
+* Extend the AKS [security patch release notes](https://releases.aks.azure.com/) in release tracker to include a package comparison with the current - 1 AKS Ubuntu base image.
+
+### Release Notes
+* Features:
+   * Application routing add-on support for [configuring the default NGINX ingress controller visibility](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#control-the-default-ingress-controller-configuration-when-creating-the-cluster) is now generally available in API 2025-02-01.
+   * Kubernetes events for monitoring [node auto-repair](https://learn.microsoft.com/azure/aks/node-auto-repair) actions are now available for your AKS cluster. You can ingest these events and create alerts following the same [process as other Kubernetes events](https://learn.microsoft.com/azure/aks/events?tabs=azure-cli).
+   * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
+
+* Preview Features:
+   * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
+   * [Control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available through Azure Monitor platform metrics in preview to monitor critical control plane components such as API server, etcd, scheculer, autoscaler, and controller-manager.
+
+* Bug Fixes:
+   * Resolved an [issue](https://github.com/Azure/AKS/issues/4662) with Istio service mesh add-on where having multiple operations with the Lua EnvoyFilter (e.g. adding the Lua filter to call an external service and specifying the cluster referenced by Lua code) was not allowed.
+   * Fixed a bug in Azure CNI Pod Subnet Static Block Allocation mode with Cilium which caused incorrect iptables rules, leading to pod connectivity failures to DNS and IMDS.
+   * Resolved an [issue](https://github.com/Azure/azure-sdk-for-go/issues/24109) in Azure CNI static block IP allocation mode, where the updated Azure Table client mishandled untyped numbers, causing static block node pools to be misidentified as dynamic and leading to operation failures.
+   * Fixed a bug in Azure Kubernetes Fleet Manager hub cluster resource groups (FL_ prefix resource groups) by truncating the name to avoid issues with long generated managed resource group names breaking the maximum length of resource groups.
+
+* Behavior Changes:
+   * [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) introduced for `ama-metrics replicaset pod` in the [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview) add-on. More details about the configuration of the Horizontal Pod Autoscaler can be found [here](https://github.com/Azure/prometheus-collector/blob/main/internal/docs/HPA.md).
+   * Starting with Kubernetes v1.32, node subnet mode will be installed via the `azure-cns` DaemonSet, allowing for faster security updates.
+
+* Component Updates:
+   * Updated Windows CNS from v1.6.13 to [v1.6.21](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.21) and Linux CNS from v1.6.18 to [v1.6.21](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.21).
+   * Updated Windows CNI and Linux CNI from v1.6.18 to [v1.6.21](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.21).
+   * Updated [tigera operator to v1.36.3](https://github.com/tigera/operator/releases/tag/v1.36.3) and [calico to v3.29.0](https://github.com/projectcalico/calico/releases/tag/v3.29.0).
+   * Node Auto Provisioning has been upgraded to use Karpenter [v0.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.7.2).
+   * Updated LTS patch version 1.27.102 for Command Injection affecting Windows nodes to address [CVE-2024-9042](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-9042).
+   * Updated the Retina basic image to v0.0.25 for Linux and Windows to address [CVE-2025-23047](https://nvd.nist.gov/vuln/detail/CVE-2025-23047) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338).
+   * Updated the cost-analysis-agent image from v0.0.20 to v0.0.21. Upgrades the following dependencies in cost-analysis-agent to fix [CVE-2024-45341](https://nvd.nist.gov/vuln/detail/CVE-2024-45341) and [CVE-2024-45336](https://nvd.nist.gov/vuln/detail/CVE-2024-45336):
+      * github.com/Azure/azure-sdk-for-go/sdk/azcore v1.15.0 to [v1.17.0](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore/CHANGELOG.md#1170-2025-01-07)
+      * github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0 to [v1.8.1](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/CHANGELOG.md#181-2025-01-15)
+      * github.com/prometheus/common v0.60.0 to [v0.62.0](https://github.com/prometheus/common/releases/tag/v0.62.0)
+      * github.com/samber/lo v1.47.0 to [v1.49.1](https://github.com/samber/lo/releases/tag/v1.49.1)
+      * github.com/stretchr/testify v1.9.0 to [v1.10.0](https://github.com/stretchr/testify/releases/tag/v1.10.0)
+   * AKS Azure Linux v2 image has been updated to [202502.09.0](vhd-notes/AzureLinux/202502.09.0.txt).
+   * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
+   * AKS Ubuntu 24.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202502.09.0.txt).
+   * AKS Windows Server 2019 image has been updated to [17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
+   * AKS Windows Server 2022 image has been updated to [20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
+   * AKS Windows Server 23H2 image has been updated to [25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
+
 ## Release 2025-01-30
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250130`.
@@ -16,7 +66,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Security patch releases in release tracker, starting with 20250115T000000Z will contain release notes for the release.
 
 * Preview Features:
-  * You can now monitor your stateful workloads running on AKS with Azure Container Storage using Azure Monitor managed service for Prometheus in Preview. You can use Azure Monitor managed service for Prometheus to collect Azure Container Storage metrics along with other Prometheus metrics from your AKS cluster. For more information please see (Enable monitoring for Azure Container Storage)[https://learn.microsoft.com/azure/storage/container-storage/enable-monitoring?source=recommendations].
+  * You can now monitor your stateful workloads running on AKS with Azure Container Storage using Azure Monitor managed service for Prometheus in Preview. You can use Azure Monitor managed service for Prometheus to collect Azure Container Storage metrics along with other Prometheus metrics from your AKS cluster. For more information please see [Enable monitoring for Azure Container Storage](https://learn.microsoft.com/azure/storage/container-storage/enable-monitoring?source=recommendations).
   * CNI validation for node autoprovisioner now allows all CNI configurations except for Calico and kubenet. See [AKS CNI Overview](https://learn.microsoft.com/azure/aks/concepts-network-cni-overview) for more information.
   * AKS Automatic SKU now supports using a [custom virtual network](https://learn.microsoft.com/azure/aks/automatic/quick-automatic-custom-network?pivots=azure-cli).
   * When using [NAP](https://learn.microsoft.com/azure/aks/node-autoprovision), custom subnets can be specified for node use via an update to the AKSNodeClass CRD which adds the vnetSubnetID property.
