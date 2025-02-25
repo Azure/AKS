@@ -14,7 +14,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Kubernetes events for monitoring [node auto-repair](https://learn.microsoft.com/en-us/azure/aks/node-auto-repair) actions are now available for your AKS cluster. You can ingest these events and create alerts following the same [process as other Kubernetes events](https://learn.microsoft.com/azure/aks/events?tabs=azure-cli).
    * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
 
-
 * Preview Features:
    * You can use the `EnableCiliumNodeSubnet' feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
    * [Free control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available in preview to monitor the API server and ETCD components, which will be automatically collected by default on your cluster.
