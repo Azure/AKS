@@ -30,7 +30,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) introduced for `ama-metrics replicaset pod` in the [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview) add-on. More details about the configuration of the Horizontal Pod Autoscaler can be found [here](https://github.com/Azure/prometheus-collector/blob/main/internal/docs/HPA.md).
 
 * Component Updates:
-   * Starting with Kubernetes v1.32, node subnet mode will be installed via a DaemonSet (CNS) instead of AgentBaker. Customers will now see this DaemonSet running in their clusters, aligning node subnet mode with PodSubnet and Overlay CNI for a more uniform architecture and faster security updates.
    * Updated Windows CNS from v1.6.13 to v1.6.21 and Linux CNS from v1.6.18 to v1.6.21.
    * Updated Windows CNI and Linux CNI from v1.6.18 to v1.6.21.
    * Updated [tigera operator to v1.36.3](https://github.com/tigera/operator/releases/tag/v1.36.3) and [calico to v3.29.0](https://github.com/projectcalico/calico/releases/tag/v3.29.0).
