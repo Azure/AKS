@@ -17,7 +17,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Preview Features:
    * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
-   * [Free control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available in preview to monitor the API server and ETCD components, which will be automatically collected by default on your cluster.
+   * [Control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available through Azure Monitor platform metrics in preview to monitor critical control plane components such as API server, etcd, scheculer, autoscaler, and controller-manager.
 
 * Bug Fixes:
    * Resolved an [issue](https://github.com/Azure/AKS/issues/4662) with Istio service mesh add-on where having multiple operations with the Lua EnvoyFilter (e.g. adding the Lua filter to call an external service and specifying the cluster referenced by Lua code) was not allowed.
