@@ -45,7 +45,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
       * github.com/stretchr/testify v1.9.0 to [v1.10.0](https://github.com/stretchr/testify/releases/tag/v1.10.0)
    * AKS Azure Linux v2 image has been updated to [202502.09.0](vhd-notes/AzureLinux/202502.09.0.txt).
    * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
-   * AKS Windows Server 2019 image has been updated to [17763.6775.250117](https://github.com/Azure/AKS/blob/master/vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
+   * AKS Windows Server 2019 image has been updated to [17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
    * AKS Windows Server 2022 image has been updated to [20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
    * AKS Windows Server 23H2 image has been updated to [25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
 
