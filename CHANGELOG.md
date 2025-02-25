@@ -31,7 +31,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Starting with Kubernetes v1.32, node subnet mode will be installed via the `azure-cns` DaemonSet, allowing for faster security updates.
 
 * Component Updates:
-   * Updated Windows CNS from v1.6.13 to v1.6.21 and Linux CNS from v1.6.18 to v1.6.21.
+   * Updated Windows CNS from v1.6.13 to [v1.6.21](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.21) and Linux CNS from v1.6.18 to [v1.6.21](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.21).
    * Updated Windows CNI and Linux CNI from v1.6.18 to [v1.6.21](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.21).
    * Updated [tigera operator to v1.36.3](https://github.com/tigera/operator/releases/tag/v1.36.3) and [calico to v3.29.0](https://github.com/projectcalico/calico/releases/tag/v3.29.0).
    * Node Auto Provisioning has been upgraded to use Karpenter [v0.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.7.2).
