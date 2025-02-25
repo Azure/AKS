@@ -47,7 +47,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
    * AKS Windows Server 2019 image has been updated to [17763.6775.250117](https://github.com/Azure/AKS/blob/master/vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
    * AKS Windows Server 2022 image has been updated to [20348.3091.250117](https://github.com/Azure/AKS/blob/master/vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
-   * AKS Windows Server 23H2 image has been updated to [25398.1369.250117](https://github.com/Azure/AKS/blob/master/vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
+   * AKS Windows Server 23H2 image has been updated to [25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
 
 ## Release 2025-01-30
 
