@@ -23,7 +23,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Bug Fixes:
    * Resolved an [issue](https://github.com/Azure/AKS/issues/4662) with Istio service mesh add-on where having multiple operations with the Lua EnvoyFilter (e.g. adding the Lua filter to call an external service and specifying the cluster referenced by Lua code) was not allowed.
    * Fixed a bug in Azure CNI Pod Subnet Static Block Allocation mode with Cilium which caused incorrect iptables rules, leading to pod connectivity failures to DNS and IMDS.
-   * Resolved an [issue](https://github.com/Azure/azure-sdk-for-go/issues/24109) where the updated Azure Table client mishandled untyped numbers, causing static block agent pools to be misidentified as dynamic and leading to operation failures.
+   * Resolved an [issue](https://github.com/Azure/azure-sdk-for-go/issues/24109) in Azure CNI static block IP allocation mode, where the updated Azure Table client mishandled untyped numbers, causing static block node pools to be misidentified as dynamic and leading to operation failures.
    * Fixed a bug in Azure Kubernetes Fleet Manager hub cluster resource groups (FL_ prefix resource groups) by truncating the name to avoid issues with long generated managed resource group names breaking the maximum length of resource groups.
 
 * Behavior Changes:
