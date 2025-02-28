@@ -193,7 +193,9 @@ az keyvault certificate import --vault-name $KEY_VAULT_NAME --name $APP_CERT_NAM
 
 ## Configure the Ingress Options
 
-We have App Routing enabled, but for our scenario we want to configure the internal endpoint for the Nginx Ingress deployment and ensure that private link is enabled, which we'll need for Azure Front Door to access the cluster ingress. This is enabled via the ```azure-load-balancer-internal``` and ```azure-pls-create```  annotations, which you may recognize from the standard load balancer Kubernetes service annotations. You apply these settings via the NginxIngressController CRD. We could modify the default NginxIngressController deployed with App Routing, but instead we'll create a second instance. This will give us a new nginx ingress deployment specific to our needs. This allows you to have different ingress deployments with different options enabled.
+We have App Routing enabled, but for our scenario we want to configure the internal endpoint for the Nginx Ingress deployment and ensure that private link is enabled, which we'll need for Azure Front Door to access the cluster ingress. This is enabled via the ```azure-load-balancer-internal``` and ```azure-pls-create```  annotations, which you may recognize from the standard load balancer Kubernetes service annotations. We'll also use the ```azure-pls-auto-approval``` annotation so that the private link will auto approve when we attach it to Azure Front Door.
+
+You apply these settings via the NginxIngressController CRD. We could modify the default NginxIngressController deployed with App Routing, but instead we'll create a second instance. This will give us a new nginx ingress deployment specific to our needs. This allows you to have different ingress deployments with different options enabled.
 
 ```bash
 # Get the Key Vault ID
@@ -201,6 +203,9 @@ KEYVAULT_ID=$(az keyvault show --name $KEY_VAULT_NAME --query "id" --output tsv)
 
 # Link the Key Vault to App Routing
 az aks approuting update --resource-group $RG --name $CLUSTER_NAME --enable-kv --attach-kv $KEYVAULT_ID
+
+# Get the current subscription ID
+SUBSCRIPTION_ID=$(az account show -o tsv --query id)
 
 # Update the app routing config to enable internal
 cat <<EOF | kubectl apply -f -
@@ -214,6 +219,7 @@ spec:
   loadBalancerAnnotations: 
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     service.beta.kubernetes.io/azure-pls-create: "true"
+    service.beta.kubernetes.io/azure-pls-auto-approval: "*"
 EOF
 
 ```
@@ -378,7 +384,7 @@ Finally, we see the domain entry created and pending association with an endpoin
 
 Front Door is acting as the entry point to our backend, which is referred to as the 'Origin'.
 
-Creating the origin group is a two step process. You create the origin group, but as part of that you also add the origin hostname configuration. As part of that origin hostname setup you will check the 'Enable Private Link Service' option, which will allow you to select the private link that was automatically created by AKS for your ingress-nginx deployment. This is why the service annotation was so important when you deployed ingress-nginx.
+Creating the origin group is a two step process. You create the origin group, but as part of that you also add the origin hostname configuration. As part of that origin hostname setup you will check the 'Enable Private Link Service' option, which will allow you to select the private link that was automatically created by AKS for your ingress-nginx deployment. This is why the service annotations where so important when you deployed ingress-nginx.
 
 You'll provide a message that will show up on the private link approval side. This message can be whatever you want.
 
@@ -417,31 +423,6 @@ When finished, your endpoint should look as follows.
 We need our DNS name to point to the Azure Front Door endpoint, so we'll take that Front Door provided FQDN and create a CNAME record. 
 
 ![dns cname entry](/AKS/assets/images/aks-ingress-tls-approuting/dnscname.jpg)
-
-### Approve the Private Link request
-
-Ok, so we associated the Azure Front Door origin with our private link, but we never approved the private link association request. To do that, we'll need to go to the AKS managed cluster (MC_) resource group. Lets get that resource group name and then go approve the request.
-
-```bash
-# Get the managed cluster resource group name
-AKS_CLUSTER_MC_RG=$(az aks show -g $RG -n $CLUSTER_NAME -o tsv --query nodeResourceGroup)
-```
-
-Back in the Azure Portal, navigate to the Managed Cluster Resource Group and find the private link.
-
-![approve private link 1](/AKS/assets/images/aks-ingress-tls-approuting/approvepl1.jpg)
-
-Click on the 'Private endpoint connections' where you should see a pending request.
-
-![approve private link 2](/AKS/assets/images/aks-ingress-tls-approuting/approvepl2.jpg)
-
-Select the private link and click 'Approve'.
-
-![approve private link 3](/AKS/assets/images/aks-ingress-tls-approuting/approvepl3.jpg)
-
-You'll see a dialog box with the message you sent when creating the origin connection.
-
-![approve private link 4](/AKS/assets/images/aks-ingress-tls-approuting/approvepl4.jpg)
 
 ## Test
 
