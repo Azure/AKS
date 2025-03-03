@@ -11,7 +11,7 @@ authors:
 
 In this walkthrough we'll create deploy an app with end to end TLS encryption, using Azure Front Door as the Internet Facing TLS endpoint and AKS App Routing Ingress as the internal in-cluster ingress controller. 
 
-We'll use Azure Key Vault to store the TLS certificate, and will use the Key Vault CSI Driver to get the secrets into the ingress controller. The Key Vault CSI Driver will use Azure Workload Identity to safely retrieve the certificate.
+We'll use Azure Key Vault to store the TLS certificate, and will use App Routing Key Vault integration to get the certificate secret into the ingress controller. 
 
 > *Note:* We'll be walking through step by step, showing the moving parts, via the Azure CLI. If you'd like to see a full implementation of a very similar deployment using Bicep, check out the link below:
 
@@ -21,7 +21,7 @@ Let's get to it....
 
 ## Network Setup
 
-First, we'll need to establish the network where our AKS cluster will be deployed. Nothing special in our network design, other than the fact that I'm creating an Azure Network Security Group at the subnet level for added security. It's also fairly common that your cluster will be deployed to a subnet that has an existing NSG, so it's good to show the steps required to make that work.
+First, we'll need to establish the network where our AKS cluster will be deployed. Nothing special in our network design. Just a Vnet with a single subnet for the cluster.
 
 ```bash
 # Set starting environment variables
@@ -39,22 +39,13 @@ VNET_NAME=lablab-vnet
 VNET_ADDRESS_SPACE=10.140.0.0/16
 AKS_SUBNET_ADDRESS_SPACE=10.140.0.0/24
 
-# Create an NSG at the subnet level for security reasons
-az network nsg create \
---resource-group $RG \
---name aks-subnet-nsg
-
-# Get the NSG ID
-NSG_ID=$(az network nsg show -g $RG -n aks-subnet-nsg -o tsv --query id)
-
 # Create the Vnet along with the initial subet for AKS
 az network vnet create \
 -g $RG \
 -n $VNET_NAME \
 --address-prefix $VNET_ADDRESS_SPACE \
 --subnet-name aks \
---subnet-prefix $AKS_SUBNET_ADDRESS_SPACE \
---network-security-group aks-subnet-nsg
+--subnet-prefix $AKS_SUBNET_ADDRESS_SPACE 
 
 # Get a subnet resource ID, which we'll need when we create the AKS cluster
 VNET_SUBNET_ID=$(az network vnet subnet show -g $RG --vnet-name $VNET_NAME -n aks -o tsv --query id)
@@ -66,8 +57,7 @@ Now, lets create the AKS cluster. This will be a very plain AKS cluster, for sim
 
 - *AKS App Routing:* This will deploy managed Nginx Ingress
 - *App Routing Default Nginx Controller:* This allows us to ensure that the default deployment of App Routing uses a private IP
-
-> *Note:* Since I created a NSG at the subnet level, I'll need to create a custom role which will be used later for automated private link creation. If you don't have an NSG on the subnet, and just rely on the managed NSG that AKS owns, then you don't need to create the custom role documented below. 
+- *Key Vault CSI Driver:* The Key Vault CSI driver will be used by App Routing to access our certificate in Azure Key Vault.
 
 ```bash
 # NOTE: Make sure you give your cluster a unique name
@@ -85,41 +75,6 @@ az aks create \
 
 # Get the cluster identity
 CLUSTER_IDENTITY=$(az aks show -g $RG -n $CLUSTER_NAME -o tsv --query identity.principalId)
-
-###################################################################################################
-# Grant the cluster identity rights on the cluster nsg, which we'll need later when we create the
-# private link.
-
-# NOTE: These steps are only needed if you have a custom NSG on the cluster subnet.
-
-# Create the role definition file
-cat << EOF > pl-nsg-role.json
-{
-    "Name": "Private Link AKS Role",
-    "Description": "Grants the cluster rights on the NSG for Private Link Creation",
-    "Actions": [
-        "Microsoft.Network/networkSecurityGroups/join/action"
-    ],
-    "NotActions": [],
-    "DataActions": [],
-    "NotDataActions": [],
-    "assignableScopes": [
-        "${RG_ID}"
-    ]
-}
-EOF
-
-# Create the role definition in Azure
-az role definition create --role-definition @pl-nsg-role.json
-
-# Assign the role
-# NOTE: New role propegation may take a minute or to, so retry as needed
-az role assignment create \
---role "Private Link AKS Role" \
---assignee $CLUSTER_IDENTITY \
---scope $NSG_ID
-###################################################################################################
-
 
 # Get credentials
 az aks get-credentials -g $RG -n $CLUSTER_NAME
@@ -166,7 +121,7 @@ az keyvault certificate import --vault-name $KEY_VAULT_NAME --name $APP_CERT_NAM
 
 ### Option 2: LetsEncrypt/CertBot
 
-I'm not going to get into all the specifics of using Certbot with LetsEncrypt, but the basics are as follows. The domain I'll be using is my 'crashoverride.nyc' domain.
+I'm not going to get into all the specifics of using [Certbot](https://certbot.eff.org/) with [LetsEncrypt](https://letsencrypt.org/), but the basics are as follows. The domain I'll be using is my 'crashoverride.nyc' domain.
 
 1. Get an internet reachable host capable of running a webserver on ports 80 and 443
 2. Create an A-record for your target domain to the public IP of the server. This is required for hostname validation used by Certbot
@@ -175,7 +130,7 @@ I'm not going to get into all the specifics of using Certbot with LetsEncrypt, b
 Here's a sample of the command I used to create a cert with two entries in the certificate Subject Alternate Names:
 
 ```bash
-sudo certbot certonly --key-type rsa --standalone -d e2elab.crashoverride.nyc -d www.crashoverride.nyc
+sudo certbot certonly --key-type rsa --standalone -d e2elab.crashoverride.nyc
 ```
 
 Certbot creates several files, all with the PEM file extension. This is misleading, as fullchain.pem is the 'crt' file and the privkey.pem is the 'key' file. To store these in Azure Key Vault as certs we'll need to package these files up in a PFX format.
@@ -203,9 +158,6 @@ KEYVAULT_ID=$(az keyvault show --name $KEY_VAULT_NAME --query "id" --output tsv)
 
 # Link the Key Vault to App Routing
 az aks approuting update --resource-group $RG --name $CLUSTER_NAME --enable-kv --attach-kv $KEYVAULT_ID
-
-# Get the current subscription ID
-SUBSCRIPTION_ID=$(az account show -o tsv --query id)
 
 # Update the app routing config to enable internal
 cat <<EOF | kubectl apply -f -
@@ -357,7 +309,7 @@ az afd profile create \
 --sku Premium_AzureFrontDoor 
 ```
 
-We'll do the rest in our Azure Front Door instance in the Azure Portal, so open a browser to [https://portal.azure.com](https://portal.azure.com).
+We'll do the rest in our Azure Front Door instance in the Azure Portal, so open a browser to [https://portal.azure.com](https://portal.azure.com) and then navigate to your resource group and then your Azure Front Door Instance.
 
 ### Link the certificate to the AFD.
 
