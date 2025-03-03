@@ -88,7 +88,7 @@ Now, lets create our Azure Key Vault and then create and upload our certificate.
 # Create a key vault name
 KEY_VAULT_NAME=e2elab$RANDOM
 
-# Create the key vaule
+# Create the key value
 az keyvault create --name $KEY_VAULT_NAME --resource-group $RG --location $LOC --enable-rbac-authorization false
 ```
 
@@ -125,7 +125,7 @@ I'm not going to get into all the specifics of using [Certbot](https://certbot.e
 
 1. Get an internet reachable host capable of running a webserver on ports 80 and 443
 2. Create an A-record for your target domain to the public IP of the server. This is required for hostname validation used by Certbot
-3. Run the certbot command as a priviledged user on that web server host mentioned in #1 above
+3. Run the certbot command as a privileged user on that web server host mentioned in #1 above
 
 Here's a sample of the command I used to create a cert with two entries in the certificate Subject Alternate Names:
 
@@ -218,10 +218,10 @@ spec:
 EOF
 ```
 
-Now we can deploy the ingress defintion. Look out for the following:
+Now we can deploy the ingress definition. Look out for the following:
 
 1. The 'tls-cert-keyvault-uri' annotation maps the inbound TLS request to the appropriate certificate secret
-2. The 'rules' section maps the target host name to the backend service that should be targetted
+2. The 'rules' section maps the target host name to the backend service that should be targeted
 3. The 'tls' section will include the target host name and it's mapping to the correct certificate, which we created above
 
 ```bash
@@ -257,7 +257,7 @@ spec:
 EOF
 ```
 
-Since we haven't set up the Azure Front Door yet, we cant access the app on the public IP yet. We can fake this out, however, with some curl magic. curl lets you call a local endpoint and pretend like you're connecting to a different host name. We'll need this for our ingress to match the hostname to the right certificate.
+Since we haven't set up the Azure Front Door yet, we can't access the app on the public IP yet. We can fake this out, however, with some curl magic. curl lets you call a local endpoint and pretend like you're connecting to a different host name. We'll need this for our ingress to match the hostname to the right certificate.
 
 First we port-forward and then we'll curl with some special options.
 
