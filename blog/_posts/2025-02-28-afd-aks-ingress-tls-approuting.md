@@ -104,7 +104,7 @@ Both options are totally fine, but have slight differences in approach, which I'
 
 We won't cover all the details of setting up a certificate with App Service Certificates, but you can review the doc [here](https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-app-service-certificate?tabs=portal) for those steps.
 
-When I created the certificate, I told App Svc Certs to store the cert in the Key Vault just created. We'll use the [Key Vault CSI Driver](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) to mount the certificate into the ingress controller, but to do that we need to get the certficate into a format that the CSI driver can read. App Svc Certs stores the certificate in an Azure Key Vault in pfx format as a secret, but for the Key Vault CSI Driver we need it stored as a certificate. We can export the PFX from the Azure Key Vault Secret and then import it as a certificate.
+When I created the certificate, I told App Svc Certs to store the cert in the Key Vault just created. We'll use the [Key Vault CSI Driver](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) to mount the certificate into the ingress controller, but to do that we need to get the certificate into a format that the CSI driver can read. App Svc Certs stores the certificate in an Azure Key Vault in pfx format as a secret, but for the Key Vault CSI Driver we need it stored as a certificate. We can export the PFX from the Azure Key Vault Secret and then import it as a certificate.
 
 ```bash
 APP_CERT_NAME=e2elab
