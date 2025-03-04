@@ -26,6 +26,25 @@ configuration:
           label: stale
       - addReply:
           reply: This issue has been automatically marked as stale because it has not had any activity for **30 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${assignees}
+    - description: Stale any issues with "Needs Author Feedback" label after 7 days of no activity from author.
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - noActivitySince:
+          days: 7
+      - isNotLabeledWith:
+          label: stale
+      - hasLabel:
+          label: bug
+          label: Needs Author Feedback
+      actions:
+      - addLabel:
+          label: stale
+      - addReply:
+          reply: This issue has been automatically marked as stale because it has not had any activity from the author for **7 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${author}
     eventResponderTasks:
       - description: When an issue is labeled with 'SR-Support Request', add a reply with instructions on how to create a support ticket.
         if:
@@ -62,5 +81,26 @@ configuration:
               label: resolution/fix-released
           - addLabel:
               label: resolution/shipped
+      - description: When a bug fix is in progress, notify the customer with a message.
+        if:
+          - payloadType: Issues
+          - labelAdded:
+              label: Fix in Progress
+          - isOpen
+        then:
+          - addReply:
+              reply: >-
+                Hi there :wave: AKS bot here. Thank you for reporting this bug to the AKS team. This issue has been tagged as the bug fix is currently in progress. When the fix is complete, we will update you with the investigation and fix details.
+      - description: When a bug is being investigated, notify the customer with a message.
+        if:
+          - payloadType: Issues
+          - labelAdded:
+              label: Under Investigation
+          - isOpen
+        then:
+          - addReply:
+              reply: >-
+                Hi there :wave: AKS bot here. This issue has been tagged as being investigated by the AKS team. Please check back shortly to see if any additional information or actions are needed from you. Thank you!
+      - description: When a support request for the GH issue has been resolved, close the issue with resolution label.
 onFailure: 
 onSuccess:
