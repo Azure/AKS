@@ -4,9 +4,6 @@ description: Using Azure Front Door in-front of AKS App Routing Internal to prov
 authors: 
   - steve_griffith
 ---
-
-# End to End TLS Encryption with AKS App Routing Internal and AFD
-
 ## Introduction
 
 In this walkthrough we'll create deploy an app with end to end TLS encryption, using Azure Front Door as the Internet Facing TLS endpoint and AKS App Routing Ingress as the internal in-cluster ingress controller. 
@@ -92,42 +89,15 @@ KEY_VAULT_NAME=e2elab$RANDOM
 az keyvault create --name $KEY_VAULT_NAME --resource-group $RG --location $LOC --enable-rbac-authorization false
 ```
 
-For certificate creation, I actually took two separate paths.
+For Azure Front door I'll need a public certificate for my hostname. If I were doing this for a company, I would reach out to the team that owns public certificates, but in my case I'll just use [Certbot](https://certbot.eff.org/) to generate a free certificate from [LetsEncrypt](https://letsencrypt.org/).
 
-- *Option 1:* Use Azure [App Service Certificates](https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-app-service-certificate?tabs=portal) to create and manage the certificate.
-- *Option 2:* Use '[LetsEncrypt](https://letsencrypt.org/)' and [Certbot](https://certbot.eff.org/) to create the certificate.
-
-Both options are totally fine, but have slight differences in approach, which I'll highlight below. If you're working in a large enterprise, you'll likely have a completely separate internal process for getting a certificate. In the end, all we care about is that we have a valid cert and key file.
-
-
-### Option 1: App Service Certificates
-
-We won't cover all the details of setting up a certificate with App Service Certificates, but you can review the doc [here](https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-app-service-certificate?tabs=portal) for those steps.
-
-When I created the certificate, I told App Svc Certs to store the cert in the Key Vault just created. We'll use the [Key Vault CSI Driver](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) to mount the certificate into the ingress controller, but to do that we need to get the certificate into a format that the CSI driver can read. App Svc Certs stores the certificate in an Azure Key Vault in pfx format as a secret, but for the Key Vault CSI Driver we need it stored as a certificate. We can export the PFX from the Azure Key Vault Secret and then import it as a certificate.
-
-```bash
-APP_CERT_NAME=e2elab
-
-# Get the secret name for the certificate in key vault
-SECRET_NAME=$(az resource show --resource-group $RG --resource-type "Microsoft.CertificateRegistration/certificateOrders" --name $APP_CERT_NAME --query "properties.certificates.$APP_CERT_NAME.keyVaultSecretName" --output tsv)
-
-# Download the certificate 
-az keyvault secret download --file $APP_CERT_NAME.pfx --vault-name $KEY_VAULT_NAME --name $SECRET_NAME --encoding base64
-
-# Import the certificate
-az keyvault certificate import --vault-name $KEY_VAULT_NAME --name $APP_CERT_NAME --file $APP_CERT_NAME.pfx
-```
-
-### Option 2: LetsEncrypt/CertBot
-
-I'm not going to get into all the specifics of using [Certbot](https://certbot.eff.org/) with [LetsEncrypt](https://letsencrypt.org/), but the basics are as follows. The domain I'll be using is my 'crashoverride.nyc' domain.
+I'm not going to get into all the specifics of using CertBot with LetsEncrypt, but the basics are as follows. The domain I'll be using is my 'crashoverride.nyc' domain.
 
 1. Get an internet reachable host capable of running a webserver on ports 80 and 443
 2. Create an A-record for your target domain to the public IP of the server. This is required for hostname validation used by Certbot
 3. Run the certbot command as a privileged user on that web server host mentioned in #1 above
 
-Here's a sample of the command I used to create a cert with two entries in the certificate Subject Alternate Names:
+Here's a sample of the command I used to create the certificate:
 
 ```bash
 sudo certbot certonly --key-type rsa --standalone -d e2elab.crashoverride.nyc
@@ -141,7 +111,11 @@ APP_CERT_NAME=crashoverride
 # export to pfx
 # skipping the Password prompt
 openssl pkcs12 -export -passout pass: -in fullchain.pem -inkey privkey.pem  -out ${APP_CERT_NAME}.pfx
+```
 
+The final critical step is to import the certificate into our Azure Key Vault so that it can be accessed by both Azure Front Door and AKS.
+
+```bash
 # Import the certificate
 az keyvault certificate import --vault-name $KEY_VAULT_NAME --name $APP_CERT_NAME --file $APP_CERT_NAME.pfx
 ```
@@ -185,7 +159,7 @@ cat <<EOF | kubectl apply -f -
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aks-helloworld 
+  name: aks-helloworld
 spec:
   replicas: 1
   selector:
