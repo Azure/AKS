@@ -6,7 +6,13 @@ authors:
 ---
 ## Introduction
 
-In this walkthrough we'll create deploy an app with end to end TLS encryption, using Azure Front Door as the Internet Facing TLS endpoint and AKS App Routing Ingress as the internal in-cluster ingress controller. 
+When running globally distributed public applications in Kubernetes, having access to a global traffic management solution is critical to ensuring high availability and security at the edge. Fortunately, [Azure Front Door](https://learn.microsoft.com/en-us/azure/frontdoor/front-door-overview) provides an easy-to-use global traffic routing capability, with integrated Content Delivery Network and Web Application Firewall. 
+
+Since Azure Front Door is a global resource, it isnt pinned to any one given region or Virtual Network, allowing it to connect to any endpoint globally. With support for [Private Link](https://learn.microsoft.com/en-us/azure/frontdoor/private-link) as an origin target, you can deploy Azure Front Door in-front of private backend services, increasing the overall security of your hosting infrastructure and giving you access to all the capabilities of Front Door.
+
+On the backend, Nginx Ingress is an easy-to-use Kubernetes ingress controller. [AKS Application Routing](https://learn.microsoft.com/en-us/azure/aks/app-routing) provides a managed experience for deploying and managing Nginx Ingress in your AKS clusters. By pairing Azure Front Door with AKS App Routing, you get one of the easiest operational experiences for deploying and managing globally distributed web endpoints with content delivery optimization and security.
+
+In this walkthrough we'll deploy an app with end-to-end TLS encryption, using Azure Front Door as the Internet Facing TLS endpoint and AKS App Routing Ingress as the internal in-cluster ingress controller. 
 
 We'll use Azure Key Vault to store the TLS certificate, and will use App Routing Key Vault integration to get the certificate secret into the ingress controller. 
 
@@ -50,7 +56,7 @@ VNET_SUBNET_ID=$(az network vnet subnet show -g $RG --vnet-name $VNET_NAME -n ak
 
 ## Cluster Creation
 
-Now, lets create the AKS cluster. This will be a very plain AKS cluster, for simplicity, however we will deploy to our above created subnet and will enable the following features:
+Now, let's create the AKS cluster. This will be a very plain AKS cluster, for simplicity, however we will deploy to our above created subnet and will enable the following features:
 
 - *AKS App Routing:* This will deploy managed Nginx Ingress
 - *App Routing Default Nginx Controller:* This allows us to ensure that the default deployment of App Routing uses a private IP
@@ -79,7 +85,7 @@ az aks get-credentials -g $RG -n $CLUSTER_NAME
 
 ## Create the Azure Key Vault and Upload Certificate
 
-Now, lets create our Azure Key Vault and then create and upload our certificate.
+Now, let's create our Azure Key Vault and then create and upload our certificate.
 
 ```bash
 # Create a key vault name
@@ -89,7 +95,7 @@ KEY_VAULT_NAME=e2elab$RANDOM
 az keyvault create --name $KEY_VAULT_NAME --resource-group $RG --location $LOC --enable-rbac-authorization false
 ```
 
-For Azure Front door I'll need a public certificate for my hostname. If I were doing this for a company, I would reach out to the team that owns public certificates, but in my case I'll just use [Certbot](https://certbot.eff.org/) to generate a free certificate from [LetsEncrypt](https://letsencrypt.org/).
+For Azure Front door I'll need a public certificate for my hostname. If I were doing this for a company, I would reach out to the team that owns public certificates, but in my case, I'll just use [Certbot](https://certbot.eff.org/) to generate a free certificate from [LetsEncrypt](https://letsencrypt.org/).
 
 I'm not going to get into all the specifics of using CertBot with LetsEncrypt, but the basics are as follows. The domain I'll be using is my 'crashoverride.nyc' domain.
 
@@ -233,7 +239,7 @@ EOF
 
 Since we haven't set up the Azure Front Door yet, we can't access the app on the public IP yet. We can fake this out, however, with some curl magic. curl lets you call a local endpoint and pretend like you're connecting to a different host name. We'll need this for our ingress to match the hostname to the right certificate.
 
-First we port-forward and then we'll curl with some special options.
+First, we port-forward and then we'll curl with some special options.
 
 >*Note:* If you prefer, you can also just edit your local 'hosts' file to fake out the DNS lookup. Just create an entry that maps your local loopback address (127.0.0.1) to your DNS name.
 
@@ -261,7 +267,7 @@ You should have seen a successful TLS handshake with your certificate and proper
 
 ## Create the Azure Front Door
 
-Now that the backend is working, lets wire up the Azure Front Door. Azure Front door will need to access our Key Vault to retrieve the certificate, so first we'll create a managed identity and grant it rights on the Key Vault, and then we'll assign that identity to the Front Door on creation.
+Now that the backend is working, let's wire up the Azure Front Door. Azure Front door will need to access our Key Vault to retrieve the certificate, so first we'll create a managed identity and grant it rights on the Key Vault, and then we'll assign that identity to the Front Door on creation.
 
 ```bash
 # Create the managed identity
@@ -297,7 +303,7 @@ Now we tell AFD what domain we'd like to use and link that domain name to the as
 
 ![afd add domain 1](/AKS/assets/images/aks-ingress-tls-approuting/afd-adddomain1.jpg)
 
-Next we select the appropriate secret for our domain.
+Next, we select the appropriate secret for our domain.
 
 ![afd add domain 2](/AKS/assets/images/aks-ingress-tls-approuting/afd-adddomain2.jpg)
 
@@ -310,7 +316,7 @@ Finally, we see the domain entry created and pending association with an endpoin
 
 Front Door is acting as the entry point to our backend, which is referred to as the 'Origin'.
 
-Creating the origin group is a two step process. You create the origin group, but as part of that you also add the origin hostname configuration. As part of that origin hostname setup you will check the 'Enable Private Link Service' option, which will allow you to select the private link that was automatically created by AKS for your ingress-nginx deployment. This is why the service annotations where so important when you deployed ingress-nginx.
+Creating the origin group is a two-step process. You create the origin group, but as part of that you also add the origin hostname configuration. As part of that origin hostname setup, you will check the 'Enable Private Link Service' option, which will allow you to select the private link that was automatically created by AKS for your ingress-nginx deployment. This is why the service annotations where so important when you deployed ingress-nginx.
 
 You'll provide a message that will show up on the private link approval side. This message can be whatever you want.
 
@@ -320,7 +326,7 @@ Now we complete our origin setup, making sure to set the right path to our ingre
 
 ![origin setup 2](/AKS/assets/images/aks-ingress-tls-approuting/origin-setup2.jpg)
 
-Now we see that our origin is created, but still pending association with an endpoint.
+Now we see that our origin is created but still pending association with an endpoint.
 
 ![origin setup 3](/AKS/assets/images/aks-ingress-tls-approuting/origin-setup3.jpg)
 
@@ -334,7 +340,7 @@ Now we'll add a route by clicking 'Add a route'.
 
 ![add an endpoint 2](/AKS/assets/images/aks-ingress-tls-approuting/addendpoint2.jpg)
 
-In the 'add route' screen, we'll select our origin and the associated domain, and set any additional options. At this point, you should also make note of the endpoint FQDN, which we'll need to use as our CNAME in our DNS for our host name.
+In the 'add route' screen, we'll select our origin and the associated domain and set any additional options. At this point, you should also make note of the endpoint FQDN, which we'll need to use as our CNAME in our DNS for our host name.
 
 ![add an endpoint 3](/AKS/assets/images/aks-ingress-tls-approuting/addendpoint3.jpg)
 
@@ -403,6 +409,6 @@ Request Body:
 
 ## Conclusion
 
- Congrats! You should now have a working Azure Front Door directing TLS secured traffic to an in cluster ingress controller!
+ Congrats! You should now have a working Azure Front Door directing TLS secured traffic to an in-cluster ingress controller!
 
  >*Note:* In this walk through we did not add encryption between the ingress controller and the backend deployment. This can be done by sharing the same, or different, certificate to the deployment pods. You then enable backend encryption on the ingress controller. Alternatively, you could use a service mesh between the ingress and the backend deployment.
