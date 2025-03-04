@@ -17,11 +17,11 @@ configuration:
       - isOpen
       - noActivitySince:
           days: 30
-          
+      - or:
         - isNotLabeledWith:
             label: stale
-
-      
+        - isNotLabeledWith:
+            label: Under Investigation
       - hasLabel:
           label: bug
       actions:
@@ -42,12 +42,13 @@ configuration:
           label: stale
       - hasLabel:
           label: bug
+      - hasLabel:
           label: Needs Author Feedback
       actions:
       - addLabel:
           label: stale
       - addReply:
-          reply: This issue has been automatically marked as stale because it has not had any activity from the author for **7 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${author}
+          reply: This issue has been automatically marked as stale because it has not had any activity from the author for **7 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${issueAuthor}
     eventResponderTasks:
       - description: When an issue is labeled with 'SR-Support Request', add a reply with instructions on how to create a support ticket.
         if:
@@ -104,6 +105,5 @@ configuration:
           - addReply:
               reply: >-
                 Hi there :wave: AKS bot here. This issue has been tagged as being investigated by the AKS team. Please check back shortly to see if any additional information or actions are needed from you. Thank you!
-      - description: When a support request for the GH issue has been resolved, close the issue with resolution label.
 onFailure: 
 onSuccess:
