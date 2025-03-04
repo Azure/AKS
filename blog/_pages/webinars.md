@@ -23,6 +23,7 @@ row1:
     image_path: /assets/webinars/community calls - Image- Americas.png
     excerpt: "Every 3rd Wednesday of the month. <br>
           8 AM PST <br>
+          4 PM GMT <br>
           <a HREF='../assets/webinars/Recurring-AKS Community Roadmap Call.ics'>Add to my calendar</a><br>"
     btn_label: "Join Now - Americas & Europe"
     btn_class: "btn--primary"
