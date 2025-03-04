@@ -137,3 +137,12 @@ Ryan Zhang:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/ryanzhang-oss/"
+
+Bridget Kromhout:
+  name        : "Bridget Kromhout"
+  bio         : "Bridget Kromhout is a Principal Product Manager at Microsoft Azure, focusing on the open source cloud native ecosystem."
+  avatar      : "https://avatars.githubusercontent.com/u/2104453?v=4"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/bridgetkromhout"
