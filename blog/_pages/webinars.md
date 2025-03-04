@@ -21,18 +21,21 @@ intro:
 row1:
   - title: "Americas & Europe"
     image_path: /assets/webinars/community calls - Image- Americas.png
-    excerpt: "Every 3rd Wednesday of the month. <br>8 AM PST <br>
-          (<a HREF='../assets/webinars/Recurring-AKS Community Roadmap Call.ics'>Add to my calendar</a>)<br>"
+    excerpt: "Every 3rd Wednesday of the month. <br>
+          8 AM PST <br>
+          <a HREF='../assets/webinars/Recurring-AKS Community Roadmap Call.ics'>Add to my calendar</a><br>"
     btn_label: "Join Now - Americas & Europe"
     btn_class: "btn--primary"
     url: 'https://aka.ms/aks/communitycalls/roadmap/joinnow'
     notice: notice--info
 
-  - title: "India, China & Asia Pacific"
+  - title: "Australia/NZ, India, Asia Pacific"
     image_path: /assets/webinars/community calls - Image- APAC.png
-    excerpt: "Every 4th Wednesday of the month. <br>10:30 AM IST <br>
-          (<a HREF='../assets/webinars/AKS Community Roadmap Call-APAC.ics'>Add to my calendar</a>)<br>"
-    btn_label: "Join Now - India, China & APAC"
+    excerpt: "Every 4th Wednesday of the month. <br>
+          10:30 AM IST <br>
+          4:00 PM AEST <br>
+          <a HREF='../assets/webinars/AKS Community Roadmap Call-APAC.ics'>Add to my calendar</a><br>"
+    btn_label: "Join Now - Australia/NZ, India, Asia Pacific"
     btn_class: "btn--primary"
     url: 'https://aka.ms/aks/communitycalls/roadmap/joinnow'
 
