@@ -17,8 +17,11 @@ configuration:
       - isOpen
       - noActivitySince:
           days: 30
-      - isNotLabeledWith:
-          label: stale
+          
+        - isNotLabeledWith:
+            label: stale
+
+      
       - hasLabel:
           label: bug
       actions:
