@@ -146,3 +146,12 @@ Bridget Kromhout:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/bridgetkromhout"
+
+Bob Mital:
+  name        : "Bob Mital"
+  bio         : "Bob Mital is a Principal Product Manager at Microsoft Azure, focusing on partners and the Cloud Native ecosystem."
+ 
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/bobmital"
