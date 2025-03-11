@@ -3,7 +3,9 @@ title: "Building Community with CRDs: Kube Resource Orchestrator"
 description: "Kube Resource Orchestrator (kro) streamlines Kubernetes complexity."
 date: 2025-01-30
 author: Bridget Kromhout
-categories: operations, developer topics
+categories: 
+- operations
+- developer
 ---
 
 _Authored by_ [Matthew Christopher](https://github.com/matthchr) & Bridget Kromhout
