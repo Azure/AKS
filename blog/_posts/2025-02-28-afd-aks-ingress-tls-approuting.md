@@ -34,7 +34,7 @@ Let's get to it....
 
 ## Network Setup
 
-First, we'll need to establish the network where our AKS cluster will be deployed. Nothing special in our network design. Just a Vnet with a single subnet for the cluster.
+First, we'll need to establish the network where our AKS cluster will be deployed. Nothing special in our network design. Just a virtual network (Vnet) with a single subnet for the cluster.
 
 ```bash
 # Set starting environment variables
