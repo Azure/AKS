@@ -29,14 +29,16 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 
 ### Follow up links:
 
-1. Link to OSS Deployment guides : (https://github.com/bitnami/azure-cnab-guides)
-2. Argo CD: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/argocd.md
-3. Deploy ClickHouse: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/clickhouse.md
-4. Deploy MinIO®: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/minio.md
-5. Deploy Prometheus Operator: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/prometheus-operator.md
-6. Deploy RabbitMQ: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/rabbitmq.md
-4. Kubernetes Apps: [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
-5. Programmatically deploying apps: [Deploy a Kubernetes Application Programmatically Using Terraform and CLI | Microsoft Community Hub](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/deploy-a-kubernetes-application-programmatically-using-terraform/ba-p/4363258)
+**Link to OSS Deployment guides on AKS** https://github.com/bitnami/azure-cnab-guides
+1. Deploy Argo CD: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/argocd.md
+2. Deploy ClickHouse: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/clickhouse.md
+3. Deploy MinIO®: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/minio.md
+4. Deploy Prometheus Operator: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/prometheus-operator.md
+5. Deploy RabbitMQ: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/rabbitmq.md
+
+**What are Kubernetes Apps** [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
+
+**Programmatically deploying apps** [Deploy a Kubernetes Application Programmatically Using Terraform and CLI | Microsoft Community Hub](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/deploy-a-kubernetes-application-programmatically-using-terraform/ba-p/4363258)
 
 
 
