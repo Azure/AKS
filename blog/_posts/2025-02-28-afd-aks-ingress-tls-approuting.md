@@ -1,8 +1,18 @@
 ---
 title: End-to-End TLS Encryption with AKS App Routing and AFD
 description: Using Azure Front Door in-front of AKS App Routing Internal to provide end-to-end TLS encryption of application traffic.
+date: 2025-03-14
 authors: 
-  - steve_griffith
+  - Steve Griffith
+categories:
+  - networking
+  - add-ons
+tags:
+  - azure-front-door
+  - azure-key-vault
+  - app-routing
+  - ingress-nginx
+  - certbot
 ---
 ## Introduction
 
