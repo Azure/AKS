@@ -304,7 +304,7 @@ We'll do the rest in our Azure Front Door instance in the Azure Portal, so open 
 
 ### Link the certificate to the AFD.
 
-To use our certificate with Azure Front Door, we need to attach the certificate in Azure Key Vault to an Front Door Secret. We do this in the 'Secrets' pane under 'Security'.
+To use our certificate with Azure Front Door, we need to attach the certificate in Azure Key Vault to a Front Door Secret. We do this in the 'Secrets' pane under 'Security'.
 
 ![link certificate](/AKS/assets/images/aks-ingress-tls-approuting/linkcert.jpg)
 
