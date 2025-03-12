@@ -69,7 +69,7 @@ VNET_SUBNET_ID=$(az network vnet subnet show -g $RG --vnet-name $VNET_NAME -n ak
 Now, let's create the AKS cluster. This will be a very plain AKS cluster, for simplicity, however we will deploy to our above created subnet and will enable the following features:
 
 - *AKS App Routing:* This will deploy managed Nginx Ingress
-- *App Routing Default Nginx Controller:* This allows us to ensure that the default deployment of App Routing uses a private IP
+- *App Routing Default Nginx Controller:* Type set to Internal which allows us to ensure that the default deployment of App Routing uses a private IP
 - *Key Vault CSI Driver:* The Key Vault CSI driver will be used by App Routing to access our certificate in Azure Key Vault.
 
 ```bash
