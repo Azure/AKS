@@ -16,11 +16,11 @@ tags:
 ---
 ## Introduction
 
-When running globally distributed public applications in Kubernetes, having access to a global traffic management solution is critical to ensuring high availability and security at the edge. Fortunately, [Azure Front Door](https://learn.microsoft.com/en-us/azure/frontdoor/front-door-overview) provides an easy-to-use global traffic routing capability, with integrated Content Delivery Network and Web Application Firewall. 
+When running globally distributed public applications in Kubernetes, having access to a global traffic management solution is critical to ensuring high availability and security at the edge. Fortunately, [Azure Front Door](https://learn.microsoft.com/azure/frontdoor/front-door-overview) provides an easy-to-use global traffic routing capability, with integrated Content Delivery Network and Web Application Firewall. 
 
-Since Azure Front Door is a global resource, it isn't pinned to any one given region or Virtual Network, allowing it to connect to any endpoint globally. With support for [Private Link](https://learn.microsoft.com/en-us/azure/frontdoor/private-link) as an origin target, you can deploy Azure Front Door in-front of private backend services, increasing the overall security of your hosting infrastructure and giving you access to all the capabilities of Front Door.
+Since Azure Front Door is a global resource, it isn't pinned to any one given region or Virtual Network, allowing it to connect to any endpoint globally. With support for [Private Link](https://learn.microsoft.com/azure/frontdoor/private-link) as an origin target, you can deploy Azure Front Door in-front of private backend services, increasing the overall security of your hosting infrastructure and giving you access to all the capabilities of Front Door.
 
-On the backend, Nginx Ingress is an easy-to-use Kubernetes ingress controller. [AKS Application Routing](https://learn.microsoft.com/en-us/azure/aks/app-routing) provides a managed experience for deploying and managing Nginx Ingress in your AKS clusters. By pairing Azure Front Door with AKS App Routing, you get one of the easiest operational experiences for deploying and managing globally distributed web endpoints with content delivery optimization and security.
+On the backend, Nginx Ingress is an easy-to-use Kubernetes ingress controller. [AKS Application Routing](https://learn.microsoft.com/azure/aks/app-routing) provides a managed experience for deploying and managing Nginx Ingress in your AKS clusters. By pairing Azure Front Door with AKS App Routing, you get one of the easiest operational experiences for deploying and managing globally distributed web endpoints with content delivery optimization and security.
 
 In this walkthrough we'll deploy an app with end-to-end TLS encryption, using Azure Front Door as the Internet Facing TLS endpoint and AKS App Routing Ingress as the internal in-cluster ingress controller. 
 
@@ -28,7 +28,7 @@ We'll use Azure Key Vault to store the TLS certificate, and will use App Routing
 
 > *Note:* We'll be walking through step by step, showing the moving parts, via the Azure CLI. If you'd like to see a full implementation of a very similar deployment using Bicep, check out the link below:
 
-[End-to-end TLS with AKS, Azure Front Door, Azure Private Link Service, and NGINX Ingress Controller](https://learn.microsoft.com/en-us/samples/azure-samples/aks-front-door-end-to-end-tls/aks-front-door-end-to-end-tls/)
+[End-to-end TLS with AKS, Azure Front Door, Azure Private Link Service, and NGINX Ingress Controller](https://learn.microsoft.com/samples/azure-samples/aks-front-door-end-to-end-tls/aks-front-door-end-to-end-tls/)
 
 Let's get to it....
 
