@@ -32,6 +32,12 @@ We'll use Azure Key Vault to store the TLS certificate, and will use App Routing
 
 Let's get to it....
 
+## Prerequisites
+
+* A working Azure subscription with the ability to deploy Resource Groups, AKS, Azure Front Door, Azure Key Vault, Virtual Networks and managed identities. 
+* [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+* Optional: If using certbot to create your certificate, you'll need to be able to deploy a virtual machine with a public IP and public access to port 80.
+
 ## Network Setup
 
 First, we'll need to establish the network where our AKS cluster will be deployed. Nothing special in our network design. Just a virtual network (Vnet) with a single subnet for the cluster.
@@ -52,7 +58,7 @@ VNET_NAME=lablab-vnet
 VNET_ADDRESS_SPACE=10.140.0.0/16
 AKS_SUBNET_ADDRESS_SPACE=10.140.0.0/24
 
-# Create the Vnet along with the initial subet for AKS
+# Create the Vnet along with the initial subnet for AKS
 az network vnet create \
 -g $RG \
 -n $VNET_NAME \
@@ -111,13 +117,18 @@ For Azure Front door I'll need a public certificate for my hostname. If I were d
 I'm not going to get into all the specifics of using CertBot with LetsEncrypt, but the basics are as follows. The domain I'll be using is my 'crashoverride.nyc' domain.
 
 1. Get an internet reachable host capable of running a webserver on ports 80 and 443
-2. Create an A-record for your target domain to the public IP of the server. This is required for hostname validation used by Certbot
-3. Run the certbot command as a privileged user on that web server host mentioned in #1 above
+2. Install certbot: [Install Steps](https://certbot.eff.org/instructions)
+3. Create an A-record for your target domain to the public IP of the server. This is required for hostname validation used by Certbot
+4. Run the certbot command as a privileged user on that web server host mentioned in #1 above
 
 Here's a sample of the command I used to create the certificate:
 
 ```bash
-sudo certbot certonly --key-type rsa --standalone -d e2elab.crashoverride.nyc
+# Set Host name/FQDN for the certificate
+HOST_NAME=e2elab.crashoverride.nyc
+
+# Generate the certificate
+sudo certbot certonly --key-type rsa --standalone -d $HOST_NAME
 ```
 
 Certbot creates several files, all with the PEM file extension. This is misleading, as fullchain.pem is the 'crt' file and the privkey.pem is the 'key' file. To store these in Azure Key Vault as certs we'll need to package these files up in a PFX format.
@@ -259,7 +270,7 @@ First, we port-forward and then we'll curl with some special options.
 kubectl port-forward svc/nginx-private-link-0 -n app-routing-system 8443:443
 
 # In terminal 2 run a curl like the following, changing out for your host name
-curl -v https://e2elab.crashoverride.nyc/hello-world --connect-to e2elab.crashoverride.nyc:443:127.0.0.1:8443
+curl -v https://${HOST_NAME}/hello-world --connect-to ${HOST_NAME}:443:127.0.0.1:8443
 ```
 
 You should have seen a successful TLS handshake with your certificate and proper hostname.
