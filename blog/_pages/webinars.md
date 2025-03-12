@@ -38,7 +38,7 @@ row1:
           <a HREF='../assets/webinars/AKS Community Roadmap Call-APAC.ics'>Add to my calendar</a><br>"
     btn_label: "Join Now - Australia/NZ, India, Asia Pacific"
     btn_class: "btn--primary"
-    url: 'https://aka.ms/aks/communitycalls/roadmap/joinnow'
+    url: 'https://aka.ms/aks/communitycalls-apac/roadmap/joinnow'
 
 ---
 {% include feature_row id="intro" type="justified" %}
