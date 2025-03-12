@@ -84,7 +84,8 @@ az aks create \
 --enable-app-routing \
 --app-routing-default-nginx-controller Internal \
 --enable-addons azure-keyvault-secrets-provider \
---vnet-subnet-id $VNET_SUBNET_ID
+--vnet-subnet-id $VNET_SUBNET_ID \
+--generate-ssh-keys
 
 # Get the cluster identity
 CLUSTER_IDENTITY=$(az aks show -g $RG -n $CLUSTER_NAME -o tsv --query identity.principalId)
