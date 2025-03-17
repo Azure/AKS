@@ -16,7 +16,7 @@ This document contains instructions on how to integrate Kiali dashboard with Ist
     ```shell
     az aks mesh enable -g <rg-name> -n <cluster-name>
     ```
-* [Enable external ingressgateway](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-ingress#enable-external-ingress-gateway)
+* [Enable external ingress gateway](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-ingress#enable-external-ingress-gateway)
     ```shell
     az aks mesh enable-ingress-gateway -g <rg-name> -n <cluster-name> --ingress-gateway-type external
     ```
