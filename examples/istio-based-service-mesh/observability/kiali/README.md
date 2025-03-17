@@ -12,17 +12,23 @@ This document contains instructions on how to integrate Kiali dashboard with Ist
 > [Kiali](https://kiali.io/) is not officially supported by Microsoft, but can be used with AKS Istio add-on as a third-party integration.
 
 ## Before you begin
+* [Set environment variables](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-addon#set-environment-variables)
+    ```shell
+    export CLUSTER=<cluster-name>
+    export RESOURCE_GROUP=<resource-group-name>
+    export LOCATION=<location>
+    ```
 * [Install](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-addon#install-istio-add-on) Istio-based service mesh add-on on your cluster.
     ```shell
-    az aks mesh enable -g <rg-name> -n <cluster-name>
+    az aks mesh enable -g $RESOURCE_GROUP -n $CLUSTER
     ```
 * [Enable external ingress gateway](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-ingress#enable-external-ingress-gateway)
     ```shell
-    az aks mesh enable-ingress-gateway -g <rg-name> -n <cluster-name> --ingress-gateway-type external
+    az aks mesh enable-ingress-gateway -g $RESOURCE_GROUP -n $CLUSTER --ingress-gateway-type external
     ```
 * [Enable sidecar injection](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-addon#enable-sidecar-injection) on the default namespace. 
     ```shell
-    revision=$(az aks show --resource-group <rg-name> --name <cluster-name> --query 'serviceMeshProfile.istio.revisions[0]' -o tsv)
+    revision=$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER --query 'serviceMeshProfile.istio.revisions[0]' -o tsv)
     kubectl label namespace default istio.io/rev=$revision
     ```
 * Install demo app
