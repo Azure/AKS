@@ -1,23 +1,20 @@
 ---
-title: Enhancing Observability in Azure Kubernetes Service (AKS): What's New?
-description: Recapping some of the recent announcements and improvements in AKS observability experience.
+title: "Enhancing Observability in Azure Kubernetes Service (AKS): What's New?"
+description: "Recapping some of the recent announcements and improvements in AKS observability experience."
 date: 2025-03-17
-authors: 
-  - Pavneet Ahluwalia
-categories:
-  - observability
+authors: Pavneet Ahluwalia
+categories: observability
 tags:
   - azure-monitor
   - observability
   - metrics
 ---
+
 # Observability Enhancements in Azure Kubernetes Service (AKS)
 
 At Azure Kubernetes Service (AKS), we deeply recognize how crucial observability is for running stable Kubernetes environments. Given our extensive reliance on Kubernetes internally, we're continually innovating to ensure you have robust, clear, and actionable insights into your cluster health and performance. Observability—the ability to monitor, understand, and manage your systems effectively—is a foundational pillar for AKS product vision to enable our users to achieve more.
 
 In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: improved monitoring capabilities, simplified operational processes, and increased reliability and performance.
-
----
 
 ## Adding New Signals
 
@@ -35,7 +32,7 @@ AKS provides a managed control plane experience with no customer actions require
 - To view these metrics, sign in to the Azure Portal and navigate directly to your AKS cluster.
 - From the left navigation menu, select **Monitoring**, then click **Metrics**.
 - Under the "Control Plane" metric namespace, select the specific metrics you'd like to track and analyze.
-![Control plane Metrics!](blog/assets/images/enhancing-observability/Control-plane-metrics.png)
+![Control plane Metrics!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/Control-plane-metrics.png)
 ---
 
 ### 2. Preview: Monitoring Azure Container Storage
@@ -51,8 +48,8 @@ Reliable storage is essential for containerized applications, especially those r
 - Navigate to your Azure Container Storage account via the Azure Portal.
 - Select **Monitoring**, then click **Diagnostic settings**.
 - Enable the appropriate logs and metrics, and specify the desired storage destination for your monitoring data.
-![AcStor Metrics!](blog/assets/images/enhancing-observability/acstor-grafana.png)
----
+![AcStor Metrics!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/acstor-grafana.png)
+
 
 ### 3. GA: Monitor Node Auto-Repair using Kubernetes Events
 
@@ -67,8 +64,8 @@ Node auto-repair in Azure Kubernetes Service (AKS) is an existing process that e
 #### How to Enable/Use:
 - No additional steps are required by users; these events are automatically enabled for all AKS clusters and persisted for 1 hour.
 - To query and store Kubernetes events beyond 1 hour, enable the **Container Insights** add-on for deeper visibility into your cluster health.
-![AutoRepair!](blog/assets/images/enhancing-observability/autorepair-events.png)
----
+![AutoRepair!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/autorepair-events.png)
+
 
 ## Simplifying Operations
 
@@ -86,8 +83,8 @@ Historically, implementing monitoring for applications involved manual instrumen
 - Set up a Custom Resource in your Kubernetes namespace to configure auto-instrumentation parameters.
 - Deploy or redeploy your applications; instrumentation will be automatically applied without any changes to your application code.
 - See detailed steps for enabling [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/kubernetes-codeless).
-![Autoinstrumentation!](blog/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
----
+![Autoinstrumentation!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
+
 
 ### 5. Preview: Unified AKS Monitoring Experience in Azure Portal
 
@@ -102,8 +99,8 @@ Managing Kubernetes effectively requires navigating multiple monitoring solution
 - Open your AKS cluster resource within the Azure Portal.
 - Select **Monitor** from the sidebar navigation.
 - Choose the **Managed Prometheus Visualizations (Preview)** option to begin exploring consolidated insights and metrics.
-![Monitoring-TOC!](blog/assets/images/enhancing-observability/monitoring-toc.gif)
----
+![Monitoring-TOC!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/monitoring-toc.gif)
+
 
 ## Better Reliability and Performance
 
@@ -119,7 +116,6 @@ To ensure reliable and efficient observability, AKS heavily utilizes Prometheus 
 #### How to Enable/Use:
 - These improvements are enabled by default for all AKS clusters, and no user actions are needed.
 
----
 
 ### 7. GA: Azure Monitor Managed Prometheus Horizontal Pod Autoscaling (HPA)
 
@@ -133,8 +129,6 @@ The Azure Monitor Managed service for Prometheus now supports Horizontal Pod Aut
 #### How to Enable/Use:
 - This feature is enabled by default with Azure Monitor Managed Prometheus.
 - You can customize the replica count settings directly through your AKS cluster settings. See more [here](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/prometheus-metrics-scrape-autoscaling).
-
----
 
 ## Looking Ahead
 
