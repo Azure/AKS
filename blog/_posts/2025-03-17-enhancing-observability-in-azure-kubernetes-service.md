@@ -5,10 +5,11 @@ date: 2025-03-17
 authors: 
   - Pavneet Ahluwalia
 categories:
-  - Observability
-
+  - observability
 tags:
   - azure-monitor
+  - observability
+  - metrics
 ---
 # Observability Enhancements in Azure Kubernetes Service (AKS)
 
