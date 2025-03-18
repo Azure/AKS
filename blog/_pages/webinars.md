@@ -19,6 +19,17 @@ intro:
   - excerpt: "Welcome to the AKS Community Calls! These sessions foster direct interaction between our product teams and the AKS community. Engage with our teams, hear the latest updates, and gain insights into the product’s development. Join our monthly public calls to discuss the product roadmap, provide feedback, and learn from others’ experiences with AKS. Check out the <a href='https://github.com/orgs/Azure/projects/685/views/1'>public feature roadmap</a> for details on features in development, public preview, and general availability."
 
 row1:
+  - title: "Agenda (March 2025)"
+    excerpt: "<ul>
+                <li>Community Call Format Changes</li><br>
+                <li>Community Content Showcase</li><br>
+                <li>Deprecated Features</li><br>
+                <li>Feature Deepdive:
+                  <ul><li>Node Auto Provisioning (Wilson Darko)</li></ul>
+                </li>
+              <li>Feature Roadmap (GA, Preview & In Progress)</li></ul>"
+    notice: notice--info
+
   - title: "Americas & Europe"
     image_path: /assets/webinars/community calls - Image- Americas.png
     excerpt: "Every 3rd Wednesday of the month. <br>
