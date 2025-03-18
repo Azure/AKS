@@ -161,3 +161,15 @@ Steve Griffith:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/stevewgriffith/"
+
+Pavneet Ahluwalia:
+  name        : "Pavneet Ahluwalia"
+  bio         : "Jorge is the Principal PM Lead for the Azure Kubernetes Service."
+  avatar      : "https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/Pavneet_Speaker.jpg"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/pavneeta"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/pavneetsingh/"
