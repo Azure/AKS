@@ -23,8 +23,8 @@ Bitnami's Kubernetes-optimized OSS solutions let you deploy databases, web apps,
 
 By combining the power of AKS with Bitnami's trusted open-source applications, organizations can:
 
+- **✔Strengthen security posture** – Bitnami apps are pre-hardened, regularly updated, and scanned for vulnerabilities, while AKS provides built-in features like RBAC, network policies, and automated patching to safeguard your workloads.
 - **✔ Deploy faster** – Get up and running in minutes with pre-configured applications. Deploy one-click via Azure marketplace onto your AKS cluster.
-- **✔ Reduce operational overhead** – Let AKS manage infrastructure while Bitnami provides security-hardened OSS solutions.
 - **✔ Ensure enterprise-grade reliability** – Built-in Azure scaling and monitoring keep applications running smoothly.
 
 ### Follow up links for detailed instructions and deployment options
