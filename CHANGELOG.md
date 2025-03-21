@@ -19,6 +19,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Kubernetes events for monitoring [node auto-repair](https://learn.microsoft.com/azure/aks/node-auto-repair) actions are now available for your AKS cluster. You can ingest these events and create alerts following the same [process as other Kubernetes events](https://learn.microsoft.com/azure/aks/events?tabs=azure-cli).
    * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
    * Application Gateway Ingress Controller now supports Azure CNI overlay clusters.
+   * Customers can now upgrade their unsupported AKS cluster with Azure Service Mesh enabled regardless of the compatibility with the current mesh revision, allowing to recover to a compatible and supported state. For more information, visit https://learn.microsoft.com/en-us/azure/aks/istio-upgrade .
 
 * Preview Features:
    * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
@@ -35,7 +36,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Azure Policy addon now includes a Pod Disruption Budget (PDB) for the Gatekeeper webhook pods. This prevents interruptions to policy enforcement during cluster scaling or upgrade operations.
    * AKS will now enforce the limit of 10 unique CAs added to the node's trust store when using [Custom Certificate Authority](https://learn.microsoft.com/azure/aks/custom-certificate-authority).
    * Default maxSurge value to 10% for all new and existing clusters with Kubernetes versions >= 1.32.0.
-   
+
 * Component Updates:
    * Update Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30
    * Update Azure File CSI driver to [v1.31.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.31.4) on AKS 1.31, [v1.30.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.8) on AKS 1.30
