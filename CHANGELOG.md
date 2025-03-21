@@ -11,6 +11,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Using the GPU VHD image (preview) to provision GPU-enabled AKS nodes was retired on January 10, 2025 and AKS will block creation of new node pools with the GPU VHD image (preview). Follow the detailed steps to [create GPU-enabled node pools](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#use-the-aks-gpu-image-preview) using the alternative supported options.
 * On 31 March 2025, AKS will no longer allow new cluster creation with the Basic Load Balancer. On 30 September 2025, the Basic Load Balancer will be retired. We will be posting updates on migration paths to the Standard Load Balancer. See [AKS Basic LB Migration Issue](https://github.com/Azure/AKS/issues/1687) for updates on when a simplified upgrade path is available. Refer to [Basic Load Balancer Deprecation Update](https://azure.microsoft.com/updates?id=azure-basic-load-balancer-will-be-retired-on-30-september-2025-upgrade-to-standard-load-balancer) for more information.
 * The asm-1-22 revision for the Istio add-on has been deprecated. Migrate to a supported revision following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
+* The pod security policy feature was retired on 1st August 2023 and removed from AKS versions 1.25 and higher. PodSecurityPolicy property will be officially removed from AKS API starting from 2025-03-01.
 
 ### Release Notes
 * Features:
@@ -24,6 +25,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Bug Fixes:
    * Fixed an [issue](https://github.com/microsoft/retina/issues/1386 ) with the Retina-Agent volume to restrict access to only `/var/run/cilium` directory. Currently retina-agent mounts `/var/run` from host directory. This can have potential issue as it can overwrite data in the directory.
+   * Fixed an issue where SSHAccess was being reset to the default value `enabled` on partial PUT requests for `managedCluster.AgentPoolProfile.SecurityProfile` without specifying SSHAccess.
 
 * Behavior Changes:
    * KAITO switched from using the `Machine` CRD to `NodeClaim` CRD, introducing a breaking change in term of resource clean up after workspace is deleted. Specifically, existing workspaces and GPU nodes will remain unaffected. For users who wish to delete old workspaces, manual deletion of `Machine` custom resource and AgentPools from the Azure portal (or CLI) is required in order to clean up the GPU nodes used by the old workspace.
