@@ -38,6 +38,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Fixed an issue where SSHAccess was being reset to the default value `enabled` on partial PUT requests for `managedCluster.AgentPoolProfile.SecurityProfile` without specifying SSHAccess.
    * Fixed an issue where Node Auto Provisioning (Karpenter) failed to properly apply the `kubernetes.azure.com/azure-cni-overlay=true` label to nodes which resulted in failure to assign pod IPs in some cases.
    * Fixed an issue where `calico-typha` could be scheduled on virtual-kubelet due to overly permissive tolerations. Tolerations are now properly restricted to prevent incorrect scheduling. Check this [GitHub Issue](https://github.com/Azure/AKS/issues/4667) for more details.
+   * Fixed an issue in Hubble-Relay scheduling behavior to prevent deployment on cordoned nodes, allowing the cluster autoscaler to properly scale down nodes.
 
 * Behavior Changes:
    * KAITO switched from using the `Machine` CRD to `NodeClaim` CRD, introducing a breaking change in term of resource clean up after workspace is deleted. Specifically, existing workspaces and GPU nodes will remain unaffected. For users who wish to delete old workspaces, manual deletion of `Machine` custom resource and AgentPools from the Azure portal (or CLI) is required in order to clean up the GPU nodes used by the old workspace.
