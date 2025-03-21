@@ -44,7 +44,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * AKS will now enforce the limit of 10 unique CAs added to the node's trust store when using [Custom Certificate Authority](https://learn.microsoft.com/azure/aks/custom-certificate-authority).
    * Default maxSurge value to 10% for all new and existing clusters with Kubernetes versions >= 1.32.0.
    * Starting with Kubernetes 1.32, all Azure CNI NodeSubnet clusters will have the CNI installed via the Azure CNS DaemonSet instead of during node provisioning.
-   * Azure Service Mesh (Istio) add-on users can now customize the `externalTrafficPolicy` field in the Istio ingress gateway `Service` spec. AKS will no longer reconcile this field, preserving user-defined values.
    * AKS now validates Istio custom resources that do not have the `istio.io/rev` label set.
    * When creating an [Azure Container Registry (ACR) cache rule](https://learn.microsoft.com/azure/aks/network-isolated?pivots=byo-acr#step-2-create-the-acr-and-enable-artifact-cache) to cache Microsoft Container Registry (MCR) container images in the private ACR, the required cache rule should be changed from `/*` to `aks-managed-repository/*`.
    * When creating a network isolated cluster with a managed [private Azure Container Registry (ACR)](https://learn.microsoft.com/azure/aks/network-isolated?pivots=byo-acr#step-2-create-the-acr-and-enable-artifact-cache), the registry will now have [anonymous pull access](https://learn.microsoft.com/azure/container-registry/anonymous-pull-access) set to false.
