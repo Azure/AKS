@@ -1,5 +1,44 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2025-03-20
+
+Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250320`.
+
+### Announcements
+* AKS Kubernetes version 1.32 is rolling out soon and is expected to reach all regions on or before the end of March. Please use the [az-aks-get-versions](https://learn.microsoft.com/azure/aks?view=azure-cli-latest#az-aks-get-versions) command to accurately capture if Kubernetes version 1.32 is available in your region.
+* HTTP Application Routing (preview) is going to be [retired on March 3, 2025](https://azure.microsoft.com/updates?id=retirement-http-application-routing-addon-preview-for-aks-will-retire-03032025) and AKS will start to block new cluster creation with HTTP Application Routing (preview) enabled. Affected clusters must migrate to the generally available Application Routing add-on prior to that date. Refer to the [migration guide](https://learn.microsoft.com/azure/aks/app-routing-migration) for more information.
+* Using the GPU VHD image (preview) to provision GPU-enabled AKS nodes was retired on January 10, 2025 and AKS will block creation of new node pools with the GPU VHD image (preview). Follow the detailed steps to [create GPU-enabled node pools](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#use-the-aks-gpu-image-preview) using the alternative supported options.
+* Extend the AKS [security patch release notes](https://releases.aks.azure.com/) in release tracker to include a package comparison with the current - 1 AKS Ubuntu base image.
+* On 31 March 2025, AKS will no longer allow new cluster creation with the Basic Load Balancer. On 30 September 2025, the Basic Load Balancer will be retired. We will be posting updates on migration paths to the Standard Load Balancer. See [AKS Basic LB Migration Issue](https://github.com/Azure/AKS/issues/1687) for updates on when a simplified upgrade path is available. Refer to [Basic Load Balancer Deprecation Update](https://azure.microsoft.com/updates?id=azure-basic-load-balancer-will-be-retired-on-30-september-2025-upgrade-to-standard-load-balancer) for more information.
+* The asm-1-22 revision for the Istio add-on has been deprecated. Migrate to a supported revision following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
+
+### Release Notes
+* Features:
+   * Application routing add-on support for [configuring the default NGINX ingress controller visibility](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#control-the-default-ingress-controller-configuration-when-creating-the-cluster) is now generally available in API 2025-02-01.
+   * Kubernetes events for monitoring [node auto-repair](https://learn.microsoft.com/azure/aks/node-auto-repair) actions are now available for your AKS cluster. You can ingest these events and create alerts following the same [process as other Kubernetes events](https://learn.microsoft.com/azure/aks/events?tabs=azure-cli).
+   * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
+
+* Preview Features:
+   * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
+   * [Control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available through Azure Monitor platform metrics in preview to monitor critical control plane components such as API server, etcd, scheculer, autoscaler, and controller-manager.
+
+* Bug Fixes:
+   * Fixed an [issue](https://github.com/microsoft/retina/issues/1386 ) with the Retina-Agent volume to restrict access to only `/var/run/cilium` directory. Currently retina-agent mounts `/var/run` from host directory. This can have potential issue as it can overwrite data in the directory.
+
+* Behavior Changes:
+   *  
+
+* Component Updates:
+   * Upgrade Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30
+   * Upgrade Azure File CSI driver to [v1.31.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.31.4) on AKS 1.31, [v1.30.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.8) on AKS 1.30
+   * Upgrade Azure Blob CSI driver to [v1.25.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.3)  on AKS 1.31, [v1.24.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.7)  on AKS 1.30
+   * AKS Azure Linux v2 image has been updated to [202502.09.0](vhd-notes/AzureLinux/202502.09.0.txt).
+   * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
+   * AKS Ubuntu 24.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202502.09.0.txt).
+   * AKS Windows Server 2019 image has been updated to [17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
+   * AKS Windows Server 2022 image has been updated to [20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
+   * AKS Windows Server 23H2 image has been updated to [25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
+
 ## Release 2025-02-20
 
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250220`.
