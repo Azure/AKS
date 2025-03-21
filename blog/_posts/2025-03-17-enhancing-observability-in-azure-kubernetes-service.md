@@ -20,7 +20,7 @@ In this post, we'll highlight several recent observability enhancements in AKS a
 
 ### 1. Preview: AKS Control Plane Platform Metrics
 
-AKS provides a managed control plane experience with no customer actions required. However, monitoring the control plane of your AKS cluster is important for maintaining stability and performance, especially at high scale. AKS already supported detailed control plane metrics through Azure Monitor managed service for Prometheus. Recently, we've introduced [Azure Platform Metrics for AKS Control Plane Monitoring](https://techcommunity.microsoft.com/blog/appsonazureblog/azure-platform-metrics-for-aks-control-plane-monitoring/4385770), these free metrics, deliver key insights into the utilization of your AKS control plane and understand how close to the limits you are flying.
+AKS provides a managed control plane experience from provisioning, patching, to managed upgrades. However, at high scale, monitoring the control plane of your AKS cluster for latency, rogue call patterns and limits is important for maintaining stability and performance. AKS already supported detailed control plane metrics through Azure Monitor managed service for Prometheus. Recently, we've introduced [Azure Platform Metrics for AKS Control Plane Monitoring](https://techcommunity.microsoft.com/blog/appsonazureblog/azure-platform-metrics-for-aks-control-plane-monitoring/4385770), these free metrics deliver key insights into the utilization of your AKS control plane and understand how close to the limits you are flying.
 
 #### Key Benefits:
 - **Monitor important metrics** such as kube-apiserver CPU and Memory utilization and etcd database utilization.
@@ -37,12 +37,12 @@ AKS provides a managed control plane experience with no customer actions require
 
 ### 2. Preview: Monitoring Azure Container Storage
 
-Reliable storage is essential for containerized applications, especially those requiring stateful interactions or persistent data management. To enhance the reliability and efficiency of container storage within AKS, we've recently introduced comprehensive [Azure Container Storage Monitoring](https://learn.microsoft.com/en-us/azure/storage/container-storage/enable-monitoring). This integration provides direct visibility into storage metrics, health statuses, and performance characteristics within Azure Monitor managed service for Prometheus.
+Reliable storage is essential for containerized applications, especially those requiring stateful interactions or persistent data management. To enhance the reliability and efficiency of container storage within AKS, we've recently introduced comprehensive [Azure Container Storage Monitoring](https://learn.microsoft.com/en-us/azure/storage/container-storage/enable-monitoring). This integration provides direct visibility into storage metrics, health statuses, and performance characteristics of Azure container storage pools and disks within Azure Monitor managed service for Prometheus.
 
 #### Key Benefits:
 - Quickly pinpoint and address any performance bottlenecks or issues in your storage operations.
-- Evaluate and optimize your storage usage by analyzing detailed consumption patterns through storage_pool_capacity_used_bytes and storage_pool_capacity_provisioned_bytes
-- Ensure consistently reliable and performant storage for all your critical workloads within AKS by alerting on disk read/write operations latency and disk_errors_total metrics
+- Evaluate and optimize your storage usage by analyzing detailed consumption patterns through `storage_pool_capacity_used_bytes` and `storage_pool_capacity_provisioned_bytes`
+- Ensure consistently reliable and performant storage for all your critical workloads within AKS by alerting on disk read/write operations latency and `disk_errors_total` metrics
 
 #### How to Enable/Use:
 - Navigate to your Azure Container Storage account via the Azure Portal.
