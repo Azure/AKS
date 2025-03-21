@@ -24,7 +24,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * AKS now supports upgrading from Node Subnet to Node Subnet + Cilium and from Node Subnet + Cilium to Azure CNI Overlay + Cilium.
    * [Message of the day](https://aka.ms/aks/message-of-the-day) is now generally available.
    * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64). This is only supported for Azure Linux 3.0 node pools on Kubernetes version 1.32+.
-   * Istio revision `asm-1-24` is now available with Istio-based service mesh add-on. Please refer to [Istio's release announcement](https://istio.io/latest/news/releases/1.24.x/announcing-1.24/) for a full list of changes. Note that this release removes the deprecated `istio.io/gateway-name` label, please use `gateway.networking.k8s.io/gateway-name` label instead.
 
 * Preview Features:
    * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
