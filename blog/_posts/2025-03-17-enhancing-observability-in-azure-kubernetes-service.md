@@ -126,12 +126,12 @@ To ensure reliable and efficient observability, AKS heavily utilizes Prometheus 
 
 ### 7. GA: Azure Monitor Managed Prometheus Horizontal Pod Autoscaling (HPA)
 
-The Azure Monitor Managed service for Prometheus now supports Horizontal Pod Autoscaling (HPA) for the `ama-metrics` replica set pod. . This feature ensures that pods responsible for scraping Prometheus metrics automatically scaling based on memory utilization, significantly improving reliability and optimizing the resource footprint on user's nodes.
+The Azure Monitor Managed service for Prometheus now supports Horizontal Pod Autoscaling (HPA) for the `ama-metrics` replica set pod. . This feature ensures that pods responsible for scraping Prometheus metrics automatically scales  based on memory utilization, significantly improving reliability and optimizing the resource footprint on user's nodes.
 
 #### Key Benefits:
 - Automatic scaling of `ama-metrics` pods to efficiently handle metrics scraping workloads.
 - Configurable replica counts (between 2 and 12 replicas), enabling you to tailor scaling behaviors to your workload needs.
-- Prevention of OOMKills and resoruce waste by ensuring sufficient resources through dynamic scaling.
+- Prevention of OOMKills and resource waste through dynamic scaling.
 
 #### How to Enable/Use:
 - This feature is enabled by default with Azure Monitor Managed Prometheus.
