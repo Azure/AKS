@@ -37,6 +37,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Fixed an [issue](https://github.com/microsoft/retina/issues/1386 ) with the Retina-Agent volume to restrict access to only `/var/run/cilium` directory. Currently retina-agent mounts `/var/run` from host directory. This can have potential issue as it can overwrite data in the directory.
    * Fixed an issue where SSHAccess was being reset to the default value `enabled` on partial PUT requests for `managedCluster.AgentPoolProfile.SecurityProfile` without specifying SSHAccess.
    * Fixed an issue where Node Auto Provisioning (Karpenter) failed to properly apply the `kubernetes.azure.com/azure-cni-overlay=true` label to nodes which resulted in failure to assign pod IPs in some cases.
+   * Fixed an issue where `calico-typha` could be scheduled on virtual-kubelet due to overly permissive tolerations. Tolerations are now properly restricted to prevent incorrect scheduling. Check this [GitHub Issue](https://github.com/Azure/AKS/issues/4667) for more details.
 
 * Behavior Changes:
    * KAITO switched from using the `Machine` CRD to `NodeClaim` CRD, introducing a breaking change in term of resource clean up after workspace is deleted. Specifically, existing workspaces and GPU nodes will remain unaffected. For users who wish to delete old workspaces, manual deletion of `Machine` custom resource and AgentPools from the Azure portal (or CLI) is required in order to clean up the GPU nodes used by the old workspace.
@@ -46,7 +47,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Starting with Kubernetes 1.32, all Azure CNI NodeSubnet clusters will have the CNI installed via the Azure CNS DaemonSet instead of the CSE script.
    * Updates to your HTTP Proxy configuration will now trigger a reimage. All of the node pools in your cluster will automatically reimage after an HTTP Proxy configuration is added or updated.
    * Azure Service Mesh (Istio) add-on users can now customize the `externalTrafficPolicy` field in the Istio ingress gateway `Service` spec. AKS will no longer reconcile this field, preserving user-defined values.
-
+   * AKS now validates Istio custom resources that do not have the `istio.io/rev` label set.
 
 * Component Updates:
    * Update Azure Disk CSI driver to v1.30.8  on AKS 1.30, 1.31, v1.31.4  on AKS 1.32
