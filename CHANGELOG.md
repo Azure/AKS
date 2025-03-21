@@ -19,7 +19,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Application routing add-on support for [configuring the default NGINX ingress controller visibility](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#control-the-default-ingress-controller-configuration-when-creating-the-cluster) is now generally available in API 2025-02-01.
    * Kubernetes events for monitoring [node auto-repair](https://learn.microsoft.com/azure/aks/node-auto-repair) actions are now available for your AKS cluster. You can ingest these events and create alerts following the same [process as other Kubernetes events](https://learn.microsoft.com/azure/aks/events?tabs=azure-cli).
    * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
-   * Application Gateway Ingress Controller now supports Azure CNI overlay clusters.
+   * [Application Gateway Ingress Controller](https://learn.microsoft.com/azure/application-gateway/tutorial-ingress-controller-add-on-new) now supports Azure CNI overlay clusters.
    * You can now upgrade AKS clusters with Azure Service Mesh enabled regardless of the compatibility with the current mesh revision, allowing to recover to a compatible and supported state. For more information, visit [istio upgrade documentation](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade).
    * AKS now supports upgrading from Node Subnet to Node Subnet + Cilium and from Node Subnet + Cilium to Azure CNI Overlay + Cilium.
    * [Message of the day](https://aka.ms/aks/message-of-the-day) is now generally available.
