@@ -35,6 +35,12 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 3. Deploy MinIO®: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/minio.md
 4. Deploy Prometheus Operator: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/prometheus-operator.md
 5. Deploy RabbitMQ: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/rabbitmq.md
+6. Deploy Kafka: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/kafka.md
+7. Deploy MongoDB: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/mongodb.md
+8. Deploy NGINX: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/nginx.md
+9. Deploy PostgreSQL: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/postgresql.md
+10. Deploy Redis: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/redis.md
+
 
 **What are Kubernetes Apps** [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
 
