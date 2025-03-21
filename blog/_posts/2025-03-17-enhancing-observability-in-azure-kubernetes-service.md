@@ -14,18 +14,18 @@ tags:
 
 At Azure Kubernetes Service (AKS), we deeply recognize how crucial observability is for running stable Kubernetes environments. Given our extensive reliance on Kubernetes internally, we're continually innovating to ensure you have robust, clear, and actionable insights into your cluster health and performance. Observability—the ability to monitor, understand, and manage your systems effectively—is a foundational pillar for AKS product vision to enable our users to achieve more.
 
-In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: improved monitoring capabilities, simplified operational processes, and increased reliability and performance.
+In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: improved monitoring capabilities, simplified operational processes, and better reliability and performance.
 
-## Adding New Signals
+## Improced Monitoring Capabilities
 
 ### 1. Preview: AKS Control Plane Platform Metrics
 
-AKS provides a managed control plane experience with no customer actions required. However, monitoring the control plane of your AKS cluster is important for maintaining stability and performance, especially at high scale. AKS already supported detailed control plane metrics through Azure Monitor managed service for Prometheus. Recently, we've introduced [Azure Platform Metrics for AKS Control Plane Monitoring](https://techcommunity.microsoft.com/blog/appsonazureblog/azure-platform-metrics-for-aks-control-plane-monitoring/4385770), which delivers key insights into the utilization of your AKS control plane and helps you understand how close to the limits you are flying.
+AKS provides a managed control plane experience with no customer actions required. However, monitoring the control plane of your AKS cluster is important for maintaining stability and performance, especially at high scale. AKS already supported detailed control plane metrics through Azure Monitor managed service for Prometheus. Recently, we've introduced [Azure Platform Metrics for AKS Control Plane Monitoring](https://techcommunity.microsoft.com/blog/appsonazureblog/azure-platform-metrics-for-aks-control-plane-monitoring/4385770), these free metrics, deliver key insights into the utilization of your AKS control plane and understand how close to the limits you are flying.
 
 #### Key Benefits:
 - **Monitor important metrics** such as kube-apiserver CPU and Memory utilization and etcd database utilization.
 - **Anticipate and plan for scaling needs** by clearly understanding your cluster’s control plane usage and limits.
-- **Mitigate potential downtime risks** through proactive alerting on resource management.
+- **Mitigate potential downtime risks** through proactive alerting on Apiserver memory usage or etCD database usage.
 
 #### How to Enable/Use:
 - These platform metrics are available by default.
@@ -41,8 +41,8 @@ Reliable storage is essential for containerized applications, especially those r
 
 #### Key Benefits:
 - Quickly pinpoint and address any performance bottlenecks or issues in your storage operations.
-- Evaluate and optimize your storage usage by analyzing detailed consumption patterns.
-- Ensure consistently reliable and performant storage for all your critical workloads within AKS.
+- Evaluate and optimize your storage usage by analyzing detailed consumption patterns through storage_pool_capacity_used_bytes and storage_pool_capacity_provisioned_bytes
+- Ensure consistently reliable and performant storage for all your critical workloads within AKS by alerting on disk read/write operations latency and disk_errors_total metrics
 
 #### How to Enable/Use:
 - Navigate to your Azure Container Storage account via the Azure Portal.
@@ -66,6 +66,10 @@ Node auto-repair in Azure Kubernetes Service (AKS) is an existing process that e
 - To query and store Kubernetes events beyond 1 hour, enable the **Container Insights** add-on for deeper visibility into your cluster health.
 ![AutoRepair!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/autorepair-events.png)
 
+Users can reproduce node failures through Azure Chaos Studios or Chaos Mesh and monitor the remediation actions taken through kubernetes events 
+```bash
+kubectl get events --field-selector=source=aks-auto-repair --watch
+```
 
 ## Simplifying Operations
 
@@ -78,12 +82,14 @@ Historically, implementing monitoring for applications involved manual instrumen
 - Ensure consistent and comprehensive monitoring across all applications deployed within your AKS environment.
 - Rapidly detect, diagnose, and resolve application performance bottlenecks using detailed, actionable telemetry data in Azure Monitor Application Insights.
 
+For example: Break down E2E latencies into individual containers/microservices response latencies through trace graphs or isolating high failure rate to individual service HTTP error rate spikes.
+![Autoinstrumentation!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
+
 #### How to Enable/Use:
 - Enable the Application Insights extension on your AKS cluster through the Azure CLI or Azure Portal.
 - Set up a Custom Resource in your Kubernetes namespace to configure auto-instrumentation parameters.
 - Deploy or redeploy your applications; instrumentation will be automatically applied without any changes to your application code.
 - See detailed steps for enabling [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/kubernetes-codeless).
-![Autoinstrumentation!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
 
 
 ### 5. Preview: Unified AKS Monitoring Experience in Azure Portal
@@ -91,7 +97,7 @@ Historically, implementing monitoring for applications involved manual instrumen
 Managing Kubernetes effectively requires navigating multiple monitoring solutions, logs, metrics, and alerts, which can complicate the operational experience. To streamline this complexity, AKS recently launched the [Unified AKS Monitoring Experience](https://techcommunity.microsoft.com/blog/azureobservabilityblog/public-preview-the-new-aks-monitoring-experience/4297181) within the Azure portal in Preview. This feature integrates various monitoring capabilities into a single, coherent interface, significantly enhancing ease of use.
 
 #### Key Benefits:
-- Immediate access to essential health metrics and comprehensive insights across multiple data sources such as SLB and VMSS attached to the AKS cluster.
+- Immediate access to essential health metrics and comprehensive insights across multiple data sources such Standard Load Balancer, Virtual Machine Scale Set, Networking etc attached to the AKS cluster.
 - A cohesive interface to simultaneously view logs, alerts, metrics, and other critical monitoring data.
 - Enhanced troubleshooting capabilities through correlated insights, enabling quicker identification and resolution of issues.
 
@@ -99,10 +105,11 @@ Managing Kubernetes effectively requires navigating multiple monitoring solution
 - Open your AKS cluster resource within the Azure Portal.
 - Select **Monitor** from the sidebar navigation.
 - Choose the **Managed Prometheus Visualizations (Preview)** option to begin exploring consolidated insights and metrics.
-![Monitoring-TOC!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/monitoring-toc.gif)
+![monitoring-toc-1!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/monitoring-toc-1.png)
+![monitoring-toc-2!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/monitoring-toc-2.png)
 
 
-## Better Reliability and Performance
+## Bettter Reliability and Performance
 
 ### 6. Enhanced Metrics Reliability and Performance
 
@@ -119,12 +126,12 @@ To ensure reliable and efficient observability, AKS heavily utilizes Prometheus 
 
 ### 7. GA: Azure Monitor Managed Prometheus Horizontal Pod Autoscaling (HPA)
 
-The Azure Monitor Managed service for Prometheus now supports Horizontal Pod Autoscaling (HPA) for the `ama-metrics` replica set pod. This feature ensures that pods responsible for scraping Prometheus metrics automatically scale based on memory utilization, significantly improving reliability and reducing memory issues.
+The Azure Monitor Managed service for Prometheus now supports Horizontal Pod Autoscaling (HPA) for the `ama-metrics` replica set pod. . This feature ensures that pods responsible for scraping Prometheus metrics automatically scaling based on memory utilization, significantly improving reliability and optimizing the resource footprint on user's nodes.
 
 #### Key Benefits:
 - Automatic scaling of `ama-metrics` pods to efficiently handle metrics scraping workloads.
 - Configurable replica counts (between 2 and 12 replicas), enabling you to tailor scaling behaviors to your workload needs.
-- Prevention of OOMKills by ensuring sufficient resources through dynamic scaling.
+- Prevention of OOMKills and resoruce waste by ensuring sufficient resources through dynamic scaling.
 
 #### How to Enable/Use:
 - This feature is enabled by default with Azure Monitor Managed Prometheus.
