@@ -66,6 +66,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Updated defender-admission-controller version from 20250212.3 to 20250304.1 to address [CVE-2024-56138](https://nvd.nist.gov/vuln/detail/CVE-2024-56138) and [CVE-2024-45339](https://nvd.nist.gov/vuln/detail/CVE-2024-45339).
    * Reverted CoreDNS to v1.11.3-6 for AKS clusters on version 1.32+ due to an upstream regression in [v1.12.0](https://github.com/coredns/coredns/pull/6898). This version of CoreDNS is built using go version 1.23.3, OS family=azurelinux, version=3.0, and has no CVEs reported.
    * Updated the `azure-ip-masq-agent` DaemonSet to use the `ip-masq-v2 image` built with Dalec addressing [CVE-2024-5535](https://nvd.nist.gov/vuln/detail/CVE-2024-5535) and [CVE-2024-9143](https://nvd.nist.gov/vuln/detail/CVE-2024-9143).
+   * Bumped NPM image tag to [v1.5.44](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.44) to resolve CVEs in the Ubuntu base image, including [CVE-2025-0395](https://nvd.nist.gov/vuln/detail/CVE-2025-0395), [CVE-2024-12133](https://nvd.nist.gov/vuln/detail/CVE-2024-12133), [CVE-2024-12243](https://nvd.nist.gov/vuln/detail/CVE-2024-12243), [CVE-2024-13176](https://nvd.nist.gov/vuln/detail/CVE-2024-13176), [CVE-2024-9143](https://nvd.nist.gov/vuln/detail/CVE-2024-9143), [CVE-2024-45336](https://nvd.nist.gov/vuln/detail/CVE-2024-45336), [CVE-2024-45341](https://nvd.nist.gov/vuln/detail/CVE-2024-45341), and [CVE-2025-22866](https://nvd.nist.gov/vuln/detail/CVE-2025-22866). 
    * AKS Azure Linux v2 image has been updated to [202502.09.0](vhd-notes/AzureLinux/202502.09.0.txt).
    * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
    * AKS Ubuntu 24.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202502.09.0.txt).
@@ -2659,7 +2660,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Fixed a bug where an AKS FIPS node may become a non-FIPS node after unattended upgrade and reboot.
   * Hotfixed a bug where we double counted windows vms in subnet size validation.
 * Behavior Changes
-  * Added pid.available<2000 to kubelet flag --eviction-hard, making the effective number of allocatable PIDs = kernel.pid_max - 2000 [eviction-signals](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals)
+  * Added `pid.available<2000` to kubelet flag --eviction-hard, making the effective number of allocatable PIDs = kernel.pid_max - 2000 [eviction-signals](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals)
 * Component Updates
   * CNI plugin updated to version [v1.1.1](https://github.com/containernetworking/plugins/releases/tag/v1.1.1).
   * Virtual-Node updated to version 1.4.5.
