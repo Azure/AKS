@@ -14,6 +14,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * The pod security policy feature was retired on 1st August 2023 and removed from AKS versions 1.25 and higher. PodSecurityPolicy property will be officially removed from AKS API starting from 2025-03-01.
 * Starting on 17 June 2025, AKS will no longer create new node images for [Ubuntu 18.04](https://github.com/Azure/AKS/issues/4873) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to a [supported Kubernetes version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions).
 * Starting on 17 March 2027, AKS will no longer create new node images for [Ubuntu 20.04](https://github.com/Azure/AKS/issues/4874) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to Kubernetes version 1.34+ by the retirement date.  
+* The Basic Load Balancer is going to be retired on September 30, 2025 and AKS will start to block new cluster creation with the Basic Load Balancers starting March 31, 2025. Refer to [Basic Load Balancer Deprecation Update](https://azure.microsoft.com/en-us/updates?id=azure-basic-load-balancer-will-be-retired-on-30-september-2025-upgrade-to-standard-load-balancer) for more information.
 
 ### Release Notes
 * Features:
@@ -44,6 +45,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Default maxSurge value to 10% for all new and existing clusters with Kubernetes versions >= 1.32.0.
    * Starting with Kubernetes 1.32, all Azure CNI NodeSubnet clusters will have the CNI installed via the Azure CNS DaemonSet instead of the CSE script.
    * Updates to your HTTP Proxy configuration will now trigger a reimage. All of the node pools in your cluster will automatically reimage after an HTTP Proxy configuration is added or updated.
+   * Azure Service Mesh (Istio) add-on users can now customize the `externalTrafficPolicy` field in the Istio ingress gateway `Service` spec. AKS will no longer reconcile this field, preserving user-defined values.
+
 
 * Component Updates:
    * Update Azure Disk CSI driver to v1.30.8  on AKS 1.30, 1.31, v1.31.4  on AKS 1.32
