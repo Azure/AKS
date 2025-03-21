@@ -23,6 +23,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Application Gateway Ingress Controller now supports Azure CNI overlay clusters.
    * You can now upgrade AKS clusters with Azure Service Mesh enabled regardless of the compatibility with the current mesh revision, allowing to recover to a compatible and supported state. For more information, visit https://learn.microsoft.com/en-us/azure/aks/istio-upgrade.
    * AKS now supports upgrading from Node Subnet to Node Subnet + Cilium and from Node Subnet + Cilium to Azure CNI Overlay + Cilium.
+   * [Message of the day](https://aka.ms/aks/message-of-the-day) is now generally available.
+   * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64). This is only supported for Azure Linux 3.0 node pools on Kubernetes version 1.32+.
 
 * Preview Features:
    * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
