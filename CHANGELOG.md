@@ -70,12 +70,12 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Update the `azure-ip-masq-agent` DaemonSet to use the `ip-masq-v2 image` built with Dalec addressing [CVE-2024-5535](https://nvd.nist.gov/vuln/detail/CVE-2024-5535) and [CVE-2024-9143](https://nvd.nist.gov/vuln/detail/CVE-2024-9143).
    * Update NPM image tag to [v1.5.44](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.44) to resolve CVEs in the Ubuntu base image, including [CVE-2025-0395](https://nvd.nist.gov/vuln/detail/CVE-2025-0395), [CVE-2024-12133](https://nvd.nist.gov/vuln/detail/CVE-2024-12133), [CVE-2024-12243](https://nvd.nist.gov/vuln/detail/CVE-2024-12243), [CVE-2024-13176](https://nvd.nist.gov/vuln/detail/CVE-2024-13176), [CVE-2024-9143](https://nvd.nist.gov/vuln/detail/CVE-2024-9143), [CVE-2024-45336](https://nvd.nist.gov/vuln/detail/CVE-2024-45336), [CVE-2024-45341](https://nvd.nist.gov/vuln/detail/CVE-2024-45341), and [CVE-2025-22866](https://nvd.nist.gov/vuln/detail/CVE-2025-22866). 
    * Update Azure Policy add-on to v1.10.0 which uses gatekeeper [v3.18.2](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.18.2).
-   * AKS Azure Linux v2 image has been updated to [202502.09.0](vhd-notes/AzureLinux/202502.09.0.txt).
-   * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
-   * AKS Ubuntu 24.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202502.09.0.txt).
-   * AKS Windows Server 2019 image has been updated to [17763.6775.250117](vhd-notes/AKSWindows/2019/17763.6775.250117.txt).
-   * AKS Windows Server 2022 image has been updated to [20348.3091.250117](vhd-notes/AKSWindows/2022/20348.3091.250117.txt).
-   * AKS Windows Server 23H2 image has been updated to [25398.1369.250117](vhd-notes/AKSWindows/23H2/25398.1369.250117.txt).
+   * AKS Azure Linux v2 image has been updated to [202503.13.0](vhd-notes/AzureLinux/202503.13.0.txt).
+   * AKS Ubuntu 22.04 node image has been updated to [202503.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202503.13.0.txt).
+   * AKS Ubuntu 24.04 node image has been updated to [202503.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202503.13.0.txt).
+   * AKS Windows Server 2019 image has been updated to [17763.7009.250316](vhd-notes/AKSWindows/2019/17763.7009.250316.txt).
+   * AKS Windows Server 2022 image has been updated to [20348.3328.250314](vhd-notes/AKSWindows/2022/20348.3328.250314.txt).
+   * AKS Windows Server 23H2 image has been updated to [25398.1486.250314](vhd-notes/AKSWindows/23H2/25398.1486.250314.txt).
 
 ## Release 2025-02-20
 
