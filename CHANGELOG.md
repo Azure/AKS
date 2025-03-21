@@ -19,7 +19,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Kubernetes events for monitoring [node auto-repair](https://learn.microsoft.com/azure/aks/node-auto-repair) actions are now available for your AKS cluster. You can ingest these events and create alerts following the same [process as other Kubernetes events](https://learn.microsoft.com/azure/aks/events?tabs=azure-cli).
    * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.29.12, 1.29.13, 1.30.8, 1.30.9, 1.31.4, and 1.31.5 are now available.
    * Application Gateway Ingress Controller now supports Azure CNI overlay clusters.
-   * Customers can now upgrade their unsupported AKS cluster with Azure Service Mesh enabled regardless of the compatibility with the current mesh revision, allowing to recover to a compatible and supported state. For more information, visit https://learn.microsoft.com/en-us/azure/aks/istio-upgrade .
+   * You can now upgrade AKS clusters with Azure Service Mesh enabled regardless of the compatibility with the current mesh revision, allowing to recover to a compatible and supported state. For more information, visit https://learn.microsoft.com/en-us/azure/aks/istio-upgrade.
+   * AKS now supports upgrading from Node Subnet to Node Subnet + Cilium and from Node Subnet + Cilium to Azure CNI Overlay + Cilium.
 
 * Preview Features:
    * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
@@ -29,18 +30,20 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Bug Fixes:
    * Fixed an [issue](https://github.com/microsoft/retina/issues/1386 ) with the Retina-Agent volume to restrict access to only `/var/run/cilium` directory. Currently retina-agent mounts `/var/run` from host directory. This can have potential issue as it can overwrite data in the directory.
    * Fixed an issue where SSHAccess was being reset to the default value `enabled` on partial PUT requests for `managedCluster.AgentPoolProfile.SecurityProfile` without specifying SSHAccess.
-   * Fixed an issue where Azure CNI Overlay nodes created with Node Auto Provisioning (Karpenter) before v0.6.3 failed to assign pod IPs in some cases.
+   * Fixed an issue where Node Auto Provisioning (Karpenter) failed to properly apply the `kubernetes.azure.com/azure-cni-overlay=true` label to nodes which resulted in failure to assign pod IPs in some cases.
 
 * Behavior Changes:
    * KAITO switched from using the `Machine` CRD to `NodeClaim` CRD, introducing a breaking change in term of resource clean up after workspace is deleted. Specifically, existing workspaces and GPU nodes will remain unaffected. For users who wish to delete old workspaces, manual deletion of `Machine` custom resource and AgentPools from the Azure portal (or CLI) is required in order to clean up the GPU nodes used by the old workspace.
    * Azure Policy addon now includes a Pod Disruption Budget (PDB) for the Gatekeeper webhook pods. This prevents interruptions to policy enforcement during cluster scaling or upgrade operations.
    * AKS will now enforce the limit of 10 unique CAs added to the node's trust store when using [Custom Certificate Authority](https://learn.microsoft.com/azure/aks/custom-certificate-authority).
    * Default maxSurge value to 10% for all new and existing clusters with Kubernetes versions >= 1.32.0.
+   * Starting with Kubernetes 1.32, all Azure CNI NodeSubnet clusters will have the CNI installed via the Azure CNS DaemonSet instead of the CSE script.
 
 * Component Updates:
+   * Update Azure Disk CSI driver to v1.30.8  on AKS 1.30, 1.31, v1.31.4  on AKS 1.32
    * Update Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30
    * Update Azure File CSI driver to [v1.31.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.31.4) on AKS 1.31, [v1.30.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.8) on AKS 1.30
-   * Update Azure Blob CSI driver to [v1.25.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.3)  on AKS 1.31, [v1.24.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.7)  on AKS 1.30
+   * Update Azure Blob CSI driver to [v1.25.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.3)  on AKS 1.31, [v1.24.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.7) on AKS 1.30
    * Update KAITO to [v0.4.4](https://github.com/kaito-project/kaito/releases/tag/v0.4.4).
    * Update Cilium to v1.17.0 for AKS clusters >= 1.32.0.
    * Update Azure Monitor Container Insights image to [v3.1.26](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.26).
@@ -51,6 +54,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Update Calico to [v3.28.3](https://github.com/projectcalico/calico/releases/tag/v3.28.3), TigeraOperator to [v1.34.8](https://github.com/tigera/operator/releases/tag/v1.34.8), Calico to [v3.29.2](https://github.com/projectcalico/calico/releases/tag/v3.29.2), and TigeraOperator to [v1.36.5](https://github.com/tigera/operator/releases/tag/v1.34.8), addressing security vulnerabilities including [CVE-2024-45337](https://nvd.nist.gov/vuln/detail/CVE-2024-45337) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338).
    * Updated Node Auto Provisioning to use Karpenter [v0.7.3](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.7.3).
    * Updated defender-admission-controller version from 20250212.3 to 20250304.1 to address [CVE-2024-56138](https://nvd.nist.gov/vuln/detail/CVE-2024-56138) and [CVE-2024-45339](https://nvd.nist.gov/vuln/detail/CVE-2024-45339).
+   * Reverted CoreDNS to v1.11.3-6 for AKS clusters on version 1.32+ due to an upstream regression in [v1.12.0](https://github.com/coredns/coredns/pull/6898). This version of CoreDNS is built using go version 1.23.3, OS family=azurelinux, version=3.0, and has no CVEs reported.
    * AKS Azure Linux v2 image has been updated to [202502.09.0](vhd-notes/AzureLinux/202502.09.0.txt).
    * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
    * AKS Ubuntu 24.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202502.09.0.txt).
