@@ -48,7 +48,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Azure Service Mesh (Istio) add-on users can now customize the `externalTrafficPolicy` field in the Istio ingress gateway `Service` spec. AKS will no longer reconcile this field, preserving user-defined values.
    * AKS now validates Istio custom resources that do not have the `istio.io/rev` label set.
    * When creating an [Azure Container Registry (ACR) cache rule](https://learn.microsoft.com/azure/aks/network-isolated?pivots=byo-acr#step-2-create-the-acr-and-enable-artifact-cache) to cache Microsoft Container Registry (MCR) container images in the private ACR, the required cache rule should be changed from `/*` to `aks-managed-repository/*`.
-   * When creating a [private Azure Container Registry (ACR)](https://learn.microsoft.com/azure/aks/network-isolated?pivots=byo-acr#step-2-create-the-acr-and-enable-artifact-cache), [anonymous pull access](https://learn.microsoft.com/azure/container-registry/anonymous-pull-access) for will be set to false by default for newly enabled Network Isolated Cluster.
+   * When creating a network isolated cluster with a managed [private Azure Container Registry (ACR)](https://learn.microsoft.com/azure/aks/network-isolated?pivots=byo-acr#step-2-create-the-acr-and-enable-artifact-cache), the registry will now have [anonymous pull access](https://learn.microsoft.com/azure/container-registry/anonymous-pull-access) set to false.
 
 * Component Updates:
    * Update Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30.
