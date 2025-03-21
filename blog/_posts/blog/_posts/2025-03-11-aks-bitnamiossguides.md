@@ -27,7 +27,7 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 - **✔ Reduce operational overhead** – Let AKS manage infrastructure while Bitnami provides security-hardened OSS solutions.
 - **✔ Ensure enterprise-grade reliability** – Built-in Azure scaling and monitoring keep applications running smoothly.
 
-### Follow up links:
+### Follow up links for detailed instructions and deployment options
 
 **Link to OSS Deployment guides on AKS** https://github.com/bitnami/azure-cnab-guides
 1. Deploy Argo CD: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/argocd.md
@@ -45,14 +45,12 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 **What are Kubernetes Apps** [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
 
 **Programmatically deploying apps** 
+Learn how to programmatically deploy Kubernetes using: 
 
-- Programmatically deploy using Terraform: Utilize the power of Terraform to automate and manage your Kubernetes applications. 
+- Terraform: https://developer.hashicorp.com/terraform/install
+- Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+- ARM: https://learn.microsoft.com/en-us/azure/aks/deploy-application-template
 
-- Deploy programmatically with Azure CLI: Leverage the Azure CLI for straightforward, command-line based deployments. 
-
-- Use ARM templates for programmatic deployment: Define and deploy your Kubernetes applications efficiently with ARM templates. 
-
-- Deploy via AKS in the Azure portal: Take advantage of the user-friendly Azure portal for a seamless deployment experience. 
 
 
 
