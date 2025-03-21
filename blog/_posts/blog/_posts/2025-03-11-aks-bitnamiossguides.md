@@ -38,7 +38,15 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 
 **What are Kubernetes Apps** [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
 
-**Programmatically deploying apps** [Deploy a Kubernetes Application Programmatically Using Terraform and CLI | Microsoft Community Hub](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/deploy-a-kubernetes-application-programmatically-using-terraform/ba-p/4363258)
+**Programmatically deploying apps** 
+
+- Programmatically deploy using Terraform: Utilize the power of Terraform to automate and manage your Kubernetes applications. 
+
+- Deploy programmatically with Azure CLI: Leverage the Azure CLI for straightforward, command-line based deployments. 
+
+- Use ARM templates for programmatic deployment: Define and deploy your Kubernetes applications efficiently with ARM templates. 
+
+- Deploy via AKS in the Azure portal: Take advantage of the user-friendly Azure portal for a seamless deployment experience. 
 
 
 
