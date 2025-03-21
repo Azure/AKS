@@ -26,7 +26,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * AKS now supports upgrading from Node Subnet to Node Subnet + Cilium and from Node Subnet + Cilium to Azure CNI Overlay + Cilium. For more information, please see our [upgrade documentation](https://learn.microsoft.com/azure/aks/upgrade-azure-cni#upgrade-to-azure-cni-powered-by-cilium).
    * [Message of the day](https://aka.ms/aks/message-of-the-day) is now generally available.
    * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64). This is only supported for Azure Linux 3.0 node pools on Kubernetes version 1.32+.
-   * AKS support to [skip the default GPU driver installation](https://aka.ms/aks/skip-gpu-drivers) on Linux and Windows node pools is now generally available.
    * You can now create Windows type Virtual Machine Node Pools. Note that existing Linux type VM node pools cannot be converted to Windows VM node pools. For more information, see [Create a Virtual Machine node pool](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
    * Private clusters are now supported in [Automated Deployments](https://learn.microsoft.com/azure/aks/automated-deployments).
 * Preview Features:
