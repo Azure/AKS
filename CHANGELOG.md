@@ -31,7 +31,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * [Control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available through Azure Monitor platform metrics in preview to monitor critical control plane components such as API server, etcd, scheculer, autoscaler, and controller-manager.
 
 * Bug Fixes:
-   * Fixed an [issue](https://github.com/microsoft/retina/issues/1386 ) with the Retina-Agent volume to restrict access to only `/var/run/cilium` directory. Currently retina-agent mounts `/var/run` from host directory. This can have potential issue as it can overwrite data in the directory.
+   * Fixed an [issue](https://github.com/microsoft/retina/issues/1386) with the retina-agent volume to restrict access to only `/var/run/cilium` directory. Currently retina-agent mounts `/var/run` from host directory. This can have potential issue as it can overwrite data in the directory.
    * Fixed an issue where SSHAccess was being reset to the default value `enabled` on partial PUT requests for `managedCluster.AgentPoolProfile.SecurityProfile` without specifying SSHAccess.
    * Fixed an issue where Node Auto Provisioning (Karpenter) failed to properly apply the `kubernetes.azure.com/azure-cni-overlay=true` label to nodes which resulted in failure to assign pod IPs in some cases.
    * Fixed an issue where `calico-typha` could be scheduled on virtual-kubelet due to overly permissive tolerations. Tolerations are now properly restricted to prevent incorrect scheduling. Check this [GitHub Issue](https://github.com/Azure/AKS/issues/4667) for more details.
