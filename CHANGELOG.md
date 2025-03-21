@@ -22,10 +22,12 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Preview Features:
    * You can use the `EnableCiliumNodeSubnet` feature in preview to [create Cilium node subnet clusters](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium#option-3-assign-ip-addresses-from-the-node-subnet-preview) using Azure CNI Powered by Cilium.
    * [Control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor) are now available through Azure Monitor platform metrics in preview to monitor critical control plane components such as API server, etcd, scheculer, autoscaler, and controller-manager.
+   * FIPS-enabled node pools with Arm64 VMs are now supported when using Azure Linux 3.0 in Kubernetes 1.32. See https://aka.ms/aks/arm64-node-pool for more information.
 
 * Bug Fixes:
    * Fixed an [issue](https://github.com/microsoft/retina/issues/1386 ) with the Retina-Agent volume to restrict access to only `/var/run/cilium` directory. Currently retina-agent mounts `/var/run` from host directory. This can have potential issue as it can overwrite data in the directory.
    * Fixed an issue where SSHAccess was being reset to the default value `enabled` on partial PUT requests for `managedCluster.AgentPoolProfile.SecurityProfile` without specifying SSHAccess.
+   * Fixed an issue where Azure CNI Overlay nodes created with Node Auto Provisioning (Karpenter) before v0.6.3 failed to assign pod IPs in some cases.
 
 * Behavior Changes:
    * KAITO switched from using the `Machine` CRD to `NodeClaim` CRD, introducing a breaking change in term of resource clean up after workspace is deleted. Specifically, existing workspaces and GPU nodes will remain unaffected. For users who wish to delete old workspaces, manual deletion of `Machine` custom resource and AgentPools from the Azure portal (or CLI) is required in order to clean up the GPU nodes used by the old workspace.
