@@ -49,7 +49,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * When creating a network isolated cluster with a managed [private Azure Container Registry (ACR)](https://learn.microsoft.com/azure/aks/network-isolated?pivots=byo-acr#step-2-create-the-acr-and-enable-artifact-cache), the registry will now have [anonymous pull access](https://learn.microsoft.com/azure/container-registry/anonymous-pull-access) set to false.
 
 * Component Updates:
-   * Update Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30.
+  * Istio revision `asm-1-24` is now available with Istio-based service mesh add-on. Please refer to [Istio's release announcement](https://istio.io/latest/news/releases/1.24.x/announcing-1.24/) for a full list of changes. Note that this release removes the deprecated `istio.io/gateway-name` label, please use `gateway.networking.k8s.io/gateway-name` label instead.
+  * Update Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30.
    * Update Azure File CSI driver to [v1.31.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.31.4) on AKS 1.31, [v1.30.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.8) on AKS 1.30.
    * Update Azure Blob CSI driver to [v1.25.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.3)  on AKS 1.31, [v1.24.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.7) on AKS 1.30.
    * Update KAITO to [v0.4.4](https://github.com/kaito-project/kaito/releases/tag/v0.4.4).
