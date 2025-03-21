@@ -41,7 +41,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Behavior Changes:
    * KAITO switched from using the `Machine` CRD to `NodeClaim` CRD, introducing a breaking change in term of resource clean up after workspace is deleted. Specifically, existing workspaces and GPU nodes will remain unaffected. For users who wish to delete old workspaces, manual deletion of `Machine` custom resource and AgentPools from the Azure portal (or CLI) is required in order to clean up the GPU nodes used by the old workspace.
-   * Azure Policy addon now includes a Pod Disruption Budget (PDB) for the Gatekeeper webhook pods. This prevents interruptions to policy enforcement during cluster scaling or upgrade operations.
    * AKS will now enforce the limit of 10 unique CAs added to the node's trust store when using [Custom Certificate Authority](https://learn.microsoft.com/azure/aks/custom-certificate-authority).
    * Default maxSurge value to 10% for all new and existing clusters with Kubernetes versions >= 1.32.0.
    * Starting with Kubernetes 1.32, all Azure CNI NodeSubnet clusters will have the CNI installed via the Azure CNS DaemonSet instead of the CSE script.
