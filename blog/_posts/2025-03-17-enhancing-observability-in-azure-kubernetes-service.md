@@ -109,7 +109,7 @@ Managing Kubernetes effectively requires navigating multiple monitoring solution
 ![monitoring-toc-2!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/monitoring-toc-2.png)
 
 
-## Bettter Reliability and Performance
+## Better Reliability and Performance
 
 ### 6. Enhanced Metrics Reliability and Performance
 
