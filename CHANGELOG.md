@@ -54,7 +54,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Update Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30.
    * Update Azure File CSI driver to [v1.31.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.31.4) on AKS 1.31, [v1.30.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.8) on AKS 1.30.
    * Update Azure Blob CSI driver to [v1.25.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.3)  on AKS 1.31, [v1.24.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.7) on AKS 1.30.
-   * Update KAITO to [v0.4.4](https://github.com/kaito-project/kaito/releases/tag/v0.4.4).
+   * Update AI toolchain operator add-on (preview) to [KAITO v0.4.4](https://github.com/kaito-project/kaito/releases/tag/v0.4.4).
    * Update Cilium to [v1.17.0](https://github.com/cilium/cilium/releases/tag/v1.17.0) for AKS clusters >= 1.32.0.
    * Update Azure Monitor Container Insights image to [v3.1.26](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.26).
    * Update Azure Monitor metrics image to [v6.15.0](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-02-21-2025) for all AKS cluster versions addressing CVE-2024-45338.
