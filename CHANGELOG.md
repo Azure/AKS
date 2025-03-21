@@ -48,6 +48,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * Update windows-gmsa-webhook-image version has been bumped to [v0.12.1[(https://github.com/kubernetes-sigs/windows-gmsa/releases/tag/v0.12.1)] to address security vulnerabilities. There is no functionality change between v0.10.0 and v1.21.1.
    * Update Calico to [v3.28.3](https://github.com/projectcalico/calico/releases/tag/v3.28.3), TigeraOperator to [v1.34.8](https://github.com/tigera/operator/releases/tag/v1.34.8), Calico to [v3.29.2](https://github.com/projectcalico/calico/releases/tag/v3.29.2), and TigeraOperator to [v1.36.5](https://github.com/tigera/operator/releases/tag/v1.34.8), addressing security vulnerabilities including [CVE-2024-45337](https://nvd.nist.gov/vuln/detail/CVE-2024-45337) and [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338).
    * Updated Node Auto Provisioning to use Karpenter [v0.7.3](https://github.com/Azure/karpenter-provider-azure/releases/tag/v0.7.3).
+   * Updated defender-admission-controller version from 20250212.3 to 20250304.1 to address [CVE-2024-56138](https://nvd.nist.gov/vuln/detail/CVE-2024-56138) and [CVE-2024-45339](https://nvd.nist.gov/vuln/detail/CVE-2024-45339).
    * AKS Azure Linux v2 image has been updated to [202502.09.0](vhd-notes/AzureLinux/202502.09.0.txt).
    * AKS Ubuntu 22.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202502.09.0.txt).
    * AKS Ubuntu 24.04 node image has been updated to [202502.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202502.09.0.txt).
