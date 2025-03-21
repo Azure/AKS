@@ -51,14 +51,13 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
    * When creating a [private Azure Container Registry (ACR)](https://learn.microsoft.com/azure/aks/network-isolated?pivots=byo-acr#step-2-create-the-acr-and-enable-artifact-cache), [anonymous pull access](https://learn.microsoft.com/azure/container-registry/anonymous-pull-access) for will be set to false by default for newly enabled Network Isolated Cluster.
 
 * Component Updates:
-   * Update Azure Disk CSI driver to v1.30.8  on AKS 1.30, 1.31, v1.31.4  on AKS 1.32.
    * Update Azure Disk CSI driver to [v1.31.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.5) on AKS 1.31, [v1.30.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.9) on AKS 1.30.
    * Update Azure File CSI driver to [v1.31.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.31.4) on AKS 1.31, [v1.30.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.30.8) on AKS 1.30.
    * Update Azure Blob CSI driver to [v1.25.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.3)  on AKS 1.31, [v1.24.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.24.7) on AKS 1.30.
    * Update KAITO to [v0.4.4](https://github.com/kaito-project/kaito/releases/tag/v0.4.4).
    * Update Cilium to v1.17.0 for AKS clusters >= 1.32.0.
    * Update Azure Monitor Container Insights image to [v3.1.26](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.26).
-   * Update Azure Monitor metrics image to [v6.15.0](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-02-21-2025) for all AKS cluster versions addressingfor CVE-2024-45338.
+   * Update Azure Monitor metrics image to [v6.15.0](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-02-21-2025) for all AKS cluster versions addressing CVE-2024-45338.
    * Update Credential Provider to [v1.32.3](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.32.3/), [v1.30.10](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.30.10/), [v1.31.4](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.31.4/), and [v1.32.3](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.32.3/).
    * Update Cloud Controller Manager [v1.32.3](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.32.3/), [v1.30.10](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.30.10/), [v1.31.4](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.31.4/), and [v1.32.3](https://cloud-provider-azure.sigs.k8s.io/blog/2025/03/07/v1.32.3/).
    * Update the Application Gateway Ingress Controller add-on to v1.8.0, adding support for CNI Overlay.
