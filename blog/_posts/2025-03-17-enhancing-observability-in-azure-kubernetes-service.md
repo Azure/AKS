@@ -14,7 +14,7 @@ tags:
 
 At Azure Kubernetes Service (AKS), we deeply recognize how crucial observability is for running stable Kubernetes environments. Given our extensive reliance on Kubernetes internally, we're continually innovating to ensure you have robust, clear, and actionable insights into your cluster health and performance. Observability—the ability to monitor, understand, and manage your systems effectively—is a foundational pillar for AKS product vision to enable our users to achieve more.
 
-In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: improved monitoring capabilities, simplified operational processes, and better reliability and performance.
+In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: Improved monitoring capabilities, simplified operational processes, and better reliability and performance.
 
 ## Improced Monitoring Capabilities
 
@@ -31,7 +31,7 @@ AKS provides a managed control plane experience from provisioning, patching, to 
 - These platform metrics are available by default.
 - To view these metrics, sign in to the Azure Portal and navigate directly to your AKS cluster.
 - From the left navigation menu, select **Monitoring**, then click **Metrics**.
-- Under the "Control Plane" metric namespace, select the specific metrics you'd like to track and analyze.
+- Under the "Container Service" Namespace, chose metric eg: API server memory percentage
 ![Control plane Metrics!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/Control-plane-metrics.png)
 ---
 
@@ -53,7 +53,7 @@ Reliable storage is essential for containerized applications, especially those r
 
 ### 3. GA: Monitor Node Auto-Repair using Kubernetes Events
 
-Node auto-repair in Azure Kubernetes Service (AKS) is an existing process that enhances reliability by automatically detecting and fixing unhealthy nodes. AKS now provides real-time Kubernetes events for node auto-repairs, significantly improving visibility and responsiveness.
+[Node auto-repair](https://learn.microsoft.com/en-us/azure/aks/node-auto-repair) in Azure Kubernetes Service (AKS) is an existing process that enhances reliability by automatically detecting and fixing unhealthy nodes. AKS now provides real-time Kubernetes events for node auto-repairs, significantly improving visibility and responsiveness.
 
 #### Key Benefits:
 - Real-time visibility into the status of node repairs, allowing you to promptly understand when and why a node is being repaired.
@@ -79,6 +79,7 @@ Historically, implementing monitoring for applications involved manual instrumen
 
 #### Key Benefits:
 - Automatically instrument applications, eliminating the need for developers to make manual adjustments or modifications.
+- Easily distinguish between platform and application issues
 - Ensure consistent and comprehensive monitoring across all applications deployed within your AKS environment.
 - Rapidly detect, diagnose, and resolve application performance bottlenecks using detailed, actionable telemetry data in Azure Monitor Application Insights.
 
@@ -87,6 +88,10 @@ For example: Break down E2E latencies into individual containers/microservices r
 
 #### How to Enable/Use:
 - Enable the Application Insights extension on your AKS cluster through the Azure CLI or Azure Portal.
+```bash
+  # Register the feature flag for Azure Monitor App Monitoring in preview
+az feature register --namespace "Microsoft.ContainerService" --name "AzureMonitorAppMonitoringPreview"
+```
 - Set up a Custom Resource in your Kubernetes namespace to configure auto-instrumentation parameters.
 - Deploy or redeploy your applications; instrumentation will be automatically applied without any changes to your application code.
 - See detailed steps for enabling [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/kubernetes-codeless).
