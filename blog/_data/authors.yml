@@ -150,7 +150,7 @@ Bridget Kromhout:
 Bob Mital:
   name        : "Bob Mital"
   bio         : "Bob Mital is a Principal Product Manager at Microsoft Azure, focusing on partners and the Cloud Native ecosystem."
- 
+  avatar      : "https://media.licdn.com/dms/image/v2/C5603AQH5qo4p4eH27w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1588364514178?e=1748476800&v=beta&t=muBYjAOzfRl-CletzMYfoh2njPn9O_T4Ku9fDywsI0Y"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-linkedin"
