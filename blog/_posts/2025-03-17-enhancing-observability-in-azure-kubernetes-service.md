@@ -45,9 +45,8 @@ Reliable storage is essential for containerized applications, especially those r
 - Ensure consistently reliable and performant storage for all your critical workloads within AKS by alerting on disk read/write operations latency and `disk_errors_total` metrics
 
 #### How to Enable/Use:
-- Navigate to your Azure Container Storage account via the Azure Portal.
-- Select **Monitoring**, then click **Diagnostic settings**.
-- Enable the appropriate logs and metrics, and specify the desired storage destination for your monitoring data.
+- To start collecting Azure Container Storage metrics, enable Managed Prometheus on the AKS cluster.
+- If your AKS cluster already has Managed Prometheus enabled, then installing Azure Container Storage on that cluster will automatically start collecting Azure Container Storage metrics.
 ![AcStor Metrics!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/acstor-grafana.png)
 
 
