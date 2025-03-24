@@ -51,11 +51,16 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 **What are Kubernetes Apps** [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
 
 **Programmatically deploying apps** 
-Learn how to programmatically deploy Kubernetes using: 
+## Programmatic Kubernetes Deployment
 
-- Terraform: https://developer.hashicorp.com/terraform/install
-- Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
-- ARM: https://learn.microsoft.com/en-us/azure/aks/deploy-application-template
+Learn how to programmatically deploy Kubernetes using the following tools:
+
+- [Terraform](https://developer.hashicorp.com/terraform/install): Infrastructure as Code tool for provisioning Kubernetes clusters.
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli): Command-line interface for managing Azure resources, including Kubernetes deployments.
+- [ARM Templates](https://learn.microsoft.com/en-us/azure/aks/deploy-application-template): Azure Resource Manager templates for declarative deployment of Kubernetes applications.
+
+👉 Check out the [official blog post](https://techcommunity.microsoft.com/blog/AzureArcBlog/deploy-a-kubernetes-application-programmatically-using-terraform-and-cli/4357388) for a step-by-step guide on deploying a Kubernetes application using Terraform and Azure CLI.
+
 
 
 
