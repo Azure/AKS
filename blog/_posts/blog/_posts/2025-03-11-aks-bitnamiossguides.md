@@ -33,6 +33,21 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 ### Follow up links for detailed instructions and deployment options
 
 **Link to OSS Deployment guides on AKS** https://github.com/bitnami/azure-cnab-guides
+
+| Deployment | Description | Link |
+|------------|-------------|------|
+| **Argo CD** | Deploy Argo CD for GitOps continuous delivery on Kubernetes. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/argocd.md) |
+| **ClickHouse** | Deploy ClickHouse, a fast open-source columnar database. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/clickhouse.md) |
+| **MinIO®** | Deploy MinIO®, a high-performance object storage system. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/minio.md) |
+| **Prometheus Operator** | Deploy Prometheus Operator for monitoring and alerting. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/prometheus-operator.md) |
+| **RabbitMQ** | Deploy RabbitMQ, a message-broker for reliable communication. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/rabbitmq.md) |
+| **Kafka** | Deploy Apache Kafka for distributed event streaming. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/kafka.md) |
+| **MongoDB** | Deploy MongoDB, a popular NoSQL document database. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/mongodb.md) |
+| **NGINX** | Deploy NGINX as a web server or reverse proxy. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/nginx.md) |
+| **PostgreSQL** | Deploy PostgreSQL, a powerful open-source relational database. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/postgresql.md) |
+| **Redis** | Deploy Redis, an in-memory key-value data store. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/redis.md) |
+
+
 1. Deploy Argo CD: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/argocd.md
 2. Deploy ClickHouse: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/clickhouse.md
 3. Deploy MinIO®: https://github.com/bitnami/azure-cnab-guides/blob/main/docs/minio.md
