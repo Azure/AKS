@@ -14,7 +14,7 @@ tags:
 
 At Azure Kubernetes Service (AKS), we deeply recognize how crucial observability is for running stable Kubernetes environments. Given our extensive reliance on Kubernetes internally, we're continually innovating to ensure you have robust, clear, and actionable insights into your cluster health and performance. Observability—the ability to monitor, understand, and manage your systems effectively—is a foundational pillar for AKS product vision to enable our users to achieve more.
 
-In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: Improved monitoring capabilities, simplified operational processes, and better reliability and performance.
+In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: Improved monitoring capabilities, Reduce effort for best-in-class observability, and better reliability and performance.
 
 ## Improced Monitoring Capabilities
 
@@ -71,7 +71,7 @@ Users can reproduce node failures through Azure Chaos Studios or Chaos Mesh and 
 kubectl get events --field-selector=source=aks-auto-repair --watch
 ```
 
-## Simplifying Operations
+## Reduce effort for best-in-class observability
 
 ### 4. Preview: Application Insights Auto-Instrumentation for Kubernetes
 
