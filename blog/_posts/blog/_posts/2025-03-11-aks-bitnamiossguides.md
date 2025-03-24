@@ -47,6 +47,20 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 | **PostgreSQL** | Deploy PostgreSQL, a powerful open-source relational database. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/postgresql.md) |
 | **Redis** | Deploy Redis, an in-memory key-value data store. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/redis.md) |
 
+## What Are Kubernetes Apps?
+
+As organizations scale their Kubernetes environments, the demand for **secure**, **intelligent**, and **cost-effective** deployments has never been higher.
+
+This follow-up blog takes you a step further by demonstrating how to **programmatically deploy Kubernetes Apps** using tools like **Terraform**, **Azure CLI**, and **ARM templates**. By leveraging Azure Marketplace, organizations can:
+
+- Deploy using trusted security frameworks  
+- Optimize for cost with flexible deployment options  
+- Tap into AI-ready Kubernetes solutions  
+
+This automated approach reduces operational overhead, accelerates time-to-market, and empowers teams to focus on innovation rather than infrastructure.
+
+👉 Learn more in the [What Are Kubernetes Apps?](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true) blog post.
+
 
 **What are Kubernetes Apps** [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
 
@@ -59,7 +73,7 @@ Learn how to programmatically deploy Kubernetes using the following tools:
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli): Command-line interface for managing Azure resources, including Kubernetes deployments.
 - [ARM Templates](https://learn.microsoft.com/en-us/azure/aks/deploy-application-template): Azure Resource Manager templates for declarative deployment of Kubernetes applications.
 
-👉 Check out the [official blog post](https://techcommunity.microsoft.com/blog/AzureArcBlog/deploy-a-kubernetes-application-programmatically-using-terraform-and-cli/4357388) for a step-by-step guide on deploying a Kubernetes application using Terraform and Azure CLI.
+👉 Check out the [blog post](https://techcommunity.microsoft.com/blog/AzureArcBlog/deploy-a-kubernetes-application-programmatically-using-terraform-and-cli/4357388) for a step-by-step guide on deploying a Kubernetes application using Terraform and Azure CLI.
 
 
 
