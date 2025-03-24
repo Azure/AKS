@@ -4,7 +4,10 @@ Azure Kubernetes Service (AKS) combined with Bitnami's open-source solutions ava
 
 Bitnami's ready-to-use Azure Kubernetes apps simplify the deployment process. This means you don't need to write deployment code with Helm, YAML, or custom scripts— just follow the below guides for deployment and the OSS app is ready to use. 
 
-Combining the highly managed Azure Kubernetes Service (AKS) platform with Bitnami's open-source solutions on Azure Marketplace streamlines the deployment of Kubernetes workloads that rely on popular open-source projects, allowing teams to focus on innovation rather than infrastructure management.
+Combining the highly managed Azure Kubernetes Service (AKS) platform with Bitnami's open-source solutions on Azure Marketplace streamlines the deployment of Kubernetes workloads that rely on popular open-source projects, allowing teams to focus on innovation rather than infrastructure management. 
+
+A key benefit for AKS users is easy access to timely security updates. Bitnami regularly builds fresh images with the latest upstream patches and automatically publishes them to the Azure Marketplace. Users can quickly apply updates, making it simpler and more secure to manage open source software on Azure.
+
 
 ### Why AKS + Bitnami OSS?
 
