@@ -47,6 +47,7 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 | **PostgreSQL** | Deploy PostgreSQL, a powerful open-source relational database. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/postgresql.md) |
 | **Redis** | Deploy Redis, an in-memory key-value data store. | [View Guide](https://github.com/bitnami/azure-cnab-guides/blob/main/docs/redis.md) |
 
+
 ## What Are Kubernetes Apps?
 
 As organizations scale their Kubernetes environments, the demand for **secure**, **intelligent**, and **cost-effective** deployments has never been higher.
@@ -62,9 +63,7 @@ This automated approach reduces operational overhead, accelerates time-to-market
 👉 Learn more in the [What Are Kubernetes Apps?](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true) blog post.
 
 
-**What are Kubernetes Apps** [techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true)
 
-**Programmatically deploying apps** 
 ## Programmatic Kubernetes Deployment
 
 Learn how to programmatically deploy Kubernetes using the following tools:
