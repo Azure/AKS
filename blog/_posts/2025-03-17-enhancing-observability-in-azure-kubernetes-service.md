@@ -6,7 +6,6 @@ authors: Pavneet Ahluwalia
 categories: observability
 tags:
   - azure-monitor
-  - observability
   - metrics
 ---
 
