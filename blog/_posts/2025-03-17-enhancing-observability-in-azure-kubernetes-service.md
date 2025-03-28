@@ -82,7 +82,7 @@ Historically, implementing monitoring for applications involved manual instrumen
 - Rapidly detect, diagnose, and resolve application performance bottlenecks using detailed, actionable telemetry data in Azure Monitor Application Insights.
 
 For example: Break down E2E latencies into individual containers/microservices response latencies through trace graphs or isolating high failure rate to individual service HTTP error rate spikes.
-![Autoinstrumentation!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
+![Autoinstrumentation!](/AKS/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
 
 #### How to Enable/Use:
 - Enable the Application Insights extension on your AKS cluster through the Azure CLI or Azure Portal.
