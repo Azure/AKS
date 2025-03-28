@@ -97,7 +97,7 @@ az feature register --namespace "Microsoft.ContainerService" --name "AzureMonito
 
 ### 5. Preview: Unified AKS Monitoring Experience in Azure Portal
 
-Managing Kubernetes effectively requires navigating multiple monitoring solutions, logs, metrics, and alerts, which can complicate the operational experience. To streamline this complexity, AKS recently launched the [Unified AKS Monitoring Experience](https://techcommunity.microsoft.com/blog/azureobservabilityblog/public-preview-the-new-aks-monitoring-experience/4297181) within the Azure portal in Preview. This feature integrates various monitoring capabilities into a single, coherent interface, significantly enhancing ease of use and enabling you to understand the health of resources, triage issues across the E2E stack and bring various datasoruces into a single view.
+Managing Kubernetes effectively requires navigating multiple monitoring solutions, logs, metrics, and alerts, which can complicate the operational experience. To streamline this complexity, AKS recently launched the [Unified AKS Monitoring Experience](https://techcommunity.microsoft.com/blog/azureobservabilityblog/public-preview-the-new-aks-monitoring-experience/4297181) within the Azure portal in Preview. This feature integrates various monitoring capabilities into a single, coherent interface, significantly enhancing ease of use and enabling you to understand the health of resources, triage issues across the E2E stack and bring various datasources into a single view.
 
 #### Key Benefits:
 - Immediate access to essential health metrics and comprehensive insights across multiple data sources such Standard Load Balancer, Virtual Machine Scale Set, Networking etc attached to the AKS cluster.
