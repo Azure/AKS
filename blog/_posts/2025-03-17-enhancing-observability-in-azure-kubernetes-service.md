@@ -73,7 +73,7 @@ kubectl get events --field-selector=source=aks-auto-repair --watch
 
 ### 4. Preview: Application Insights Auto-Instrumentation for Kubernetes
 
-Historically, implementing monitoring for applications involved manual instrumentation, a process that could be cumbersome and error-prone, causing delays in deployment cycles. To simplify this significantly, AKS now supports [Application Insights Auto-Instrumentation](https://learn.microsoft.com/en-us/azure/azure-monitor/app/kubernetes-codeless). This feature eliminates the manual effort traditionally required, enabling effortless integration of monitoring solutions. Currently, we support auto-instrumentation for Java and NodeJS applications.
+Historically, implementing monitoring for applications involved manual instrumentation, a process that could be cumbersome and error-prone, causing delays in deployment cycles. To simplify this significantly, AKS now supports [Application Insights Auto-Instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless). This feature eliminates the manual effort traditionally required, enabling effortless integration of monitoring solutions. Currently, we support auto-instrumentation for Java and NodeJS applications.
 
 #### Key Benefits:
 - Automatically instrument applications, eliminating the need for developers to make manual adjustments or modifications.
