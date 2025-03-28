@@ -31,7 +31,7 @@ AKS provides a managed control plane experience from provisioning, patching, to 
 - To view these metrics, sign in to the Azure Portal and navigate directly to your AKS cluster.
 - From the left navigation menu, select **Monitoring**, then click **Metrics**.
 - Under the "Container Service" Namespace, chose metric eg: API server memory percentage
-![Control plane Metrics!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/Control-plane-metrics.png)
+![Control plane Metrics!](/AKS/assets/images/enhancing-observability/Control-plane-metrics.png)
 ---
 
 ### 2. Preview: Monitoring Azure Container Storage
