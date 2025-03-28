@@ -1,7 +1,6 @@
 ---
-title: "Accelerating Open-Source Innovation with AKS and Bitnami on Azure Marketplace"
-description: "Deploy Kubernetes apps on Azure effortlessly with Bitnami's open-source solutions and AKS. This blog highlights programmatic methods using Terraform, Azure CLI, and ARM templates—ensuring security, reliability, and rapid innovation for popular OSS tools like Argo CD, ClickHouse, RabbitMQ and more"
-date: 2025-04-01 
+title: "Accelerate your Kubernetes deployments on Azure with Bitnami’s secure, pre-configured OSS solutions. This guide shows how to use Terraform, Azure CLI, and ARM templates to effortlessly deploy popular tools like Argo CD, ClickHouse, MinIO, Prometheus Operator, RabbitMQ, Kafka, MongoDB, NGINX, PostgreSQL, and Redis—cutting operational overhead and fueling innovation"
+date: 2025-03-28 
 author: Bob Mital
 categories: 
 - general 
