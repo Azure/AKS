@@ -1,4 +1,12 @@
-## Accelerating Open-Source Innovation with AKS and Bitnami on Azure Marketplace
+---
+title: "Accelerating Open-Source Innovation with AKS and Bitnami on Azure Marketplace"
+description: "Sample - Add your description"
+date: 2025-04-01 # date is important. future dates will not be published
+author: Bob Mital # must match the authors.yml in the _data folder
+categories: 
+- general 
+# - general
+---
 
 Azure Kubernetes Service (AKS) combined with Bitnami's open-source solutions available on Azure Marketplace streamlines and accelerates the deployment of your Kubernetes workloads that depend on widely-used open-source projects.
 
