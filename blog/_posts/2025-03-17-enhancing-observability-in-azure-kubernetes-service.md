@@ -51,7 +51,7 @@ Reliable storage is essential for containerized applications, especially those r
 
 ### 3. GA: Monitor Node Auto-Repair using Kubernetes Events
 
-[Node auto-repair](https://learn.microsoft.com/azure/aks/node-auto-repair) in Azure Kubernetes Service (AKS) is an existing process that enhances reliability by automatically detecting and fixing unhealthy nodes. AKS now provides real-time Kubernetes events for node auto-repairs, significantly improving visibility and responsiveness. This allows you to monitor AKS remediation and node-repair actions on nodes, and follow their success/status to understand if user itnervention is needed or to understand the cause(aks auto-repair) of sudden node reboots/re-image.
+[Node auto-repair](https://learn.microsoft.com/azure/aks/node-auto-repair) in Azure Kubernetes Service (AKS) is an existing process that enhances reliability by automatically detecting and fixing unhealthy nodes. AKS now provides real-time Kubernetes events for node auto-repairs, significantly improving visibility and responsiveness. This allows you to monitor AKS remediation and node-repair actions on nodes, and follow their success/status to understand if user intervention is needed or to understand the cause (aks auto-repair) of sudden node reboots/re-image.
 
 #### Key Benefits:
 - Real-time visibility into the status of node repairs, allowing you to promptly understand when and why a node is being repaired.
