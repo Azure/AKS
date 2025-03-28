@@ -165,7 +165,7 @@ Steve Griffith:
 Pavneet Ahluwalia:
   name        : "Pavneet Ahluwalia"
   bio         : "Pavneet is the Principal PM Lead for the Azure Kubernetes Service."
-  avatar      : "https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/Pavneet_Speaker.jpg"
+  avatar      : "https://raw.githubusercontent.com/Azure/AKS/23e6b34acb76d5f6055ea08586bd61a8e62085b3/blog/assets/images/Pavneet_Speaker.jpg"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
