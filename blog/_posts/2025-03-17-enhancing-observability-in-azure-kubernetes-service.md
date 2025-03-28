@@ -46,7 +46,7 @@ Reliable storage is essential for containerized applications, especially those r
 #### How to Enable/Use:
 - To start collecting Azure Container Storage metrics, enable Managed Prometheus on the AKS cluster.
 - If your AKS cluster already has Managed Prometheus enabled, then installing Azure Container Storage on that cluster will automatically start collecting Azure Container Storage metrics.
-![AcStor Metrics!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/acstor-grafana.png)
+![AcStor Metrics!](/AKS/assets/images/enhancing-observability/acstor-grafana.png)
 
 
 ### 3. GA: Monitor Node Auto-Repair using Kubernetes Events
