@@ -1,7 +1,7 @@
 ---
 title: "Enhancing Observability in Azure Kubernetes Service (AKS): What's New?"
 description: "Recapping some of the recent announcements and improvements in AKS observability experience."
-date: 2025-03-28
+date: 2025-03-31
 authors: Pavneet Ahluwalia
 categories: observability
 tags:
