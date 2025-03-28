@@ -92,7 +92,7 @@ az feature register --namespace "Microsoft.ContainerService" --name "AzureMonito
 ```
 - Set up a Custom Resource in your Kubernetes namespace to configure auto-instrumentation parameters.
 - Deploy or redeploy your applications; instrumentation will be automatically applied without any changes to your application code.
-- See detailed steps for enabling [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/kubernetes-codeless).
+- See detailed steps for enabling [here](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless).
 
 
 ### 5. Preview: Unified AKS Monitoring Experience in Azure Portal
