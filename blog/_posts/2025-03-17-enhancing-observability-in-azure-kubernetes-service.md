@@ -138,7 +138,7 @@ The Azure Monitor Managed service for Prometheus now supports Horizontal Pod Aut
 
 #### How to Enable/Use:
 - This feature is enabled by default with Azure Monitor Managed Prometheus.
-- You can customize the replica count settings directly through your AKS cluster settings. See more [here](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/prometheus-metrics-scrape-autoscaling).
+- You can customize the replica count settings directly through your AKS cluster settings. See more [here](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-autoscaling).
 
 ## Looking Ahead
 
