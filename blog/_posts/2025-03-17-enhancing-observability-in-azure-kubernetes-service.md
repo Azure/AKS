@@ -62,7 +62,7 @@ Reliable storage is essential for containerized applications, especially those r
 #### How to Enable/Use:
 - No additional steps are required by users; these events are automatically enabled for all AKS clusters and persisted for 1 hour.
 - To query and store Kubernetes events beyond 1 hour, enable the **Container Insights** add-on for deeper visibility into your cluster health.
-![AutoRepair!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/autorepair-events.png)
+![AutoRepair!](/AKS/assets/images/enhancing-observability/autorepair-events.png)
 
 Users can reproduce node failures through Azure Chaos Studios or Chaos Mesh and monitor the remediation actions taken through kubernetes events 
 ```bash
