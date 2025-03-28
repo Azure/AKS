@@ -147,6 +147,33 @@ Bridget Kromhout:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/bridgetkromhout"
 
+Steve Griffith:
+  name        : "Steve Griffith"
+  bio         : "Steve is a part of the Microsoft App Innovation Global Blackbelt team where helps customers build amazing solutions on Azure's container hosting platforms."
+  avatar      : "https://media.licdn.com/dms/image/v2/D4E03AQFSs7_UG9tu4Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1712869781158?e=1744243200&v=beta&t=DeHBP9Q1D5S4fWVejdVnWJt_7Fl4LujuWX1o2uhkhlA"
+  links:
+    - label: "X"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://x.com/SteveGriffith"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/swgriffith"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/stevewgriffith/"
+
+Pavneet Ahluwalia:
+  name        : "Pavneet Ahluwalia"
+  bio         : "Pavneet is the Principal PM Lead for the Azure Kubernetes Service."
+  avatar      : "https://raw.githubusercontent.com/Azure/AKS/23e6b34acb76d5f6055ea08586bd61a8e62085b3/blog/assets/images/Pavneet_Speaker.jpg"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/pavneeta"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/pavneetsingh/"
+
 Bob Mital:
   name        : "Bob Mital"
   bio         : "Bob Mital is a Principal Product Manager at Microsoft Azure, focusing on partners and the Cloud Native ecosystem."
