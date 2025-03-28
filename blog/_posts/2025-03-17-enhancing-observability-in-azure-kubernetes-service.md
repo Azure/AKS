@@ -36,7 +36,7 @@ AKS provides a managed control plane experience from provisioning, patching, to 
 
 ### 2. Preview: Monitoring Azure Container Storage
 
-Reliable storage is essential for containerized applications, especially those requiring stateful interactions or persistent data management. To enhance the reliability and efficiency of container storage within AKS, we've recently introduced comprehensive [Azure Container Storage Monitoring](https://learn.microsoft.com/en-us/azure/storage/container-storage/enable-monitoring). This integration provides direct visibility into storage metrics, health statuses, and performance characteristics of Azure container storage pools and disks within Azure Monitor managed service for Prometheus.
+Reliable storage is essential for containerized applications, especially those requiring stateful interactions or persistent data management. To enhance the reliability and efficiency of container storage within AKS, we've recently introduced comprehensive [Azure Container Storage Monitoring](https://learn.microsoft.com/azure/storage/container-storage/enable-monitoring). This integration provides direct visibility into storage metrics, health statuses, and performance characteristics of Azure container storage pools and disks within Azure Monitor managed service for Prometheus.
 
 #### Key Benefits:
 - Quickly pinpoint and address any performance bottlenecks or issues in your storage operations.
