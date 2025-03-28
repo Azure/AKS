@@ -15,7 +15,7 @@ At Azure Kubernetes Service (AKS), we deeply recognize how crucial observability
 
 In this post, we'll highlight several recent observability enhancements in AKS and Azure Monitor across three main dimensions: Improved monitoring capabilities, Reduce effort for best-in-class observability, and better reliability and performance.
 
-## Improced Monitoring Capabilities
+## Improved Monitoring Capabilities
 
 ### 1. Preview: AKS Control Plane Platform Metrics
 
