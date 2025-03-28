@@ -109,7 +109,7 @@ Managing Kubernetes effectively requires navigating multiple monitoring solution
 - Select **Monitor** from the sidebar navigation.
 - Choose the **Managed Prometheus Visualizations (Preview)** option to begin exploring consolidated insights and metrics.
 ![monitoring-toc-1!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/monitoring-toc-1.png)
-![monitoring-toc-2!](https://github.com/pavneeta/AKS/blob/obs_blog/blog/assets/images/enhancing-observability/monitoring-toc-2.png)
+![monitoring-toc-2!](/AKS/assets/images/enhancing-observability/monitoring-toc-2.png)
 
 
 ## Better Reliability and Performance
