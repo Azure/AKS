@@ -20,7 +20,7 @@ It's important to note that this problem isn't limited to `Golang`. Any language
 
 ## Cluster and observability tools
 
-Our application was deployed on [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/) running [Kubernetes version 1.30.10](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13010).
+Our application was deployed on [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure//AKS/) running [Kubernetes version 1.30.10](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13010).
 
 Below are the most relevant details about the cluster I'm using:
 
@@ -59,7 +59,7 @@ This metric is highly important, because the `Kubernetes` uses the [Working_set]
 
 First, ask yourself if this metric makes sense. In our case we had the following scenario:
 
-![working_set_graph](AKS/assets/images/tshoot-memory-consuption/working_set.png)
+![working_set_graph](/AKS/assets/images/tshoot-memory-consuption/working_set.png)
 
 In this application's case the `working_set` is close to **~380 MB**, which is extremely high for this application.
 
@@ -73,7 +73,7 @@ The `go_memstats_heap_inuse_bytes` metric represents the number of bytes of memo
 
 The figure above highlights the striking difference between the two metrics:
 
-![go_heap](AKS/assets/images/tshoot-memory-consuption/comparing_ws_heap.png.png)
+![go_heap](/AKS/assets/images/tshoot-memory-consuption/comparing_ws_heap.png.png)
 
 The discrepancy is significant: approximately **380 MB** from the `pod` perspective versus only **~8 MB** from the application's perspective. This pattern strongly suggests a `page cache` issue, as discussed earlier in this article.
 
@@ -89,7 +89,7 @@ Where does this metric come from? That was the question I asked after encounteri
 
 The answer lies in the [Kubernetes metrics pipeline](https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/):
 
-![Kubernetes metrics architecture image](AKS/assets/images/tshoot-memory-consuption/metrics_pipeline.png)
+![Kubernetes metrics architecture image](/AKS/assets/images/tshoot-memory-consuption/metrics_pipeline.png)
 
 - [cAdvisor](https://github.com/google/cadvisor): [Daemon](https://www.man7.org/linux/man-pages/man7/daemon.7.html) for collecting, aggregating, and exposing container metrics included in Kubelet.
 
@@ -198,7 +198,7 @@ NAME                                                    READY   STATUS      REST
 disk-writer                                             1/1     Running     2 (5m7s ago)   127m    10.244.0.216   aks-agentpool-17949162-vmss000006   <none>           <none>
 ```
 
-Next we have to connect to that `node`, this is a more complex task so please read the doc to get more details: [Connect to Azure Kubernetes Service (AKS) cluster nodes for maintenance or troubleshooting](https://learn.microsoft.com/en-us/azure/aks/node-access).
+Next we have to connect to that `node`, this is a more complex task so please read the doc to get more details: [Connect to Azure Kubernetes Service (AKS) cluster nodes for maintenance or troubleshooting](https://learn.microsoft.com/en-us/azure//AKS/node-access).
 
 Inside the node we can run the write `1` on file `/proc/sys/vm/drop_caches` that is going to trigger the `dropping cache`:
 
@@ -208,7 +208,7 @@ echo 1 > /proc/sys/vm/drop_caches
 
 Now we can check for any side effects by looking at the same `Grafana Dashboard` used earlier to identify the problem:
 
-![working_set_after_drop_cache](AKS/assets/images/tshoot-memory-consuption/working_set_after_drop.png)
+![working_set_after_drop_cache](/AKS/assets/images/tshoot-memory-consuption/working_set_after_drop.png)
 
 We can see a huge decrease in the `working_set` that happened right after I ran the `dropping cache` procedure.
 
