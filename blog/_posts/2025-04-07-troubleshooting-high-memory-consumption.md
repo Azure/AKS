@@ -169,7 +169,7 @@ inactive_file 10511630336 # ~= 10.5116303 GB
 
 In the previous paragraph, we observed that `cAdvisor` performs the subtraction of `inactive_file` to calculate the `working_set`.
 
-If we subtract the value of `inactive_file` from the total memory in the `memory.current` file, we get a value close to the `380 MB` reported by `cAdvisor`. The question is: is `inactive_file` the only segment that cannot be freed under memory pressure? In reality, this may vary depending on the `Linux Distribution` and `Kernel Version`. For example, in the case of `Ubuntu`, there are a few other segments that aren't necessarily freed under memory pressure.
+If we subtract the value of `inactive_file` from the total memory in the `memory.current` file, we get a value close to the `380 MB` reported by `cAdvisor`. The question is: is `inactive_file` the only segment that cannot be freed under memory pressure? In reality, this may vary depending on the `Linux Distribution` and `Kernel Version`. For example, in the case of `Ubuntu`, there are a few other segments that are freed under memory pressure.
 
 From the `memory.stat` file, I calculated the percentage distribution of the largest statistics in relation to `380 MB`, and the result was:
 
