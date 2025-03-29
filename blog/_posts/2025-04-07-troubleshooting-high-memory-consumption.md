@@ -73,7 +73,7 @@ The `go_memstats_heap_inuse_bytes` metric represents the number of bytes of memo
 
 The figure above highlights the striking difference between the two metrics:
 
-![go_heap](/AKS/assets/images/tshoot-memory-consuption/comparing_ws_heap.png.png)
+![go_heap](/AKS/assets/images/tshoot-memory-consuption/comparing_ws_heap.png)
 
 The discrepancy is significant: approximately **380 MB** from the `pod` perspective versus only **~8 MB** from the application's perspective. This pattern strongly suggests a `page cache` issue, as discussed earlier in this article.
 
