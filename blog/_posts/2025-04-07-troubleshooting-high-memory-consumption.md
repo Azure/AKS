@@ -140,11 +140,17 @@ This section is important because this is where `cAdvisor` captures statistics f
 
 We can inspect the memory statistics of the `cgroup` of the `pod` we used as an example by following the steps below.
 
-Connect to the `pod`: `kubectl exec disk-writer -it -- bash`.
+- Connect to the `pod`.
+- Navigate to the directory of `cgroup` statistics.
+- List all memory-related files: ``
 
-Navigate to the directory of `cgroup` statistics: `cd /sys/fs/cgroup`.
+```sh
+kubectl exec YOU-POD-NAME -it -- bash
+cd /sys/fs/cgroup
+ls | grep -e memory.stat -e memory.current
+```
 
-List all memory-related files: `ls | grep -e memory.stat -e memory.current`.
+The location and schema of those files can change depending on the `Distribution` and `Kernel Version`. If everything went well you'll see a result as bellow:
 
 ```sh
 memory.current
