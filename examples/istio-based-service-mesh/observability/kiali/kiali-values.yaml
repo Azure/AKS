@@ -1,0 +1,20 @@
+cr:
+  create: true
+  namespace: kiali-operator
+  spec:
+    deployment:
+      accessible_namespaces:
+        - "**"
+    auth:
+      strategy: anonymous
+    istio:
+      root_namespace: aks-istio-system
+      component_status:
+        components:
+          - app_label: aks-istio-ingressgateway-external
+            namespace: aks-istio-ingress
+    external_services:
+      prometheus:
+        url: "http://prometheus-server.prometheus.svc:80"
+        auth:
+          type: none
