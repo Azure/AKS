@@ -133,7 +133,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - miwithrow
+              - Azure/teams/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True   
         # Confidential Computing
@@ -222,7 +222,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - miwithro
+              - Azure/teams/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Windows Containers
