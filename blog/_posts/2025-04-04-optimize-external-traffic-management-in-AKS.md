@@ -2,7 +2,9 @@
 title: "Optimizing External Traffic Management in AKS: Insights and Best Practices"
 description: "Recapping some of the recent announcements and improvements in AKS observability experience."
 date: 2025-03-28
-authors: Vaibhav Arora, Mitch Shao
+authors: 
+  - Vaibhav Arora
+  - Mitch Shao
 categories: general
 tags:
   - traffic-management
