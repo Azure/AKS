@@ -1,8 +1,8 @@
 ---
-title: "Scaling Kubernetes for AI and Data-intensive Workloads: The AKS Fleet Strategy
-"
-description: "Using Multi-cluster approach to achieving high compute scale on K8s, why , and how to do it with Azure Kubernetes Fleet Manager"
-date: 2025-04-03
+title: "Scaling Kubernetes for AI and Data-intensive Workloads: The AKS Fleet Strategy"
+
+description: "Using Multi-cluster approach to achieving high compute scale on K8s, why, and how to do it with Azure Kubernetes Fleet Manager"
+date: 2025-04-02
 authors: 
 - Pavneet Ahluwalia
 - Paul Yu
@@ -21,12 +21,13 @@ With the fast-paced advancement of AI workloads, building and fine-tuning of mul
 
 While you can opt to scale your node pools out within a single cluster, there are some challenges that you might encounter, including but not limited to Kubernetes control plane scaling limits (e.g., kube-apiserver bottlenecks, etcd performance, pod and container limits) and even cloud providers' subscription, region, and/or resource limits.
 
-That is why here at AKS, we believe taking a different approach might be worth exploring. Rather than scaling out to tens of thousands of nodes within a single cluster, we think scaling out to tens or even hundreds of clusters may be a more efficient approach, especially when leveraging the [AKS Fleet Manager feature](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/overview), which is powered by the KubeFleet project recently donated to the CNCF Sandbox.
+That is why here at AKS, we believe taking a different approach might be worth exploring. Rather than scaling out to tens of thousands of nodes within a single cluster, we think scaling out to tens or even hundreds of clusters may be a more efficient approach, especially when leveraging the [AKS Fleet Manager feature](https://learn.microsoft.com/azure/kubernetes-fleet/overview) whcih was first announced in October 2022 and is powered by the [KubeFleet](https://kfleet.io/) project recently donated to the CNCF Sandbox.
 
-With AKS Fleet Manager, you can unlock true infinite scalability by leveraging its ability to aggregate numerous AKS clusters for vast node provisioning tailored to your extensive AI training/serving needs while ensuring failures are contained within individual clusters—this maintains system stability. Moreover, it offers a flexible multi-region distribution of workloads that safeguards against capacity shortfalls and enhances resilience by decentralizing resources across various geographic locations for robust operational continuity.
-
+With AKS Fleet Manager, you can unlock true infinite scalability by leveraging its ability to aggregate numerous AKS clusters for vast node provisioning tailored to your extensive AI training/serving and Data processing needs.
+- **True Infinite Scalability**: By grouping numerous AKS clusters into a single fleet, we enable practically limitless scalability. Need 100,000 nodes for your AI training tasks? Azure Kuberentes Fleet Manager makes this achievable. 
+ - **Reduced Blast Radius for Failures**: A multi-cluster fleet significantly minimizes downtime risks. Failures remain isolated to individual clusters, preserving the stability of your overall system. 
+- **Flexible Capacity Across Regions**: Fleet Manager  it offers a flexible multi-region distribution of workloads that safeguards against capacity shortfalls
 ---
-
 ## Proof in Practice: Our 70,000 Node Demonstration
 ![fleet-multi-cluster!](blog/assets/images/fleetmulticluster/overview.png) 
 
