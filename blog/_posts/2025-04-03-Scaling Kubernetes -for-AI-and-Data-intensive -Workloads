@@ -1,5 +1,5 @@
 ---
-title: "Scaling Kubernetes for AI and Data-intensive Workloads: The AKS Fleet Strategy"
+title: "Limitless Kubernetes Scaling for AI and Data-intensive Workloads: The AKS Fleet Strategy"
 
 description: "Using Multi-cluster approach to achieving high compute scale on K8s, why, and how to do it with Azure Kubernetes Fleet Manager"
 date: 2025-04-02
@@ -23,8 +23,8 @@ While you can opt to scale your node pools out within a single cluster, there ar
 
 That is why here at AKS, we believe taking a different approach might be worth exploring. Rather than scaling out to tens of thousands of nodes within a single cluster, we think scaling out to tens or even hundreds of clusters may be a more efficient approach, especially when leveraging the [AKS Fleet Manager feature](https://learn.microsoft.com/azure/kubernetes-fleet/overview) which was first announced in October 2022 and is powered by the [KubeFleet](https://kfleet.io/) project recently donated to the CNCF Sandbox.
 
-With AKS Fleet Manager, you can unlock true infinite scalability by leveraging its ability to aggregate numerous AKS clusters for vast node provisioning tailored to your extensive AI training/serving and Data processing needs.
-- **True Infinite Scalability**: By grouping numerous AKS clusters into a single fleet, we enable practically limitless scalability. Need 100,000 nodes for your AI training tasks? Azure Kubernetes Fleet Manager makes this achievable. 
+With AKS Fleet Manager, you can unlock true limitless scalability by leveraging its ability to aggregate numerous AKS clusters for vast node provisioning tailored to your extensive AI training/serving and Data processing needs.
+- **Limitless Scalability**: By grouping numerous AKS clusters into a single fleet, we enable practically limitless scalability. Need 100,000 nodes for your AI training tasks? Azure Kubernetes Fleet Manager makes this achievable. 
  - **Reduced Blast Radius for Failures**: A multi-cluster fleet significantly minimizes downtime risks. Failures remain isolated to individual clusters, preserving the stability of your overall system. 
 - **Flexible Capacity Across Regions**: Fleet Manager  it offers a flexible multi-region distribution of workloads that safeguards against capacity shortfalls
 ---
