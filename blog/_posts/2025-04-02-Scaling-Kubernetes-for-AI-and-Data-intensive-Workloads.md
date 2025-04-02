@@ -21,7 +21,7 @@ That is why here at AKS, we believe taking a different approach might be worth e
 
 With AKS Fleet Manager, you can unlock true limitless scalability by leveraging its ability to aggregate numerous AKS clusters for vast node provisioning tailored to your extensive AI training/serving and Data processing needs.
 - **Limitless Scalability**: By grouping numerous AKS clusters into a single fleet, we enable practically limitless scalability. Need 100,000 nodes for your AI training tasks? Azure Kubernetes Fleet Manager makes this achievable. 
- - **Reduced Blast Radius for Failures**: A multi-cluster fleet significantly minimizes downtime risks. Failures remain isolated to individual clusters, preserving the stability of your overall system. 
+- **Reduced Blast Radius for Failures**: A multi-cluster fleet significantly minimizes downtime risks. Failures remain isolated to individual clusters, preserving the stability of your overall system. 
 - **Flexible Capacity Across Regions**: Fleet Manager offers a flexible multi-region distribution of workloads that safeguards against capacity shortfalls.
   
 ---
