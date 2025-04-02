@@ -1,12 +1,8 @@
 ---
 title: "Limitless Kubernetes Scaling for AI and Data-intensive Workloads: The AKS Fleet Strategy"
-
 description: "Using Multi-cluster approach to achieving high compute scale on K8s, why, and how to do it with Azure Kubernetes Fleet Manager"
 date: 2025-04-02
-authors: 
-- Pavneet Ahluwalia
-- Paul Yu
-- Ryan Zhang
+authors: Pavneet Ahluwalia
 categories: general
 tags:
   - Fleet
