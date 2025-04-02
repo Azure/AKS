@@ -173,3 +173,16 @@ Pavneet Ahluwalia:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/pavneetsingh/"
+
+
+Claudio Godoy:
+  name        : "Claudio Godoy"
+  bio         : "Claudio Godoy is a Microsoft Cloud Solution Architect in Digital and Apps Innovation across Latin America."
+  avatar      : "https://avatars.githubusercontent.com/u/40471021?v=4"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/claudiogodoy99"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/claudio-godoy-8571a515b/"
