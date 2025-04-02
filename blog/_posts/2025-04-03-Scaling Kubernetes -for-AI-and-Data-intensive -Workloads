@@ -4,7 +4,7 @@ title: "Scaling Kubernetes for AI and Data-intensive Workloads: The AKS Fleet St
 description: "Using Multi-cluster approach to achieving high compute scale on K8s, why , and how to do it with Azure Kubernetes Fleet Manager"
 date: 2025-04-03
 authors: Pavneet Ahluwalia
-categories: 
+categories: General
 tags:
   - Fleet
   - AI
