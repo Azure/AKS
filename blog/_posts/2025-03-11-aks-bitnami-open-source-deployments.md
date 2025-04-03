@@ -8,13 +8,13 @@ categories:
 - general 
 ---
 
-Azure Kubernetes Service (AKS) combined with Bitnami's open-source solutions available on Azure Marketplace streamlines and accelerates the deployment of your Kubernetes workloads that depend on widely-used open-source projects.
+Azure Kubernetes Service (AKS) is a highly managed platform that simplifies deploying, managing, and scaling containerized applications using Kubernetes on Azure. When paired with Bitnami's open-source solutions available on Azure Marketplace, AKS becomes an even more powerful platform for accelerating the deployment of Kubernetes workloads that rely on popular open-source projects.
 
-Bitnami's ready-to-use Azure Kubernetes apps simplify the deployment process. This means you don't need to write deployment code with Helm, YAML, or custom scripts— just follow the below guides for deployment and the OSS app is ready to use. 
+Bitnami, a leader in open-source packaging and security for nearly 15 years, offers a catalog of over 250 pre-packaged open-source Kubernetes applications. These solutions are maintained with continuous updates—over 1,000 releases monthly—ensuring users always have access to the latest upstream patches and security fixes.
 
-Combining the highly managed Azure Kubernetes Service (AKS) platform with Bitnami's open-source solutions on Azure Marketplace streamlines the deployment of Kubernetes workloads that rely on popular open-source projects, allowing teams to focus on innovation rather than infrastructure management. 
+With Bitnami’s ready-to-use Kubernetes apps, available directly in the Azure Marketplace, users can skip writing Helm charts, YAML files, or custom deployment scripts. Instead, they can follow simple guides to deploy production-ready open-source software in just a few clicks.
 
-A key benefit for AKS users is easy access to timely security updates. Bitnami regularly builds fresh images with the latest upstream patches and automatically publishes them to the Azure Marketplace. Users can quickly apply updates, making it simpler and more secure to manage open source software on Azure.
+This seamless integration allows teams to focus on building and innovating rather than managing infrastructure. Additionally, the automatic and timely security updates from Bitnami simplify lifecycle management and enhance the security posture of Kubernetes workloads on Azure.
 
 
 ### Why AKS + Bitnami OSS?
@@ -34,13 +34,13 @@ Bitnami's Kubernetes-optimized OSS solutions let you deploy databases, web apps,
 
 By combining the power of AKS with Bitnami's trusted open-source applications, organizations can:
 
-- **✔Strengthen security posture** – Bitnami apps are pre-hardened, regularly updated, and scanned for vulnerabilities, while AKS provides built-in features like RBAC, network policies, and automated patching to safeguard your workloads.
+- **✔ Strengthen security posture** – Bitnami apps are pre-hardened, regularly updated, and scanned for vulnerabilities, while AKS provides built-in features like RBAC, network policies, and automated patching to safeguard your workloads.
 - **✔ Deploy faster** – Get up and running in minutes with pre-configured applications. Deploy one-click via Azure marketplace onto your AKS cluster or programmatically via Terraform, Azure CLI or ARM templates.
 - **✔ Ensure enterprise-grade reliability** – Built-in Azure scaling and monitoring keep applications running smoothly.
 
 ### Follow up links for detailed instructions and deployment options
 
-**Link to OSS Deployment guides on AKS** https://github.com/bitnami/azure-cnab-guides
+**Link to OSS Deployment guides on AKS** [https://github.com/bitnami/azure-cnab-guides](https://github.com/bitnami/azure-cnab-guides)
 
 | Deployment | Description | Link |
 |------------|-------------|------|
@@ -59,14 +59,6 @@ By combining the power of AKS with Bitnami's trusted open-source applications, o
 ## What Are Kubernetes Apps?
 
 As organizations scale their Kubernetes environments, the demand for **secure**, **intelligent**, and **cost-effective** deployments has never been higher.
-
-This follow-up blog takes you a step further by demonstrating how to **programmatically deploy Kubernetes Apps** using tools like **Terraform**, **Azure CLI**, and **ARM templates**. By leveraging Azure Marketplace, organizations can:
-
-- Deploy using trusted security frameworks  
-- Optimize for cost with flexible deployment options  
-- Tap into AI-ready Kubernetes solutions  
-
-This automated approach reduces operational overhead, accelerates time-to-market, and empowers teams to focus on innovation rather than infrastructure.
 
 👉 Learn more in the [What Are Kubernetes Apps?](https://techcommunity.microsoft.com/blog/appsonazureblog/deploy-smarter-scale-faster---secure-ai-ready-cost-effective-kubernetes-apps-at-/4363258?previewMessage=true) blog post.
 
