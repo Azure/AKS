@@ -47,6 +47,8 @@ configuration:
       - isNotLabeledWith:
           label: Needs Information
       - isNotLabeledWith:
+          label: Needs Author Feedback
+      - isNotLabeledWith:
           label: action-required
       - isNotLabeledWith:
           label: announcement
