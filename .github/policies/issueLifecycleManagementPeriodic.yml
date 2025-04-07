@@ -159,7 +159,7 @@ configuration:
           label: stale
       - addReply:
           reply: This issue has been automatically marked as stale because it has not had any activity for **180 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${assignees}
-    - description: Stale any issue awaiting further information or author feedback that has had no activity for 7 days - runs daily at 1am
+    - description: Stale any issue awaiting further information that has had no activity for 7 days - runs daily at 1am
       frequencies:
       - daily:
           time: 1:0
@@ -170,6 +170,20 @@ configuration:
           label: stale
       - hasLabel:
           label: Needs Information
+      - noActivitySince:
+          days: 7
+      actions:
+      - addLabel:
+          label: stale
+    - description: Stale any issue awaiting author feedback that has had no activity for 7 days - runs daily at 1am
+      frequencies:
+      - daily:
+          time: 1:0
+      filters:
+      - isIssue
+      - isOpen
+      - isNotLabeledWith:
+          label: stale
       - hasLabel:
           label: Needs Author Feedback
       - noActivitySince:
