@@ -10,7 +10,8 @@ categories:
 
 ## What is InfiniBand?
 
-High performance computing (HPC) workloads, like large-scale distributed AI training and inferencing, often require fast, reliable data transfer and synchronization across the underlying compute. A common way to achieve this at scale is with a high-speed, low-latency network interconnect technology called **InfiniBand (IB)**. 
+High performance computing (HPC) workloads, like large-scale distributed AI training and inferencing, often require fast, reliable data transfer and synchronization across the underlying compute. Model training, for example, requires shared memory across GPUs because the parameters and gradients need to be constantly shared. For models with billions of parameters, the available memory in a single GPU node may not be enough, so "pooling" the memory across multiple nodes also requires high memory bandwidth due to the sheer volume of data involved. A common way to achieve this at scale is with a high-speed, low-latency network interconnect technology called **InfiniBand (IB)**. 
+
 
 
 Imagine InfiniBand networking as an incredibly fast highway for data transfer, and the data as cars that need to travel from one city to another. On a typical highway (like traditional IP networks), cars must follow speed limits, obey traffic signals, and sometimes stop in traffic jams, which slows them down.
