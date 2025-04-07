@@ -30,28 +30,6 @@ configuration:
           label: stale
       - addReply:
           reply: This issue has been automatically marked as stale because it has not had any activity for **30 days**. It will be closed if no further activity occurs **within 7 days of this comment**. Please review ${assignees}.
-    - description: Stale any open bugs that are not being investigated or fixed that have 30 days inactivity - runs every 6 hours
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isOpen
-      - noActivitySince:
-          days: 30
-      - hasLabel:
-          label: bug
-      - isNotLabeledWith:
-          label: stale
-      - isNotLabeledWith:
-          label: fixing
-      - isNotLabeledWith:
-          label: 'Under Investigation'
-      actions:
-      - addLabel:
-          label: stale
-      - addReply:
-          reply: This issue has been automatically marked as stale because it has not had any activity for **30 days**. It will be closed if no further activity occurs **within 7 days of this comment**. ${assignees}
     - description: Mark any bug labeled with 'Under Investigation' that is not waiting on Author Feedback with 'Needs Attention' after 14 days inactivity - runs every 6 hours
       frequencies:
       - hourly:
