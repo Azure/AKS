@@ -1,0 +1,45 @@
+---
+title: "Simplifying InfiniBand on AKS"
+description: "Learn the what, whys and hows of configuring InfiniBand networking for high performance compute (HPC) workloads on AKS"
+date: 2025-04-10
+authors: Sachi Desai, Suraj Deshmukh
+categories: 
+- AI
+- networking
+---
+
+## What is InfiniBand?
+
+High peformance computing (HPC) workloads, like large-scale distributed AI training and inferencing, often require fast, reliable data transfer and synchronization across the underlying compute. A common way to achieve this at scale is with a high-speed, low-latency network interconnect technology called **InfiniBand (IB)**. 
+
+Imagine InfiniBand networking as an incredibly fast highway for data transfer, and the data as cars that need to travel from one city to another. On a typical highway (like traditional IP networks), cars must follow speed limits, obey traffic signals, and sometimes stop in traffic jams, which slows them down.
+InfiniBand, on the other hand, can be considered a special highway built just for race cars - it has no speed limits, no traffic lights, and wide lanes, allowing the cars to zoom at top speed without any interruptions. This makes data travel incredibly fast and efficiently.
+
+There are two ways to use this fast highway:
+- **Remote Direct Memory Access (RDMA)**: Similar to driving a race car on the race car highway. It maximizes speed and performance but may require specific application design and networking configuration to drive these race cars.
+- **IP over InfiniBand (IPoIB)**: This is comparable to regular cars using the race car highway - may be easy to implement and compatible with off-the-shelf applications, but you don't get the full speed benefits.
+
+Choosing between these two approaches depends on whether you need compatibility and ease (like regular cars on a race car highway) or top-notch speed and performance (like race cars on a race car highway).
+
+## RDMA over InfiniBand versus IPoIB
+
+RDMA over IB enables data transfer directly between the memory of different machines without involving the CPU, which significantly reduces latency and improves throughput. To use this approach, your application needs to be RDMA-aware, meaning that an RDMA API or RDMA-aware message passing framework is used to enable high performance communication. Check out this [RDMA programming on NVIDIA](https://docs.nvidia.com/networking/display/rdmaawareprogrammingv17/rdma-aware+programming+overview) guide to learn more.
+
+If your application is not RDMA-aware, IPoIB alternatively can be used to provide an IP network emulation layer on top of InfiniBand networks. IPoIB enables your application to transmit data over IB but may lower performance and increase latency as it relies on the IP protocol stack.
+
+## InfiniBand on AKS
+
+In the Kubernetes world, there are a range of tools and plugins that support HPC workloads and IB networking - so where is a good place to start?
+
+Choosing the right compute in your node pool is an important building block: Azure [HBv3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/high-performance-compute/hbv3-series?tabs=sizebasic) and [HBv4](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/high-performance-compute/hbv4-series?tabs=sizebasic) HPC VM sizes or [ND series](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-family) GPU VM sizes with built-in NVIDIA networking are suitable for HPC applications. 
+
+For NVIDIA VM sizes, the [Network Operator](https://docs.nvidia.com/networking/display/cokan10/network+operator) and [GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) are useful tools that package networking and device specific components for ease of installation on Kubernetes. However, setting up your cluster for multi-node distributed HPC workloads may involve device plugin, networking component, and node labelling configurations. As a cluster admin or AI service provider, these steps shouldn't increase time-to-value for your developers or end users! 
+
+We recently created an open-source [InfiniBand on AKS guide](https://azure.github.io/aks-rdma-infiniband/) to simplify and streamline this setup, walking you through step-by-step to:
+- Determine the appropriate InfiniBand approach for your new or existing AKS application.
+- Configure the NVIDIA Network Operator with specific namespace and node labelling to properly schedule your pods deployments.
+- Apply out-of-box Kubernetes network policy and test the associated pod configuration to achieve maximum performance, resource efficiency, or support non-RDMA aware apps.
+- Optionally set up the NVIDIA GPU Operator and view an example pod configuration to claim both GPUs and InfiniBand resources created from your selected device plugin managed via Network Operator.
+- Validate the end-to-end setup with [example test scripts](https://github.com/Azure/aks-rdma-infiniband/tree/main/tests) on your chosen VM size.
+
+The AKS team is actively building out this repository with examples and updates for new component versions - we encourage you to set up InfiniBand following these best practices for HPC workloads like AI training or inferencing at scale, starting in your AKS test environment(s). Please submit any feedback and/or enhancements by creating a new issue [here](https://github.com/Azure/aks-rdma-infiniband/issues), or review/comment on existing issues in the project!
