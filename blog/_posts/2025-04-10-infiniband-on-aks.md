@@ -2,7 +2,7 @@
 title: "Simplifying InfiniBand on AKS"
 description: "Learn the what, whys and hows of configuring InfiniBand networking for high performance compute (HPC) workloads on AKS"
 date: 2025-04-10
-authors: Sachi Desai, Suraj Deshmukh
+authors: Sachi Desai, Suraj Deshmukh, Ernest Wong
 categories: 
 - AI
 - networking
