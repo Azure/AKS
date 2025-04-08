@@ -38,19 +38,19 @@ By understanding the operational differences between these two modes, you can ma
 - **Preservation of Client Source IP**: The client’s original IP is maintained, which is crucial for security, logging, and analytics.
 - **Targeted Health Checking**: Local mode uses a dedicated `healthCheckNodePort`, ensuring that external load balancers send traffic only to nodes with healthy pods.
 
-## How Local ExternalTrafficPolicy Works
+## How `externalTrafficPolicy=Local` Works
+
 As detailed above, `externalTrafficPolicy=Local` routes traffic directly to nodes hosting service pods and which meet the health check requirements. Below is an illustration of how this policy works in practice:
-![How External Traffic Policy Works](./AKS/blog/assets/images/howexternaltrafficpolicyworks.png)
+![How `externalTrafficPolicy=Local` Works](./AKS/blog/assets/images/howexternaltrafficpolicyworks.png)
 
-Lets look into how each of the following components work with the Local Mode:
-1. **HealthCheckNodePort**:
-    - A dedicated `healthCheckNodePort` is exposed on each node, allowing external load balancers to probe the health of the node.
-    - The `kube-proxy` component manages this port and ensures that it only responds as healthy if the node hosts at least one healthy pod for the service.
+Let's look into how each of the following components work with the Local Mode:
+When you set a Service's external traffic policy to Local in AKS, you'll see an additional field in the Service description: **HealthCheck NodePort**​. This is a dedicated NodePort (e.g. port number in the 30000+ range) that Azure's Standard Load Balancer uses to verify which nodes have healthy pods for this Service.
 
-2. **IPTables Rules**:
-    - IPTables rules are configured to forward incoming traffic from the Azure Load Balancer (ALB) directly to pods running on the same node.
-    - These rules ensure that traffic is not forwarded to other nodes, preserving the original client source IP.
-    - This localized traffic routing reduces latency and ensures that only healthy pods receive traffic.
+- **Health Probe on Each Node:** Azure automatically configures a health probe on the load balancer that targets the `HealthCheckNodePort` across all nodes in the LB's backend pool. Kubernetes ensures that this port only returns a successful response on nodes that are running at least one *ready* pod for the Service. Nodes with no pods for that Service will fail the health check.
+
+- **Load Balancer Back-end Pool:** With `externalTrafficPolicy=Local`, all cluster nodes are still listed in the LB's back-end pool (Azure assumes any node *could* host a pod at some point). But thanks to the health probes, nodes without a Service pod are marked **unhealthy** and won't receive traffic​. Only nodes with healthy pods respond to the probe and remain in rotation. By contrast, in `Cluster` mode, every node responds (since even if it has no pod, kube-proxy will forward the traffic), so the LB sees all nodes as healthy​. The `kube-proxy` component manages this port and ensures that it only responds as healthy if the node hosts at least one healthy pod for the service.
+
+ **IPTables Rules**: IPTables rules are configured to only forward incoming traffic from the Azure Load Balancer (ALB) directly to pods running on the same node. These rules ensure that traffic is never forwarded to other nodes. This localized traffic routing reduces latency and ensures that only healthy pods receive traffic.
 
 By combining these mechanisms, `externalTrafficPolicy=Local` provides a robust way to manage external traffic while maintaining source IP visibility and ensuring traffic is routed to healthy pods only.
 
