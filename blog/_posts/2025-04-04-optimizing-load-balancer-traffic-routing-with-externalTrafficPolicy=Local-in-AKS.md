@@ -1,8 +1,8 @@
 ---
-title: "Optimizing Load Balancer Traffic Routing with `externalTrafficPolicy=Local` in AKS"
-description: "Recapping some of the recent announcements and improvements in AKS observability experience."
+title: "Best Practices for Traffic Routing in AKS"
+description: "Optimize your Traffic Routing in AKS with best practices, including externalTrafficPolicy. Learn how to preserve client source IPs, implement graceful pod termination, and ensure even traffic distribution across nodes for reliable production workloads."
 date: 2025-03-28
-authors: 
+authors:
   - Mitch Shao
   - Vaibhav Arora
 categories: general
@@ -13,21 +13,22 @@ tags:
   - load balancers
 ---
 
-# Optimizing Load Balancer Traffic Routing with `externalTrafficPolicy=Local` in AKS
+# Best Practices for Traffic Routing in AKS
 
 Managing external traffic in Kubernetes clusters can be a complex task, especially when striving to maintain service reliability, optimize performance, and ensure seamless user experiences. With the increasing adoption of Kubernetes in production environments, understanding and implementing best practices for external traffic management when using the Azure Load Balancer has become essential.
 
 In this blog, we delve into the intricacies of Kubernetes’ `externalTrafficPolicy=Local` setting and explore strategies to gracefully handle pod shutdowns, rolling updates, and pod distribution. By following these best practices, you can enhance the resilience and reliability of your services while optimizing resource utilization across your AKS clusters.
 
-## Comparing `externalTrafficPolicy=Local` and `externalTrafficPolicy=Cluster`
+## `externalTrafficPolicy`: Cluster vs. Local
 
-The choice between `externalTrafficPolicy=Local` and `externalTrafficPolicy=Cluster` significantly impacts how external traffic is routed within a Kubernetes cluster. Below is a detailed comparison of these two modes:
+**What does `externalTrafficPolicy` do?** In short, it influences how a cloud load balancer directs incoming traffic to Kubernetes nodes and how that traffic may hop between nodes to reach pods:
 
-- **Local Mode (`externalTrafficPolicy=Local`)**:  
+- **Cluster Mode (default) (`externalTrafficPolicy=Cluster`)**:
+    All nodes in the cluster are included behind the Azure Load Balancer (ALB), regardless of whether they host any pods for the service. Incoming external traffic is distributed evenly across all nodes in the cluster. If a node receives traffic but doesn't have a local pod for the Service, Kubernetes (`kube-proxy`) will forward the request across the cluster network to a node that does. While this mode simplifies traffic distribution and reduces the risk of uneven load, it does not preserve the client’s original source IP.
+
+- **Local Mode (`externalTrafficPolicy=Local`)**:
     In this mode, external traffic is directed only to nodes that host healthy pods for the specified service. The traffic is routed exclusively to the pods residing on the same node where it is received. This approach ensures that the client’s original source IP is preserved, which is critical for use cases involving security, logging, and analytics. However, it requires careful consideration of pod distribution across nodes to avoid uneven traffic loads.
-
-- **Cluster Mode (`externalTrafficPolicy=Cluster`)**:  
-    When this mode is enabled, all nodes in the cluster are included behind the Azure Load Balancer (ALB), regardless of whether they host any pods for the service. Incoming external traffic is distributed evenly across all nodes in the cluster. Each node then forwards the traffic internally to the available pods, which may reside on other nodes. While this mode simplifies traffic distribution and reduces the risk of uneven load, it does not preserve the client’s original source IP, as the traffic is routed through intermediate nodes.
+    If one node hosts multiple pods while another node hosts only one, the node with one pod will receive roughly the same share of incoming connections as the node with many pods.
 
 By understanding the operational differences between these two modes, you can make an informed decision based on your application’s requirements for traffic routing, source IP preservation, and load balancing.
 
@@ -61,42 +62,42 @@ Gracefully handling pod shutdowns is critical to maintaining service reliability
 
 When a pod is shutting down (recieving the `TERM` signal), it is essential to ensure that existing client connections are closed properly to avoid abrupt disconnections or errors.
 
-- **For HTTP/1.1 Connections**:  
-    The server should include a `Connection: close` header in its response for all active and new incoming requests. This informs clients not to reuse the connection and allows idle connections to be closed gracefully.  
-    **Use Case**: Applications serving REST APIs or web traffic where clients rely on persistent connections for performance optimization.  
+- **For HTTP/1.1 Connections**:
+    The server should include a `Connection: close` header in its response for all active and new incoming requests. This informs clients not to reuse the connection and allows idle connections to be closed gracefully.
+    **Use Case**: Applications serving REST APIs or web traffic where clients rely on persistent connections for performance optimization.
 
 > **Note**: In HTTP/1.1, there is a potential race condition where the server might close an idle connection at the same time the client sends a new request. In such cases, the client must handle this scenario by retrying the request on a new connection.
 
-- **For HTTP/2 Connections**:  
-    The server should send a `GOAWAY` frame to notify clients that the connection is being closed. This allows clients to gracefully terminate the connection and retry requests on a new connection if necessary.  
+- **For HTTP/2 Connections**:
+    The server should send a `GOAWAY` frame to notify clients that the connection is being closed. This allows clients to gracefully terminate the connection and retry requests on a new connection if necessary.
     **Use Case**: Applications using gRPC or HTTP/2 for high-performance communication between services or with external clients.
 
 ### Preventing New Requests to an Unhealthy Pod
-To avoid routing new requests to a pod that is in the process of shutting down, it is important to manage its health status effectively. The below image shows the timeline for a pod recieving a `TERM` signal and gracefully shutting down without impact on external traffic: 
+To avoid routing new requests to a pod that is in the process of shutting down, it is important to manage its health status effectively. The below image shows the timeline for a pod recieving a `TERM` signal and gracefully shutting down without impact on external traffic:
 
 ![Preventing New Requests to Unhealthy Pods](./AKS/blog/assets/images/preventingnewrequeststoanunhealthypod.png)
 
-- **Immediate Health Check Response**:  
-    As soon as a pod is marked for deletion, its `healthCheckNodePort` should start returning a 500 error. This signals to external load balancers that the pod is no longer healthy and should not receive new traffic.  
- 
-- **Load Balancer Probe Delay**:  
-    External load balancers may take a few seconds to detect the unhealthy status of a pod. During this time, the pod might still receive traffic. 
+- **Immediate Health Check Response**:
+    As soon as a pod is marked for deletion, its `healthCheckNodePort` should start returning a 500 error. This signals to external load balancers that the pod is no longer healthy and should not receive new traffic.
+
+- **Load Balancer Probe Delay**:
+    External load balancers may take a few seconds to detect the unhealthy status of a pod. During this time, the pod might still receive traffic.
 
 To ensure your pods follow a similar timeline to gracefully shutdown, make sure to assess the following:
 
-1. **Delay Termination**:  
-     After receiving the `TERM` signal, the application should wait for at least 10 seconds before proceeding with shutdown tasks (helps address the Load balancer probe delay). This can be achieved using a `preStop` hook in Kubernetes. 
+1. **Delay Termination**:
+     After receiving the `TERM` signal, the application should wait for at least 10 seconds before proceeding with shutdown tasks (helps address the Load balancer probe delay). This can be achieved using a `preStop` hook in Kubernetes.
 
     > **Note**: When using annotations `service.beta.kubernetes.io/azure-load-balancer-health-probe-interval` and/or `service.beta.kubernetes.io/azure-load-balancer-health-probe-num-of-probe`, consider changing the wait time to cover the annotation's needs (see [documentation](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/))
 
-2. **Announce Readiness as `false`**:  
-     The application should update its readiness probe to indicate it is no longer ready to serve traffic. This allows Kubernetes to stop routing new requests to the pod.  
+2. **Announce Readiness as `false`**:
+     The application should update its readiness probe to indicate it is no longer ready to serve traffic. This allows Kubernetes to stop routing new requests to the pod.
 
-3. **Gracefully Close Existing Connections**:  
-     The application should close all active connections, ensuring that no in-flight requests are dropped.  
+3. **Gracefully Close Existing Connections**:
+     The application should close all active connections, ensuring that no in-flight requests are dropped.
 
-4. **Exit the Process**:  
-     Once all shutdown tasks are complete, the application should terminate its process cleanly.  
+4. **Exit the Process**:
+     Once all shutdown tasks are complete, the application should terminate its process cleanly.
 
 By implementing these best practices, you can minimize disruptions during pod shutdowns, maintain a seamless user experience, and ensure the reliability of your services in production environments.
 
@@ -105,7 +106,7 @@ By implementing these best practices, you can minimize disruptions during pod sh
 
 While the above work when a pod is being taken down in isolation, it does not cover cases like upgrades and rolling restarts which require coordination between the time the pod goes down and a new one comes up, ready to serve traffic. To optimize pod rotation, add the following best practice to your deployment:
 
-- **Set `minReadySeconds`**:  
+- **Set `minReadySeconds`**:
     Configure the `minReadySeconds` parameter in your deployment to introduce a delay before Kubernetes is able to mark the pod as "available". This buffer gives the load balancer enough time to register the new pod and start routing traffic to it, while also preventing Kubernetes from deleting the old pod prematurely.
 
 By implementing this strategy, you can achieve smoother rolling updates and maintain a consistent user experience during application changes.
