@@ -1,7 +1,7 @@
 ---
-title: "Best Practices for Traffic Routing in AKS"
+title: "Traffic Routing Demystified - Best practices for AKS Load Balancers"
 description: "Optimize your Traffic Routing in AKS with best practices, including externalTrafficPolicy. Learn how to preserve client source IPs, implement graceful pod termination, and ensure even traffic distribution across nodes for reliable production workloads."
-date: 2025-03-28
+date: 2025-04-08
 authors:
   - Mitch Shao
   - Vaibhav Arora
@@ -13,7 +13,7 @@ tags:
   - load balancers
 ---
 
-# Best Practices for Traffic Routing in AKS
+# Traffic Routing Demystified - Best practices for AKS Load Balancers
 
 Managing external traffic in Kubernetes clusters can be a complex task, especially when striving to maintain service reliability, optimize performance, and ensure seamless user experiences. With the increasing adoption of Kubernetes in production environments, understanding and implementing best practices for external traffic management when using the Azure Load Balancer has become essential.
 
@@ -133,9 +133,9 @@ Below are some best practices you can follow to evenly distribute pods across yo
    - Ensures pods from different deployment versions do not overlap on the same nodes.
 
 ## Conclusion
+To conclude, while `externalTrafficPolicy=Local` is a powerful option for optimizing traffic routing in AKS, it also requires careful planning of your pod lifecycle. With a professional, proactive approach to how your services handle start-up and shutdown, you can reap the benefits of Local traffic policy -- getting client IP transparency and efficient routing -- without sacrificing reliability during deployments or scaling events. Kubernetes gives us the knobs; it's up to us as SREs and engineers to turn them correctly for our particular workloads. Happy load balancing!
 
-Implementing `externalTrafficPolicy=Local` in AKS provides a robust framework for managing external traffic while preserving critical attributes like the client's source IP. This configuration ensures that traffic is routed exclusively to healthy pods on the same node, reducing latency and enhancing reliability. By adhering to best practices such as coordinated termination, graceful pod shutdown, and controlled rolling updates, you can minimize service disruptions and maintain a seamless user experience. Furthermore, leveraging strategies like Pod Anti-Affinity and Topology Spread Constraints helps achieve an even distribution of pods across nodes, optimizing resource utilization and balancing traffic loads. These approaches collectively enable you to build a resilient, high-performing AKS environment capable of handling production-grade workloads with confidence.
 
 ## Additional Resources
-
+- [Deployment and Cluster Reliability Best Practices for AKS](https://learn.microsoft.com/en-us/azure/aks/best-practices-app-cluster-reliability)
 - [YouTube: Kubernetes ExternalTrafficPolicy Explained](https://mmistakes.github.io/minimal-mistakes/docs/helpers/#youtube)
