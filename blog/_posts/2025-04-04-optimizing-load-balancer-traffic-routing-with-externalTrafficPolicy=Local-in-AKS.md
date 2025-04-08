@@ -48,7 +48,7 @@ When you set a Service's external traffic policy to Local in AKS, you'll see an 
 
 - **Health Probe on Each Node:** Azure automatically configures a health probe on the load balancer that targets the `HealthCheckNodePort` across all nodes in the LB's backend pool. Kubernetes ensures that this port only returns a successful response on nodes that are running at least one *ready* pod for the Service. Nodes with no pods for that Service will fail the health check.
 
-- **Load Balancer Back-end Pool:** With `externalTrafficPolicy=Local`, all cluster nodes are still listed in the LB's back-end pool (Azure assumes any node *could* host a pod at some point). But thanks to the health probes, nodes without a Service pod are marked **unhealthy** and won't receive traffic​. Only nodes with healthy pods respond to the probe and remain in rotation. By contrast, in `Cluster` mode, every node responds (since even if it has no pod, kube-proxy will forward the traffic), so the LB sees all nodes as healthy​. The `kube-proxy` component manages this port and ensures that it only responds as healthy if the node hosts at least one healthy pod for the service.
+- **Load Balancer Back-end Pool:** With `externalTrafficPolicy=Local`, all cluster nodes are listed in the LB's back-end pool. But due to the health probes, nodes without a Service pod are marked **unhealthy** and won't receive traffic​. Only nodes with healthy pods respond to the probe and remain in rotation. By contrast, in `Cluster` mode, every node responds (since even if it has no pod, kube-proxy will forward the traffic), so the LB sees all nodes as healthy​. The `kube-proxy` component manages this port and ensures that it only responds as healthy if the node hosts at least one healthy pod for the service.
 
  **IPTables Rules**: IPTables rules are configured to only forward incoming traffic from the Azure Load Balancer (ALB) directly to pods running on the same node. These rules ensure that traffic is never forwarded to other nodes. This localized traffic routing reduces latency and ensures that only healthy pods receive traffic.
 
@@ -60,7 +60,7 @@ Gracefully handling pod shutdowns is critical to maintaining service reliability
 
 ### Gracefully Closing Existing Connections
 
-When a pod is shutting down (recieving the `TERM` signal), it is essential to ensure that existing client connections are closed properly to avoid abrupt disconnections or errors.
+When a pod is shutting down (receiving the `TERM` signal), it is essential to ensure that existing client connections are closed properly to avoid abrupt disconnections or errors.
 
 - **For HTTP/1.1 Connections**:
     The server should include a `Connection: close` header in its response for all active and new incoming requests. This informs clients not to reuse the connection and allows idle connections to be closed gracefully.
@@ -73,7 +73,7 @@ When a pod is shutting down (recieving the `TERM` signal), it is essential to en
     **Use Case**: Applications using gRPC or HTTP/2 for high-performance communication between services or with external clients.
 
 ### Preventing New Requests to an Unhealthy Pod
-To avoid routing new requests to a pod that is in the process of shutting down, it is important to manage its health status effectively. The below image shows the timeline for a pod recieving a `TERM` signal and gracefully shutting down without impact on external traffic:
+To avoid routing new requests to a pod that is in the process of shutting down, it is important to manage its health status effectively. The below image shows the timeline for a pod receiving a `TERM` signal and gracefully shutting down without impact on external traffic:
 
 ![Preventing New Requests to Unhealthy Pods](./AKS/blog/assets/images/preventingnewrequeststoanunhealthypod.png)
 
@@ -113,11 +113,11 @@ By implementing this strategy, you can achieve smoother rolling updates and main
 
 ## Pod Distribution Best Practices
 
-Achieving an even distribution of pods across nodes is important for load balancing and resource utilization, especially for pods receiving external traffic via `externalTrafficPolicy=Local`. The diagram below demonstrates an example of uneven pod distribution whcih leads to imbalanced traffic across pods:
+Achieving an even distribution of pods across nodes is important for load balancing and resource utilization, especially for pods receiving external traffic via `externalTrafficPolicy=Local`. The diagram below demonstrates an example of uneven pod distribution which leads to imbalanced traffic across pods:
 
 ![Pod Distribution](./AKS/blog/assets/images/poddistribution.png)
 
-In this situation, even though the load balancer devides the traffic evenly between nodes, the pods on the node with 2 replicas serve 25% of the traffic each, while the pod in the single replica node serves the full 50% of the total traffic.
+In this situation, even though the load balancer divides the traffic evenly between nodes, the pods on the node with 2 replicas serve 25% of the traffic each, while the pod in the single replica node serves the full 50% of the total traffic.
 
 Below are some best practices you can follow to evenly distribute pods across your nodes based on your workload needs:
 1. **Use Pod Anti-Affinity**:
@@ -125,8 +125,8 @@ Below are some best practices you can follow to evenly distribute pods across yo
    - Requires more nodes than pods, including surge pods during evictions or deployments.
 
 2. **Use Topology Spread Constraints**:
-   - Distributes pods as evenly as possible (best effort) across available nodes and zones (specified with the topologykey).
-   > **Note**: If your application requires strict spreading of pods (i.e your ideal behavior is to leave a pod in pending if spread is not possible), you can set the `whenUnsatisfiable` to `DoNotSchedule`
+   - Distributes pods as evenly as possible (best effort) across available nodes and zones (specified with the topologyKey).
+   > **Note**: If your application requires strict spreading of pods (i.e., your ideal behavior is to leave a pod in pending if spread is not possible), you can set the `whenUnsatisfiable` to `DoNotSchedule`
 
 3. **Use MatchLabelKeys**:
    - Provides fine-grained control over pod scheduling decisions.
@@ -134,10 +134,8 @@ Below are some best practices you can follow to evenly distribute pods across yo
 
 ## Conclusion
 
-Implementing `externalTrafficPolicy=Local` in AKS provides a robust framework for managing external traffic while preserving critical attributes like the client’s source IP. This configuration ensures that traffic is routed exclusively to healthy pods on the same node, reducing latency and enhancing reliability. By adhering to best practices such as coordinated termination, graceful pod shutdown, and controlled rolling updates, you can minimize service disruptions and maintain a seamless user experience. Furthermore, leveraging strategies like Pod Anti-Affinity and Topology Spread Constraints helps achieve an even distribution of pods across nodes, optimizing resource utilization and balancing traffic loads. These approaches collectively enable you to build a resilient, high-performing AKS environment capable of handling production-grade workloads with confidence.
+Implementing `externalTrafficPolicy=Local` in AKS provides a robust framework for managing external traffic while preserving critical attributes like the client's source IP. This configuration ensures that traffic is routed exclusively to healthy pods on the same node, reducing latency and enhancing reliability. By adhering to best practices such as coordinated termination, graceful pod shutdown, and controlled rolling updates, you can minimize service disruptions and maintain a seamless user experience. Furthermore, leveraging strategies like Pod Anti-Affinity and Topology Spread Constraints helps achieve an even distribution of pods across nodes, optimizing resource utilization and balancing traffic loads. These approaches collectively enable you to build a resilient, high-performing AKS environment capable of handling production-grade workloads with confidence.
 
 ## Additional Resources
 
 - [YouTube: Kubernetes ExternalTrafficPolicy Explained](https://mmistakes.github.io/minimal-mistakes/docs/helpers/#youtube)
-
-
