@@ -25,7 +25,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Kubernetes [1.32](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md) is now Generally Available
   * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.31.7, 1.30.11, 1.29.15 to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426)
   * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64) in Azure Linux 3.0 node pools in Kubernetes version 1.31+.
-  * Enable Pod Sandboxing Confidential mounts for Azure File CSI driver on AKS 1.32
+  * Enable Pod Sandboxing Confidential mounts for [Azure File CSI](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.1) driver on AKS 1.32
  * The Azure Portal now offers Deployment Recommendations proactively if there are capacity constraints on the selected node pool sku, zone, and region when creating a new AKS cluster. 
 * Preview Features:
 
@@ -52,7 +52,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Cluster Autoscaler [updated](https://github.com/kubernetes/autoscaler/releases) to [1.29.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.29.5), [1.30.3](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.30.3), [1.31.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.31.1).
   * Istio has been patched to 1.23.5 and 1.24.3
   * Azure File & Disk CSI driver updated to v1.29.14, v1.30.10,  v1.31.6 & v1.32.1
-  * Azure Blob CSI driver apdated to v1.25.5 on AKS 1.31 & v1.26.2 on AKS 1.32
+  * Azure Blob CSI driver updated to v1.25.5 on AKS 1.31 & v1.26.2 on AKS 1.32
   * AKS Azure Linux v2 image has been updated to [202504.06.0](vhd-notes/AzureLinux/202504.06.0.txt).
   * AKS Azure Linux v3 image has been updated to [202504.06.0](vhd-notes/AzureLinuxv3/202504.06.0.txt).
   * AKS Ubuntu 22.04 node image has been updated to [202504.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202504.06.0.txt).
