@@ -30,7 +30,8 @@ If your application is not RDMA-aware, IPoIB alternatively can be used to provid
 
 In the Kubernetes world, there are a range of tools and plugins that support HPC workloads and IB networking - so where is a good place to start?
 
-Choosing the right compute in your node pool is an important building block: Azure [HBv3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/high-performance-compute/hbv3-series?tabs=sizebasic) and [HBv4](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/high-performance-compute/hbv4-series?tabs=sizebasic) HPC VM sizes or [ND series](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-family) GPU VM sizes with built-in NVIDIA networking are suitable for HPC applications. 
+Choosing the right compute in your node pool is an important building block: Azure [HBv3](https://learn.microsoft.com/azure/virtual-machines/sizes/high-performance-compute/hbv3-series?tabs=sizebasic) and [HBv4](https://learn.microsoft.com/azure/virtual-machines/sizes/high-performance-compute/hbv4-series?tabs=sizebasic) HPC VM sizes or [ND series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nd-family) GPU VM sizes with built-in NVIDIA networking are suitable for HPC applications. 
+
 
 For NVIDIA VM sizes, the [Network Operator](https://docs.nvidia.com/networking/display/cokan10/network+operator) and [GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) are useful tools that package networking and device specific components for ease of installation on Kubernetes. However, setting up your cluster for multi-node distributed HPC workloads may involve device plugin, networking component, and node labelling configurations. As a cluster admin or AI service provider, these steps shouldn't increase time-to-value for your developers or end users! 
 
