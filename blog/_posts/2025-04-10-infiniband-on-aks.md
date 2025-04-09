@@ -35,7 +35,6 @@ Choosing the right compute in your node pool is an important building block: Azu
 
 When using NVIDIA VM sizes, the [Network Operator](https://docs.nvidia.com/networking/display/cokan10/network+operator) and [GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) are useful tools that package networking and device specific components for ease of installation on Kubernetes. However, setting up your cluster for multi-node distributed HPC workloads may involve installing a device plugin, networking component, and node labelling configurations. As a cluster admin or AI service provider, these steps shouldn't increase time-to-value for your developers or end users! 
 
-
 We recently created an open-source [InfiniBand on AKS guide](https://azure.github.io/aks-rdma-infiniband/) to simplify and streamline this setup, walking you through step-by-step instructions to:
 
 - Determine the appropriate InfiniBand approach for your new or existing AKS application.
