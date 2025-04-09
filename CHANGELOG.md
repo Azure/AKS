@@ -1,5 +1,61 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2025-04-06
+
+Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250406`.
+
+### Announcements
+* Starting in April 2025, Azure Kubernetes Service will begin rolling out a change to enable quota for all current and new AKS customers. AKS quota will represent a limit of the maximum number of managed clusters that an Azure subscription can consume per region. Existing AKS customer subscriptions will be given a quota limit at or above their current usage, depending on region availability. Once quota is enabled, customers can view their available quota and request quota increases in the Quotas page in the Azure Portal or by using the Quotas REST API. For details on how to view and request quota increases via the Portal Quotas page, visit [Azure Quotas](https://learn.microsoft.com/azure/quotas/view-quotas). For details on how to view and request quota increases via the Quotas REST API, visit: [Azure Quota REST API Reference](https://learn.microsoft.com/rest/api/reserved-vm-instances/quotaapi). New AKS customer subscriptions will be given a default limit upon new subscription creation. More information on the default limits for new subscriptions is available in documentation [here](https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits).
+* AKS Kubernetes version 1.32 roll out has been delayed and is now expected to reach all regions on or before the end of April. Please use the [az-aks-get-versions](https://learn.microsoft.com/azure/aks?view=azure-cli-latest#az-aks-get-versions) command to accurately capture if Kubernetes version 1.32 is available in your region.
+* AKS Kubernetes version 1.28 will be the next [Long Term Support](https://learn.microsoft.com/azure/aks/long-term-support) version.
+* You can now [switch non-LTS clusters](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#faq) on Kubernetes versions 1.25 onwards and within 3 versions of the current LTS versions to LTS by switching their tier to Premium.
+* On 31 March 2025, AKS will no longer allow new cluster creation with the Basic Load Balancer. On 30 September 2025, the Basic Load Balancer will be retired. We will be posting updates on migration paths to the Standard Load Balancer. See [AKS Basic LB Migration Issue](https://github.com/Azure/AKS/issues/1687) for updates on when a simplified upgrade path is available. Refer to [Basic Load Balancer Deprecation Update](https://azure.microsoft.com/updates?id=azure-basic-load-balancer-will-be-retired-on-30-september-2025-upgrade-to-standard-load-balancer) for more information.
+* The asm-1-22 revision for the Istio-based service mesh add-on has been deprecated. Migrate to a supported revision following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
+* The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) feature was retired on 1st August 2023 and removed from AKS versions 1.25 and higher. PodSecurityPolicy property will be officially removed from AKS API starting from 2025-03-01.
+* Starting on 17 June 2025, AKS will no longer create new node images for [Ubuntu 18.04](https://github.com/Azure/AKS/issues/4873) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to a [supported Kubernetes version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions).
+* Starting on 17 March 2027, AKS will no longer create new node images for [Ubuntu 20.04](https://github.com/Azure/AKS/issues/4874) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to Kubernetes version 1.34+ by the retirement date.  
+* HTTP Application Routing (preview) has been retired as of March 3, 2025 and AKS will start to block new cluster creation with HTTP App routing enabled. Affected clusters must [migrate](https://learn.microsoft.com/azure/aks/app-routing-migration) to the generally available Application Routing add-on prior to that date. 
+
+
+### Release Notes
+* Features:
+  * AGIC support for CNI overlay - refer to last release notes
+  * [AKS cost recommendations in Azure Advisor](https://learn.microsoft.com/azure/aks/cost-advisors) is Generally Available
+  * Kubernetes 1.32 is now Generally Available
+  * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.31.7, 1.30.11, 1.29.15 to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426)
+  * AKS now supports upgrading from Node Subnet to Node Subnet + Cilium and from Node Subnet + Cilium to Azure CNI Overlay + Cilium. For more information, please see our [upgrade documentation](https://learn.microsoft.com/azure/aks/upgrade-azure-cni#upgrade-to-azure-cni-powered-by-cilium).
+  * Azure Linux 3.0 supports FIPS mode on Kubernetes versions above 1.31
+  * Enable Kata Confidential mounts for Azure File CSI driver on AKS 1.32
+
+* Preview Features:
+
+* Bug Fixes:
+  * Cost Analysis add-on updated to v0.0.22 to fix [CVE-2025-22866](https://pkg.go.dev/vuln/GO-2025-3447)
+  * IP masq agent updated to 0.1.15-2 to fix [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338)
+  * Application routing updated to v0.2.1-patch-8 for Kubernetes below 1.30 and to v0.2.3-patch-6 for Kubernetes 1.30+. This updates ingress-nginx to v1.11.5 to fix [CVE-2025-1097](https://nvd.nist.gov/vuln/detail/CVE-2025-1097), [CVE-2025-1098](https://nvd.nist.gov/vuln/detail/CVE-2025-1098), [CVE-2025-1974](https://nvd.nist.gov/vuln/detail/CVE-2025-1974), [CVE-2025-24513](https://nvd.nist.gov/vuln/detail/CVE-2025-24513), and [CVE-2025-24514](https://nvd.nist.gov/vuln/detail/CVE-2025-24514).
+
+* Behavior Changes:
+  * Add node anti-affinity for FIPS-compliant nodes to prevent scheduling of retina-agent pods to stop CrashLoopBackOff on FIPS-enabled nodes whilst fix for Retina + FIPS is being rolled out.
+  * Updated Kubernetes Scheduler Topology Constraints default of maxSkew from 5 to 1 for zones in all AKS clusters.
+  * Increased tofqdns-endpoint-max-ip-per-hostname from 50 to 1000 and tofqdns-min-ttl from 0 to 3600 in Azure Cilium for better handling of large DNS responses and reduce DNS query load.
+  * Konnectivity agent will now scale based on cluster node count
+
+* Component Updates:
+  * Updated NPM to v1.5.45 to resolve [CVE-2025-22870](https://nvd.nist.gov/vuln/detail/CVE-2025-22870)
+  * Cilium updated to v1.17 so that L7 policy (http, kafka etc) can now be applied to a cluster when advancedNetworkPolicies is set.
+  * Windows GPU Device plugin updated to 0.0.17 to resolve [CVE-2025-22870](https://nvd.nist.gov/vuln/detail/CVE-2025-22870).
+  * Egress gateway updated to [0.019](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.19)
+  * Eraser updated to v1.4.0-2 for Image Cleaner
+  * Retina updated to [v0.0.29](https://github.com/microsoft/retina/releases/tag/v0.0.29) on Linux and Windows.
+  * Cluster Autoscaler [updated](https://github.com/kubernetes/autoscaler/releases) to 1.29.5, 1.30.3, 1.31.1.
+  * Istio has been patched to 1.23.5 and 1.24.3
+  * Azure File & Disk CSI driver updated to v1.29.14, v1.30.10,  v1.31.6 & v1.32.1
+  * Azure Blob CSI driver apdated to v1.25.5 on AKS 1.31 & v1.26.2 on AKS 1.32
+  * AKS Azure Linux v2 image has been updated to [202504.06.0](vhd-notes/AzureLinux/202504.06.0.txt).
+  * AKS Azure Linux v3 image has been updated to [202504.06.0](vhd-notes/AzureLinuxv3/202504.06.0.txt).
+  * AKS Ubuntu 22.04 node image has been updated to [202504.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202504.06.0.txt).
+  * AKS Ubuntu 24.04 node image has been updated to [202504.06.00](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202504.06.0.txt).
+
 ## Release 2025-03-16
 
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250316`.
