@@ -23,7 +23,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Kubernetes 1.32 is now Generally Available
   * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.31.7, 1.30.11, 1.29.15 to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426)
   * AKS now supports upgrading from Node Subnet to Node Subnet + Cilium and from Node Subnet + Cilium to Azure CNI Overlay + Cilium. For more information, please see our [upgrade documentation](https://learn.microsoft.com/azure/aks/upgrade-azure-cni#upgrade-to-azure-cni-powered-by-cilium).
-  * Azure Linux 3.0 supports FIPS mode on Kubernetes versions above 1.31
+  * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64) in Azure Linux 3.0 node pools in Kubernetes version 1.31+.
   * Enable Kata Confidential mounts for Azure File CSI driver on AKS 1.32
 
 * Preview Features:
