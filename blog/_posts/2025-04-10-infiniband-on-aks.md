@@ -15,7 +15,7 @@ High performance computing (HPC) workloads, like large-scale distributed AI trai
 Imagine InfiniBand networking as an incredibly fast highway for data transfer, and the data as cars that need to travel from one city to another. On a typical highway (like traditional IP networks), cars must follow speed limits, obey traffic signals, and sometimes stop in traffic jams, which slows them down. InfiniBand networking, on the other hand, can be considered a highway built just for race cars - it has no speed limits, no traffic lights, and wide lanes, allowing the cars to zoom at top speed without any interruptions. This makes data travel incredibly fast and efficiently.
 
 There are two ways to use this fast InfiniBand highway:
-- **Remote Direct Memory Access (RDMA)**: Similar to driving a race car on the race car highway. It maximizes speed and performance but may require specific application design and networking configuration to drive these race cars.
+- **[Remote Direct Memory Access (RDMA) over InfiniBand](https://enterprise-support.nvidia.com/s/article/What-is-RDMA)**: Similar to driving a race car on the race car highway. It maximizes speed and performance but may require specific application design and networking configuration to drive these race cars.
 - **[IP over InfiniBand (IPoIB)](https://docs.nvidia.com/doca/sdk/ip+over+infiniband/index.html)**: This is comparable to regular cars using the race car highway - may be easy to implement and compatible with off-the-shelf applications, but you don't get the full speed benefits.
 
 Choosing between these two approaches depends on whether you need compatibility and ease (like regular cars on a race car highway) or top-notch speed and performance (like race cars on a race car highway).
