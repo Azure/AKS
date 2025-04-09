@@ -5,11 +5,11 @@
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250406`.
 
 ### Announcements
-* Starting in April 2025, Azure Kubernetes Service will begin rolling out a change to enable quota for all current and new AKS customers. AKS quota will represent a limit of the maximum number of managed clusters that an Azure subscription can consume per region. Existing AKS customer subscriptions will be given a quota limit at or above their current usage, depending on region availability. Once quota is enabled, customers can view their available quota and request quota increases in the Quotas page in the Azure Portal or by using the Quotas REST API. For details on how to view and request quota increases via the Portal Quotas page, visit [Azure Quotas](https://learn.microsoft.com/azure/quotas/view-quotas). For details on how to view and request quota increases via the Quotas REST API, visit: [Azure Quota REST API Reference](https://learn.microsoft.com/rest/api/reserved-vm-instances/quotaapi). New AKS customer subscriptions will be given a default limit upon new subscription creation. More information on the default limits for new subscriptions is available in documentation [here](https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits).
+* Starting in May 2025, Azure Kubernetes Service will begin rolling out a change to enable quota for all current and new AKS customers. AKS quota will represent a limit of the maximum number of managed clusters that an Azure subscription can consume per region. Existing AKS customer subscriptions will be given a quota limit at or above their current usage, depending on region availability. Once quota is enabled, customers can view their available quota and request quota increases in the Quotas page in the Azure Portal or by using the Quotas REST API. For details on how to view and request quota increases via the Portal Quotas page, visit [Azure Quotas](https://learn.microsoft.com/azure/quotas/view-quotas). For details on how to view and request quota increases via the Quotas REST API, visit: [Azure Quota REST API Reference](https://learn.microsoft.com/rest/api/reserved-vm-instances/quotaapi). New AKS customer subscriptions will be given a default limit upon new subscription creation. More information on the default limits for new subscriptions is available in documentation [here](https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits).
 * AKS Kubernetes version 1.32 roll out has been delayed and is now expected to reach all regions on or before the end of April. Please use the [az-aks-get-versions](https://learn.microsoft.com/azure/aks?view=azure-cli-latest#az-aks-get-versions) command to accurately capture if Kubernetes version 1.32 is available in your region.
 * Kubernetes version 1.28 will become an **additional** [Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) version in AKS, alongside existing LTS versions 1.27 and 1.30.
 * You can now [switch non-LTS clusters](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#faq) on Kubernetes versions 1.25 onwards and within 3 versions of the current LTS versions to LTS by switching their tier to Premium.
-* As of 31 March 2025, AK no longer allows new cluster creation with the Basic Load Balancer. On 30 September 2025, the Basic Load Balancer will be retired. We will be posting updates on migration paths to the Standard Load Balancer. See [AKS Basic LB Migration Issue](https://github.com/Azure/AKS/issues/1687) for updates on when a simplified upgrade path is available. Refer to [Basic Load Balancer Deprecation Update](https://azure.microsoft.com/updates?id=azure-basic-load-balancer-will-be-retired-on-30-september-2025-upgrade-to-standard-load-balancer) for more information.
+* As of 31 March 2025, AKS no longer allows new cluster creation with the Basic Load Balancer. On 30 September 2025, the Basic Load Balancer will be retired. We will be posting updates on migration paths to the Standard Load Balancer. See [AKS Basic LB Migration Issue](https://github.com/Azure/AKS/issues/1687) for updates on when a simplified upgrade path is available. Refer to [Basic Load Balancer Deprecation Update](https://azure.microsoft.com/updates?id=azure-basic-load-balancer-will-be-retired-on-30-september-2025-upgrade-to-standard-load-balancer) for more information.
 * The asm-1-22 revision for the Istio-based service mesh add-on has been deprecated. Migrate to a supported revision following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
 * The [pod security policy](https://learn.microsoft.com/azure/aks/use-pod-security-policies) feature was retired on 1st August 2023 and removed from AKS versions 1.25 and higher. PodSecurityPolicy property will be officially removed from AKS API starting from 2025-03-01.
 * Starting on 17 June 2025, AKS will no longer create new node images for [Ubuntu 18.04](https://github.com/Azure/AKS/issues/4873) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to a [supported Kubernetes version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions).
@@ -19,12 +19,14 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Release Notes
 * Features:
+  * Azure Portal will now show you Deployment Recommendations based on available capacity of virtual machines
+  * Microsoft Copilot in Azure, including AKS is now generally available
   * [AKS cost recommendations in Azure Advisor](https://learn.microsoft.com/azure/aks/cost-advisors) is Generally Available
   * Kubernetes [1.32](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md) is now Generally Available
   * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.31.7, 1.30.11, 1.29.15 to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426)
   * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64) in Azure Linux 3.0 node pools in Kubernetes version 1.31+.
   * Enable Pod Sandboxing Confidential mounts for Azure File CSI driver on AKS 1.32
-
+ * The Azure Portal now offers Deployment Recommendations proactively if there are capacity constraints on the selected node pool sku, zone, and region when creating a new AKS cluster. 
 * Preview Features:
 
 * Bug Fixes:
@@ -39,13 +41,15 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Konnectivity agent will now scale based on cluster node count.
 
 * Component Updates:
-  * Updated NPM to v1.5.45 to resolve [CVE-2025-22870](https://nvd.nist.gov/vuln/detail/CVE-2025-22870)
+  * Coredns 1.12.0 introduced a breaking change which was used in 1.32 AKS clusters. After the issue was discovered, Coredns was updated to [v1.11.3-6](https://github.com/coredns/coredns/releases/tag/v1.12.1) for 1.32 AKS clusters which does not contain the breaking change. Coredns upstream reverted the breaking change in v1.12.1. and AKS clusters on 1.33+ version will use coredns v1.12.1-1 (which does not contain the breaking change).
+  * KEDA 2.16 is now supported on AKS 1.32. KEDA 2.15 and KEDA 2.14 introduced multiple breaking changes. View the [troubleshooting guide](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/extensions/changes-in-kubernetes-event-driven-autoscaling-add-on-214-215) to learn how to mitigate these breaking changes.
+  * Updated NPM to [v1.5.45](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.45) to resolve [CVE-2025-22870](https://nvd.nist.gov/vuln/detail/CVE-2025-22870)
   * Cilium updated to v1.17 so that L7 policy (http, kafka etc) can now be applied to a cluster when advancedNetworkPolicies is set.
   * Windows GPU Device plugin updated to 0.0.17 to resolve [CVE-2025-22870](https://nvd.nist.gov/vuln/detail/CVE-2025-22870).
   * Egress gateway updated to [0.019](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.19)
   * Eraser updated to v1.4.0-2 for Image Cleaner
   * Retina updated to [v0.0.29](https://github.com/microsoft/retina/releases/tag/v0.0.29) on Linux and Windows.
-  * Cluster Autoscaler [updated](https://github.com/kubernetes/autoscaler/releases) to 1.29.5, 1.30.3, 1.31.1.
+  * Cluster Autoscaler [updated](https://github.com/kubernetes/autoscaler/releases) to [1.29.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.29.5), [1.30.3](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.30.3), [1.31.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.31.1).
   * Istio has been patched to 1.23.5 and 1.24.3
   * Azure File & Disk CSI driver updated to v1.29.14, v1.30.10,  v1.31.6 & v1.32.1
   * Azure Blob CSI driver apdated to v1.25.5 on AKS 1.31 & v1.26.2 on AKS 1.32
