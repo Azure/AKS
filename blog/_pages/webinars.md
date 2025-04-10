@@ -38,7 +38,7 @@ timezones1:
     image_path: /assets/webinars/community calls - Image- Americas.png
     excerpt: "Every 3rd Wednesday of the month. <br>
           8 AM PST <br>
-          4 PM GMT <br>
+          3 PM GMT <br>
           <a HREF='../assets/webinars/Recurring-AKS Community Roadmap Call.ics'>Add to my calendar</a><br>"
     btn_label: "Join Now - Americas & Europe"
     btn_class: "btn--primary"
@@ -50,7 +50,7 @@ timezones1:
     image_path: /assets/webinars/community calls - Image- APAC.png
     excerpt: "Every 4th Wednesday of the month. <br>
           10:30 AM IST <br>
-          4:00 PM AEST <br>
+          3:00 PM AEST <br>
           <a HREF='../assets/webinars/AKS Community Roadmap Call-APAC.ics'>Add to my calendar</a><br>"
     btn_label: "Join Now - Australia/NZ, India, Asia Pacific"
     btn_class: "btn--primary"
