@@ -51,7 +51,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Eraser updated to v1.4.0-2 for Image Cleaner
   * Retina updated to [v0.0.29](https://github.com/microsoft/retina/releases/tag/v0.0.29) on Linux and Windows.
   * Cluster Autoscaler [updated](https://github.com/kubernetes/autoscaler/releases) to [1.29.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.29.5), [1.30.3](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.30.3), [1.31.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.31.1).
-  * Istio has been patched to 1.23.5 and 1.24.3
+  * Updated Istio-based service mesh add-on revision asm-1-23 to patch [v1.23.5](https://istio.io/latest/news/releases/1.23.x/announcing-1.23.5) and  [v1.24.3](https://istio.io/latest/news/releases/1.24.x/announcing-1.24.3).
   * Azure File & Disk CSI driver updated to v1.29.14, v1.30.10,  v1.31.6 & v1.32.1
   * Azure Blob CSI driver updated to v1.25.5 on AKS 1.31 & v1.26.2 on AKS 1.32
   * AKS Azure Linux v2 image has been updated to [202504.06.0](vhd-notes/AzureLinux/202504.06.0.txt).
