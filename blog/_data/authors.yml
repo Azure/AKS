@@ -161,3 +161,27 @@ Steve Griffith:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/stevewgriffith/"
+
+Pavneet Ahluwalia:
+  name        : "Pavneet Ahluwalia"
+  bio         : "Pavneet is the Principal PM Lead for the Azure Kubernetes Service."
+  avatar      : "https://raw.githubusercontent.com/Azure/AKS/23e6b34acb76d5f6055ea08586bd61a8e62085b3/blog/assets/images/Pavneet_Speaker.jpg"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/pavneeta"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/pavneetsingh/"
+
+Bob Mital:
+  name        : "Bob Mital"
+  bio         : "Bob Mital is a Principal Product Manager at Microsoft Azure, focusing on partners and the Cloud Native ecosystem."
+  avatar      : "https://media.licdn.com/dms/image/v2/C5603AQH5qo4p4eH27w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1588364514178?e=1748476800&v=beta&t=muBYjAOzfRl-CletzMYfoh2njPn9O_T4Ku9fDywsI0Y"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/bobmital"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/bobmital"
