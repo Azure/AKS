@@ -45,7 +45,7 @@ The table below summarizes these key differences:
 
 ## InfiniBand on AKS
 
-In the Kubernetes world, there are a range of tools and plugins that support HPC workloads and IB networking - so where is a good place to start?
+In the Kubernetes world, there are a range of tools and plugins that support HPC workloads and InfiniBand - so where is a good place to start?
 
 Choosing the right compute in your node pool is an important building block. Consider using Azure [HBv3](https://learn.microsoft.com/azure/virtual-machines/sizes/high-performance-compute/hbv3-series?tabs=sizebasic) and [HBv4](https://learn.microsoft.com/azure/virtual-machines/sizes/high-performance-compute/hbv4-series?tabs=sizebasic) HPC VM sizes or [ND series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nd-family) GPU VM sizes with built-in NVIDIA networking which are all suitable for HPC applications. 
 
