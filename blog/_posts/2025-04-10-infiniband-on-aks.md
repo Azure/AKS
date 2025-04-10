@@ -25,7 +25,7 @@ Choosing between these two approaches depends on whether you need compatibility 
 
 ## RDMA over InfiniBand versus IPoIB
 
-RDMA over IB enables data transfer directly between the memory of different machines without involving the CPU (as shown in the diagram below for GPUs) which significantly reduces latency and improves throughput. 
+RDMA over InfiniBand enables data transfer directly between the memory of different machines without involving the CPU (as shown in the diagram below for GPUs) which significantly reduces latency and improves throughput. 
 
  ![GPUDirect RDMA over InfiniBand](/AKS/assets/images/infiniband-on-aks/GPUDirectRDMA_IB_diagram.png)
 
