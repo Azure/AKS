@@ -37,7 +37,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Behavior Changes:
   * Add node anti-affinity for FIPS-compliant nodes to prevent scheduling of retina-agent pods to stop CrashLoopBackOff on FIPS-enabled nodes whilst fix for Retina + FIPS is being rolled out.
-  * Updated Kubernetes Scheduler Topology Constraints default of maxSkew from 5 to 1 for zones in all AKS clusters.
   * Increased tofqdns-endpoint-max-ip-per-hostname from 50 to 1000 and tofqdns-min-ttl from 0 to 3600 in Azure Cilium for better handling of large DNS responses and reduce DNS query load.
   * Konnectivity agent will now scale based on cluster node count.
 
