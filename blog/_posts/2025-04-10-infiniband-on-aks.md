@@ -18,7 +18,7 @@ There are two ways to use this fast InfiniBand highway:
 - **[Remote Direct Memory Access (RDMA) over InfiniBand](https://enterprise-support.nvidia.com/s/article/What-is-RDMA)**: Similar to driving a race car on the fast InfiniBand highway. It maximizes speed and performance but may require specific application design and networking configuration to operate these race cars on the race car highway.
 - **[IP over InfiniBand (IPoIB)](https://docs.nvidia.com/doca/sdk/ip+over+infiniband/index.html)**: This is comparable to regular cars using the race car highway - may be easy to implement and compatible with off-the-shelf applications, but you don't get the full speed benefits.
 
-Choosing between these two approaches depends on whether you need compatibility and ease (like regular cars on a race car highway) or top-notch speed and performance (like race cars on a race car highway).
+Choosing between these two approaches depends on whether you need compatibility and ease (regular cars on a race car highway) or top-notch speed and performance (race cars on a race car highway).
 
 ## RDMA over InfiniBand versus IPoIB
 
