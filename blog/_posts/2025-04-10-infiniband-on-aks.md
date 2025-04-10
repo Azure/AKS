@@ -33,6 +33,16 @@ To use this approach, your application needs to be RDMA-aware, meaning that an R
 
 If your application is not RDMA-aware, IPoIB alternatively can be used to provide an IP network emulation layer on top of InfiniBand networks. IPoIB enables your application to transmit data over IB but may lower performance and increase latency as it relies on the IP protocol stack.
 
+The table below summarizes these key differences:
+
+| Feature           | RDMA over IB         | IPoIB                |
+|--------------------|-----------------------|-----------------------|
+| **Data Transfer**  | Direct Memory Access   | IP Protocol Over IB   |
+| **Latency**         | Very Low              | Higher                |
+| **Throughput**      | Very High             | Lower                 |
+| **CPU Involvement** | Minimal               | Significant           |
+| **Complexity**      | More specialized (requires RDMA awareness) | Low (easier to implement in existing applications) |
+
 ## InfiniBand on AKS
 
 In the Kubernetes world, there are a range of tools and plugins that support HPC workloads and IB networking - so where is a good place to start?
