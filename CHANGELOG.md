@@ -38,11 +38,11 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Behavior Changes:
   * Add node anti-affinity for FIPS-compliant nodes to prevent scheduling of retina-agent pods to stop CrashLoopBackOff on FIPS-enabled nodes whilst fix for Retina + FIPS is being rolled out.
-  * Updated Kubernetes Scheduler Topology Constraints default of maxSkew from 5 to 1 for zones in all AKS clusters.
   * Increased tofqdns-endpoint-max-ip-per-hostname from 50 to 1000 and tofqdns-min-ttl from 0 to 3600 in Azure Cilium for better handling of large DNS responses and reduce DNS query load.
   * Konnectivity agent will now scale based on cluster node count.
 
 * Component Updates:
+  * Application routing add-on updated to [v0.2.1-patch-8](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.1-patch-8) for Kubernetes below 1.30 and to [v0.2.3-patch-6](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.3-patch-6) for Kubernetes 1.30+. This updates ingress-nginx to v1.11.5 to fix [CVE-2025-1097](https://nvd.nist.gov/vuln/detail/CVE-2025-1097), [CVE-2025-1098](https://nvd.nist.gov/vuln/detail/CVE-2025-1098), [CVE-2025-1974](https://nvd.nist.gov/vuln/detail/CVE-2025-1974), [CVE-2025-24513](https://nvd.nist.gov/vuln/detail/CVE-2025-24513), and [CVE-2025-24514](https://nvd.nist.gov/vuln/detail/CVE-2025-24514).
   * Coredns 1.12.0 introduced a breaking change which was used in 1.32 AKS clusters. After the issue was discovered, Coredns was updated to [v1.11.3-6](https://github.com/coredns/coredns/releases/tag/v1.12.1) for 1.32 AKS clusters which does not contain the breaking change. Coredns upstream reverted the breaking change in v1.12.1. and AKS clusters on 1.33+ version will use coredns v1.12.1-1 (which does not contain the breaking change).
   * KEDA 2.16 is now supported on AKS 1.32. KEDA 2.15 and KEDA 2.14 introduced multiple breaking changes. View the [troubleshooting guide](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/extensions/changes-in-kubernetes-event-driven-autoscaling-add-on-214-215) to learn how to mitigate these breaking changes.
   * Updated NPM to [v1.5.45](https://github.com/Azure/azure-container-networking/releases/tag/v1.5.45) to resolve [CVE-2025-22870](https://nvd.nist.gov/vuln/detail/CVE-2025-22870)
@@ -52,7 +52,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Eraser updated to v1.4.0-2 for Image Cleaner
   * Retina updated to [v0.0.29](https://github.com/microsoft/retina/releases/tag/v0.0.29) on Linux and Windows.
   * Cluster Autoscaler [updated](https://github.com/kubernetes/autoscaler/releases) to [1.29.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.29.5), [1.30.3](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.30.3), [1.31.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.31.1).
-  * Istio has been patched to 1.23.5 and 1.24.3
+  * Updated Istio-based service mesh add-on revision asm-1-23 to patch [v1.23.5](https://istio.io/latest/news/releases/1.23.x/announcing-1.23.5) and  [v1.24.3](https://istio.io/latest/news/releases/1.24.x/announcing-1.24.3).
   * Azure File & Disk CSI driver updated to v1.29.14, v1.30.10,  v1.31.6 & v1.32.1
   * Azure Blob CSI driver updated to v1.25.5 on AKS 1.31 & v1.26.2 on AKS 1.32
   * AKS Azure Linux v2 image has been updated to [202504.06.0](vhd-notes/AzureLinux/202504.06.0.txt).
