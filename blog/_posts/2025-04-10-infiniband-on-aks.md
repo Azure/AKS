@@ -22,7 +22,11 @@ Choosing between these two approaches depends on whether you need compatibility 
 
 ## RDMA over InfiniBand versus IPoIB
 
-RDMA over IB enables data transfer directly between the memory of different machines without involving the CPU, which significantly reduces latency and improves throughput. To use this approach, your application needs to be RDMA-aware, meaning that an RDMA API or RDMA-aware message passing framework is used to enable high performance communication. Check out this [RDMA programming on NVIDIA](https://docs.nvidia.com/networking/display/rdmaawareprogrammingv17/rdma-aware+programming+overview) guide to learn more.
+RDMA over IB enables data transfer directly between the memory of different machines without involving the CPU (as shown in the diagram below for GPUs) which significantly reduces latency and improves throughput. 
+
+ ![GPUDirect RDMA over InfiniBand](/AKS/assets/images/infiniband-on-aks/GPUDirectRDMA_IB_diagram.png)
+
+To use this approach, your application needs to be RDMA-aware, meaning that an RDMA API or RDMA-aware message passing framework is used to enable high performance communication. Check out this [RDMA programming on NVIDIA](https://docs.nvidia.com/networking/display/rdmaawareprogrammingv17/rdma-aware+programming+overview) guide to learn more.
 
 If your application is not RDMA-aware, IPoIB alternatively can be used to provide an IP network emulation layer on top of InfiniBand networks. IPoIB enables your application to transmit data over IB but may lower performance and increase latency as it relies on the IP protocol stack.
 
