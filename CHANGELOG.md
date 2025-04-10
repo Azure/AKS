@@ -21,18 +21,19 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Features:
   * [AKS Security Bulletin](https://learn.microsoft.com/en-us/azure/aks/security-bulletins/overview?tabs=aks-addons%2Caks-cluster%2Caks-node-image) and [AKS CVE Mitigation Status](https://releases.aks.azure.com/webpage/index.html) are now available to track Security and CVE mitigations
   * Azure Portal will now show you Deployment Recommendations based on available capacity of virtual machines
-  * Microsoft Copilot in Azure, including AKS is now generally available
+  * [Microsoft Copilot in Azure](https://techcommunity.microsoft.com/blog/azureinfrastructureblog/microsoft-copilot-in-azure-is-now-generally-available/4402033), including AKS is now generally available
   * [AKS cost recommendations in Azure Advisor](https://learn.microsoft.com/azure/aks/cost-advisors) is Generally Available
   * Kubernetes [1.32](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md) is now Generally Available
   * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.31.7, 1.30.11, 1.29.15 to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426)
   * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64) in Azure Linux 3.0 node pools in Kubernetes version 1.31+.
   * Enable Pod Sandboxing Confidential mounts for [Azure File CSI](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.1) driver on AKS 1.32
  * The Azure Portal now offers Deployment Recommendations proactively if there are capacity constraints on the selected node pool sku, zone, and region when creating a new AKS cluster. 
+
 * Preview Features:
 
 * Bug Fixes:
   * Cost Analysis add-on updated to v0.0.22 to fix [CVE-2025-22866](https://pkg.go.dev/vuln/GO-2025-3447)
-  * IP masq agent updated to 0.1.15-2 to fix [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338)
+  * IP masq agent updated to 0.1.15-2 to address [CVE-2024-45338](https://nvd.nist.gov/vuln/detail/CVE-2024-45338)
   * Application routing updated to v0.2.1-patch-8 for Kubernetes below 1.30 and to v0.2.3-patch-6 for Kubernetes 1.30+. This updates ingress-nginx to v1.11.5 to fix [CVE-2025-1097](https://nvd.nist.gov/vuln/detail/CVE-2025-1097), [CVE-2025-1098](https://nvd.nist.gov/vuln/detail/CVE-2025-1098), [CVE-2025-1974](https://nvd.nist.gov/vuln/detail/CVE-2025-1974), [CVE-2025-24513](https://nvd.nist.gov/vuln/detail/CVE-2025-24513), and [CVE-2025-24514](https://nvd.nist.gov/vuln/detail/CVE-2025-24514).
 
 * Behavior Changes:
