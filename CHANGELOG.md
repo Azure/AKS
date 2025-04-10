@@ -19,6 +19,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Release Notes
 * Features:
+  * [AKS Security Bulletin](https://learn.microsoft.com/en-us/azure/aks/security-bulletins/overview?tabs=aks-addons%2Caks-cluster%2Caks-node-image) and [AKS CVE Mitigation Status](https://releases.aks.azure.com/webpage/index.html) are now available to track Security and CVE mitigations
   * Azure Portal will now show you Deployment Recommendations based on available capacity of virtual machines
   * Microsoft Copilot in Azure, including AKS is now generally available
   * [AKS cost recommendations in Azure Advisor](https://learn.microsoft.com/azure/aks/cost-advisors) is Generally Available
