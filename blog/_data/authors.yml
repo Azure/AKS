@@ -185,3 +185,30 @@ Bob Mital:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/bobmital"
+
+Suraj Deshmukh:
+  name        : "Suraj Deshmukh"
+  bio         : "Software Engineer at Microsoft, involved in Kubernetes and Open Source."
+  avatar      : "https://github.com/surajssd.png" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/surajssd/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/surajssd"
+    - label: "Blog"
+      icon: "fas fa-fw fa-link"
+      url: "https://suraj.io/"
+      
+Ernest Wong:
+  name        : "Ernest Wong"
+  bio         : "Software Engineer at Microsoft"
+  avatar      : "https://github.com/chewong.png" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/chewong/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/chewong"
