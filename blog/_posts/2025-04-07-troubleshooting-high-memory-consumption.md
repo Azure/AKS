@@ -1,5 +1,5 @@
 ---
-title: "Troubleshooting high memory consumption in disk intensive Applications"
+title: "Troubleshooting Kernel Memory Consumption on Pods"
 description: "Explore how Linux page caching inflates memory usage in Kubernetes and learn how to identify and manage it effectively."
 date: 2025-04-07
 author: Claudio Godoy
