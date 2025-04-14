@@ -42,7 +42,7 @@ timezones1:
           <a HREF='../assets/webinars/Recurring-AKS Community Roadmap Call.ics'>Add to my calendar</a><br>"
     btn_label: "Join Now - Americas & Europe"
     btn_class: "btn--primary"
-    url: 'https://aka.ms/aks/communitycalls/roadmap/joinnow'
+    url: 'https://aka.ms/aks/communitycalls-us/roadmap/joinnow'
     notice: notice--info
     style: { .border-width: 1px .border-color:#fff }
 
