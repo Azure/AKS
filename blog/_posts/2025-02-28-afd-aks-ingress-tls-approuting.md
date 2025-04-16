@@ -26,9 +26,10 @@ In this walkthrough we'll deploy an app with end-to-end TLS encryption, using Az
 
 We'll use Azure Key Vault to store the TLS certificate, and will use App Routing Key Vault integration to get the certificate secret into the ingress controller. 
 
-> *Note:* We'll be walking through step by step, showing the moving parts, via the Azure CLI. If you'd like to see a full implementation of a very similar deployment using Bicep, check out the link below:
+> *Note:* We'll be walking through a basic step-by-step guide, showing the moving parts, via the Azure CLI. If you'd like to see a fully built out architecture design with bicep deployment files, check out the following great articles from [Paolo Salvatori](https://www.linkedin.com/in/paolo-salvatori/)
 
-[End-to-end TLS with AKS, Azure Front Door, Azure Private Link Service, and NGINX Ingress Controller](https://learn.microsoft.com/samples/azure-samples/aks-front-door-end-to-end-tls/aks-front-door-end-to-end-tls/)
+- [Use Azure Front Door to secure AKS workloads](https://learn.microsoft.com/en-us/azure/architecture/example-scenario/aks-front-door/aks-front-door)
+- [End-to-end TLS with AKS, Azure Front Door, Azure Private Link Service, and NGINX Ingress Controller](https://learn.microsoft.com/samples/azure-samples/aks-front-door-end-to-end-tls/aks-front-door-end-to-end-tls/)
 
 Let's get to it....
 
