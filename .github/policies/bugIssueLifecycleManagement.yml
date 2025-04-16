@@ -24,7 +24,7 @@ configuration:
       - isNotLabeledWith:
           label: fixing
       - isNotLabeledWith:
-          label: Under Investigation
+          label: 'Under Investigation'
       actions:
       - addLabel:
           label: stale
@@ -44,7 +44,7 @@ configuration:
       - noActivitySince:
           days: 14
       - isNotLabeledWith:
-          label: Needs Author Feedback
+          label: 'Needs Author Feedback'
       actions:
       - addLabel:
           label: 'Needs Attention :wave:'
@@ -77,11 +77,11 @@ configuration:
               label: bug
           - payloadType: Issues
           - labelAdded:
-              label: SR-Support Request
+              label: 'SR-Support Request'
           - isOpen
         then:
           - addLabel:
-              label: Needs Author Feedback
+              label: 'Needs Author Feedback'
           - addReply:
               reply: >-
                 Hi there :wave: AKS bot here. This issue has been tagged as needing a support request so that the AKS support and engineering teams have a look into this particular cluster/issue.
@@ -124,7 +124,7 @@ configuration:
               label: bug
           - payloadType: Issues
           - labelAdded:
-              label: fixing
+              label: 'Under Investigation'
           - isOpen
         then:
           - addReply:
