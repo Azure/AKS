@@ -17,6 +17,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Starting on 17 March 2027, AKS will no longer create new node images for [Ubuntu 20.04](https://github.com/Azure/AKS/issues/4874) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to Kubernetes version 1.34+ by the retirement date.  
 * HTTP Application Routing (preview) has been retired as of March 3, 2025 and AKS will start to block new cluster creation with HTTP App routing enabled. Affected clusters must [migrate](https://learn.microsoft.com/azure/aks/app-routing-migration) to the generally available Application Routing add-on prior to that date. 
 * Customers with nodepools using [Standard_NC24rsv3](https://learn.microsoft.com/en-us/azure/virtual-machines/ncv3-nc24rs-retirement) VM sizes should resize or deallocate those VMs. Microsoft will deallocate remaining Standard_NC24rsv3 VMs in the coming weeks.
+* [Teleport (preview)](https://github.com/Azure/acr/blob/main/docs/teleport/aks-getting-started.md) on AKS will be retired on 15 July 2025, please [migrate to Artifact Streaming (preview) on AKS](https://learn.microsoft.com/azure/aks/artifact-streaming) or update your node pools to set --aks-custom-headers EnableACRTeleport=false. Azure Container Registry has removed the Teleport API meaning that any nodes with Teleport enabled are pulling images from Azure Container Registry as any other AKS node. After 15 July 2025, any node pools with Teleport (preview) enabled may experience breakage and node provisioning failures. For more information, see [aka.ms/aks/teleport-retirement](https://aka.ms/aks/teleport-retirement).
 
 ### Release Notes
 * Features:
@@ -28,13 +29,15 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.31.7, 1.30.11, 1.29.15 to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426)
   * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64) in Azure Linux 3.0 node pools in Kubernetes version 1.31+.
   * Enable Pod Sandboxing Confidential mounts for [Azure File CSI](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.1) driver on AKS 1.32
- * The Azure Portal now offers Deployment Recommendations proactively if there are capacity constraints on the selected node pool sku, zone, and region when creating a new AKS cluster. 
+  * The Azure Portal now offers Deployment Recommendations proactively if there are capacity constraints on the selected node pool sku, zone, and region when creating a new AKS cluster. 
+  * Custom Certificate Authority is available as GA in the [2025-01-01 GA API](https://learn.microsoft.com/rest/api/aks/managed-clusters/create-or-update?view=rest-aks-2025-01-01&tabs=HTTP#create-managed-cluster-with-custom-ca-trust-certificates). It isn't yet available in the CLI until May 2025. To use the GA feature in CLI before release, you can use the [`az rest`](https://learn.microsoft.com/cli/azure/reference-index?view=azure-cli-latest#az-rest) command to add custom certificates during cluster creation. For more information, see [aka.ms/aks/custom-certificate-authority](https://aka.ms/aks/custom-certificate-authority).
 
 
 * Behavior Changes:
   * Add node anti-affinity for FIPS-compliant nodes to prevent scheduling of retina-agent pods to stop CrashLoopBackOff on FIPS-enabled nodes whilst fix for Retina + FIPS is being rolled out.
   * Increased tofqdns-endpoint-max-ip-per-hostname from 50 to 1000 and tofqdns-min-ttl from 0 to 3600 in Azure Cilium for better handling of large DNS responses and reduce DNS query load.
   * Konnectivity agent will now scale based on cluster node count.
+  * Starting on 15 April 2025, you will now be able to update your clusters to add an HTTP Proxy Configuration. Any update command that adds/changes an HTTP Proxy Configuration will now trigger an automatic reimage that will ensure all node pools in the cluster will have the same configuration. For more information, see [aka.ms/aks/http-proxy](https://aka.ms/aks/http-proxy).
 
 * Component Updates:
   * Cost Analysis add-on updated to v0.0.22 to fix [CVE-2025-22866](https://pkg.go.dev/vuln/GO-2025-3447)
