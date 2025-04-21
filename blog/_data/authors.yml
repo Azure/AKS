@@ -224,3 +224,14 @@ Jack Jiang:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/jakjang"
+
+Ally Ford:
+  name        : "Ally Ford"
+  bio         : "Product Manager 2 at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/allison-ford-pm/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/allyford?query=ally+ford"
