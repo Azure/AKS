@@ -101,5 +101,5 @@ each node in the nodepool is deleted. Any running node instances and pods in the
 If you choose to [**resize**](https://learn.microsoft.com/en-us/azure/aks/resize-node-pool?tabs=azure-cli) a node pool, you'll go through the process of creating a new node 
 pool with your desired VM size while the existing node pool is cordoned, drained, and ultimately removed.
 
-Depending on the needs of your infrastructure and workloads, please ensure that you pick the operation that will best suit your needs.
+Depending on the needs of your infrastructure and workloads, please make sure that you pick the operation that will best suit your needs.
 
