@@ -228,7 +228,6 @@ Jack Jiang:
 Ally Ford:
   name        : "Ally Ford"
   bio         : "Product Manager 2 at Microsoft"
-  avatar      : "https://github.com/jakjang/profilepic/blob/main/jack_headshot.jpg?raw=true" 
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
