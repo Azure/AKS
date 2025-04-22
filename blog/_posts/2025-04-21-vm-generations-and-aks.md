@@ -49,7 +49,7 @@ The table below summarizes some key differences between Generation 1 and Generat
 ### Implications for your Virtual Machines
 If you are already running on Generation 2 VMs, you are all set to deploy on the majority of Azure VMs, including the latest v6 VMs. You can also enable Trusted Launch and the NVMe Interface. 
 
-If you are running on a Generation 1 VMs, you can continue running on most v5 and older Azure VMs. Migration to Generation 2 VMs is recommended, especially if any of the following requirements apply: 
+If you are running on Generation 1 VMs, you can continue running on most v5 and older Azure VMs. Migration to Generation 2 VMs is recommended, especially if any of the following requirements apply: 
 - You require Trusted Launch for your workloads 
 - You require NVMe interface for your workloads
 - You want/need to migrate to the latest v6 VMs 
