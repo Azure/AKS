@@ -65,12 +65,12 @@ AKS supports both Generation 1 and 2 VMs with all operating systems on AKS. The 
 
 For more information on Generation 2 default behavior on AKS, see [AKS documentation](https://learn.microsoft.com/azure/aks/generation-2-vm).
 
-For a list of supported VM sizes for Generation 1 and Generation 2, please refer to the table on [this page](https://learn.microsoft.com/en-us/azure/virtual-machines/generation-2#generation-2-vm-sizes).
+For a list of supported VM sizes for Generation 1 and Generation 2, please refer to the table on [this page](https://learn.microsoft.com/azure/virtual-machines/generation-2#generation-2-vm-sizes).
 
 ### Generation 1 VM Retirements
 When a VM size or series reaches its retirement date, the VM will be deallocated. VM deallocation means that your AKS node pool may experience breakage.
 
-If you would like to confirm whether your Gen 1 VM sizes are retired or are being retired, please search in the [Azure Updates](https://azure.microsoft.com/en-us/updates) 
+If you would like to confirm whether your Gen 1 VM sizes are retired or are being retired, please search in the [Azure Updates](https://azure.microsoft.com/updates) 
 page.
 
 ## Migrating From Retired VM Sizes
@@ -91,14 +91,14 @@ az aks nodepool list \
 --output table 
 ```
 
-### Actioning on Your Nodepools
-After you determine the appropriate nodepool(s) to take action on, you have the option to either [**delete**](https://learn.microsoft.com/en-us/azure/aks/delete-node-pool?tabs=azure-cli) 
-or [**resize**](https://learn.microsoft.com/en-us/azure/aks/resize-node-pool?tabs=azure-cli) your nodepool(s).
+### Resizing or deleting your node pools
+After you determine the appropriate nodepool(s) to take action on, you have the option to either [**delete**](https://learn.microsoft.com/azure/aks/delete-node-pool?tabs=azure-cli) 
+or [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) your nodepool(s).
 
-If you choose to [**delete**](https://learn.microsoft.com/en-us/azure/aks/delete-node-pool?tabs=azure-cli) a node pool, the virtual machine scale set (VMSS) and the VMs for 
+If you choose to [**delete**](https://learn.microsoft.com/azure/aks/delete-node-pool?tabs=azure-cli) a node pool, the virtual machine scale set (VMSS) and the VMs for 
 each node in the nodepool is deleted. Any running node instances and pods in the pool are also deleted. 
 
-If you choose to [**resize**](https://learn.microsoft.com/en-us/azure/aks/resize-node-pool?tabs=azure-cli) a node pool, you'll go through the process of creating a new node 
+If you choose to [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) a node pool, you'll go through the process of creating a new node 
 pool with your desired VM size while the existing node pool is cordoned, drained, and ultimately removed.
 
 Depending on the needs of your infrastructure and workloads, please make sure that you pick the operation that will best suit your needs.
