@@ -76,7 +76,7 @@ page.
 
 ## Migrating From Retired VM Sizes
 
-If you are using a VM size that is retiring/retired, to prevent any potential disruption to your service, it is recommended to resize your node pool(s) to a supported VM size.
+If you are using a VM size that is retiring/retired, to prevent any potential disruption to your service, it is recommended to resize your node pool(s) to a supported VM size. AKS does not currently support transitioning to a new VM size within the same node pool, so a new node pool will be created and workloads moved to it during the resizing process. 
 
 ### What VM sizes are my nodes?
 To determine the size of your nodes, navigate to the Azure Portal, access your Resource Group, and then select your AKS resource. Within the "Overview" tab, you will find the size of your node pool.
