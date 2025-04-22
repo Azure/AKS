@@ -127,20 +127,19 @@ Achieving an even distribution of pods across nodes is important for load balanc
 In this situation, even though the load balancer divides the traffic evenly between nodes, the pods on the node with 2 replicas serve 25% of the traffic each, while the pod in the single replica node serves the full 50% of the total traffic.
 
 Below are some best practices you can follow to evenly distribute pods across your nodes based on your workload needs:
-1. **Use Pod Anti-Affinity** [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity):
+1. [**Pod Anti-Affinity**](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity):
    - Ensures pods with the same label are not scheduled on the same node.
    - Requires more nodes than pods, including surge pods during evictions or deployments.
 
-2. **Use Topology Spread Constraints**:
+2. [**Topology Spread Constraints**](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field):
    - Distributes pods as evenly as possible (best effort) across available nodes and zones (specified with the topologyKey).
    > **Note**: If your application requires strict spreading of pods (i.e., your ideal behavior is to leave a pod in pending if spread is not possible), you can set the `whenUnsatisfiable` to `DoNotSchedule`
 
-3. **Use MatchLabelKeys**:
+3. [**MatchLabelKeys**](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field):
    - Provides fine-grained control over pod scheduling decisions.
    - Ensures pods from different deployment versions do not overlap on the same nodes.
 
-Further Implementation details for these best practices can be found in AKS documentation
-- [Deployment and Cluster Reliability Best Practices for AKS](https://learn.microsoft.com/en-us/azure/aks/best-practices-app-cluster-reliability)
+For additional best practices, you can refer to [Deployment and Cluster Reliability Best Practices for AKS](https://learn.microsoft.com/en-us/azure/aks/best-practices-app-cluster-reliability)
 
 ## Conclusion
 To conclude, while `externalTrafficPolicy=Local` is a powerful option for optimizing traffic routing in AKS, it also requires careful planning of your pod lifecycle. With a professional, proactive approach to how your services handle start-up and shutdown, you can reap the benefits of Local traffic policy -- getting client IP transparency and efficient routing -- without sacrificing reliability during deployments or scaling events. Kubernetes gives us the knobs; it's up to us as SREs and engineers to turn them correctly for our particular workloads. Happy load balancing!
