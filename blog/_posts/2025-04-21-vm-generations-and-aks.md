@@ -35,7 +35,7 @@ will exclusively support Generation 2 VMs.
 
 ### Comparing Generation 1 & Generation 2
 Generation 2 VMs offer exclusive features over Generation 1 VMs, such as increased memory, improved CPU performance, support for NVMe disks, and support for Trusted 
-Launch. With some [exceptions](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v),
+Launch. With some [exceptions](https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v),
 it is generally recommended to migrate to Generation 2 VMs to take advantage of the newest features and functionalities in Azure VMs.
 
 The table below summarizes some key differences between Generation 1 and Generation 2 VMs. For a more detailed comparison, please refer to this [page](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn282285(v=ws.11)).
