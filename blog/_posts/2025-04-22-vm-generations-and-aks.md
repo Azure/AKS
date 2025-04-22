@@ -76,9 +76,8 @@ page.
 If you are using a VM size that is retiring/retired, to prevent any potential disruption to your service, it is recommended to either delete or resize the affected VM node pools.
 
 ### What VM sizes are my nodes?
-To determine the size your nodes, navigate to the Azure Portal, access your Resource Group, and then select your AKS resource. Within the "Overview" tab, you will find the size
-of your node pool.
-![image](https://github.com/user-attachments/assets/93091030-9edf-4c5e-b1c6-82b1d5a9159a)
+To determine the size your nodes, navigate to the Azure Portal, access your Resource Group, and then select your AKS resource. Within the "Overview" tab, you will find the size of your node pool.
+
 
 Alternatively, you may run this command in the Azure CLI. Make sure you fill in the names of your resource group and cluster name: 
 ```azurecli-interactive
