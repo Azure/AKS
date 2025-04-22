@@ -30,7 +30,7 @@ gives a thorough breakdown on VM series and the generation they support.
 The latest v6 VMs (whether they are 
 [Intel](https://techcommunity.microsoft.com/blog/azurecompute/announcing-preview-of-new-azure-dlsv6-dsv6-esv6-vms-with-new-cpu-azure-boost-and/4192124), 
 [AMD](https://techcommunity.microsoft.com/blog/azurecompute/new-daeafav6-vms-with-increased-performance-and-azure-boost-are-now-generally-av/4309381), or 
-[ARM](https://azure.microsoft.com/en-us/blog/azure-cobalt-100-based-virtual-machines-are-now-generally-available/?msockid=150f515112e461e5201d45b1136e602c)
+[ARM](https://azure.microsoft.com/blog/azure-cobalt-100-based-virtual-machines-are-now-generally-available/?msockid=150f515112e461e5201d45b1136e602c)
 will exclusively support Generation 2 VMs.
 
 ### Comparing Generation 1 & Generation 2
