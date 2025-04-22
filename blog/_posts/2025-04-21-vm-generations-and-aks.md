@@ -19,7 +19,7 @@ configurations available utilizing its resources.
 As the physical hardware ages and newer components become available, older hardware of a previous generation get retired, while newer generation hardware 
 is progressively made available. 
 
-In this blog, we will go over Generation 1 and the newer Generation 2 virtual machines. Both have their own use cases, and [picking the right one](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v) 
+In this blog, we will go over Generation 1 and the newer Generation 2 virtual machines. Both have their own use cases, and [picking the right one](https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v) 
 to suit your workloads is critical in ensuring you get the best possible experience, capabilities, and cost.  
 
 ### Virtual Machine Generation Overview
