@@ -4,7 +4,6 @@ description: "Learn more about Generation 1 and Generation 2 VMs and what they o
 date: 2025-04-21 # date is important. future dates will not be published
 authors: 
    - Ally Ford
-   - Sarah Zhou
    - Jack Jiang
 categories: 
 - operations
