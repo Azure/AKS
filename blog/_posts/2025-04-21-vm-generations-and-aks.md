@@ -58,7 +58,7 @@ If you are running on Generation 1 VMs, you can continue running on most v5 and 
 
 ### Generation 2 Default
 
-AKS supports both Generation 1 and 2 VMs with all operating systems on AKS. Generation 2 VMs support additional features Generation 1 VMs do not, such as increased memory, virtualized persistent memory, or a UEFI-based boot architecture. The VM size and operating system that you select when creating an AKS node pool determines which VM Generation you will use. 
+AKS supports both Generation 1 and 2 VMs with all operating systems on AKS. The VM size and operating system that you select when creating an AKS node pool determines which VM Generation you will use. 
 - When creating Linux node pools on AKS, the default will be a Generation 2 VM unless the VM size does not support it. 
 - When creating Windows Server 2025 node pools on AKS, the default will be a Generation 2 VM unless the VM size does not support it.  
 - When creating Windows Server 2019 and Windows Server 2022 node pools on AKS, the default will be Generation 1 VM unless the VM size does not support it. To use a Generation 2 VM, you must add `--aks-custom-headers UseWindowsGen2VM=true` during node pool creation. 
