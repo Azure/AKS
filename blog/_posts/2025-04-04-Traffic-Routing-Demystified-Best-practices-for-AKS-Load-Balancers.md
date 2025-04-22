@@ -114,7 +114,7 @@ By implementing these best practices, you can minimize disruptions during pod sh
 While the above works when a pod is being taken down in isolation, it does not cover cases like upgrades and rolling restarts which require coordination between the time the pod goes down and a new one comes up, ready to serve traffic. To optimize pod rotation, add the following best practice to your deployment:
 
 - **Set `minReadySeconds`**:
-    Configure the `minReadySeconds` parameter in your deployment (we recommend around 10 sec) to introduce a delay before Kubernetes is able to mark the pod as "available" (i.e the pod has been ready long enough that the rolling upgrade can move to the next pod - making it different from the "ready" state which implies the application is ready to recieve new connections). This buffer gives the load balancer enough time to register the new pod and start routing traffic to it, while also preventing Kubernetes from deleting the old pod prematurely.
+    Configure the `minReadySeconds` parameter in your deployment (we recommend around 10 sec) to introduce a delay before Kubernetes is able to mark the pod as "available" (i.e the pod has been ready long enough that the rolling upgrade can move to the next pod - making it different from the "ready" state which implies the application is ready to receive new connections). This buffer gives the load balancer enough time to register the new pod and start routing traffic to it, while also preventing Kubernetes from deleting the old pod prematurely.
 
 By implementing this strategy, you can achieve smoother rolling updates and maintain a consistent user experience during application changes.
 
@@ -127,7 +127,7 @@ Achieving an even distribution of pods across nodes is important for load balanc
 In this situation, even though the load balancer divides the traffic evenly between nodes, the pods on the node with 2 replicas serve 25% of the traffic each, while the pod in the single replica node serves the full 50% of the total traffic.
 
 Below are some best practices you can follow to evenly distribute pods across your nodes based on your workload needs:
-1. **Use Pod Anti-Affinity**:
+1. **Use Pod Anti-Affinity** [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity):
    - Ensures pods with the same label are not scheduled on the same node.
    - Requires more nodes than pods, including surge pods during evictions or deployments.
 
