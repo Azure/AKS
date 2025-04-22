@@ -79,6 +79,7 @@ When a pod is shutting down (receiving the `TERM` signal), it is essential to en
     **Use Case**: Applications using gRPC or HTTP/2 for high-performance communication between services or with external clients.
 
 ### Preventing New Connections to an Unhealthy Pod when using externalTrafficPolicy=Local
+
 To avoid routing new requests to a pod that is in the process of shutting down, it is important to manage its health status effectively. The below image shows the timeline for a pod receiving a `TERM` signal and gracefully shutting down without impact on external traffic:
 
 ![Preventing New Requests to Unhealthy Pods](./AKS/blog/assets/images/preventingnewrequeststoanunhealthypod.png)
