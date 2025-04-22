@@ -24,7 +24,7 @@ to suit your workloads is critical in ensuring you get the best possible experie
 
 ### Virtual Machine Generation Overview
 
-Azure VM sizes (v5 and older) have largely supported both Generation 1 and Generation 2 VMs. [This page](https://learn.microsoft.com/en-us/azure/virtual-machines/generation-2)
+Azure VM sizes (v5 and older) have largely supported both Generation 1 and Generation 2 VMs. [This page](https://learn.microsoft.com/azure/virtual-machines/generation-2)
 gives a thorough breakdown on VM series and the generation they support. 
 
 The latest v6 VMs (whether they are 
@@ -38,16 +38,16 @@ Generation 2 VMs offer exclusive features over Generation 1 VMs, such as increas
 Launch. With some [exceptions](https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v),
 it is generally recommended to migrate to Generation 2 VMs to take advantage of the newest features and functionalities in Azure VMs.
 
-The table below summarizes some key differences between Generation 1 and Generation 2 VMs. For a more detailed comparison, please refer to this [page](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn282285(v=ws.11)).
+The table below summarizes some key differences between Generation 1 and Generation 2 VMs. For a more detailed comparison, please refer to this [page](https://learn.microsoft.com/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn282285(v=ws.11)).
 | **Topic** | **Generate 2 VM** | **Generation 1 VM** |
 | --- | --- | --- |
 | Firmware Interface | UEFI (Unified Extensible Firmware Interface)-based boot (Enhanced security and faster boot times) | BIOS (Basic Input/Output System)-based boot (Legacy) |
 | Latest v6 VM Support | v6 VMs support Generation 2 VMs | v6 VMs do **NOT** support Generation 1 VMs |
 | [Trusted Launch](https://learn.microsoft.com/azure/virtual-machines/trusted-launch) | Can enable Trusted Launch, which includes protections like virtual Trusted Platform Module (vTPM) | Can **NOT** enable Trusted Launch |
-| [NVMe Interface Support](https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview) | Supports NVMe disks, which requires NVM-enabled Generation 2 image | Does **NOT** support NVMe disks |
+| [NVMe Interface Support](https://learn.microsoft.com/azure/virtual-machines/nvme-overview) | Supports NVMe disks, which requires NVM-enabled Generation 2 image | Does **NOT** support NVMe disks |
 
 ### Implications for your Virtual Machines
-If you are already running on Generation 2 VMs, you are all set to deploy on the majority of Azure VMs, including the latest v6 VMs. You can also enable Trusted Launch and the NVMe Interface. 
+If you are already running on Generation 2 VMs, you are all set to deploy on the majority of Azure VMs, including the latest v6 VMs. You can also enable [Trusted Launch](https://learn.microsoft.com/azure/aks/use-trusted-launch) and the NVMe Interface. 
 
 If you are running on Generation 1 VMs, you can continue running on most v5 and older Azure VMs. Migration to Generation 2 VMs is recommended, especially if any of the following requirements apply: 
 - You require Trusted Launch for your workloads 
