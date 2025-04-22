@@ -43,7 +43,7 @@ The table below summarizes some key differences between Generation 1 and Generat
 | --- | --- | --- |
 | Firmware Interface | UEFI (Unified Extensible Firmware Interface)-based boot (Enhanced security and faster boot times) | BIOS (Basic Input/Output System)-based boot (Legacy) |
 | Latest v6 VM Support | v6 VMs support Generation 2 VMs | v6 VMs do **NOT** support Generation 1 VMs |
-| [Trusted Launch](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch) | Can enable Trusted Launch, which includes protections like virtual Trusted Platform Module (vTPM) | Can **NOT** enable Trusted Launch |
+| [Trusted Launch](https://learn.microsoft.com/azure/virtual-machines/trusted-launch) | Can enable Trusted Launch, which includes protections like virtual Trusted Platform Module (vTPM) | Can **NOT** enable Trusted Launch |
 | [NVMe Interface Support](https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview) | Supports NVMe disks, which requires NVM-enabled Generation 2 image | Does **NOT** support NVMe disks |
 
 ### Implications for your Virtual Machines
