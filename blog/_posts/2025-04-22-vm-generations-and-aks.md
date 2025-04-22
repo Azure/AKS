@@ -99,5 +99,5 @@ When [**resizing**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=
 pool with your desired VM size while the existing node pool is cordoned, drained, and ultimately removed.
 
 Depending on the needs of your infrastructure and workloads, when resizing your node pool, please make sure that you pick a new VM size that will best suit your needs.
-
+Note that these instructions are in reference to node pools. If you are using [Virtual Machines node pools](https://learn.microsoft.com/en-us/azure/aks/virtual-machines-node-pools), VMs should all be generation 2 by default.
 
