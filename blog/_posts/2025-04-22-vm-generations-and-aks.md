@@ -13,7 +13,7 @@ categories:
 
 If you are a user of Azure, you may be familiar with virtual machines. What you may not have known is the fact that Azure now offers two generations of virtual machines! 
 
-Before going further, let's first breakdown virtual machines. Azure virtual machine are offered in various "sizes," which are in turn broken down by the amount/type of resources allocated to the virtual machine in the cloud. These resources are
+Before going further, let's first breakdown virtual machines. Azure virtual machines are offered in various "sizes," which are in turn broken down by the amount/type of resources allocated to the virtual machine in the cloud. These resources are
 tied to a portion of a physical server's hardware capabilities. A single physical server may be broken down into a collection of *size series*, or 
 configurations available utilizing its resources. 
 
