@@ -70,7 +70,7 @@ For a list of supported VM sizes for Generation 1 and Generation 2, please refer
 ### Generation 1 VM Retirements
 When a VM size or series reaches its retirement date, the VM will be deallocated. VM deallocation means that your AKS node pool may experience breakage.
 
-If you would like to confirm whether your Gen 1 VM sizes are retired or are being retired, please search in the [Azure Updates](https://azure.microsoft.com/updates) 
+If you would like to confirm whether your Generation 1 VM sizes are retired or are being retired, please search in the [Azure Updates](https://azure.microsoft.com/updates) 
 page.
 
 ## Migrating From Retired VM Sizes
