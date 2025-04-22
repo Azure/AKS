@@ -1,16 +1,19 @@
 ---
-title: "VM Generations and AKS"
+title: "Azure VM Generations and AKS"
 description: "Learn more about Generation 1 and Generation 2 VMs and what they offer, differences between them, upcoming Generation 1 VM retirements, and how to move your AKS workloads to Generation 2 VMs."
 date: 2025-04-22 # date is important. future dates will not be published
 authors: 
    - Jack Jiang
+   - Ally Ford
+   - Sarah Zhou
 categories: 
 - operations
 ---
-*This blog was co-authored by Ally Ford, Product Manager 2, AKS, Sarah Zhou, Product Manager, Azure Compute, and Jack Jiang, Product Manager, AKS*
 ## What are Virtual Machine Generations?
 
-Azure virtual machine sizes are broken down by the amount/type of resources allocated to the virtual machine in the cloud. These resources are in turn 
+If you are a user of Azure, you may be familiar with virtual machines. What you may not have known is the fact that Azure now offers two generations of virtual machines! 
+
+Before going further, let's first breakdown virtual machines. Azure virtual machine are offered in various "sizes," which are in turn broken down by the amount/type of resources allocated to the virtual machine in the cloud. These resources are
 tied to a portion of a physical server's hardware capabilities. A single physical server may be broken down into a collection of *size series*, or 
 configurations available utilizing its resources. 
 
@@ -73,10 +76,10 @@ page.
 
 ## Migrating From Retired VM Sizes
 
-If you are using a VM size that is retiring/retired, to prevent any potential disruption to your service, it is recommended to either delete or resize the affected VM node pools.
+If you are using a VM size that is retiring/retired, to prevent any potential disruption to your service, it is recommended to resize your node pool(s) to a supported VM size.
 
 ### What VM sizes are my nodes?
-To determine the size your nodes, navigate to the Azure Portal, access your Resource Group, and then select your AKS resource. Within the "Overview" tab, you will find the size of your node pool.
+To determine the size of your nodes, navigate to the Azure Portal, access your Resource Group, and then select your AKS resource. Within the "Overview" tab, you will find the size of your node pool.
 
 
 Alternatively, you may run this command in the Azure CLI. Make sure you fill in the names of your resource group and cluster name: 
@@ -88,16 +91,13 @@ az aks nodepool list \
 --output table 
 ```
 
-### Resizing or deleting your node pools
-After you determine the appropriate nodepool(s) to take action on, you have the option to either [**delete**](https://learn.microsoft.com/azure/aks/delete-node-pool?tabs=azure-cli) 
-or [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) your nodepool(s).
+### Resizing your node pools
+After you determine the appropriate nodepool(s) to take action on, you can [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) your nodepool(s) to a supported VM size.
 
-If you choose to [**delete**](https://learn.microsoft.com/azure/aks/delete-node-pool?tabs=azure-cli) a node pool, the virtual machine scale set (VMSS) and the VMs for 
-each node in the nodepool is deleted. Any running node instances and pods in the pool are also deleted. 
 
-If you choose to [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) a node pool, you'll go through the process of creating a new node 
+When [**resizing**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) a node pool, you'll go through the process of creating a new node
 pool with your desired VM size while the existing node pool is cordoned, drained, and ultimately removed.
 
-Depending on the needs of your infrastructure and workloads, please make sure that you pick the operation that will best suit your needs.
+Depending on the needs of your infrastructure and workloads, when resizing your node pool, please make sure that you pick a new VM size that will best suit your needs.
 
 
