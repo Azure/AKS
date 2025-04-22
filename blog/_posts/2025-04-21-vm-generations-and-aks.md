@@ -63,7 +63,7 @@ AKS supports both Generation 1 and 2 VMs with all operating systems on AKS. The 
 - When creating Windows Server 2025 node pools on AKS, the default will be a Generation 2 VM unless the VM size does not support it.  
 - When creating Windows Server 2019 and Windows Server 2022 node pools on AKS, the default will be Generation 1 VM unless the VM size does not support it. To use a Generation 2 VM, you must add `--aks-custom-headers UseWindowsGen2VM=true` during node pool creation. 
 
-For more information on Generation 2 default behavior on AKS, see [AKS documentation](https://learn.microsoft.com/en-us/azure/aks/generation-2-vm?tabs=linux-node-pool).
+For more information on Generation 2 default behavior on AKS, see [AKS documentation](https://learn.microsoft.com/azure/aks/generation-2-vm).
 
 For a list of supported VM sizes for Generation 1 and Generation 2, please refer to the table on [this page](https://learn.microsoft.com/en-us/azure/virtual-machines/generation-2#generation-2-vm-sizes).
 
