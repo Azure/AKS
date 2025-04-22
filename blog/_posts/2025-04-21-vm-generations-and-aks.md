@@ -8,7 +8,7 @@ authors:
 categories: 
 - operations
 ---
-
+*This blog was co-authored by Ally Ford, Product Manager 2, AKS, Sarah Zhou, Product Manager, Azure Compute, and Jack Jiang, Product Manager, AKS*
 ## What are Virtual Machine Generations?
 
 Azure virtual machine sizes are broken down by the amount/type of resources allocated to the virtual machine in the cloud. These resources are in turn 
