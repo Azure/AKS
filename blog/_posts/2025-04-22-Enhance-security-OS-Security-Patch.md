@@ -7,8 +7,7 @@ authors:
 - Ye Wang
 categories: 
 - Security
-- Workload SLO
-- Upgrades
+- Operations
 ---
 
 
