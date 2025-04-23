@@ -1,7 +1,7 @@
 ---
 title: "Azure VM Generations and AKS"
 description: "Learn more about Generation 1 and Generation 2 VMs and what they offer, differences between them, upcoming Generation 1 VM retirements, and how to move your AKS workloads to Generation 2 VMs."
-date: 2025-04-22 # date is important. future dates will not be published
+date: 2025-04-23 # date is important. future dates will not be published
 authors: 
    - Jack Jiang
    - Ally Ford
