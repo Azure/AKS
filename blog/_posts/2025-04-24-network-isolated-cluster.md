@@ -22,5 +22,5 @@ With above being said, firewall still has its own unique value. Especially when 
 
 Network isolated cluster is now general available across all Azure public cloud. You can get started today by following the [how-to guide](https://aka.ms/aks/automatic-quickstart](https://learn.microsoft.com/en-us/azure/aks/network-isolated?pivots=aks-managed-acr) to create a network isolated cluster and secure your data.
 
-We are far from the ending, we have a ton of planned experiences that will be shipping over the following months and we‘d love to hear your [feedback and suggestions](https://github.com/Azure/AKS/issues/3319) on how to make network isolated cluster even better.
+We are far from the ending, we have a ton of planned experiences that will be shipping over the following months and we‘d love to hear your [feedback and suggestions](https://github.com/Azure/AKS/issues/3319) on how to make the network isolated cluster even better.
 
