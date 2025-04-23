@@ -35,7 +35,7 @@ If your requirements go beyond just OS security packages and include bug fixes o
 
 1. In the Azure portal, select Create a resource > Containers > Azure Kubernetes Service (AKS).
 2. In the Basics tab, under Cluster details, select the desired channel type from the Node security channel type dropdown.
-[!Screenshot of the Azure portal showing cluster details for security patch configuration.](/blog/assets/images/enhance-security-with-os-security-patch/create-secpatch.jpg).
+![Screenshot of the Azure portal showing cluster details for security patch configuration!](/blog/assets/images/enhance-security-with-os-security-patch/create-secpatch.jpg).
 3. Select Security channel scheduler and choose the desired maintenance window using the [Planned Maintenance feature](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli). We recommend selecting the default option Every week on Sunday (recommended).
 ![Security Patch Schedule!](/blog/assets/images/enhance-security-with-os-security-patch/sec-channel-schedule.png).
 
@@ -56,12 +56,13 @@ If your requirements go beyond just OS security packages and include bug fixes o
 To learn more on configuration options via CLI visit this [page](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli#set-the-node-os-autoupgrade-channel-on-a-new-cluster).
 
 ## Best Practices when using OS Security Patch Channel
-    Here are some tips to go about doing this. 
+   
+ Here are some tips to go about doing this. 
 
 - **Configure Maintenance Windows**: Configure [Planned Maintenance window](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) to apply security patches during periods of low activity. This minimizes the impact on workloads and ensures that updates are applied seamlessly. 
 - **Configure Cluster Auto-Upgrade Channel**: To maximize the benefits of OS security patches, it is recommended to enable the SecurityPatch channel alongside the [Kubernetes cluster auto upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster?tabs=azure-cli). This dual-channel approach ensures that both the control plane and node pools are kept up-to-date with the latest security patches.
 - **Configure Upgrade Monitoring**: Regularly monitor the status of ongoing upgrades to ensure that patches are applied successfully. Utilize tools such as the [AKS Communication Manager](https://learn.microsoft.com/azure/aks/aks-communication-manager) to get periodic notifications on OS Patching updates. 
-- **Use Release Tracker**: [AKS release tracker](https://releases.aks.azure.com/webpage/index.html) provides region by region updates on what security patch version runs in a particular region. These real-time updates are crucial for closely tracking CVEs. There is also a AKS CVE status tab.[!Screenshot of the AKS release tracker showing region-specific security patch updates.](/blog/assets/images/enhance-security-with-os-security-patch/sec-patch-reltracker.jpg).
+- **Use Release Tracker**: [AKS release tracker](https://releases.aks.azure.com/webpage/index.html) provides region by region updates on what security patch version runs in a particular region. These real-time updates are crucial for closely tracking CVEs. There is also a AKS CVE status tab.![Screenshot of the AKS release tracker showing region-specific security patch updates!](/blog/assets/images/enhance-security-with-os-security-patch/sec-patch-reltracker.jpg).
 
 
 ### What Is Coming Next for OS Security Patch?
