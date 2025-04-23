@@ -1,6 +1,6 @@
 ---
 title: "Enhancing Your Operating System's Security with OS Security Patches in AKS"
-description: "Learn the what, the whys, and the hows of configuring OS Security Patch Auto upgrade channel. The article also provides a compelling case for OS Security Patch citing performance, better security, minimal disruption to workloads as chief gains."
+description: "Learn the what, the whys, and the hows of configuring OS Security Patch Auto upgrade channel. The article also covers some reasons for OS Security Patch, with some primary benefits being increased performance, better security, and minimal disruption to workloads."
 date: 2025-04-22
 authors:
 - Kaarthikeyan Subramanian
