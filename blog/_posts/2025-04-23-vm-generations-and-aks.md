@@ -13,12 +13,11 @@ categories:
 
 If you are a user of Azure, you may be familiar with virtual machines. What you may not have known is the fact that Azure now offers two generations of virtual machines! 
 
-Before going further, let's first breakdown virtual machines. Azure virtual machines are offered in various "sizes," which are broken down by the amount and type of each resource allocated, such as CPU, memory, storage, and network bandwidth. These resources are
+Before going further, let's first break down virtual machines. Azure virtual machines are offered in various "sizes," which are broken down by the amount and type of each resource allocated, such as CPU, memory, storage, and network bandwidth. These resources are
 tied to a portion of a physical server's hardware capabilities. Physical servers may be broken down into many different VM *size series* or
 configurations available utilizing its resources. 
 
 As the physical hardware ages and newer components become available, older hardware and VMs get retired, while newer generation hardware and VM products are made available.
-is progressively made available. 
 
 In this blog, we will go over Generation 1 and newer Generation 2 virtual machines. Both have their own use cases, and [picking the right one](https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v) 
 to suit your workloads is critical in ensuring you get the best possible experience, capabilities, and cost.  
@@ -40,6 +39,7 @@ Launch. With some [exceptions](https://learn.microsoft.com/windows-server/virtua
 it is generally recommended to migrate to Generation 2 VMs to take advantage of the newest features and functionalities in Azure VMs.
 
 The table below summarizes some key differences between Generation 1 and Generation 2 VMs. For a more detailed comparison, please refer to this [page](https://learn.microsoft.com/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn282285(v=ws.11)).
+
 | **Feature** | **Generation 2 VM** | **Generation 1 VM** |
 |--------------------|-----------------------|-----------------------|
 | Firmware Interface | UEFI (Unified Extensible Firmware Interface)-based boot ([Additional security features and faster boot times](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-uefi#uefi-benefits)) | BIOS (Basic Input/Output System)-based boot (Legacy) |
