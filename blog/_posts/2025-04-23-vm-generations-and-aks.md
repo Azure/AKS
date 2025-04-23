@@ -41,7 +41,7 @@ it is generally recommended to migrate to Generation 2 VMs to take advantage of 
 
 The table below summarizes some key differences between Generation 1 and Generation 2 VMs. For a more detailed comparison, please refer to this [page](https://learn.microsoft.com/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn282285(v=ws.11)).
 | **Feature** | **Generation 2 VM** | **Generation 1 VM** |
-| --- | --- | --- |
+|--------------------|-----------------------|-----------------------|
 | Firmware Interface | UEFI (Unified Extensible Firmware Interface)-based boot ([Additional security features and faster boot times](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-uefi#uefi-benefits)) | BIOS (Basic Input/Output System)-based boot (Legacy) |
 | Latest v6 VM Support | v6 VMs support Generation 2 VMs | v6 VMs do **NOT** support Generation 1 VMs |
 | Trusted Launch | Can enable [Trusted Launch](https://learn.microsoft.com/azure/virtual-machines/trusted-launch), which includes protections like virtual Trusted Platform Module (vTPM) | Can **NOT** enable Trusted Launch |
