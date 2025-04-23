@@ -13,14 +13,14 @@ categories:
 
 If you are a user of Azure, you may be familiar with virtual machines. What you may not have known is the fact that Azure now offers two generations of virtual machines! 
 
-Before going further, let's first breakdown virtual machines. Azure virtual machines are offered in various "sizes," which are in turn broken down by the amount/type of resources allocated to the virtual machine in the cloud. These resources are
-tied to a portion of a physical server's hardware capabilities. A single physical server may be broken down into a collection of *size series*, or 
+Before going further, let's first breakdown virtual machines. Azure virtual machines are offered in various "sizes," which are broken down by the amount and type of each resource allocated, such as CPU, memory, storage, and network bandwidth. These resources are
+tied to a portion of a physical server's hardware capabilities. Physical servers may be broken down into many different VM *size series* or
 configurations available utilizing its resources. 
 
-As the physical hardware ages and newer components become available, older hardware of a previous generation get retired, while newer generation hardware 
+As the physical hardware ages and newer components become available, older hardware and VMs get retired, while newer generation hardware and VM products are made available.
 is progressively made available. 
 
-In this blog, we will go over Generation 1 and the newer Generation 2 virtual machines. Both have their own use cases, and [picking the right one](https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v) 
+In this blog, we will go over Generation 1 and newer Generation 2 virtual machines. Both have their own use cases, and [picking the right one](https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v) 
 to suit your workloads is critical in ensuring you get the best possible experience, capabilities, and cost.  
 
 ### Virtual Machine Generation Overview
@@ -29,7 +29,7 @@ Azure VM sizes (v5 and older) have largely supported both Generation 1 and Gener
 gives a thorough breakdown on VM series and the generation they support. 
 
 The latest v6 VMs (whether they are 
-[Intel](https://techcommunity.microsoft.com/blog/azurecompute/announcing-preview-of-new-azure-dlsv6-dsv6-esv6-vms-with-new-cpu-azure-boost-and/4192124), 
+[Intel](https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-of-azure-dlde-v6-vms-powered-by-intel-emr-proces/4376186), 
 [AMD](https://techcommunity.microsoft.com/blog/azurecompute/new-daeafav6-vms-with-increased-performance-and-azure-boost-are-now-generally-av/4309381), or 
 [ARM](https://azure.microsoft.com/blog/azure-cobalt-100-based-virtual-machines-are-now-generally-available/?msockid=150f515112e461e5201d45b1136e602c)
 will exclusively support Generation 2 VMs.
@@ -40,12 +40,12 @@ Launch. With some [exceptions](https://learn.microsoft.com/windows-server/virtua
 it is generally recommended to migrate to Generation 2 VMs to take advantage of the newest features and functionalities in Azure VMs.
 
 The table below summarizes some key differences between Generation 1 and Generation 2 VMs. For a more detailed comparison, please refer to this [page](https://learn.microsoft.com/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn282285(v=ws.11)).
-| **Topic** | **Generate 2 VM** | **Generation 1 VM** |
+| **Feature** | **Generation 2 VM** | **Generation 1 VM** |
 | --- | --- | --- |
 | Firmware Interface | UEFI (Unified Extensible Firmware Interface)-based boot ([Additional security features and faster boot times](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-uefi#uefi-benefits)) | BIOS (Basic Input/Output System)-based boot (Legacy) |
-| Latest v6 VM Support | [v6 VMs](https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896) support Generation 2 VMs | v6 VMs do **NOT** support Generation 1 VMs |
-| [Trusted Launch](https://learn.microsoft.com/azure/virtual-machines/trusted-launch) | Can enable Trusted Launch, which includes protections like virtual Trusted Platform Module (vTPM) | Can **NOT** enable Trusted Launch |
-| [NVMe Interface Support](https://learn.microsoft.com/azure/virtual-machines/nvme-overview) | Supports NVMe disks, which requires NVM-enabled Generation 2 image | Does **NOT** support NVMe disks |
+| Latest v6 VM Support | v6 VMs support Generation 2 VMs | v6 VMs do **NOT** support Generation 1 VMs |
+| Trusted Launch | Can enable [Trusted Launch](https://learn.microsoft.com/azure/virtual-machines/trusted-launch), which includes protections like virtual Trusted Platform Module (vTPM) | Can **NOT** enable Trusted Launch |
+| NVMe Interface Support | Supports [NVMe disks](https://learn.microsoft.com/azure/virtual-machines/nvme-overview), which requires NVM-enabled Generation 2 image | Does **NOT** support NVMe disks |
 
 ### Implications for your Virtual Machines
 If you are already running on Generation 2 VMs, you are all set to deploy on the majority of Azure VMs, including the latest v6 VMs. You can also enable [Trusted Launch](https://learn.microsoft.com/azure/aks/use-trusted-launch) and the NVMe Interface. 
@@ -92,7 +92,7 @@ az aks nodepool list \
 ```
 
 ### Resizing your node pools
-After you determine the appropriate nodepool(s) to take action on, you can [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) your nodepool(s) to a supported VM size.
+After you determine the appropriate node pool(s) to take action on, you can [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) your node pool(s) to a supported VM size.
 
 
 When [**resizing**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) a node pool, you'll go through the process of creating a new node
@@ -100,5 +100,5 @@ pool with your desired VM size while the existing node pool is cordoned, drained
 
 Depending on the needs of your infrastructure and workloads, when resizing your node pool, please make sure that you pick a new VM size that will best suit your needs.
 
-Note that these instructions are in reference to node pools. If you are using [Virtual Machines node pools](https://learn.microsoft.com/en-us/azure/aks/virtual-machines-node-pools), VMs should all be generation 2 by default.
+Note that these instructions are in reference to node pools. If you are using [Virtual Machines node pools](https://learn.microsoft.com/en-us/azure/aks/virtual-machines-node-pools), VMs should all be Generation 2 by default.
 
