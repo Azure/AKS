@@ -212,3 +212,16 @@ Ernest Wong:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/chewong"
+
+Charles Wu:
+  name        : "Charles Wu"
+  bio         : "Charles is the PM for Azure Kubernetes Serivce, focus on security capabilities and Compliance experience"
+  avatar      : "" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/yue-wu-763b63125"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/charleswool"
+  
