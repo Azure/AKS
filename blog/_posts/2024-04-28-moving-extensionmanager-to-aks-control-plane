@@ -1,0 +1,56 @@
+---
+title: "Moving ExtensionManager to AKS Control Plane"
+description: "Learn how ExtensionManager in AKS control plane safeguards extension integrity, simplifies networking setup, and reduces identity footprint for your extensions experience on AKS."
+date: 2025-04-24 # date is important. future dates will not be published
+author: Jane Guo # must match the authors.yml in the _data folder
+categories: 
+- general 
+# - general
+# - operations
+# - networking
+# - security
+# - developer
+# - add-ons
+---
+
+## What is ExtensionManager?
+
+If you have used any of the cluster extensions for AKS, such as Dapr, Flux (GitOps), Azure Machine Learning, Azure Backup, Azure Container Storage, and Azure App Configuration, or any 3rd party Kubernetes Apps on Azure Marketplace like Datadog AKS Cluster Extension, Isovalent Cilium Enterprise, and Cast AI agent, you may be familiar with ExtensionManager. ExtensionManager is a key component responsible for the cluster extension lifecycle operations (Create, Upgrade, Delete, Reconciliation). It periodically polls for version updates on extension instances and reconciles extension configuration settings, ensuring that extensions are managed effectively. 
+
+## What are cluster extensions?
+
+Cluster extensions are pre-packaged applications that provide an Azure Resource Manager-driven experience for installation and lifecycle management of different Azure capabilities on top of your Kubernetes cluster.
+* For more information about specific cluster extensions for AKS, see [Deploy and manage cluster extensions for Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/cluster-extensions?tabs=azure-cli).
+* For more information about available cluster extensions, see [Currently available extensions](https://learn.microsoft.com/en-us/azure/aks/cluster-extensions?tabs=azure-cli#currently-available-extensions).
+
+## What has changed?
+
+Previously, ExtensionManager ran on the customer worker nodes. We have now moved it to AKS Control Plane.
+
+```extension-operator``` and ```extension-agent``` were the two components deployed in the kube-system namespace (as shown in the code below) by ExtensionManager to maintain the desired state of the installed cluster extensions.They have now been moved to the AKS Controle Plane; hence, you won't see these two pods in kube-system anymore. 
+```
+$ kubectl get pods -n kube-system
+NAME                                      READY   STATUS    RESTARTS   AGE
+coredns-558bd4d5db-7x5c8                  1/1     Running   0          5d
+coredns-558bd4d5db-9x5c9                  1/1     Running   0          5d
+extension-agent-abc123                    1/1     Running   0          3d
+extension-operator-def456                 1/1     Running   0          3d
+kube-proxy-xyz789                         1/1     Running   0          5d
+metrics-server-123abc                     1/1     Running   0          5d
+azure-ip-masq-agent-456def                1/1     Running   0          5d
+```
+
+## Why did we move ExtensionManager to AKS control plane and how does that benefit you? 
+
+### Safeguard extension integrity
+With extension-operator in the worker nodes, you might inadvertently interfere with it, potentially breaking extensions installed on your clusters. After it is moved to the control plane, you will no longer be able to see or meddle with it, reducing the risk of accidental disruptions. 
+
+### Simplify networking setup 
+In order for the extensions to function, you must set up networking configurations (as outlined in [Required FQDN / application rules](https://learn.microsoft.com/en-us/azure/aks/outbound-rules-control-egress#required-fqdn--application-rules-5)) on your clusters before ExtensionManager will work, which adds extra work for you. Moving ExtensionManager to the control plane helps you simplify the network setup because you no longer need to modify your networking configurations for ExtensionManager, and you only need to take care of that for the extensions themselves (For example, extensions still need access to MCR to pull container images. If your firewall rules restrict specific images from MCR, update them to allow the extension images).
+
+### Reduce identity footprint
+We are working on making every extension support workload identity, but the ExtensionManager component also has an identity associated with it on all nodes in the AKS cluster. By moving ExtensionManager to the control plane, we remove the need for that identity and improve the overall security posture of the cluster, because fewer identities need to be assigned to the nodes. Additionally, the first extension installation time will be shortened as you don't need to wait for identity assignment to nodes for ExtensionManager.
+
+## Summary
+
+This is just one of many efforts we're making to streamline the extension experience on AKS. Keep an eye out for more future updates, and we'd love to hear your feedback. 
