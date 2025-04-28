@@ -27,7 +27,7 @@ Cluster extensions are pre-packaged applications that provide an Azure Resource 
 
 Previously, ExtensionManager ran on the customer worker nodes. We have now moved it to AKS Control Plane.
 
-```extension-operator``` and ```extension-agent``` were the two components deployed in the kube-system namespace (as shown in the code below) by ExtensionManager to maintain the desired state of the installed cluster extensions.They have now been moved to the AKS Controle Plane; hence, you won't see these two pods in kube-system anymore. 
+```extension-operator``` and ```extension-agent``` were the two components deployed in the kube-system namespace (as shown in the code below) by ExtensionManager to maintain the desired state of the installed cluster extensions.They have now been moved to the AKS Control Plane; hence, you won't see these two pods in kube-system anymore. 
 ```
 $ kubectl get pods -n kube-system
 NAME                                      READY   STATUS    RESTARTS   AGE
