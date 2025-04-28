@@ -4,13 +4,14 @@ description: "Learn how ExtensionManager in AKS control plane safeguards extensi
 date: 2025-04-24 # date is important. future dates will not be published
 author: Jane Guo # must match the authors.yml in the _data folder
 categories: 
-- general 
+- extensions 
 # - general
 # - operations
 # - networking
 # - security
 # - developer
 # - add-ons
+# - extensions
 ---
 
 ## What is ExtensionManager?

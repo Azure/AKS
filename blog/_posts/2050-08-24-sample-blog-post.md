@@ -11,6 +11,7 @@ categories:
 # - security
 # - developer
 # - add-ons
+# - extensions
 ---
 
 ## Background
