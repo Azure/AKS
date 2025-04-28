@@ -51,7 +51,7 @@ As detailed above, `externalTrafficPolicy=Local` routes traffic directly to node
 ![How `externalTrafficPolicy=Local` Works](./AKS/blog/assets/images/howexternaltrafficpolicyworks.png)
 
 Let's look into how each of the following components work with the Local Mode:
-When you set a Service's external traffic policy to Local in AKS, you'll see an additional field in the Service description: **HealthCheck NodePort**​. This is a dedicated NodePort (e.g. port number in the 30000+ range) that Azure's Standard Load Balancer uses to verify which nodes have healthy pods for this Service.
+When you set a Service's external traffic policy to Local in AKS, you'll see an additional field in the Service description: [**HealthCheck NodePort**](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip)​. This is a dedicated NodePort (e.g. port number in the 30000+ range) that Azure's Standard Load Balancer uses to verify which nodes have healthy pods for this Service.
 
 - **Health Probe on Each Node:** Azure automatically configures a health probe on the load balancer that targets the `HealthCheckNodePort` across all nodes in the LB's backend pool. Kubernetes ensures that this port only returns a successful response on nodes that are running at least one *ready* pod for the Service. Nodes with no pods for that Service will fail the health check.
 
@@ -63,12 +63,13 @@ By combining these mechanisms, `externalTrafficPolicy=Local` provides a robust w
 
 ## Best Practices to gracefully close existing connections and shut service pods
 
-Gracefully handling pod shutdowns is critical to maintaining service reliability and avoiding disruptions, especially in scenarios involving HTTP keep-alive connections or long-lived client sessions. Without a graceful shutdown process, external customers could see errors like - `connection refused` and `connection reset by peer` during node related events.  
+Gracefully handling pod shutdowns is critical to maintaining service reliability and avoiding disruptions, especially in scenarios involving HTTP keep-alive connections or long-lived client sessions. Without a graceful shutdown process, external customers could see errors like - `connection refused` and `connection reset by peer` during node related events.
+
 Below are detailed best practices for how pods can handle Kubernetes initiated termination requests (eg: pod evictions or a scale down) to ensure a smooth shutdown process.
 
 ### Gracefully Closing Existing Connections
 
-When a pod is shutting down (receiving the `TERM` signal), it is essential to ensure that existing client connections are closed properly to avoid abrupt disconnections or errors.
+When a pod is shutting down (receiving the `TERM` signal), it is essential to ensure that existing client connections are closed properly to avoid abrupt disconnections or errors. Failing to handle this gracefully could result in clients encountering errors like `connection reset by peer` or `connection refused`, leading to a poor user experience and potential service disruptions.
 
 - **For HTTP/1.1 Connections**:
     The server should include a `Connection: close` header in its response for all active and new incoming requests. This informs clients not to reuse the connection and allows idle connections to be closed gracefully.
@@ -116,7 +117,7 @@ By implementing these best practices, you can minimize disruptions during pod sh
 While the above works when a pod is being taken down in isolation, it does not cover cases like upgrades and rolling restarts which require coordination between the time the pod goes down and a new one comes up, ready to serve traffic. To optimize pod rotation, add the following best practice to your deployment:
 
 - **Set `minReadySeconds`**:
-    Configure the `minReadySeconds` parameter in your deployment (we recommend around 10 sec) to introduce a delay before Kubernetes is able to mark the pod as "available" (i.e the pod has been ready long enough that the rolling upgrade can move to the next pod - making it different from the "ready" state which implies the application is ready to receive new connections). This buffer gives the load balancer enough time to register the new pod and start routing traffic to it, while also preventing Kubernetes from deleting the old pod prematurely.
+    Configure the [`minReadySeconds`](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#minimum-ready-seconds) parameter in your deployment (we recommend around 10 sec) to introduce a delay before Kubernetes is able to mark the pod as "available" (i.e the pod has been ready long enough that the rolling upgrade can move to the next pod - making it different from the "ready" state which implies the application is ready to receive new connections). This buffer gives the load balancer enough time to register the new pod and start routing traffic to it, while also preventing Kubernetes from deleting the old pod prematurely.
 
 By implementing this strategy, you can achieve smoother rolling updates and maintain a consistent user experience during application changes.
 
