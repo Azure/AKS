@@ -13,7 +13,7 @@ tags:
   - load balancers
 ---
 
-# Traffic Routing Demystified - Best practices for AKS Load Balancers
+# Optimize AKS Traffic with externalTrafficPolicy=Local
 
 Managing external traffic in Kubernetes clusters can be a complex task, especially when striving to maintain service reliability, optimize performance, and ensure seamless user experiences. With the increasing adoption of Kubernetes in production environments, understanding and implementing best practices for external traffic management when using the Azure Load Balancer has become essential.
 
@@ -26,18 +26,18 @@ In this blog, we delve into the intricacies of Kubernetes’ `externalTrafficPol
 - **Cluster Mode (default) (`externalTrafficPolicy=Cluster`)**:
     This is default mode for Kubernetes Services and provides a simplified approach to traffic distribution across all nodes in the cluster. While it does not preserve the client source IP, it offers several benefits for certain workloads:
 
-    - **Simplified Traffic Distribution**: Ensures even distribution of incoming traffic across all nodes in the cluster, regardless of pod placement.
-    - **Reduced Risk of Node Overload**: Balances traffic across all nodes, minimizing the chance of overloading specific nodes.
-    - **Ease of Configuration**: Requires no additional configuration for health checks or pod distribution.
-    - **Resilience During Pod Failures**: Traffic is forwarded to healthy pods on other nodes, ensuring service availability even if some pods are unavailable.
+  - **Simplified Traffic Distribution**: Ensures even distribution of incoming traffic across all nodes in the cluster, regardless of pod placement.
+  - **Reduced Risk of Node Overload**: Balances traffic across all nodes, minimizing the chance of overloading specific nodes.
+  - **Ease of Configuration**: Requires no additional configuration for health checks or pod distribution.
+  - **Resilience During Pod Failures**: Traffic is forwarded to healthy pods on other nodes, ensuring service availability even if some pods are unavailable.
 
     However, because this mode distributes traffic to all nodes regardless of them hosting the service pod, it can add latency and more failure modes due to extra hops between nodes (forwarded by `kube-proxy`). This is especially detrimental during events like node upgrades since if a node is taken down, 1/N (N stands for node count) traffic could experience disruptions. So, if you update your nodes weekly, this would disrupt your connections on a weekly basis.
 
 - **Local Mode (`externalTrafficPolicy=Local`)**:
     In this mode, external traffic is directed only to nodes that host healthy pods for the specified service. The traffic is routed exclusively to the pods residing on the same node where it is received (avoiding cross-node hops). This approach ensures:
-    - **Localized Impact of Node Downtime**: During operations like upgrades, reboots and unexpected failures on a node, a portion of external traffic is only affected if the downed node is running a service pod. The traffic to the pods on different nodes remains unaffected.
-    - **Preservation of Client Source IP**: The client’s original IP is maintained, which is crucial for security, logging, and analytics.
-    - **Targeted Health Checking**: Local mode uses a dedicated `healthCheckNodePort`, ensuring that external load balancers send traffic only to nodes with healthy pods.
+  - **Localized Impact of Node Downtime**: During operations like upgrades, reboots and unexpected failures on a node, a portion of external traffic is only affected if the downed node is running a service pod. The traffic to the pods on different nodes remains unaffected.
+  - **Preservation of Client Source IP**: The client’s original IP is maintained, which is crucial for security, logging, and analytics.
+  - **Targeted Health Checking**: Local mode uses a dedicated `healthCheckNodePort`, ensuring that external load balancers send traffic only to nodes with healthy pods.
 
     However, apart from these benefits, this approach requires careful consideration of pod distribution across nodes to avoid uneven traffic loads. If one node hosts multiple pods while another node hosts only one, the node with one pod will receive roughly the same share of incoming connections as the node with multiple pods.
 
@@ -48,7 +48,7 @@ To learn more, you can refer to [Kubernetes Traffic Policies](https://kubernetes
 ## How `externalTrafficPolicy=Local` Works
 
 As detailed above, `externalTrafficPolicy=Local` routes traffic directly to nodes hosting service pods and which meet the health check requirements. Below is an illustration of how this policy works in practice:
-![How `externalTrafficPolicy=Local` Works](./AKS/blog/assets/images/howexternaltrafficpolicyworks.png)
+![How `externalTrafficPolicy=Local` Works](AKS/assets/images/howexternaltrafficpolicyworks.png)
 
 Let's look into how each of the following components work with the Local Mode:
 When you set a Service's external traffic policy to Local in AKS, you'll see an additional field in the Service description: [**HealthCheck NodePort**](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip)​. This is a dedicated NodePort (e.g. port number in the 30000+ range) that Azure's Standard Load Balancer uses to verify which nodes have healthy pods for this Service.
@@ -112,6 +112,7 @@ To ensure your pods follow a similar timeline to gracefully shutdown, make sure 
 By implementing these best practices, you can minimize disruptions during pod shutdowns, maintain a seamless user experience, and ensure the reliability of your services in production environments.
 
 ## Best Practices for Rolling Updates and Pod Rotation
+
 ![Pod Rotation Timeline](./AKS/blog/assets/images/podrotationbestpractices.png)
 
 While the above works when a pod is being taken down in isolation, it does not cover cases like upgrades and rolling restarts which require coordination between the time the pod goes down and a new one comes up, ready to serve traffic. To optimize pod rotation, add the following best practice to your deployment:
@@ -130,6 +131,7 @@ Achieving an even distribution of pods across nodes is important for load balanc
 In this situation, even though the load balancer divides the traffic evenly between nodes, the pods on the node with 2 replicas serve 25% of the traffic each, while the pod in the single replica node serves the full 50% of the total traffic.
 
 Below are some best practices you can follow to evenly distribute pods across your nodes based on your workload needs:
+
 1. [**Pod Anti-Affinity**](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity):
    - Ensures pods with the same label are not scheduled on the same node.
    - Requires more nodes than pods, including surge pods during evictions or deployments.
@@ -145,9 +147,11 @@ Below are some best practices you can follow to evenly distribute pods across yo
 For additional best practices, you can refer to [Deployment and Cluster Reliability Best Practices for AKS](https://learn.microsoft.com/en-us/azure/aks/best-practices-app-cluster-reliability)
 
 ## Conclusion
+
 To conclude, while `externalTrafficPolicy=Local` is a powerful option for optimizing traffic routing in AKS, it also requires careful planning of your pod lifecycle. With a professional, proactive approach to how your services handle start-up and shutdown, you can reap the benefits of Local traffic policy -- getting client IP transparency and efficient routing -- without sacrificing reliability during deployments or scaling events. Kubernetes gives us the knobs; it's up to us as SREs and engineers to turn them correctly for our particular workloads. Happy load balancing!
 
 
 ## Additional Resources
+
 - [Deployment and Cluster Reliability Best Practices for AKS](https://learn.microsoft.com/en-us/azure/aks/best-practices-app-cluster-reliability)
 - [YouTube: Kubernetes ExternalTrafficPolicy Explained](https://mmistakes.github.io/minimal-mistakes/docs/helpers/#youtube)
