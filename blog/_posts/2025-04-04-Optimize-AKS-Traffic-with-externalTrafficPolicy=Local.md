@@ -48,7 +48,7 @@ To learn more, you can refer to [Kubernetes Traffic Policies](https://kubernetes
 ## How `externalTrafficPolicy=Local` Works
 
 As detailed above, `externalTrafficPolicy=Local` routes traffic directly to nodes hosting service pods and which meet the health check requirements. Below is an illustration of how this policy works in practice:
-![How `externalTrafficPolicy=Local` Works](AKS/assets/images/howexternaltrafficpolicyworks.png)
+![How `externalTrafficPolicy=Local` Works](./AKS/blog/assets/images/howexternaltrafficpolicyworks.png)
 
 Let's look into how each of the following components work with the Local Mode:
 When you set a Service's external traffic policy to Local in AKS, you'll see an additional field in the Service description: [**HealthCheck NodePort**](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip)​. This is a dedicated NodePort (e.g. port number in the 30000+ range) that Azure's Standard Load Balancer uses to verify which nodes have healthy pods for this Service.
