@@ -22,7 +22,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 ### Release Notes
 * Features:
   * [Network isolated cluster](https://learn.microsoft.com/azure/aks/concepts-network-isolated) is now Generally Available.
-  * [AKS Security Bulletin](https://learn.microsoft.com/en-us/azure/aks/security-bulletins/overview?tabs=aks-addons%2Caks-cluster%2Caks-node-image) and [AKS CVE Mitigation Status](https://releases.aks.azure.com/webpage/index.html) are now available to track Security and CVE mitigations.
+  * [AKS Security Bulletin](https://learn.microsoft.com/azure/aks/security-bulletins/overview?tabs=aks-addons%2Caks-cluster%2Caks-node-image) and [AKS CVE Mitigation Status](https://releases.aks.azure.com/webpage/index.html) are now available to track Security and CVE mitigations.
 
 * Bug Fixes:
   * Fix an [issue](https://github.com/azure-networking/cilium-private/pull/465)) in [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium), if the DNS request timeout is set to below 2 seconds, the high-scale scenarios may cause drops due to duplicate request ID.
