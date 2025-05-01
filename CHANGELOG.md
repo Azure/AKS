@@ -23,7 +23,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Features:
   * [Network isolated cluster](https://learn.microsoft.com/azure/aks/concepts-network-isolated) is now Generally Available.
   * [AKS Security Bulletin](https://learn.microsoft.com/en-us/azure/aks/security-bulletins/overview?tabs=aks-addons%2Caks-cluster%2Caks-node-image) and [AKS CVE Mitigation Status](https://releases.aks.azure.com/webpage/index.html) are now available to track Security and CVE mitigations.
-  * You can now enable [Federal Information Process Standard (FIPS)](https://aka.ms/aks/enable-fips) when using [Arm64 VM SKUs](https://aka.ms/aks/arm64) in Azure Linux 3.0 node pools in Kubernetes version 1.31+.
   * Custom Certificate Authority is available as GA in the [2025-01-01 GA API](https://learn.microsoft.com/rest/api/aks/managed-clusters/create-or-update?view=rest-aks-2025-01-01&tabs=HTTP#create-managed-cluster-with-custom-ca-trust-certificates). It isn't yet available in the CLI until May 2025. To use the GA feature in CLI before release, you can use the [`az rest`](https://learn.microsoft.com/cli/azure/reference-index?view=azure-cli-latest#az-rest) command to add custom certificates during cluster creation. For more information, see [aka.ms/aks/custom-certificate-authority](https://aka.ms/aks/custom-certificate-authority).
 
 * Bug Fixes:
