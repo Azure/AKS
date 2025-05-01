@@ -12,7 +12,7 @@ In today's containerized ecosystem, maintaining secure images has become increas
 
 Artifacts stored in Azure Container Registry (ACR) can become vulnerable as new threats are discovered over time, leaving your production environment exposed.
 
-![Continuous-patching-problem](../assets/images/acr-continuous-patching/continuous-patching-problem.png)
+![Continuous-patching-problem](AKS/assets/images/acr-continuous-patching/continuous-patching-problem.png)
 
 ## Automating Security with ACR Continuous Patching
 
@@ -26,7 +26,7 @@ Continuous Patching leverages a scheduled workflow to:
 
 This process ensures that vulnerabilities are addressed swiftly, reducing risk and freeing your team from the burden of continuous manual updates.
 
-![Continuous-patching-solution](../assets/images/acr-continuous-patching/continuous-patching-solution.png)
+![Continuous-patching-solution](AKS/assets/images/acr-continuous-patching/continuous-patching-solution.png)
 
 ## Key Benefits
 
