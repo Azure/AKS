@@ -50,7 +50,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Updated [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-upgrade) revisions asm-1-23, asm-1-24, and asm-1-25 to patch [v1.23.6](https://istio.io/latest/news/releases/1.23.x/announcing-1.23.6), [v1.24.5](https://istio.io/latest/news/releases/1.24.x/announcing-1.24.5) and [1.25.2](https://istio.io/latest/news/releases/1.25.x/announcing-1.25.2). asm-1-24 support has now been extended to include AKS 1.33.
   * Azure Disk CSI driver version updated to [v1.32.4](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.4) on AKS 1.32, [v1.31.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.8) on AKS 1.31.
   * Coredns updated to v1.12.1-1 on AKS 1.33.
-  * Agentbaker updated to v0.20250416.0.
   * AKS Azure Linux v2 image has been updated to [202504.27.0](vhd-notes/AzureLinux/202504.27.0.txt).
   * AKS Azure Linux v3 image has been updated to [202504.27.0](vhd-notes/AzureLinuxv3/202504.27.0.txt).
   * AKS Ubuntu 22.04 node image has been updated to [202504.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202504.27.0.txt).
