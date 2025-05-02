@@ -29,7 +29,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Behavior Changes:
   * `aksmanagedap` is blocked as a reserved name for use of creating agent pool.
-  * `linuxutil plugin` is temporarily disabled for [Retina Basic and ACNS](https://retina.sh/docs/Metrics/plugins/Linux/linuxutil) for it is causing memory leaks that leads to Retina pods OOMKill.
+  * `linuxutil plugin` is temporarily disabled for [Retina Basic and ACNS](https://retina.sh/docs/Metrics/plugins/Linux/linuxutil) as it is causing memory leaks that leads to Retina pods OOMKill.
   * ACNS configmaps (`cilium`, `retina`, `hubble`) now auto‑format cluster names to satisfy Cilium 1.17 rules:≤ 32 chars, lowercase alphanumeric characters and dashes, no leading/trailing dashes. See this [link](https://github.com/cilium/cilium/commit/b1f10bcb26d71f046d8ad108d5f4b9e42aa5d486) for details.
   * The `defaultConfig.gatewayTopology` field is now included in the Istio add-on `MeshConfig` AllowList as an unsupported field. For more details, see the [Istio MeshConfig documentation](https://learn.microsoft.com/azure/aks/istio-meshconfig#allowed-supported-and-blocked-meshconfig-values).
   * You can now disable [NodeAutoProvisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) if meet these criteria: 1. The cluster must have 0 NAP-managed nodes. 2. Every existing karpenter.sh/NodePool must have its spec.limits.cpu set to 0.
