@@ -33,7 +33,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * ACNS configmaps (`cilium`, `retina`, `hubble`) now auto‑format cluster names to satisfy Cilium 1.17 rules:≤ 32 chars, lowercase alphanumeric characters and dashes, no leading/trailing dashes. See this [link](https://github.com/cilium/cilium/commit/b1f10bcb26d71f046d8ad108d5f4b9e42aa5d486) for details.
   * The `defaultConfig.gatewayTopology` field is now included in the Istio add-on `MeshConfig` AllowList as an unsupported field. For more details, see the [Istio MeshConfig documentation](https://learn.microsoft.com/azure/aks/istio-meshconfig#allowed-supported-and-blocked-meshconfig-values).
   * You can now disable [NodeAutoProvisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) if meet these criteria: 1. The cluster must have 0 NAP-managed nodes. 2. Every existing karpenter.sh/NodePool must have its spec.limits.cpu set to 0.
-  * [Disabling kube-proxy](https://learn.microsoft.com/azure/aks/configure-kube-proxy) no longer requires the AFEC flag in bring-your-own (BYO) CNI scenarios.
+  * [Disabling kube-proxy](https://learn.microsoft.com/azure/aks/configure-kube-proxy) no longer requires the `KubeProxyConfigurationPreview` feature flag in bring-your-own (BYO) CNI scenarios.
   * [ExtensionManager](https://learn.microsoft.com/azure/azure-arc/kubernetes/conceptual-extensions) is moved from kube-system to internal AKS infrastructure. Clusters with extensions in canary no longer require any of the outbound networking rules documented [here](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#cluster-extensions). Note that some extensions such as Flux still require a subset of these outbound rules.
 
 * Component Updates:
