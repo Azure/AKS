@@ -44,7 +44,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Fleet networking components updated to v0.39 from v0.38 to fix CVE.
   * [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster) updated from v1.4.0 to [v1.5.0](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.0)
   * App-routing-operator has been upgraded to [v0.2.5](https://github.com/Azure/aks-app-routing-operator/blob/main/CHANGELOG.md#025---2025-04-22) on all supported AKS versions.
-  * Cost-analysis-agent and -scraper versions in addon charts updated from v0.0.22 to 0.0.23 to fix [CVE-2025-22871](https://pkg.go.dev/vuln/GO-2025-3563).
+  * Cost-analysis-agent and cost-analysis-scraper image updated from v0.0.22 to 0.0.23 to fix [CVE-2025-22871](https://pkg.go.dev/vuln/GO-2025-3563).
   * Cloud-controller-manager updated to [v1.32.4](https://cloud-provider-azure.sigs.k8s.io/blog/2025/04/21/v1.32.4/), [v1.31.5](https://cloud-provider-azure.sigs.k8s.io/blog/2025/04/21/v1.31.5/), [v1.30.11](https://cloud-provider-azure.sigs.k8s.io/blog/2025/04/21/v1.30.11/) and [v1.29.14](https://cloud-provider-azure.sigs.k8s.io/blog/2025/04/21/v1.29.14/).
   * [Promtheus collector](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-15-2025) for Azure Monitor managed service for Prometheus addon updated from 6.15.0-main-02-21-2025-4acb2b4c to 6.16.0-main-04-15-2025-d78050c6.
   * Retina Enterprise image updated to [v0.1.9](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.9) to resolve issues with retina-operator container image build on ARM64 nodes.
