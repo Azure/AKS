@@ -24,7 +24,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Kubernetes 1.31 and 1.32 are now recognized as Long-Term Support (LTS) releases in AKS, joining existing LTS versions 1.28 and 1.29. You can view when these LTS releases hit your region in real time via the [Release tracker](https://releases.aks.azure.com/). For more information, see [Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support).
 
 * Bug Fixes:
-  * Fix an [issue](https://github.com/azure-networking/cilium-private/pull/465)) in [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) to improves DNS request/response performance, especially in large scale clusters using FQDN based policies. Without this fix, if the user sets a DNS request timeout below 2 seconds, in high-scale scenarios they may experience request drops due to duplicate request IDs.
+  * Fix an [issue](https://github.com/azure-networking/cilium-private/pull/465) in [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) to improves DNS request/response performance, especially in large scale clusters using FQDN based policies. Without this fix, if the user sets a DNS request timeout below 2 seconds, in high-scale scenarios they may experience request drops due to duplicate request IDs.
   * Fix an issue where [load balancer](https://learn.microsoft.com/azure/aks/load-balancer-standard) tags were not updated after accluster tag update. Load balancer tags now correctly reflect the latest state.
   * Fix an [issue](https://github.com/cilium/cilium/issues/38210) in Cilium v1.17 where a deadlock was causing server pods to be unable to start. 
 
