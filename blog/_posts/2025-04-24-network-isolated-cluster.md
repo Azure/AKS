@@ -9,7 +9,7 @@ categories:
 
 ## Network isolated Azure Kubernetes Service (AKS) cluster
 
-You may have heard about [AKS network isolated cluster](https://learn.microsoft.com/azure/aks/concepts-network-isolated) during Microsoft last year. This feature allows you to bootstrap an AKS cluster without any outbound egress traffic at a glance. This feature is now Generallly available. With this announcement, we want to share with you more details of this exciting offering. 
+You may have heard about [AKS network isolated cluster](https://learn.microsoft.com/azure/aks/concepts-network-isolated) during Microsoft last year. This feature allows you to bootstrap an AKS cluster without any outbound egress traffic at a glance. This feature is now Generally available. With this announcement, we want to share with you more details of this exciting offering. 
 
 Previously, if a user wants to restrict outbound traffic for an AKS cluster, firewall is the common option to go with. However, this solution has some shortcomings: 
 1. It could be cumbersome and complicated since you have to figure out the endpoints of the AKS cluster and your own application, which are required for outbound traffic and to create corresponding egress firewall rules. 
