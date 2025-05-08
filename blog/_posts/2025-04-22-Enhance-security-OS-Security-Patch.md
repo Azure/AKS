@@ -19,25 +19,28 @@ This approach, while effective, introduced challenges. Untested or uncontrolled 
 
 ## Automatic Node OS Security Patching mechanisms at AKS
 
-AKS provides two managed and tested mechanisms to deliver the latest security packages to your Node Operating System. Learn more about [OS Security Patch](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli).
+AKS provides two managed and tested mechanisms to deliver the latest security packages to your Node Operating System. 
 
-**Automatic Node Image Channel** - AKS updates nodes weekly with a newly patched VHD for security and bug fixes. This update follows maintenance windows and upgrade configuration settings. Linux unattended upgrades are disabled by default when using this channel. Automatic Node image upgrades are supported as long as the cluster's Kubernetes minor version is in support. These AKS-tested node images are fully managed and applied with safe deployment practices.
+**Automatic Node Image Channel** - AKS updates nodes weekly with a newly patched VHD for security and bug fixes. This update follows maintenance windows and upgrade configuration settings. Automatic Node image upgrades are supported as long as the cluster's Kubernetes minor version is in support. These AKS-tested node images are fully managed and applied with safe deployment practices.
 
-**OS Security Patch Channel** - Several customers may need only the security packages for their OS without additional bug fixes and updates. The OS Security Patch channel provides a fully managed, attended Node OS security-only solution. It automates manual processes, eliminating the need for tools like KURED to reboot nodes for kernel updates. The Security-Patch channel reimages nodes only when necessary and provides live security patching updates with zero disruption, respecting planned maintenance windows and follows azure safe deployment practices.
-
-## Comparison between OS Security Patch channel and Automatic Node Image Channel
+**OS Security Patch Channel** - Several customers may need only the security packages for their OS without additional bug fixes and updates. The OS Security Patch channel provides a fully managed, attended Node OS security-only solution. The Security-Patch channel reimages nodes only when necessary and provides live security patching updates with zero disruption, respecting planned maintenance windows and follows azure safe deployment practices.
 
 
-| Category                     | Verdict                                  | Why                                                                                                   |
-|-----------------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| **Speed of Patching**       | OS Security Patch Channel wins            | Delivers updates 1 to 2 weeks faster, addressing critical vulnerabilities (CVEs) promptly.           |
-| **Disruptions to Workload** | OS Security Patch Channel wins            | Focuses solely on security packages, minimizing disruptions. Reimages 60-70% less frequently and does live security patching other times.        |
-| **Handling Capacity Constraints** | OS Security Patch Channel wins            | Reduces surging by reimaging less frequently, ideal for capacity-constrained regions or SKUs.         |
-| **Bug Fixes and Binaries**  | Node Image Channel wins                   | Includes bug fixes and additional binaries, providing a more comprehensive update approach.           |
-| **Cost**                    | Node Image Channel wins             | OS Security Patch incurs additional costs due to Azure Compute Gallery usage. For details, refer to the [Azure Compute Gallery billing documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/azure-compute-gallery#billing). However this cost is very negligible estimated not more than 20$/month for a large cluster with approx. 500 nodes. |
+## When to use OS Security Patch or Automatic Node Image Channel?
 
-## In Conclusion 
-If you need updates beyond security patches, such as bug fixes or additional binaries, the Node Image channel is ideal. It offers comprehensive updates, including both security and functionality improvements. However, for faster security updates with minimal disruptions and fewer node reimages, the OS Security Patch channel is better suited, especially in capacity-constrained environments. Note that the OS Security Patch channel has a small additional cost due to Azure Compute Gallery usage.
+Choosing between the OS Security Patch channel and the Automatic Node Image channel depends on your specific requirements and operational constraints. Here's a breakdown based on common scenarios:
+
+- **Speed of Patching is Paramount**: If addressing critical vulnerabilities (CVEs) promptly is a priority, the OS Security Patch channel is the better choice. It delivers updates 1 to 2 weeks faster than the Node Image channel, ensuring your workloads remain secure against emerging threats.
+
+- **Require Comprehensive Security Fixes and Bug Fixes**: For environments where both security patches and additional bug fixes or binaries are essential, the Node Image channel is ideal. It provides a more comprehensive update approach, ensuring both security and functionality improvements.
+
+- **Workload Sensitive to Multiple Reimages in a Month**: If your workloads cannot tolerate frequent disruptions, the OS Security Patch channel is preferable. It minimizes disruptions by focusing solely on security packages, reimaging nodes 60-70% less frequently, and performing live security patching during other times.
+
+- **Using Windows Environment for Running Workloads**: Currently, the OS Security Patch channel is better suited for Linux-based workloads. For Windows environments, the Node Image channel is recommended until OS Security Patch support for Windows is introduced.
+
+- **Operating in a Capacity-Constrained Region or SKU**: In regions or SKUs with limited capacity, the OS Security Patch channel is advantageous. Its reduced frequency of node reimages helps mitigate surging and ensures smoother operations in constrained environments.
+
+By carefully evaluating these factors, you can select the channel that best aligns with your operational needs and workload requirements.
 
 ## How to Enable OS Security Patch Channel?
 You can enable the OS Security Patch Channel using the API, CLI, or the AKS portal. For detailed CLI configuration steps, refer to this [guide](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli#set-the-node-os-autoupgrade-channel-on-a-new-cluster).
