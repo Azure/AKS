@@ -1,7 +1,7 @@
 ---
 title: "What's New?! Guidance Updates for Stateful Workloads on AKS"
 description: "Learn how to set up an AKS cluster, deploy Kafka, integrate Azure Container Storage and explore the other stateful workloads running on AKS with Terraform or AzCLI."
-date: 2025-05-21
+date: 2025-05-28
 author: Colin Mixon
 categories: general
 ---
