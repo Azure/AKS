@@ -7,7 +7,7 @@ authors:
 - Suraj Deshmukh
 - Ernest Wong
 categories: 
-- AI
+- ai
 - networking
 ---
 

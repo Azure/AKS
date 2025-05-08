@@ -5,8 +5,8 @@ date: 2025-04-02
 authors: Pavneet Ahluwalia
 categories: general
 tags:
-  - Fleet
-  - AI
+  - fleet
+  - ai
 ---
 
 # Scaling Kubernetes for AI and Data-intensive Workloads: The AKS Fleet Strategy
