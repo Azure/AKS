@@ -6,7 +6,7 @@ author: Colin Mixon
 categories: general
 ---
 ## Helping you deploy on AKS
-Building on our initial announcement for [Deploying Open Source Software on Azure](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/deploying-open-source-software-on-azure-new-guides-for-aks-and-vms/4264602) we are excited to announce we have expanded our library of techncial best practice deployment guides for stateful and AI workloads on AKS. We have developed a comprehensive guide for deploying Kafka on AKS, updated our Postgres guidance with additional storage considerations for data resiliency, performance or costs, and added Terraform templates to our Mongo DB and Valkey guides for automated deployments. 
+Building on our initial announcement for [Deploying Open Source Software on Azure](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/deploying-open-source-software-on-azure-new-guides-for-aks-and-vms/4264602) we and the Customer Experience team are excited to announce we have expanded our library of techncial best practice deployment guides for stateful workloads on AKS. We have developed a comprehensive guide for deploying Kafka on AKS, updated our Postgres guidance with additional storage considerations for data resiliency, performance or costs, and added Terraform templates to our Mongo DB and Valkey guides for automated deployments. 
 
 These guides are designed to help you accelerate the integration of some of the most critical and heavily adopted open source projects onto Azure, utilizing best practices and optimizations for AKS. Jump to our [collection of Stateful and AI guides below](#deploy-stateful-and-ai-workloads-on-azure-kubernetes-service). 
 
@@ -28,7 +28,7 @@ In addition to writing new guidance, we have reviewed our existing portfolio of 
 
 We have revised our [PostgreSQL guidance](https://learn.microsoft.com/en-us/azure/aks/create-postgresql-ha?tabs=acstor%2Chelm) and [Kafka guidance](https://learn.microsoft.com/en-us/azure/aks/kafka-overview) to include Azure Container Storage alongside other storage configuration options, so you can make an informed choice on what best suits your objectives. For the most durable data resiliency, you can use the Azure Disks CSI driver with Premium SSD disks which provide [zone-redundant storage](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#redundancy-in-the-primary-region) resiliency to your PostgreSQL deployment. For the best cost savings at scale, you can use [Premium SSD v2 disks](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-deploy-premium-v2?tabs=azure-cli) which can let you set disk capacity independently from performance settings. For maximal performance, Azure Container Storage and ephemeral disks can provide the extremely low sub-millisecond latency and high input/output operations per second (IOPS) that transactional database workloads benefit from.  
 
-## Automate Deployment Guides with Terraform Templates 
+## Automate Deployment Guides with Terraform templates 
 We also listened to your requests for adding Terraform templates alongside the AzCli guidance so that you can use Infrastructure as Code for your deployments. 
 
 We have updated both MongoDB and Valkey guides with Terraform. Additionally, we have developed an Azure Verified Module for deploying a production-grade AKS Cluster. 
