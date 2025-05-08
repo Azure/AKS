@@ -9,19 +9,19 @@ categories:
 
 # Network isolated Azure Kubernetes Service (AKS) cluster
 
-By default, standard SKU Azure Kubernetes Service (AKS) clusters have unrestricted outbound internet access. This level of network access allows nodes and services you run to access external resources as needed. For those organizations who have strict security and compliance requirements, to regulate and control egress (outbound) network traffic from a cluster is a must have for the purpose of eliminating data exfiltration.
+By default, standard SKU Azure Kubernetes Service (AKS) clusters have unrestricted outbound internet access. This level of network access allows nodes and services you run to access external resources as needed. For organizations with strict security and compliance requirements, regulating and controlling egress (outbound) network traffic from a cluster is a must have for the purpose of eliminating data exfiltration.
 
-Previously, if a user wants to restrict outbound traffic for an AKS cluster, firewall is the common option to go with. However, this solution has some shortcomings: 
-1. It could be cumbersome and complicated since you have to figure out the endpoints of the AKS cluster and your own application, which are required for outbound traffic and to create corresponding egress firewall rules. 
-2. A cluster is not truly without outbound traffic due to the need for these endpoints. Said outbound traffic could still cause data exfiltration and leakage. 
+Previously, when a user wanted to restrict outbound traffic for an AKS cluster, Azure Firewall was the common option to go with. However, this solution has some shortcomings: 
+1. It could be cumbersome and complicated since you have to figure out the endpoints of the AKS cluster and your own application, which are required for outbound traffic and creating corresponding egress firewall rules.
+2. A cluster is not truly without outbound traffic due to the need for these endpoints, the outbound traffic could still cause data exfiltration and leakage. 
 
-Is there an easier way? You may have heard about [AKS network isolated cluster](https://learn.microsoft.com/azure/aks/concepts-network-isolated) during the Microsoft Build last year. This feature allows you to bootstrap an AKS cluster without any outbound egress traffic at a glance. This feature is now generally available (GA). With this announcement, we want to share with you more details of this exciting offering. 
+Is there an easier way? You may have heard about [AKS network isolated cluster](https://learn.microsoft.com/azure/aks/concepts-network-isolated) during Microsoft Build last year. This feature allows you to bootstrap an AKS cluster without any outbound egress traffic at a glance. This feature is now generally available (GA). With this announcement, we want to share with you more details of this exciting offering. 
 
 ## How a network isolated cluster works
 
 The following diagram shows the network communication between dependencies for a network isolated cluster.
 
-![Traffic diagram of network isolated AKS cluster](blog/assets/images/network-isolated-cluster-diagram.png)
+![Traffic diagram of network isolated AKS cluster](AKS/assets/images/network-isolated-cluster/network-isolated-cluster-diagram.png)
 
 AKS clusters fetch artifacts required for the cluster and its features or add-ons from the Microsoft Artifact Registry (MAR). This image pull allows AKS to provide newer versions of the cluster components and to also address critical security vulnerabilities. A network isolated cluster attempts to pull those images and binaries from a private Azure Container Registry (ACR) instance connected to the cluster instead of pulling from MAR. If the images aren't present, the private ACR pulls them from MAR and serves them via its private endpoint, eliminating the need to enable egress from the cluster to the public MAR endpoint.
 
@@ -35,7 +35,7 @@ AKS clusters fetch artifacts required for the cluster and its features or add-on
 
 ## Get Started 
 
-Network isolated cluster is now general available across all Azure public cloud. You can get started today by following the [how-to guide](https://learn.microsoft.com/en-us/azure/aks/network-isolated?pivots=aks-managed-acr) to create a network isolated cluster and secure your cluster environment.
+Network isolated cluster is now Generally available across all Azure public cloud. You can get started today by following the [how-to guide](https://learn.microsoft.com/en-us/azure/aks/network-isolated?pivots=aks-managed-acr) to create a network isolated cluster and secure your cluster environment.
 
 ## Looking forward
 
