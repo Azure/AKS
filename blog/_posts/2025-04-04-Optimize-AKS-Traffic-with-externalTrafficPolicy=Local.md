@@ -85,7 +85,7 @@ When a pod is shutting down (receiving the `TERM` signal), it is essential to en
 
 To avoid routing new requests to a pod that is in the process of shutting down, it is important to manage its health status effectively. The below image shows the timeline for a pod receiving a `TERM` signal and gracefully shutting down without impact on external traffic:
 
-![Preventing New Requests to Unhealthy Pods](/AKSBlog/assets/images/optimized-lb-routing-with-external-traffic-policy-local/preventingnewrequeststoanunhealthypod.png)
+![Preventing New Requests to Unhealthy Pods](/AKS/assets/images/optimized-lb-routing-with-external-traffic-policy-local/preventingnewrequeststoanunhealthypod.png)
 
 - **Immediate Health Check Response**:
     As soon as a pod is marked for deletion, its `healthCheckNodePort` should start returning a 500 error. This signals to external load balancers that the pod is no longer healthy and should not receive new traffic.
@@ -113,7 +113,7 @@ By implementing these best practices, you can minimize disruptions during pod sh
 
 ## Best Practices for Rolling Updates and Pod Rotation
 
-![Pod Rotation Timeline](/AKSBlog/assets/images/optimized-lb-routing-with-external-traffic-policy-local/podrotationbestpractices.png)
+![Pod Rotation Timeline](/AKS/assets/images/optimized-lb-routing-with-external-traffic-policy-local/podrotationbestpractices.png)
 
 While the above works when a pod is being taken down in isolation, it does not cover cases like upgrades and rolling restarts which require coordination between the time the pod goes down and a new one comes up, ready to serve traffic. To optimize pod rotation, add the following best practice to your deployment:
 
@@ -126,7 +126,7 @@ By implementing this strategy, you can achieve smoother rolling updates and main
 
 Achieving an even distribution of pods across nodes is important for load balancing and resource utilization, especially for pods receiving external traffic via `externalTrafficPolicy=Local`. The diagram below demonstrates an example of uneven pod distribution which leads to imbalanced traffic across pods:
 
-![Pod Distribution](/AKSBlog/assets/images/optimized-lb-routing-with-external-traffic-policy-local/poddistribution.png)
+![Pod Distribution](/AKS/assets/images/optimized-lb-routing-with-external-traffic-policy-local/poddistribution.png)
 
 In this situation, even though the load balancer divides the traffic evenly between nodes, the pods on the node with 2 replicas serve 25% of the traffic each, while the pod in the single replica node serves the full 50% of the total traffic.
 
