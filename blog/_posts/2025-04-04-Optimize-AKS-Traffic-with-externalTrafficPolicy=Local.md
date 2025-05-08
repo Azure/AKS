@@ -1,7 +1,7 @@
 ---
 title: "Optimize AKS Traffic with externalTrafficPolicy=Local"
 description: "Learn how to optimize traffic routing in Azure Kubernetes Service (AKS) by leveraging the `externalTrafficPolicy=Local` setting. This guide covers best practices for preserving client IPs, managing pod shutdowns, and ensuring even traffic distribution across nodes."
-date: 2025-04-08
+date: 2025-05-09
 authors:
   - Mitch Shao
   - Vaibhav Arora
