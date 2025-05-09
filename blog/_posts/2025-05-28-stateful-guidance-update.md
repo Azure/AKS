@@ -6,7 +6,7 @@ author: Colin Mixon
 categories: general
 ---
 ## Helping you deploy on AKS
-Building on our initial announcement for [Deploying Open Source Software on Azure](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/deploying-open-source-software-on-azure-new-guides-for-aks-and-vms/4264602) we and the Customer Experience team are excited to announce we have expanded our library of techncial best practice deployment guides for stateful workloads on AKS. We have developed a comprehensive guide for deploying Kafka on AKS, updated our Postgres guidance with additional storage considerations for data resiliency, performance or costs, and added Terraform templates to our Mongo DB and Valkey guides for automated deployments. 
+Building on our initial announcement for [Deploying Open Source Software on Azure](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/deploying-open-source-software-on-azure-new-guides-for-aks-and-vms/4264602) Azure is excited to announce we have expanded our library of technical best practice deployment guides for stateful workloads on AKS. We have developed a comprehensive guide for deploying Kafka on AKS, and updated our Postgres guidance with additional storage considerations for data resiliency, performance and cost. We have also added Terraform templates to our Mongo DB and Valkey guides for automated deployments. 
 
 These guides are designed to help you accelerate the integration of some of the most critical and heavily adopted open source projects onto Azure, utilizing best practices and optimizations for AKS. Jump to our [collection of Stateful and AI guides below](#deploy-stateful-and-ai-workloads-on-azure-kubernetes-service). 
 
