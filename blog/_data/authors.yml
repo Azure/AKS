@@ -243,3 +243,14 @@ Sarah Zhou:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/sarahjzhou/"
+
+Leo Wang:
+  name        : "Leo Wang"
+  bio         : "Product Manager at Microsoft, involved in Azure Container Registry and Open Source"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/wang-leonard/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/leodewang"
