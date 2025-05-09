@@ -16,7 +16,7 @@ Apache Kafka is an open source distributed event streaming platform designed to 
 
 The [Kafka on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/kafka-infrastructure?pivots=azure-cli) guide covers essential storage and compute considerations, ensuring you Kafka deployment meets your needs. Additionally, we provide guidance for tuning the Java Virtual Machine (JVM), which is critical for optimal Kafka broker and controller performance.
 
-In addition to basic installation steps, the Kafka guide provides best practice recommendations for configuring networking, monitoring, and  managed identity.
+On top of basic installation steps, the Kafka guide provides best practice recommendations for configuring networking, monitoring, and  managed identity.
 
 ## Updates to our current Guidance 
 
