@@ -243,3 +243,12 @@ Sarah Zhou:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/sarahjzhou/"
+
+Jane Guo:
+  name: "Jane Guo"
+  bio: "Product Manager at Microsoft Azure"
+  avatar: "https://avatars.githubusercontent.com/u/114879471?s=400&u=4bccf4353a3b4514327bc3ac9bb6fa6b5c958bd1&v=4" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/ziqi-guo/"
