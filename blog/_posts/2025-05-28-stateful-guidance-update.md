@@ -20,7 +20,7 @@ In addition to basic installation steps, the Kafka guide provides best practice 
 
 ## Updates to our current Guidance 
 
-In addition to writing new guidance, we have reviewed our existing portfolio of guides to ensure they are accurate and up to date. Also, as new services and features have been developed, we have provided guidance to help you seamlessly integrate them with your stateful applications. 
+Aside from writing new guidance, we have also reviewed our existing portfolio of guides to ensure they are accurate and up to date. Also, as new services and features have been developed, we have provided guidance to help you seamlessly integrate them with your stateful applications. 
 
 ## Azure Container Storage integration 
 
