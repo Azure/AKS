@@ -26,19 +26,19 @@ AKS provides two managed and tested mechanisms to deliver the latest security pa
 **OS Security Patch Channel** - Several customers may need only the security packages for their OS without additional bug fixes and updates. The OS Security Patch channel provides a fully managed, attended Node OS security-only solution. The Security-Patch channel reimages nodes only when necessary and provides live security patching updates with zero disruption, respecting planned maintenance windows and follows azure safe deployment practices.
 
 
-## When to use OS Security Patch or Automatic Node Image Channel?
+## Choosing OS Security Patch or Automatic Node Image Channel?
 
 Choosing between the OS Security Patch channel and the Automatic Node Image channel depends on your specific requirements and operational constraints. Here's a breakdown based on common scenarios:
 
-- **Speed of Patching is Paramount**: If addressing critical vulnerabilities (CVEs) promptly is a priority, the OS Security Patch channel is the better choice. It delivers updates 1 to 2 weeks faster than the Node Image channel, ensuring your workloads remain secure against emerging threats.
+- **Speed of Patching is Critical**: For urgent CVE fixes, the OS Security Patch channel applies security patches within 5 days, while the Automatic Node Image channel takes approximately 1-2 weeks.
 
 - **Require Comprehensive Security Fixes and Bug Fixes**: For environments where both security patches and additional bug fixes or binaries are essential, the Node Image channel is ideal. It provides a more comprehensive update approach, ensuring both security and functionality improvements.
 
 - **Workload Sensitive to Multiple Reimages in a Month**: If your workloads cannot tolerate frequent disruptions, the OS Security Patch channel is preferable. It minimizes disruptions by focusing solely on security packages, reimaging nodes 60-70% less frequently, and performing live security patching during other times.
 
-- **Using Windows Environment for Running Workloads**: Currently, the OS Security Patch channel is better suited for Linux-based workloads. For Windows environments, the Node Image channel is recommended until OS Security Patch support for Windows is introduced.
+- **Using Windows Environment for Running Workloads**: Currently, the OS Security Patch channel is not yet available in Windows environment. For Windows environments, the Automatic Node Image channel is the recommended option for consuming OS security fixes.
 
-- **Operating in a Capacity-Constrained Region or SKU**: In regions or SKUs with limited capacity, the OS Security Patch channel is advantageous. Its reduced frequency of node reimages helps mitigate surging and ensures smoother operations in constrained environments.
+- **Operating in Capacity-Constrained Regions or SKUs**: In regions or SKUs with limited capacity, the OS Security Patch channel is beneficial as it primarily performs live security patching, avoiding the need for surge nodes unless there is a re-image required. If using Automatic Node Image channel, you can set surge nodes to zero by configuring the [MaxUnavailable](https://learn.microsoft.com/en-us/azure/aks/upgrade-aks-cluster?tabs=azure-cli#customize-unavailable-nodes-during-upgrade-preview) setting especially on capacity constrained environments.
 
 By carefully evaluating these factors, you can select the channel that best aligns with your operational needs and workload requirements.
 
