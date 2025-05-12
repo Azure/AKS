@@ -34,6 +34,7 @@ The latest v6 VMs (whether they are
 will exclusively support Generation 2 VMs.
 
 ### Comparing Generation 1 & Generation 2
+
 Generation 2 VMs offer exclusive features over Generation 1 VMs, such as increased memory, improved CPU performance, support for NVMe disks, and support for Trusted 
 Launch. With some [exceptions](https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v),
 it is generally recommended to migrate to Generation 2 VMs to take advantage of the newest features and functionalities in Azure VMs.
@@ -48,6 +49,7 @@ The table below summarizes some key differences between Generation 1 and Generat
 | NVMe Interface Support | Supports [NVMe disks](https://learn.microsoft.com/azure/virtual-machines/nvme-overview), which requires NVM-enabled Generation 2 image | Does **NOT** support NVMe disks |
 
 ### Implications for your Virtual Machines
+
 If you are already running on Generation 2 VMs, you are all set to deploy on the majority of Azure VMs, including the latest v6 VMs. You can also enable [Trusted Launch](https://learn.microsoft.com/azure/aks/use-trusted-launch) and the NVMe Interface. 
 
 If you are running on Generation 1 VMs, you can continue running on most v5 and older Azure VMs. Migration to Generation 2 VMs is recommended, especially if any of the following requirements apply: 
@@ -69,6 +71,7 @@ For more information on Generation 2 default behavior on AKS, see [AKS documenta
 For a list of supported VM sizes for Generation 1 and Generation 2, please refer to the table on [this page](https://learn.microsoft.com/azure/virtual-machines/generation-2#generation-2-vm-sizes).
 
 ### Generation 1 VM Retirements
+
 When a VM size or series reaches its retirement date, the VM will be deallocated. VM deallocation means that your AKS node pool may experience breakage.
 
 If you would like to confirm whether your Generation 1 VM sizes are retired or are being retired, please search in the [Azure Updates](https://azure.microsoft.com/updates) 
@@ -79,6 +82,7 @@ page.
 If you are using a VM size that is retiring/retired, to prevent any potential disruption to your service, it is recommended to resize your node pool(s) to a supported VM size. AKS does not currently support transitioning to a new VM size within the same node pool, so a new node pool will be created and workloads moved to it during the resizing process. 
 
 ### What VM sizes are my nodes?
+
 To determine the size of your nodes, navigate to the Azure Portal, access your Resource Group, and then select your AKS resource. Within the "Overview" tab, you will find the size of your node pool.
 
 
@@ -92,6 +96,7 @@ az aks nodepool list \
 ```
 
 ### Resizing your node pools
+
 After you determine the appropriate node pool(s) to take action on, you can [**resize**](https://learn.microsoft.com/azure/aks/resize-node-pool?tabs=azure-cli) your node pool(s) to a supported VM size.
 
 
