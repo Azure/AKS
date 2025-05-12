@@ -76,6 +76,7 @@ extension-operator-def456                 1/1     Running   0          3d
 1. **Improved extension integrity:** Prevents accidental interference with extension components, safeguarding extension integrity.
 1. **Simplified Networking:** Reduces the need for complex networking configurations (as outlined in [Required FQDN / application rules](https://learn.microsoft.com/en-us/azure/aks/outbound-rules-control-egress#required-fqdn--application-rules-5)) for ExtensionManager. You only need to configure networking for the extensions themselves (e.g., allowing access to MCR for pulling container images).
 1. **Reduced Identity Footprint:** Eliminates the need for node-level identities for ExtensionManager, improving security and reducing setup time. This also contributes to shortening the first extension installation time.
+1. **Reduced pod footprint and resource usage**. Moving the two pods - extension-operator and extension-agent - to AKS internal infrastructure will reduce the resource usage on the customer's side.
 
 ## Summary
 More AKS functionality will be available through core Kubernetes extensions. Keep an eye out for more updates, and share your feedback with us!
