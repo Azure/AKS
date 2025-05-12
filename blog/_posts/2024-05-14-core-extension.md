@@ -29,39 +29,43 @@ Extensions and add-ons both enhance AKS functionality but differ in scope and ma
 
 ### What Are Core Kubernetes Extensions?
 
- Compared to regular Kubernetes extensions, core Kubernetes extensions provide a native AKS experience, with the goal of supporting important AKS capabilities through Kubernetes extensions while maintaining seamless integration just like add-ons. This approach also paves the way for more services and applications to be supported across both AKS and [Arc-connected Kubernetes](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/overview) environments in the future.
+ Core Kubernetes extensions are a type of Kubernetes extensions that provide broader region availability, a native AKS experience, safer version management rules, and enhanced security and efficiency on AKS. Important AKS capabilities can be supported through core Kubernetes extensions while maintaining seamless integration with AKS just like add-ons. This approach also paves the way for more services and applications to be supported across both AKS and [Arc-connected Kubernetes](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/overview) environments in the future.
 
-#### Transitioning Add-ons to Core Extensions
+#### Broader region availability
+Core Kubernetes extensions are available in all regions across all clouds (Public cloud, Fairfax, Mooncake, and Air Gapped cloud). See the full list at [Azure Arc enabled Kubernetes region support](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=azure-arc&regions=all).
 
-Some AKS add-ons, such as Container Insights, Azure Managed Prometheus, and App Monitoring, are transitioning to core extensions. The user experience remains unchanged, but the underlying technology shifts to extensions.
+#### Native AKS experience
+* Transitioning Add-ons to Core Extensions: Some AKS add-ons, such as Container Insights, Azure Managed Prometheus, and App Monitoring, are transitioning to core extensions. The user experience remains unchanged, but the underlying technology is shifting to extensions.
 
-CLI command to enable a core Extension that transitioned from an add-on:
-```bash
-az aks create/update --resource-group <group> --name <cluster> --enable-<core-extension>
-```
-#### Upgrading Regular Extensions to Core Extensions
-Key extensions like Azure Backup are being upgraded to core extensions for better integration with AKS.
+    CLI command to enable a core Extension that transitioned from an add-on:
+    ```bash
+    az aks create/update --resource-group <group> --name <cluster> --enable-<core-extension>
+    ```
+* Shifting Regular Extensions to Core Extensions: Key extensions like Azure Backup are also being shifted to core extensions for better integration with AKS.
 
-CLI commands:
-* Create a regular extension:
-```bash
-az k8s-extension create --extension-type <type> --resource-group <group> --cluster-name <name> --cluster-type <clusterType> --name <extension name>
-```
-* Create a core extension:
-```bash
-az aks extension create --extension-type <type> --resource-group <group> --cluster-name <name> --name <core extension name>
-```
-Note, core extensions follow the same update rules as add-ons: patch versions can be upgraded within a Kubernetes minor version, while major/minor upgrades occur only with Kubernetes minor version updates.
+    CLI commands:
+    * Create a regular extension:
+    ```bash
+    az k8s-extension create --extension-type <type> --resource-group <group> --cluster-name <name> --cluster-type <clusterType> --name <extension name>
+    ```
+    * Create a core extension:
+    ```bash
+    az aks extension create --extension-type <type> --resource-group <group> --cluster-name <name> --name <core extension name>
+    ```
 
-## Other recent Updates for Kubernetes Extensions
-### Expanded Region and Cloud Support
-Kubernetes extensions are now available in more regions across public, fairfax, mooncake, and air-gapped clouds. See the full list at [Azure Arc enabled Kubernetes region support](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=azure-arc&regions=all).
+#### Safer version management rules
+Core extensions follow the same update rules as add-ons: patch versions can be upgraded within a Kubernetes minor version, while major/minor upgrades occur only with Kubernetes minor version updates to avoid introducing breaking changes in a Kubernetes version.
 
-### ExtensionManager Moved to AKS Control Plane
-#### What Is ExtensionManager?
+#### Improved security and efficiency
+
+ExtensionManager is moved from user node pool to AKS Control Plane, which improved extension security and efficiency.
+
+What Is ExtensionManager?
+
 ExtensionManager is a key component that handles lifecycle operations (create, upgrade, delete, reconcile) for Kubernetes extensions. It periodically polls for version updates on extension instances and reconciles extension configuration settings, ensuring that extensions are managed effectively. Previously running on customer worker nodes, it has now been moved to the AKS control plane.
 
-#### What Has Changed?
+What Has Changed?
+
 Previously, extension-operator and extension-agent were deployed in the kube-system namespace by ExtensionManager on worker nodes. These components are now part of the AKS control plane, so they are no longer visible in the kube-system namespace.
 
 Example of previous deployment:
@@ -72,12 +76,12 @@ coredns-558bd4d5db-7x5c8                  1/1     Running   0          5d
 extension-agent-abc123                    1/1     Running   0          3d
 extension-operator-def456                 1/1     Running   0          3d
 ```
-#### Benefits of the Move
+Benefits of the Move
 1. **Improved extension integrity:** Prevents accidental interference with extension components, safeguarding extension integrity.
 1. **Simplified Networking:** Reduces the need for complex networking configurations (as outlined in [Required FQDN / application rules](https://learn.microsoft.com/en-us/azure/aks/outbound-rules-control-egress#required-fqdn--application-rules-5)) for ExtensionManager. You only need to configure networking for the extensions themselves (e.g., allowing access to MCR for pulling container images).
 1. **Reduced Identity Footprint:** Eliminates the need for node-level identities for ExtensionManager, improving security and reducing setup time. This also contributes to shortening the first extension installation time.
 1. **Reduced pod footprint and resource usage**. Moving the two pods - extension-operator and extension-agent - to AKS internal infrastructure will reduce the resource usage on the customer's side.
 
-## Summary
-More AKS functionality will be available through core Kubernetes extensions. Keep an eye out for more updates, and share your feedback with us!
+## Which applications or services will be supported through core Kubernetes extensions?
+We're in the process of enabling Container insights, Managed prometheus, App monitoring, and Azure Backup through core extensions, and there will be more. Keep an eye out for more updates, and share your feedback with us!
 
