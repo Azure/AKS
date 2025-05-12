@@ -37,8 +37,6 @@ One key benefit of Local mode over Cluster mode is that its impact during node d
 ### Preservation of the Client Source IP 
 With Local mode, the client’s original IP is maintained because traffic is only routed to nodes hosting healthy pods. This is crucial for security, logging, and analytics. 
 
-### Targeted Health Checking 
-Local mode utilizes a dedicated healthCheckNodePort, ensuring that external load balancers send traffic only to nodes with healthy pods, and helping ensure that the node itself is healthy too. This focused approach improves the overall reliability of service availability
 
 To learn more, you can refer to [Kubernetes Traffic Policies](https://kubernetes.io/docs/reference/networking/virtual-ips/#external-traffic-policy)
 
