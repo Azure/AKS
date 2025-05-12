@@ -19,29 +19,26 @@ Managing external traffic in Kubernetes clusters can be a complex task, especial
 
 In this blog, we delve into the intricacies of Kubernetes’ `externalTrafficPolicy=Local` setting and explore strategies to gracefully handle pod shutdowns, rolling updates, and pod distribution. By following these best practices, you can enhance the resilience and reliability of your services while optimizing resource utilization across your AKS clusters.
 
-## `externalTrafficPolicy`: Cluster vs. Local
+## The Advantages of Local ExternalTrafficPolicy
 
-**What does `externalTrafficPolicy` do?** In short, it influences how a cloud load balancer directs incoming traffic to Kubernetes nodes and how that traffic may hop between nodes to reach pods:
+The key differences between ExternalTrafficPolicy=Local and ExternalTrafficPolicy=Cluster is traffic routing:
 
-- **Cluster Mode (default) (`externalTrafficPolicy=Cluster`)**:
-    This is default mode for Kubernetes Services and provides a simplified approach to traffic distribution across all nodes in the cluster. While it does not preserve the client source IP, it offers several benefits for certain workloads:
+- With Local, only nodes that have healthy pods for the service receive traffic. The node routes the traffic solely to the pods residing on it.  
+- With Cluster, all nodes are behind the Azure Load Balancer. The incoming external traffic is distributed across all nodes in the cluster—even those that don’t have any pods for the service. Each node then routes the traffic internally to the available pods for that service.
 
-  - **Simplified Traffic Distribution**: Ensures even distribution of incoming traffic across all nodes in the cluster, regardless of pod placement.
-  - **Reduced Risk of Node Overload**: Balances traffic across all nodes, minimizing the chance of overloading specific nodes.
-  - **Ease of Configuration**: Requires no additional configuration for health checks or pod distribution.
-  - **Resilience During Pod Failures**: Traffic is forwarded to healthy pods on other nodes, ensuring service availability even if some pods are unavailable.
 
-    However, because this mode distributes traffic to all nodes regardless of them hosting the service pod, it can add latency and more failure modes due to extra hops between nodes (forwarded by `kube-proxy`). This is especially detrimental during events like node upgrades since if a node is taken down, 1/N (N stands for node count) traffic could experience disruptions. So, if you update your nodes weekly, this would disrupt your connections on a weekly basis.
+The advantages of ExternalTrafficPolicy=Local over Cluster include:
+### Localized Impact of Node Downtime:
+One key benefit of Local mode over Cluster mode is that its impact during node downtime is more confined. Specifically:
 
-- **Local Mode (`externalTrafficPolicy=Local`)**:
-    In this mode, external traffic is directed only to nodes that host healthy pods for the specified service. The traffic is routed exclusively to the pods residing on the same node where it is received (avoiding cross-node hops). This approach ensures:
-  - **Localized Impact of Node Downtime**: During operations like upgrades, reboots and unexpected failures on a node, a portion of external traffic is only affected if the downed node is running a service pod. The traffic to the pods on different nodes remains unaffected.
-  - **Preservation of Client Source IP**: The client’s original IP is maintained, which is crucial for security, logging, and analytics.
-  - **Targeted Health Checking**: Local mode uses a dedicated `healthCheckNodePort`, ensuring that external load balancers send traffic only to nodes with healthy pods.
+- Local Mode: Traffic is affected only if the downed node is running a service pod, impacting that pod’s share of the traffic (i.e., 1/N, where N is the total number of service pods). 
+- Cluster Mode: Not only is the traffic affected on the node running the service pod (1/N), but a downed on any other node also affects an additional 1/M of the traffic, where M is the total number of nodes.
 
-    However, apart from these benefits, this approach requires careful consideration of pod distribution across nodes to avoid uneven traffic loads. If one node hosts multiple pods while another node hosts only one, the node with one pod will receive roughly the same share of incoming connections as the node with multiple pods.
+### Preservation of the Client Source IP 
+With Local mode, the client’s original IP is maintained because traffic is only routed to nodes hosting healthy pods. This is crucial for security, logging, and analytics. 
 
-By understanding the operational differences between these two modes, you can make an informed decision based on your application’s requirements for traffic routing, source IP preservation, and load balancing.
+### Targeted Health Checking 
+Local mode utilizes a dedicated healthCheckNodePort, ensuring that external load balancers send traffic only to nodes with healthy pods, and helping ensure that the node itself is healthy too. This focused approach improves the overall reliability of service availability
 
 To learn more, you can refer to [Kubernetes Traffic Policies](https://kubernetes.io/docs/reference/networking/virtual-ips/#external-traffic-policy)
 
