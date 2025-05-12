@@ -73,7 +73,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - justindavies
+              - allyford
+              - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Kubernetes Dashboard
@@ -182,7 +183,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - miwithro
+              - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Networking
@@ -286,7 +287,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - miwithro
+              - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Azure Gateway Ingress Controller (AGIC)
@@ -461,7 +462,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - allyford
-              - justindavies
               - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
