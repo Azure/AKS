@@ -69,7 +69,7 @@ To avoid routing new requests to a pod that is in the process of shutting down, 
 ![Preventing New Requests to Unhealthy Pods](/AKS/assets/images/optimized-lb-routing-with-external-traffic-policy-local/preventingnewrequeststoanunhealthypod.png)
 
 - **Immediate Health Check Response**:
-    As soon as a pod is marked for deletion, its `healthCheckNodePort` should start returning a 500 error. This signals to external load balancers that the pod is no longer healthy and should not receive new traffic.
+    As soon as a pod is marked for deletion, kube-proxy’s healthCheckNodePort begins returning HTTP 500. This immediately signals external load balancers that the pod is no longer healthy and should stop receiving traffic.
 
 - **Load Balancer Probe Delay**:
     External load balancers will take a few seconds (upto 10 sec) to detect the unhealthy status of a pod. During this time, the pod might still receive new connections.
