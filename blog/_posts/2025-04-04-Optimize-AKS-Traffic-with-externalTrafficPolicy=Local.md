@@ -21,20 +21,18 @@ In this blog, we delve into the intricacies of Kubernetes’ `externalTrafficPol
 
 ## The Advantages of Local ExternalTrafficPolicy
 
-The key differences between ExternalTrafficPolicy=Local and ExternalTrafficPolicy=Cluster is traffic routing:
+The key differences between ExternalTrafficPolicy=Local and ExternalTrafficPolicy=Cluster is traffic routing are:
 
 - With Local, only nodes that have healthy pods for the service receive traffic. The node routes the traffic solely to the pods residing on it.  
 - With Cluster, all nodes are behind the Azure Load Balancer. The incoming external traffic is distributed across all nodes in the cluster—even those that don’t have any pods for the service. Each node then routes the traffic internally to the available pods for that service.
 
-
-The advantages of ExternalTrafficPolicy=Local over Cluster include:
-### Localized Impact of Node Downtime:
+These architectural differences give ExternalTrafficPolicy=Local some key benefits over type cluster including:
+*1.Localized Impact of Node Downtime:*
 One key benefit of Local mode over Cluster mode is that its impact during node downtime is more confined. Specifically:
-
 - Local Mode: Traffic is affected only if the downed node is running a service pod, impacting that pod’s share of the traffic (i.e., 1/N, where N is the total number of service pods). 
 - Cluster Mode: Not only is the traffic affected on the node running the service pod (1/N), but a downed on any other node also affects an additional 1/M of the traffic, where M is the total number of nodes.
 
-### Preservation of the Client Source IP 
+*2.Preservation of the Client Source IP:* 
 With Local mode, the client’s original IP is maintained because traffic is only routed to nodes hosting healthy pods. This is crucial for security, logging, and analytics. 
 
 
