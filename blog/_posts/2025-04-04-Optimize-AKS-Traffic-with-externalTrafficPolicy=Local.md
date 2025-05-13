@@ -28,14 +28,13 @@ The key differences between ExternalTrafficPolicy=Local and ExternalTrafficPolic
 
 These architectural differences give ExternalTrafficPolicy=Local some key benefits over type cluster including:
 
-**1.Localized Impact of Node Downtime:**
-One key benefit of Local mode over Cluster mode is that its impact during node downtime is more confined. Specifically:
+**1. Localized Impact of Node Downtime:**
+The impact during node downtime is more confined. Specifically:
 - Local Mode: Traffic is affected only if the downed node is running a service pod, impacting that pod’s share of the traffic (i.e., 1/N, where N is the total number of service pods). 
 - Cluster Mode: Not only is the traffic affected on the node running the service pod (1/N), but a downed on any other node also affects an additional 1/M of the traffic, where M is the total number of nodes.
 
-**2.Preservation of the Client Source IP:** 
-With Local mode, the client’s original IP is maintained because traffic is only routed to nodes hosting healthy pods. This is crucial for security, logging, and analytics. 
-
+**2. Preservation of the Client Source IP:** 
+The client’s original IP is maintained because traffic is only routed to nodes hosting healthy pods. This is crucial for security, logging, and analytics. 
 
 To learn more, you can refer to [Kubernetes Traffic Policies](https://kubernetes.io/docs/reference/networking/virtual-ips/#external-traffic-policy)
 
@@ -45,13 +44,14 @@ As detailed above, `externalTrafficPolicy=Local` routes traffic directly to node
 ![How `externalTrafficPolicy=Local` Works](/AKS/assets/images/optimized-lb-routing-with-external-traffic-policy-local/howexternaltrafficpolicyworks.png)
 
 Let's look into how each of the following components work with the Local Mode:
+
 When you set a Service's external traffic policy to Local in AKS, you'll see an additional field in the Service description: [**HealthCheck NodePort**](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip)​. This is a dedicated NodePort (e.g. port number in the 30000+ range) that Azure's Standard Load Balancer uses to verify which nodes have healthy pods for this Service.
 
 - **Health Probe on Each Node:** Azure automatically configures a health probe on the load balancer that targets the `HealthCheckNodePort` across all nodes in the LB's backend pool. Kubernetes ensures that this port only returns a successful response on nodes that are running at least one *ready* pod for the Service. Nodes with no pods for that Service will fail the health check.
 
-- **Load Balancer Backend Pool:** With `externalTrafficPolicy=Local`, all cluster nodes are listed in the LB's backend pool. But due to the health probes, nodes without a Service pod are marked **unhealthy** and won't receive traffic​. Only nodes with healthy pods respond to the probe and remain in rotation. By contrast, in `Cluster` mode, every node responds (since even if it has no pod, kube-proxy will forward the traffic), so the LB sees all nodes as healthy​. The `kube-proxy` component manages this port and ensures that it only responds as healthy if the node hosts at least one healthy pod for the service.
+- **Load Balancer Backend Pool:** With `externalTrafficPolicy=Local`, all cluster nodes are listed in the LB's backend pool. But due to the health probes, nodes without a Service pod are marked **unhealthy** and won't receive traffic​. Only nodes with healthy pods respond to the probe and remain in rotation. By contrast, in `Cluster` mode, every node responds (since even if it has no pod, kube-proxy will forward the traffic), so the LB sees all nodes as healthy​. The `kube-proxy` component manages this port and ensures it responds in accordance with the trafficpolicy selected.
 
- **IPTables Rules**: IPTables rules are configured to only forward incoming traffic from the Azure Load Balancer (ALB) directly to pods running on the same node. These rules ensure that traffic is never forwarded to other nodes. This localized traffic routing reduces latency and ensures that external connections continue to be served even during node update operations.
+- **IPTables Rules**: IPTables rules are configured to only forward incoming traffic from the Azure Load Balancer (ALB) directly to pods running on the same node. These rules ensure that traffic is never forwarded to other nodes. This localized traffic routing reduces latency and ensures that external connections continue to be served even during node update operations.
 
 By combining these mechanisms, `externalTrafficPolicy=Local` provides a robust way to manage external traffic while maintaining source IP visibility and ensuring traffic is routed to healthy pods directly.
 
@@ -97,7 +97,7 @@ When a pod is shutting down (receiving the `TERM` signal), it is essential to en
     After receiving the TERM signal, the server should include a Connection: close header in its responses to all active and new incoming requests. This signals to clients that the connection will be closed and should not be reused, allowing idle connections to terminate gracefully.
     **Use Case**: Applications serving REST APIs or web traffic where clients rely on persistent connections for performance optimization.
 
-> **Note**: In HTTP/1.1, there is a potential race condition where the server might close an idle connection at the same time the client sends a new request. In such cases, the client must handle this scenario by retrying the request on a new connection.
+    > **Note**: In HTTP/1.1, there is a potential race condition where the server might close an idle connection at the same time the client sends a new request. In such cases, the client must handle this scenario by retrying the request on a new connection.
 
 - **For HTTP/2 Connections**:
     The server should send a `GOAWAY` frame to notify clients that the connection is being closed. This allows clients to gracefully terminate the connection and retry requests on a new connection if necessary.
@@ -111,7 +111,7 @@ By implementing these best practices, you can minimize disruptions during pod sh
 
 While the above works when a pod is being taken down in isolation, it does not cover cases like upgrades and rolling restarts which require coordination between the time the pod goes down and a new one comes up, ready to serve traffic. To optimize pod rotation, add the following best practice to your deployment:
 
-- **Set `minReadySeconds`**:
+**Set `minReadySeconds`**:
     Configure the [`minReadySeconds`](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#minimum-ready-seconds) parameter in your deployment (we recommend around 10 sec) to introduce a delay before Kubernetes is able to mark the pod as "available" (i.e the pod has been ready long enough that the rolling upgrade can move to the next pod - making it different from the "ready" state which implies the application is ready to receive new connections). This buffer gives the load balancer enough time to register the new pod and start routing traffic to it, while also preventing Kubernetes from deleting the old pod prematurely.
 
 By implementing this strategy, you can achieve smoother rolling updates and maintain a consistent user experience during application changes.
