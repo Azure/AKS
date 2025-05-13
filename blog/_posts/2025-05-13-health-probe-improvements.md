@@ -57,7 +57,6 @@ We’re flipping the probe around:
 - **Cleaner upgrades** – You no longer have to remember arcane SLB annotations when you migrate an ingress controller.  
 - **Observability you can trust** – A red DIP now really means “this node is unhealthy,” not “one of my pods failed HTTP on `/ready`.”  
 - **Fewer moving parts** – Turn off unneeded NodePorts, reduce SNAT churn, and shrink SLB config size.  
-- **Graceful node maintenance** – Coming soon: mark a node *admin‑down*; SLB stops new flows while existing connections drain naturally.
 
 ## Getting started
 
