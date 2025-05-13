@@ -4,10 +4,9 @@ description: "Learn the what, the whys, and the hows of configuring OS Security 
 date: 2025-04-22
 authors:
 - Kaarthikeyan Subramanian
-- Ye Wang
 categories: 
-- Security
-- Operations
+- security
+- operations
 ---
 
 
