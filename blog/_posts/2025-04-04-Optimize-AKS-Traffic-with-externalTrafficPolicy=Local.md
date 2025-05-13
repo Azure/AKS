@@ -95,7 +95,7 @@ To ensure your pods follow a similar timeline to gracefully shutdown, make sure 
 When a pod is shutting down (receiving the `TERM` signal), it is essential to ensure that existing client connections are closed properly to avoid abrupt disconnections or errors. Failing to handle this gracefully could result in clients encountering errors like `connection reset by peer` or `connection refused`, leading to a poor user experience and potential service disruptions.
 
 - **For HTTP/1.1 Connections**:
-    The server should include a `Connection: close` header in its response for all active and new incoming requests. This informs clients not to reuse the connection and allows idle connections to be closed gracefully.
+    After receiving the TERM signal, the server should include a Connection: close header in its responses to all active and new incoming requests. This signals to clients that the connection will be closed and should not be reused, allowing idle connections to terminate gracefully.
     **Use Case**: Applications serving REST APIs or web traffic where clients rely on persistent connections for performance optimization.
 
 > **Note**: In HTTP/1.1, there is a potential race condition where the server might close an idle connection at the same time the client sends a new request. In such cases, the client must handle this scenario by retrying the request on a new connection.
