@@ -52,8 +52,6 @@ We’re flipping the probe around:
    - Strips or parses the PROXY PDU so kube‑proxy doesn’t choke.  
    - Forwards `/healthz` to localhost `10256`.
 
-3. **Future expansion** – In a later phase the sidecar will roll up kube‑proxy, kubelet, node taints, and admin‑down annotations into a single synthetic OK/FAIL—a smarter signal for SLB and your dashboards.
-
 ## What this means for you
 
 - **Cleaner upgrades** – You no longer have to remember arcane SLB annotations when you migrate an ingress controller.  
@@ -61,26 +59,11 @@ We’re flipping the probe around:
 - **Fewer moving parts** – Turn off unneeded NodePorts, reduce SNAT churn, and shrink SLB config size.  
 - **Graceful node maintenance** – Coming soon: mark a node *admin‑down*; SLB stops new flows while existing connections drain naturally.
 
-## Getting started (preview)
+## Getting started
 
-```bash
-# Register the feature (preview)
-az feature register \
-  --namespace Microsoft.ContainerService \
-  --name NodeHealthProbesForClusterETP
+For more information on how to use the new health probe, check out the [AKS documentation](https://learn.microsoft.com/azure/aks/load-balancer-standard).
 
-# Check registration state = Enabled, then refresh
-az provider register -n Microsoft.ContainerService
-
-# Create or upgrade a cluster with the preview flag
-az aks create \
-  --name myCluster \
-  --resource-group myRG \
-  --network-plugin azure \
-  --feature-gates "NodeHealthProbesForClusterETP=true"
-```
-
-Summary
+## Summary
 
 By pointing SLB’s probe at the node instead of every app, AKS:
 
@@ -89,4 +72,4 @@ By pointing SLB’s probe at the node instead of every app, AKS:
 - Cuts probe traffic and SNAT pressure.
 - Opens the door to cleaner node drains and autoscaler events.
 
-Try the preview today and let us know how it works in your environment—your feedback helps us ship a rock‑solid GA experience!
+Try it out today and let us know how it works in your environment!
