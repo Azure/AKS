@@ -74,21 +74,10 @@ configuration:
           - mentionUsers:
               mentionees:
               - allyford
+              - wdarko1
               - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
-        # Kubernetes Dashboard
-        - if:
-          - hasLabel:
-              label: addon/k8s-dashboard
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - qpetraroia
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True
         # App Routing
         - if:
           - hasLabel:
@@ -98,7 +87,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sabbour
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # App Gateway
@@ -110,7 +99,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sabbour
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Security Center
@@ -146,7 +135,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - agowdamsft
+              - jakjang
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Azure Portal
@@ -183,7 +172,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sjwaight
+              - weinong
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Networking
@@ -196,6 +185,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - chasewilson
+              - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Cilium
@@ -287,7 +277,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sjwaight
+              - @thomas1206
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Azure Gateway Ingress Controller (AGIC)
@@ -299,7 +289,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sabbour
+              - chasewilson
               - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -324,7 +314,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sabbour
+              - chasewilson
               - jackstromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -413,7 +403,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - pavneeta
+              - olsenme
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Documentation                
@@ -449,7 +439,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - qpetraroia
+              - wangyira
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
         # Node pools
@@ -462,6 +452,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - allyford
+              - wdarko1
               - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -500,7 +491,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - kaarthis
-              - sdesai345
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True 
         # Miscellaneous issues
