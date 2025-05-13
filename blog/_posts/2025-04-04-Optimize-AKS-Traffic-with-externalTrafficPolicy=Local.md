@@ -54,7 +54,7 @@ When you set a Service's external traffic policy to Local in AKS, you'll see an 
 
  **IPTables Rules**: IPTables rules are configured to only forward incoming traffic from the Azure Load Balancer (ALB) directly to pods running on the same node. These rules ensure that traffic is never forwarded to other nodes. This localized traffic routing reduces latency and ensures that external connections continue to be served even during node update operations.
 
-By combining these mechanisms, `externalTrafficPolicy=Local` provides a robust way to manage external traffic while maintaining source IP visibility and ensuring traffic is routed to healthy pods only.
+By combining these mechanisms, `externalTrafficPolicy=Local` provides a robust way to manage external traffic while maintaining source IP visibility and ensuring traffic is routed to healthy pods directly.
 
 ## Best Practices to gracefully close existing connections and shut service pods
 
