@@ -29,7 +29,7 @@ Extensions and add-ons both enhance AKS functionality but differ in scope and ma
 
 ### What Are Core Kubernetes Extensions?
 
- Core Kubernetes extensions are a type of Kubernetes extensions that provide broader region availability, a native AKS experience, safer version management rules, and enhanced security and efficiency on AKS. Important AKS capabilities can be supported through core Kubernetes extensions while maintaining seamless integration with AKS just like add-ons. This approach also paves the way for more services and applications to be supported across both AKS and [Arc-connected Kubernetes](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/overview) environments in the future.
+Core Kubernetes extensions are a Kubernetes extension that provides broader region availability, a native AKS experience, safer version management, and enhanced security and efficiency on AKS. Important AKS capabilities can be supported through core Kubernetes extensions while maintaining seamless integration with AKS just like add-ons. This approach also paves the way for more services and applications to be supported across both AKS and [Arc-connected Kubernetes](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/overview) environments in the future.
 
 #### Broader region availability
 Core Kubernetes extensions are available in all regions across all clouds (Public cloud, Fairfax, Mooncake, and Air Gapped cloud). See the full list at [Azure Arc enabled Kubernetes region support](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=azure-arc&regions=all).
