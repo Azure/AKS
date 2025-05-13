@@ -277,7 +277,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - @thomas1206
+              - thomas1206
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Azure Gateway Ingress Controller (AGIC)
