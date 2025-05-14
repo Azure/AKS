@@ -30,9 +30,16 @@ Jorge Palma:
 
 Kaarthikeyan Subramanian:
   name        : "Kaarthikeyan Subramanian"
-  bio         : "Product Manager"
-  avatar      : "" # Replace this with your avatar image
-
+  bio         : "Kaarthik is a Senior Product Manager for the Azure Kubernetes Service."
+  avatar      : "https://avatars.githubusercontent.com/u/97623105?s=400&u=48bac61e9a155beb58db79ef06f4db715b5f1b4d&v=4" # Replace this with your avatar image
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/kaarthikeyan-s-a835631b/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/kaarthis"
+      
 Paul Yu:
   name        : "Paul Yu"
   bio         : "Cloud Native Developer Advocate. Loves pineapple on pizza, dogs, and writing code."
