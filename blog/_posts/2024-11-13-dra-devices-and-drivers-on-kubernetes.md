@@ -14,7 +14,7 @@ Today, you need a few vendor-specific software components to even get started wi
 
 Since Kubernetes does not have native support for special devices like GPUs, the device plugin surfaces and makes these resources available to your application. The device plugin works by exposing the number of GPUs on a node, by taking in a list of allocatable resources through the device plugin API and passing this to the kubelet. The kubelet then tracks this set and inputs the count of arbitrary resource type on the node to API Server, for kube-scheduler to use in pod scheduling decisions. 
 
-![image](/AKS/assets/images/dra-devices-drivers-on-kubernetes/device-plugin-diagram.png)
+![image](/assets/images/dra-devices-drivers-on-kubernetes/device-plugin-diagram.png)
 
 However, there are some limitations with this device plugin approach, namely:
 
@@ -117,7 +117,7 @@ In the place of arbitrary resource count, an entire object now represents the ch
 
 Pulling this all together, the key components of DRA look like:
 
-![image](/AKS/assets/images/dra-devices-drivers-on-kubernetes/dra-driver-diagram.png)
+![image](/assets/images/dra-devices-drivers-on-kubernetes/dra-driver-diagram.png)
 
 ## Seeing DRA in action
 
