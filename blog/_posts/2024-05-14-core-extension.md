@@ -30,7 +30,7 @@ Extensions and add-ons both enhance AKS functionality but differ in scope and ma
 
 ### What Are Core Kubernetes Extensions?
 
- Core Kubernetes extensions are a Kubernetes extension that provides broader region availability, a native AKS experience, safer version management, and enhanced security and efficiency on AKS. Important AKS capabilities can be supported through core Kubernetes extensions while maintaining seamless integration with AKS just like add-ons. This approach also paves the way for more services and applications to be supported across both AKS and Arc-connected Kubernetes environments in the future.
+ Core Kubernetes extensions are a Kubernetes extension that provides broader region availability, a native AKS experience, safer version management, enhanced security, efficiency, and reliability on AKS. Important AKS capabilities can be supported through core Kubernetes extensions while maintaining seamless integration with AKS just like add-ons. This approach also paves the way for more services and applications to be supported across both AKS and Arc-connected Kubernetes environments in the future.
 
 #### Broader region availability
 Core Kubernetes extensions are available in all regions across Azure Public cloud, Azure Government and China regions. See the full list of regions at [Azure Arc enabled Kubernetes region support](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=azure-arc&regions=all).
@@ -54,11 +54,11 @@ Core Kubernetes extensions are available in all regions across Azure Public clou
     ```
 
 #### Safer version management
-In principle, core extensions follow the same update rules as add-ons: patch versions can be upgraded within a Kubernetes minor version, while major/minor upgrades occur only with Kubernetes minor version updates to avoid introducing breaking changes in a Kubernetes version. Exceptions are allowed if the extension has proven testing and safeguards against unexpected breaking changes in new minor/minor versions.
+In principle, core extensions follow the same update rules as add-ons: patch versions can be upgraded within a Kubernetes minor version, while major/minor upgrades occur only with Kubernetes minor version updates to avoid introducing breaking changes in a Kubernetes version. Exceptions are allowed if the extension has proven testing and safeguards against unexpected breaking changes in new minor/major versions.
 
-#### Improved security and efficiency
+#### Improved security, efficiency and reliability
 
-ExtensionManager is moved from user node pool to AKS Control Plane, which improved extension security and efficiency.
+ExtensionManager is moved from user node pool to AKS Control Plane, which improved extension security, efficiency, and reliability.
 
 What Is ExtensionManager?
 
