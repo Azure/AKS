@@ -181,6 +181,27 @@ Pavneet Ahluwalia:
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/pavneetsingh/"
 
+Vaibhav Arora:
+  name        : "Vaibhav Arora"
+  bio         : "Product Manager for Azure Kubernetes Service"
+  avatar      : "https://avatars.githubusercontent.com/u/72528539?v=4"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/varora24"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/varora24/"
+
+Mitch Shao:
+  name        : "Mitch Shao"
+  bio         : "Senior Software Engineer for Azure Kubernetes Service."
+  avatar      : "https://avatars.githubusercontent.com/u/115824693?v=4"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/mingqi-shao/"
+
 Bob Mital:
   name        : "Bob Mital"
   bio         : "Bob Mital is a Principal Product Manager at Microsoft Azure, focusing on partners and the Cloud Native ecosystem."
