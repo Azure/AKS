@@ -199,9 +199,21 @@ configuration:
               mentionees:
               - chasewilson
               - paulgmiller
-              - wedaly
               - quantumn-a5
               - tamilmani1989
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # ACNS (Advance Container Networking Services)
+        - if:
+          - hasLabel:
+              label: advanced-container-networking-services
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Pod Identity
@@ -354,6 +366,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - azure/aks-traffic
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Mesh networking
@@ -366,6 +379,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - shashankbarsin
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
         # Copilot
@@ -391,7 +405,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - mangalorereshmi
+              - jakjang
+              - toddysm
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Control plane
@@ -403,7 +418,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - olsenme
+              - robbiezhang
+              - kthakar1990
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Documentation                
@@ -415,7 +431,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - allyford
+              - chasewilson
+              - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
         # Azure Kubernetes Fleet Manager
@@ -492,18 +509,6 @@ configuration:
               mentionees:
               - kaarthis
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True 
-        # Miscellaneous issues
-        - if:
-          - hasLabel:
-              label: miscellaneous
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - seguler
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True               
+              assignMentionees: True            
 onFailure: 
 onSuccess: 
