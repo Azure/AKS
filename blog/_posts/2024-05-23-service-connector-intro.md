@@ -9,7 +9,7 @@ Workloads deployed on an Azure Kubernetes Service (AKS) cluster often need to ac
 
 The [Service Connector](https://learn.microsoft.com/azure/service-connector/overview) integration greatly simplifies the connection configuration experience for AKS workloads and Azure backing services. Service Connector takes care of authentication and network configurations securely and follows Azure best practices, so you can focus on your application code without worrying about your infrastructure connectivity.
  
-![image](https://github.com/CocoWang-wql/AKS/assets/45681473/8c146088-0bd9-4095-a0c2-c802a135b4c2)
+![image](/assets/images/service-connector-intro/service-connector-overview.png)
 Service Connector Action Breakdown     
 
 Before Service Connector, in order to [connect from AKS pods to a private Azure backing services](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster) using workload identity, users needed to perform the following actions manually:
@@ -22,7 +22,7 @@ Before Service Connector, in order to [connect from AKS pods to a private Azure 
 
 Now, Service Connector performs steps 2 to 5 automatically. Additionally, for Azure services without public access, Service Connector creates private connection components such as private link, private endpoint, DNS record, etc.   
 You can create a connection in the Service Connection blade within AKS.
-![image](https://github.com/CocoWang-wql/AKS/assets/45681473/8cb37a39-9e1b-4423-9ffa-9a928fd7d486)
+![image](/assets/images/service-connector-intro/service-connector-create.png)
 Click create and select the target service, authentication method, and networking rule. The connection will then be automatically set up. 
 
 In addition to Azure portal, Service Connector also supports [Azure CLI](https://learn.microsoft.com/azure/service-connector/quickstart-cli-aks-connection?tabs=Using-access-key).

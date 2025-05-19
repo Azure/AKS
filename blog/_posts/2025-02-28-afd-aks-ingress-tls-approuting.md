@@ -317,21 +317,21 @@ We'll do the rest in our Azure Front Door instance in the Azure Portal, so open 
 
 To use our certificate with Azure Front Door, we need to attach the certificate in Azure Key Vault to a Front Door Secret. We do this in the 'Secrets' pane under 'Security'.
 
-![link certificate](/AKS/assets/images/aks-ingress-tls-approuting/linkcert.jpg)
+![link certificate](/assets/images/aks-ingress-tls-approuting/linkcert.jpg)
 
 ### Create the Custom Domain Configuration
 
 Now we tell AFD what domain we'd like to use and link that domain name to the associated secret that we just created for our certificate.
 
-![afd add domain 1](/AKS/assets/images/aks-ingress-tls-approuting/afd-adddomain1.jpg)
+![afd add domain 1](/assets/images/aks-ingress-tls-approuting/afd-adddomain1.jpg)
 
 Next, we select the appropriate secret for our domain.
 
-![afd add domain 2](/AKS/assets/images/aks-ingress-tls-approuting/afd-adddomain2.jpg)
+![afd add domain 2](/assets/images/aks-ingress-tls-approuting/afd-adddomain2.jpg)
 
 Finally, we see the domain entry created and pending association with an endpoint.
 
-![afd add domain 3](/AKS/assets/images/aks-ingress-tls-approuting/afd-adddomain3.jpg)
+![afd add domain 3](/assets/images/aks-ingress-tls-approuting/afd-adddomain3.jpg)
 
 
 ### Create the Origin Group
@@ -342,41 +342,41 @@ Creating the origin group is a two-step process. You create the origin group, bu
 
 You'll provide a message that will show up on the private link approval side. This message can be whatever you want.
 
-![origin setup 1](/AKS/assets/images/aks-ingress-tls-approuting/origin-setup1.jpg)
+![origin setup 1](/assets/images/aks-ingress-tls-approuting/origin-setup1.jpg)
 
 Now we complete our origin setup, making sure to set the right path to our ingress health probe. In our case, the URL will forward to '/hello-world', as we know this will return an HTTP 200 response. If you have your own health endpoint, you can set that here. You'll also want to set the protocol to HTTPS. This will tell Azure Front Door that it should re-encrypt traffic when sending it to the backend.
 
-![origin setup 2](/AKS/assets/images/aks-ingress-tls-approuting/origin-setup2.jpg)
+![origin setup 2](/assets/images/aks-ingress-tls-approuting/origin-setup2.jpg)
 
 Now we see that our origin is created but still pending association with an endpoint.
 
-![origin setup 3](/AKS/assets/images/aks-ingress-tls-approuting/origin-setup3.jpg)
+![origin setup 3](/assets/images/aks-ingress-tls-approuting/origin-setup3.jpg)
 
 ### Create the AFD Endpoint
 
 In 'Front Door manager' select 'Add an endpoint' and give the endpoint a name. Make note of the FQDN is provides. This will be used in our DNS for the CNAME.
 
-![add an endpoint 1](/AKS/assets/images/aks-ingress-tls-approuting/addendpoint1.jpg)
+![add an endpoint 1](/assets/images/aks-ingress-tls-approuting/addendpoint1.jpg)
 
 Now we'll add a route by clicking 'Add a route'.
 
-![add an endpoint 2](/AKS/assets/images/aks-ingress-tls-approuting/addendpoint2.jpg)
+![add an endpoint 2](/assets/images/aks-ingress-tls-approuting/addendpoint2.jpg)
 
 In the 'add route' screen, we'll select our origin and the associated domain and set any additional options. At this point, you should also make note of the endpoint FQDN, which we'll need to use as our CNAME in our DNS for our host name.
 
-![add an endpoint 3](/AKS/assets/images/aks-ingress-tls-approuting/addendpoint3.jpg)
+![add an endpoint 3](/assets/images/aks-ingress-tls-approuting/addendpoint3.jpg)
 
-![add an endpoint 4](/AKS/assets/images/aks-ingress-tls-approuting/addendpoint4.jpg)
+![add an endpoint 4](/assets/images/aks-ingress-tls-approuting/addendpoint4.jpg)
 
 When finished, your endpoint should look as follows.
 
-![add an endpoint 5](/AKS/assets/images/aks-ingress-tls-approuting/addendpoint5.jpg)
+![add an endpoint 5](/assets/images/aks-ingress-tls-approuting/addendpoint5.jpg)
 
 ### Update your DNS
 
 We need our DNS name to point to the Azure Front Door endpoint, so we'll take that Front Door provided FQDN and create a CNAME record. 
 
-![dns cname entry](/AKS/assets/images/aks-ingress-tls-approuting/dnscname.jpg)
+![dns cname entry](/assets/images/aks-ingress-tls-approuting/dnscname.jpg)
 
 ## Test
 
