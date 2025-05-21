@@ -116,13 +116,13 @@ Thanks to the integration with Workload Identity Federation, Azure Container Reg
 * Troubleshoot deployment issues faster through Azure Portal.
 * Query historical logs using Log Analytics.
 
-![image](/AKS/assets/images/deploy-data-science-solution-with-flyte/flyte-admin-logs-view-log-analytics.png)
+![image](/assets/images/deploy-data-science-solution-with-flyte/flyte-admin-logs-view-log-analytics.png)
 
 ## Check out my Flyte environment on AKS
 
 Following [these steps](https://github.com/unionai-oss/deploy-flyte/blob/main/environments/azure/flyte-core/README.md#test-your-deployment), you can update the cluster endpoint in your Flyte config, execute a sample workflow, and verify the successful execution in your Flyte console:
 
-![image](/AKS/assets/images/deploy-data-science-solution-with-flyte/successful-flyte-deployment-on-aks.png)
+![image](/assets/images/deploy-data-science-solution-with-flyte/successful-flyte-deployment-on-aks.png)
 
 
 ## What next?
