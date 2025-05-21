@@ -1,5 +1,5 @@
 ---
-title: "Optimize AKS Traffic with externalTrafficPolicy=Local"
+title: "Optimize AKS Traffic with externalTrafficPolicy Local"
 description: "Learn how to optimize traffic routing in Azure Kubernetes Service (AKS) by leveraging the `externalTrafficPolicy=Local` setting. This guide covers best practices for preserving client IPs, managing pod shutdowns, and ensuring even traffic distribution across nodes."
 date: 2025-05-21
 authors:
@@ -12,8 +12,6 @@ tags:
   - best practices
   - load balancers
 ---
-Optimize AKS Traffic with externalTrafficPolicy=Local
-
 Managing external traffic in Kubernetes clusters can be a complex task, especially when striving to maintain service reliability, optimize performance, and ensure seamless user experiences. With the increasing adoption of Kubernetes in production environments, understanding and implementing best practices for external traffic management when using the Azure Load Balancer has become essential.
 
 In this blog, we delve into the intricacies of Kubernetes `externalTrafficPolicy=Local` setting and explore strategies to gracefully handle pod shutdowns, rolling updates, and pod distribution. By following these best practices, you can enhance the resilience and reliability of your services while optimizing resource utilization across your AKS clusters.
