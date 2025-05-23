@@ -26,7 +26,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Fixed failures triggered by duplicate tag keys that differed only by character case.
 
 * Behavior Changes  
-  * In-place upgrades are now supported when the cluster is using Azure CNI Overlay (preview).  
+  * In-place upgrades are now supported when the cluster is using [Azure CNI Overlay (preview)](https://learn.microsoft.com/azure/aks/azure-cni-overlay).
   * Overlay manager disregards non-weekly maintenance windows (see Bug Fixes).  
   * Duplicate tag keys that differ only by case are now rejected at creation time.
 
