@@ -11,43 +11,52 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Starting in June 2025, Azure Kubernetes Service will begin rolling out a change to enable quota for all current and new AKS customers. AKS quota will represent a limit of the maximum number of managed clusters that an Azure subscription can consume per region. Existing AKS customer subscriptions will be given a quota limit at or above their current usage, depending on region availability. Once quota is enabled, customers can view their available quota and request quota increases in the Quotas page in the Azure Portal or by using the Quotas REST API. For details on how to view and request quota increases via the Portal Quotas page, visit [Azure Quotas](https://learn.microsoft.com/azure/quotas/view-quotas). For details on how to view and request quota increases via the Quotas REST API, visit: [Azure Quota REST API Reference](https://learn.microsoft.com/rest/api/reserved-vm-instances/quotaapi). New AKS customer subscriptions will be given a default limit upon new subscription creation. More information on the default limits for new subscriptions is available in documentation [here](https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits).
 * Starting on 17 June 2025, AKS will no longer create new node images for [Ubuntu 18.04](https://github.com/Azure/AKS/issues/4873) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to a [supported Kubernetes version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions).
 * [Teleport (preview)](https://github.com/Azure/acr/blob/main/docs/teleport/aks-getting-started.md) on AKS will be retired on 15 July 2025, please [migrate to Artifact Streaming (preview) on AKS](https://learn.microsoft.com/azure/aks/artifact-streaming) or update your node pools to set --aks-custom-headers EnableACRTeleport=false. Azure Container Registry has removed the Teleport API meaning that any nodes with Teleport enabled are pulling images from Azure Container Registry as any other AKS node. After 15 July 2025, any node pools with Teleport (preview) enabled may experience breakage and node provisioning failures. For more information, see [aka.ms/aks/teleport-retirement](https://aka.ms/aks/teleport-retirement).
+* Kubernetes 1.31 and 1.32 are designated as [Long Term Suport Version](https://learn.microsoft.com/en-us/azure/aks/long-term-support).
 
-### Features
-* AKS will support CVM for ubuntu 24.04. This PR adds cvm ossku validation logic. Not to be added to release notes as the feature is still blocked from usage. It can only be tested using the test subscriptions/ E2E.
-* Update CRDs to match 1.4.0-aks, including: remove unsupported resource version add zone label support remove unsupported labels add image-related status in AKSNodeClass add v1beta1 version Update default CRs: AKSNodeClass - use v1beta1 version NodePool default - move Cilium label into template NodePool system-surge - add (conditionally) Cilium label & startupTaint Remove configuration for webhook Update Deployment Flow in vnetGUID if available (use Secret) Update SIG configuration (set USESIG to sigEnable value if available, otherwise false) Rename (currently unused) USECONTROLPLANE to AKSCONTROL_PLANE Update feature flags and a couple of other values for 1.4.x Add permissions to read ConfigMap (for Maintenance Windows config)
+### Release Notes
 
-### Behavior Changes
-* AKS now allows upgrading from Azure CNI NodeSubnet to Azure CNI NodeSubnet with Cilium dataplane, and from Azure CNI NodeSubnet with Cilium dataplane to Azure CNI Overlay with Cilium dataplane.
+* Features:
+  * Added validation logic for Confidential Virtual Machines (CVM) on Ubuntu 24.04 (feature currently gated for limited testing).
+  * Updated CRDs to version `1.4.0-aks`  
+    * Added zone-label support and image-related status fields.  
+    * Removed unsupported resource versions and labels.  
+    * Introduced `v1beta1` API version for **AKSNodeClass** and updated default CRs.  
+    * Adjusted deployment flow to use `vnetGUID` from Secret when available.  
+    * Updated feature flags, SIG configuration, and permissions to read ConfigMaps for maintenance windows.
 
-### Bug Fixes
-* Keep kube-proxy running on add-ons v2 during Cilium migrations to avoid service connectivity loss.
-* Update Windows GPU device-plugin to `v0.0.19`, mitigating CVE-2025-22871.
-* Use a pre-built image for the static-egress-gateway init container (kube-egress-gateway `v0.0.20`) to remove network-related installation failures.
-* Move `ExtensionManager` back to Overlay, resolving Flux-extension deployment issues.
-* Overlay manager now ignores non-weekly maintenance windows (second part of validator fix).
-* Fix duplicate tag keys that differed only by case.
+* Bug Fixes:
+  * Kept **kube-proxy** running on add-ons v2 during Cilium migrations to prevent service connectivity loss.  
+  * Updated Windows GPU device-plugin to `v0.0.19`, mitigating CVE-2025-22871.  
+  * Switched static-egress-gateway init container to pre-built image (`v0.0.20`) to avoid network-related install failures.  
+  * Moved `ExtensionManager` back to Overlay, resolving Flux extension deployment issues.  
+  * Overlay manager now ignores non-weekly maintenance windows.  
+  * Fixed duplicate tag keys that differed only by case.
 
-### Component Updates
-* Windows node images  
-  * Server 2019 Gen1 – `17763.7240.250416`  
-  * Server 2022 Gen1/Gen2 – `20348.3561.250416`  
-  * Server 23H2 Gen1/Gen2 – `25398.1551.250416`
-* AgentBaker versions: `v0.20250422.0`, `v0.20250509.0`, `v0.20250514.0`.
-* Container Insights Linux DaemonSet memory limit increased to 1 Gi.
-* kubelet-serving-csr-approver plug-in enabled by default in all public regions; new chart released.
-* New (disabled-by-default) Cilium metric `ciliumproxydatapathupdatetimeout_total`.
-* KSCR enabled by default for West Central US & East Asia regions.
-* CVM support added for Ubuntu 24.04 on Azure Linux 3.0; image selection wired-in.
-* Back-port upstream Istio chart changes for CCOA patch releases.
-* CSI driver upgrades  
-  * Azure Disk & Blob: latest patch versions  
-  * Azure File: `v1.32.3` on AKS 1.32
-* Fleet, Cloud Node Manager, Cloud Controller Manager and Credential Provider bumped to `v1.33.0 / v1.32.5 / v1.31.6 / v1.30.12 / v1.29.15`.
-* Static egress gateway: memory limits raised; images updated to `v0.0.21`.
-* Policy add-on `1.11` with Gatekeeper `3.19`.
-* Network-isolated cluster GA, plus support for CNIv1 → Cilium and Cilium → Overlay upgrade paths.
-* Kubernetes 1.31 & 1.32 marked LTS; Kubernetes 1.33 preview support added. 
+* Behavior Changes:
+  * Supported in-place upgrades:  
+    * Azure
+  * Overlay manager now ignores non-weekly maintenance windows.  
+  * Fixed duplicate tag keys differing only by case.
 
+* Component updates:
+  * Windows node images:  
+    * Server 2019 Gen1 – `17763.7240.250416`  
+    * Server 2022 Gen1/Gen2 – `20348.3561.250416`  
+    * Server 23H2 Gen1/Gen2 – `25398.1551.250416`
+  * AgentBaker versions: `v0.20250422.0`, `v0.20250509.0`, `v0.20250514.0`.
+  * Container Insights Linux DaemonSet memory limit increased to 1 GiB.
+  * `kubelet-serving-csr-approver` plug-in enabled by default in all public regions; new chart released.
+  * New (disabled-by-default) Cilium metric `ciliumproxydatapathupdatetimeout_total`.
+  * KSCR enabled by default for West Central US and East Asia.
+  * CVM support wired-in for Ubuntu 24.04 on Azure Linux 3.0.
+  * Back-ported upstream Istio chart changes for CCOA patch releases.
+  * CSI drivers:  
+    * Azure Disk & Azure Blob updated to latest patch versions.  
+    * Azure File `v1.32.3` available on AKS 1.32.
+  * Fleet Networking, Cloud Node Manager, Cloud Controller Manager, and Credential Provider bumped to `v1.33.0 / v1.32.5 / v1.31.6 / v1.30.12 / v1.29.15`.
+  * Static egress gateway images updated to `v0.0.21` and memory limits increased.
+  * Policy add-on `v1.11` with Gatekeeper `v3.19`.
+  * Network-isolated clusters GA with support for CNIv1 → Cilium and Cilium → Overlay upgrade paths.
 
 ## Release 2025-04-27
 
