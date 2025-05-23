@@ -32,16 +32,16 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Duplicate tag keys that differ only by case are now rejected at creation time.
 
 * Component Updates  
-  * CRDs `1.4.0-aks`  
+  * Updated NAP Custom Resource Definitions to [`1.4.0-aks`](https://github.com/Azure/karpenter-provider-azure/blob/main/charts/karpenter-crd/templates/karpenter.azure.com_aksnodeclasses.yaml)
     * Added zone-label support and image-status fields.  
     * Introduced `v1beta1` API for AKSNodeClass; default CRs updated accordingly.  
     * Deployment flow now consumes `vnetGUID` from Secret when present.  
     * Clean-up of obsolete resource versions/labels; broader ConfigMap read permissions for maintenance-window detection.  
   * Windows node images  
-    * Server 2019 Gen1 – `17763.7240.250416`  
-    * Server 2022 Gen1/Gen2 – `20348.3561.250416`  
-    * Server 23H2 Gen1/Gen2 – `25398.1551.250416`  
-  * AgentBaker versions bumped to `v0.20250422.0`, `v0.20250509.0`, and `v0.20250514.0`.  
+    * Server 2019 Gen1 – [`17763.7240.250416`](vhd-notes\AKSWindows\2019\17763.7240.250416.txt)
+    * Server 2022 Gen1/Gen2 – [`20348.3561.250416`](vhd-notes\AKSWindows\2022\20348.3561.250416.txt)
+    * Server 23H2 Gen1/Gen2 – [`25398.1551.250416`](vhd-notes\AKSWindows\23H2\25398.1551.250416.txt)
+  * AgentBaker versions bumped to [`v0.20250422.0`](https://github.com/Azure/AgentBaker/releases/tag/v0.20250422.0), [`v0.20250422.0`](https://github.com/Azure/AgentBaker/releases/tag/v0.20250428.0), [`v0.20250509.0`](https://github.com/Azure/AgentBaker/releases/tag/v0.20250509.0), and [`v0.20250514.0`](https://github.com/Azure/AgentBaker/releases/tag/v0.20250514.0).  
   * Container Insights Linux DaemonSet memory limit increased to 1 GiB.  
   * kubelet-serving-csr-approver plug-in enabled by default in all public regions; new Helm chart released.  
   * Cilium introduces a new (disabled-by-default) metric `ciliumproxydatapathupdatetimeout_total`.  
