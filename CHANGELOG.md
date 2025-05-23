@@ -16,6 +16,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Features  
   * Kubernetes 1.31 and 1.32 are now designated as [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) versions.  
   * Kubernetes 1.33 is available in Preview. A full matrix of supported add-ons and components is published at the [AKS versions page](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-1330).
+  * Network-isolated clusters are now Generally Available, including GA support for CNIv1 → Cilium and Cilium → Overlay upgrade paths.
 
 * Bug Fixes  
   * Retained `kube-proxy` on add-ons v2 during Cilium migrations to prevent transient service-connectivity loss.  
@@ -54,8 +55,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
     * Fleet Networking, Cloud-Node-Manager, Cloud-Controller-Manager, and Credential Provider updated respectively to `v1.33.0`, `v1.32.5`, `v1.31.6`, `v1.30.12`, and `v1.29.15`.  
   * Static egress gateway images updated to `v0.0.21`; memory limits raised for greater stability.  
   * Azure Policy add-on upgraded to `v1.11`, which bundles Gatekeeper `v3.19`.  
-  * Network-isolated clusters are now Generally Available, including GA support for CNIv1 → Cilium and Cilium → Overlay upgrade paths.
-
+  
 ## Release 2025-04-27
 
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250427`.
