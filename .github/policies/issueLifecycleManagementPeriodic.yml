@@ -246,7 +246,7 @@ configuration:
           days: 7
       actions:
       - addReply:
-          reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" or "shipped" and it hasn't had activity for 7 days.
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "resolution/fix-released" and it hasn't had activity for 7 days.
       - closeIssue
     - description: Close open issues marked as 'resolution/shipped ' that have had no activity for 7 days - runs every 12 hours
       frequencies:
@@ -261,7 +261,7 @@ configuration:
           days: 7
       actions:
       - addReply:
-          reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" or "shipped" and it hasn't had activity for 7 days.
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "resolution/shipped" and it hasn't had activity for 7 days.
       - closeIssue
     - description: Close open issues marked as 'resolution/answer-provided' that have had no activity for 2 days - runs every 6 hours
       frequencies:
