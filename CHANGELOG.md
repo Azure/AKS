@@ -21,7 +21,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Kubernetes 1.31 and 1.32 are now designated as [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) versions.  
   * [Kubernetes 1.33](https://kubernetes.io/blog/2025/04/23/kubernetes-v1-33-release/) is available in Preview. A full matrix of supported add-ons and components is published at the [AKS versions page](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-1330).
   
-  * Bug Fixes  
+* Bug Fixes  
   * Fixed failures triggered by duplicate [tag keys](https://learn.microsoft.com/azure/aks/use-tags) that differed only by character case.
 
 * Behavior Changes  
