@@ -13,25 +13,25 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * [Teleport (preview)](https://github.com/Azure/acr/blob/main/docs/teleport/aks-getting-started.md) on AKS will be retired on 15 July 2025, please [migrate to Artifact Streaming (preview) on AKS](https://learn.microsoft.com/azure/aks/artifact-streaming) or update your node pools to set --aks-custom-headers EnableACRTeleport=false. Azure Container Registry has removed the Teleport API meaning that any nodes with Teleport enabled are pulling images from Azure Container Registry as any other AKS node. After 15 July 2025, any node pools with Teleport (preview) enabled may experience breakage and node provisioning failures. For more information, see [aka.ms/aks/teleport-retirement](https://aka.ms/aks/teleport-retirement).
 
 ### Release Notes
+
+* Preview Features
+  * For clusters with [Layer 7 policies with Advanced Container Networking Services](https://learn.microsoft.com/azure/aks/how-to-apply-l7-policies?tabs=cilium) enabled, a new metric [proxy_datapath_update_timeout_total](https://docs.cilium.io/en/stable/observability/metrics/#policy-l7-http-kafka-fqdn) has been introduced in disabled by default mode.
+
 * Features  
   * Kubernetes 1.31 and 1.32 are now designated as [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) versions.  
   * [Kubernetes 1.33](https://kubernetes.io/blog/2025/04/23/kubernetes-v1-33-release/) is available in Preview. A full matrix of supported add-ons and components is published at the [AKS versions page](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-1330).
-  * GA support for [CNIv1 → Cilium and Cilium → Overlay](https://learn.microsoft.com/azure/aks/upgrade-azure-cni) upgrade paths.
-
-* Bug Fixes  
+  
+  * Bug Fixes  
   * Fixed failures triggered by duplicate [tag keys](https://learn.microsoft.com/azure/aks/use-tags) that differed only by character case.
 
 * Behavior Changes  
-  * [AKS `default` maintenance window](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) now ignores maintenance windows that aren’t weekly.   
   * Static egress gateway memory limits increased from 128Mi to 500Mi for greater stability.
+  * Memory for Azure Monitor Container Insights container `ama-logs` increased from `750Mi` to `1Gi`.
+  
 * Component Updates  
-  * Updated [Node Auto Provisioning]( https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) Custom Resource Definitions to [`1.4.0-aks`]( https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.4.0.)
-    * Added zone-label support and image-status fields.  
-    * Introduced `v1beta1` API for AKSNodeClass; default CRs updated accordingly.  
-    * Deployment flow now consumes `vnetGUID` from Secret when present.  
-    * Clean-up of obsolete resource versions/labels.
+  * Updated [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) to use karpenter-provider-azure release [v1.4.0](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.4.0).
   * Updated [Azure Monitor Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) images to [3.1.27](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#05082025--) for both Linux and Windows.
-  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://nvd.nist.gov/vuln/detail/CVE-2025-22871).  
+  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-22871).  
   * Windows node images  
     * Server 2019 Gen1 – [`17763.7240.250416`](vhd-notes/AKSWindows/2019/17763.7240.250416.txt)
     * Server 2022 Gen1/Gen2 – [`20348.3561.250416`](vhd-notes/AKSWindows/2022/20348.3561.250416.txt)
@@ -41,15 +41,15 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * AKS Ubuntu 22.04 node image has been updated to [202505.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202505.14.0.txt).
   * AKS Ubuntu 24.04 node image has been updated to [202505.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202505.14.0.txt).
   * Cilium introduces a new (disabled-by-default) metric [`proxy_datapath_update_timeout_total`](https://docs.cilium.io/en/stable/observability/metrics/#policy-l7-http-kafka-fqdn).  
-  * CSI drivers  
-    * Azure Disk CSI driver updated to versions [v1.30.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.12), [v1.31.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.9), [v1.32.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.5) on AKS versions 1.30, 1.31, and 1.32 respectively.
-    * Azure Blob CSI driver updated to versions [v1.25.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.6) and [v1.26.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.3) on AKS versions 1.31 and 1.32 respectively
-    * Azure File CSI driver [v1.32.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.2) for AKS 1.32  
-  * Updated cloud-node-manager to [v1.32.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.32.5)
-  * Updated cloud-controller-manager to [v1.31.6](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.6)
-  * Updated acr-credential-provider to [v1.29.15](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.15)
-  * Static egress gateway images updated to [v0.0.21](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
-  * Updated Azure Policy add-on image to [v1.11](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111). Gatekeeper updated to [v3.19.1](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.19.1)
+  * Azure Disk CSI driver updated to versions [v1.30.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.12), [v1.31.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.9), [v1.32.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.5) on AKS versions 1.30, 1.31, and 1.32 respectively.
+  * Azure Blob CSI driver updated to versions [v1.25.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.6) and [v1.26.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.3) on AKS versions 1.31 and 1.32 respectively
+  * Azure File CSI driver [v1.32.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.2) for AKS 1.32  
+  * Updated [Cloud-Node-Manager](https://github.com/kubernetes-sigs/cloud-provider-azure) to `v1.32.5`.
+  * Updated [Cloud-Controller-Manager](https://cloud-provider-azure.sigs.k8s.io/blog/) to `v1.31.6`.
+  * Updated [Credential Provider](https://cloud-provider-azure.sigs.k8s.io/blog/releases/) to `v1.29.15`.
+  * Updated fleet-networking agent to [v0.3.11](https://github.com/Azure/fleet-networking/releases/tag/v0.3.11).
+  * Static egress gateway images updated to [`v0.0.21`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
+  * Azure Policy add-on upgraded to [`v1.11`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111), which bundles Gatekeeper `v3.19`.  
   
 ## Release 2025-04-27
 
