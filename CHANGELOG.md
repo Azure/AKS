@@ -46,10 +46,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
     * Azure Blob CSI driver updated to versions [v1.25.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.6) and [v1.26.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.3) on AKS versions 1.31 and 1.32 respectively
     * Azure File CSI driver [v1.32.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.2) for AKS 1.32  
   * Updated cloud-node-manager to [v1.32.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.32.5)
-  * Updated [Cloud-Controller-Manager](https://cloud-provider-azure.sigs.k8s.io/blog/) to `v1.31.6`.
-  * Updated [Credential Provider](https://cloud-provider-azure.sigs.k8s.io/blog/releases/) to `v1.29.15`.  
-  * Static egress gateway images updated to [`v0.0.21`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
-  * Azure Policy add-on upgraded to [`v1.11`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111), which bundles Gatekeeper `v3.19`.  
+  * Updated cloud-controller-manager to [v1.31.6](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.6)
+  * Updated acr-credential-provider to [v1.29.15](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.15)
+  * Static egress gateway images updated to [v0.0.21](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
+  * Updated Azure Policy add-on image to [v1.11](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111). Gatekeeper updated to [v3.19.1](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.19.1)
   
 ## Release 2025-04-27
 
