@@ -41,10 +41,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Cilium introduces a new (disabled-by-default) metric [`proxy_datapath_update_timeout_total`](https://docs.cilium.io/en/stable/observability/metrics/#policy-l7-http-kafka-fqdn).  
   * Confidential VM(https://learn.microsoft.com/azure/aks/use-cvm) support added for Ubuntu 24.04.
   * CSI drivers  
-    * [Azure Disk CSI driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver)
-      * v1.30.12 for AKS 1.30  
-      * v1.31.9  for AKS 1.31  
-      * v1.32.5  for AKS 1.32  
+    * Azure Disk CSI driver updated to versions [v1.30.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.12), [v1.31.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.9), [v1.32.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.5) on AKS versions 1.30, 1.31, and 1.32 respectively.
     * [Azure Blob CSI driver](https://github.com/kubernetes-sigs/blob-csi-driver)
       * v1.25.6 for AKS 1.31  
       * v1.26.3 for AKS 1.32  
