@@ -34,9 +34,9 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
     * Deployment flow now consumes `vnetGUID` from Secret when present.  
     * Clean-up of obsolete resource versions/labels; broader ConfigMap read permissions for maintenance-window detection.  
   * Windows node images  
-    * Server 2019 Gen1 – [`17763.7240.250416`](vhd-notes\AKSWindows\2019\17763.7240.250416.txt)
-    * Server 2022 Gen1/Gen2 – [`20348.3561.250416`](vhd-notes\AKSWindows\2022\20348.3561.250416.txt)
-    * Server 23H2 Gen1/Gen2 – [`25398.1551.250416`](vhd-notes\AKSWindows\23H2\25398.1551.250416.txt)
+    * Server 2019 Gen1 – [`17763.7240.250416`](vhd-notes/AKSWindows/2019/17763.7240.250416.txt)
+    * Server 2022 Gen1/Gen2 – [`20348.3561.250416`](vhd-notes/AKSWindows/2022/20348.3561.250416.txt)
+    * Server 23H2 Gen1/Gen2 – [`25398.1551.250416`](vhd-notes/AKSWindows/23H2/25398.1551.250416.txt)
   * Refer the latest VHD versions of Ubuntu and Azure Linux for your regions [here](https://releases.aks.azure.com/webpage/index.html).
   * Cilium introduces a new (disabled-by-default) metric [`proxy_datapath_update_timeout_total`](https://docs.cilium.io/en/stable/observability/metrics/#policy-l7-http-kafka-fqdn).  
   * Confidential VM(https://learn.microsoft.com/azure/aks/use-cvm) support added for Ubuntu 24.04.
