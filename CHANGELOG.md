@@ -42,9 +42,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Confidential VM(https://learn.microsoft.com/azure/aks/use-cvm) support added for Ubuntu 24.04.
   * CSI drivers  
     * Azure Disk CSI driver updated to versions [v1.30.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.12), [v1.31.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.9), [v1.32.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.5) on AKS versions 1.30, 1.31, and 1.32 respectively.
-    * [Azure Blob CSI driver](https://github.com/kubernetes-sigs/blob-csi-driver)
-      * v1.25.6 for AKS 1.31  
-      * v1.26.3 for AKS 1.32  
+    * Azure Blob CSI driver updated to versions [v1.25.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.6) and [v1.26.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.3) on AKS versions 1.31 and 1.32 respectively
     * Azure File CSI driver [v1.32.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.2) for AKS 1.32  
   * Control-plane components  
     * [Fleet Networking](https://github.com/Azure/fleet-networking), [Cloud-Node-Manager](https://github.com/kubernetes-sigs/cloud-provider-azure), [Cloud-Controller-Manager](https://cloud-provider-azure.sigs.k8s.io/blog/), and [Credential Provider](https://cloud-provider-azure.sigs.k8s.io/blog/releases/)updated respectively to `v1.33.0`, `v1.32.5`, `v1.31.6`, `v1.30.12`, and `v1.29.15`.  
