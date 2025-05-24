@@ -6,7 +6,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Announcements
 
-* Customers using AzureLinux 2.0 should migrate to Azure Linux 3.0 before November 2025. For details on how to migrate from Azure Linux 2.0 to Azure Linux 3.0, see this [doc](https://learn.microsoft.com/azure/azure-linux/how-to-enable-azure-linux-3). AKS is currently working on a feature to allow for migrations between Azure Linux 2.0 and Azure Linux 3.0 through a node pool update command. For updates on feature progress and availability, see Github [issue](https://github.com/Azure/AKS/issues/4987).
+* Customers using Azure Linux 2.0 should migrate to Azure Linux 3.0 before November 2025. For details on how to migrate from Azure Linux 2.0 to Azure Linux 3.0, see this [doc](https://learn.microsoft.com/azure/azure-linux/how-to-enable-azure-linux-3). AKS is currently working on a feature to allow for migrations between Azure Linux 2.0 and Azure Linux 3.0 through a node pool update command. For updates on feature progress and availability, see Github [issue](https://github.com/Azure/AKS/issues/4987).
 * Starting in June 2025, Customers using AzureLinux 2.0 can opt into LTS clusters from versions 1.28 LTS onwards.
 * Starting in June 2025, Azure Kubernetes Service will begin rolling out a change to enable quota for all current and new AKS customers. AKS quota will represent a limit of the maximum number of managed clusters that an Azure subscription can consume per region. Existing AKS customer subscriptions will be given a quota limit at or above their current usage, depending on region availability. Once quota is enabled, customers can view their available quota and request quota increases in the Quotas page in the Azure Portal or by using the Quotas REST API. For details on how to view and request quota increases via the Portal Quotas page, visit [Azure Quotas](https://learn.microsoft.com/azure/quotas/view-quotas). For details on how to view and request quota increases via the Quotas REST API, visit: [Azure Quota REST API Reference](https://learn.microsoft.com/rest/api/reserved-vm-instances/quotaapi). New AKS customer subscriptions will be given a default limit upon new subscription creation. More information on the default limits for new subscriptions is available in documentation [here](https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits).
 * Starting on 17 June 2025, AKS will no longer create new node images for [Ubuntu 18.04](https://github.com/Azure/AKS/issues/4873) or provide security updates. Existing node images will be deleted. Your node pools will be unsupported and you will no longer be able to scale. To avoid service disruptions, scaling restrictions, and remain supported, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to a [supported Kubernetes version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions).
@@ -16,7 +16,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Features  
   * Kubernetes 1.31 and 1.32 are now designated as [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) versions.  
   * [Kubernetes 1.33](https://kubernetes.io/blog/2025/04/23/kubernetes-v1-33-release/) is available in Preview. A full matrix of supported add-ons and components is published at the [AKS versions page](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-1330).
-  * [Network-isolated clusters]( https://learn.microsoft.com/azure/aks/concepts-network-isolated) are now Generally Available.
   * GA support for [CNIv1 → Cilium and Cilium → Overlay](https://learn.microsoft.com/azure/aks/upgrade-azure-cni) upgrade paths.
 
 * Bug Fixes  
@@ -24,22 +23,24 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 * Behavior Changes  
   * [AKS `default` maintenance window](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli)now ignores maintenance windows that aren’t weekly.   
-  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-22871).
-  * Bumped [Container Insights image](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md) and agent versions to 3.1.27 for both Linux and Windows agents.
-  * Static egress gateway memory limits raised for greater stability. 
+  * Static egress gateway memory limits increased from 128Mi to 500Mi for greater stability.
 * Component Updates  
-  * Updated [Node Auto Provisioning]( https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) Custom Resource Definitions to [`1.4.0-aks`](https://github.com/Azure/karpenter-provider-azure/blob/main/charts/karpenter-crd/templates/karpenter.azure.com_aksnodeclasses.yaml)
+ * Updated [Node Auto Provisioning]( https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) Custom Resource Definitions to [`1.4.0-aks`]( https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.4.0.)
     * Added zone-label support and image-status fields.  
     * Introduced `v1beta1` API for AKSNodeClass; default CRs updated accordingly.  
     * Deployment flow now consumes `vnetGUID` from Secret when present.  
-    * Clean-up of obsolete resource versions/labels; broader ConfigMap read permissions for maintenance-window detection.  
+    * Clean-up of obsolete resource versions/labels.
+  * Updated [Azure Monitor Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) images to [3.1.27](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#05082025--) for both Linux and Windows.
+  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-22871).  
   * Windows node images  
     * Server 2019 Gen1 – [`17763.7240.250416`](vhd-notes/AKSWindows/2019/17763.7240.250416.txt)
     * Server 2022 Gen1/Gen2 – [`20348.3561.250416`](vhd-notes/AKSWindows/2022/20348.3561.250416.txt)
     * Server 23H2 Gen1/Gen2 – [`25398.1551.250416`](vhd-notes/AKSWindows/23H2/25398.1551.250416.txt)
-  * Refer the latest VHD versions of Ubuntu and Azure Linux for your regions [here](https://releases.aks.azure.com/webpage/index.html).
+  * AKS Azure Linux v2 image has been updated to [202505.14.0](vhd-notes/AzureLinux/202505.14.0.txt).
+  * AKS Azure Linux v3 image has been updated to [202505.14.0](vhd-notes/AzureLinuxv3/202505.14.0.txt).
+  * AKS Ubuntu 22.04 node image has been updated to [202505.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202505.14.0.txt).
+  * AKS Ubuntu 24.04 node image has been updated to [202505.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202505.14.0.txt).
   * Cilium introduces a new (disabled-by-default) metric [`proxy_datapath_update_timeout_total`](https://docs.cilium.io/en/stable/observability/metrics/#policy-l7-http-kafka-fqdn).  
-  * Confidential VM(https://learn.microsoft.com/azure/aks/use-cvm) support added for Ubuntu 24.04.
   * CSI drivers  
     * [Azure Disk CSI driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver)
       * v1.30.12 for AKS 1.30  
@@ -49,10 +50,11 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
       * v1.25.6 for AKS 1.31  
       * v1.26.3 for AKS 1.32  
     * Azure File CSI driver [v1.32.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.2) for AKS 1.32  
-  * Control-plane components  
-    * [Fleet Networking](https://github.com/Azure/fleet-networking), [Cloud-Node-Manager](https://github.com/kubernetes-sigs/cloud-provider-azure), [Cloud-Controller-Manager](https://cloud-provider-azure.sigs.k8s.io/blog/), and [Credential Provider](https://cloud-provider-azure.sigs.k8s.io/blog/releases/)updated respectively to `v1.33.0`, `v1.32.5`, `v1.31.6`, `v1.30.12`, and `v1.29.15`.  
-  * Static egress gateway images updated to [`v0.0.21`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
-  * Azure Policy add-on upgraded to [`v1.11`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111), which bundles Gatekeeper `v3.19`.  
+    * Updated [Cloud-Node-Manager](https://github.com/kubernetes-sigs/cloud-provider-azure) to `v1.32.5`.
+    * Updated [Cloud-Controller-Manager](https://cloud-provider-azure.sigs.k8s.io/blog/) to `v1.31.6`.
+    * Updated [Credential Provider](https://cloud-provider-azure.sigs.k8s.io/blog/releases/) to `v1.29.15`.  
+    * Static egress gateway images updated to [`v0.0.21`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
+    * Azure Policy add-on upgraded to [`v1.11`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111), which bundles Gatekeeper `v3.19`.  
   
 ## Release 2025-04-27
 
