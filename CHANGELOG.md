@@ -27,11 +27,11 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Behavior Changes  
   * Static egress gateway memory limits increased from 128Mi to 500Mi for greater stability.
   * Memory for Azure Monitor Container Insights container `ama-logs` increased from `750Mi` to `1Gi`.
-  
+
 * Component Updates  
   * Updated [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) to use karpenter-provider-azure release [v1.4.0](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.4.0).
   * Updated [Azure Monitor Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) images to [3.1.27](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#05082025--) for both Linux and Windows.
-  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-22871).  
+  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://nvd.nist.gov/vuln/detail/CVE-2025-22871).  
   * Windows node images  
     * Server 2019 Gen1 – [`17763.7240.250416`](vhd-notes/AKSWindows/2019/17763.7240.250416.txt)
     * Server 2022 Gen1/Gen2 – [`20348.3561.250416`](vhd-notes/AKSWindows/2022/20348.3561.250416.txt)
@@ -44,12 +44,11 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Azure Disk CSI driver updated to versions [v1.30.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.30.12), [v1.31.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.9), [v1.32.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.5) on AKS versions 1.30, 1.31, and 1.32 respectively.
   * Azure Blob CSI driver updated to versions [v1.25.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.6) and [v1.26.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.3) on AKS versions 1.31 and 1.32 respectively
   * Azure File CSI driver [v1.32.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.2) for AKS 1.32  
-  * Updated [Cloud-Node-Manager](https://github.com/kubernetes-sigs/cloud-provider-azure) to `v1.32.5`.
-  * Updated [Cloud-Controller-Manager](https://cloud-provider-azure.sigs.k8s.io/blog/) to `v1.31.6`.
-  * Updated [Credential Provider](https://cloud-provider-azure.sigs.k8s.io/blog/releases/) to `v1.29.15`.
-  * Updated fleet-networking agent to [v0.3.11](https://github.com/Azure/fleet-networking/releases/tag/v0.3.11).
-  * Static egress gateway images updated to [`v0.0.21`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
-  * Azure Policy add-on upgraded to [`v1.11`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111), which bundles Gatekeeper `v3.19`.  
+  * Updated cloud-node-manager to [v1.32.5](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.32.5)
+  * Updated cloud-controller-manager to [v1.31.6](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.6)
+  * Updated acr-credential-provider to [v1.29.15](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.29.15)
+  * Static egress gateway images updated to [v0.0.21](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
+  * Updated Azure Policy add-on image to [v1.11](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111). Gatekeeper updated to [v3.19.1](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.19.1).  
   
 ## Release 2025-04-27
 
