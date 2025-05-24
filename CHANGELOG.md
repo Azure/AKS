@@ -52,7 +52,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Control-plane components  
     * [Fleet Networking](https://github.com/Azure/fleet-networking), [Cloud-Node-Manager](https://github.com/kubernetes-sigs/cloud-provider-azure), [Cloud-Controller-Manager](https://cloud-provider-azure.sigs.k8s.io/blog/), and [Credential Provider](https://cloud-provider-azure.sigs.k8s.io/blog/releases/)updated respectively to `v1.33.0`, `v1.32.5`, `v1.31.6`, `v1.30.12`, and `v1.29.15`.  
   * Static egress gateway images updated to [`v0.0.21`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.0.21).  
-  * Azure Policy add-on upgraded to [`v1.11`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111), which bundles Gatekeeper `v3.19`.  
+  * Updated Azure Policy add-on image to [v1.11](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1111). Gatekeeper updated to [v3.19.1](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.19.1)
   
 ## Release 2025-04-27
 
