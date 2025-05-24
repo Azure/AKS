@@ -31,7 +31,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
     * Deployment flow now consumes `vnetGUID` from Secret when present.  
     * Clean-up of obsolete resource versions/labels.
   * Updated [Azure Monitor Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) images to [3.1.27](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#05082025--) for both Linux and Windows.
-  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-22871).  
+  * Updated the Windows GPU device-plugin to `v0.0.19`, mitigating [CVE-2025-22871](https://nvd.nist.gov/vuln/detail/CVE-2025-22871).  
   * Windows node images  
     * Server 2019 Gen1 – [`17763.7240.250416`](vhd-notes/AKSWindows/2019/17763.7240.250416.txt)
     * Server 2022 Gen1/Gen2 – [`20348.3561.250416`](vhd-notes/AKSWindows/2022/20348.3561.250416.txt)
