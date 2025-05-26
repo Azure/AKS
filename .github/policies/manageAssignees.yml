@@ -111,7 +111,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - Azure/teams/aks-security
+              - Azure/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True   
         # Confidential Computing
@@ -213,7 +213,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - Azure/teams/aks-security
+              - Azure/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: False
         # Windows Containers
