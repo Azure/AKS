@@ -240,8 +240,6 @@ configuration:
       - isOpen
       - hasLabel:
           label: resolution/fix-released
-      - hasLabel:
-          label: resolution/shipped 
       - noActivitySince:
           days: 7
       actions:
