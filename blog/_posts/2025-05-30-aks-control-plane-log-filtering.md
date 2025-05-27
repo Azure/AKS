@@ -13,7 +13,7 @@ categories:
 
 ## Introduction
 
-While AKS does NOT provide access to the cluster's managed control plane, it does provide access to the control plane component logs via [diagnostic settings](https://learn.microsoft.com/en-us/azure/aks/monitor-aks#aks-control-planeresource-logs). The easiest option to persist and search this data is to send it directly to Azure Log Analytics, however there is a LOT of data in those logs, which makes it cost prohibitive in Log Analytics. Alternatively, you can send all the data to an Azure Storage Account, but then searching and alerting can be challenging. 
+While AKS does not provide access to the cluster's managed control plane, it does provide access to the control plane component logs via [diagnostic settings](https://learn.microsoft.com/en-us/azure/aks/monitor-aks#aks-control-planeresource-logs). The easiest option to persist and search this data is to send it directly to Azure Log Analytics, however there is a large amount of data in those logs, which makes it cost prohibitive in Log Analytics. Alternatively, you can send all the data to an Azure Storage Account, but then searching and alerting can be challenging. 
 
 To address the above challenge, one option is to stream the data to Azure Event Hub, which then gives you the option to use Azure Stream Analytics to filter out events that you deem important and then just store the rest in cheaper storage (ex. Azure Storage) for potential future diagnostic needs.
 
@@ -52,7 +52,13 @@ az eventhubs eventhub create --name $EVENT_HUB_NAME --resource-group $RG --names
 
 AKS_CLUSTER_ID=$(az aks show -g $RG -n $CLUSTER_NAME -o tsv --query id)
 EVENT_HUB_NAMESPACE_ID=$(az eventhubs namespace show -g $RG -n $NAMESPACE_NAME -o tsv --query id)
+```
 
+
+Next, we'll enable the diagnostic settings for the AKS cluster. In the example below, for simplicity, we will only enable the 'kube-audit' logs, however you can edit this to include any additional control plane logs you'd like to leverage. You can review the logs available [here](https://learn.microsoft.com/en-us/azure/aks/monitor-aks-reference#resource-logs) 
+
+
+```bash
 # Apply the diagnostic settings to the AKS cluster to enable Kubernetes audit log shipping
 # to our Event Hub
 az monitor diagnostic-settings create \
@@ -158,7 +164,7 @@ For the Stream Analytics Job we'll switch over to the portal, so go ahead and op
     CROSS APPLY GetArrayElements(records) AS individualRecords
     )
     SELECT *
-    INTO [kubeauditlogs]
+    INTO [kubeaudit]
     FROM DynamicCTE
     ```
 
@@ -167,6 +173,8 @@ For the Stream Analytics Job we'll switch over to the portal, so go ahead and op
     ![Save Query](/assets/images/aks-control-plane-log-filtering/sa-save-query.jpg)
 
 20. In the top left of the query window, click on 'Start Job' to kick off the stream analytics job.
+
+    > **Note:** You may need to click out of and then back into the 'Query' tab before the 'Start job' button becomes active.
 
 21. In the 'Start job' window, leave the start time set to 'Now' and click 'Start'
 
@@ -277,10 +285,21 @@ So, we have a user trying to execute requests against our cluster for which they
 5. Click 'Save query'
 6. Once the save completes click 'Start Job'
 
-Once your job is started, you should be able to navigate back to your Service Bus Queue and watch the messages flowing through.
+    > **Note:** Again, you may need to click out of and then back into the 'Query' tab before the 'Start job' button becomes active.
+
+7. Go back to the 'Overview' tab in your Stream Analytics job, and refresh until the job 'Status' shows as 'Running'.
+
+Once your job is running, you should be able to navigate back to your Service Bus Queue and watch the messages flowing through.
 
 ![Filtered Messages](/assets/images/aks-control-plane-log-filtering/sb-filtered-messages.jpg)
 
+If you've built up a large backlog of messages, you can change from 'Peek Mode' to 'Receive Mode'. 
+
+![Receive Mode](/assets/images/aks-control-plane-log-filtering/receivemode.jpg)
+
+Then when you click on 'Receive Messages', you can set the messages to 'ReceiveAndDelete' and specify the number of messages you'd like to recieve and delete to clear out your queue.
+
+![Receive and Delete](/assets/images/aks-control-plane-log-filtering/receiveanddelete.jpg)
 
 ## Conclusion
 
