@@ -1,7 +1,7 @@
 ---
 title: "Using Stream Analytics to Filter AKS Control Plane Logs"
 description: "Using Azure Stream Analytics to filter Kubernetes control plane log data from AKS diagnostics in order to isolate critical data and reduce log retention cost."
-date: 2025-05-26
+date: 2025-05-27
 author: Steve Griffith
 categories: 
 - general
