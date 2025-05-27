@@ -297,7 +297,7 @@ If you've built up a large backlog of messages, you can change from 'Peek Mode' 
 
 ![Receive Mode](/assets/images/aks-control-plane-log-filtering/receivemode.jpg)
 
-Then when you click on 'Receive Messages', you can set the messages to 'ReceiveAndDelete' and specify the number of messages you'd like to recieve and delete to clear out your queue.
+Then when you click on 'Receive Messages', you can set the messages to 'ReceiveAndDelete' and specify the number of messages you'd like to receive and delete to clear out your queue.
 
 ![Receive and Delete](/assets/images/aks-control-plane-log-filtering/receiveanddelete.jpg)
 
