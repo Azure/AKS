@@ -1,6 +1,6 @@
 ---
 title: "Smarter Load‑Balancer Health Probes for AKS"
-description: "We’re redesigning the default Azure Load Balancer probe for externalTrafficPolicy: Cluster services so your apps stay healthy, troubleshooting gets simpler, and you can finally turn off those extra NodePorts."
+description: "We’re redesigning the Azure Load Balancer probe for externalTrafficPolicy: Cluster services so your apps stay healthy, troubleshooting gets simpler, and you can finally turn off those extra NodePorts."
 date: 2025-05-13
 author: Chase Wilson
 categories:
@@ -27,7 +27,7 @@ That design worked, but it came with real pain:
 
 We’re flipping the probe around:
 
-- **New default** for `externalTrafficPolicy: Cluster` – SLB sends a single shared **HTTP** probe to `http://<nodeIP>:10256/healthz`.  
+- **New default** for `externalTrafficPolicy: Cluster`and setting `clusterServiceLoadBalancerHealthProbeMode: Shared` – SLB sends a single shared **HTTP** probe to `http://<nodeIP>:10256/healthz`.  
   - A lightweight AKS sidecar handles PROXY‑protocol edge cases so Private Link Service scenarios keep working.
   - That endpoint is kube‑proxy’s own health check.  
 
@@ -47,7 +47,7 @@ We’re flipping the probe around:
 ## How it works under the hood
 
 1. **Shared probe** – Cloud‑provider config switches to *node health check* mode.  
-2. **Sidecar** – AKS deploys `node-health-proxy` alongside kube‑proxy:  
+2. **Sidecar** – AKS deploys a `health-probe-proxy` sidecar container in `cloud-node-manager` Pod:  
    - Listens on a new port (defaults to `29999`).  
    - Strips or parses the PROXY PDU so kube‑proxy doesn’t choke.  
    - Forwards `/healthz` to localhost `10256`.
@@ -72,3 +72,8 @@ By pointing SLB’s probe at the node instead of every app, AKS:
 - Opens the door to cleaner node drains and autoscaler events.
 
 Try it out today and let us know how it works in your environment!
+
+## Next steps
+
+- [Learn more about AKS networking](https://learn.microsoft.com/azure/aks/concepts-network)
+- [Explore AKS load balancer documentation](https://learn.microsoft.com/azure/aks/load-balancer-standard)
