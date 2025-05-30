@@ -124,7 +124,7 @@ configuration:
               label: bug
           - payloadType: Issues
           - labelAdded:
-              label: fixing
+              label: 'Under Investigation'
           - isOpen
         then:
           - addReply:
