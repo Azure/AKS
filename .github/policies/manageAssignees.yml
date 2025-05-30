@@ -500,6 +500,19 @@ configuration:
               mentionees:
               - kaarthis
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True            
+              assignMentionees: True
+        # Flux
+        - if:
+          - hasLabel:
+              label: extension/flux
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - dipti-pai
+              - bavneetsingh16
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
 onFailure: 
 onSuccess: 
