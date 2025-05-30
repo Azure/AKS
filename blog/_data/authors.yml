@@ -30,9 +30,16 @@ Jorge Palma:
 
 Kaarthikeyan Subramanian:
   name        : "Kaarthikeyan Subramanian"
-  bio         : "Product Manager"
-  avatar      : "" # Replace this with your avatar image
-
+  bio         : "Kaarthik is a Senior Product Manager for the Azure Kubernetes Service."
+  avatar      : "https://avatars.githubusercontent.com/u/97623105?s=400&u=48bac61e9a155beb58db79ef06f4db715b5f1b4d&v=4" # Replace this with your avatar image
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/kaarthikeyan-s-a835631b/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/kaarthis"
+      
 Paul Yu:
   name        : "Paul Yu"
   bio         : "Cloud Native Developer Advocate. Loves pineapple on pizza, dogs, and writing code."
@@ -174,6 +181,27 @@ Pavneet Ahluwalia:
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/pavneetsingh/"
 
+Vaibhav Arora:
+  name        : "Vaibhav Arora"
+  bio         : "Product Manager for Azure Kubernetes Service"
+  avatar      : "https://avatars.githubusercontent.com/u/72528539?v=4"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/varora24"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/varora24/"
+
+Mitch Shao:
+  name        : "Mitch Shao"
+  bio         : "Senior Software Engineer for Azure Kubernetes Service."
+  avatar      : "https://avatars.githubusercontent.com/u/115824693?v=4"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/mingqi-shao/"
+
 Bob Mital:
   name        : "Bob Mital"
   bio         : "Bob Mital is a Principal Product Manager at Microsoft Azure, focusing on partners and the Cloud Native ecosystem."
@@ -185,3 +213,61 @@ Bob Mital:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/bobmital"
+
+Suraj Deshmukh:
+  name        : "Suraj Deshmukh"
+  bio         : "Software Engineer at Microsoft, involved in Kubernetes and Open Source."
+  avatar      : "https://github.com/surajssd.png" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/surajssd/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/surajssd"
+    - label: "Blog"
+      icon: "fas fa-fw fa-link"
+      url: "https://suraj.io/"
+      
+Ernest Wong:
+  name        : "Ernest Wong"
+  bio         : "Software Engineer at Microsoft"
+  avatar      : "https://github.com/chewong.png" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/chewong/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/chewong"
+
+Jack Jiang:
+  name        : "Jack Jiang"
+  bio         : "Product Manager at Microsoft"
+  avatar      : "https://github.com/jakjang/profilepic/blob/main/jack_headshot.jpg?raw=true" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/jackjiangj/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/jakjang"
+      
+Ally Ford:
+  name        : "Ally Ford"
+  bio         : "Product Manager 2 at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/allison-ford-pm/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/allyford"
+      
+Sarah Zhou:
+  name        : "Sarah Zhou"
+  bio         : "Product Manager at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/sarahjzhou/"
