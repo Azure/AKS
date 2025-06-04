@@ -50,3 +50,6 @@ We will continue expanding our library of technical best practice guidance and u
 * Ray - [Deploy a Ray cluster on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/deploy-ray)
 * Valkey - [Create the infrastructure for running a Valkey cluster on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/create-valkey-infrastructure?pivots=terraform)
 * Mongo DB - [Create the infrastructure for running a MongoDB cluster on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/create-mongodb-infrastructure?pivots=terraform)
+
+## What's next?
+We will continue expanding our library of technical best practice guidance and update the remaining guides to also include Terraform templates. Soon, we will develop more guides for databases like Cassandra DB, which will also include AcStor integration guidance, helping you choose the best storage option for your needs.
