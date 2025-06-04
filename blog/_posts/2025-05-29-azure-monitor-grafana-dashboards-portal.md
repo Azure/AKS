@@ -7,23 +7,22 @@ categories:
 - operations
 ---
 
-## High-Level Overview and Blog Structure
 
 ### Introduction
 
 Azure Kubernetes Service (AKS) now offers native Grafana dashboards within the Azure portal at no additional cost. This integration enables users to access Grafana’s powerful visualization capabilities directly from the AKS resource blade, without the need to deploy or manage a separate Grafana instance. Metrics from Container Insights, the Kubernetes metrics server, and any configured Azure Managed Prometheus endpoints are available out-of-the-box, providing comprehensive cluster observability.
 
-To get started, navigate to your AKS cluster in the Azure portal and select **Monitoring** > **Dashboards with Grafana (preview)**. You will be presented with prebuilt dashboards for cluster health, node utilization, and pod performance. From there, you may edit and ad  panels, configure template variables scoped to namespaces or node pools, and save custom dashboards - all within the familiar AKS management experience. By eliminating additional infrastructure overhead, this feature streamlines troubleshooting workflows and delivers actionable insights to SRE and DevOps teams with minimal effort.
+To get started, navigate to your AKS cluster in the Azure portal and select **Monitoring** > **Dashboards with Grafana (preview)**. You will be presented with prebuilt dashboards for cluster health, node utilization, and pod performance. From there, you may edit and ad  panels, configure template variables scoped to namespaces or node pools, and save custom dashboards - all within the familiar AKS management experience. Because no separate Grafana server needs to be provisioned or maintained, teams can quickly adopt and customize dashboards within the AKS portal- reducing setup time, operational complexity, and accelerating access to actionable insights for SRE and DevOps workflows.
 
 ![Cluster Dashboard in AKS!](/assets/images/azure-monitor-grafana-dashboards/sample-grafana-dashboard.png)
 
-### Why Grafana in Azure Monitor?
+### Why Grafana in Azure Portal?
 
-Grafana is celebrated for its rich panel types, templating engine, and client-side data transformations. Embedding it natively in Azure Monitor offers:
+Grafana is celebrated for its rich panel types, templating engine, and client-side data transformations. Embedding it natively in Azure Portal offers:
 
 - Unified experience: No extra authentication or network configuration—just use your Azure login.
 - Single-pane observability: Combine Azure Metrics, Logs, and Application Insights data alongside and other Azure data sources supported by Grafana.
-- Rapid onboarding: Spin up dashboards in minutes using familiar Azure workflows and templates.
+- Rapid onboarding: Spin up dashboards in minutes using familiar Azure workflows and templates. All the community dashboards are available out of the box.
 
 These capabilities mean faster troubleshooting, deeper insights, and a more consistent observability platform for Azure-centric workloads.
 
@@ -49,7 +48,11 @@ The native Grafana experience in Azure Monitor includes many of the customizatio
 - **Cross-workspace & cross-source queries:** Query data from multiple Log Analytics workspaces, metrics namespaces.
 - **Alerts & Annotations:**  View Azure alerts state and history in Grafana dashboards.
 
+> **Note:** Grafana dashboards in Azure Monitor are provided at no additional cost and currently in public preview. Availability may vary by region—verify your subscription’s eligibility before proceeding.
+
 ### Getting Started
+
+> **Note:** To view telemetry in Grafana dashboards, ensure you have at least **Reader** access to the relevant resource (Azure Monitor or Log Analytics workspace).
 
 1. In the Azure portal, go to **Azure Monitor** > **Dashboards with Grafana**.
 2. Click **+ New** and select **New  Dashboard**.
@@ -60,15 +63,24 @@ Once the dashboard is created, select **+ Add** and chose ** Add Visualization *
 The default dashboards are also available in the AKS cluster page under **Dashboards with Grafana**
 ![!Sample  Dashboards view in AKS](/assets/images/azure-monitor-grafana-dashboards/dashboards-with-grafana.png)
 
+> **Note:** Currently, the AKS cluster entry point is gated by the enablement of Managed Prometheus. This will likely change in the future as we incorporate dashboards which leverage platform metrics or Container Insights based logs
 
 
 No separate Grafana deployment is required—this feature is enabled by default in supported regions. For region availability, quotas, and limitations, refer to the [Learn documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-use-grafana-dashboards).
 
 ### Real-world Use Cases
 
-- **Kubernetes monitoring:** Combine Prometheus-style queries with AKS metrics and container logs to track pod health and resource utilization.  
-- **Application performance dashboards:** Merge Application Insights traces with custom metrics to identify slow operations and error hotspots.  
-- **Custom dashboards: ** Create individualized dashboards to track health of multiple Azure resources across resource typeswith custom health indicators
+- **Troubleshooting node issues:** A platform SRE spots CPU saturation on the `prod-nodepool`; by filtering the dashboard by node pool, they view CPU and memory trends and identify the problematic pod in under two minutes.
+- **Analyzing API latency:** A DevOps team correlates Application Insights request durations with pod-level metrics for the `payments` service, isolating slow endpoints and impacted pods to optimize performance.
+- **Unified multi-cluster monitoring:** A cloud architect overseeing three AKS clusters uses a single Grafana dashboard to compare node utilization and ingress traffic across regions, enabling data-driven scaling and cost decisions.
+- **Investigating API server list bottlenecks:** When the API server experiences high latency, an SRE opens the API Server Grafana dashboard to view `list` request counts and durations, identifying a misbehaving DaemonSet issuing excessive list calls and restoring control plane performance swiftly.
+- **Monitoring Azure Container Networking Services:** A network administrator overlays Container Networking Metrics in Grafana to track pod-to-pod latency, dropped packet rates, and network policy enforcement events—quickly isolating a misconfigured CNI plugin and ensuring secure cluster communications.
+
+### Roadmap
+Building on the public preview launch of Grafana dashboards in AKS, we have a lot of exciting features on the our roadmap. Some of these are listed here 
+- **In-portal Grafana Explore integration:** Embed Grafana’s Explore mode directly in the Azure portal—providing query builders, logs/metrics toggle, and inline documentation (see https://grafana.com/docs/grafana/latest/explore/) to help users investigate time series and log data without leaving Azure Monitor
+- **Expanded Azure resource support:** Add native integrations for additional resources —so metrics and logs from these resources appear in Grafana dashboards
+- **Seamless migration tooling:** Provide easy migration of dashboards and data source configurations between native Grafana dashboards and Azure Managed Grafana instances, simplifying hybrid and migration scenarios
 
 ### Conclusion and Next Steps
 
