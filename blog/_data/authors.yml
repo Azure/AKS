@@ -246,7 +246,7 @@ Sarah Zhou:
 
 Colin Mixon:
   name        : "Colin Mixon"
-  bio         : "Product Manager 2 for Azure Kubernetes Service."
+  bio         : "Product Manager 2 focusing on optimizing HPC and stateful workloads on Azure Kubernetes Service."
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
