@@ -40,7 +40,6 @@ We have updated both MongoDB and Valkey guides with Terraform. Additionally, we 
 - [Create the infrastructure for running a MongoDB cluster on Aks using Terraform](https://learn.microsoft.com/en-us/azure/aks/create-mongodb-infrastructure?pivots=terraform)
 - [Create the infrastructure for running a Valkey cluster on AKS using Terraform](https://learn.microsoft.com/en-us/azure/aks/create-valkey-infrastructure?pivots=terraform)
 
-## What’s Next? 
 
 ## Deploy Stateful and AI workloads on Azure Kubernetes Service 
 * Postgres - [Create infrastructure for deploying a highly available PostgreSQL database on AKS](https://learn.microsoft.com/en-us/azure/aks/create-postgresql-ha?tabs=pv1%2Chelm)
