@@ -40,7 +40,6 @@ We have updated both MongoDB and Valkey guides with Terraform. Additionally, we 
 - [Create the infrastructure for running a MongoDB cluster on Aks using Terraform](https://learn.microsoft.com/en-us/azure/aks/create-mongodb-infrastructure?pivots=terraform)
 - [Create the infrastructure for running a Valkey cluster on AKS using Terraform](https://learn.microsoft.com/en-us/azure/aks/create-valkey-infrastructure?pivots=terraform)
 
-
 ## Deploy Stateful and AI workloads on Azure Kubernetes Service 
 * Postgres - [Create infrastructure for deploying a highly available PostgreSQL database on AKS](https://learn.microsoft.com/en-us/azure/aks/create-postgresql-ha?tabs=pv1%2Chelm)
 * Apache Airflow - [Create the infrastructure for deploying Apache Airflow on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/airflow-create-infrastructure)
@@ -48,6 +47,7 @@ We have updated both MongoDB and Valkey guides with Terraform. Additionally, we 
 * Ray - [Deploy a Ray cluster on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/deploy-ray)
 * Valkey - [Create the infrastructure for running a Valkey cluster on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/create-valkey-infrastructure?pivots=terraform)
 * Mongo DB - [Create the infrastructure for running a MongoDB cluster on Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/create-mongodb-infrastructure?pivots=terraform)
+* Kubernetes AI Toolchain Operator (KAITO) - [Deploy KAITO on AKS using Terraform](https://github.com/kaito-project/kaito/blob/main/terraform/README.md#deploy-kaito-on-aks-using-terraform)
 
 ## What's next?
 We will continue expanding our library of technical best practice guidance and update the remaining guides to also include Terraform templates. Soon, we will develop more guides for databases like Cassandra DB, which will also include AcStor integration guidance, helping you choose the best storage option for your needs.
