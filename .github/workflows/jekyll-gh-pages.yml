@@ -2,9 +2,11 @@
 name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes targeting the default branch and the blog folder.
   push:
     branches: ["master"]
+    paths:
+      - 'blog/**'
 
   # Runs at 13:00 UTC every day
   schedule:
