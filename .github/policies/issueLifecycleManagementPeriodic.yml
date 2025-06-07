@@ -230,8 +230,38 @@ configuration:
       - addLabel:
           label: stale
       - addReply:
-          reply: This issue has been automatically marked as stale because it has not had any activity for **180 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
-    - description: Close issue marked as 'answer provided' that has had no activity for 2 days - runs every 6 hours
+          reply: This announcement has been automatically marked as stale because it has not had any activity for **90 days**. It will be closed if no further activity occurs **within 7 days of this comment**.
+    - description: Close open issues marked as 'resolution/fix-released' that have had no activity for 7 days - runs every 12 hours
+      frequencies:
+      - hourly:
+          hour: 12
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: resolution/fix-released
+      - noActivitySince:
+          days: 7
+      actions:
+      - addReply:
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "resolution/fix-released" and it hasn't had activity for 7 days.
+      - closeIssue
+    - description: Close open issues marked as 'resolution/shipped ' that have had no activity for 7 days - runs every 12 hours
+      frequencies:
+      - hourly:
+          hour: 12
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: resolution/shipped 
+      - noActivitySince:
+          days: 7
+      actions:
+      - addReply:
+          reply: Thanks for reaching out. I'm closing this issue as it was marked with "resolution/shipped" and it hasn't had activity for 7 days.
+      - closeIssue
+    - description: Close open issues marked as 'resolution/answer-provided' that have had no activity for 2 days - runs every 6 hours
       frequencies:
       - hourly:
           hour: 6
@@ -246,24 +276,7 @@ configuration:
       - addReply:
           reply: Thanks for reaching out. I'm closing this issue as it was marked with "Answer Provided" and it hasn't had activity for 2 days.
       - closeIssue
-    - description: Close issue marked as 'fix released' or 'shipped' that has had no activity for 7 days - runs every 12 hours
-      frequencies:
-      - hourly:
-          hour: 12
-      filters:
-      - isIssue
-      - isOpen
-      - hasLabel:
-          label: resolution/fix-released
-      - hasLabel:
-          label: resolution/shipped
-      - noActivitySince:
-          days: 7
-      actions:
-      - addReply:
-          reply: Thanks for reaching out. I'm closing this issue as it was marked with "Fix released" or "shipped" and it hasn't had activity for 7 days.
-      - closeIssue
-    - description: Close issue marked as 'resolved/other' that has and no activity for 3 days - runs every 12 hours
+    - description: Close open issues marked as 'resolution/other' that have had no activity for 2 days - runs every 12 hours
       frequencies:
       - hourly:
           hour: 12
@@ -273,12 +286,12 @@ configuration:
       - hasLabel:
           label: resolution/other
       - noActivitySince:
-          days: 3
+          days: 2
       actions:
       - addReply:
-          reply: Thanks for reaching out. I'm closing this issue as it was marked resolved and it hasn't had activity for 3 days. If it continues please reply or open a support ticket.
+          reply: Thanks for reaching out. I'm closing this issue as it was marked resolved and it hasn't had activity for 2 days. If it continues please reply or open a support ticket.
       - closeIssue
-    - description: Close issues marked as duplicates after 1 day inactivity - runs every 6 hours
+    - description: Close open issues marked as duplicates after 1 day inactivity - runs every 6 hours
       frequencies:
       - hourly:
           hour: 6
@@ -293,7 +306,7 @@ configuration:
       - addReply:
           reply: This issue has been marked as duplicate and has not had any activity for **1 day**. It will be closed for housekeeping purposes.
       - closeIssue
-    - description: Close stale issues after 7 days inactivity - runs every 6 hours
+    - description: Close open stale issues after 7 days inactivity - runs every 6 hours
       frequencies:
       - hourly:
           hour: 6
