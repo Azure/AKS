@@ -271,3 +271,11 @@ Sarah Zhou:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/sarahjzhou/"
+
+Colin Mixon:
+  name        : "Colin Mixon"
+  bio         : "Product Manager 2 focusing on optimizing HPC and stateful workloads on Azure Kubernetes Service."
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/colinmixon/"
