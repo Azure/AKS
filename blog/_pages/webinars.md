@@ -16,18 +16,18 @@ intro:
   - excerpt: "Welcome to the AKS Community Calls! These sessions foster direct interaction between our product teams and the AKS community. Engage with our teams, hear the latest updates, and gain insights into the product’s development. Join our monthly public calls to discuss the product roadmap, provide feedback, and learn from others’ experiences with AKS. Check out the <a href='https://github.com/orgs/Azure/projects/685/views/1' style='color:white'>public feature roadmap</a> for details on features in development, public preview, and general availability."
 
 agendarow1:
-  - title: "Agenda (May 2025)"
+  - title: "Agenda (June 2025)"
     excerpt: "<ul>
                 <li>Announcements:
                   <ul>
-                    <li>Microsoft Build 2025 (May 19-22, Seattle)</li>
                     <li>AKS Labs on Microsoft Reactor</li>
+                    <li>Cost Management Video Series</li>
                   </ul>
                 </li>
                 <li>Community Content Showcase</li><br>
                 <li>Deprecated Features</li><br>
                 <li>Feature Deepdive:
-                  <ul><li>ACNS/Retina (Sandhya Castelino)</li></ul>
+                  <ul><li>Cost Management (Kaysie Yu)</li></ul>
                 </li>
               <li>Feature Roadmap (GA, Preview & In Progress)</li></ul>"
     notice: notice--info
