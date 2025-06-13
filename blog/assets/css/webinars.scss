@@ -39,8 +39,133 @@ $base0f: #00f769;
   margin-top: 0;
 }
 
+// Style feature rows with rounded corners and shadow
+.feature__wrapper {
+  margin-bottom: 2em;
+  
+  // Basic styling without shadows and rounded corners
+  .feature__item {
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 1.5em;
+    
+    .archive__item-title {
+      font-weight: bold;
+      margin-top: 0.5em;
+    }
+    
+    .archive__item-excerpt {
+      margin-bottom: 0.8em;
+    }
+    
+    .btn {
+      font-weight: 500;
+    }
+    
+    img {
+      border: 1px solid #efefef;
+    }
+  }
+  
+  // Add styling ONLY for timezones1 feature row
+  .timezones1 {
+    .feature__item {
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+      
+      .archive__item {
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      
+      .btn {
+        border-radius: 4px;
+      }
+      
+      img {
+        border-radius: 6px;
+      }
+    }
+  }
+}
+
+// Only apply special styling to timezones1
+.timezones1 {
+  .feature__item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn {
+      margin-top: auto;
+      border-radius: 4px;
+    }
+    
+    img {
+      border-radius: 6px 6px 0 0;
+    }
+  }
+}
+
 .background {
-  background: $base06;
+  background: #ffffff; // Set to solid white
+}
+
+// Set the overall page background to white
+body, .page {
+  background-color: white !important;
+  color: #000 !important; // Set text color to black
+}
+
+// Make sure all text is black for better contrast on white background
+.page__content p,
+.page__content li,
+.page__content h1,
+.page__content h2,
+.page__content h3,
+.page__content h4,
+.page__content h5,
+.page__content h6,
+.archive__item-title,
+.archive__item-excerpt,
+.feature__item,
+.notice {
+  color: #000 !important;
+}
+
+// Ensure links are still visible
+.page__content a {
+  color: #0366d6 !important;
+}
+
+// Override for overlay areas where we want to maintain white text
+.page__hero--overlay {
+  .page__title, 
+  .page__lead,
+  .page__meta {
+    color: white !important; // Keep header text white for contrast against the overlay image
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7) !important;
+  }
+  
+  .btn {
+    color: white !important;
+  }
 }
 
 .page__meta-description {
@@ -54,6 +179,325 @@ $base0f: #00f769;
   color: #000 !important;
 }
 
+// Only apply styling to the timezones1 feature row
+#feature_row_timezones1,
+.timezones1 {
+  .archive__item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+      transform: translateY(-5px);
+    }
+  }
+  
+  .archive__item-teaser {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .btn {
+    border-radius: 6px;
+  }
+}
+
+// Specific styles for the webinars page
+.page--webinars {
+  // Style the agenda items and timezones
+  .agendarow1,
+  .timezones1 {
+    color: #000;
+    
+    .title {
+      color: #000 !important;
+      font-weight: bold;
+    }
+    
+    .excerpt {
+      color: #000 !important;
+    }
+    
+    .notice {
+      background-color: #f8f9fa !important;
+      border-color: #ddd !important;
+    }
+    
+    // Enhanced feature row styling for webinars
+    .archive__item-teaser {
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+    }
+    
+    // Style for feature items
+    .feature__item {
+      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      border: none !important;
+      
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      }
+      
+      // Add subtle gradient overlay to image areas
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(0,0,0,0) 70%, rgba(0,0,0,0.05) 100%);
+        z-index: 1;
+        pointer-events: none;
+      }
+    }
+  }
+  
+  // Style buttons to maintain visibility
+  .btn--primary {
+    background-color: $primary-color !important;
+    color: white !important;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(159, 98, 235, 0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(159, 98, 235, 0.4);
+    }
+  }
+  
+  // Make sure the intro text is black
+  .intro {
+    color: #000 !important;
+    
+    a {
+      color: #0366d6 !important;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(3, 102, 214, 0.3);
+      
+      &:hover {
+        border-bottom: 1px solid rgba(3, 102, 214, 0.7);
+      }
+    }
+  }
+  
+  // Only style timezones1 feature row with rounded corners and shadow
+  .feature__wrapper {
+    .feature__item {
+      position: relative;
+      background-color: white;
+      margin-bottom: 1.5em;
+    }
+    
+    // Add styling ONLY for the timezone sections
+    .timezones1,
+    #timezones1 {
+      .feature__item {
+        border-radius: 10px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        transition: all 0.25s ease;
+        
+        &:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+        }
+      }
+    
+      .archive__item {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        .archive__item-body {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          padding: 1.5em;
+        }
+        
+        .archive__item-excerpt {
+          flex: 1;
+        }
+        
+        .btn--primary {
+          margin-top: auto;
+        }
+      }
+      
+      .archive__item-teaser {
+        border-radius: 10px 10px 0 0;
+        overflow: hidden;
+        
+        img {
+          transition: transform 0.3s ease;
+        }
+      }
+      
+      .feature__item:hover {
+        .archive__item-teaser img {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+  
+  // Style the header
+  .page__hero--overlay {
+    .page__title, 
+    .page__lead {
+      color: white !important; // Keep header text white for contrast against the overlay image
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5) !important;
+    }
+  }
+  
+  // Modified styling to only apply rounded corners and shadows to timezones1
+  .page__content {
+    // Add padding to the content area
+    padding: 1em;
+    
+    // Basic feature row styling without rounded corners and shadows
+    .feature__wrapper {
+      margin-bottom: 3em;
+      
+      .feature__item {
+        background-color: white;
+        border-radius: 0;
+        box-shadow: none;
+        
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+    
+    // Override for timezones1 to ensure it has rounded corners and shadows
+    .feature__wrapper:last-child .feature__item {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+      transition: all 0.3s ease !important;
+      
+      &:hover {
+        transform: translateY(-6px) !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+      }
+    }
+    
+    // Style intro differently
+    .intro {
+      padding: 1em;
+      
+      .feature__item {
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+    
+    // Style for the agenda row (without rounded corners and shadow)
+    .agendarow1 {
+      .feature__item {
+        background-color: #fafafa;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+        
+        ul {
+          margin-left: 1em;
+          
+          li {
+            margin-bottom: 0.5em;
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+    
+    // Style for the timezones row - keep the rounded corners and shadow ONLY here
+    .timezones1,
+    .feature__wrapper:last-child {
+      .feature__item {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        background-color: white !important;
+        transition: all 0.25s ease-out !important;
+        
+        &:hover {
+          transform: translateY(-6px) !important;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+        }
+      }
+      
+      .archive__item {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border-radius: 12px;
+        overflow: hidden;
+        
+        .archive__item-teaser {
+          overflow: hidden;
+          border-radius: 12px 12px 0 0;
+          
+          img {
+            transition: transform 0.3s ease;
+          }
+        }
+        
+        .archive__item-body {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          padding: 1.5em;
+        }
+        
+        .archive__item-excerpt {
+          flex: 1;
+        }
+        
+        .btn--primary {
+          margin-top: auto;
+          margin-bottom: 0.5em;
+          border-radius: 6px;
+        }
+      }
+      
+      .feature__item:hover {
+        .archive__item-teaser img {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
+
 ::-moz-selection {
   background: lighten($primary-color, 25%) !important;
   color: #000 !important;
@@ -64,3 +508,34 @@ $base0f: #00f769;
 }
 
 .feature__item { position: relative; margin-bottom: 2em; font-size: 1.125em; border-width: 1px ; border-color:#00f769 }
+
+// Direct styling for timezone cards container
+.timezone-cards-container {
+  .feature__item {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+    }
+    
+    .archive__item {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .archive__item-teaser {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .btn--primary {
+      border-radius: 6px;
+      margin-top: 1em;
+    }
+  }
+}
