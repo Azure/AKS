@@ -22,9 +22,9 @@ As Kubernetes adoption accelerates, engineers need streamlined, cost-effective t
 
 We are thrilled to announce that Azure Kubernetes Service (AKS) now offers native Grafana dashboards within the Azure portal at no additional cost. This integration eliminates the complexity of maintaining separate visualization tools while delivering Grafana's powerful capabilities directly where you need them. Metrics from Container Insights, the Kubernetes metrics server, and any configured Azure Managed Prometheus endpoints are available out-of-the-box, providing comprehensive cluster observability.
 
-To get started, navigate to your AKS cluster in the Azure portal and select **Monitoring** > **Dashboards with Grafana (preview)**. You will be presented with prebuilt dashboards for cluster health, node utilization, and pod performance. From there, you may edit and add  panels, configure template variables scoped to namespaces or node pools, and save custom dashboards - all within the familiar AKS management experience. Because no separate Grafana server needs to be provisioned or maintained, teams can quickly adopt and customize dashboards within the AKS portal- reducing setup time, operational complexity, and accelerating access to actionable insights for SRE and DevOps workflows.
+To get started, navigate to your AKS cluster in the Azure portal and select **Monitoring** > **Dashboards with Grafana (preview)**. You will be presented with prebuilt dashboards for cluster health, node utilization, and pod performance. From there, you may edit and add  panels, configure template variables scoped to namespaces or node pools, and save custom dashboards - all within the familiar AKS management experience. Because no Grafana server needs to be provisioned or maintained, teams can quickly adopt and customize dashboards within the AKS portal- reducing setup time, operational complexity, and accelerating access to actionable insights for SRE and DevOps workflows.
 
-![Cluster Dashboard in AKS](/AKS/assets/images/azure-monitor-grafana-dashboards/sample-grafana-dashboard.png)
+![Cluster Dashboard in AKS](/assets/images/azure-monitor-grafana-dashboards/sample-grafana-dashboard.png)
 *Figure 1: Comprehensive AKS cluster dashboard showing resource utilization, performance metrics, and health status directly within the Azure portal.*
 
 ### Why Grafana in Azure Portal?
@@ -63,7 +63,7 @@ Find a detailed comparison of the experiences [here](https://learn.microsoft.com
 | **Enterprise Features** | Not supported | Reporting, team collaboration, enterprise plugins |
 | **Deployment Model** | Managed SaaS | Dedicated VM scale sets with private networking options |
 
-A detailed difference is available on the [solution comparion]](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-grafana-overview#solution-comparison)
+A detailed difference is available on the [solution comparion](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-grafana-overview#solution-comparison)
 
 ### Customization and Advanced Features
 
@@ -82,10 +82,11 @@ The native Grafana experience in Azure Monitor includes many of the customizatio
 
 The default dashboards are  available in the AKS cluster page under **Dashboards with Grafana**
 
-![Sample Dashboards view in AKS](/AKS/assets/images/azure-monitor-grafana-dashboards/dashboards-with-grafana.png)
+![Sample Dashboards view in AKS](/assets/images/azure-monitor-grafana-dashboards/dashboards-with-grafana.png)
 *Figure 2: Navigation view showing the collection of pre-built Grafana dashboards available in the AKS monitoring section, providing one-click access to various visualization templates.*
 
-To create a new dashboard, 
+To create a new dashboard
+
 1. In the Azure portal, go to **Azure Monitor** > **Dashboards with Grafana**.
 2. Click **+ New** and select **New  Dashboard**.
 3. Provide a title for the dashboard and the subscription, resource group for the dashboard. Click on Create.
