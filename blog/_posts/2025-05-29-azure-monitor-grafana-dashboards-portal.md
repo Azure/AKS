@@ -45,8 +45,6 @@ While Dashboards with Grafana in the Azure portal cover most common visualizatio
 - Advanced authentication, provisioning APIs, and fine-grained access control.
 - Multi-cloud and hybrid data source connectivity.
 
-Find a detailed comparison of the experiences [here](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-grafana-overview#solution-comparison)
-
 **When to choose native dashboards:** Quick visibility into your Azure telemetry, minimal setup, with no additional costs.  
 **When to choose Azure Managed Grafana:** Large teams with complex governance, open-source or Enterprise, or multi-cloud data sources.
 
@@ -63,7 +61,7 @@ Find a detailed comparison of the experiences [here](https://learn.microsoft.com
 | **Enterprise Features** | Not supported | Reporting, team collaboration, enterprise plugins |
 | **Deployment Model** | Managed SaaS | Dedicated VM scale sets with private networking options |
 
-A detailed difference is available on the [solution comparion](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-grafana-overview#solution-comparison)
+A detailed difference is available on the [solution comparison](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-grafana-overview#solution-comparison)
 
 ### Customization and Advanced Features
 
@@ -73,7 +71,6 @@ The native Grafana experience in Azure Monitor includes many of the customizatio
 - **Themes & Layouts:**  Automatically switches theme based on the Azure portal's theme, resize panels, and arrange layouts with drag-and-drop.
 - **Cross-workspace & cross-source queries:** Query data from multiple Log Analytics workspaces, metrics namespaces.
 - **Alerts:**  View Azure alerts state and history in Grafana dashboards.
-
 
 ### Getting Started
 
@@ -90,7 +87,7 @@ To create a new dashboard
 1. In the Azure portal, go to **Azure Monitor** > **Dashboards with Grafana**.
 2. Click **+ New** and select **New  Dashboard**.
 3. Provide a title for the dashboard and the subscription, resource group for the dashboard. Click on Create.
-Once the dashboard is created, select **+ Add** and chose ** Add Visualization **
+Once the dashboard is created, select **+ Add** and chose **Add Visualization**
 4. Choose data sources (Log Analytics, Metrics, Prometheus, Azure Resource Graph) and start adding panels.
 
 This feature is available out of the box for all customers.. For more information on customization, refer to the [Learn documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-use-grafana-dashboards).
@@ -105,10 +102,20 @@ This feature is available out of the box for all customers.. For more informatio
 - **Monitoring Azure Container Networking Services:** A network administrator overlays Container Networking Metrics in Grafana to track pod-to-pod latency, dropped packet rates, and network policy enforcement events—quickly isolating a misconfigured CNI plugin and ensuring secure cluster communications.
 
 ### Roadmap
-Building on the public preview launch of Grafana dashboards in AKS, we have a lot of exciting features on the our roadmap. Some of these are listed here 
-- **In-portal Grafana Explore integration:** Embed Grafana’s Explore mode directly in the Azure portal—providing query builders, logs/metrics toggle, and inline documentation (see https://grafana.com/docs/grafana/latest/explore/) to help users investigate time series and log data without leaving Azure Monitor
-- **Expanded Azure resource support:** Add native integrations for additional resources —so metrics and logs from these resources appear in Grafana dashboards
-- **Seamless migration tooling:** Provide easy migration of dashboards and data source configurations between native Grafana dashboards and Azure Managed Grafana instances, simplifying hybrid and migration scenarios
+
+Building on the public preview launch of Grafana dashboards in AKS, we have a lot of exciting features on the our roadmap. Some of these are listed here
+
+- **In-portal Grafana Explore integration:**
+
+Embed Grafana’s [Explore](https://grafana.com/docs/grafana/latest/explore/) mode directly in the Azure portal—providing query builders, logs/metrics toggle, and inline documentation (see ) to help users investigate time series and log data without leaving Azure Monitor
+
+- **Expanded Azure resource support:**
+
+ Add native integrations for additional resources —so metrics and logs from these resources appear in Grafana dashboards
+
+- **Seamless migration tooling:**
+
+Provide easy migration of dashboards and data source configurations between native Grafana dashboards and Azure Managed Grafana instances, simplifying hybrid and migration scenarios
 
 ### Frequently Asked Questions
 
@@ -123,7 +130,6 @@ A: Yes, Dashboards using Prometheus and Azure data sources can be imported.
 
 **Q: Will my existing Grafana dashboards work with this feature?**  
 A: Most dashboards using Prometheus or Azure data sources can be imported, though some adjustments may be needed.
-
 
 ### Conclusion and Next Steps
 
