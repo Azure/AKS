@@ -14,7 +14,7 @@ categories:
 ---
 
 PostgreSQL is one of the most popular workloads on Azure Kubernetes
-Service (AKS). Thanks to a robust operator ecosystem, there\'s now a
+Service (AKS). Thanks to a robust operator ecosystem, there's now a
 vibrant community centered around self-hosting PostgreSQL on Kubernetes
 across all major cloud platforms.
 
@@ -52,23 +52,23 @@ database responsiveness.
 AKS supports a variety of storage options through the Azure Disk CSI
 driver. Let's dive into a few of them:
 
-1. **Premium SSD**\
+1. **Premium SSD**
     These general-purpose SSDs are widely used and support availability
     features like ZRS (Zone Redundant Storage) and fast snapshotting.
-    They\'re ideal for many workloads, but IOPS and throughput are still
+    They're ideal for many workloads, but IOPS and throughput are still
     constrained by the VM's limits on remote disk access.
 
-2. **Premium SSD v2**\
+2. **Premium SSD v2**
     An evolution of Premium SSDs, this option decouples storage size
     from performance, letting you scale IOPS and throughput
     independently. With up to 80,000 IOPS and 1,200 MB/s throughput,
     they're more cost-efficient for I/O-intensive workloads.
 
-3. **Ultra Disk**\
+3. **Ultra Disk**
     Azure's highest-performing remote disk offering, Ultra Disk supports
     up to 400,000 IOPS and 10,000 MB/s. However, this raw performance
     can only be utilized on select VM sizes that can keep up with
-    it---like the Standard_E112ibds_v5. Most workloads can\'t unlock
+    it---like the Standard_E112ibds_v5. Most workloads can't unlock
     this full potential due to VM throughput bottlenecks.
 
 ## Why local NVMe changes the game
@@ -79,9 +79,9 @@ in.
 
 Local NVMe drives are physically attached to the VM, bypassing remote
 I/O limitations. Even a modest 8-core VM can deliver up to 400,000 IOPS
-immediately because there\'s no network overhead.
+immediately because there's no network overhead.
 
-Historically, Kubernetes couldn\'t easily use local NVMe disks due to
+Historically, Kubernetes couldn't easily use local NVMe disks due to
 their ephemeral nature and lack of built-in abstraction. Azure Container
 Storage solves this: it aggregates local NVMe devices across nodes into
 a storage pool and exposes them through a Kubernetes-compatible storage
@@ -113,7 +113,7 @@ So why go through all this trouble?
 *Because the performance is worth it!* Using local NVMe with Azure
 Container Storage as shown in our [official AKS PostgreSQL deployment
 guide](https://learn.microsoft.com/en-us/azure/aks/postgresql-ha-overview)
-can provide 15,000+ transactions per second and \<4.5ms average latency
+can provide 15,000+ transactions per second and <4.5ms average latency
 on Standard_L16s_v3 virtual machines.
 
 ![image](/assets/images/postgresql-nvme/graph.png)
@@ -138,7 +138,7 @@ Some caveats to remember as you test different scenarios, particularly
 super large virtual machines:
 
 - Our benchmarking tool, pgbench, also stresses CPU and memory, so
-    it\'s not purely I/O-bound.
+    it's not purely I/O-bound.
 
 - High availability via CloudNativePG introduces synchronization
     overhead that limits maximum throughput. Once storage IOPS exceed a
