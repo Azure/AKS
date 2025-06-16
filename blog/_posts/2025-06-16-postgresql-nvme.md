@@ -1,6 +1,6 @@
 ---
 title: "Boosting PostgreSQL performance on AKS"
-description: "Sample - Add your description"
+description: "Unlock high-performance PostgreSQL on AKS with CloudNativePG and Azure Container Storage using local NVMe for big throughput/latency improvements."
 date: 2025-06-16 # date is important. future dates will not be published
 author: Eric Cheng # must match the authors.yml in the _data folder
 categories: 
