@@ -119,13 +119,11 @@ A: No, the feature is included at no additional cost with your Azure Monitor usa
 A: Currently, only the built-in plugins are supported. For custom plugins, consider Azure Managed Grafana.
 
 **Q: Can I export dashboards created in the portal to standalone Grafana?**  
-A: Yes, dashboards can be exported in standard Grafana JSON format.
+A: Yes, Dashboards using Prometheus and Azure data sources can be imported.
 
 **Q: Will my existing Grafana dashboards work with this feature?**  
 A: Most dashboards using Prometheus or Azure data sources can be imported, though some adjustments may be needed.
 
-**Q: What do I need to be able to use the Azure monitor dashboards with Grafana**  
-A: Currently, Azure Managed Prometheus is required to be able to view the dashboards. This will likely change with time as there are more dashboards focussed on logs, platform metrics.
 
 ### Conclusion and Next Steps
 
