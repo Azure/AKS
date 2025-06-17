@@ -279,3 +279,15 @@ Colin Mixon:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/colinmixon/"
+
+Jose Blanquicet:
+  name        : "Jose Blanquicet"
+  bio         : "Jose is a Senior Software Engineer at Microsoft, using eBPF on Azure Kubernetes Service to boost observability and make troubleshooting simpler."
+  avatar      : "https://github.com/blanquicet.png"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/joseblanquicet"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/blanquicet"
