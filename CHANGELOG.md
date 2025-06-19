@@ -24,6 +24,7 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
 * Features  
   * AKS patch versions 1.32.5, 1.31.9 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
   * API Server VNet Integration is available now, please find the [most up to date regions](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability) where this feature has been rolled out.
+  * Kubelet Service Certificate Rotation has now been rolled out to East US and UK South. Existing node pools will have kubelet serving certificate rotation enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. New node pools on kubernetes version 1.27 or greater will have kubelet serving certificate rotation enabled by default. For more information on kubelet serving certificate rotation and disablement, see [certificate rotation in Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/certificate-rotation).  
   
 * Bug Fixes
   * Fixed a race condition with streams sharing data between Cilium agent and ACNS security agent.
