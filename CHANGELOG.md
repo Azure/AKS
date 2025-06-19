@@ -31,10 +31,9 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
   * Resolved an issue where node pool scaling failed with customized kubelet configuration. Without this fix, node pools using CustomKubeletConfigs could not be scaled, and encountered an error message stating that the CustomKubeletConfig or CustomLinuxOSConfig cannot be changed for the scaling operation.
   * Fixed an [issue](https://github.com/kubernetes-sigs/cloud-provider-azure/issues/8649) where updating node pools with the exclude label, it doesn't update the Load Balancer Backend Pool properly.
   * Resolved a problem when upgrading Kubenet or Nodesubnet cluster with AGIC enabled to Azure CNI Overlay there might be some connectivity issues to services exposed via Ingress App Gateway public IP.
-  * Fix a bug where clusters with Node Auto Provisioning enabled could intermittently get an error about "multiple identities configured" and be unable to authenticate with Azure.
+  * Fixed a bug where clusters with Node Auto Provisioning enabled could intermittently get an error about "multiple identities configured" and be unable to authenticate with Azure.
   * Fixed an issure to ensure the vms in a specific cloud are compatible with the latest Windows 550 grid driver.
-  * Fixed a bug for the policy addon by addressing a sync issue with allowed service accounts.
-  
+    
 
 * Behavior Changes  
   * AKS now allows [daily schedules](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli#schedule-types) for the auto upgrade configuration.
@@ -45,8 +44,7 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
   * `linuxutil plugin` is enabled again for [Retina Basic and ACNS](https://retina.sh/docs/Metrics/plugins/Linux/linuxutil).
   * Kubelet Service Certificate Rotation has now been rolled out to East US and UK South. Existing node pools will have kubelet serving certificate rotation enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. New node pools on kubernetes version 1.27 or greater will have kubelet serving certificate rotation enabled by default. For more information on kubelet serving certificate rotation and disablement, see [certificate rotation in Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/certificate-rotation).
   * Node Auto-Provisioning (NAP) now requires Kubernetes RBAC to be enabled, because NAP relies on secure and scoped access to Kubernetes resources to provision nodes based on pending pod resource requests. For more information, see [RBAC for Kubernetes](https://learn.microsoft.com/azure/aks/manage-azure-rbac).
-  * Safeguards now supports policy assignments through its own first-party application.
-With this enhancement, Safeguards no longer relies on On-Behalf-Of tokens to assign policies. As a result, customer permission validation during policy assignment is no longer required, simplifying the experience and reducing friction.
+  * [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) no longer requires Azure Policy permissions. Cluster admins will have the ability to turn on and disable Deployment Safeguards.
 
 * Component Updates  
   * Windows node images  
