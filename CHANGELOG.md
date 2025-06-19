@@ -6,6 +6,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Announcements
 
+* Kubernetes 1.27 LTS version and 1.30 community version are going out of support by July 30th. Please upgrade to a supported version , refer to [AKS release calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
+* Kubernetes 1.33 community version is going to be released before end of June 2025, please keep track of the rollout by regions via [AKS Release tracker](https://releases.aks.azure.com/).
 * Customers using Azure Linux 2.0 should migrate to Azure Linux 3.0 before November 2025. For details on how to migrate from Azure Linux 2.0 to Azure Linux 3.0, see this [doc](https://learn.microsoft.com/azure/azure-linux/how-to-enable-azure-linux-3). AKS is currently working on a feature to allow for migrations between Azure Linux 2.0 and Azure Linux 3.0 through a node pool update command. For updates on feature progress and availability, see Github [issue](https://github.com/Azure/AKS/issues/4987).
 * Starting in June 2025, AKS clusters with version >= 1.28 and using Azure Linux 2.0 can be opted into [Long Term Support](https://learn.microsoft.com/azure/aks/long-term-support).
 * Starting in June 2025, Azure Kubernetes Service will begin rolling out a change to enable quota for all current and new AKS customers. AKS quota will represent a limit of the maximum number of managed clusters that an Azure subscription can consume per region. Existing AKS customer subscriptions will be given a quota limit at or above their current usage, depending on region availability. Once quota is enabled, customers can view their available quota and request quota increases in the Quotas page in the Azure Portal or by using the Quotas REST API. For details on how to view and request quota increases via the Portal Quotas page, visit [Azure Quotas](https://learn.microsoft.com/azure/quotas/view-quotas). For details on how to view and request quota increases via the Quotas REST API, visit: [Azure Quota REST API Reference](https://learn.microsoft.com/rest/api/reserved-vm-instances/quotaapi). New AKS customer subscriptions will be given a default limit upon new subscription creation. More information on the default limits for new subscriptions is available in documentation [here](https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits).
@@ -20,14 +22,13 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
   
 * Features  
   * AKS patch versions 1.32.5, 1.31.9 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
-  * AKS now allows [daily schedules](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli#schedule-types) for the auto upgrade configuration.
-  * API Server VNet Integration is available now, please find the [most up to date regions](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration#limited-availability) where this feature has been rolled out.
+  * API Server VNet Integration is available now, please find the [most up to date regions](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability) where this feature has been rolled out.
   
 * Bug Fixes
   * Fixed a race condition with streams sharing data between Cilium agent and ACNS security agent.
-  * Fixed an issue by forcing a pinned driver file name for NVv3 VMs, ensuring they do not use unsupported GRID driver versions.
+  * Fixed an issue in [NVs_v3](https://learn.microsoft.com/azure/virtual-machines/windows/n-series-driver-setup#nvidia-gridvgpu-drivers) VMs where unsupported vGPU drivers were causing the Virtual Machine to fail to initialize GPU capabilities properly.
   * Fixed Azure Policy addon Gatekeeper regression causing crash loop on clusters with Kubernetes versions < 1.27.
-  * Resolved an issue where node pool scaling failed when customized kubelet configuration applied. Previously, node pools using CustomKubeletConfigs could not be scaled, and encountered an error message stating that the CustomKubeletConfig or CustomLinuxOSConfig cannot be changed for the scaling operation.
+  * Resolved an issue where node pool scaling failed with customized kubelet configuration. Without this fix, node pools using CustomKubeletConfigs could not be scaled, and encountered an error message stating that the CustomKubeletConfig or CustomLinuxOSConfig cannot be changed for the scaling operation.
   * Fixed an [issue](https://github.com/kubernetes-sigs/cloud-provider-azure/issues/8649) where updating node pools with the exclude label, it doesn't update the Load Balancer Backend Pool properly.
   * Resolved a problem when upgrading Kubenet or Nodesubnet cluster with AGIC enabled to Azure CNI Overlay there might be some connectivity issues to services exposed via Ingress App Gateway public IP.
   * Fix a bug where clusters with Node Auto Provisioning enabled could intermittently get an error about "multiple identities configured" and be unable to authenticate with Azure.
@@ -36,14 +37,15 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
   
 
 * Behavior Changes  
-  * Static egress gateway memory limits increased from 500Mi to 3000Mi reducing the risk of memory-related restarts under load.
-  * GPU-Provisioner is a component of KAITO, and it is now hidden from the customer as part of the KAITO add-on.
+  * AKS now allows [daily schedules](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli#schedule-types) for the auto upgrade configuration.
+  * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) memory limits increased from 500Mi to 3000Mi reducing the risk of memory-related restarts under load.
+  * GPU-Provisioner is a component of [KAITO](https://learn.microsoft.com/azure/aks/ai-toolchain-operator), and it is now hidden from the customer as part of the KAITO add-on.
   * [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview) updates the max shards from 12 to 24, ensuring enhanced scaling capabilities.
   * `linuxutil plugin` is enabled again for [Retina Basic and ACNS](https://retina.sh/docs/Metrics/plugins/Linux/linuxutil).
   * Kubelet Service Certificate Rotation has now been rolled out to East US and UK South. Existing node pools will have kubelet serving certificate rotation enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. New node pools on kubernetes version 1.27 or greater will have kubelet serving certificate rotation enabled by default. For more information on kubelet serving certificate rotation and disablement, see [certificate rotation in Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/certificate-rotation).
-  * Node Auto-Provisioning (NAP) now requires Kubernetes RBAC to be enabled also. For more info, see [RBAC for Kubernetes](https://learn.microsoft.com/azure/aks/manage-azure-rbac).
+  * Node Auto-Provisioning (NAP) now requires Kubernetes RBAC to be enabled, because NAP relies on secure and scoped access to Kubernetes resources to provision nodes based on pending pod resource requests. For more information, see [RBAC for Kubernetes](https://learn.microsoft.com/azure/aks/manage-azure-rbac).
   * Safeguards now supports policy assignments through its own first-party application.
-With this enhancement, Safeguards no longer relies on OBO tokens to assign policies. As a result, customer permission validation during policy assignment is no longer required, simplifying the experience and reducing friction.
+With this enhancement, Safeguards no longer relies on On-Behalf-Of tokens to assign policies. As a result, customer permission validation during policy assignment is no longer required, simplifying the experience and reducing friction.
 
 * Component Updates  
   * Windows node images  
@@ -55,7 +57,7 @@ With this enhancement, Safeguards no longer relies on OBO tokens to assign polic
   * AKS Ubuntu 22.04 node image has been updated to [202506.12.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202506.12.0.txt).
   * AKS Ubuntu 24.04 node image has been updated to [202506.12.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202506.12.0.txt).
   * Updated Istio-based service mesh add-on to versions [v1.23.6](https://istio.io/latest/news/releases/1.23.x/announcing-1.23.6/), [v1.24.6](https://istio.io/latest/news/releases/1.24.x/announcing-1.24.6/), [v1.25.3](https://istio.io/latest/news/releases/1.25.x/announcing-1.25.3/).
-  * Updated secret store driver to [v1.5.0](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.0) and azure provider to [v1.7.0](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.7.0).
+  * Updated Secret Store CSI driver to [v1.5.0](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.0) and the Azure provider to [v1.7.0](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.7.0).
   * Updated tigera operator to [v1.36.10](https://github.com/tigera/operator/releases/tag/v1.36.10) and calico to [v3.29.4](https://github.com/projectcalico/calico/releases/tag/v3.29.4) for versions running on K8S 1.32. Updated tigera operator to [v1.38.0](https://github.com/tigera/operator/releases/tag/v1.38.0) and calico to [v3.30.0](https://github.com/projectcalico/calico/releases/tag/v3.30.0) for versions running on K8S 1.33.
   * Updated KEDA to [v2.17](https://github.com/kedacore/keda/releases/tag/v2.17.0) for AKS clusters running on Kubernetes 1.33.
   * Updated Azure Disk CSI driver to [v1.32.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.7) for AKS 1.32, [v1.33.1](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.1) for AKS 1.33.
@@ -68,7 +70,7 @@ With this enhancement, Safeguards no longer relies on OBO tokens to assign polic
   * Updated Retina Enteprise image to [v0.1.10](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.10).
   * Updated Metrics-server to [v0.7.2-7](https://github.com/aks-lts/metrics-server/releases/tag/v0.7.2-7) for AKS clusters on 1.32+ version, [v0.6.3-6](https://github.com/aks-lts/metrics-server/releases/tag/v0.6.3-6) for AKS clusters on 1.24+ version.
   * Updated coredns version to [v1.9.4-6](https://github.com/aks-lts/coredns/releases/tag/v1.9.4-6) for AKS clusters on 1.24+ version, [v1.11.3-8](https://github.com/aks-lts/coredns/releases/tag/v1.11.3-8) for AKS clusters on 1.32+ version, [v1.12.1-2](https://github.com/aks-lts/coredns/releases/tag/v1.12.1-2) for AKS clusters on 1.33+ version.
-  * Updated cilium/fqdn images to [v1.14.20](https://github.com/azure-networking/cilium-private/releases/tag/core%2Fv1.14.20-1) for Kubernetes 1.29, [v1.16.10](https://github.com/azure-networking/cilium-private/releases/tag/core%2Fv1.16.10) for Kubernetes 1.31, [v1.17.4](https://github.com/azure-networking/cilium-private/releases/tag/core%2Fv1.17.4) for Kubernetes 1.32.
+  * Updated cilium/fqdn images to [v1.14.20-1](https://github.com/azure-networking/cilium-private/releases/tag/core%2Fv1.14.20-1) for Kubernetes 1.29, [v1.16.10](https://github.com/cilium/cilium/releases/tag/v1.16.10) for Kubernetes 1.31, [v1.17.4](https://github.com/cilium/cilium/releases/tag/v1.17.4) for Kubernetes 1.32.
 
 
 ## Release 2025-05-19
