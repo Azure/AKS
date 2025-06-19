@@ -26,7 +26,6 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
   
 * Bug Fixes
   * Fixed a race condition with streams sharing data between Cilium agent and ACNS security agent.
-  * Fixed an issue in [NVs_v3](https://learn.microsoft.com/azure/virtual-machines/windows/n-series-driver-setup#nvidia-gridvgpu-drivers) VMs where unsupported vGPU drivers were causing the Virtual Machine to fail to initialize GPU capabilities properly.
   * Fixed Azure Policy addon Gatekeeper regression causing crash loop on clusters with Kubernetes versions < 1.27.
   * Resolved an issue where node pool scaling failed with customized kubelet configuration. Without this fix, node pools using CustomKubeletConfigs could not be scaled, and encountered an error message stating that the CustomKubeletConfig or CustomLinuxOSConfig cannot be changed for the scaling operation.
   * Fixed an [issue](https://github.com/kubernetes-sigs/cloud-provider-azure/issues/8649) where updating node pools with the exclude label, it doesn't update the Load Balancer Backend Pool properly.
@@ -70,7 +69,8 @@ With this enhancement, Safeguards no longer relies on On-Behalf-Of tokens to ass
   * Updated Retina Enteprise image to [v0.1.10](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.10).
   * Updated Metrics-server to [v0.7.2-7](https://github.com/aks-lts/metrics-server/releases/tag/v0.7.2-7) for AKS clusters on 1.32+ version, [v0.6.3-6](https://github.com/aks-lts/metrics-server/releases/tag/v0.6.3-6) for AKS clusters on 1.24+ version.
   * Updated coredns version to [v1.9.4-6](https://github.com/aks-lts/coredns/releases/tag/v1.9.4-6) for AKS clusters on 1.24+ version, [v1.11.3-8](https://github.com/aks-lts/coredns/releases/tag/v1.11.3-8) for AKS clusters on 1.32+ version, [v1.12.1-2](https://github.com/aks-lts/coredns/releases/tag/v1.12.1-2) for AKS clusters on 1.33+ version.
-  * Updated cilium/fqdn images to [v1.14.20-1](https://github.com/azure-networking/cilium-private/releases/tag/core%2Fv1.14.20-1) for Kubernetes 1.29, [v1.16.10](https://github.com/cilium/cilium/releases/tag/v1.16.10) for Kubernetes 1.31, [v1.17.4](https://github.com/cilium/cilium/releases/tag/v1.17.4) for Kubernetes 1.32.
+  * Released an update in GRID driver version on the guest VM for [NVs_v3](https://learn.microsoft.com/azure/virtual-machines/windows/n-series-driver-setup#nvidia-gridvgpu-drivers) VM family to ensure compatibility with host VM GPU driver version for Windows GPU node pools.
+  * Updated cilium/fqdn images to v1.14.20-1 for Kubernetes 1.29, [v1.16.10](https://github.com/cilium/cilium/releases/tag/v1.16.10) for Kubernetes 1.31, [v1.17.4](https://github.com/cilium/cilium/releases/tag/v1.17.4) for Kubernetes 1.32 to fix [CVE‑2025‑22871](https://nvd.nist.gov/vuln/detail/CVE-2025-22871) , [CVE‑2025‑22872](https://nvd.nist.gov/vuln/detail/CVE-2025-22872) , [CVE‑2024‑45336](https://nvd.nist.gov/vuln/detail/CVE-2024-45336) , [CVE‑2024‑45341](https://nvd.nist.gov/vuln/detail/CVE-2024-45341) , [CVE‑2025‑22866](https://nvd.nist.gov/vuln/detail/CVE-2025-22866) , [CVE‑2025‑43973](https://nvd.nist.gov/vuln/detail/CVE-2025-43973) , [CVE‑2025‑43970](https://nvd.nist.gov/vuln/detail/CVE-2025-43970) , [CVE‑2025‑43972](https://nvd.nist.gov/vuln/detail/CVE-2025-43972) , [CVE‑2025‑43971](https://nvd.nist.gov/vuln/detail/CVE-2025-43971) , [CVE‑2025‑32793](https://nvd.nist.gov/vuln/detail/CVE-2025-32793).
 
 
 ## Release 2025-05-19
