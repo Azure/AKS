@@ -39,6 +39,7 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
 * Behavior Changes  
   * AKS now allows [daily schedules](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli#schedule-types) for the auto upgrade configuration.
   * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) memory limits increased from 500Mi to 3000Mi reducing the risk of memory-related restarts under load.
+    * [HTTP Proxy](https://aka.ms/aks/http-proxy) configuration updates will now trigger automatic reimaging with this release. This functionality was temporarily disabled.
   * GPU-Provisioner is a component of [KAITO](https://learn.microsoft.com/azure/aks/ai-toolchain-operator), and it is now hidden from the customer as part of the KAITO add-on.
   * [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/essentials/prometheus-metrics-overview) updates the max shards from 12 to 24, ensuring enhanced scaling capabilities.
   * `linuxutil plugin` is enabled again for [Retina Basic and ACNS](https://retina.sh/docs/Metrics/plugins/Linux/linuxutil).
