@@ -20,6 +20,7 @@ Azure Kubernetes Service will no longer support the --skip-gpu-driver-install no
 * Preview Features
   * [Azure Monitor Application Insights for Azure Kubernetes Service (AKS) workloads](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now available in preview.
   * Ubuntu 24.04 is now available in public preview in k8s 1.32+. ContainerD 2.0 is enabled by default. You can create new Ubuntu 24.04 node pools or update existing Linux node pools to Ubuntu 24.04. Use the "Ubuntu2404" os sku enum after registering the preview flag "Ubuntu2404Preview". You can also use the new "Ubuntu2204" os sku enum to rollback to Ubuntu 22.04 if you encounter any issues! You may also rollback using "Ubuntu" os sku enum. For more information, see [upgrading your OS version](https://learn.microsoft.com/azure/aks/upgrade-os-version?tabs=testing-a-new-os-version%2Croll-back-your-os-version).
+  *[Cost optimized add-on scaling](https://learn.microsoft.com/azure/aks/optimized-addon-scaling) is now available in preview. This feature allows you to autoscale supported addons or customize the resource's default CPU/ memory requests and limits to improve cost savings. 
   
 * Features  
   * AKS patch versions 1.32.5, 1.31.9 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
