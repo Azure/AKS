@@ -13,10 +13,10 @@ categories:
 # - add-ons
 ---
 
-PostgreSQL is one of the most popular workloads on Azure Kubernetes
-Service (AKS). Thanks to a robust operator ecosystem, there's now a
-vibrant community centered around self-hosting PostgreSQL on Kubernetes
-across all major cloud platforms.
+## Introduction
+
+[PostgreSQL](https://www.postgresql.org/) is one of the most popular stateful workloads on Azure Kubernetes
+Service (AKS). Thanks to a vibrant community, there's now a robust operator ecosystem, making it easy to self-host PostgreSQL on Kubernetes across all major cloud platforms.
 
 One of the key enablers of this momentum is
 [CloudNativePG](https://cloudnative-pg.io), an open-source PostgreSQL
@@ -30,19 +30,18 @@ observability, and a smoother developer experience. CloudNativePG is
 also a CNCF-hosted project, developed in the open with wide community
 participation, and backed by upstream PostgreSQL contributors. For teams
 looking to run production-grade PostgreSQL in Kubernetes without
-managing custom scripts or sidecars, CloudNativePG provides a cleaner,
-more maintainable approach than many of the alternatives that retrofit
+managing custom scripts or sidecars, CloudNativePG provides a clean, maintainable approach without retrofitting
 traditional PostgreSQL management practices into container environments.
 
 However, optimizing PostgreSQL performance can still be challenging. In
 this post, we'll demystify challenges on how storage impacts PostgreSQL
 and share how we dramatically improved performance on AKS by using local
-NVMe storage with Azure Container Storage.
+NVMe storage with [Azure Container Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction).
 
 ## The big bottleneck: storage
 
 PostgreSQL's performance is tightly bound to storage I/O. To operate
-optimallyPostgreSQL performs frequent disk writes for transaction logs
+optimally, PostgreSQL performs frequent disk writes for transaction logs
 (WAL) and checkpoints, even during read-heavy workloads. Any delay in
 storage throughput or latency directly affects query performance and
 database responsiveness.
@@ -52,26 +51,22 @@ database responsiveness.
 AKS supports a variety of storage options through the Azure Disk CSI
 driver. Let's dive into a few of them:
 
-1. **Premium SSD**
-    These general-purpose SSDs are widely used and support availability
+1. **Premium SSD**: These general-purpose SSDs are widely used and support availability
     features like ZRS (Zone Redundant Storage) and fast snapshotting.
     They're ideal for many workloads, but IOPS and throughput are still
     constrained by the VM's limits on remote disk access.
 
-2. **Premium SSD v2**
-    An evolution of Premium SSDs, this option decouples storage size
+2. **Premium SSD v2**: An evolution of Premium SSDs, this option decouples storage size
     from performance, letting you scale IOPS and throughput
     independently. With up to 80,000 IOPS and 1,200 MB/s throughput,
     they're more cost-efficient for I/O-intensive workloads.
 
-3. **Ultra Disk**
-    Azure's highest-performing remote disk offering, Ultra Disk supports
+3. **Ultra Disk**: Azure's highest-performing remote disk offering, Ultra Disk supports
     up to 400,000 IOPS and 10,000 MB/s. However, this raw performance
     can only be utilized on select VM sizes that can keep up with
-    it---like the Standard_E112ibds_v5. Most workloads can't unlock
-    this full potential due to VM throughput bottlenecks.
+    it, like the [Standard_E112ibds_v5](https://learn.microsoft.com/en-us/azure/virtual-machines/ebdsv5-ebsv5-series). Most workloads can't unlock this full potential due to VM throughput bottlenecks.
 
-## Why local NVMe changes the game
+## Benchmarking: PostgreSQL performance with Azure Container Storage
 
 All of these remote disks still hit a ceiling: the IOPS limit of the
 VM's remote disk controller. That's where **local NVMe** storage comes
@@ -88,7 +83,7 @@ a storage pool and exposes them through a Kubernetes-compatible storage
 class. You can reference this class directly when creating
 PersistentVolumeClaims.
 
-## What about persistence?
+### What about persistence?
 
 Yes, local NVMe is ephemeral---data is lost if the node is deallocated
 or the cluster shuts down. So how do you make use of it for something as
@@ -106,11 +101,9 @@ ephemeral volumes more predictably. This doesn't change the nature of
 the storage---it simply signals to the platform and your team that
 you're opting into these trade-offs knowingly.
 
-## Benchmarking the results
+### Benchmark results
 
-So why go through all this trouble?
-
-*Because the performance is worth it!* Using local NVMe with Azure
+So why go through all this trouble? *Because the performance is worth it!* Using local NVMe with Azure
 Container Storage as shown in our [official AKS PostgreSQL deployment
 guide](https://learn.microsoft.com/en-us/azure/aks/postgresql-ha-overview)
 can provide 15,000+ transactions per second and <4.5ms average latency
