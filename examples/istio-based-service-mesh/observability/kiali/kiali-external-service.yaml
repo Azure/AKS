@@ -2,7 +2,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kiali-external
-  namespace: kiali-operator
 spec:
   ports:
   - port: 20001
