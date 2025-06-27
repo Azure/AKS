@@ -279,3 +279,8 @@ Colin Mixon:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/colinmixon/"
+
+Francis Yu:
+  name     : "Francis Yu"
+  bio      : "Francis is a Product Manager and focuses on optimizing storage orchestration for Kubernetes workloads."
+  avatar   : "https://avatars.githubusercontent.com/u/23534998"

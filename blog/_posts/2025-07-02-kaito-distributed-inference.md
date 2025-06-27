@@ -4,7 +4,6 @@ date: 2025-07-02
 authors:
 - Sachi Desai
 - Francis Yu
-- Yuemin Lu
 categories: 
 - ai
 - storage
