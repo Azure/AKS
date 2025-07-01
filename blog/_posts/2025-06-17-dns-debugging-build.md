@@ -76,7 +76,7 @@ This is the part of the application we are focusing on:
 
     **Finding**: The logs show "getaddrinfo EAI_AGAIN myexternalendpoint.com", indicating DNS lookup failures for the external endpoint.
 
-2. Now that we know it's a DNS issue, let's trace the DNS traffic using [Inspektor Gadget](http://inspektor-gadget.io/). This allows us to easily view DNS queries and responses to identify the root cause of the issue. If you are not running it yet, deploy it into your cluster by following the [installation instructions](https://inspektor-gadget.io/docs/latest/quick-start#kubernetes).
+2. Now that we know it's a DNS issue, let's trace the DNS traffic using [Inspektor Gadget](http://inspektor-gadget.io/). Inspektor Gadget is a versatile open source tool for observability. In this case, it will allow us to easily view DNS queries and responses to identify the root cause of the issue. If you are not running it yet, deploy it into your cluster by following the [installation instructions](https://inspektor-gadget.io/docs/latest/quick-start#kubernetes).
 
     ![Focusing on DNS traffic exchange between order-service and in-cluster DNS service](../assets/images/dns-debugging-build/app-kube-dns.png)
 
