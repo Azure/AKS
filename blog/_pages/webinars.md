@@ -107,15 +107,15 @@ timezones1:
     url: 'https://aka.ms/aks/communitycalls-apac/roadmap/joinnow'
 
 combined_row:
-  - title: "Agenda (June 2025)"
+  - title: "Agenda (July 2025)"
     excerpt: "<div class='agenda-container compact'>
                 <div class='agenda-section'>
                   <div class='agenda-item'>
                     <div class='agenda-content'>
                       <h4>Welcome & Announcements</h4>
                       <ul class='compact-list'>
-                        <li>AKS Labs on Microsoft Reactor</li>
-                        <li>Cost Management Video Series</li>
+                        <li>Node AutoProvision GA</li>
+                        <li>Video Series: AKS Me Anything</li>
                       </ul>
                     </div>
                   </div>
@@ -136,8 +136,8 @@ combined_row:
                   
                   <div class='agenda-item featured'>
                     <div class='agenda-content'>
-                      <h4>Feature Deepdive: Cost Management</h4>
-                      <p>By <strong>Kaysie Yu</strong>, PM (AKS)</p>
+                      <h4>Feature Deepdive: AI ok AKS</h4>
+                      <p>By <strong>Sachi Desai</strong>, PM (AKS)</p>
                       <p class='agenda-description'></p>
                     </div>
                   </div>
