@@ -80,10 +80,21 @@ limitations. Even a modest 8-core VM can deliver up to 400,000 IOPS immediately
 because there's no network overhead.
 
 Historically, Kubernetes couldn't easily use local NVMe disks due to their
-ephemeral nature and lack of built-in abstraction. Azure Container Storage
-solves this: it aggregates local NVMe devices across nodes into a storage pool
-and exposes them through a Kubernetes-compatible storage class. You can
-reference this class directly when creating PersistentVolumeClaims.
+ephemeral nature and lack of built-in abstraction. [Azure Container Storage
+solves
+this](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-container-storage-with-local-disk):
+it aggregates local NVMe devices across nodes into a storage pool and exposes
+them through a Kubernetes-compatible storage class. You can reference this class
+directly when creating PersistentVolumeClaims.
+
+> *Hmm, is this something I can do with the Azure Disks CSI driver?*
+>
+> Not quite, which is what makes [Azure Container
+> Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction)
+> unique! You can use advanced block storage products such as local NVMe, temp
+> SSDs, and [Azure Elastic
+> SAN](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-container-storage-with-elastic-san)
+> to create the PVCs you need to run stateful applications on Kubernetes.
 
 ### What about persistence?
 
@@ -112,6 +123,21 @@ provide 15,000+ transactions per second and <4.5ms average latency on
 Standard_L16s_v3 virtual machines.
 
 ![image](/assets/images/postgresql-nvme/graph.png)
+
+> If you're curious about our exact benchmark procedure, you can read
+> [CloudNativePG's official benchmarking
+> documentation](https://cloudnative-pg.io/documentation/1.26/benchmarking/#pgbench).
+>
+> In a nutshell, we initialized the database via `kubectl cnpg pgbench
+> postgres-cluster -n postgres --job-name pgbench-init -- -i -s 1000`. This
+> command generates a database of 100,000,000 records using a scale factor of
+> 1000. Then, we ran the benchmark command `kubectl cnpg pgbench
+> postgres-cluster -n postgres --job-name pgbench -- -c 64 -j 4 -t 10000 -P`
+> which runs the test with 64 concurrent clients, four worker threads, and
+> 10,000 records per client (for a total of 64,000). The `-p` is a nice added
+> touch to monitor the progress of the test live. This simulates a
+> medium-to-high load on a production-like system, stressing both throughput and
+> latency.
 
 We also benchmarked our setup on larger L-series VM SKUs, and discovered
 performance increased to 26,000 transactions per second with 2.3ms average
@@ -157,3 +183,9 @@ developer experience seamless.
 If you're running PostgreSQL on AKS and are looking to squeeze out more
 performance without overpaying for compute, local NVMe + Azure Container Storage
 might be the best setup you haven't tried yet.
+
+Want to try everything out for yourself? Visit our newly renovated guide on
+[deploying PostgreSQL in Azure Kubernetes Service with
+CloudNativePG](https://learn.microsoft.com/en-us/azure/aks/postgresql-ha-overview),
+as well as the [benchmarking scripts](https://github.com/eh8/acstor-pgsql) we
+used for this blog post.
