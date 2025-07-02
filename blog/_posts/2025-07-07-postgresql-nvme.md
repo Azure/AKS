@@ -48,6 +48,29 @@ PostgreSQL performs frequent disk writes for transaction logs (WAL) and
 checkpoints, even during read-heavy workloads. Any delay in storage throughput
 or latency directly affects query performance and database responsiveness.
 
+This is because PostgreSQL is designed with strong durability guarantees: every
+transaction must be written to the Write-Ahead Log (WAL) before it is considered
+committed. This means that even if your workload is mostly reads, every write
+operation---including inserts, updates, and deletes---must wait for the storage
+subsystem to confirm that the WAL has been safely persisted. If the underlying
+storage is slow or experiences high latency, these commit operations become a
+major bottleneck, causing application slowdowns and increased response times.
+
+Additionally, PostgreSQL periodically performs checkpoints, flushing dirty pages
+from memory to disk to ensure data consistency and enable crash recovery. During
+these checkpoints, large bursts of I/O can occur, and if the storage cannot keep
+up, it can lead to increased query latency or even temporary stalls. Background
+processes like autovacuum and replication also generate significant I/O, further
+amplifying the dependency on fast, low-latency storage.
+
+In high-concurrency environments, the situation is even more pronounced: with
+many clients issuing transactions simultaneously, the database's ability to
+process requests is often limited not by CPU or memory, but by how quickly it
+can read from and write to disk. As a result, storage IOPS (input/output
+operations per second) and latency become the primary factors that determine
+PostgreSQL's throughput and overall performance, especially for write-heavy or
+latency-sensitive workloads.
+
 ## Storage options on AKS
 
 AKS supports a variety of storage options through the Azure Disk CSI driver.
