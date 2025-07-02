@@ -35,9 +35,9 @@ Self-hosting LLMs on Kubernetes is growing in popularity for organizations that 
 - Keen to fine-tune or customize the model — something closed APIs usually block
 - Have sensitive or proprietary data to keep ringfenced and protected from accidental exposure through third-party logs
 
-Self-hosting with the Kubernetes AI Toolchain Operator (KAITO) helps you achieve all this and more! KAITO is a CNCF Sandbox project that simplifies and optimizes your inference and tuning workloads on Kubernetes. It integrates with vLLM, a high-throughput LLM inference engine optimized for serving large models efficiently. 
+Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) helps you achieve all this and more! KAITO is a CNCF Sandbox project that simplifies and optimizes your inference and tuning workloads on Kubernetes. It integrates with vLLM, a high-throughput LLM inference engine optimized for serving large models efficiently. 
 
-vLLM supports quantized models (like 4-bit GPTQ or AWQ), reducing memory/GPU requirements drastically without major accuracy trade-offs. KAITO’s modular, plug-and-play setup allows you to go from model selection to production-grade API quickly:
+[vLLM](https://docs.vllm.ai/en/latest/) supports quantized models, reducing memory/GPU requirements drastically without major accuracy trade-offs. KAITO’s modular, plug-and-play setup allows you to go from model selection to production-grade API quickly:
 
 - Out-of-the-box OpenAI-compatible API means you can swap in KAITO with minimal application-side changes.
 - Built-in support for prompt formatting, batching, and streaming responses.
@@ -56,7 +56,7 @@ Luckily, KAITO inferencing now supports these model weights with the power of a 
 
 [Azure Container Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction) (ACStor) is a cloud-based volume management, deployment, and orchestration service built natively for containers. It integrates with Kubernetes, allowing you to dynamically and automatically provision persistent volumes to store data for stateful applications running on Kubernetes clusters.
 
-ACStor v2 is purpose-built for AI and high-performance computing (HPC) workloads that demand ultra-fast data processing on local NVMe disks. It delivers performance close to raw NVMe speeds, all while providing seamless Kubernetes-native operations.
+The latest version of this project, ACStor v2, is purpose-built for AI and high-performance computing (HPC) workloads that demand ultra-fast data processing on local NVMe disks. It delivers performance close to raw NVMe speeds, all while providing seamless Kubernetes-native operations.
 
 We’re excited to share that these capabilities are now available in KAITO through early integration. When deployed with KAITO, ACStor v2 provisions striped volumes across local NVMe disks, serving large model files efficiently. 
 
@@ -85,7 +85,7 @@ We see over a **5X improvement** in model file loading performance when using AC
 
 # Ready to dive in? Try LLaMA 3.3 70B today on your AKS cluster
 
-Using this [KAITO inference workspace](https://aka.ms/kaito/distributed-inference), you'll leverage NVMe local storage to serve a model as large as LLaMA 3.3 70B LLM (140GB in size) easier and and more efficient than ever on AKS. The Llama 3.3 70B tuned model is optimized for multilingual dialogue use cases and outperforms many of the available open source and closed chat models on common industry benchmarks. You get fast inference, scalable deployments, and complete control over your AI stack – now available in open-source [KAITO v0.5.0](https://aka.ms/kaito) and coming soon to the AKS managed add-on experience.
+Using this [KAITO inference workspace](https://aka.ms/kaito/distributed-inference), you'll leverage NVMe local storage to serve a model as large as LLaMA 3.3 70B LLM (140GB in size) easier and more efficient than ever on AKS. The Llama 3.3 70B tuned model is optimized for multilingual dialogue use cases and outperforms many of the available open source and closed chat models on common industry benchmarks. You get fast inference, scalable deployments, and complete control over your AI stack – now available in open-source [KAITO v0.5.0](https://aka.ms/kaito) and coming soon to the [AKS managed add-on](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) experience.
 
 For teams looking to adopt Azure Container Storage v2 directly in their own Kubernetes environment, a standalone Kubernetes extension is scheduled for release by September 2025. Stay tuned for more updates!
 
