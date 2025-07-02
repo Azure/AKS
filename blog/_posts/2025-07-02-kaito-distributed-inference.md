@@ -13,7 +13,7 @@ XL-size large language models (LLMs) are quickly evolving from experimental tool
 
 Massive LLMs power virtual assistants and recommendations across social media, UI/UX design tooling and self-learning platforms. But how do they differ from your average language model? And how do you get the best bang for your buck running them at scale?
 
-Let’s unpack why large models matter how pairing them with Kubernetes and NVMe local storage accelerates your intelligent app development.
+Let’s unpack why large models matter and how Kubernetes, paired with NVMe local storage, accelerates intelligent app development.
 
 # Aren’t LLMs large enough?
 
