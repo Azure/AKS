@@ -27,7 +27,7 @@ Large models aren’t just big for show — they’re smart, efficient, and vers
 
 Running these XL-size LLMs at scale can be more cost-effective than relying on commercial APIs, if you play your cards right.
 
-# When self-hosting big models makes sense 💡
+## When self-hosting big models makes sense 💡
 
 Self-hosting LLMs on Kubernetes is growing in popularity for organizations that are:
 
