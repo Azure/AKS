@@ -56,7 +56,8 @@ Luckily, KAITO inferencing now supports these model weights with the power of a 
 
 # What is Azure Container Storage?
 
-[Azure Container Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction) (ACStor) is a cloud-based volume management, deployment, and orchestration service built natively for containers. It integrates with Kubernetes, allowing you to dynamically and automatically provision persistent volumes to store data for stateful applications running on Kubernetes clusters.
+[Azure Container Storage](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction) (ACStor) is a cloud-based volume management, deployment, and orchestration service built natively for containers. It integrates with Kubernetes, allowing you to dynamically and automatically provision persistent volumes to store data for stateful applications running on Kubernetes clusters.
+
 
 The latest version of this project, ACStor v2, is purpose-built for AI and high-performance computing (HPC) workloads that demand ultra-fast data processing on local NVMe disks. It delivers performance close to raw NVMe speeds, all while providing seamless Kubernetes-native operations.
 
