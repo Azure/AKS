@@ -86,7 +86,7 @@ To test this out, we performed a performance benchmark test on the Llama-3.1-8B-
 
 We see over a **5X improvement** in model file loading performance when using ACStor v2 with a locally striped NVMe volume, compared to using an ephemeral OS disk!
 
-# Ready to dive in? Try LLaMA 3.3 70B today on your AKS cluster
+## Ready to dive in? Try LLaMA 3.3 70B today on your AKS cluster
 
 Using this [KAITO inference workspace](https://aka.ms/kaito/distributed-inference), you'll leverage NVMe local storage to serve a model as large as LLaMA 3.3 70B LLM (140GB in size) easier and more efficient than ever on AKS. The Llama 3.3 70B tuned model is optimized for multilingual dialogue use cases and outperforms many of the available open source and closed chat models on common industry benchmarks. You get fast inference, scalable deployments, and complete control over your AI stack – now available in open-source [KAITO v0.5.0](https://aka.ms/kaito) and coming soon to the [AKS managed add-on](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) experience.
 
