@@ -45,7 +45,7 @@ Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.g
 - Built-in support for prompt formatting, batching, and streaming responses.
 - Self-hosting with KAITO on your AKS cluster ensures data never leaves your organization's controlled environment, ideal for highly regulated industries (finance, healthcare, defense) where cloud LLM APIs may be restricted due to compliance.
 
-# The catch? Managing huge model weights 🏋️‍♂️
+## The catch? Managing huge model weights 🏋️‍♂️
 Some models come with **massive** weight files, and even when fully quantized can weigh hundreds of gigabytes (based on model type and version). Handling and deploying such model serving workloads isn’t trivial, especially if you want reproducible, scalable workflows on Kubernetes.
 
 KAITO balances simplicity and efficiency but using container images to manage most LLMs - but it can become difficult to distribute large model files in heavy-weight images.
