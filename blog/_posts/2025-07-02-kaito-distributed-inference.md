@@ -39,7 +39,7 @@ Self-hosting LLMs on Kubernetes is growing in popularity for organizations that 
 
 Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) helps you achieve all this and more! KAITO is a CNCF Sandbox project that simplifies and optimizes your inference and tuning workloads on Kubernetes. It integrates with vLLM, a high-throughput LLM inference engine optimized for serving large models efficiently. 
 
-[vLLM](https://docs.vllm.ai/en/latest/) supports quantized models, reducing memory/GPU requirements drastically without major accuracy trade-offs. KAITO’s modular, plug-and-play setup allows you to go from model selection to production-grade API quickly:
+[vLLM](https://docs.vllm.ai/) supports quantized models, reducing memory/GPU requirements drastically without major accuracy trade-offs. KAITO’s modular, plug-and-play setup allows you to go from model selection to production-grade API quickly:
 
 - Out-of-the-box OpenAI-compatible API means you can swap in KAITO with minimal application-side changes.
 - Built-in support for prompt formatting, batching, and streaming responses.
