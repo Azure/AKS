@@ -71,7 +71,7 @@ How does this work?
 - Abstracts multiple NVMe drives into as low as single persistent volume, so pods automatically land on nodes with maximum fast storage
 - Supports StatefulSets to handle stateful workloads and edge data pipelines smoothly
 
-## Why is ACStor v2 ideal for distributed inference with KAITO?
+### Why is ACStor v2 ideal for distributed inference with KAITO?
 
 | Benefit |	Why it Matters |
 | -- | -- |
