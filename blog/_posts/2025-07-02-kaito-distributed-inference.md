@@ -17,7 +17,7 @@ Massive LLMs power virtual assistants and recommendations across social media, U
 
 Let’s unpack why large models matter and how Kubernetes, paired with NVMe local storage, accelerates intelligent app development.
 
-# Aren’t LLMs large enough?
+## Aren’t LLMs large enough?
 
 Large models aren’t just big for show — they’re smart, efficient, and versatile thanks to:
 
