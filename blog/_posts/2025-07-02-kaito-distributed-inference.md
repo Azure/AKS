@@ -92,4 +92,6 @@ Using this [KAITO inference workspace](https://aka.ms/kaito/distributed-inferenc
 
 For teams looking to adopt Azure Container Storage v2 directly in their own Kubernetes environment, a standalone Kubernetes extension is scheduled for release by September 2025. Stay tuned for more updates!
 
+## We want your feedback
+
 Want your favorite XL-size large language model supported with KAITO? Jump in and submit your feature requests to the [Upstream project roadmap](https://github.com/kaito-project/kaito/issues)!
