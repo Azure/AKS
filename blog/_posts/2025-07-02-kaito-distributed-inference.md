@@ -6,7 +6,9 @@ authors:
 - Francis Yu
 categories: 
 - ai
+tags:
 - storage
+- acstor
 ---
 
 XL-size large language models (LLMs) are quickly evolving from experimental tools to essential infrastructure. Their flexibility, ease of integration, and growing range of capabilities are positioning them as core components of modern software systems. 
