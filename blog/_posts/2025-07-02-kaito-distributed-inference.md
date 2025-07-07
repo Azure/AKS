@@ -46,11 +46,12 @@ Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.g
 - Self-hosting with KAITO on your AKS cluster ensures data never leaves your organization's controlled environment, ideal for highly regulated industries (finance, healthcare, defense) where cloud LLM APIs may be restricted due to compliance.
 
 ## The catch? Managing huge model weights 🏋️‍♂️
+
 Some models come with **massive** weight files, and even when fully quantized can weigh hundreds of gigabytes (based on model type and version). Handling and deploying such model serving workloads isn’t trivial, especially if you want reproducible, scalable workflows on Kubernetes.
 
 KAITO balances simplicity and efficiency but using container images to manage most LLMs - but it can become difficult to distribute large model files in heavy-weight images.
 
-Luckily, KAITO inferencing now supports these model weights with the power of a local file cache and striped Non-Volatile Memory Express (NVMe) PersistentVolume managed by Azure Container Storage v2.
+Luckily, KAITO inferencing now supports these model weights with the power of a local file cache and striped Non-Volatile Memory Express (NVMe) PersistentVolume managed by Azure Container Storage.
 
 > A local file cache significantly reduces latency during model downloads and reads, enhances reliability with persistent storage and avoids repetitive downloads after container restarts - all without extra storage fees! 
 
