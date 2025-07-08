@@ -79,6 +79,7 @@ How does this work?
 | -- | -- |
 |⚡Performance | Max throughput & IOPS of local NVMe SSDs |
 |🎯Data Locality | Pods get scheduled where storage is available, avoiding failures |
+|💸 Zero added costs | Local storage used by default to avoid external storage fees |
 |📦Kubernetes Native | Full CSI support, PVC lifecycle management, and integration with AKS/VMSS |
 |🔁 Repeatability | Ideal for ML pipelines and reproducible runs |
 
