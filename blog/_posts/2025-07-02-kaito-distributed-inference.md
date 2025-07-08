@@ -11,7 +11,7 @@ tags:
 - acstor
 ---
 
-XL-size large language models (LLMs) are quickly evolving from experimental tools to essential infrastructure. Their flexibility, ease of integration, and growing range of capabilities are positioning them as core components of modern software systems. 
+XL-size large language models (LLMs) are quickly evolving from experimental tools to essential infrastructure. Their flexibility, ease of integration, and growing range of capabilities are positioning them as core components of modern software systems.
 
 Massive LLMs power virtual assistants and recommendations across social media, UI/UX design tooling and self-learning platforms. But how do they differ from your average language model? And how do you get the best bang for your buck running them at scale?
 
@@ -37,7 +37,7 @@ Self-hosting LLMs on Kubernetes is growing in popularity for organizations that 
 - Keen to fine-tune or customize the model — something closed APIs usually block
 - Have sensitive or proprietary data to keep ring-fenced and protected from accidental exposure through third-party logs
 
-Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) helps you achieve all this and more! KAITO is a CNCF Sandbox project that simplifies and optimizes your inference and tuning workloads on Kubernetes. It integrates with vLLM, a high-throughput LLM inference engine optimized for serving large models efficiently. 
+Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) helps you achieve all this and more! KAITO is a CNCF Sandbox project that simplifies and optimizes your inference and tuning workloads on Kubernetes. It integrates with vLLM, a high-throughput LLM inference engine optimized for serving large models efficiently.
 
 [vLLM](https://docs.vllm.ai/) supports quantized models, reducing memory/GPU requirements drastically without major accuracy trade-offs. KAITO’s modular, plug-and-play setup allows you to go from model selection to production-grade API quickly:
 
@@ -53,16 +53,15 @@ KAITO balances simplicity and efficiency but using container images to manage mo
 
 Luckily, KAITO inferencing now supports these model weights with the power of a local file cache and striped Non-Volatile Memory Express (NVMe) PersistentVolume managed by Azure Container Storage.
 
-> A local file cache significantly reduces latency during model downloads and reads, enhances reliability with persistent storage and avoids repetitive downloads after container restarts - all without extra storage fees! 
+> A local file cache significantly reduces latency during model downloads and reads, enhances reliability with persistent storage and avoids repetitive downloads after container restarts - all without extra storage fees!
 
 ## What is Azure Container Storage?
 
 [Azure Container Storage](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction) (ACStor) is a cloud-based volume management, deployment, and orchestration service built natively for containers. It integrates with Kubernetes, allowing you to dynamically and automatically provision persistent volumes to store data for stateful applications running on Kubernetes clusters.
 
-
 The latest version of this project, ACStor v2, is purpose-built for AI and high-performance computing (HPC) workloads that demand ultra-fast data processing on local NVMe disks. It delivers performance close to raw NVMe speeds, all while providing seamless Kubernetes-native operations.
 
-We’re excited to share that these capabilities are now available in KAITO through early integration. When deployed with KAITO, ACStor v2 provisions striped volumes across local NVMe disks, serving large model files efficiently. 
+We’re excited to share that these capabilities are now available in KAITO through early integration. When deployed with KAITO, ACStor v2 provisions striped volumes across local NVMe disks, serving large model files efficiently.
 
 ![ACStor v2 integration with KAITO](/assets/images/kaito-distributed-inference/kaito-acstorv2-integration.png)
 
@@ -74,12 +73,12 @@ How does this work?
 
 ### Why is ACStor v2 ideal for distributed inference with KAITO?
 
-| Benefit |	Why it Matters |
+| Benefit | Why it Matters |
 | -- | -- |
-| ⚡ Performance	| Max throughput & IOPS of local NVMe SSDs |
-| 🎯 Data Locality | Pods get scheduled where storage is available, avoiding failures |
-| 📦 Kubernetes Native	| Full CSI support, PVC lifecycle management, and integration with AKS/VMSS |
-| 🔁 Repeatability | Ideal for ML pipelines and reproducible runs |
+|⚡Performance | Max throughput & IOPS of local NVMe SSDs |
+|🎯Data Locality | Pods get scheduled where storage is available, avoiding failures |
+|📦Kubernetes Native | Full CSI support, PVC lifecycle management, and integration with AKS/VMSS |
+|🔁 Repeatability | Ideal for ML pipelines and reproducible runs |
 
 To test this out, we performed a performance benchmark test on the Llama-3.1-8B-Instruct LLM:
 
