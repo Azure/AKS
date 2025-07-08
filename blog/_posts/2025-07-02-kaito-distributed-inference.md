@@ -23,7 +23,7 @@ Large models aren’t just big for show — they’re smart, efficient, and vers
 
 - Efficient transformer architectures powering them
 - Compatibility with high-performance inference libraries like vLLM
-- Better scores on tasks like instructions, coding, math, multilingual understanding, and long-context memory
+- Ability to handle long-context memory effectively, allowing them to score well on tasks like instructions, coding, math, and multilingual understanding (check out [HuggingFace's Open LLM Leaderboard](https://huggingface.co/open-llm-leaderboard) to learn more)
 
 Running these XL-size LLMs at scale can be more cost-effective than relying on commercial APIs, if you play your cards right.
 
@@ -37,7 +37,9 @@ Self-hosting LLMs on Kubernetes is growing in popularity for organizations that 
 - Keen to fine-tune or customize the model — something closed APIs usually block
 - Have sensitive or proprietary data to keep ring-fenced and protected from accidental exposure through third-party logs
 
-Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) helps you achieve all this and more! KAITO is a CNCF Sandbox project that simplifies and optimizes your inference and tuning workloads on Kubernetes. It integrates with vLLM, a high-throughput LLM inference engine optimized for serving large models efficiently.
+## Using KAITO for self-hosting
+
+Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) helps you achieve all this and more! KAITO is a CNCF Sandbox project that simplifies and optimizes your inference and tuning workloads on Kubernetes. By default, it integrates with vLLM, a high-throughput LLM inference engine optimized for serving large models efficiently.
 
 [vLLM](https://docs.vllm.ai/) supports quantized models, reducing memory/GPU requirements drastically without major accuracy trade-offs. KAITO’s modular, plug-and-play setup allows you to go from model selection to production-grade API quickly:
 
@@ -49,7 +51,7 @@ Self-hosting with the [Kubernetes AI Toolchain Operator](https://kaito-project.g
 
 Some models come with **massive** weight files, and even when fully quantized can weigh hundreds of gigabytes (based on model type and version). Handling and deploying such model serving workloads isn’t trivial, especially if you want reproducible, scalable workflows on Kubernetes.
 
-KAITO balances simplicity and efficiency but using container images to manage most LLMs - but it can become difficult to distribute large model files in heavy-weight images.
+KAITO balances simplicity and efficiency by using container images to manage most LLMs - but it can become difficult to distribute large model files that result in heavy-weight images.
 
 Luckily, KAITO inferencing now supports these model weights with the power of a local file cache and striped Non-Volatile Memory Express (NVMe) PersistentVolume managed by Azure Container Storage.
 
@@ -68,7 +70,7 @@ We’re excited to share that these capabilities are now available in KAITO thro
 How does this work?
 - ACStor v2 aggregates local NVMe drives  (**available by default** in several Azure GPU-enabled VM sizes) as Kubernetes PersistentVolumes (PVs)
 - Bypasses network storage bottlenecks for ultra-low latency & high IOPS & high throughput - ideal for AI inference at scale
-- Abstracts multiple NVMe drives into as low as single persistent volume, so pods automatically land on nodes with maximum fast storage
+- Abstracts multiple NVMe drives into (as low as) a single persistent volume, so pods automatically land on nodes with maximum fast storage
 - Supports StatefulSets to handle stateful workloads and edge data pipelines smoothly
 
 ### Why is ACStor v2 ideal for distributed inference with KAITO?
