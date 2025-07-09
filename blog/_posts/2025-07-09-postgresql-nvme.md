@@ -4,13 +4,10 @@ description: "Unlock blazing fast PostgreSQL performance on AKS with CloudNative
 date: 2025-07-09 # date is important. future dates will not be published
 author: Eric Cheng # must match the authors.yml in the _data folder
 categories: 
-# - general 
-# - general
-# - operations
-# - networking
-# - security
+- general 
 - developer
-# - add-ons
+- storage
+- databases
 ---
 
 ## Introduction
