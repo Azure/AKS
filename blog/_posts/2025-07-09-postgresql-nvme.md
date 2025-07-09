@@ -167,7 +167,7 @@ So why go through all this trouble? *Because the performance is worth it!* Using
 local NVMe with Azure Container Storage can provide 15,000+ transactions per
 second and <4.5ms average latency on Standard_L16s_v3 virtual machines.
 
-![image](/assets/images/postgresql-nvme/graph.png)
+![image](/assets/images/postgresql-nvme/chart.png)
 
 > If you're curious about our exact benchmark procedure, you can read
 > [CloudNativePG's official benchmarking
