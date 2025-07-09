@@ -22,7 +22,7 @@ There's no doubt that Ingress and service mesh have greatly improved the way we 
 
 The API has been designed from the ground up, taking into account the lessons learned from the Ingress and service mesh APIs. To me, it's a game-changer because it ensures that you can express traffic routing configurations that were previously only possible via custom Ingress annotations. It also offers role-oriented configuration, which means that cluster operators can configure gateways and app developers can manage routes through the gateway. This is a big win for organizations that have a separation of duties between cluster operators and app developers. And finally, the API is portable, meaning that the API specification is supported by many implementations including [Istio](https://istio.io/latest/).
 
-> The Gateway API is not fully supported yet supported for the Istio-based managed add-on on AKS and this should be considered an experiment for now.
+> The Gateway API is not fully supported for the Istio-based managed add-on on AKS and this should be considered an experiment for now.
 
 ## Istio on AKS
 
