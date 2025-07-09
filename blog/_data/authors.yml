@@ -280,6 +280,21 @@ Colin Mixon:
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/colinmixon/"
 
+Eric Cheng:
+  name        : "Eric Cheng"
+  bio         : "Eric is a product manager in Azure Storage."
+  avatar      : "https://www.chengeric.com/photo.jpg" # Replace this with your avatar image
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:ericcheng@microsoft.com"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/eh8"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/eh8"
+
 Francis Yu:
   name     : "Francis Yu"
   bio      : "Francis is a Product Manager and focuses on optimizing storage orchestration for Kubernetes workloads."
