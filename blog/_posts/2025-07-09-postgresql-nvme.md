@@ -21,11 +21,11 @@ community, we now have a strong PostgreSQL operator ecosystem that makes it
 easier for everyone to self-host PostgreSQL on Kubernetes.
 
 One of the leading operators driving PostgreSQL adoption is
-[CloudNativePG](https://cloudnative-pg.io), an open-source PostgreSQL operator
-built from the ground up for Kubernetes. CloudNativePG embraces
-Kubernetes-native patterns for stateful workloads. It offers built-in support
-for high availability, rolling updates, backup orchestration, and automated
-failover---all using native Kubernetes resources.
+[CloudNativePG](https://github.com/cloudnative-pg/cloudnative-pg), an
+open-source PostgreSQL operator built from the ground up for Kubernetes.
+CloudNativePG embraces Kubernetes-native patterns for stateful workloads. It
+offers built-in support for high availability, rolling updates, backup
+orchestration, and automated failover---all using native Kubernetes resources.
 
 This tight Kubernetes integration leads to more predictable behavior, easier
 observability, and a smoother developer experience. CloudNativePG is also a
@@ -130,8 +130,8 @@ directly when creating PersistentVolumeClaims.
 >
 > Not quite, which is what makes [Azure Container
 > Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction)
-> unique! You can use advanced block storage products such as local NVMe, temp
-> SSDs, and [Azure Elastic
+> unique! Azure Container Storage lets you use advanced block storage products
+> such as local NVMe, temp SSDs, and [Azure Elastic
 > SAN](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-container-storage-with-elastic-san)
 > to create the PVCs you need to run stateful applications on Kubernetes.
 
@@ -222,7 +222,7 @@ machines:
 
 We're continuing to invest in simplifying and accelerating stateful workloads on
 Kubernetes. In our next release of Azure Container Storage, we're reducing
-PostgreSQL latency even further and increasing throughput---while keeping the
+PostgreSQL latency even further and increasing throughput, all while keeping the
 developer experience seamless.
 
 If you're running PostgreSQL on AKS and are looking to squeeze out more
