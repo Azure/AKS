@@ -5,12 +5,13 @@
 @charset "utf-8";
 
 /* system colors */
-$primary-color: #9F62EB;
+$primary-color: #9f62eb;
 
 /* system typefaces */
-$serif      : Georgia, Times, serif;
-$sans-serif : "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial, sans-serif;
-$monospace  : "Roboto Mono", Monaco, Consolas, "Lucida Console", monospace;
+$serif: Georgia, Times, serif;
+$sans-serif: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  "Helvetica Neue", "Lucida Grande", Arial, sans-serif;
+$monospace: "Roboto Mono", Monaco, Consolas, "Lucida Console", monospace;
 
 /* dracula syntax highlighting (base16) */
 /* https://github.com/dracula/base16-dracula-scheme */
@@ -57,4 +58,12 @@ $base0f: #00f769;
 
 .nav__list .nav__items a:hover {
   color: $primary-color !important;
+}
+
+blockquote {
+  background-color: darken(#663399, 15%) !important;
+  border-left: 0.5em solid $primary-color !important;
+  font-style: normal !important;
+  border-radius: 0.25em !important;
+  vertical-align: middle !important;
 }
