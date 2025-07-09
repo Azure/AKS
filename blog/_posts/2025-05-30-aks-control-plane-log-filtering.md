@@ -5,10 +5,8 @@ date: 2025-05-27
 author: Steve Griffith
 categories: 
 - general
-- metrics
 - operations
 - security
-- azure-monitor
 ---
 
 ## Introduction
