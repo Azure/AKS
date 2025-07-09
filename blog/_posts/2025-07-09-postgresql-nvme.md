@@ -1,6 +1,6 @@
 ---
 title: "Boosting PostgreSQL performance on AKS"
-description: "Unlock high-performance PostgreSQL on AKS with CloudNativePG and Azure Container Storage using local NVMe for big throughput/latency improvements."
+description: "Unlock blazing fast PostgreSQL performance on AKS with CloudNativePG and Azure Container Storage, using local NVMe for significant boosts in throughput and latency."
 date: 2025-07-09 # date is important. future dates will not be published
 author: Eric Cheng # must match the authors.yml in the _data folder
 categories: 
@@ -16,45 +16,47 @@ categories:
 ## Introduction
 
 [PostgreSQL](https://www.postgresql.org/) is one of the most popular stateful
-workloads on Azure Kubernetes Service (AKS). Thanks to a vibrant community,
-there's now a robust operator ecosystem, making it easy to self-host PostgreSQL
-on Kubernetes across all major cloud platforms.
+workloads on Azure Kubernetes Service (AKS). Thanks to the support of a vibrant
+community, we now have a strong PostgreSQL operator ecosystem that makes it
+easier for everyone to self-host PostgreSQL on Kubernetes.
 
-One of the key enablers of this momentum is
+One of the leading operators driving PostgreSQL adoption is
 [CloudNativePG](https://cloudnative-pg.io), an open-source PostgreSQL operator
 built from the ground up for Kubernetes. CloudNativePG embraces
 Kubernetes-native patterns for stateful workloads. It offers built-in support
 for high availability, rolling updates, backup orchestration, and automated
 failover---all using native Kubernetes resources.
 
-This tight integration leads to more predictable behavior, easier observability,
-and a smoother developer experience. CloudNativePG is also a CNCF-hosted
-project, developed in the open with wide community participation, and backed by
-upstream PostgreSQL contributors. For teams looking to run production-grade
-PostgreSQL in Kubernetes without managing custom scripts or sidecars,
-CloudNativePG provides a clean, maintainable approach without retrofitting
-traditional PostgreSQL management practices into container environments.
+This tight Kubernetes integration leads to more predictable behavior, easier
+observability, and a smoother developer experience. CloudNativePG is also a
+CNCF-hosted project, developed in the open with wide community participation,
+and backed by upstream PostgreSQL contributors. For teams looking to run
+production-grade PostgreSQL in Kubernetes without managing custom scripts or
+sidecars, CloudNativePG provides a straightforward and maintainable approach
+without retrofitting traditional PostgreSQL management practices into container
+environments.
 
-However, optimizing PostgreSQL performance can still be challenging. In this
-post, we'll demystify challenges on how storage impacts PostgreSQL and share how
-we dramatically improved performance on AKS by using local NVMe storage with
-[Azure Container
+However, optimizing PostgreSQL infrastructure performance can still be
+challenging. In this post, we'll demystify challenges on how storage impacts
+PostgreSQL and share how we dramatically improved performance on AKS by using
+local NVMe storage with [Azure Container
 Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction).
 
 ## The big bottleneck: storage
 
 PostgreSQL's performance is tightly bound to storage I/O. To operate optimally,
 PostgreSQL performs frequent disk writes for transaction logs (WAL) and
-checkpoints, even during read-heavy workloads. Any delay in storage throughput
-or latency directly affects query performance and database responsiveness.
+checkpoints. Even in predominantly read-heavy workloads, any write
+operations---including inserts, updates, and deletes---must wait for the storage
+subsystem to confirm that the WAL has been safely persisted, and any delay in
+storage throughput or latency directly affects query performance and database
+responsiveness.
 
 This is because PostgreSQL is designed with strong durability guarantees: every
 transaction must be written to the Write-Ahead Log (WAL) before it is considered
-committed. This means that even if your workload is mostly reads, every write
-operation---including inserts, updates, and deletes---must wait for the storage
-subsystem to confirm that the WAL has been safely persisted. If the underlying
-storage is slow or experiences high latency, these commit operations become a
-major bottleneck, causing application slowdowns and increased response times.
+committed. If the underlying storage is slow or experiences high latency, these
+commit operations become a major bottleneck, causing application slowdowns and
+increased response times.
 
 Additionally, PostgreSQL periodically performs checkpoints, flushing dirty pages
 from memory to disk to ensure data consistency and enable crash recovery. During
@@ -87,20 +89,34 @@ Let's dive into a few of them:
     more cost-efficient for I/O-intensive workloads.
 
 3. **Ultra Disk**: Azure's highest-performing remote disk offering, Ultra Disk
-    supports up to 400,000 IOPS and 10,000 MB/s. However, this raw performance
-    can only be utilized on select VM sizes that can keep up with it, like the
-    [Standard_E112ibds_v5](https://learn.microsoft.com/en-us/azure/virtual-machines/ebdsv5-ebsv5-series).
-    Most workloads can't unlock this full potential due to VM throughput
-    bottlenecks.
+    supports up to 400,000 IOPS and 10,000 MB/s. However, achieving this full
+    performance requires very large VMs such as the
+    [Standard_E112ibds_v5](https://learn.microsoft.com/en-us/azure/virtual-machines/ebdsv5-ebsv5-series#ebdsv5-series-nvme)
+    because remote disk performance is constrained by the VM's vCPU count and
+    remote disk controller limits. This means you're forced to pay for massive
+    compute resources just to unlock storage performance—even if your workload
+    doesn't need 112 vCPUs.
 
 ## Benchmarking: PostgreSQL performance with Azure Container Storage
 
-All of these remote disks still hit a ceiling: the IOPS limit of the VM's remote
-disk controller. That's where **local NVMe** storage comes in.
+This is where **local NVMe** storage fundamentally changes the game. Unlike
+remote disks that scale performance with VM size, local NVMe drives deliver
+their full performance regardless of vCPU count because they're physically
+attached to the VM and bypass the remote disk controller entirely.
 
-Local NVMe drives are physically attached to the VM, bypassing remote I/O
-limitations. Even a modest 8-core VM can deliver up to 400,000 IOPS immediately
-because there's no network overhead.
+Consider this stark contrast:
+
+- **Ultra Disk**: To get 400,000 IOPS, you need a 112-vCPU VM
+  ([Standard_E112ibds_v5](https://learn.microsoft.com/en-us/azure/virtual-machines/ebdsv5-ebsv5-series#ebdsv5-series-nvme))
+- **Local NVMe**: An 8-vCPU
+  ([Standard_L8s_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/storage-optimized/lsv3-series?tabs=sizestoragelocal#sizes-in-series))
+  VM delivers 400,000 IOPS out of the box
+
+That's **14x fewer vCPUs** for the same IOPS performance, dramatically reducing
+your compute costs. The trade-off is that you're shifting data durability from
+the storage layer to the application layer, relying on PostgreSQL's WAL-based
+replication and backup orchestration instead of underlying storage persistence
+(which we address in the next section).
 
 Historically, Kubernetes couldn't easily use local NVMe disks due to their
 ephemeral nature and lack of built-in abstraction. [Azure Container Storage
@@ -121,29 +137,35 @@ directly when creating PersistentVolumeClaims.
 
 ### What about persistence?
 
-Yes, local NVMe is ephemeral---data is lost if the node is deallocated or the
-cluster shuts down. So how do you make use of it for something as critical as a
-database?
+Yes, local NVMe is ephemeral—data is lost if the node is deallocated or the
+cluster shuts down. Azure Container Storage provides an annotation for volumes
+that enables a **persistence-aware mode**, which helps Kubernetes treat these
+ephemeral volumes more predictably. This doesn't change the nature of the
+storage—it simply signals to the platform and your team that you're opting into
+these trade-offs knowingly.
 
-Modern operators like [CloudNativePG](https://cloudnative-pg.io) enable
-PostgreSQL-native high availability (HA), allowing you to replicate data across
-nodes. While data on any single NVMe volume is not durable, replication ensures
-that PostgreSQL continues to function even if a node goes down.
+So how do you make use of it for something as critical as a database?
 
-Azure Container Storage also provides an annotation for volumes that enables a
-**persistence-aware mode**, which helps Kubernetes treat these ephemeral volumes
-more predictably. This doesn't change the nature of the storage---it simply
-signals to the platform and your team that you're opting into these trade-offs
-knowingly.
+This is where application-level resilience comes in. PostgreSQL's Write-Ahead
+Log (WAL) ensures data durability by recording every change before it's applied,
+enabling point-in-time recovery even if the primary disk is lost. Modern
+operators like [CloudNativePG](https://cloudnative-pg.io) leverage this by
+providing PostgreSQL-native high availability (HA), replicating data across
+nodes. We show you how to set up automatic backups to Azure Blob Storage in our
+[official AKS PostgreSQL deployment
+guide](https://learn.microsoft.com/en-us/azure/aks/postgresql-ha-overview)
+
+While data on any single NVMe volume is not durable, WAL-based replication and
+backup orchestration ensure that PostgreSQL can recover to a consistent state
+and continue functioning even if a node goes down. This approach provides
+insulation from underlying storage failures and allows you to balance
+performance with resilience.
 
 ### Benchmark results
 
 So why go through all this trouble? *Because the performance is worth it!* Using
-local NVMe with Azure Container Storage as shown in our [official AKS PostgreSQL
-deployment
-guide](https://learn.microsoft.com/en-us/azure/aks/postgresql-ha-overview) can
-provide 15,000+ transactions per second and <4.5ms average latency on
-Standard_L16s_v3 virtual machines.
+local NVMe with Azure Container Storage can provide 15,000+ transactions per
+second and <4.5ms average latency on Standard_L16s_v3 virtual machines.
 
 ![image](/assets/images/postgresql-nvme/graph.png)
 
