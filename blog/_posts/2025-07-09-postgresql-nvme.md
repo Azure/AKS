@@ -194,7 +194,7 @@ page flushing---all of which are extremely sensitive to disk latency. Local NVMe
 delivers consistent microsecond-scale latency and high IOPS, giving PostgreSQL
 the I/O headroom it needs to scale under pressure.
 
-We encourage you to set benchmark PostgreSQL and Azure Container Storage
+We encourage you to benchmark PostgreSQL and Azure Container Storage
 yourself. For your convenience, we're sharing our [setup
 scripts](https://github.com/eh8/acstor-pgsql) if you want to give it a shot. We
 encourage you to experiment with different virtual machines in your nodepool,
