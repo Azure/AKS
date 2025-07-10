@@ -244,7 +244,6 @@ Ernest Wong:
 Jack Jiang:
   name        : "Jack Jiang"
   bio         : "Product Manager at Microsoft"
-  avatar      : "https://github.com/jakjang/profilepic/blob/main/jack_headshot.jpg?raw=true" 
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
