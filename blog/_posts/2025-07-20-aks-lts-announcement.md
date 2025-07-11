@@ -59,15 +59,18 @@ Key characteristics of AKS LTS include:
 **Beyond Community Support:** When the Kubernetes community support ends (typically 12-14 months after a version's GA), AKS LTS continues providing comprehensive support for approximately 24 months from the original GA date. **Crucially, once the community stops supplying patches after the official version support end-of-life, AKS continues to provide patches and CVE fixes** for all supported components. This extended support is comprehensive and includes:
 
 - **Core Kubernetes components:** API server, etcd, kubelet, kube-proxy, and all core Kubernetes functionality
-- **AKS-managed add-ons:** All add-ons that AKS manages (see [AKS integrations](https://learn.microsoft.com/en-us/azure/aks/integrations) for the complete list), including networking, monitoring, and security components
+- **AKS-managed add-ons:** (see [**AKS integrations**](https://learn.microsoft.com/en-us/azure/aks/integrations) for the complete list), **including networking, monitoring, and security components**, with the exception of Istio which is coming soon as mentioned in the Looking Ahead section. For the current list of unsupported add-ons and features, please refer to our [**LTS unsupported add-ons documentation**](https://learn.microsoft.com/en-us/azure/aks/long-term-support#unsupported-add-ons-and-features)
 - **Node and OS components:** Operating system patches, security updates, and node-level components for both Linux and Windows nodes
 
 This holistic approach ensures that every layer of your full Kubernetes stack remains supported, secure, and stable throughout the entire LTS lifecycle.
 
 **Support Timeline Example:**
-- AKS LTS 1.29 (GA: July 2025): Supported until approximately July 2027
-- AKS LTS 1.32 (planned GA: 2026): Will be supported until approximately 2028
+- AKS LTS 1.27 (GA: June 2023): Supported until June 30, 2025
+- AKS LTS 1.30 (GA: May 2024): Supported until July 31, 2026
 - Future LTS versions will follow the same 24-month support commitment from their respective GA dates
+
+For the most up-to-date information on LTS version support timelines, please refer to the [AKS LTS calendar](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#lts-versions).
+
 
 Throughout the support lifecycle, AKS LTS versions receive:
 - Security patches and vulnerability fixes
@@ -136,8 +139,7 @@ AKS LTS represents our commitment to supporting enterprises at every stage of th
 
 Over the coming months, we'll be expanding AKS LTS capabilities based on your feedback, including:
 
-**LTS-Specific Features:**
-- **Istio support:** Bringing comprehensive LTS support for Istio service mesh to provide enterprise-grade stability for your microservices architecture
+- **Istio support for LTS:** Bringing comprehensive LTS support for Istio service mesh to provide enterprise-grade stability for your microservices architecture
 
 **Enhanced AKS Upgrade Capabilities (coming soon for both standard AKS and LTS Support Plan):**
 - **Agent pool Blue-Green upgrades:** Node pool-level blue-green upgrade strategy that enables workload validation batch by batch, with the ability to rollback newly created green nodes within a configurable soak period
