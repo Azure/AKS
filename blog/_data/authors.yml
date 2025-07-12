@@ -193,6 +193,15 @@ Vaibhav Arora:
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/varora24/"
 
+Wilson Darko:
+  name        : "Wilson Darko"
+  bio         : "Product Manager for Azure Kubernetes Service"
+  avatar      : "https://avatars.githubusercontent.com/u/172273315?v=4"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/wilsondarko/"
+
 Mitch Shao:
   name        : "Mitch Shao"
   bio         : "Senior Software Engineer for Azure Kubernetes Service."
