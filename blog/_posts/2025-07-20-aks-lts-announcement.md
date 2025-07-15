@@ -1,12 +1,12 @@
 ---
-title: "Introducing AKS Long Term Support: 24-Month Support for Every Kubernetes Version"
-description: "Every supported AKS Kubernetes version now gets ~24 months of enterprise-grade support - no special releases required"
+title: "AKS Long Term Support: 24-Month Support Now Available for Every Kubernetes Version"
+description: "Every supported AKS Kubernetes version is now eligible for 24-month LTS support when you enable the Premium tier"
 date: 2025-07-20
 author: Kaarthis
 categories: general
 ---
 
-If you attended KubeCon EU 2025, you might have heard about our exciting announcement regarding AKS Long Term Support (LTS). Today, we're thrilled to share more details about this game-changing offering that addresses one of the most critical challenges enterprises face when running Kubernetes at scale.
+In London at KubeCon EU 2025, AKS shared our exciting announcement regarding our expansion of what AKS Long Term Support (LTS) includes. Today, we're thrilled to share more details about this game-changing offering that addresses one of the most critical challenges enterprises face when running Kubernetes at scale.
 
 From our conversations with customers, we consistently hear the same concerns: *"How do I balance Kubernetes innovation with the stability my business-critical applications require?"* and *"Why do I need to upgrade my clusters so frequently when my applications are running perfectly?"* AKS LTS directly solves these real-world challenges.
 
@@ -23,27 +23,27 @@ AKS LTS directly addresses these needs by providing a **support plan** specifica
 
 ## What is AKS LTS?
 
-AKS Long Term Support is a **support plan** that provides **approximately 24 months** of support for Kubernetes versions from their GA date in AKS, compared to the standard 12-15 month support lifecycle. **Here's the game-changer: Every currently supported AKS Kubernetes version is now eligible for LTS designation.** This isn't just extended maintenance—it's a comprehensive support commitment designed for enterprises running mission-critical workloads.
+AKS Long Term Support is a **support plan** that provides **24 months** of support for Kubernetes versions from their GA date in AKS, compared to the standard 12-15 month support lifecycle. **Here's the game-changer: Every currently supported AKS Kubernetes version is now also available for long term support (LTS).** This isn't just extended maintenance—it's a comprehensive support commitment designed for enterprises running mission-critical workloads.
 
 **The Real Impact:** Instead of planning cluster upgrades every 12-15 months, you can now plan major Kubernetes upgrades every 24 months. This **reduces upgrade frequency by 50%** and can **save enterprises 40+ hours of operational overhead annually** per cluster while maintaining full security and support coverage.
 
 Key characteristics of AKS LTS include:
 
-- **Extended Support Timeline:** Approximately 24 months of full support from GA date, including security patches and critical bug fixes
+- **Extended Support Timeline:** 24 months of full support from GA date, including security patches and critical bug fixes
 - **Predictable Release Cadence:** New LTS versions released annually, allowing for planned upgrade cycles
-- **Enterprise-Grade Stability:** Focus on proven, stable features rather than bleeding-edge capabilities
+- **Enterprise-Grade Stability:** Focus on proven, stable features rather than frequent changes
 - **Backwards Compatibility:** Strong commitment to API stability and workload compatibility within LTS versions
 - **Integrated Azure Services:** Full compatibility with existing Azure services and AKS ecosystem features
 
 ## Enterprise Benefits at a Glance
 
 **Reduced Operational Overhead**
-- Fewer forced upgrades mean less time spent on cluster maintenance
+- Fewer required upgrades mean less time spent on cluster maintenance
 - Predictable planning cycles aligned with enterprise budgeting and resource allocation
 - Reduced testing and validation overhead for workload compatibility
 
 **Enhanced Stability**
-- Battle-tested Kubernetes versions with proven production track record
+- Production-tested Kubernetes versions with proven track record
 - Minimized risk of introducing breaking changes or regressions
 - Focus on reliability over cutting-edge features
 
@@ -56,7 +56,7 @@ Key characteristics of AKS LTS include:
 
 **Universal LTS Coverage:** AKS LTS extends to every currently supported Kubernetes version in AKS. Each version undergoes extensive testing across diverse workload patterns and enterprise scenarios to ensure LTS-grade stability and compatibility.
 
-**Beyond Community Support:** When the Kubernetes community support ends (typically 12-14 months after a version's GA), AKS LTS continues providing comprehensive support for approximately 24 months from the original GA date. **Crucially, once the community stops supplying patches after the official version support end-of-life, AKS continues to provide patches and CVE fixes** for all supported components. This extended support is comprehensive and includes:
+**Beyond Community Support:** When the Kubernetes community support ends (typically 12-14 months after a version's GA), AKS LTS continues providing comprehensive support for 24 months from the original GA date. **Crucially, once the community stops supplying patches after the official version support end-of-life, AKS continues to provide patches and CVE fixes** for all supported components. This extended support is comprehensive and includes:
 
 - **Core Kubernetes components:** API server, etcd, kubelet, kube-proxy, and all core Kubernetes functionality
 - **AKS-managed add-ons:** (see [**AKS integrations**](https://learn.microsoft.com/en-us/azure/aks/integrations) for the complete list), **including networking, monitoring, and security components**, with the exception of Istio which is coming soon as mentioned in the Looking Ahead section. For the current list of unsupported add-ons and features, please refer to our [**LTS unsupported add-ons documentation**](https://learn.microsoft.com/en-us/azure/aks/long-term-support#unsupported-add-ons-and-features)
@@ -65,8 +65,9 @@ Key characteristics of AKS LTS include:
 This holistic approach ensures that every layer of your full Kubernetes stack remains supported, secure, and stable throughout the entire LTS lifecycle.
 
 **Support Timeline Example:**
-- AKS LTS 1.27 (GA: June 2023): Supported until June 30, 2025
-- AKS LTS 1.30 (GA: May 2024): Supported until July 31, 2026
+- AKS LTS 1.29 (GA: December 2024): Supported until December 2026
+- AKS LTS 1.30 (GA: May 2025): Supported until May 2027
+- AKS LTS 1.31 (GA: August 2025): Supported until August 2027
 - Future LTS versions will follow the same 24-month support commitment from their respective GA dates
 
 For the most up-to-date information on LTS version support timelines, please refer to the [AKS LTS calendar](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#lts-versions).
@@ -74,7 +75,7 @@ For the most up-to-date information on LTS version support timelines, please ref
 
 Throughout the support lifecycle, AKS LTS versions receive:
 - Security patches and vulnerability fixes
-- Critical bug fixes that impact stability or functionality
+- Fixes for critical bugs that impact stability or functionality
 - Azure service integration updates
 - Compatibility updates for ecosystem tools and applications
 
@@ -101,13 +102,13 @@ You can also deploy AKS clusters with LTS support using:
 
 **Important:** AKS LTS is available as part of the **Premium tier**. For detailed pricing information, please refer to the [AKS Premium tier pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/).
 
-AKS clusters with LTS support maintain full compatibility with the existing AKS ecosystem, including Azure Monitor, Azure Policy, and all AKS-managed add-ons. We're committed to providing comprehensive LTS support for the entire ecosystem—KEDA is already fully supported as of July 2025.
+AKS clusters with LTS support maintain full compatibility with the existing AKS ecosystem, including Azure Monitor, Azure Policy, and all AKS-managed add-ons.
 
 **Industry-Leading Ecosystem Support:** Unlike other cloud providers that typically limit LTS guarantees to the base Kubernetes API, AKS LTS provides comprehensive support for popular add-ons and components that enterprises depend on for production workloads. This includes coordinated breaking change management, timely CVE fixes, and compatibility assurance throughout the LTS lifecycle.
 
 ## AKS LTS Version Compatibility
 
-**Every currently supported AKS Kubernetes version is now LTS-eligible.** This means you can immediately access long-term support for your existing clusters without requiring cluster upgrades or migrations. Whether you're running the latest version or an older supported version, you can transition to 24-month support coverage today.
+**Every currently supported AKS Kubernetes version is now also available for long term support (LTS).** This means you can immediately access long-term support for your existing clusters without requiring cluster upgrades or migrations. Whether you're running the latest version or an older supported version, you can transition to LTS support coverage today.
 
 **Immediate Benefits:**
 - **No forced migrations:** Your existing clusters can adopt LTS support in-place
@@ -131,7 +132,7 @@ When it's time to upgrade from one AKS LTS version to another, you can take adva
 - **Node Image channel:** Keep node images updated with the latest security patches and OS improvements
 - **Planned maintenance windows:** Schedule upgrades during off-peak hours to minimize business impact
 
-For comprehensive guidance on all available upgrade strategies, see the [AKS cluster upgrade documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster). These battle-tested upgrade mechanisms ensure smooth transitions between LTS versions while maintaining workload availability.
+For comprehensive guidance on all available upgrade strategies, see the [AKS cluster upgrade documentation](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster). These production-tested upgrade mechanisms ensure smooth transitions between LTS versions while maintaining workload availability.
 
 ## Looking Ahead
 
