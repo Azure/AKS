@@ -1,7 +1,7 @@
 ---
 title: "AKS Long Term Support: 24-Month Support Now Available for Every Kubernetes Version"
 description: "Every supported AKS Kubernetes version is now eligible for 24-month LTS support when you enable the Premium tier"
-date: 2025-07-20
+date: 2025-07-25
 author: Kaarthis
 categories: general
 ---
