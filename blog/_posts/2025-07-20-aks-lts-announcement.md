@@ -65,9 +65,9 @@ Key characteristics of AKS LTS include:
 This holistic approach ensures that every layer of your full Kubernetes stack remains supported, secure, and stable throughout the entire LTS lifecycle.
 
 **Support Timeline Example:**
+- AKS LTS 1.28 (GA: August 2024): Supported until August 2026
 - AKS LTS 1.29 (GA: December 2024): Supported until December 2026
 - AKS LTS 1.30 (GA: May 2025): Supported until May 2027
-- AKS LTS 1.31 (GA: August 2025): Supported until August 2027
 - Future LTS versions will follow the same 24-month support commitment from their respective GA dates
 
 For the most up-to-date information on LTS version support timelines, please refer to the [AKS LTS calendar](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#lts-versions).
