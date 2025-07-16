@@ -1,13 +1,13 @@
 ---
 title: "Performance Tuning AKS for Network Intensive Workloads "
 description: "Learn more about how to optimize network I/O performance on AKS nodes through benchmark and comparison."
-date: 2025-06-06 # date is important. future dates will not be published
+date: 2025-07-15 # date is important. future dates will not be published
 author:
-   - Anson Qian
-   - Alyssa Vu
+- Anson Qian
+- Alyssa Vu
 categories:
-- Performance
-- Networking
+- performance
+- networking
 ---
 
 ## Background
@@ -47,5 +47,3 @@ A higher MTU (Maximum Transmission Unit) and MSS (Maximum Segment Size) allow TC
 ![image](/assets/images/network-perf-aks/cpu_usage.png)
 
 We realized there is no way to fully abstract hardware from the application — fundamentally, application network performance is dictated by the capabilities of the underlying CPU, memory, and network interfaces on the physical host. Identifying the appropriate VM SKU and series is essential to ensure the application meets its networking performance requirements.
-
-### Kernel Settings
