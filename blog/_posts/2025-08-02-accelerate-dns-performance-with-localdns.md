@@ -25,35 +25,35 @@ These differences turn DNS from a background service into a critical bottleneck 
 
 The result? Application timeouts, resource exhaustion, cascading failures, and increased operational burden for SREs. Without rethinking DNS architecture, SREs face increased latency, reliability issues, and operational headaches at scale. LocalDNS addresses these challenges by decentralizing DNS resolution—moving the cache and resolver directly onto each node, closer to every workload.
 
-## Introducing LocalDNS for faster, more reliable DNS resolution
+## Introducing LocalDNS for Faster, More Reliable DNS Resolution
 
-To address these fundamental architectural challenges, AKS introduces LocalDNS — a node-level DNS proxy that transforms how DNS resolution works in Kubernetes clusters. This isn't just another performance optimization; it's a strategic architectural enhancement that addresses reliability, and operational efficiency at scale.
+To address these fundamental architectural challenges, AKS introduces LocalDNS—a node-level DNS proxy that transforms how DNS resolution works in Kubernetes clusters. This isn't just another performance optimization; it's a strategic architectural enhancement that addresses reliability and operational efficiency at scale.
 
 LocalDNS represents a shift from centralized DNS resolution to a distributed, resilient architecture that brings DNS responses closer to the workloads that need them. By deploying a DNS proxy directly on each node as a systemd service, LocalDNS eliminates the network hop to centralized DNS pods, dramatically reducing latency while improving overall cluster resilience.
 
-Curious about the real impact? Read on to see some data that demonstrates how much of a different LocalDNS can make for your production workloads.
+Curious about the real impact? Read on to see data that demonstrates how much of a difference LocalDNS can make for your production workloads.
 
-## How we tested LocalDNS
+## How We Tested LocalDNS
 
 To evaluate the impact of LocalDNS, we conducted parallel tests across two AKS clusters: one with LocalDNS enabled on all nodes and another using only centralized CoreDNS. In both environments, we generated a sustained load of 10,000 DNS queries per second (QPS) using industry-standard tools like `dnsperf` and `resperf`. This allowed us to observe query distribution across CoreDNS pods, measure resolution success rates, and compare end-to-end DNS lookup latencies.
 
-## The results
+## The Results
 
-### 1. Improved DNS query resolution times
+### 1. Improved DNS Query Resolution Times
 
-#### **DNS Query Latency Comparison**
+#### DNS Query Latency Comparison
 
 Below are the comparative results for DNS query latency across three key percentiles:
 
 | Metric   | Comparison Charts | Improvement |
 |----------|---------------------|-------------|
-| **P50**  | ![P50 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP50.png) |  10x lower latency |
-| **P99**  | ![P99 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP99.png) |  Significant tail latency reduction |
-| **P100** | ![P100 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP100.png) |  Eliminated outlier spikes |
+| **P50**  | ![P50 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP50.png) | 10x lower latency |
+| **P99**  | ![P99 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP99.png) | Significant tail latency reduction |
+| **P100** | ![P100 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP100.png) | Eliminated outlier spikes |
 
 The graphs clearly demonstrate that enabling LocalDNS leads to a substantial reduction in DNS query resolution times compared to using only centralized CoreDNS. Across all percentiles—P50, P99, and P100—LocalDNS consistently delivers faster responses, validating its effectiveness in minimizing latency and improving overall DNS performance in AKS clusters.
 
-### 2. Better Split of requests across CoreDNS pods
+### 2. Better Distribution of Requests Across CoreDNS Pods
 
 | Metric   | Centralized CoreDNS | LocalDNS Enabled | Improvement |
 |----------|---------------------|------------------|-------------|
@@ -61,7 +61,7 @@ The graphs clearly demonstrate that enabling LocalDNS leads to a substantial red
 
 The pie charts above illustrate the dramatic improvement in traffic distribution across CoreDNS pods when LocalDNS is enabled. In the centralized setup, nearly all DNS traffic (99.9%) is handled by a single CoreDNS pod, creating a significant bottleneck and risk of overload. With LocalDNS, the split shifts to a much healthier 40%/59.9% distribution, demonstrating balanced load and improved scalability across the DNS infrastructure.
 
-### Other Improvements seen
+### 3. Additional Operational Improvements
 
 - **Stale cache serving during upstream DNS outages**: LocalDNS can serve DNS responses from its local cache even if the upstream CoreDNS or external DNS servers become temporarily unavailable. This ensures that workloads continue to resolve frequently used names without interruption, improving resilience during intermittent DNS outages.
 
@@ -69,12 +69,10 @@ The pie charts above illustrate the dramatic improvement in traffic distribution
 
 - **Fewer DNS queries reaching CoreDNS**: By caching responses at the node level, LocalDNS dramatically reduces the number of queries that need to be forwarded to the centralized CoreDNS pods. This offloads traffic from CoreDNS, decreases overall DNS infrastructure load, and further improves cluster scalability and reliability.
 
-## Conclusion 
+## Conclusion
 
 LocalDNS redefines DNS delivery in AKS clusters by providing faster resolution, greater reliability, and streamlined operations for production workloads. By decentralizing DNS and placing resolution closer to each node, LocalDNS eliminates common bottlenecks and empowers SREs to scale with confidence.
 
 We invite you to enable LocalDNS in your AKS clusters and experience the benefits firsthand. Your feedback helps us evolve this feature—please share your insights, report issues, or suggest enhancements by opening a [GitHub issue](https://github.com/Azure/AKS/issues).
 
 For a deeper dive into LocalDNS architecture and step-by-step guidance on activation, visit our [official documentation](https://aka.ms/aks-localdns).
-
-
