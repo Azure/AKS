@@ -1,0 +1,69 @@
+---
+title: "Accelerate DNSLocalDNS is a CoreDNS instance that runs as a systemd service on each Linux node. It acts as a local caching proxy, forwarding queries to either the cluster's CoreDNS pods or custom VNET DNS servers.
+
+**Key Characteristics:**
+- **Node level caching**: Reduces latency and offloads CoreDNS
+- **TCP fallback**: Improves reliability under high query volume
+- **Stale record serving**: Provides best-effort responses during upstream failures
+- **Independent of Kubernetes**: Operates outside the K8s control plane, reducing blast radiusmance with LocalDNS"
+description: "Learn how to enhance DNS performance in your Kubernetes clusters using LocalDNS."
+date: 2025-08-02 # date is important. future dates will not be published
+author: Vaibhav Arora # must match the authors.yml in the _data folder
+categories: 
+- general 
+- networking
+---
+
+## Background
+In the world of Kubernetes, DNS is a foundational service that often goes unnoticed—until it fails. For SREs managing large-scale AKS clusters, DNS latency, resolution failures, and CoreDNS saturation can quickly escalate into customer-impacting incidents.
+
+To address these challenges, AKS introduced LocalDNS, a node-level DNS caching layer that enhances both performance and resiliency. This post explains why enabling LocalDNS is a strategic move for SREs focused on reliability, observability, and operational efficiency.
+
+## The Problem: DNS as a hidden bottleneck
+CoreDNS is the default DNS resolver in AKS, but it can become a single point of failure under scale. Common pain points include:
+
+1. High latency: Every pod’s DNS query traverses the network to reach CoreDNS.
+2. Conntrack exhaustion: UDP-based DNS traffic can overwhelm connection tracking tables.
+3. Pod-level imbalance: DNS traffic is not evenly distributed across CoreDNS pods.
+4. Resolution failures: Under load, DNS queries may time out, causing cascading failures in dependent services.
+
+For SREs, these issues translate into noisy alerts, degraded SLAs, and difficult-to-diagnose outages.
+
+## The Solution: LocalDNS
+
+LocalDNS is a CoreDNS instance that runs as a systemd service on each Linux node. It acts as a local caching proxy, forwarding queries to either the cluster’s CoreDNS pods or custom VNET DNS servers.
+
+Key Characteristics:
+Node level caching: Reduces latency and offloads CoreDNS.
+TCP fallback: Improves reliability under high query volume.
+Stale record serving: Provides best-effort responses during upstream failures.
+Independent of Kubernetes: Operates outside the K8s control plane, reducing blast radius.
+
+## Why SREs should enable LocalDNS
+
+Enabling LocalDNS in AKS is straightforward. SREs can leverage the Azure CLI or the Azure portal to enable the feature on their AKS clusters. Once enabled, LocalDNS automatically caches DNS responses for a configurable duration, ensuring that frequently accessed records are served quickly and efficiently.
+
+1. Improved Performance Under Load
+10x reduction in DNS lookup latency due to local caching.
+Balanced traffic across CoreDNS pods, mitigating hotspots.
+Lower P50 and P99 latencies observed in 10,000 QPS load tests .
+LocalDNS
+📊 Dashboards: https://dataexplorer.azure.com/dashboards/e127ea53-458b-49ed-af9f-2bf99a1b5adc | https://dataexplorer.azure.com/dashboards/d78ee56f-4d0f-4a16-af7e-cc51cd65f303
+
+2. Resiliency and Fault Tolerance
+Stale cache fallback: LocalDNS can serve cached responses even if upstream DNS is unreachable .
+LocalDNS MMM Project Completion Report
+Reduced dependency on CoreDNS: Node-level resolution limits the blast radius of CoreDNS failures.
+TCP upgrades: More reliable than UDP under high packet loss or firewall constraints.
+3. Operational Visibility and Control
+Node-level logs: LocalDNS logs are accessible for debugging DNS failures.
+Dashboards and metrics: Integrated with Azure Data Explorer and VMA for observability.
+ASI integration: On-call engineers can view LocalDNS status and profiles directly in the AKS portal .
+
+## Conclusion 
+LocalDNS is more than a performance optimization—it’s a resiliency enhancement. By decentralizing DNS resolution, it reduces the risk of cluster-wide DNS outages and gives SREs better tools to observe, debug, and maintain DNS health.
+
+If you're responsible for uptime, latency, or incident response in AKS, enabling LocalDNS is a high-leverage improvement that pays off immediately.
+- Symmarize LocalDNS and mention folks can open github issues for feedback and we can address it before going general
+
+

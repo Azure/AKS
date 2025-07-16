@@ -1,0 +1,80 @@
+---
+title: "Accelerate DNS Performance with LocalDNS"
+description: "Discover how LocalDNS transforms DNS performance in AKS clusters with 10x latency reduction, enhanced reliability, and improved operational visibility for SREs."
+date: 2025-08-02 # date is important. future dates will not be published
+author: Vaibhav Arora # must match the authors.yml in the _data folder
+categories: 
+- general 
+- networking
+---
+
+## Background: The Hidden Cost of DNS in Production Kubernetes
+
+In Kubernetes clusters, DNS is the invisible backbone that enables service discovery and inter-pod communication, but its critical role often goes unnoticed until it becomes a bottleneck. For Site Reliability Engineers (SREs) managing production AKS clusters, DNS-related issues are among the most challenging operational problems—what begins as minor performance degradation can quickly escalate into customer-impacting incidents and even full-scale outages. As cluster size grows, the complexity of DNS management increases exponentially: a configuration that works for a small development environment may prove completely inadequate at production scale, exposing fundamental architectural limitations that can threaten the reliability and scalability of the entire system.
+
+### Why Centralized CoreDNS Becomes a Bottleneck in Kubernetes Clusters
+
+Traditional DNS was built for static, predictable environments with long-lived hosts and low query volumes. Kubernetes, however, is dynamic and high-churn:
+
+- **Ephemeral workloads**: Pods are rapidly created and destroyed, each needing immediate DNS resolution.
+- **High query volume**: Service meshes, health checks, and inter-service calls generate thousands of DNS queries per second.
+- **Dynamic endpoints**: Services and pods frequently change IPs, requiring constant DNS updates and cache invalidation.
+- **Complex networking**: Multiple network layers (pod, service, ingress) add latency and increase DNS infrastructure load.
+
+These differences turn DNS from a background service into a critical bottleneck as clusters grow. Relying on a handful of centralized CoreDNS pods exposes architectural weaknesses: all DNS queries are funneled through these pods, creating a single point of contention and introducing network overhead with every lookup. High query volumes can overwhelm conntrack tables, and centralized caching misses the benefits of local cache hits—forcing even repeated queries to traverse the network.
+
+The result? Application timeouts, resource exhaustion, cascading failures, and increased operational burden for SREs. Without rethinking DNS architecture, SREs face increased latency, reliability issues, and operational headaches at scale. LocalDNS addresses these challenges by decentralizing DNS resolution—moving the cache and resolver directly onto each node, closer to every workload.
+
+## Introducing LocalDNS for faster, more reliable DNS resolution
+
+To address these fundamental architectural challenges, AKS introduces LocalDNS — a node-level DNS proxy that transforms how DNS resolution works in Kubernetes clusters. This isn't just another performance optimization; it's a strategic architectural enhancement that addresses reliability, and operational efficiency at scale.
+
+LocalDNS represents a shift from centralized DNS resolution to a distributed, resilient architecture that brings DNS responses closer to the workloads that need them. By deploying a DNS proxy directly on each node as a systemd service, LocalDNS eliminates the network hop to centralized DNS pods, dramatically reducing latency while improving overall cluster resilience.
+
+Curious about the real impact? Read on to see some data that demonstrates how much of a different LocalDNS can make for your production workloads.
+
+## How we tested LocalDNS
+
+To evaluate the impact of LocalDNS, we conducted parallel tests across two AKS clusters: one with LocalDNS enabled on all nodes and another using only centralized CoreDNS. In both environments, we generated a sustained load of 10,000 DNS queries per second (QPS) using industry-standard tools like `dnsperf` and `resperf`. This allowed us to observe query distribution across CoreDNS pods, measure resolution success rates, and compare end-to-end DNS lookup latencies.
+
+## The results
+
+### 1. Improved DNS query resolution times
+
+#### **DNS Query Latency Comparison**
+
+Below are the comparative results for DNS query latency across three key percentiles:
+
+| Metric   | Comparison Charts | Improvement |
+|----------|---------------------|-------------|
+| **P50**  | ![P50 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP50.png) |  10x lower latency |
+| **P99**  | ![P99 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP99.png) |  Significant tail latency reduction |
+| **P100** | ![P100 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP100.png) |  Eliminated outlier spikes |
+
+The graphs clearly demonstrate that enabling LocalDNS leads to a substantial reduction in DNS query resolution times compared to using only centralized CoreDNS. Across all percentiles—P50, P99, and P100—LocalDNS consistently delivers faster responses, validating its effectiveness in minimizing latency and improving overall DNS performance in AKS clusters.
+
+### 2. Better Split of requests across CoreDNS pods
+
+| Metric   | Centralized CoreDNS | LocalDNS Enabled | Improvement |
+|----------|---------------------|------------------|-------------|
+| % traffic served by CoreDNS pod | ![Centralized CoreDNS](/assets/images/accelerate-dns-performance-with-localdns/corednsdistribution_nolocaldns.png) | ![LocalDNS enabled](/assets/images/accelerate-dns-performance-with-localdns/corednstrafficdistribution_localdns.png) | More equal distribution of traffic between CoreDNS pods |
+
+The pie charts above illustrate the dramatic improvement in traffic distribution across CoreDNS pods when LocalDNS is enabled. In the centralized setup, nearly all DNS traffic (99.9%) is handled by a single CoreDNS pod, creating a significant bottleneck and risk of overload. With LocalDNS, the split shifts to a much healthier 40%/59.9% distribution, demonstrating balanced load and improved scalability across the DNS infrastructure.
+
+### Other Improvements seen
+
+- **Stale cache serving during upstream DNS outages**: LocalDNS can serve DNS responses from its local cache even if the upstream CoreDNS or external DNS servers become temporarily unavailable. This ensures that workloads continue to resolve frequently used names without interruption, improving resilience during intermittent DNS outages.
+
+- **No conntrack table entries created for each connection**: With LocalDNS running as a node-level service, DNS queries from pods are resolved locally, eliminating the need for each DNS request to traverse the node’s network stack and create conntrack entries. This reduces pressure on the node’s conntrack table, lowering the risk of resource exhaustion and related networking issues.
+
+- **Fewer DNS queries reaching CoreDNS**: By caching responses at the node level, LocalDNS dramatically reduces the number of queries that need to be forwarded to the centralized CoreDNS pods. This offloads traffic from CoreDNS, decreases overall DNS infrastructure load, and further improves cluster scalability and reliability.
+
+## Conclusion 
+
+LocalDNS redefines DNS delivery in AKS clusters by providing faster resolution, greater reliability, and streamlined operations for production workloads. By decentralizing DNS and placing resolution closer to each node, LocalDNS eliminates common bottlenecks and empowers SREs to scale with confidence.
+
+We invite you to enable LocalDNS in your AKS clusters and experience the benefits firsthand. Your feedback helps us evolve this feature—please share your insights, report issues, or suggest enhancements by opening a [GitHub issue](https://github.com/Azure/AKS/issues).
+
+For a deeper dive into LocalDNS architecture and step-by-step guidance on activation, visit our [official documentation](https://aka.ms/aks-localdns).
+
+
