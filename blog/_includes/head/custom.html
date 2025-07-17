@@ -8,4 +8,606 @@
 <link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/favicon-16x16.png">
 
+{% if page.custom_css %}
+  {% for stylesheet in page.custom_css %}
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/{{ stylesheet }}.css">
+  {% endfor %}
+{% endif %}
+
+<!-- Additional inline styles for ensuring equal-sized timezone cards and professional agenda -->
+<style>
+  /* Professional agenda styling */
+  .agendarow1 .archive__item-title,
+  .combined-row-container .agenda-feature .archive__item-title {
+    background-color: #9F62EB;
+    color: white !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    position: relative;
+    padding: 10px 15px;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .agendarow1 .archive__item-title::after,
+  .combined-row-container .agenda-feature .archive__item-title::after {
+    content: '📅';
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+  }
+  
+  .agenda-item.featured .agenda-content h4 {
+    color: #9F62EB;
+    font-weight: 600;
+  }
+  
+  .agenda-section {
+    padding: 15px 0;
+    border: 1px solid #eee;
+    border-radius: 0 0 8px 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .agenda-item {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 15px;
+  }
+  
+  .agenda-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Removed agenda-time class as it's no longer needed */
+  
+  .agenda-content {
+    flex: 1;
+    padding: 0 5px;
+  }
+  
+  .agenda-content h4 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .agenda-content p {
+    margin: 0 0 5px 0;
+    font-size: 0.85em;
+    color: #666;
+  }
+  
+  .agenda-description {
+    font-style: italic;
+    color: #777;
+  }
+  
+  .compact-list {
+    margin: 5px 0;
+    padding-left: 0;
+    list-style-type: none; /* Remove bullets */
+  }
+  
+  .compact-list li {
+    margin-bottom: 5px;
+    font-size: 0.85em;
+    padding-left: 0;
+    line-height: 1.4;
+  }
+  
+  /* Equal height cards in the timezone container */
+  .timezone-cards-container {
+    margin: 2em auto;
+  }
+  
+  .timezone-cards-container .feature__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  
+  .timezone-cards-container .feature__item {
+    flex: 0 0 calc(50% - 30px);
+    max-width: 360px;
+    min-width: 300px;
+    display: flex;
+    margin: 0 15px !important;
+    height: 100%;
+  }
+  
+  .timezone-cards-container .feature__item .archive__item {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .timezone-cards-container .feature__item .archive__item-teaser {
+    height: 180px;
+  }
+  
+  .timezone-cards-container .feature__item .archive__item-teaser img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .timezone-cards-container .feature__item .archive__item-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .timezone-cards-container .feature__item .archive__item-excerpt {
+    flex: 1;
+  }
+  
+  .timezone-cards-container .feature__item .btn {
+    width: 120px;
+    text-align: center;
+    margin-top: auto;
+  }
+  
+  /* Side-by-side layout for agenda and timezone cards */
+  .agenda-timezone-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  
+  .agenda-column {
+    flex: 3;
+    min-width: 320px;
+    padding-right: 15px;
+  }
+  
+  .timezone-column {
+    flex: 2;
+    min-width: 320px;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .timezone-column .feature__wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .timezone-column .feature__item {
+    max-height: none;
+  }
+  
+  /* Make the agenda more compact */
+  .agenda-container .agenda-section .agenda-item {
+    padding: 8px 0;
+  }
+  
+  .agenda-container .agenda-section .agenda-item .agenda-content h4 {
+    font-size: 1em;
+    margin-bottom: 4px;
+  }
+  
+  .agenda-container .agenda-section .agenda-item .agenda-content p {
+    font-size: 0.8em;
+    margin-bottom: 0;
+  }
+  
+  .agenda-container .agenda-section .agenda-item .agenda-content ul {
+    margin: 4px 0 4px 20px;
+  }
+  
+  .agenda-container .agenda-section .agenda-item .agenda-content ul li {
+    font-size: 0.8em;
+    margin-bottom: 3px;
+  }
+  
+  /* Responsive layout */
+  @media screen and (max-width: 992px) {
+    .agenda-timezone-container {
+      flex-direction: column;
+    }
+    
+    .agenda-column, .timezone-column {
+      flex: 1 0 100%;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media screen and (max-width: 767px) {
+    .timezone-cards-container .feature__wrapper {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .timezone-cards-container .feature__item {
+      flex: 0 0 100%;
+      max-width: 480px;
+      min-width: 0;
+      margin: 0 0 20px 0 !important;
+    }
+  }
+  
+  /* Optimizations for side-by-side layout */
+  .page__content .agenda-timezone-container {
+    max-width: 1200px;
+    padding: 0 20px;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+  
+  /* Enhanced compact layout for timezone cards */
+  .timezone-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .timezone-cards-container.compact {
+    display: block;
+    width: 100%;
+  }
+  
+  /* Ensure buttons are easily clickable */
+  .timezone-column .btn--primary {
+    display: inline-block;
+    margin-top: 10px;
+    min-width: 120px;
+    background-color: #9F62EB !important;
+    color: white !important;
+  }
+  
+  /* Typography adjustments */
+  .timezone-column .archive__item-title {
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  
+  /* Fix container width for better layout */
+  @media screen and (min-width: 993px) {
+    .agenda-timezone-container {
+      width: 100%;
+      padding: 0 30px;
+    }
+    
+    .agenda-column {
+      padding-right: 20px;
+    }
+    
+    .timezone-column {
+      padding-left: 20px;
+    }
+  }
+  
+  /* Removed responsive adjustment for agenda-time as it's no longer needed */
+  
+  /* Compact timezone cards styling */
+  .timezone-cards-container.compact {
+    width: 100%;
+  }
+  
+  .timezone-cards-container.compact .feature__wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    margin: 0 !important;
+  }
+  
+  .timezone-cards-container.compact .feature__item {
+    flex: 0 0 calc(50% - 5px) !important;
+    max-width: calc(50% - 5px) !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  
+  .timezone-cards-container.compact .archive__item-teaser {
+    height: 90px !important;
+  }
+  
+  .timezone-cards-container.compact .archive__item-body {
+    padding: 10px !important;
+  }
+  
+  .timezone-cards-container.compact .archive__item-title {
+    font-size: 0.9em !important;
+    margin: 0 0 5px 0 !important;
+    line-height: 1.2 !important;
+  }
+  
+  .timezone-cards-container.compact .archive__item-excerpt {
+    font-size: 0.75em !important;
+    line-height: 1.4 !important;
+  }
+  
+  .timezone-cards-container.compact .btn {
+    padding: 5px 10px !important;
+    font-size: 0.8em !important;
+    margin-top: 5px !important;
+    min-width: 80px !important;
+  }
+  
+  .timezone-heading {
+    font-size: 1.1em;
+    margin: 0 0 10px 0;
+    color: #333;
+    padding: 0 10px;
+    text-align: center;
+  }
+  
+  /* Responsive adjustments for timezone cards */
+  @media screen and (max-width: 767px) {
+    .timezone-cards-container.compact .feature__wrapper {
+      flex-direction: column !important;
+      gap: 10px;
+    }
+    
+    .timezone-cards-container.compact .feature__item {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+  }
+  
+  /* More compact intro styling */
+  .intro-container {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .intro-container .feature__wrapper {
+    margin-bottom: 5px;
+  }
+  
+  .intro-container .feature__item {
+    padding: 10px 20px;
+    margin-bottom: 0;
+  }
+  
+  .intro-container .archive__item-excerpt p {
+    margin-bottom: 0;
+  }
+  
+  .compact-intro {
+    font-size: 0.95em;
+    line-height: 1.4;
+    color: #333 !important;
+    padding: 0;
+  }
+  
+  .compact-intro a {
+    color: #0366d6 !important;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(3, 102, 214, 0.3);
+  }
+  
+  .compact-intro a:hover {
+    border-bottom: 1px solid rgba(3, 102, 214, 0.7);
+  }
+
+  /* Combined row container styling */
+  .combined-row-container {
+    display: block;
+    width: 100%;
+    max-width: 1200px;
+    margin: 10px auto;
+    padding: 0 20px;
+  }
+  
+  .combined-row-container .feature__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 0;
+    align-items: flex-start;
+  }
+  
+  .combined-row-container .feature__item {
+    flex: 1;
+    min-width: 300px;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    transform: none !important;
+  }
+  
+  .combined-row-container .feature__item.agenda-feature {
+    flex: 2.5;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .combined-row-container .feature__item.timezone-feature {
+    flex: 2.5;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .combined-row-container .archive__item {
+    height: 100%;
+  }
+  
+  .combined-row-container .archive__item-title {
+    font-size: 1.1em;
+    margin: 0;
+    padding: 10px 15px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .combined-row-container .archive__item-excerpt {
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Timezone cards flow styling */
+  .timezone-cards-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 10px;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .timezone-card {
+    flex: 0 0 calc(50% - 10px);
+    width: calc(50% - 10px);
+    min-width: 180px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid #eee;
+  }
+  
+  .timezone-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .timezone-header {
+    background-color: #9F62EB;
+    color: white;
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  .timezone-header h4 {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 500;
+    color: white !important;
+    letter-spacing: 0.5px;
+  }
+  
+  .timezone-details {
+    padding: 20px 15px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fafafa;
+  }
+  
+  .timezone-details p {
+    font-size: 0.9em;
+    margin: 0 0 15px 0;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  .calendar-link {
+    display: inline-block;
+    font-size: 0.85em;
+    margin: 5px 0 15px 0;
+    padding: 3px 0;
+    color: #0366d6;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(3, 102, 214, 0.3);
+    transition: all 0.2s ease;
+    position: relative;
+    padding-left: 20px;
+  }
+  
+  .calendar-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230366d6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .calendar-link:hover {
+    border-color: rgba(3, 102, 214, 0.7);
+    text-decoration: none;
+    color: #0056b3;
+  }
+  
+  .calendar-link:hover::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230056b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+  }
+  
+  .timezone-details .btn {
+    font-size: 0.9em;
+    padding: 10px 30px;
+    margin: 10px auto 0 auto;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 8px rgba(159, 98, 235, 0.3);
+    display: inline-block;
+    min-width: 120px;
+    letter-spacing: 0.5px;
+  }
+  
+  .timezone-details .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(159, 98, 235, 0.4);
+    background-color: #8A50D8 !important;
+  }
+  
+  .combined-row-container .timezone-feature .archive__item-title {
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid #eee;
+    border-bottom: none;
+    text-align: center;
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 992px) {
+    .combined-row-container .feature__wrapper {
+      flex-direction: column;
+    }
+    
+    .combined-row-container .feature__item {
+      min-width: 100%;
+    }
+    
+    .timezone-cards-flow {
+      justify-content: space-around;
+    }
+    
+    .timezone-card {
+      flex: 0 0 45%;
+      width: 45%;
+      margin-bottom: 15px;
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+    .timezone-cards-flow {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .timezone-card {
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+
 <!-- end custom head snippets -->

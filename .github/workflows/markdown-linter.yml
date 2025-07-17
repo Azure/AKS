@@ -1,0 +1,58 @@
+name: markdown-linter
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "blog/**.md"
+
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+
+jobs:
+  get-files-changed:
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.files.outputs.files }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: files
+        run: |
+          files=$(git diff --name-only HEAD^1 HEAD | grep 'blog/.*\.md' || true)
+          if [ -z "$files" ]; then
+            echo "files=[]" >> $GITHUB_OUTPUT
+          else
+            json_array=$(echo "$files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "files=$json_array" >> $GITHUB_OUTPUT
+          fi
+          printf "Changed files: %s\n" "$files"
+
+  run-markdown-lint:
+    runs-on: ubuntu-latest
+    needs: get-files-changed
+
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJson(needs.get-files-changed.outputs.files) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Super-linter
+        uses: super-linter/super-linter/slim@12150456a73e248bdc94d0794898f94e23127c88 # v7.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_MARKDOWN: true
+          MARKDOWN_LINTER_RULES: .github/linters/markdown.yml
+          FILTER_REGEX_INCLUDE: ${{ matrix.file }}
