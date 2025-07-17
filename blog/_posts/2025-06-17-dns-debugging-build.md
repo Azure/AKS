@@ -1,7 +1,7 @@
 ---
 title: "Debugging DNS in AKS with Inspektor Gadget"
 description: "This blog post showcases the DNS troubleshooting demo from the Microsoft Build Breakout Session #181, Streamlining AKS Debugging: Techniques to solve common & complex problems, guiding you step-by-step through troubleshooting a DNS issue with Inspektor Gadget."
-date: 2025-06-17
+date: 2025-07-23
 author: Jose Blanquicet
 categories:
   - observability
