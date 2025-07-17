@@ -19,7 +19,7 @@ In this blog post, we share how we conducted simple benchmark to evaluate and co
 ## Benchmark
 Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on AKS. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same AKS cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usge.
 
-In our experiment, iperf3 was run as a container within Kubernetes pods on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux with kernel major version 5. During each test, we also monitor cpu and memory usage of both client and server containers to make sure iperf3 is not resource constrainted.
+In our experiment, iperf3 was run as a container within Kubernetes pods on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernenls. During each test, we also monitor cpu and memory usage of both client and server containers to make sure iperf3 is not resource constrainted.
 
 ## Hardware Matters Most
 
@@ -69,3 +69,7 @@ TCP retransmissions often occur when the sender or receiver buffer is too small 
 ![image](/assets/images/network-perf-aks/buffer_retran.png)
 
 It’s important to note that increasing the NIC ring buffer size has memory usage implications. Allocating larger buffers means the operating system reserves more memory specifically for handling network traffic, which reduces the amount of memory available for user-space applications. For example, doubling the receive buffer size from 1024 to 2048 bytes per descriptor across multiple queues and interfaces can lead to a non-trivial increase in kernel memory usage — especially on systems with high network concurrency or multiple high-throughput NICs. While this tradeoff can significantly improve network performance, especially under high load, it should be balanced against the memory demands of the application workload running on the same VM.
+
+## Conclusion
+
+Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU/Serie and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. In the future, we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also intend to analyze both inbound and outbound networking performance on AKS and explore further optimization strategies.
