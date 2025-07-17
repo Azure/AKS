@@ -1,7 +1,7 @@
 ---
 title: "Scaling Safely with Azure AKS Spot Node Pools Using Cluster Autoscaler Priority Expander"
 description: "How to improve workload resilience when using spot VMs in Azure AKS, specifically how to use cluster autoscaler priority expander and other best practices."
-date: 2025-17-07
+date: 2025-07-17
 authors: Pavneet Ahluwalia
 categories: operations
 tags:
