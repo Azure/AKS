@@ -25,17 +25,18 @@ In our experiment, iperf3 was run as a container within Kubernetes pods on selec
 
 We compared the test results of Azure's older generation series [Dsv3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dsv3-series?tabs=sizebasic) and newer generation series [Dsv6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dsv6-series?tabs=sizebasic) on AKS, as well as AWS next-generation instances [M7i](https://aws.amazon.com/ec2/instance-types/m7i/) on EKS, and observated signifncant network performance difference:
 
-1. Up to 35% higher throughput for Azure Dsv6 compared to Dsv3 and AWS M7i when tests were designed to maximize network bandwidth usage.
+Up to 35% higher throughput for Azure Dsv6 compared to Dsv3 and AWS M7i when trying to maximize network bandwidth usage.
 
-![image](/assets/images/network-perf-aks/single_stream_throughput.png)
+![image](/assets/images/network-perf-aks/throughput.png)
 
-2. Up to 50% lower RTT for Azure Dsv6 compared to Dsv3 and AWS M7i when tests are limited to the same network badnwdith usage.
 
-![image](/assets/images/network-perf-aks/single_stream_rtt.png)
+Up to 3x~6x lower RTT for Azure Dsv6 compared to Dsv3 and AWS M7i when tests are limited to the same network badnwdith usage.
 
-3. TCP retransmissions remained consistently at 0% on Azure Dsv6, matching AWS M7i and significantly outperforming Azure Dsv3
+![image](/assets/images/network-perf-aks/multi_stream_rtt.png)
 
-![image](/assets/images/network-perf-aks/single_stream_retransmits.png)
+TCP retransmissions remained consistently at 0% on Azure Dsv6, matching AWS M7i and significantly outperforming Azure Dsv3
+
+![image](/assets/images/network-perf-aks/multi_stream_retran.png)
 
 The primary reasons for the significant leap in network performance on Dsv6 is because of support [Jumbo Frames (MTU 9000)](https://learn.microsoft.com/en-us/azure/virtual-network/how-to-virtual-machine-mtu?tabs=linux) with [Microsoft Azure Network Adaptor (MANA)](https://learn.microsoft.com/en-us/azure/virtual-network/accelerated-networking-mana-overview)
 
@@ -47,3 +48,15 @@ A higher MTU (Maximum Transmission Unit) and MSS (Maximum Segment Size) allow TC
 ![image](/assets/images/network-perf-aks/cpu_usage.png)
 
 We realized there is no way to fully abstract hardware from the application — fundamentally, application network performance is dictated by the capabilities of the underlying CPU, memory, and network interfaces on the physical host. Identifying the appropriate VM SKU and series is essential to ensure the application meets its networking performance requirements.
+
+## Kernel Settings Tunning
+
+If migrating to newer VM SKU or series like Dsv6 isn’t a viable short-term option due to capacity reason or compatibility concerns, there are still kernel tuning options available to improve network performance.
+
+TCP retransmissions often occur when the sender or receiver buffer is too small to handle surge of packets, resulting in packet drops. This is commonly indicated by errors like rx_no_buffer, which signal that the network interface card (NIC) couldn't allocate enough buffer space for incoming packets. To improve performance on existing VMs like Dsv3, adjusting the NIC ring buffer settings can be an effective tuning approach.
+
+As shown below, after increasing the NIC receiver buffer size from the default 1024 bytes to 2048 bytes, we observed a reduction in both TCP retransmission rate and RTT at a total bandwidth usage of 15 Gbps. The performance improvement was more pronounced when the traffic was distributed across three parallel TCP streams, each running at 5 Gbps.
+
+![image](/assets/images/network-perf-aks/multi_buffer_rtt.png)
+
+![image](/assets/images/network-perf-aks/multi_buffer_retran.png)
