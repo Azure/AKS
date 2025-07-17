@@ -7,7 +7,7 @@ authors:
 - Suraj Deshmukh
 - Ernest Wong
 categories: 
-- AI
+- ai
 - networking
 ---
 
@@ -27,7 +27,7 @@ Choosing between these two approaches depends on whether you need compatibility 
 
 RDMA over InfiniBand enables data transfer directly between the memory of different machines without involving the CPU (as shown in the diagram below for GPUs) which significantly reduces latency and improves throughput. 
 
- ![GPUDirect RDMA over InfiniBand](/AKS/assets/images/infiniband-on-aks/GPUDirectRDMA_IB_diagram.png)
+ ![GPUDirect RDMA over InfiniBand](/assets/images/infiniband-on-aks/GPUDirectRDMA_IB_diagram.png)
 
 To use this approach, your application needs to be RDMA-aware, meaning that an RDMA API or RDMA-aware message passing framework is used to enable high performance communication. Check out this [RDMA programming on NVIDIA](https://docs.nvidia.com/networking/display/rdmaawareprogrammingv17/rdma-aware+programming+overview) guide to learn more.
 

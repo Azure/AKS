@@ -39,8 +39,133 @@ $base0f: #00f769;
   margin-top: 0;
 }
 
+// Style feature rows with rounded corners and shadow
+.feature__wrapper {
+  margin-bottom: 2em;
+  
+  // Basic styling without shadows and rounded corners
+  .feature__item {
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 1.5em;
+    
+    .archive__item-title {
+      font-weight: bold;
+      margin-top: 0.5em;
+    }
+    
+    .archive__item-excerpt {
+      margin-bottom: 0.8em;
+    }
+    
+    .btn {
+      font-weight: 500;
+    }
+    
+    img {
+      border: 1px solid #efefef;
+    }
+  }
+  
+  // Add styling ONLY for timezones1 feature row
+  .timezones1 {
+    .feature__item {
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+      
+      .archive__item {
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      
+      .btn {
+        border-radius: 4px;
+      }
+      
+      img {
+        border-radius: 6px;
+      }
+    }
+  }
+}
+
+// Only apply special styling to timezones1
+.timezones1 {
+  .feature__item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn {
+      margin-top: auto;
+      border-radius: 4px;
+    }
+    
+    img {
+      border-radius: 6px 6px 0 0;
+    }
+  }
+}
+
 .background {
-  background: $base06;
+  background: #ffffff; // Set to solid white
+}
+
+// Set the overall page background to white
+body, .page {
+  background-color: white !important;
+  color: #000 !important; // Set text color to black
+}
+
+// Make sure all text is black for better contrast on white background
+.page__content p,
+.page__content li,
+.page__content h1,
+.page__content h2,
+.page__content h3,
+.page__content h4,
+.page__content h5,
+.page__content h6,
+.archive__item-title,
+.archive__item-excerpt,
+.feature__item,
+.notice {
+  color: #000 !important;
+}
+
+// Ensure links are still visible
+.page__content a {
+  color: #0366d6 !important;
+}
+
+// Override for overlay areas where we want to maintain white text
+.page__hero--overlay {
+  .page__title, 
+  .page__lead,
+  .page__meta {
+    color: white !important; // Keep header text white for contrast against the overlay image
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7) !important;
+  }
+  
+  .btn {
+    color: white !important;
+  }
 }
 
 .page__meta-description {
@@ -54,6 +179,424 @@ $base0f: #00f769;
   color: #000 !important;
 }
 
+// Only apply styling to the timezones1 feature row
+#feature_row_timezones1,
+.timezones1 {
+  .archive__item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+      transform: translateY(-5px);
+    }
+  }
+  
+  .archive__item-teaser {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .btn {
+    border-radius: 6px;
+  }
+}
+
+// Specific styles for the webinars page
+.page--webinars {
+  // Style the agenda items and timezones
+  .agendarow1,
+  .timezones1 {
+    color: #000;
+    
+    .title {
+      color: #000 !important;
+      font-weight: bold;
+    }
+    
+    .excerpt {
+      color: #000 !important;
+    }
+    
+    .notice {
+      background-color: #f8f9fa !important;
+      border-color: #ddd !important;
+    }
+    
+    // Enhanced feature row styling for webinars
+    .archive__item-teaser {
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+    }
+    
+    // Style for feature items
+    .feature__item {
+      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      border: none !important;
+      
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      }
+      
+      // Add subtle gradient overlay to image areas
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(0,0,0,0) 70%, rgba(0,0,0,0.05) 100%);
+        z-index: 1;
+        pointer-events: none;
+      }
+    }
+  }
+  
+  // Style buttons to maintain visibility
+  .btn--primary {
+    background-color: $primary-color !important;
+    color: white !important;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(159, 98, 235, 0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(159, 98, 235, 0.4);
+    }
+  }
+  
+  // Make sure the intro text is black
+  .intro {
+    color: #000 !important;
+    
+    a {
+      color: #0366d6 !important;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(3, 102, 214, 0.3);
+      
+      &:hover {
+        border-bottom: 1px solid rgba(3, 102, 214, 0.7);
+      }
+    }
+  }
+  
+  // Only style timezones1 feature row with rounded corners and shadow
+  .feature__wrapper {
+    .feature__item {
+      position: relative;
+      background-color: white;
+      margin-bottom: 1.5em;
+    }
+    
+    // Add styling ONLY for the timezone sections
+    .timezones1,
+    #timezones1 {
+      .feature__item {
+        border-radius: 10px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        transition: all 0.25s ease;
+        
+        &:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+        }
+      }
+    
+      .archive__item {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        .archive__item-body {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          padding: 1.5em;
+        }
+        
+        .archive__item-excerpt {
+          flex: 1;
+        }
+        
+        .btn--primary {
+          margin-top: auto;
+        }
+      }
+      
+      .archive__item-teaser {
+        border-radius: 10px 10px 0 0;
+        overflow: hidden;
+        
+        img {
+          transition: transform 0.3s ease;
+        }
+      }
+      
+      .feature__item:hover {
+        .archive__item-teaser img {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+  
+  // Style the header
+  .page__hero--overlay {
+    .page__title, 
+    .page__lead {
+      color: white !important; // Keep header text white for contrast against the overlay image
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5) !important;
+    }
+  }
+  
+  // Modified styling to only apply rounded corners and shadows to timezones1
+  .page__content {
+    // Add padding to the content area
+    padding: 1em;
+    
+    // Basic feature row styling without rounded corners and shadows
+    .feature__wrapper {
+      margin-bottom: 3em;
+      
+      .feature__item {
+        background-color: white;
+        border-radius: 0;
+        box-shadow: none;
+        
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+    
+    // Override for timezones1 to ensure it has rounded corners and shadows
+    .feature__wrapper:last-child .feature__item {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+      transition: all 0.3s ease !important;
+      
+      &:hover {
+        transform: translateY(-6px) !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+      }
+    }
+    
+    // Style intro differently
+    .intro {
+      padding: 1em;
+      
+      .feature__item {
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+    
+    // Enhanced professional styling for the agenda row
+    .agendarow1 {
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+      
+      .feature__item {
+        background-color: #fff;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        padding: 0;
+        
+        &:hover {
+          transform: none;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+        
+        .archive__item-title {
+          background-color: $primary-color;
+          color: white !important;
+          padding: 16px 24px;
+          margin: 0;
+          font-size: 1.3em;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .archive__item-excerpt {
+          padding: 0;
+          margin: 0;
+        }
+        
+        ul {
+          margin-left: 1em;
+          
+          li {
+            margin-bottom: 0.5em;
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+    
+    // Style for the timezones row - keep the rounded corners and shadow ONLY here
+    .timezones1,
+    .feature__wrapper:last-child {
+      .feature__item {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        background-color: white !important;
+        transition: all 0.25s ease-out !important;
+        
+        &:hover {
+          transform: translateY(-6px) !important;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+        }
+      }
+      
+      .archive__item {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border-radius: 12px;
+        overflow: hidden;
+        
+        .archive__item-teaser {
+          overflow: hidden;
+          border-radius: 12px 12px 0 0;
+          
+          img {
+            transition: transform 0.3s ease;
+          }
+        }
+        
+        .archive__item-body {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          padding: 1.5em;
+        }
+        
+        .archive__item-excerpt {
+          flex: 1;
+        }
+        
+        .btn--primary {
+          margin-top: auto;
+          margin-bottom: 0.5em;
+          border-radius: 6px;
+        }
+      }
+      
+      .feature__item:hover {
+        .archive__item-teaser img {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
+
+// Specific styling for timezone cards to ensure equal height and appearance
+.page--webinars {
+  .timezone-cards-container {
+    margin-top: 2em;
+    
+    // For the feature wrapper (contains both cards)
+    .feature__wrapper {
+      display: flex;
+      justify-content: center;
+      
+      // Media query for mobile
+      @media (max-width: 767px) {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    
+    // For each card
+    .feature__item {
+      flex: 0 0 calc(50% - 20px); // Each card takes half the width minus margins
+      max-width: 380px;          // Maximum width for consistency
+      margin: 0 10px !important; // Equal margins
+      display: flex;
+      flex-direction: column;
+      height: auto;              // Auto height
+      
+      // Media query for mobile
+      @media (max-width: 767px) {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px !important;
+      }
+      
+      // For the archive item
+      .archive__item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        
+        // For the image area
+        .archive__item-teaser {
+          height: 180px;
+          overflow: hidden;
+          
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        
+        // For the title
+        .archive__item-title {
+          font-size: 20px;
+          margin: 15px 0;
+          min-height: 30px;      // Minimum height for title
+        }
+        
+        // For the excerpt
+        .archive__item-excerpt {
+          flex-grow: 1;
+          min-height: 120px;     // Minimum height for excerpt
+        }
+        
+        // For the button
+        .btn--primary {
+          width: 120px;          // Fixed width for buttons
+          text-align: center;
+          padding: 10px;
+          margin-top: auto;
+          align-self: flex-start;
+        }
+      }
+    }
+  }
+}
+
 ::-moz-selection {
   background: lighten($primary-color, 25%) !important;
   color: #000 !important;
@@ -64,3 +607,461 @@ $base0f: #00f769;
 }
 
 .feature__item { position: relative; margin-bottom: 2em; font-size: 1.125em; border-width: 1px ; border-color:#00f769 }
+
+// Direct styling for timezone cards container
+.timezone-cards-container {
+  .feature__item {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+    }
+    
+    .archive__item {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .archive__item-teaser {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .btn--primary {
+      border-radius: 6px;
+      margin-top: 1em;
+    }
+  }
+}
+
+// Direct styling for timezone cards to ensure consistent height and width
+.timezone-cards-container {
+  .feature__wrapper {
+    display: flex;
+    
+    // Set equal width for items in the row
+    .feature__item {
+      flex: 1;
+      display: flex;
+      min-height: 420px; // Set a minimum height for all cards
+      margin: 0 10px;    // Add some spacing between cards
+      
+      @media (max-width: 767px) {
+        min-height: unset; // Remove fixed height on mobile
+      }
+      
+      .archive__item {
+        width: 100%;      // Ensure archive item takes full width
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .archive__item-teaser {
+        height: 180px;    // Fixed height for image area
+        overflow: hidden;
+        
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+      }
+      
+      .archive__item-body {
+        flex: 1;          // Body takes remaining height
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+      }
+      
+      .archive__item-title {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+      
+      .archive__item-excerpt {
+        flex: 1;          // Excerpt takes available space
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      
+      .btn--primary {
+        align-self: flex-start;
+        margin-top: auto;  // Push button to bottom
+        width: auto;       // Width based on content
+      }
+    }
+  }
+}
+
+// Professional styling for agenda section
+.agenda-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 0;
+  font-family: $sans-serif;
+  
+  .agenda-section {
+    position: relative;
+    
+    .agenda-item {
+      display: flex;
+      padding: 16px 0;
+      
+      &.featured {
+        background-color: rgba($primary-color, 0.05);
+      }
+      
+      &:hover {
+        .agenda-time {
+          color: $primary-color;
+          font-weight: 500;
+        }
+        
+        // Removed hover effect for dots
+      }
+      
+      .agenda-time {
+        flex: 0 0 140px;
+        color: #666;
+        font-weight: 400;
+        font-size: 0.9em;
+        padding-right: 30px;
+        text-align: right;
+        padding-top: 3px;
+        transition: all 0.2s ease;
+      }
+      
+      .agenda-content {
+        flex: 1;
+        padding-left: 30px;
+        
+        h4 {
+          margin: 0 0 8px 0;
+          color: #333;
+          font-weight: 500;
+          font-size: 1.1em;
+        }
+        
+        p {
+          margin: 0;
+          color: #666;
+          font-size: 0.9em;
+        }
+        
+        ul {
+          margin: 8px 0 8px 20px;
+          padding: 0;
+          
+          li {
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 0.9em;
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Media queries for responsive design
+@media screen and (max-width: 767px) {
+  .agenda-container {
+    .agenda-section {
+      // Timeline removed
+      
+      .agenda-item {
+        flex-direction: column;
+        padding-left: 15px;
+        
+        // Dots removed
+        
+        &.featured {
+          border-left: 3px solid $primary-color;
+        }
+        
+        .agenda-time {
+          flex: 0 0 auto;
+          text-align: left;
+          padding-right: 0;
+          margin-bottom: 10px;
+          font-weight: 500;
+        }
+        
+        .agenda-content {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+}
+
+// Styling for agenda and timezone cards in a single row
+.agenda-timezone-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 2rem 0;
+  
+  // Left column - Agenda (65%)
+  .agenda-column {
+    flex: 65;
+    min-width: 320px;
+    
+    // Make sure the agenda feature row takes up full height
+    .feature__wrapper {
+      height: 100%;
+      margin-top: 0;
+      margin-bottom: 0;
+      
+      .feature__item {
+        height: 100%;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // Right column - Timezone cards (35%)
+  .timezone-column {
+    flex: 35;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .timezone-cards-container {
+      margin: 0;
+      height: 100%;
+      
+      .equal-height-cards {
+        height: 100%;
+        
+        .feature__wrapper {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          
+          .feature__item {
+            height: auto;
+            margin-top: 0;
+            margin-bottom: 10px;
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+  
+  // Responsive styling for smaller screens
+  @media (max-width: 992px) {
+    flex-direction: column;
+    
+    .agenda-column,
+    .timezone-column {
+      flex: 1 0 100%;
+      width: 100%;
+    }
+    
+    .timezone-column {
+      .timezone-cards-container {
+        .equal-height-cards {
+          .feature__wrapper {
+            flex-direction: row;
+            flex-wrap: wrap;
+            
+            .feature__item {
+              flex: 1 0 calc(50% - 20px);
+              max-width: calc(50% - 20px);
+              margin: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .timezone-column {
+      .timezone-cards-container {
+        .equal-height-cards {
+          .feature__wrapper {
+            flex-direction: column;
+            
+            .feature__item {
+              flex: 1 0 100%;
+              max-width: 100%;
+              margin: 10px 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Styling for compact agenda
+.agenda-container.compact {
+  .agenda-section {
+    // Timeline removed
+    
+    .agenda-item {
+      padding: 8px 0; // Reduce vertical padding
+      border-bottom: 1px solid #f0f0f0;
+      
+      // Dots removed
+      
+      &.featured {
+        background-color: rgba($primary-color, 0.03);
+        border-left: 3px solid $primary-color;
+        padding-left: 8px;
+      }
+      
+      .agenda-time {
+        flex: 0 0 80px; // Narrower time column
+        font-size: 0.8em; // Smaller text
+        padding-right: 20px; // Less right padding
+      }
+      
+      .agenda-content {
+        padding-left: 20px; // Less left padding
+        
+        h4 {
+          font-size: 0.95em; // Smaller headings
+          margin-bottom: 4px; // Less margin
+        }
+        
+        p {
+          margin: 0;
+          font-size: 0.8em; // Smaller text
+        }
+        
+        ul.compact-list {
+          margin: 4px 0; // Remove left margin
+          padding-left: 0; // Remove padding
+          list-style-type: none; // Remove bullets
+          
+          li {
+            margin-bottom: 5px; // Slightly more space between list items
+            font-size: 0.8em; // Smaller text
+            line-height: 1.4; // Better line height for readability
+          }
+        }
+      }
+    }
+  }
+}
+
+// Ensure timezone cards are optimized for side-by-side layout
+.timezone-column {
+  .timezone-cards-container {
+    .feature__item {
+      .archive__item-teaser {
+        height: 140px; // Shorter image height
+      }
+      
+      .archive__item-title {
+        font-size: 1.1em; // Smaller title
+        margin: 10px 0; // Less margin
+      }
+      
+      .archive__item-excerpt {
+        font-size: 0.85em; // Smaller text
+      }
+      
+      .btn {
+        padding: 8px 15px; // Smaller buttons
+        font-size: 0.9em;
+      }
+    }
+  }
+}
+
+// Compact styling for timezone cards in a single row
+.timezone-cards-container.compact {
+  margin: 0;
+  width: 100%;
+  
+  .single-row {
+    .feature__wrapper {
+      display: flex;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      margin: 0;
+      gap: 10px;
+      
+      .feature__item {
+        flex: 1;
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        
+        .archive__item {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          
+          .archive__item-teaser {
+            height: 90px !important;
+            
+            img {
+              height: 100%;
+              object-fit: cover;
+              object-position: center;
+            }
+          }
+          
+          .archive__item-body {
+            padding: 10px !important;
+          }
+          
+          .archive__item-title {
+            font-size: 0.9em !important;
+            margin: 0 0 5px 0 !important;
+            line-height: 1.2;
+          }
+          
+          .archive__item-excerpt {
+            font-size: 0.75em !important;
+            line-height: 1.4;
+            
+            br {
+              content: '';
+              display: block;
+              margin: 2px 0;
+            }
+          }
+          
+          .btn {
+            padding: 5px 10px !important;
+            font-size: 0.8em !important;
+            margin-top: 5px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Style for timezone heading
+.timezone-heading {
+  font-size: 1.1em;
+  margin: 0 0 10px 0;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+}

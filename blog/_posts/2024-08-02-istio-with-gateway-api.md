@@ -4,12 +4,12 @@ description: "Learn how to use the Gateway API to manage the Istio external ingr
 date: 2024-08-06
 author: Paul Yu
 categories:
-- networking
-- operations
-- add-ons
+  - networking
+  - operations
+  - add-ons
 tags:
-- istio 
-- gateway-api
+  - istio
+  - gateway-api
 ---
 
 ## Introduction
@@ -22,13 +22,13 @@ There's no doubt that Ingress and service mesh have greatly improved the way we 
 
 The API has been designed from the ground up, taking into account the lessons learned from the Ingress and service mesh APIs. To me, it's a game-changer because it ensures that you can express traffic routing configurations that were previously only possible via custom Ingress annotations. It also offers role-oriented configuration, which means that cluster operators can configure gateways and app developers can manage routes through the gateway. This is a big win for organizations that have a separation of duties between cluster operators and app developers. And finally, the API is portable, meaning that the API specification is supported by many implementations including [Istio](https://istio.io/latest/).
 
+> The Gateway API is not fully supported for the Istio-based managed add-on on AKS and this should be considered an experiment for now.
+
 ## Istio on AKS
 
 If you haven't heard of Istio yet, it is a [CNCF-graduated service mesh project](https://www.cncf.io/announcements/2023/07/12/cloud-native-computing-foundation-reaffirms-istio-maturity-with-project-graduation/) that provides a uniform way to connect, manage, and secure microservices. Istio is a fully-featured service mesh that supports managing traffic flows between services, enforcing access policies, and aggregating telemetry data. It not only provides East-West traffic management and security but also North-South traffic management and security through its Ingress Gateway. We can also thank Istio for much of the inspiration behind the Gateway API - if you've worked with Istio, you'll see the similarities.
 
 AKS is a managed Kubernetes offering and as such many popular open-source projects are available as managed add-ons and extensions. [Istio is one of those add-ons that can be enabled on AKS](https://learn.microsoft.com/azure/aks/istio-about?WT.mc_id=containers-146848-pauyu). AKS also provides managed deployments of Istio Ingress Gateway, which can be used to route traffic into the cluster from both internal origins within a virtual network as well as external traffic from the public internet. In this article, I'll show you how you can experiment with the Gateway API to manage the external Istio Ingress Gateway on AKS.
-
-> The Gateway API is not fully supported yet supported for the Istio-based managed add-on on AKS and this should be considered an experiment for now.
 
 ## Gateway API in action with Istio on AKS
 
@@ -123,6 +123,7 @@ To use the Gateway API, we need to create a Gateway resource in the `aks-istio-i
 The Gateway resource is a top-level resource that acts as a load balancer operating at the edge of the mesh. It can be used to leverage a particular [GatewayClass](https://gateway-api.sigs.k8s.io/api-types/gatewayclass/), in our case, we will be using the Istio external ingress gateway.
 
 ![Gateway API resource model](https://gateway-api.sigs.k8s.io/images/resource-model.png)
+
 > Source: [https://gateway-api.sigs.k8s.io](https://gateway-api.sigs.k8s.io/)
 
 Deploy the Gateway for our sample application in the `aks-istio-ingress` namespace.

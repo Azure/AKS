@@ -5,8 +5,8 @@ date: 2025-03-28
 authors: Pavneet Ahluwalia
 categories: observability
 tags:
-  - azure-monitor
-  - metrics
+  - observability
+  - general
 ---
 
 # Observability Enhancements in Azure Kubernetes Service (AKS)
@@ -31,7 +31,7 @@ AKS provides a managed control plane experience from provisioning, patching, to 
 - To view these metrics, sign in to the Azure Portal and navigate directly to your AKS cluster.
 - From the left navigation menu, select **Monitoring**, then click **Metrics**.
 - Under the "Container Service" Namespace, chose metric eg: API server memory percentage
-![Control plane Metrics!](/AKS/assets/images/enhancing-observability/Control-plane-metrics.png)
+![Control plane Metrics!](/assets/images/enhancing-observability/Control-plane-metrics.png)
 ---
 
 ### 2. Preview: Monitoring Azure Container Storage
@@ -46,7 +46,7 @@ Reliable storage is essential for containerized applications, especially those r
 #### How to Enable/Use:
 - To start collecting Azure Container Storage metrics, enable Managed Prometheus on the AKS cluster.
 - If your AKS cluster already has Managed Prometheus enabled, then installing Azure Container Storage on that cluster will automatically start collecting Azure Container Storage metrics.
-![AcStor Metrics!](/AKS/assets/images/enhancing-observability/acstor-grafana.png)
+![AcStor Metrics!](/assets/images/enhancing-observability/acstor-grafana.png)
 
 
 ### 3. GA: Monitor Node Auto-Repair using Kubernetes Events
@@ -62,7 +62,7 @@ Reliable storage is essential for containerized applications, especially those r
 #### How to Enable/Use:
 - No additional steps are required by users; these events are automatically enabled for all AKS clusters and persisted for 1 hour.
 - To query and store Kubernetes events beyond 1 hour, enable the **Container Insights** add-on for deeper visibility into your cluster health.
-![AutoRepair!](/AKS/assets/images/enhancing-observability/autorepair-events.png)
+![AutoRepair!](/assets/images/enhancing-observability/autorepair-events.png)
 
 Users can reproduce node failures through Azure Chaos Studios or Chaos Mesh and monitor the remediation actions taken through kubernetes events 
 ```bash
@@ -82,7 +82,7 @@ Historically, implementing monitoring for applications involved manual instrumen
 - Rapidly detect, diagnose, and resolve application performance bottlenecks using detailed, actionable telemetry data in Azure Monitor Application Insights.
 
 For example: Break down E2E latencies into individual containers/microservices response latencies through trace graphs or isolating high failure rate to individual service HTTP error rate spikes.
-![Autoinstrumentation!](/AKS/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
+![Autoinstrumentation!](/assets/images/enhancing-observability/app-insights-overview-screenshot.png)
 
 #### How to Enable/Use:
 - Enable the Application Insights extension on your AKS cluster through the Azure CLI or Azure Portal.
@@ -108,8 +108,8 @@ Managing Kubernetes effectively requires navigating multiple monitoring solution
 - Open your AKS cluster resource within the Azure Portal.
 - Select **Monitor** from the sidebar navigation.
 - Choose the **Managed Prometheus Visualizations (Preview)** option to begin exploring consolidated insights and metrics.
-![monitoring-toc-1!](/AKS/assets/images/enhancing-observability/monitoring-toc-1.png)
-![monitoring-toc-2!](/AKS/assets/images/enhancing-observability/monitoring-toc-2.png)
+![monitoring-toc-1!](/assets/images/enhancing-observability/monitoring-toc-1.png)
+![monitoring-toc-2!](/assets/images/enhancing-observability/monitoring-toc-2.png)
 
 
 ## Better Reliability and Performance
