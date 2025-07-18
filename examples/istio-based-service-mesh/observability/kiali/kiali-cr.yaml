@@ -26,7 +26,6 @@ spec:
   external_services:
     istio:
       root_namespace: "aks-istio-system"
-      config_map_name: "${ISTIO_CONFIG_MAP}"
       istiod_deployment_name: "${ISTIOD_DEPLOYMENT}"
       istio_sidecar_injector_config_map_name: "${ISTIO_SIDECAR_INJECTOR_CM}"
       istio_api_enabled: true

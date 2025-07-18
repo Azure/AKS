@@ -9,14 +9,11 @@ This guide shows how to set up Kiali dashboard with Azure Monitor managed Promet
 
 ```shell
 export WORKSPACE_NAME=<your-azure-monitor-workspace-name>
-export WORKSPACE_RESOURCE_ID=/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/microsoft.monitor/accounts/<workspace-name>
 
 # Derived variables
 export TENANT_ID=$(az account show --query tenantId -o tsv)
 export CLIENT_ID=$(az aks show -g $RESOURCE_GROUP -n $CLUSTER --query identityProfile.kubeletidentity.clientId -o tsv)
-export PROMETHEUS_QUERY_ENDPOINT=$(az monitor account show --ids $WORKSPACE_RESOURCE_ID --query metrics.prometheusQueryEndpoint -o tsv)
 export ISTIO_REVISION=$(az aks show -g $RESOURCE_GROUP -n $CLUSTER --query serviceMeshProfile.istio.revisions[0] -o tsv)
-export ISTIO_CONFIG_MAP=$(kubectl get configmap -n aks-istio-system -o name | grep "istio.*${ISTIO_REVISION}" | head -1 | cut -d'/' -f2)
 export ISTIOD_DEPLOYMENT=$(kubectl get deployment -n aks-istio-system -o name | grep "istiod.*${ISTIO_REVISION}" | head -1 | cut -d'/' -f2)
 export ISTIO_SIDECAR_INJECTOR_CM=$(kubectl get configmap -n aks-istio-system -o name | grep "sidecar-injector.*${ISTIO_REVISION}" | head -1 | cut -d'/' -f2)
 export ISTIO_GATEWAY_NAME=$(kubectl get deployment -n aks-istio-ingress -o name | grep "ingressgateway.*${ISTIO_REVISION}" | head -1 | cut -d'/' -f2)
@@ -36,6 +33,10 @@ az monitor account create \
   --name $WORKSPACE_NAME \
   --resource-group $RESOURCE_GROUP \
   --location $LOCATION
+
+# Get the Prometheus query endpoint
+export WORKSPACE_RESOURCE_ID=$(az monitor account show -n $WORKSPACE_NAME -g $RESOURCE_GROUP --query id -o tsv)
+export PROMETHEUS_QUERY_ENDPOINT=$(az monitor account show --ids $WORKSPACE_RESOURCE_ID --query metrics.prometheusQueryEndpoint -o tsv)
 
 # Enable Azure Monitor managed Prometheus on your AKS cluster
 az aks update \
@@ -137,6 +138,10 @@ Create the [Kiali Custom Resource](https://kiali.io/docs/configuration/kialis.ki
 
 ```shell
 # Deploy Kiali using the custom resource template
+
+>[!Note]
+>Kiali v2.13+ automatically detects and merges shared mesh config from AKS Istio addon
+
 envsubst < kiali-cr.yaml | kubectl apply -f -
 ```
 
