@@ -119,3 +119,4 @@ When scaling down, the autoscaler will cordon and drain underutilized nodes, mai
 
 **Summary:**
 Implementing spot node pool scaling in Azure AKS, combined with the cluster autoscaler’s priority expander, brings cost savings and elasticity to Kubernetes workloads—while protecting critical applications from unwanted interruptions through flexible, intelligent failover strategies.
+
