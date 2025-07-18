@@ -9,13 +9,13 @@ tags:
   - spot
 ---
 
-## Scaling Safely with Azure AKS Spot Node Pools Using Cluster Autoscaler Priority Expander
+# Scaling Safely with Azure AKS Spot Node Pools Using Cluster Autoscaler Priority Expander
 
-As engineering teams seek to optimize costs and maintain scalability in the cloud, leveraging Azure Spot Virtual Machines (VMs) in Azure Kubernetes Service (AKS) can help dramatically reduce compute costs for workloads tolerant of interruption. However, operationalizing spot nodes safely—especially for production or critical workloads—requires deliberate strategies around cluster autoscaling and workload placement. Here’s how to improve workload availability with Spot on AKS, using the cluster autoscaler’s priority mechanism and native AKS features.
+As engineering teams seek to optimize costs and maintain scalability in the cloud, leveraging Azure Spot Virtual Machines (VMs) in Azure Kubernetes Service (AKS) can help dramatically reduce compute costs for workloads tolerant of interruption. However, operationalizing spot nodes safely—especially for production or critical workloads—requires deliberate strategies around cluster autoscaling and workload placement. Here’s how to utilize to improve workload availability with spot on AKS, using the cluster autoscaler’s priority mechanism and native AKS features.
 
-### 1. Understanding Azure Spot Node Pools in AKS
+## 1. Understanding Azure Spot Node Pools in AKS
 
-Azure Spot VMs provide up to 90% savings compared to pay-as-you-go prices but come with the risk of eviction when Azure needs the compute back. To use Spot VMs with cluster autoscaler in AKS: 
+Azure Spot VMs provide up to 90% savings compared to pay-as-you-go prices but come with the risk of eviction when Azure needs the compute back. To use Spot VMs with cluster autoscaler in AKS:
 
 - Your AKS cluster must use Virtual Machine Scale Sets (VMSS) for its node pools.
 - You can’t use Spot VMs for the default system node pool; only user node pools can be created as spot node pools.
@@ -41,7 +41,7 @@ A resilient AKS architecture for spot scaling typically looks like:
 
 - You can enable autoscaler when creating a node pool:
 
-```
+```bash
 az aks nodepool add \
   --resource-group <ResourceGroup> \
   --cluster-name <AKSCluster> \
@@ -55,7 +55,7 @@ az aks nodepool add \
 
 - Each pool can scale independently by setting different min/max counts.
 
-#### 4. Using the Priority Expander
+### 4. Using the Priority Expander
 
 The [**priority expander**](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md) lets you influence which node pool the cluster autoscaler scales first. For example, you might want the autoscaler to scale spot pools before on-demand pools to optimize for cost, but fall back to regular VMs if no spot capacity is available.
 
@@ -63,12 +63,13 @@ The [**priority expander**](https://github.com/kubernetes/autoscaler/blob/master
 
 - Add an autoscaler profile to cluster creation or update, specifying `expander=priority`:
 
-```
+```bash
 az aks update \
   --resource-group <ResourceGroup> \
   --name <AKSCluster> \
   --cluster-autoscaler-profile expander=priority
 ```
+
 - Configure a ConfigMap with pool patterns and their numeric priorities: higher number = higher priority.
 - The ConfigMap must be named `cluster-autoscaler-priority-expander` and placed in the `kube-system` namespace.
 - below is an example of a configuration providing higher priority for spot VM node pools (higher number):
@@ -94,6 +95,7 @@ data:
 ```bash
 kubectl apply -f <path-to-configmap-file>
 ```
+
 ### 5. Best Practices for Spot Node Pool Scaling
 
 - **Eviction Handling:** Create disruption budgets and readiness checks so pods are safely rescheduled if spot nodes are reclaimed.
@@ -117,5 +119,3 @@ When scaling down, the autoscaler will cordon and drain underutilized nodes, mai
 
 **Summary:**
 Implementing spot node pool scaling in Azure AKS, combined with the cluster autoscaler’s priority expander, brings cost savings and elasticity to Kubernetes workloads—while protecting critical applications from unwanted interruptions through flexible, intelligent failover strategies.
-
-
