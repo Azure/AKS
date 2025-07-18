@@ -11,7 +11,9 @@ tags:
 
 # Scaling Safely with Azure AKS Spot Node Pools Using Cluster Autoscaler Priority Expander
 
-As engineering teams seek to optimize costs and maintain scalability in the cloud, leveraging Azure Spot Virtual Machines (VMs) in Azure Kubernetes Service (AKS) can help dramatically reduce compute costs for workloads tolerant of interruption. However, operationalizing spot nodes safely—especially for production or critical workloads—requires deliberate strategies around cluster autoscaling and workload placement.
+As engineering teams seek to optimize costs and maintain scalability in the cloud, leveraging Azure Spot Virtual Machines (VMs) in Azure Kubernetes Service (AKS) can help dramatically reduce compute costs for workloads tolerant of interruption. 
+
+However, operationalizing spot nodes safely—especially for production or critical workloads—requires deliberate strategies around cluster autoscaling and workload placement.
 
 Here's how to utilize to improve workload availability with spot on AKS, using the cluster autoscaler's priority mechanism and native AKS features.
 
