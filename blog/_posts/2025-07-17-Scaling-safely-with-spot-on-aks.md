@@ -21,7 +21,7 @@ Azure Spot VMs provide up to 90% savings compared to pay-as-you-go prices but co
 - You can’t use Spot VMs for the default system node pool; only user node pools can be created as spot node pools.
 - The `priority` property of the node pool determines if it's a spot pool or regular VM.
 
-### 2. Setting Up a Safe Node Pool Architecture
+## 2. Setting Up a Safe Node Pool Architecture
 
 A resilient AKS architecture for spot scaling typically looks like:
 
@@ -35,7 +35,7 @@ A resilient AKS architecture for spot scaling typically looks like:
 - Additional node pools can be created for workload pods: some regular, some spot.
 - Workloads are assigned to node pools via Kubernetes node selectors and taints/tolerations.
 
-### 3. Enabling and Configuring the Cluster Autoscaler and spot VM nodepool
+## 3. Enabling and Configuring the Cluster Autoscaler and spot VM nodepool
 
 **Cluster Autoscaler** automatically adjusts the number of nodes to meet pod scheduling needs. On AKS:
 
@@ -55,7 +55,7 @@ az aks nodepool add \
 
 - Each pool can scale independently by setting different min/max counts.
 
-### 4. Using the Priority Expander
+## 4. Using the Priority Expander
 
 The [**priority expander**](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md) lets you influence which node pool the cluster autoscaler scales first. For example, you might want the autoscaler to scale spot pools before on-demand pools to optimize for cost, but fall back to regular VMs if no spot capacity is available.
 
@@ -96,7 +96,7 @@ data:
 kubectl apply -f <path-to-configmap-file>
 ```
 
-### 5. Best Practices for Spot Node Pool Scaling
+## 5. Best Practices for Spot Node Pool Scaling
 
 - **Eviction Handling:** Create disruption budgets and readiness checks so pods are safely rescheduled if spot nodes are reclaimed.
 - **Hedge capacity across SKUs:** Create multiple node pools of different VM family and SKUs to increase probability of spot capacity availability.
@@ -105,7 +105,7 @@ kubectl apply -f <path-to-configmap-file>
 - **Cost Monitoring:** Use Azure monitoring to track node evictions (vmss activity logs), pool utilization, and right-size your pools regularly.
 - **Horizontal Pod Autoscaler:** Combine with HPA to orchestrate scaling at both node and pod level for optimal elasticity.
 
-### 6. Failover and Reliability Patterns
+## 6. Failover and Reliability Patterns
 
 If spot capacity runs out or spot nodes are evicted:
 
@@ -113,7 +113,7 @@ If spot capacity runs out or spot nodes are evicted:
 - Application workloads can continue on on-demand nodes, maintaining uptime and minimizing interruption.
 - Use multiple node pools with appropriate affinity/anti-affinity to balance workloads and risk.
 
-### 7. Clean-Up and Observation
+## 7. Clean-Up and Observation
 
 When scaling down, the autoscaler will cordon and drain underutilized nodes, maintaining minimum pool counts and moving pods as needed. Always validate behavior in test environments before onboarding production workloads.
 
