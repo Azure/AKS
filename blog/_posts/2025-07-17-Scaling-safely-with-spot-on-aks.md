@@ -15,7 +15,7 @@ As engineering teams seek to optimize costs and maintain scalability in the clou
 
 However, operationalizing spot nodes safely—especially for production or critical workloads—requires deliberate strategies around cluster autoscaling and workload placement.
 
-Here's how to utilize to improve workload availability with spot on AKS, using the cluster autoscaler's priority mechanism and native AKS features.
+Here's how to utilize cluster autoscaler's priority expander feature to improve workload availability with spot on AKS.
 
 ## 1. Understanding Azure Spot Node Pools in AKS
 
