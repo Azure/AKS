@@ -1,6 +1,6 @@
 ---
 title: "Accelerate DNS Performance with LocalDNS"
-description: "Discover how LocalDNS transforms DNS performance in AKS clusters with 10x latency reduction, enhanced reliability, and improved operational visibility for SREs."
+description: "Discover how LocalDNS transforms DNS performance in AKS clusters with 10x latency reduction and enhanced reliability"
 date: 2025-08-02 # date is important. future dates will not be published
 author: Vaibhav Arora # must match the authors.yml in the _data folder
 categories: 
@@ -39,23 +39,21 @@ To evaluate the impact of LocalDNS, we conducted parallel tests across two AKS c
 
 ### 1. Improved DNS Query Resolution Times
 
-The graphs below demonstrate a substantial reduction in DNS query resolution times across all percentiles (P50, P99, P100) when LocalDNS is enabled. LocalDNS consistently delivers faster responses, with 10x lower latency, significant tail latency reduction, and eliminated outlier spikes.
+The graphs below demonstrate a substantial reduction in DNS query resolution times across all percentiles (P50, P95, P99) when LocalDNS is enabled. LocalDNS consistently delivers faster responses, with >10x lower latency and significant tail latency reduction at the P99 scale. These improvements apply to both internal cluster traffic and external domain resolution. 
 
-#### DNS Query Latency Comparison
+#### Resolution Time for Cluster Traffic (cluster.local)
 
-| Metric   | Comparison Charts | Improvement |
-|----------|---------------------|-------------|
-| **P50**  | ![P50 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP50.png) | 10x lower latency |
-| **P99**  | ![P99 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP99.png) | Significant tail latency reduction |
-| **P100** | ![P100 Graph](/assets/images/accelerate-dns-performance-with-localdns/DNSComparisonP100.png) | Eliminated outlier spikes |
+![DNS resolution times for internal cluster traffic showing LocalDNS performance improvements](/assets/images/accelerate-dns-performance-with-localdns/inclustertraffic.png)
+
+#### Resolution Time for External Domain Traffic
+
+![DNS resolution times for external domain traffic showing LocalDNS performance improvements](/assets/images/accelerate-dns-performance-with-localdns/externaltraffic.png)
 
 ### 2. Better Distribution of Requests Across CoreDNS Pods
 
 The pie charts below show the dramatic improvement in traffic distribution across CoreDNS pods when LocalDNS is enabled. In the centralized setup, nearly all DNS traffic (99.9%) is handled by a single CoreDNS pod (because of the use of UDP protocol), creating a significant bottleneck. With LocalDNS, the split shifts to a much healthier 40%/59.9% distribution, demonstrating balanced load and improved scalability.
 
-| Metric   | Centralized CoreDNS | LocalDNS Enabled | Improvement |
-|----------|---------------------|------------------|-------------|
-| % traffic served by CoreDNS pod | ![Centralized CoreDNS](/assets/images/accelerate-dns-performance-with-localdns/corednsdistribution_nolocaldns.png) | ![LocalDNS enabled](/assets/images/accelerate-dns-performance-with-localdns/corednstrafficdistribution_localdns.png) | More equal distribution of traffic between CoreDNS pods |
+![Traffic distribution comparison showing improved load balancing across CoreDNS pods with LocalDNS](/assets/images/accelerate-dns-performance-with-localdns/trafficdistribution.png)
 
 ### 3. Additional Operational Improvements
 
