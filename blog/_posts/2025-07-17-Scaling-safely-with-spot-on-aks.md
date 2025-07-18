@@ -72,7 +72,7 @@ az aks update \
 
 - Configure a ConfigMap with pool patterns and their numeric priorities: higher number = higher priority.
 - The ConfigMap must be named `cluster-autoscaler-priority-expander` and placed in the `kube-system` namespace.
-- below is an example of a configuration providing higher priority for spot VM node pools (higher number):
+- Below is an example of a configuration providing higher priority for spot VM node pools (higher number):
 
 ```yaml
 apiVersion: v1
