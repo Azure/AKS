@@ -92,7 +92,7 @@ Throughout the support lifecycle, AKS LTS versions receive:
 - Compatibility maintenance for Azure service integrations (not new feature additions)
 - Ecosystem compatibility updates to maintain existing functionality (not new capabilities)
 
-**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab. Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/cli/azure/aks#az-aks-get-upgrades) CLI command or the get-upgrades API with the support plan parameter to view available LTS versions for your clusters. 
+**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab. Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-upgrades) CLI command or the [GET upgradeProfiles API](https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/get-upgrade-profile?view=rest-aks-2025-05-01&tabs=HTTP) (which maps to Microsoft.ContainerService/managedClusters/upgradeProfiles/read permission) to view available LTS versions for your clusters. 
 These tools provide complete visibility into your LTS support lifecycle and upcoming releases.
 
 ## Creating AKS LTS Clusters
@@ -116,7 +116,7 @@ You can also deploy AKS clusters with LTS support using:
 
 **Important:** AKS LTS is available as part of the **Premium tier**. For detailed pricing information, please refer to the [AKS Premium tier pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/).
 
-AKS clusters with LTS support maintain full compatibility with the existing AKS ecosystem, including [AKS Features,Add ons and Extensions](https://learn.microsoft.com/azure/aks/integrations).
+AKS clusters with LTS support maintain full compatibility with the existing AKS ecosystem, including [AKS Features, Add-ons and Extensions](https://learn.microsoft.com/azure/aks/integrations).
 
 **Industry-Leading Ecosystem Support:** Unlike other cloud providers that typically limit LTS guarantees to the base Kubernetes API, AKS LTS provides comprehensive support for popular add-ons and components that enterprises depend on for production workloads. 
 This includes [coordinated breaking change management](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version), timely CVE fixes (tracked via [AKS security bulletins](https://github.com/Azure/AKS/releases)), and compatibility assurance throughout the LTS lifecycle.
@@ -198,6 +198,7 @@ AKS LTS represents our commitment to supporting enterprises at every stage of th
 Over the coming months, we'll be expanding AKS LTS capabilities based on your feedback, including:
 
 - **Istio support for LTS:** Bringing comprehensive LTS support for Istio service mesh to provide enterprise-grade stability for your microservices architecture
+- **KMS V2 support for LTS:** Enhanced Key Management Service V2 support for AKS LTS coming by early CY26, providing improved encryption key management capabilities for enterprise security requirements
 
 **Enhanced AKS Upgrade Capabilities (coming soon for both standard AKS and LTS Support Plan):**
 - **Agent pool Blue-Green upgrades:** Node pool-level blue-green upgrade strategy that enables workload validation batch by batch, with the ability to rollback newly created green nodes within a configurable soak period
