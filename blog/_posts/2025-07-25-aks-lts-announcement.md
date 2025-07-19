@@ -198,7 +198,7 @@ AKS LTS represents our commitment to supporting enterprises at every stage of th
 Over the coming months, we'll be expanding AKS LTS capabilities based on your feedback, including:
 
 - **Istio support for LTS:** Bringing comprehensive LTS support for Istio service mesh to provide enterprise-grade stability for your microservices architecture
-- **KMS V2 support for LTS:** Enhanced Key Management Service V2 support for AKS LTS coming by early CY26, providing improved encryption key management capabilities for enterprise security requirements
+- **KMS V2 support for LTS:** Enhanced Key Management Service V2 support for AKS LTS tentatively CY2026H1, providing improved encryption key management capabilities for enterprise security requirements
 
 **Enhanced AKS Upgrade Capabilities (coming soon for both standard AKS and LTS Support Plan):**
 - **Agent pool Blue-Green upgrades:** Node pool-level blue-green upgrade strategy that enables workload validation batch by batch, with the ability to rollback newly created green nodes within a configurable soak period
