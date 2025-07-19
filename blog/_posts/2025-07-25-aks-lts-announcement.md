@@ -24,7 +24,7 @@ AKS LTS directly addresses these needs by providing a **support plan** specifica
 
 ## What is AKS LTS?
 
-**Understanding Kubernetes Community Support:** The upstream Kubernetes project follows a [regular release cadence](https://kubernetes.io/releases/release/) of approximately 4 months between versions, supporting the current version plus the two previous versions (n to n-2). 
+**Understanding Kubernetes Community Support:** The upstream Kubernetes project follows a [regular release cadence](https://kubernetes.io/releases/release/) of approximately 4 months between versions, supporting the current version plus the two previous versions (n to n-2).
 AKS typically makes new Kubernetes versions available about a month after the upstream release, following our rigorous testing and validation process. This means each version receives roughly 12-14 months of community support.
 
 While this rapid innovation cycle drives excellent new capabilities, we've heard from many enterprise customers that the standard 12-14 month support lifecycle can present challenges for production environments with stability requirements, compliance needs, or complex upgrade validation processes.
@@ -62,7 +62,7 @@ AKS LTS provides all the same capabilities and features as community-supported A
 
 ## Technical Implementation
 
-**Universal LTS Coverage - A Major Expansion:** Previously, AKS LTS was available only for select Kubernetes versions, typically spaced several versions apart. **This announcement represents a fundamental shift: AKS LTS now extends to every currently supported Kubernetes version in AKS.** 
+**Universal LTS Coverage - A Major Expansion:** Previously, AKS LTS was available only for select Kubernetes versions, typically spaced several versions apart. **This announcement represents a fundamental shift: AKS LTS now extends to every currently supported Kubernetes version in AKS.**
 This means instead of waiting for specific "LTS-designated" versions, enterprises can choose long-term support for any supported Kubernetes version that meets their application requirements.
 
 **Beyond Community Support:** When the Kubernetes community support ends (typically 12-14 months after a version's GA), AKS LTS continues providing comprehensive support for 24 months from the original GA date. **Crucially, once the community stops supplying patches after the official version support end-of-life, AKS continues to provide patches and CVE fixes** for all supported components.
@@ -92,7 +92,7 @@ Throughout the support lifecycle, AKS LTS versions receive:
 - Compatibility maintenance for Azure service integrations (not new feature additions)
 - Ecosystem compatibility updates to maintain existing functionality (not new capabilities)
 
-**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab. Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-upgrades) CLI command or the [GET upgradeProfiles API](https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/get-upgrade-profile?view=rest-aks-2025-05-01&tabs=HTTP) (which maps to Microsoft.ContainerService/managedClusters/upgradeProfiles/read permission) to view available LTS versions for your clusters. 
+**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab. Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-upgrades) CLI command or the [GET upgradeProfiles API](https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/get-upgrade-profile?view=rest-aks-2025-05-01&tabs=HTTP) (which maps to Microsoft.ContainerService/managedClusters/upgradeProfiles/read permission) to view available LTS versions for your clusters.
 These tools provide complete visibility into your LTS support lifecycle and upcoming releases.
 
 ## Creating AKS LTS Clusters
@@ -118,7 +118,7 @@ You can also deploy AKS clusters with LTS support using:
 
 AKS clusters with LTS support maintain full compatibility with the existing AKS ecosystem, including [AKS Features, Add-ons and Extensions](https://learn.microsoft.com/azure/aks/integrations).
 
-**Industry-Leading Ecosystem Support:** Unlike other cloud providers that typically limit LTS guarantees to the base Kubernetes API, AKS LTS provides comprehensive support for popular add-ons and components that enterprises depend on for production workloads. 
+**Industry-Leading Ecosystem Support:** Unlike other cloud providers that typically limit LTS guarantees to the base Kubernetes API, AKS LTS provides comprehensive support for popular add-ons and components that enterprises depend on for production workloads.
 This includes [coordinated breaking change management](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version), timely CVE fixes (tracked via [AKS security bulletins](https://github.com/Azure/AKS/releases)), and compatibility assurance throughout the LTS lifecycle.
 
 ## Choosing Between Community and LTS Support
