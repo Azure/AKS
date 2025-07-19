@@ -197,7 +197,7 @@ AKS LTS represents our commitment to supporting enterprises at every stage of th
 
 Over the coming months, we'll be expanding AKS LTS capabilities based on your feedback, including:
 
-- **Istio support for LTS:** Bringing comprehensive LTS support for Istio service mesh to provide enterprise-grade stability for your microservices architecture
+- **Istio support for LTS:** Unlike other add-ons whose minor versions are pinned to minor version of the AKS version, Istio add-on having its sidecar inside user's pod allows for minor version and upgrades to be explicitly controlled by the user today, thus complicating the permutations to be considered for LTS. LTS scope for Istio version(s) when deployed on top of AKS LTS versions is currently being finalized and will be announced in a future update
 - **KMS V2 support for LTS:** Enhanced Key Management Service V2 support for AKS LTS tentatively CY2026H1, providing improved encryption key management capabilities for enterprise security requirements
 
 **Enhanced AKS Upgrade Capabilities (coming soon for both standard AKS and LTS Support Plan):**
