@@ -104,7 +104,8 @@ Creating an AKS cluster with LTS support is straightforward and uses the same fa
 az aks create \
     --resource-group myResourceGroup \
     --name myAKSLTSCluster \
-    --tier LTS \
+    --tier premium \
+    --k8s-support-plan AKSLongTermSupport \
     --kubernetes-version 1.29 \
     --node-count 3
 ```
