@@ -19,7 +19,7 @@ In this blog post, we share how we conducted simple benchmark to evaluate and co
 ## Benchmark
 Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on AKS. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same AKS cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usge.
 
-In our experiment, iperf3 was run as a container within Kubernetes pods on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernenls. During each test, we also monitor cpu and memory usage of both client and server containers to make sure iperf3 is not resource constrainted.
+In our experiment, iperf3 was run as a container within Kubernetes pods on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernenls. During each test, we also monitor cpu and memory usage of both client and server containers to make sure iperf3 is not resource constrained.
 
 ## Hardware Matters Most
 
@@ -55,7 +55,7 @@ ip link set $device mtu 9000
 To enable Jumbo Frames across all nodes in an AKS cluster, you can deploy a [example daemonset](https://github.com/Azure/telescope/blob/c217665271666131cc4c78ee391db967a808fa48/modules/kustomize/mtu/overlays/azure/patch.yaml#L16). In addition, you can optimize MTU settings dynamically using [Path MTU Discovery](https://learn.microsoft.com/en-us/azure/virtual-network/how-to-virtual-machine-mtu?tabs=linux#path-mtu-discovery)
 
 
-## Kernel Settings Tunning
+## Kernel Settings Tuning
 
 If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term option due to capacity constraints or compatibility concerns, kernel-level tuning remains a practical path to improving network performance. In our testing, we explored several tuning parameters and found that adjusting the ring buffer size on the network interface card (NIC) had the most significant impact. As shown below, increasing the NIC receive buffer size from the default 1024 bytes to 2048 bytes on a Dsv3 VM resulted in a noticeable improvement in network throughput. 
 
@@ -72,4 +72,4 @@ It’s important to note that increasing the NIC ring buffer size has memory usa
 
 ## Conclusion
 
-Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU/Serie and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. In the future, we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also intend to analyze both inbound and outbound networking performance on AKS and explore further optimization strategies.
+Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU and series  and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. In the future, we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also intend to analyze both inbound and outbound networking performance on AKS and explore further optimization strategies.
