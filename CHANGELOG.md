@@ -5,7 +5,6 @@
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250720`.
 
 ### Announcements
-* Kubernetes version 1.33 is now Generally Available for AKS. Patch version [1.33.1](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#v1331) is also now supported.
 * Azure CNI Overlay with AGIC is now Generally Available. Customers can now use AGIC with Azure CNI Overlay without registering the AppGatewayWithOverlayPreview feature flag.
 * The asm-1-23 revision for the Istio add-on has been deprecated. Kindly upgrade your service mesh to a supported version following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
 * AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS).
@@ -15,11 +14,9 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Release notes
 * Features
-  * Application routing add-on now supports configuration of SSL passthrough, custom logging format, and load balancer IP ranges. Review the [configuration of NGINX ingress controller documentation](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#configuration-of-the-nginx-ingress-controller) for more information.
   * SecurityPatch Node OS upgrade channel is now supported for all network isolated clusters.
-  * API server VNet integration is now Generally Available (GA) in additional regoins: East Asia, Southeast Asia, Switzerland North, Brazil South, Central India, Germany West Central, and more GA regions. For the complete list of supported regions and any capacity limitations, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration).
-  *Kubelet Service Certificate Rotation will begin rollout to all remaining public regions, starting on 23 July 2025. Rollout is expected to be completed in 10 days. Note: This is an estimate and is subject to change. See [Github issue](https://github.com/Azure/AKS/issues/4986) for regional updates. Existing node pools will have kubelet serving certificate rotation enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. New node pools on kubernetes version 1.27 or greater will have kubelet serving certificate rotation enabled by default. For more information on kubelet serving certificate rotation and disablement, see https://aka.ms/aks/kubelet-serving-certificate-rotation.
-  * Added support for the service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation for Istio ingress gateways.
+  * API server VNet integration is now Generally Available (GA) in additional regions: East Asia, Southeast Asia, Switzerland North, Brazil South, Central India, Germany West Central, and more GA regions. For the complete list of supported regions and any capacity limitations, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration).
+  *Kubelet Service Certificate Rotation will begin rollout to all remaining public regions, starting on 23 July 2025. Rollout is expected to be completed in 10 days. Note: This is an estimate and is subject to change. See [GitHub issue](https://github.com/Azure/AKS/issues/4986) for regional updates. Existing node pools will have kubelet serving certificate rotation enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. New node pools on kubernetes version 1.27 or greater will have kubelet serving certificate rotation enabled by default. For more information on kubelet serving certificate rotation and disablement, see https://aka.ms/aks/kubelet-serving-certificate-rotation.
   * [Kubernetes Event-Driven Autoscaling (KEDA)](https://learn.microsoft.com/azure/aks/keda-about) is now supported in LTS.
   * [Component Version API](https://learn.microsoft.com/azure/aks/upgrade-cluster) is available for retrieving the exact versions of all AKS components in your cluster. This gives you real-time visibility into AKS components and add-ons, helping with proactive upgrade planning. Comparing component versions in your current version (cluster context) with potential K8s minor version updates to help identify possible breaking changes. CLI extension 18.0.0b19+ is required.
 
@@ -27,7 +24,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * [Azure Virtual Network Verifier](https://learn.microsoft.com/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Nodepools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
   * [Encryption in transit](https://learn.microsoft.com/azure/storage/files/encryption-in-transit-for-nfs-shares?tabs=azure-portal%2CUbuntu) is now available for the Azure File CSI driver for AKS version 1.33.
   * Node Autoprovisioning metrics are now available through Managed Prometheus.
-  * Blue-green nodepool upgrade is now available in Preview in the v20250702preview API.
   * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now available as preview.
  
 * Bug Fixes
@@ -37,19 +33,20 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Behavior Changes
   * The delete-machines API will only delete machines from the system nodepool if the system addon PDBs are respected.
   * Application routing component Pods are now annotated with kubernetes.azure.com/set-kube-service-host-fqdn to automatically have the [API server's domain name injected into the pod](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#required-outbound-network-rules-and-fqdns-for-aks-clusters) instead of the cluster IP, to enable communication to the API server. This is useful in cases where the cluster egress is via a layer 7 firewall.
-  * Add node anti-affinity for FIPS-enabled nodes for retina-agent when pod-level metrics are enabled.
   * Container Insights agents now have a memory limit of 750Mi (down from 4Gi).
   * Advanced Container Networking Services (ACNS) pods now run with priorityClassName: system-node-critical, preventing eviction under node resource pressure and improving cluster security posture.
+  * Application routing add-on now supports configuration of SSL passthrough, custom logging format, and load balancer IP ranges. Review the [configuration of NGINX ingress controller documentation](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#configuration-of-the-nginx-ingress-controller) for more information.
 
 * Component Updates
   * App monitoring addon image is updated to 1.0.0-beta.7 to expose container port 4000 for scraping Prometheus metrics.
   * Application routing operator is updated to [v0.2.7](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.6) for all supported Kubernetes versions.
   * Azure Network Policy Manager (NPM) image version is updated to [v1.6.29](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.29) to resolve iptables-legacy command issues and bump Ubuntu to 24.04 with CVE fixes.
-  * Azure Disk CSI driver versions are upgraded to to [v1.31.11](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.11), [v1.32.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.8), [v1.33.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.2) on AKS versions 1.31, 1.32, 1.33 respectively.
+  * Azure Disk CSI driver versions are upgraded to [v1.31.11](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.11), [v1.32.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.8), [v1.33.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.2) on AKS versions 1.31, 1.32, 1.33 respectively.
   * Cloud Controller Manager has been upgraded to [v1.33.1](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.33.1), [v1.32.6](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.32.6), [v1.31.7](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.31.7) and [v1.30.13](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.30.13).
   * ExtensionManager addon is updated to v1.27.0. Other updates:
     * ExtensionManager now honors AKS maintenance windows for autoupgrades of Kubernetes extension.
   * Retina Basic image is updated to [v0.0.36](https://github.com/microsoft/retina/releases/tag/v0.0.36) on Linux and Windows.
+  * Add node anti-affinity for FIPS-enabled nodes for retina-agent when pod-level metrics are enabled.
   * Retina Enterprise has been updated to [v0.1.11](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.11) to resolve several CVEs.
   * Managed Prometheus addon is updated to the latest release [06-19-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-19-2025).
   * Microsoft Defender for Cloud addon image is updated to version 20250706.2. Other updates:
@@ -67,6 +64,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Workload Identity image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
     * Istio service mesh add-on now supports the following annotations: service.beta.kubernetes.io/azure-allowed-ip-ranges, service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset, service.beta.kubernetes.io/azure-pip-ip-tags.
+    * Added support for the service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation for Istio ingress gateways.
   * On Windows GPU-enabled node pools, the default NVIDIA CUDA driver version has been bumped to v560.94 and GRID driver version has been bumped to v553.62.
 
 
