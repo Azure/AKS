@@ -106,7 +106,8 @@ Creating an AKS cluster with LTS support is straightforward and uses the same fa
 az aks create \
     --resource-group myResourceGroup \
     --name myAKSLTSCluster \
-    --tier LTS \
+    --tier premium \
+    --k8s-support-plan AKSLongTermSupport \
     --kubernetes-version 1.29 \
     --node-count 3
 ```
@@ -202,6 +203,7 @@ Over the coming months, we'll be expanding AKS LTS capabilities based on your fe
 - **Istio support for LTS:** Unlike other add-ons whose minor versions are pinned to minor version of the AKS version, Istio add-on having its sidecar inside user's pod allows for minor version and upgrades to be explicitly controlled by the user today, thus complicating the permutations to be considered for LTS. 
 LTS scope for Istio version(s) when deployed on top of AKS LTS versions is currently being finalized and will be announced in a future update
 - **KMS V2 support for LTS:** Enhanced Key Management Service V2 support for AKS LTS tentatively CY2026H1, providing improved encryption key management capabilities for enterprise security requirements
+
 
 **Enhanced AKS Upgrade Capabilities (coming soon for both standard AKS and LTS Support Plan):**
 - **Agent pool Blue-Green upgrades:** Node pool-level blue-green upgrade strategy that enables workload validation batch by batch, with the ability to rollback newly created green nodes within a configurable soak period
