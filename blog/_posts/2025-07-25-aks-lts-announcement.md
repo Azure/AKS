@@ -92,7 +92,9 @@ Throughout the support lifecycle, AKS LTS versions receive:
 - Compatibility maintenance for Azure service integrations (not new feature additions)
 - Ecosystem compatibility updates to maintain existing functionality (not new capabilities)
 
-**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab. Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-get-upgrades) CLI command or the [GET upgradeProfiles API](https://learn.microsoft.com/rest/api/aks/managed-clusters/get-upgrade-profile?view=rest-aks-2025-05-01&tabs=HTTP) (which maps to Microsoft.ContainerService/managedClusters/upgradeProfiles/read permission) to view available LTS versions for your clusters.
+**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab. 
+Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-get-upgrades) CLI command or the [GET upgradeProfiles API](https://learn.microsoft.com/rest/api/aks/managed-clusters/get-upgrade-profile?view=rest-aks-2025-05-01&tabs=HTTP) 
+(which maps to Microsoft.ContainerService/managedClusters/upgradeProfiles/read permission) to view available LTS versions for your clusters.
 These tools provide complete visibility into your LTS support lifecycle and upcoming releases.
 
 ## Creating AKS LTS Clusters
@@ -197,7 +199,8 @@ AKS LTS represents our commitment to supporting enterprises at every stage of th
 
 Over the coming months, we'll be expanding AKS LTS capabilities based on your feedback, including:
 
-- **Istio support for LTS:** Unlike other add-ons whose minor versions are pinned to minor version of the AKS version, Istio add-on having its sidecar inside user's pod allows for minor version and upgrades to be explicitly controlled by the user today, thus complicating the permutations to be considered for LTS. LTS scope for Istio version(s) when deployed on top of AKS LTS versions is currently being finalized and will be announced in a future update
+- **Istio support for LTS:** Unlike other add-ons whose minor versions are pinned to minor version of the AKS version, Istio add-on having its sidecar inside user's pod allows for minor version and upgrades to be explicitly controlled by the user today, thus complicating the permutations to be considered for LTS. 
+LTS scope for Istio version(s) when deployed on top of AKS LTS versions is currently being finalized and will be announced in a future update
 - **KMS V2 support for LTS:** Enhanced Key Management Service V2 support for AKS LTS tentatively CY2026H1, providing improved encryption key management capabilities for enterprise security requirements
 
 **Enhanced AKS Upgrade Capabilities (coming soon for both standard AKS and LTS Support Plan):**
