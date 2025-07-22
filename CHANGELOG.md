@@ -5,15 +5,22 @@
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250720`.
 
 ### Announcements
-
+* Azure CNI Overlay with AGIC is now Generally Available. Customers can now use AGIC with Azure CNI Overlay without registering the AppGatewayWithOverlayPreview feature flag.
+* The asm-1-23 revision for the Istio add-on has been deprecated. Migrate to a supported revision following the [AKS Istio upgrade guide](https://learn.microsoft.com/en-us/azure/aks/istio-upgrade).
+* AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS).
+* [Static Block allocation mode](https://learn.microsoft.com/en-us/azure/aks/configure-azure-cni-static-block-allocation) for Azure CNI Networking is now Generally Available.
 
 ### Release notes
-* Preview Features
-
-
 * Features
   * Application routing add-on now supports configuration of SSL passthrough, custom logging format, and load balancer IP ranges. Review the [configuration of NGINX ingress controller documentation](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#configuration-of-the-nginx-ingress-controller) for more information.
+  * SecurityPatch Node OS upgrade channel is now supported for all network isolated clusters.
+  * API server VNet integration is now Generally Available (GA) in the switzerlandnorth region.
+  * Windows Server 2025 is now supported on AKS.
 
+* Preview Features
+  * [Encryption in transit](https://learn.microsoft.com/en-us/azure/storage/files/encryption-in-transit-for-nfs-shares?tabs=azure-portal%2CUbuntu) is now available for the Azure File CSI driver for AKS version 1.33.
+  * Node Autoprovisioning metrics are now available through Managed Prometheus.
+ 
 * Bug Fixes
 
 
@@ -22,8 +29,15 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Application routing component Pods are now annotated with kubernetes.azure.com/set-kube-service-host-fqdn to automatically have the [API server's domain name injected into the pod](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#required-outbound-network-rules-and-fqdns-for-aks-clusters) instead of the cluster IP, to enable communication to the API server. This is useful in cases where the cluster egress is via a layer 7 firewall.
 
 * Component Updates
-  * App monitoring addon image updated to 1.0.0-beta.7. Container port 4000 is now exposed to scrape Prometheus metrics.
-  * Updated application routing operator to [v0.2.7](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.6) for all supported Kubernetes versions.
+  * App monitoring addon image is updated to 1.0.0-beta.7. Container port 4000 is now exposed to scrape Prometheus metrics.
+  * Application routing operator is updated to [v0.2.7](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.6) for all supported Kubernetes versions.
+  * Npm image version is updated to [v1.6.29](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.29).
+  * Azure Disk CSI driver versions are upgraded to to [v1.31.11](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.11), [v1.32.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.8), [v1.33.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.2) on AKS versions 1.31, 1.32, 1.33 respectively.
+  * ExtensionManager addon is updated to v1.27.0.
+  * Retina image is updated to [v0.0.36](https://github.com/microsoft/retina/releases/tag/v0.0.36) on Linux and Windows.
+  * Retina enterprise and operator images are updated to [v0.1.11](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.11).
+  * Managed Promethues addon is updated to the latest release [06-19-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-19-2025).
+  * Microsoft Defender addon image is updated to version 20250706.2.
 
 
 ## Release 2025-06-17
