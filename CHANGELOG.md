@@ -24,6 +24,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Kubernetes Event-Driven Autoscaling (KEDA) is now supported in LTS.
 
 * Preview Features
+  * [Azure Virtual Network Verifier](https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Nodepools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
   * [Encryption in transit](https://learn.microsoft.com/en-us/azure/storage/files/encryption-in-transit-for-nfs-shares?tabs=azure-portal%2CUbuntu) is now available for the Azure File CSI driver for AKS version 1.33.
   * Node Autoprovisioning metrics are now available through Managed Prometheus.
   * Blue-green nodepool upgrade is now available in Preview in the v20250702preview API.
