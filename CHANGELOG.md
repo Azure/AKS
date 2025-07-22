@@ -10,13 +10,20 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 ### Release notes
 * Preview Features
 
+
 * Features
+  * Application routing add-on now supports configuration of SSL passthrough, custom logging format, and load balancer IP ranges. Review the [configuration of NGINX ingress controller documentation](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#configuration-of-the-nginx-ingress-controller) for more information.
 
 * Bug Fixes
 
+
 * Behavior Changes
+  * The delete-machines API will only delete machines from the system nodepool if the system addon PDBs are respected.
+  * Application routing component Pods are now annotated with kubernetes.azure.com/set-kube-service-host-fqdn to automatically have the [API server's domain name injected into the pod](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#required-outbound-network-rules-and-fqdns-for-aks-clusters) instead of the cluster IP, to enable communication to the API server. This is useful in cases where the cluster egress is via a layer 7 firewall.
 
 * Component Updates
+  * App monitoring addon image updated to 1.0.0-beta.7. Container port 4000 is now exposed to scrape Prometheus metrics.
+  * Updated application routing operator to [v0.2.7](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.6) for all supported Kubernetes versions.
 
 
 ## Release 2025-06-17
