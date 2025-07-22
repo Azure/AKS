@@ -12,14 +12,15 @@ categories:
 
 ## Background
 
-As more intelligent applications are deployed and hosted on Azure Kubernetes Service (AKS), network performance becomes increasingly critical to ensuring a seamless user experience. For example, an chatbot server running in an AKS cluster need handle high volumes of network traffic with low latency, while retrieving contextual data — such as conversation history and user feedback from a database or cache, and interacting with a LLM (Large Language Model) endpoint through prompt requests and streamed inference responses.
+As more intelligent applications are deployed and hosted on Azure Kubernetes Service (AKS), network performance becomes increasingly critical to ensuring a seamless user experience. For example, a chatbot server running in an AKS cluster needs to handle high volumes of network traffic with low latency, while retrieving contextual data — such as conversation history and user feedback from a database or cache, and interacting with a LLM (Large Language Model) endpoint through prompt requests and streamed inference responses.
 
-In this blog post, we share how we conducted simple benchmark to evaluate and compare network performance across various VM (Virtual Machine) SKU and series. We also provide recommendations on key kernel settings to help you explore the trade-offs between network performance and resource usage.
+In this blog post, we share how we conducted simple benchmarks to evaluate and compare network performance across various VM (Virtual Machine) SKU and series. We also provide recommendations on key kernel settings to help you explore the trade-offs between network performance and resource usage.
 
 ## Benchmark
-Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on AKS. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same AKS cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usge.
 
-In our experiment, iperf3 was run as a container within Kubernetes pods on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernenls. During each test, we also monitor cpu and memory usage of both client and server containers to make sure iperf3 is not resource constrained.
+Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on AKS. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same AKS cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usage.
+
+In our experiment, iperf3 was run as a container within Kubernetes pods on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernels. During each test, we also monitor CPU and memory usage of both client and server containers to make sure iperf3 is not resource constrained.
 
 ## Hardware Matters Most
 
@@ -28,7 +29,6 @@ We compared the test results of Azure's older generation series [Dsv3](https://l
 Up to 35% higher throughput for Azure Dsv6 compared to Dsv3 and AWS M7i when trying to maximize network bandwidth usage.
 
 ![image](/assets/images/network-perf-aks/sku_throughput.png)
-
 
 Up to 3x~6x lower RTT for Azure Dsv6 compared to Dsv3 and AWS M7i when tests are limited to the same network badnwdith usage.
 
@@ -49,15 +49,16 @@ We realized there is no way to fully abstract hardware from the application — 
 ![image](/assets/images/network-perf-aks/sku_cpu_usage.png)
 
 The MTU on Azure Dsv6-series VMs is not set to 9000 by default. You can manually adjust the MTU for a specific network interface using the following Linux command:
+
 ```bash
 ip link set $device mtu 9000
 ```
-To enable Jumbo Frames across all nodes in an AKS cluster, you can deploy a [example daemonset](https://github.com/Azure/telescope/blob/c217665271666131cc4c78ee391db967a808fa48/modules/kustomize/mtu/overlays/azure/patch.yaml#L16). In addition, you can optimize MTU settings dynamically using [Path MTU Discovery](https://learn.microsoft.com/en-us/azure/virtual-network/how-to-virtual-machine-mtu?tabs=linux#path-mtu-discovery)
 
+To enable Jumbo Frames across all nodes in an AKS cluster, you can deploy a [example daemonset](https://github.com/Azure/telescope/blob/c217665271666131cc4c78ee391db967a808fa48/modules/kustomize/mtu/overlays/azure/patch.yaml#L16). In addition, you can optimize MTU settings dynamically using [Path MTU Discovery](https://learn.microsoft.com/en-us/azure/virtual-network/how-to-virtual-machine-mtu?tabs=linux#path-mtu-discovery)
 
 ## Kernel Settings Tuning
 
-If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term option due to capacity constraints or compatibility concerns, kernel-level tuning remains a practical path to improving network performance. In our testing, we explored several tuning parameters and found that adjusting the ring buffer size on the network interface card (NIC) had the most significant impact. As shown below, increasing the NIC receive buffer size from the default 1024 bytes to 2048 bytes on a Dsv3 VM resulted in a noticeable improvement in network throughput. 
+If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term option due to capacity constraints or compatibility concerns, kernel-level tuning remains a practical path to improving network performance. In our testing, we explored several tuning parameters and found that adjusting the ring buffer size on the network interface card (NIC) had the most significant impact. As shown below, increasing the NIC receive buffer size from the default 1024 bytes to 2048 bytes on a Dsv3 VM resulted in a noticeable improvement in network throughput.
 
 ![image](/assets/images/network-perf-aks/buffer_throughput.png)
 
@@ -68,10 +69,13 @@ We also observed reductions in both TCP retransmission rate and round-trip time 
 ![image](/assets/images/network-perf-aks/buffer_rtt.png)
 
 TCP retransmissions often occur when the sender or receiver buffer is too small to handle a surge of packets, resulting in packet drops. For example, if the NIC is `enP28334s1` (typical name for an [S-IOV network interface](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-single-root-i-o-virtualization--sr-iov-)), you can check how many packets were dropped due to ring buffer overflow with:
+
 ```bash
 ethtool -S enP28334s1 | grep rx_out_of_buffer
 ```
+
 If `rx_out_of_buffer` shows a non-zero value, it indicates that a ring buffer overflow has occurred. To increase the ring buffer size (e.g., to 2048 packets), use:
+
 ```bash
 sudo ethtool -G enP28334s1 rx 2048
 ```
