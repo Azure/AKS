@@ -48,7 +48,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Azure Disk CSI driver versions are upgraded to to [v1.31.11](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.11), [v1.32.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.8), [v1.33.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.2) on AKS versions 1.31, 1.32, 1.33 respectively.
   * Cloud Controller Manager has been upgraded to [v1.33.1](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.33.1), [v1.32.6](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.32.6), [v1.31.7](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.31.7) and [v1.30.13](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.30.13).
   * ExtensionManager addon is updated to v1.27.0. Other updates:
-    * ExtensionManager now honors AKS maintanance windows for autoupgrades of Kubernetes extension.
+    * ExtensionManager now honors AKS maintenance windows for autoupgrades of Kubernetes extension.
   * Retina Basic image is updated to [v0.0.36](https://github.com/microsoft/retina/releases/tag/v0.0.36) on Linux and Windows.
   * Retina Enterprise has been updated to [v0.1.11](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.11) to resolve several CVEs.
   * Managed Prometheus addon is updated to the latest release [06-19-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-19-2025).
