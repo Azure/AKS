@@ -32,10 +32,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Fixed an issue with image pull secrets settings when embargo CVE toggle is enabled.
 
 * Behavior Changes
-  * The delete-machines API will only delete machines from the system nodepool if the system addon PDBs are respected.
+  * The [delete-machines API](https://learn.microsoft.com/azure/aks/delete-node-pool?tabs=azure-cli) will only delete machines from the system nodepool if the system addon PDBs are respected.
   * Application routing component Pods are now annotated with kubernetes.azure.com/set-kube-service-host-fqdn to automatically have the [API server's domain name injected into the pod](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#required-outbound-network-rules-and-fqdns-for-aks-clusters) instead of the cluster IP, to enable communication to the API server. This is useful in cases where the cluster egress is via a layer 7 firewall.
-  * Container Insights agents now have a memory limit of 750Mi (down from 4Gi).
-  * Advanced Container Networking Services (ACNS) pods now run with priorityClassName: system-node-critical, preventing eviction under node resource pressure and improving cluster security posture.
+  * [Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) agents now have a memory limit of 750Mi (down from 4Gi).
+  * [Advanced Container Networking Services (ACNS)](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview?tabs=cilium) pods now run with priorityClassName: system-node-critical, preventing eviction under node resource pressure and improving cluster security posture.
 
 * Component Updates
   * Windows node images  
