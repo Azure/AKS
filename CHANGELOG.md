@@ -11,14 +11,14 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS).
 * [Static Block allocation mode](https://learn.microsoft.com/en-us/azure/aks/configure-azure-cni-static-block-allocation) for Azure CNI Networking is now Generally Available.
 * Virtual Machines (VMs) agent pools are now enabled by default.
-* The [`WASI Node Pool`](https://learn.microsoft.com/azure/aks/wasi-node-pool) feature has been deprecated with removal of the WasmNodePoolPreview feature flag.
+* The [WASI Node Pool](https://learn.microsoft.com/azure/aks/wasi-node-pool) feature has been deprecated with removal of the WasmNodePoolPreview feature flag.
 
 ### Release notes
 * Features
   * Application routing add-on now supports configuration of SSL passthrough, custom logging format, and load balancer IP ranges. Review the [configuration of NGINX ingress controller documentation](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#configuration-of-the-nginx-ingress-controller) for more information.
   * SecurityPatch Node OS upgrade channel is now supported for all network isolated clusters.
   * API server VNet integration is now Generally Available (GA) in additional regoins: East Asia, Southeast Asia, Switzerland North, Brazil South, Central India, Germany West Central, and more GA regions. For the complete list of supported regions and any capacity limitations, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration).
-  * [`Windows Server 2025`](https://learn.microsoft.com/azure/aks/windows-node-pools) support is now Generally Available for AKS clusters. Containerd 2.0 will be default with Windows Server 2025.
+  * [Windows Server 2025](https://learn.microsoft.com/azure/aks/windows-node-pools) support is now Generally Available for AKS clusters. Containerd 2.0 will be default with Windows Server 2025.
   * [Kubelet Serving Certificate Rotation (KSCR)](aka.ms/aks/kubelet-serving-certificate-rotation) is now enabled by default in further regions. Existing node pools will have KSCR enabled by default when they perform their first upgrade to any Kubernetes version 1.27 or greater, while new node pools on Kubernetes version 1.27 or greater will have KSCR enabled by default.
   * Added support for the service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation for Istio ingress gateways.
   * Kubernetes Event-Driven Autoscaling (KEDA) is now supported in LTS.
@@ -46,7 +46,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Application routing operator is updated to [v0.2.7](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.6) for all supported Kubernetes versions.
   * Azure Network Policy Manager (NPM) image version is updated to [v1.6.29](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.29) to resolve iptables-legacy command issues and bump Ubuntu to 24.04 with CVE fixes.
   * Azure Disk CSI driver versions are upgraded to to [v1.31.11](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.11), [v1.32.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.8), [v1.33.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.2) on AKS versions 1.31, 1.32, 1.33 respectively.
-  * Cloud Controller Manager has been upgraded to [`v1.33.1`](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.33.1), [`v1.32.6`](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.32.6), [`v1.31.7`](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.31.7) and [`v1.30.13`](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.30.13).
+  * Cloud Controller Manager has been upgraded to [`v1.33.1`](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.33.1), [`v1.32.6`](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.32.6), [v1.31.7](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.31.7) and [`v1.30.13`](https://github.com/kubernetes/cloud-provider-azure/releases/tag/v1.30.13).
   * ExtensionManager addon is updated to v1.27.0. Other updates:
     * ExtensionManager now honors AKS maintanance windows for autoupgrades of Kubernetes extension.
   * Retina Basic image is updated to [v0.0.36](https://github.com/microsoft/retina/releases/tag/v0.0.36) on Linux and Windows.
@@ -60,12 +60,12 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * AgentBaker version is updated to v0.20250715.0.
   * Bumped Azure Cloud Controller Manager to [v1.33.1](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.33.1), [v1.32.6](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.32.6), [v1.31.7](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.7), and [v1.30.13](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.13).
   * Tigera operator is updated from v.1.38.0 to [v1.38.2](https://github.com/tigera/operator/releases/tag/v1.38.2) to support Calico [v3.30.1](https://github.com/projectcalico/calico/blob/release-v3.30/release-notes/v3.30.1-release-notes.md).
-  * Calico has been upgraded with the [`v3.30.2`](https://github.com/projectcalico/calico/blob/release-v3.30/release-notes/v3.30.2-release-notes.md).
+  * Calico has been upgraded with the [v3.30.2](https://github.com/projectcalico/calico/blob/release-v3.30/release-notes/v3.30.2-release-notes.md).
   * Vertical Pod Autoscaler (VPA) addon images are now built with [Dalec](https://github.com/Azure/dalec) starting from AKS version 1.27.
-  * Cluster Autoscaler is upgraded to [`v1.33.0`](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.0) with Dalec-built image.
-  * Azure Policy Addon is upgraded to [`v1.13.0`](https://github.com/Azure/azure-policy/releases) with enhanced EUDB request routing.
-  * CSI Secrets Store add-on is upgraded to [`v1.5.1`](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1)
-  * Workload Identity image is updated to [`v1.5.1`](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
+  * Cluster Autoscaler is upgraded to [v1.33.0](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.0) with Dalec-built image.
+  * Azure Policy Addon is upgraded to [v1.13.0](https://github.com/Azure/azure-policy/releases) with enhanced EUDB request routing.
+  * CSI Secrets Store add-on is upgraded to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1)
+  * Workload Identity image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
     * Istio service mesh add-on now supports the following annotations: service.beta.kubernetes.io/azure-allowed-ip-ranges, service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset, service.beta.kubernetes.io/azure-pip-ip-tags.
 
