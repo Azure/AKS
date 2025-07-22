@@ -22,6 +22,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * [Kubelet Serving Certificate Rotation (KSCR)](aka.ms/aks/kubelet-serving-certificate-rotation) is now enabled by default in further regions. Existing node pools will have KSCR enabled by default when they perform their first upgrade to any Kubernetes version 1.27 or greater, while new node pools on Kubernetes version 1.27 or greater will have KSCR enabled by default.
   * Added support for the service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation for Istio ingress gateways.
   * Kubernetes Event-Driven Autoscaling (KEDA) is now supported in LTS.
+  * [Component Version API](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster) is available for retrieving the exact versions of all AKS components in your cluster. This gives you real-time visibility into AKS components and add-ons, helping with proactive upgrade planning. Comparing component versions in your current version (cluster context) with potential K8s minor version updates to help identify possible breaking changes. CLI extension 18.0.0b19+ is required.
 
 * Preview Features
   * [Azure Virtual Network Verifier](https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Nodepools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
@@ -69,6 +70,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Workload Identity image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
     * Istio service mesh add-on now supports the following annotations: service.beta.kubernetes.io/azure-allowed-ip-ranges, service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset, service.beta.kubernetes.io/azure-pip-ip-tags.
+  * On Windows GPU-enabled node pools, the default NVIDIA CUDA driver version has been bumped to v560.94 and GRID driver version has been bumped to v553.62.
 
 
 
