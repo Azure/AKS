@@ -61,9 +61,14 @@ $base0f: #00f769;
 }
 
 blockquote {
+  p {
+    margin: 0 !important;
+  }
   background-color: darken(#663399, 15%) !important;
   border-left: 0.5em solid $primary-color !important;
   font-style: normal !important;
   border-radius: 0.25em !important;
   vertical-align: middle !important;
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
 }
