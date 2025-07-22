@@ -62,11 +62,19 @@ If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term o
 ![image](/assets/images/network-perf-aks/buffer_throughput.png)
 
 We also observed reductions in both TCP retransmission rate and round-trip time (RTT) under a combined bandwidth load of 15 Gbps. The benefit was especially pronounced when traffic was split across three parallel TCP streams, each operating at 5 Gbps.
-![image](/assets/images/network-perf-aks/buffer_rtt.png) 
-
-TCP retransmissions often occur when the sender or receiver buffer is too small to handle surge of packets, resulting in packet drops. This is commonly indicated by errors like rx_no_buffer, which signal that the network interface card (NIC) couldn't allocate enough buffer space for incoming packets. To improve performance on existing VMs like Dsv3, adjusting the NIC ring buffer settings can be an effective tuning approach.
 
 ![image](/assets/images/network-perf-aks/buffer_retran.png)
+
+![image](/assets/images/network-perf-aks/buffer_rtt.png)
+
+TCP retransmissions often occur when the sender or receiver buffer is too small to handle a surge of packets, resulting in packet drops. For example, if the NIC is `enP28334s1` (typical name for an [S-IOV network interface](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-single-root-i-o-virtualization--sr-iov-)), you can check how many packets were dropped due to ring buffer overflow with:
+```bash
+ethtool -S enP28334s1 | grep rx_out_of_buffer
+```
+If `rx_out_of_buffer` shows a non-zero value, it indicates that a ring buffer overflow has occurred. To increase the ring buffer size (e.g., to 2048 packets), use:
+```bash
+sudo ethtool -G enP28334s1 rx 2048
+```
 
 It’s important to note that increasing the NIC ring buffer size has memory usage implications. Allocating larger buffers means the operating system reserves more memory specifically for handling network traffic, which reduces the amount of memory available for user-space applications. For example, doubling the receive buffer size from 1024 to 2048 bytes per descriptor across multiple queues and interfaces can lead to a non-trivial increase in kernel memory usage — especially on systems with high network concurrency or multiple high-throughput NICs. While this tradeoff can significantly improve network performance, especially under high load, it should be balanced against the memory demands of the application workload running on the same VM.
 
