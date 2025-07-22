@@ -38,6 +38,14 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Application routing add-on now supports configuration of SSL passthrough, custom logging format, and load balancer IP ranges. Review the [configuration of NGINX ingress controller documentation](https://learn.microsoft.com/azure/aks/app-routing-nginx-configuration?tabs=azurecli#configuration-of-the-nginx-ingress-controller) for more information.
 
 * Component Updates
+  * Windows node images  
+    * Server 2019 Gen1 – [`17763.7558.250714`](vhd-notes/AKSWindows/2019/17763.7558.250714.txt).
+    * Server 2022 Gen1/Gen2 – [`20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt)
+    * Server 23H2 Gen1/Gen2 – [`25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt)
+  * AKS Azure Linux v2 image has been updated to [202507.15.0](vhd-notes/AzureLinux/202507.15.0.txt).
+  * AKS Azure Linux v3 image has been updated to [202507.15.0](vhd-notes/AzureLinuxv3/202507.15.0.txt).
+  * AKS Ubuntu 22.04 node image has been updated to [202507.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.15.0.txt).
+  * AKS Ubuntu 24.04 node image has been updated to [202507.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.15.0.txt).
   * App monitoring addon image is updated to 1.0.0-beta.7 to expose container port 4000 for scraping Prometheus metrics.
   * Application routing operator is updated to [v0.2.7](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.6) for all supported Kubernetes versions.
   * Azure Network Policy Manager (NPM) image version is updated to [v1.6.29](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.29) to resolve iptables-legacy command issues and bump Ubuntu to 24.04 with CVE fixes.
