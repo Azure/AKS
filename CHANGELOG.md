@@ -22,7 +22,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Preview Features
   * [Azure Virtual Network Verifier](https://learn.microsoft.com/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Node pools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
   * [Encryption in transit](https://learn.microsoft.com/azure/aks/azure-files-csi#encryption-in-transit-for-nfs-file-shares-preview) is now available for the Azure File CSI driver, starting from AKS version 1.33.
-  * Node auto provisioning metrics are now available through Managed Prometheus. To learn more, visit our [node auto provisioning documentation](https://learn.microsoft.com/azure/aks/node-autoprovision#node-auto-provisioning-metrics)
+  * [Node auto provisioning metrics](https://learn.microsoft.com/azure/aks/monitor-aks-reference#minimal-ingestion-profile-for-control-plane-metrics-in-managed-prometheus) are now available through [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus). To learn more, visit our [node auto provisioning documentation](https://learn.microsoft.com/azure/aks/node-autoprovision#node-auto-provisioning-metrics)
   * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now available as preview.
   * [Component Version API](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version) is available for retrieving the exact versions of all AKS components in your cluster. This gives you real-time visibility into AKS components and add-ons, helping with proactive upgrade planning. Comparing component versions in your current version (cluster context) with potential K8s minor version updates to help identify possible breaking changes. CLI extension 18.0.0b19+ is required.
  
@@ -34,7 +34,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * AKS will now reject invalid OsSku enums during cluster creation, node pool creation, and node pool update. Previously AKS would default to `Ubuntu`. Unspecified OsSku with OsType `Linux` will still default to `Ubuntu`. For more information on supported OsSku options, see [Azure CLI documentation](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-create).
   * Application routing component Pods are now annotated with kubernetes.azure.com/set-kube-service-host-fqdn to automatically have the [API server's domain name injected into the pod](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#required-outbound-network-rules-and-fqdns-for-aks-clusters) instead of the cluster IP, to enable communication to the API server. This is useful in cases where the cluster egress is via a layer 7 firewall.
   * [Container Insights](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) agents now have a memory limit of 750Mi (down from 4Gi).
-  * [Advanced Container Networking Services (ACNS)](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview?tabs=cilium) pods now run with priorityClassName: system-node-critical, preventing eviction under node resource pressure and improving cluster security posture.
+  * [Advanced Container Networking Services (ACNS)](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview?tabs=cilium) pods now run with priorityClassName: system-node-critical, preventing eviction under node resource pressure and improving cluster security posture.
 
 * Component Updates
   * Windows node images  
@@ -70,7 +70,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Workload Identity image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
     * Istio service mesh add-on now supports the following annotations: service.beta.kubernetes.io/azure-allowed-ip-ranges, service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset, service.beta.kubernetes.io/azure-pip-ip-tags.
-    * Added support for the [service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations) for Istio ingress gateways.
+    * Added support for the [service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations) for Istio ingress gateways.
   * On Windows GPU-enabled node pools, the default NVIDIA CUDA driver version has been bumped to v560.94 and GRID driver version has been bumped to v553.62.
 
 ## Release 2025-06-17
