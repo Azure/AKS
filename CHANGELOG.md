@@ -45,7 +45,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * AKS Azure Linux v3 image has been updated to [202507.15.0](vhd-notes/AzureLinuxv3/202507.15.0.txt).
   * AKS Ubuntu 22.04 node image has been updated to [202507.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.15.0.txt).
   * AKS Ubuntu 24.04 node image has been updated to [202507.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.15.0.txt).
-  * App monitoring addon image is updated to 1.0.0-beta.7 to expose container port 4000 for scraping Prometheus metrics.
+  * Application Insights addon image is updated to [1.0.0-beta.7](https://github.com/microsoft/Docker-Provider/releases/tag/appmonitoring-1.0.0-beta.7) to expose container port 4000 for scraping Prometheus metrics.
   * Application routing operator is updated to [v0.2.7](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.6) for all supported Kubernetes versions.
   * Azure Network Policy Manager (NPM) image version is updated to [v1.6.29](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.29) to resolve iptables-legacy command issues and bump Ubuntu to 24.04 with CVE fixes.
   * Azure Disk CSI driver versions are upgraded to [v1.31.11](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.31.11), [v1.32.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.8), [v1.33.2](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.2) on AKS versions 1.31, 1.32, 1.33 respectively.
