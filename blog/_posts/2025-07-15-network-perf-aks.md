@@ -36,7 +36,7 @@ Up to 3x~6x lower RTT for Azure Dsv6 compared to Dsv3 and AWS M7i when tests are
 
 TCP retransmissions remained consistently at 0% on Azure Dsv6, matching AWS M7i while significantly outperforming Azure Dsv3.
 
-![image](/assets/images/network-perf-aks/sku_retran.png)
+![image](/assets/images/network-perf-aks/sku_retransmits.png)
 
 The primary reasons for the significant leap in network performance on Dsv6 is because the next-generation network interface [Microsoft Azure Network Adaptor (MANA)](https://learn.microsoft.com/en-us/azure/virtual-network/accelerated-networking-mana-overview) support [Jumbo Frame](https://en.wikipedia.org/wiki/Jumbo_frame) and [MTU 9000](https://learn.microsoft.com/en-us/azure/virtual-network/how-to-virtual-machine-mtu?tabs=linux).
 
@@ -64,7 +64,7 @@ If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term o
 
 We also observed reductions in both TCP retransmission rate and round-trip time (RTT) under a combined bandwidth load of 15 Gbps. The benefit was especially pronounced when traffic was split across three parallel TCP streams, each operating at 5 Gbps.
 
-![image](/assets/images/network-perf-aks/buffer_retran.png)
+![image](/assets/images/network-perf-aks/buffer_retransmits.png)
 
 ![image](/assets/images/network-perf-aks/buffer_rtt.png)
 
