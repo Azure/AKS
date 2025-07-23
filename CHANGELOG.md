@@ -70,7 +70,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Workload Identity image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
     * Istio service mesh add-on now supports the following annotations: service.beta.kubernetes.io/azure-allowed-ip-ranges, service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset, service.beta.kubernetes.io/azure-pip-ip-tags.
-    * Added support for the service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation for Istio ingress gateways.
+    * Added support for the [service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation](https://learn.microsoft.com/en-us/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations) for Istio ingress gateways.
   * On Windows GPU-enabled node pools, the default NVIDIA CUDA driver version has been bumped to v560.94 and GRID driver version has been bumped to v553.62.
 
 ## Release 2025-06-17
