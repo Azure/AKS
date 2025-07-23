@@ -22,7 +22,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Preview Features
   * [Azure Virtual Network Verifier](https://learn.microsoft.com/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Node pools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
   * [Encryption in transit](https://learn.microsoft.com/azure/aks/azure-files-csi#encryption-in-transit-for-nfs-file-shares-preview) is now available for the Azure File CSI driver, starting from AKS version 1.33.
-  * Node Autoprovisioning metrics are now available through Managed Prometheus.
+  * Node auto provisioning metrics are now available through Managed Prometheus. To learn more, visit our [node auto provisioning documentation](https://learn.microsoft.com/azure/aks/node-autoprovision#node-auto-provisioning-metrics)
   * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now available as preview.
   * [Component Version API](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version) is available for retrieving the exact versions of all AKS components in your cluster. This gives you real-time visibility into AKS components and add-ons, helping with proactive upgrade planning. Comparing component versions in your current version (cluster context) with potential K8s minor version updates to help identify possible breaking changes. CLI extension 18.0.0b19+ is required.
  
