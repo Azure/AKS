@@ -6,6 +6,8 @@ author: Kaarthis
 categories: general
 ---
 
+<!-- markdownlint-disable MD043 -->
+
 ## Introduction
 
 In London at KubeCon EU 2025, AKS announced our expansion of what AKS Long Term Support (LTS) includes. Today, we're sharing more details about this offering that addresses one of the most critical challenges enterprises face when running Kubernetes at scale.
@@ -207,7 +209,7 @@ Transitioning from LTS to community support requires more planning, especially i
 
 **Best Practice:** Consider your long-term strategy when initially choosing LTS to avoid complex transitions later.
 
-## Looking Ahead
+**Looking Ahead**
 
 AKS LTS represents our commitment to supporting enterprises at every stage of their Kubernetes journey. While LTS focuses on stability, we continue to innovate rapidly in standard AKS, ensuring you have access to the latest Kubernetes capabilities when you need them.
 
