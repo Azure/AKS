@@ -45,17 +45,20 @@ AKS LTS provides all the same capabilities and features as community-supported A
 
 ## Enterprise Benefits at a Glance
 
-**Reduced Operational Overhead**
+### Reduced Operational Overhead
+
 - Fewer required upgrades mean less time spent on cluster maintenance
 - Predictable planning cycles aligned with enterprise budgeting and resource allocation
 - Reduced testing and validation overhead for workload compatibility
 
-**Enhanced Stability**
+### Enhanced Stability
+
 - Production-tested Kubernetes versions with proven track record
 - Minimized risk of introducing breaking changes or regressions
 - Focus on reliability over cutting-edge features
 
-**Compliance and Governance**
+### Compliance and Governance
+
 - Extended support timelines that meet enterprise compliance requirements
 - Clear end-of-life planning with advance notice for migration planning
 - Integration with Azure Policy and governance frameworks
@@ -77,6 +80,7 @@ For the current list of unsupported add-ons and features, please refer to our [*
 This holistic approach ensures that every layer of your full Kubernetes stack remains supported, secure, and stable throughout the entire LTS lifecycle.
 
 **Support Timeline Example:**
+
 - AKS LTS 1.28 (GA: Nov 2023): Supported until Feb 2026
 - AKS LTS 1.29 (GA: Mar 2024): Supported until Apr 2026
 - AKS LTS 1.30 (GA: Jul 2024): Supported until Jul 2026
@@ -87,13 +91,14 @@ For the most up-to-date information on LTS version support timelines, please ref
 **Add-on Versioning Policy:** AKS add-ons, components and extensions are pinned to specific versions that align with each Kubernetes release. This versioning policy remains consistent between community-supported AKS and AKS LTS—add-ons receive the same version pinning approach to ensure stability and compatibility throughout the support lifecycle.
 
 Throughout the support lifecycle, AKS LTS versions receive:
+
 - Security patches and vulnerability fixes
 - Fixes for critical bugs that impact stability or functionality
 - Compatibility maintenance for Azure service integrations (not new feature additions)
 - Ecosystem compatibility updates to maintain existing functionality (not new capabilities)
 
-**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab. 
-Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-get-upgrades) CLI command or the [GET upgradeProfiles API](https://learn.microsoft.com/rest/api/aks/managed-clusters/get-upgrade-profile?view=rest-aks-2025-05-01&tabs=HTTP) 
+**Stay Informed:** You can track LTS patch rollouts and new LTS version availability in real-time using the [AKS Release Tracker](https://releases.aks.azure.com/webpage/index.html) under the Kubernetes version tab.
+Additionally, you can use the [`az aks get-upgrades`](https://learn.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-get-upgrades) CLI command or the [GET upgradeProfiles API](https://learn.microsoft.com/rest/api/aks/managed-clusters/get-upgrade-profile?view=rest-aks-2025-05-01&tabs=HTTP)
 (which maps to Microsoft.ContainerService/managedClusters/upgradeProfiles/read permission) to view available LTS versions for your clusters.
 These tools provide complete visibility into your LTS support lifecycle and upcoming releases.
 
@@ -113,6 +118,7 @@ az aks create \
 ```
 
 You can also deploy AKS clusters with LTS support using:
+
 - **Azure Portal:** Select "Long Term Support" option during cluster creation
 - **ARM Templates/Bicep:** Specify the LTS tier in your infrastructure-as-code deployments
 - **Terraform:** Updated AKS provider supports LTS cluster configuration
@@ -129,12 +135,14 @@ This includes [coordinated breaking change management](https://learn.microsoft.c
 While AKS LTS provides extended stability, it's important to understand when each support option makes the most sense for your organization. Both community and LTS support have distinct advantages depending on your requirements.
 
 **When to Choose Community Support:**
+
 - **Cost optimization:** Community support comes at no additional cost beyond standard AKS pricing
 - **Latest features:** Immediate access to the newest Kubernetes capabilities and AKS innovations
 - **Development environments:** Non-critical workloads and test environments where ability to test newer functionality is a requirement
 - **Frequent upgrade tolerance:** Teams comfortable with 12-14 month upgrade cycles and regular maintenance windows. Workloads that can handle seamless restarts.
 
 **When to Choose LTS Support:**
+
 - **Less maintenance to workloads and clusters:** Production systems where reducing upgrade frequency and operational overhead is prioritized
 - **Compliance requirements:** Environments demanding extended support commitments for regulatory purposes
 - **Complex upgrade validation:** Organizations requiring extensive testing cycles before adopting new versions
@@ -156,11 +164,13 @@ Consider these factors when choosing your support model:
 Whether you're running the latest version or an older supported version, you can transition to LTS support coverage today by upgrading your cluster to the Premium tier.
 
 **Immediate Benefits:**
+
 - **No forced migrations:** Your existing clusters can adopt LTS support in-place
 - **Complete coverage:** Every supported version gets the same comprehensive LTS treatment
 - **Instant value:** Start benefiting from extended support timelines immediately
 
 When planning your LTS adoption, consider:
+
 - **Current cluster assessment:** Evaluate which of your existing clusters would benefit most from extended support
 - **Workload criticality:** Prioritize mission-critical production workloads for LTS coverage
 - **Compliance requirements:** Align LTS adoption with your organization's governance and compliance needs
@@ -200,12 +210,12 @@ AKS LTS represents our commitment to supporting enterprises at every stage of th
 
 Over the coming months, we'll be expanding AKS LTS capabilities based on your feedback, including:
 
-- **Istio support for LTS:** Unlike other add-ons whose minor versions are pinned to minor version of the AKS version, Istio add-on having its sidecar inside user's pod allows for minor version and upgrades to be explicitly controlled by the user today, thus complicating the permutations to be considered for LTS. 
+- **Istio support for LTS:** Unlike other add-ons whose minor versions are pinned to minor version of the AKS version, Istio add-on having its sidecar inside user's pod allows for minor version and upgrades to be explicitly controlled by the user today, thus complicating the permutations to be considered for LTS.
 LTS scope for Istio version(s) when deployed on top of AKS LTS versions is currently being finalized and will be announced in a future update
 - **KMS V2 support for LTS:** Enhanced Key Management Service V2 support for AKS LTS tentatively CY2026H1, providing improved encryption key management capabilities for enterprise security requirements
 
-
 **Enhanced AKS Upgrade Capabilities (coming soon for both standard AKS and LTS Support Plan):**
+
 - **Agent pool Blue-Green upgrades:** Node pool-level blue-green upgrade strategy that enables workload validation batch by batch, with the ability to rollback newly created green nodes within a configurable soak period
 - **Component Version API:** A dedicated API to surface breaking changes in AKS components, including AKS features, add-ons, extensions, and OS components, helping customers understand compatibility impacts before upgrading to the next AKS LTS version
 - **Enhanced Pod Disruption Budget management:** Simplified Pod Disruption Budget(PDB) creation and management capabilities to streamline PDB setup and reduce upgrade complexity
@@ -223,6 +233,7 @@ LTS scope for Istio version(s) when deployed on top of AKS LTS versions is curre
 **Azure Linux Container Host for AKS now supports AKS Long Term Support**, starting with Kubernetes v1.29. This completes our OS support matrix for LTS—while Ubuntu and Windows Server node pools have been available with LTS since launch, Azure Linux Container Host is now the final piece, providing comprehensive OS choice for enterprise LTS deployments.
 
 [Azure Linux Container Host for AKS](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux) brings several key advantages for LTS deployments:
+
 - **Secure supply chain:** Built and maintained by Microsoft with full supply chain security
 - **Secure by default:** Streamlined attack surface with only essential components and security-hardened configuration
 - **Optimized performance:** Purpose-built for Azure infrastructure with container workload optimizations
@@ -238,6 +249,7 @@ For detailed information about Azure Linux Container Host support for AKS LTS, s
 To reduce operational overhead and gain enterprise-grade stability, **create your first AKS LTS cluster** using our [comprehensive quickstart guide](https://aka.ms/aks/lts-quickstart).
 
 **Immediate Next Steps:**
+
 1. **Quick assessment:** Identify 1-2 production clusters that would benefit from 24-month support
 2. **Pilot deployment:** Create a test AKS LTS cluster to evaluate the experience
 3. **Plan transition:** Review our [migration documentation](https://aka.ms/aks/lts-migration) for production workloads
