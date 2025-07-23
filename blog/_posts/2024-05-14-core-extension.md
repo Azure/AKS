@@ -42,10 +42,10 @@ Core Kubernetes extensions are available in all regions across Azure Public clou
     ```bash
     az aks create/update --resource-group <group> --name <cluster> --enable/disable-<add-on>
     ```
-* **More native experience for core extensions graduated from [regular extensions](https://learn.microsoft.com/azure/aks/cluster-extensions#currently-available-extensions)**: Currently, we are working on upgrading Azure Backup, which is key functionality, to core extensions for better integrated experience in AKS. More core extensions will come in the future.
+* **More native experience for core extensions graduated from [standard extensions](https://learn.microsoft.com/azure/aks/cluster-extensions#currently-available-extensions)**: Currently, we are working on upgrading Azure Backup, which is key functionality, to core extensions for better integrated experience in AKS. More core extensions will come in the future.
 
     CLI commands:
-    * Create/delete a **regular** extension:
+    * Create/delete a **standard** extension:
     ```bash
     az k8s-extension create/delete --extension-type <type> --resource-group <group> --cluster-name <name> --cluster-type <clusterType> --name <extension name>
     ```
