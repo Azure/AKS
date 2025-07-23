@@ -136,12 +136,11 @@ kill $PID
 
 Create the [Kiali Custom Resource](https://kiali.io/docs/configuration/kialis.kiali.io/) with Azure Monitor integration:
 
-```shell
-# Deploy Kiali using the custom resource template
-
 >[!Note]
 >Kiali v2.13+ automatically detects and merges shared mesh config from AKS Istio addon
 
+```shell
+# Deploy Kiali using the custom resource template
 envsubst < kiali-cr.yaml | kubectl apply -f -
 ```
 
@@ -214,7 +213,7 @@ done
 
 #### Kiali Dashboard
 >[!Note]
-To learn about the full set of features supported by Kiali, see the [website](https://kiali.io/docs/features/)  
+>To learn about the full set of features supported by Kiali, see the [website](https://kiali.io/docs/features/)  
 
 Navigate to the Kiali dashboard URL to visualize different aspects of your service mesh.   
 
