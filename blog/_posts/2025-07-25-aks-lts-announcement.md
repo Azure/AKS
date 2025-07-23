@@ -11,8 +11,6 @@ From our conversations with customers, we consistently hear the same concerns: *
 
 On the flip side, customers also ask: *"If I don't upgrade frequently, how do I still ensure that I'm getting security fixes and ecosystem compatibility updates for my Kubernetes infrastructure?"* AKS LTS directly addresses these real-world challenges.
 
-# AKS Long Term Support: Enterprise Kubernetes Stability
-
 ## Why AKS LTS Matters
 
 Enterprise organizations running mission-critical workloads on Kubernetes have consistently told us they need more predictable, stable platform foundations. While the rapid innovation pace of Kubernetes is fantastic for driving new capabilities, it can create challenges for organizations that require:
