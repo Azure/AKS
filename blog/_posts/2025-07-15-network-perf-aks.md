@@ -58,7 +58,7 @@ To enable Jumbo Frames across all nodes in an AKS cluster, you can deploy a [exa
 
 ## Kernel Settings Tuning
 
-If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term option due to capacity constraints or compatibility concerns, kernel-level tuning remains a practical path to improving network performance. In our testing, we explored several tuning parameters and found that adjusting the ring buffer size on the network interface card (NIC) had the most significant impact. As shown below, increasing the NIC receive buffer size from the default 1024 bytes to 2048 bytes on a Dsv3 VM resulted in a noticeable improvement in network throughput.
+If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term option due to capacity constraints or compatibility concerns, kernel-level tuning remains a practical path to improving network performance. In our testing, we explored several tuning parameters and found that adjusting the ring buffer size on the network interface card (NIC) had the most significant impact. As shown below, increasing the NIC receive buffer size from the default 1024 to 2048 packets on a Dsv3 VM resulted in a noticeable improvement in network throughput.
 
 ![image](/assets/images/network-perf-aks/buffer_throughput.png)
 
@@ -68,7 +68,7 @@ We also observed reductions in both TCP retransmission rate and round-trip time 
 
 ![image](/assets/images/network-perf-aks/buffer_rtt.png)
 
-TCP retransmissions often occur when the sender or receiver buffer is too small to handle a surge of packets, resulting in packet drops. For example, if the NIC is `enP28334s1` (typical name for an [S-IOV network interface](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-single-root-i-o-virtualization--sr-iov-)), you can check how many packets were dropped due to ring buffer overflow with:
+TCP retransmissions often occur when the sender or receiver buffer is too small to handle a surge of packets, resulting in packet drops. For example, if the NIC name is `enP28334s1` (typical name for an [S-IOV network interface](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-single-root-i-o-virtualization--sr-iov-)), you can check how many packets were dropped due to ring buffer overflow with:
 
 ```bash
 ethtool -S enP28334s1 | grep rx_out_of_buffer
@@ -80,7 +80,7 @@ If `rx_out_of_buffer` shows a non-zero value, it indicates that a ring buffer ov
 sudo ethtool -G enP28334s1 rx 2048
 ```
 
-It’s important to note that increasing the NIC ring buffer size has memory usage implications. Allocating larger buffers means the operating system reserves more memory specifically for handling network traffic, which reduces the amount of memory available for user-space applications. For example, doubling the receive buffer size from 1024 to 2048 bytes per descriptor across multiple queues and interfaces can lead to a non-trivial increase in kernel memory usage — especially on systems with high network concurrency or multiple high-throughput NICs. While this tradeoff can significantly improve network performance, especially under high load, it should be balanced against the memory demands of the application workload running on the same VM.
+It’s important to note that increasing the NIC ring buffer size has memory usage implications. Allocating larger buffers means the operating system reserves more memory specifically for handling network traffic, which reduces the amount of memory available for user-space applications. For example, doubling the receive buffer size from 1024 to 2048 packets per descriptor across multiple queues and interfaces can lead to a non-trivial increase in kernel memory usage — especially on systems with high network concurrency or multiple high-throughput NICs. While this tradeoff can significantly improve network performance, especially under high load, it should be balanced against the memory demands of the application workload running on the same VM.
 
 ## Conclusion
 
