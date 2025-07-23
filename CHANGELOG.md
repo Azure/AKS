@@ -18,10 +18,9 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Kubelet Service Certificate Rotation will begin rollout to all remaining public regions, starting on 23 July 2025. Rollout is expected to be completed in 10 days. Note: This is an estimate and is subject to change. See [GitHub issue](https://github.com/Azure/AKS/issues/4986) for regional updates. Existing node pools will have kubelet serving certificate rotation enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. New node pools on kubernetes version 1.27 or greater will have kubelet serving certificate rotation enabled by default. For more information on kubelet serving certificate rotation and disablement, see https://aka.ms/aks/kubelet-serving-certificate-rotation.
   * [Kubernetes Event-Driven Autoscaling (KEDA)](https://learn.microsoft.com/azure/aks/keda-about) is now supported in LTS.
   * [Static Block allocation mode](https://learn.microsoft.com/azure/aks/configure-azure-cni-static-block-allocation) for Azure CNI Networking is now Generally Available.
-  * Azure CNI Overlay with AGIC is now Generally Available. Customers can now use AGIC with Azure CNI Overlay without registering the AppGatewayWithOverlayPreview feature flag.
 
 * Preview Features
-  * [Azure Virtual Network Verifier](https://learn.microsoft.com/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Nodepools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
+  * [Azure Virtual Network Verifier](https://learn.microsoft.com/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Node pools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
   * [Encryption in transit](https://learn.microsoft.com/azure/aks/azure-files-csi#encryption-in-transit-for-nfs-file-shares-preview) is now available for the Azure File CSI driver for AKS version 1.33.
   * Node Autoprovisioning metrics are now available through Managed Prometheus.
   * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now available as preview.
