@@ -6,10 +6,16 @@ author: Kaarthis
 categories: general
 ---
 
+## Introduction
+
 In London at KubeCon EU 2025, AKS announced our expansion of what AKS Long Term Support (LTS) includes. Today, we're sharing more details about this offering that addresses one of the most critical challenges enterprises face when running Kubernetes at scale.
+
 From our conversations with customers, we consistently hear the same concerns: *"How do I balance Kubernetes innovation with the stability my business-critical applications require?"* and *"Why do I need to upgrade my clusters so frequently when my applications are running perfectly?"*
 
 On the flip side, customers also ask: *"If I don't upgrade frequently, how do I still ensure that I'm getting security fixes and ecosystem compatibility updates for my Kubernetes infrastructure?"* AKS LTS directly addresses these real-world challenges.
+
+## Why AKS LTS Matters
+
 Enterprise organizations running mission-critical workloads on Kubernetes have consistently told us they need more predictable, stable platform foundations. While the rapid innovation pace of Kubernetes is fantastic for driving new capabilities, it can create challenges for organizations that require:
 
 - **Extended support lifecycles** that align with enterprise planning cycles
