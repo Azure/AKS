@@ -25,11 +25,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * [Encryption in transit](https://learn.microsoft.com/azure/aks/azure-files-csi#encryption-in-transit-for-nfs-file-shares-preview) is now available for the Azure File CSI driver for AKS version 1.33.
   * Node Autoprovisioning metrics are now available through Managed Prometheus.
   * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now available as preview.
-  * [Component Version API](https://learn.microsoft.com/azure/aks/upgrade-cluster) is available for retrieving the exact versions of all AKS components in your cluster. This gives you real-time visibility into AKS components and add-ons, helping with proactive upgrade planning. Comparing component versions in your current version (cluster context) with potential K8s minor version updates to help identify possible breaking changes. CLI extension 18.0.0b19+ is required.
+  * [Component Version API](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version) is available for retrieving the exact versions of all AKS components in your cluster. This gives you real-time visibility into AKS components and add-ons, helping with proactive upgrade planning. Comparing component versions in your current version (cluster context) with potential K8s minor version updates to help identify possible breaking changes. CLI extension 18.0.0b19+ is required.
  
 * Bug Fixes
   * Fixed [issue](https://github.com/Azure/AKS/issues/4720) where AKS evicted pods that had already been manually relocated, causing upgrade failures. This fix adds a node consistency check to ensure the pod is still on the original node before retrying eviction.
-  * Fixed an issue with image pull secrets settings when embargo CVE toggle is enabled.
 
 * Behavior Changes
   * The [delete-machines API](https://learn.microsoft.com/azure/aks/delete-node-pool?tabs=azure-cli) will only delete machines from the system nodepool if the system addon PDBs are respected.
@@ -59,7 +58,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Retina Enterprise has been updated to [v0.1.11](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.11) to resolve several CVEs.
   * Managed Prometheus addon is updated to the latest release [06-19-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-19-2025).
   * Microsoft Defender for Cloud addon image is updated to version 20250706.2. Other updates:
-    * Added version labeling to Microsoft Defender for Cloud to enable simple querying of resources. Version number will be updated whenever image tags are updated.
     * Microsoft Defender for Cloud security-publisher image updated to 1.0.243 to address [CVE-2023-4039](https://nvd.nist.gov/vuln/detail/cve-2023-4039) and [CVE-2024-13176](https://nvd.nist.gov/vuln/detail/CVE-2024-13176).
     * Microsoft Defender for Cloud old-file-cleaner image updated to 1.0.243 to address [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913) and [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673).
   * [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) eraser image is updated to [v1.4.0-4](https://github.com/eraser-dev/eraser/releases/tag/v1.4.0).
