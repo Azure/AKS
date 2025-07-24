@@ -10,11 +10,11 @@ categories:
 
 DNS performance issues can cripple production Kubernetes clusters, causing application timeouts and service outages. LocalDNS in AKS solves this by moving DNS resolution directly to each node, delivering 10x faster queries and improved reliability. In this post, we share the results from our internal tests showing exactly how much of an improvement LocalDNS can make and how it can benefit your cluster.
 
-## Background: The Hidden Cost of DNS in Production Kubernetes
+# Background: The Hidden Cost of DNS in Production Kubernetes
 
 In Kubernetes clusters, DNS is the invisible backbone that enables service discovery and inter pod communication, but its critical role often goes unnoticed until it becomes a bottleneck. DNS related issues are among the most challenging operational problems. What begins as minor performance degradation can quickly escalate into customer impacting incidents and even full scale outages. As cluster size grows, the complexity of DNS management increases exponentially. A configuration that works for a small development environment may prove completely inadequate at production scale, exposing fundamental architectural limitations that can threaten the reliability and scalability of the entire system.
 
-### Why Centralized CoreDNS Becomes a Bottleneck in Kubernetes Clusters
+## Why Centralized CoreDNS Becomes a Bottleneck in Kubernetes Clusters
 
 Traditional DNS was built for static, predictable environments with long lived hosts and low query volumes. Kubernetes, however, is dynamic and high churn:
 
