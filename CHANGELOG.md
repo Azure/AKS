@@ -6,7 +6,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Announcements
 * The asm-1-23 revision for the Istio add-on has been deprecated. Kindly upgrade your service mesh to a supported version following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
-* AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS).
+* AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS), aligning with AKS ensuring that [all supported Kubernetes versions are eligible for Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support#will-every-aks-version-support-long-term-support-lts)
 * [Virtual Machines (VMs) node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) are now enabled by default when creating a new node pool. Previously [Virtual Machine Scale Sets (VMSS)](https://learn.microsoft.com/azure/virtual-machine-scale-sets/overview) were the default node pool type when creating a node pool in AKS.  To learn more about VMs, an AKS-optimized node pool type, visit our [documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
 * WASI Node Pool has been [retired](https://azure.microsoft.com/updates?id=484102). If you'd like to run WebAssembly (WASM) workloads, you can [deploy SpinKube to Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/deploy-spinkube) from Azure Marketplace.
 
@@ -65,10 +65,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Vertical Pod Autoscaler (VPA) addon images are now built with [Dalec](https://github.com/Azure/dalec) starting from AKS version 1.27.
   * Cluster Autoscaler is upgraded to [v1.33.0](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.0) with Dalec-built image.
   * Azure Policy Addon is upgraded to [v1.13.0](https://github.com/Azure/azure-policy/releases) with enhanced EUDB request routing.
-  * CSI Secrets Store add-on is upgraded to [v1.5.1](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.1)
-  * Workload Identity image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
+  * `secrets-store-csi-driver` is upgraded to [v1.5.1](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.1)
+  * [Workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=dotnet) image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
-    * Istio service mesh add-on now supports the following annotations: service.beta.kubernetes.io/azure-allowed-ip-ranges, service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset, service.beta.kubernetes.io/azure-pip-ip-tags.
+  * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) now supports the following [annotations](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations): `service.beta.kubernetes.io/azure-allowed-ip-ranges`, `service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset`, `service.beta.kubernetes.io/azure-pip-ip-tags`, `service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout` for Istio ingress gateways.
     * Added support for the [service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations) for Istio ingress gateways.
   * On Windows GPU-enabled node pools, the default NVIDIA CUDA driver version has been bumped to v560.94 and GRID driver version has been bumped to v553.62.
 
