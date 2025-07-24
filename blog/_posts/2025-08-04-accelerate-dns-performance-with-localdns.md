@@ -1,7 +1,7 @@
 ---
 title: "Accelerate DNS Performance with LocalDNS"
 description: "Discover how LocalDNS transforms DNS performance in AKS clusters with 10x latency reduction and enhanced reliability"
-date: 2025-08-02 # date is important. future dates will not be published
+date: 2025-08-04 # date is important. future dates will not be published
 author: Vaibhav Arora # must match the authors.yml in the _data folder
 categories: 
 - general 
@@ -29,11 +29,13 @@ The result? Application timeouts, resource exhaustion, cascading failures, and i
 
 ## Introducing LocalDNS for Faster, More Reliable DNS Resolution
 
-To address these fundamental architectural challenges, AKS introduces LocalDNS a node level DNS proxy that transforms how DNS resolution works in Kubernetes clusters. LocalDNS represents a shift from centralized DNS resolution to a distributed, resilient architecture that brings DNS responses closer to the workloads that need them. By deploying a DNS proxy directly on each node as a systemd service, LocalDNS eliminates the network hop to centralized DNS pods, dramatically reducing latency while improving overall cluster resilience.
+To address these fundamental architectural challenges, AKS introduces LocalDNS - a node level DNS proxy that transforms how DNS resolution works in Kubernetes clusters. LocalDNS represents a shift from centralized DNS resolution to a distributed, resilient architecture that brings DNS responses closer to the workloads that need them. By deploying a DNS proxy directly on each node as a systemd service, LocalDNS eliminates the network hop to centralized DNS pods, dramatically reducing latency while improving overall cluster resilience. This is especially useful in large clusters and high-traffic environments, where it dramatically reduces DNS latency and improves reliability even under high load. 
+
+For more details on LocalDNS and how to enable it in your AKS clusters, check out the [official AKS LocalDNS documentation](https://aka.ms/aks-localdns).
 
 ## How We Tested LocalDNS
 
-To evaluate the impact of LocalDNS, we conducted parallel tests across two AKS clusters: one with LocalDNS enabled on all nodes and another using only centralized CoreDNS. In both environments, we generated a sustained load of 10,000 DNS queries per second (QPS) using industry standard tools like `dnsperf` and `resperf`. This allowed us to observe query distribution across CoreDNS pods, measure resolution success rates, and compare end to end DNS lookup latencies.
+To evaluate the impact of LocalDNS, we conducted parallel tests across two AKS clusters: one with LocalDNS enabled on all nodes and another using only centralized CoreDNS. In both environments, we generated a sustained load of 10,000 DNS queries per second (QPS) and used industry standard tools like `dnsperf` and `resperf` in the testing. This allowed us to observe query distribution across CoreDNS pods, measure resolution success rates, and compare end to end DNS lookup latencies.
 
 ## The Results
 
@@ -41,11 +43,11 @@ To evaluate the impact of LocalDNS, we conducted parallel tests across two AKS c
 
 The graphs below demonstrate a substantial reduction in DNS query resolution times across all percentiles (P50, P95, P99) when LocalDNS is enabled. LocalDNS consistently delivers faster responses, with >10x lower latency and significant tail latency reduction at the P99 scale. These improvements apply to both internal cluster traffic and external domain resolution. 
 
-#### Resolution Time for Cluster Traffic (cluster.local)
+#### In-Cluster DNS Resolution Time (cluster.local)
 
 ![DNS resolution times for internal cluster traffic showing LocalDNS performance improvements](/assets/images/accelerate-dns-performance-with-localdns/inclustertraffic.png)
 
-#### Resolution Time for External Domain Traffic
+#### External DNS Resolution Time
 
 ![DNS resolution times for external domain traffic showing LocalDNS performance improvements](/assets/images/accelerate-dns-performance-with-localdns/externaltraffic.png)
 
