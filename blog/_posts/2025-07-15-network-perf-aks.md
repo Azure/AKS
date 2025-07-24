@@ -68,7 +68,7 @@ We also observed reductions in both TCP retransmission rate and round-trip time 
 
 ![image](/assets/images/network-perf-aks/buffer_rtt.png)
 
-TCP retransmissions often occur when the sender or receiver buffer is too small to handle a surge of packets, resulting in packet drops. For example, if the NIC name is `enP28334s1` (typical name for an [S-IOV network interface](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-single-root-i-o-virtualization--sr-iov-)), you can check how many packets were dropped due to ring buffer overflow with:
+TCP retransmissions often occur when the sender or receiver buffer is too small to handle a surge of packets, resulting in packet drops. For example, if the NIC name is `enP28334s1` (typical name for an [SR-IOV network interface](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-single-root-i-o-virtualization--sr-iov-)), you can check how many packets were dropped due to ring buffer overflow with:
 
 ```bash
 ethtool -S enP28334s1 | grep rx_out_of_buffer
@@ -86,4 +86,4 @@ It’s important to note that increasing the NIC ring buffer size has memory usa
 
 ## Conclusion
 
-Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU and series  and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. In the future, we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also plan to measure and analyze the performance implications of container networking solutions (such as Cilium), and to explore additional optimization strategies..
+Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU and series  and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. In the future, we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also plan to measure and analyze the performance implications of container networking solutions (such as Cilium), and to explore additional optimization strategies.
