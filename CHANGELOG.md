@@ -9,6 +9,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS).
 * [Virtual Machines (VMs) node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) are now enabled by default when creating a new node pool. Previously [Virtual Machine Scale Sets (VMSS)](https://learn.microsoft.com/azure/virtual-machine-scale-sets/overview) were the default node pool type when creating a node pool in AKS.  To learn more about VMs, an AKS-optimized node pool type, visit our [documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
 * The [WASI Node Pool](https://learn.microsoft.com/azure/aks/wasi-node-pool) feature is now fully removed with the removal of the WasmNodePoolPreview feature flag.
+* Azure Kubernetes Service will no longer support the --skip-gpu-driver-install node pool tag to skip automatic driver installation. Starting on August 14 2025, you will no longer be able to use this node pool tag at AKS node pool creation time to install custom GPU drivers or use the GPU Operator. Alternatively, you should use the generally available `gpu-driver` API field to update your existing node pools or create new GPU-enabled node pools to [skip automatic GPU driver installation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation).
 
 ### Release notes
 * Features
@@ -34,6 +35,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Application routing component Pods are now annotated with kubernetes.azure.com/set-kube-service-host-fqdn to automatically have the [API server's domain name injected into the pod](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#required-outbound-network-rules-and-fqdns-for-aks-clusters) instead of the cluster IP, to enable communication to the API server. This is useful in cases where the cluster egress is via a layer 7 firewall.
   * [Container Insights](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) agents now have a memory limit of 750Mi (down from 4Gi).
   * [Advanced Container Networking Services (ACNS)](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview?tabs=cilium) pods now run with priorityClassName: system-node-critical, preventing eviction under node resource pressure and improving cluster security posture.
+  * Add node anti-affinity for [FIPS-enabled nodes](https://learn.microsoft.com/en-us/azure/aks/enable-fips-nodes) for retina-agent when pod-level metrics are enabled.
 
 * Component Updates
   * Windows node images  
@@ -52,12 +54,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * ExtensionManager addon is updated to v1.27.0. Other updates:
     * ExtensionManager now honors AKS maintenance windows for autoupgrades of Kubernetes extension.
   * Retina Basic image is updated to [v0.0.36](https://github.com/microsoft/retina/releases/tag/v0.0.36) on Linux and Windows.
-  * Add node anti-affinity for FIPS-enabled nodes for retina-agent when pod-level metrics are enabled.
   * Retina Enterprise has been updated to [v0.1.11](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.11) to resolve several CVEs.
   * Managed Prometheus addon is updated to the latest release [06-19-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-19-2025).
-  * Microsoft Defender for Cloud addon image is updated to version 20250706.2. Other updates:
-    * Microsoft Defender for Cloud security-publisher image updated to 1.0.243 to address [CVE-2023-4039](https://nvd.nist.gov/vuln/detail/cve-2023-4039) and [CVE-2024-13176](https://nvd.nist.gov/vuln/detail/CVE-2024-13176).
-    * Microsoft Defender for Cloud old-file-cleaner image updated to 1.0.243 to address [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913) and [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673).
+  * Microsoft Defender for Cloud security-publisher image updated to 1.0.243 to address [CVE-2023-4039](https://nvd.nist.gov/vuln/detail/cve-2023-4039) and [CVE-2024-13176](https://nvd.nist.gov/vuln/detail/CVE-2024-13176).
+  * Microsoft Defender for Cloud old-file-cleaner image updated to 1.0.243 to address [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913) and [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673).
   * [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) eraser image is updated to [v1.4.0-4](https://github.com/eraser-dev/eraser/releases/tag/v1.4.0).
   * Bumped Azure Cloud Controller Manager to [v1.33.1](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.33.1), [v1.32.6](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.32.6), [v1.31.7](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.7), and [v1.30.13](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.13).
   * Tigera operator is updated from v.1.38.0 to [v1.38.2](https://github.com/tigera/operator/releases/tag/v1.38.2) to support Calico [v3.30.1](https://github.com/projectcalico/calico/blob/release-v3.30/release-notes/v3.30.1-release-notes.md).
