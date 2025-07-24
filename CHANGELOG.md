@@ -8,7 +8,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * The asm-1-23 revision for the Istio add-on has been deprecated. Kindly upgrade your service mesh to a supported version following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
 * AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS).
 * [Virtual Machines (VMs) node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) are now enabled by default when creating a new node pool. Previously [Virtual Machine Scale Sets (VMSS)](https://learn.microsoft.com/azure/virtual-machine-scale-sets/overview) were the default node pool type when creating a node pool in AKS.  To learn more about VMs, an AKS-optimized node pool type, visit our [documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
-* The [WASI Node Pool](https://learn.microsoft.com/azure/aks/wasi-node-pool) feature is now fully removed with the removal of the WasmNodePoolPreview feature flag.
+* WASI Node Pool has been [retired](https://azure.microsoft.com/updates?id=484102). If you'd like to run WebAssembly (WASM) workloads, you can [deploy SpinKube to Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/deploy-spinkube) from Azure Marketplace.
 
 ### Release notes
 * Features
