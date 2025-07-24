@@ -6,8 +6,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Announcements
 * The asm-1-23 revision for the Istio add-on has been deprecated. Kindly upgrade your service mesh to a supported version following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
-* AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS), aligning with AKS ensuring that [all supported Kubernetes versions are eligible for Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support#will-every-aks-version-support-long-term-support-lts)
-* [Virtual Machines (VMs) node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) are now enabled by default when creating a new node pool. Previously [Virtual Machine Scale Sets (VMSS)](https://learn.microsoft.com/azure/virtual-machine-scale-sets/overview) were the default node pool type when creating a node pool in AKS.  To learn more about VMs, an AKS-optimized node pool type, visit our [documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
+* AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS), aligning with [all supported Kubernetes versions are eligible for Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support#will-every-aks-version-support-long-term-support-lts) on AKS.
+* [Virtual Machines (VMs) node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) are now enabled by default when creating a new node pool. Previously [Virtual Machine Scale Sets (VMSS)](https://learn.microsoft.com/azure/virtual-machine-scale-sets/overview) were the default node pool type when creating a node pool in AKS.  To learn more about VMs, an AKS-optimized node pool type, visit our [documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
 * WASI Node Pool has been [retired](https://azure.microsoft.com/updates?id=484102). If you'd like to run WebAssembly (WASM) workloads, you can [deploy SpinKube to Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/deploy-spinkube) from Azure Marketplace.
 
 ### Release notes
@@ -22,8 +22,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Preview Features
   * [Azure Virtual Network Verifier](https://learn.microsoft.com/azure/virtual-network-manager/concept-virtual-network-verifier) is now available in Azure Portal (Node pools blade) for troubleshooting outbound connectivity issues in your AKS cluster. 
   * [Encryption in transit](https://learn.microsoft.com/azure/aks/azure-files-csi#encryption-in-transit-for-nfs-file-shares-preview) is now available for the Azure File CSI driver, starting from AKS version 1.33.
-  * [Node auto provisioning metrics](https://learn.microsoft.com/azure/aks/monitor-aks-reference#minimal-ingestion-profile-for-control-plane-metrics-in-managed-prometheus) are now available through [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus). To learn more, visit our [node auto provisioning documentation](https://learn.microsoft.com/azure/aks/node-autoprovision#node-auto-provisioning-metrics)
-  * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now available as preview.
+  * [Node auto provisioning metrics](https://learn.microsoft.com/azure/aks/monitor-aks-reference#minimal-ingestion-profile-for-control-plane-metrics-in-managed-prometheus) are now available through [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus). To learn more, visit our [node auto provisioning documentation](https://learn.microsoft.com/azure/aks/node-autoprovision#node-auto-provisioning-metrics).
+  * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now available in Preview.
  
 * Bug Fixes
   * Fixed [issue](https://github.com/Azure/AKS/issues/4720) where AKS evicted pods that had already been manually relocated, causing upgrade failures. This fix adds a node consistency check to ensure the pod is still on the original node before retrying eviction.
@@ -39,8 +39,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 * Component Updates
   * Windows node images  
     * Server 2019 Gen1 – [`17763.7558.250714`](vhd-notes/AKSWindows/2019/17763.7558.250714.txt).
-    * Server 2022 Gen1/Gen2 – [`20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt)
-    * Server 23H2 Gen1/Gen2 – [`25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt)
+    * Server 2022 Gen1/Gen2 – [`20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt).
+    * Server 23H2 Gen1/Gen2 – [`25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt).
   * AKS Azure Linux v2 image has been updated to [202507.15.0](vhd-notes/AzureLinux/202507.15.0.txt).
   * AKS Azure Linux v3 image has been updated to [202507.15.0](vhd-notes/AzureLinuxv3/202507.15.0.txt).
   * AKS Ubuntu 22.04 node image has been updated to [202507.15.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.15.0.txt).
@@ -67,7 +67,6 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * [Workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=dotnet) image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
   * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) now supports the following [annotations](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations): `service.beta.kubernetes.io/azure-allowed-ip-ranges`, `service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset`, `service.beta.kubernetes.io/azure-pip-ip-tags`, `service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout` for Istio ingress gateways.
-    * Added support for the [service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations) for Istio ingress gateways.
 
 ## Release 2025-06-17
 
