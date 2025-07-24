@@ -6,10 +6,9 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 ### Announcements
 * The asm-1-23 revision for the Istio add-on has been deprecated. Kindly upgrade your service mesh to a supported version following the [AKS Istio upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
-* AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS).
+* AKS Kubernetes version 1.33 is now compatible with Long-Term Support (LTS), aligning with AKS ensuring that [all supported Kubernetes versions are eligible for Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support#will-every-aks-version-support-long-term-support-lts)
 * [Virtual Machines (VMs) node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) are now enabled by default when creating a new node pool. Previously [Virtual Machine Scale Sets (VMSS)](https://learn.microsoft.com/azure/virtual-machine-scale-sets/overview) were the default node pool type when creating a node pool in AKS.  To learn more about VMs, an AKS-optimized node pool type, visit our [documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
-* The [WASI Node Pool](https://learn.microsoft.com/azure/aks/wasi-node-pool) feature is now fully removed with the removal of the WasmNodePoolPreview feature flag.
-* Azure Kubernetes Service will no longer support the --skip-gpu-driver-install node pool tag to skip automatic driver installation. Starting on August 14 2025, you will no longer be able to use this node pool tag at AKS node pool creation time to install custom GPU drivers or use the GPU Operator. Alternatively, you should use the generally available `gpu-driver` API field to update your existing node pools or create new GPU-enabled node pools to [skip automatic GPU driver installation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation).
+* WASI Node Pool has been [retired](https://azure.microsoft.com/updates?id=484102). If you'd like to run WebAssembly (WASM) workloads, you can [deploy SpinKube to Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/deploy-spinkube) from Azure Marketplace.
 
 ### Release notes
 * Features
@@ -55,9 +54,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
     * ExtensionManager now honors AKS maintenance windows for autoupgrades of Kubernetes extension.
   * Retina Basic image is updated to [v0.0.36](https://github.com/microsoft/retina/releases/tag/v0.0.36) on Linux and Windows.
   * Retina Enterprise has been updated to [v0.1.11](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.11) to resolve several CVEs.
-  * Managed Prometheus addon is updated to the latest release [06-19-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-19-2025).
-  * Microsoft Defender for Cloud security-publisher image updated to 1.0.243 to address [CVE-2023-4039](https://nvd.nist.gov/vuln/detail/cve-2023-4039) and [CVE-2024-13176](https://nvd.nist.gov/vuln/detail/CVE-2024-13176).
-  * Microsoft Defender for Cloud old-file-cleaner image updated to 1.0.243 to address [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913) and [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673).
+  * [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus) addon is updated to the latest release [06-19-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-06-19-2025).
+  * Microsoft Defender for Cloud addon image is updated to version 20250706.2. Other updates:
+    * Microsoft Defender for Cloud security-publisher image updated to 1.0.243 to address [CVE-2023-4039](https://nvd.nist.gov/vuln/detail/cve-2023-4039) and [CVE-2024-13176](https://nvd.nist.gov/vuln/detail/CVE-2024-13176).
+    * Microsoft Defender for Cloud old-file-cleaner image updated to 1.0.243 to address [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913) and [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673).
   * [Image Cleaner](https://learn.microsoft.com/azure/aks/image-cleaner) eraser image is updated to [v1.4.0-4](https://github.com/eraser-dev/eraser/releases/tag/v1.4.0).
   * Bumped Azure Cloud Controller Manager to [v1.33.1](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.33.1), [v1.32.6](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.32.6), [v1.31.7](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.31.7), and [v1.30.13](https://github.com/kubernetes-sigs/cloud-provider-azure/releases/tag/v1.30.13).
   * Tigera operator is updated from v.1.38.0 to [v1.38.2](https://github.com/tigera/operator/releases/tag/v1.38.2) to support Calico [v3.30.1](https://github.com/projectcalico/calico/blob/release-v3.30/release-notes/v3.30.1-release-notes.md).
@@ -65,10 +65,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Vertical Pod Autoscaler (VPA) addon images are now built with [Dalec](https://github.com/Azure/dalec) starting from AKS version 1.27.
   * Cluster Autoscaler is upgraded to [v1.33.0](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.0) with Dalec-built image.
   * Azure Policy Addon is upgraded to [v1.13.0](https://github.com/Azure/azure-policy/releases) with enhanced EUDB request routing.
-  * CSI Secrets Store add-on is upgraded to [v1.5.1](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.1)
-  * Workload Identity image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
+  * `secrets-store-csi-driver` is upgraded to [v1.5.1](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.1)
+  * [Workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=dotnet) image is updated to [v1.5.1](https://github.com/Azure/azure-workload-identity/releases/tag/v1.5.1) with CVE fixes.
   * Istio revision [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/) is now available for the Istio-based service mesh add-on. To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade). Other updates:
-    * Istio service mesh add-on now supports the following annotations: service.beta.kubernetes.io/azure-allowed-ip-ranges, service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset, service.beta.kubernetes.io/azure-pip-ip-tags.
+  * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) now supports the following [annotations](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations): `service.beta.kubernetes.io/azure-allowed-ip-ranges`, `service.beta.kubernetes.io/azure-load-balancer-disable-tcp-reset`, `service.beta.kubernetes.io/azure-pip-ip-tags`, `service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout` for Istio ingress gateways.
     * Added support for the [service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout annotation](https://learn.microsoft.com/azure/aks/istio-deploy-ingress#ingress-gateway-service-customizations) for Istio ingress gateways.
   * On Windows GPU-enabled node pools, the default NVIDIA CUDA driver version has been bumped to v560.94 and GRID driver version has been bumped to v553.62.
 
