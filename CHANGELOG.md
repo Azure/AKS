@@ -35,7 +35,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   * Application routing component Pods are now annotated with kubernetes.azure.com/set-kube-service-host-fqdn to automatically have the [API server's domain name injected into the pod](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress#required-outbound-network-rules-and-fqdns-for-aks-clusters) instead of the cluster IP, to enable communication to the API server. This is useful in cases where the cluster egress is via a layer 7 firewall.
   * [Container Insights](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) agents now have a memory limit of 750Mi (down from 4Gi).
   * [Advanced Container Networking Services (ACNS)](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview?tabs=cilium) pods now run with priorityClassName: system-node-critical, preventing eviction under node resource pressure and improving cluster security posture.
-  * Add node anti-affinity for [FIPS-enabled nodes](https://learn.microsoft.com/en-us/azure/aks/enable-fips-nodes) for retina-agent when pod-level metrics are enabled.
+  * Add node anti-affinity for [FIPS-enabled nodes](https://learn.microsoft.com/azure/aks/enable-fips-nodes) for retina-agent when pod-level metrics are enabled.
 
 * Component Updates
   * Windows node images  
