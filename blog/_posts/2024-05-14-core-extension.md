@@ -26,7 +26,7 @@ Extensions and add-ons both enhance AKS functionality but differ in scope and ma
 - **Add-ons**: Part of the AKS [resource provider](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types) (`Microsoft.ContainerService/managedClusters`), limited to AKS, and generally reserved for cluster critical functionality. These are configured directly via the Managed Cluster API.
 - **Extensions**: Managed via the [Extension API](https://learn.microsoft.com/rest/api/kubernetesconfiguration/extensions/extensions?view=rest-kubernetesconfiguration-extensions-2024-11-01) (`Microsoft.KubernetesConfiguration/extensions`), supporting both AKS and [Arc-enabled Kubernetes environments](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/overview). Learn how extensions also work on Azure Arc-enabled clusters at [extension architecture](https://learn.microsoft.com/azure/azure-arc/kubernetes/conceptual-extensions#architecture).
 
-### What Are Core Kubernetes Extensions?
+### What are Core Kubernetes Extensions?
 
 Core Kubernetes extensions are a Kubernetes extension that provides broader region availability, a native AKS experience, safer version management, enhanced security, efficiency, and reliability on AKS. Important AKS capabilities can be supported through core Kubernetes extensions while maintaining seamless integration with AKS just like add-ons. This approach also paves the way for more functionality to be supported across both AKS and Azure Arc-enabled Kubernetes environments in the future. 
 
