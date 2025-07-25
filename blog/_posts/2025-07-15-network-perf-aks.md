@@ -18,23 +18,23 @@ In this blog post, we share how we conducted simple benchmarks to evaluate and c
 
 ## Benchmark
 
-Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on managed Kubernetes. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usage.
+Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on AKS. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usage.
 
 In our experiment, iperf3 was run as a container within Kubernetes pods in the host network namespace on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernels. During each test, we also monitor CPU and memory usage of both client and server containers to make sure iperf3 is not resource constrained.
 
 ## Hardware Matters Most
 
-We compared the test results of Azure's older generation series [Dsv3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dsv3-series?tabs=sizebasic) and newer generation series [Dsv6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dsv6-series?tabs=sizebasic) on AKS, as well as AWS next-generation instances [M7i](https://aws.amazon.com/ec2/instance-types/m7i/) on EKS, and observated signifncant network performance difference:
+We compared the test results of Azure's older generation series [Dsv3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dsv3-series?tabs=sizebasic) and newer generation series [Dsv6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dsv6-series?tabs=sizebasic) on AKS, and observated signifncant network performance difference:
 
-Up to 35% higher throughput for Azure Dsv6 compared to Dsv3 and AWS M7i when trying to maximize network bandwidth usage.
+Up to 35% higher throughput for Azure Dsv6 compared to Dsv3 when trying to maximize network bandwidth usage.
 
 ![image](/assets/images/network-perf-aks/sku_throughput.png)
 
-Up to 3x~6x lower RTT for Azure Dsv6 compared to Dsv3 and AWS M7i when tests are limited to the same network bandwidth usage.
+Up to 3x~6x lower RTT for Azure Dsv6 compared to Dsv3 when tests are limited to the same network bandwidth usage.
 
 ![image](/assets/images/network-perf-aks/sku_rtt.png)
 
-TCP retransmissions remained consistently at 0% on Azure Dsv6, matching AWS M7i while significantly outperforming Azure Dsv3.
+The TCP retransmission rate remained consistently at 0% on Azure Dsv6, while it was noticeably higher on Dsv3.
 
 ![image](/assets/images/network-perf-aks/sku_retransmits.png)
 
