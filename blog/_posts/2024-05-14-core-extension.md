@@ -15,7 +15,7 @@ categories:
 
 ## Introducing Core Kubernetes Extensions
 
-### What Are Kubernetes Extensions?
+### What are Kubernetes Extensions?
 
 [Kubernetes extensions](https://learn.microsoft.com/azure/aks/cluster-extensions?tabs=azure-cli) (or cluster extensions) are pre-packaged applications that simplify the installation and lifecycle management of Azure capabilities on Kubernetes clusters. Examples include [Azure Backup](https://learn.microsoft.com/azure/backup/azure-kubernetes-service-backup-overview), [GitOps (Flux)](https://learn.microsoft.com/azure/azure-arc/kubernetes/conceptual-gitops-flux2), and [Azure Machine Learning](https://learn.microsoft.com/azure/machine-learning/how-to-attach-kubernetes-anywhere?view=azureml-api-2). Third-party extensions (or Kubernetes apps), such as [Datadog AKS Cluster Extension](https://azuremarketplace.microsoft.com/marketplace/apps/datadog1591740804488.dd_aks_extension?tab=Overview) and [Isovalent Cilium Enterprise](https://azuremarketplace.microsoft.com/marketplace/apps/isovalentinc1662143158090.isovalent-cilium-enterprise?tab=Overview), are also available in the [Azure Marketplace](https://azuremarketplace.microsoft.com).
 
