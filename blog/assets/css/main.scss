@@ -72,3 +72,11 @@ blockquote {
   padding-top: 1em !important;
   padding-bottom: 1em !important;
 }
+
+table {
+  display: table !important;
+
+  th {
+    background-color: darken(#663399, 15%) !important;
+  }
+}
