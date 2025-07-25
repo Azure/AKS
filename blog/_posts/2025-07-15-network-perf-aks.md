@@ -18,7 +18,7 @@ In this blog post, we share how we conducted simple benchmarks to evaluate and c
 
 ## Benchmark
 
-Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on AKS. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same AKS cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usage.
+Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on managed Kuberentes. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usage.
 
 In our experiment, iperf3 was run as a container within Kubernetes pods in the host network namespace on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernels. During each test, we also monitor CPU and memory usage of both client and server containers to make sure iperf3 is not resource constrained.
 
@@ -30,7 +30,7 @@ Up to 35% higher throughput for Azure Dsv6 compared to Dsv3 and AWS M7i when try
 
 ![image](/assets/images/network-perf-aks/sku_throughput.png)
 
-Up to 3x~6x lower RTT for Azure Dsv6 compared to Dsv3 and AWS M7i when tests are limited to the same network badnwdith usage.
+Up to 3x~6x lower RTT for Azure Dsv6 compared to Dsv3 and AWS M7i when tests are limited to the same network bandwidth usage.
 
 ![image](/assets/images/network-perf-aks/sku_rtt.png)
 
@@ -38,9 +38,9 @@ TCP retransmissions remained consistently at 0% on Azure Dsv6, matching AWS M7i 
 
 ![image](/assets/images/network-perf-aks/sku_retransmits.png)
 
-The primary reasons for the significant leap in network performance on Dsv6 is because the next-generation network interface [Microsoft Azure Network Adaptor (MANA)](https://learn.microsoft.com/en-us/azure/virtual-network/accelerated-networking-mana-overview) support [Jumbo Frame](https://en.wikipedia.org/wiki/Jumbo_frame) and [MTU 9000](https://learn.microsoft.com/en-us/azure/virtual-network/how-to-virtual-machine-mtu?tabs=linux).
+The primary reasons for the significant leap in network performance on Dsv6 is because the next-generation network interface [Microsoft Azure Network Adaptor (MANA)](https://learn.microsoft.com/en-us/azure/virtual-network/accelerated-networking-mana-overview) supports [Jumbo Frame](https://en.wikipedia.org/wiki/Jumbo_frame) and [MTU 9000](https://learn.microsoft.com/en-us/azure/virtual-network/how-to-virtual-machine-mtu?tabs=linux).
 
-A higher MTU (Maximum Transmission Unit) and MSS (Maximum Segment Size) allow TCP traffic to transmit more data per packet, reducing the total number of packets that need to be processed by network interface and OS kernenl. This leads to fewer hardware interrupts, less buffering, and reduced overhead in data movement, ultimately improving overall network efficiency.
+A higher MTU (Maximum Transmission Unit) and MSS (Maximum Segment Size) allow TCP traffic to transmit more data per packet, reducing the total number of packets that need to be processed by network interface and OS kernel. This leads to fewer hardware interrupts, less buffering, and reduced overhead in data movement, ultimately improving overall network efficiency.
 
 ![image](/assets/images/network-perf-aks/sku_mtu.png)
 
@@ -82,8 +82,8 @@ sudo ethtool -G enP28334s1 rx 2048
 
 Again you can also deploy a daemonSet to enforce consistent ring buffer size across all nodes in AKS cluster following [this example](https://github.com/Azure/telescope/blob/main/modules/kustomize/ring_buffer/ring-buffer-config.yaml).
 
-It’s important to note that increasing the NIC ring buffer size has memory usage implications. Allocating larger buffers means the operating system reserves more memory specifically for handling network traffic, which reduces the amount of memory available for user-space applications. For example, doubling the receive buffer size from 1024 to 2048 packets per descriptor across multiple queues and interfaces can lead to a non-trivial (around 100 MB or more) increase in kernel memory usage — especially on systems with high network concurrency or multiple high-throughput NICs. While this tradeoff can significantly improve network performance, especially under high load, it should be balanced against the memory demands of the application workload running on the same VM.
+It's important to note that increasing the NIC ring buffer size has memory usage implications. Allocating larger buffers means the operating system reserves more memory specifically for handling network traffic, which reduces the amount of memory available for user-space applications. For example, doubling the receive buffer size from 1024 to 2048 packets per descriptor across multiple queues and interfaces can lead to a non-trivial (around 100 MB or more) increase in kernel memory usage — especially on systems with high network concurrency or multiple high-throughput NICs. While this tradeoff can significantly improve network performance, especially under high load, it should be balanced against the memory demands of the application workload running on the same VM.
 
 ## Conclusion
 
-Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU and series  and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. In the future, we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also plan to measure and analyze the performance implications of container networking solutions (such as Cilium), and to explore additional optimization strategies.
+Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU and series  and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. Next we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also intend to measure and analyze the performance implications of container networking solutions (such as Cilium), and to explore additional optimization strategies. Please let us know if there are specific scenarios, workloads, or networking configurations you’d like to see included in future work.
