@@ -18,7 +18,7 @@ In this blog post, we share how we conducted simple benchmarks to evaluate and c
 
 ## Benchmark
 
-Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on managed Kuberentes. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usage.
+Our methodology involves conducting tests and measurements to identify key factors affecting network performance for applications running on managed Kubernetes. We simulated a common use case: a pair of pods communicating in TCP protocol across two different nodes within the same cluster. We measured various performance metrics, including throughput, round-trip time (RTT), and retransmission rate in the presence of packet loss at high bandwidth usage.
 
 In our experiment, iperf3 was run as a container within Kubernetes pods in the host network namespace on selected nodes to generate single or multiple TCP streams simulating application traffic. All underlying Kubernetes nodes had identical hardware specifications: 48 CPU cores, 192 GB of memory, and were running Linux 5.X kernels. During each test, we also monitor CPU and memory usage of both client and server containers to make sure iperf3 is not resource constrained.
 
