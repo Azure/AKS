@@ -1,7 +1,7 @@
 ---
 title: "Performance Tuning AKS for Network Intensive Workloads "
 description: "Learn more about how to optimize network performance on AKS nodes through benchmark and comparison."
-date: 2025-07-15 # date is important. future dates will not be published
+date: 2025-07-25 # date is important. future dates will not be published
 authors:
 - Anson Qian
 - Alyssa Vu
