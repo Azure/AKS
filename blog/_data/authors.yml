@@ -39,7 +39,7 @@ Kaarthikeyan Subramanian:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/kaarthis"
-      
+
 Paul Yu:
   name        : "Paul Yu"
   bio         : "Cloud Native Developer Advocate. Loves pineapple on pizza, dogs, and writing code."
@@ -217,7 +217,7 @@ Bob Mital:
 Suraj Deshmukh:
   name        : "Suraj Deshmukh"
   bio         : "Software Engineer at Microsoft, involved in Kubernetes and Open Source."
-  avatar      : "https://github.com/surajssd.png" 
+  avatar      : "https://github.com/surajssd.png"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
@@ -228,11 +228,11 @@ Suraj Deshmukh:
     - label: "Blog"
       icon: "fas fa-fw fa-link"
       url: "https://suraj.io/"
-      
+
 Ernest Wong:
   name        : "Ernest Wong"
   bio         : "Software Engineer at Microsoft"
-  avatar      : "https://github.com/chewong.png" 
+  avatar      : "https://github.com/chewong.png"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
@@ -244,7 +244,7 @@ Ernest Wong:
 Jack Jiang:
   name        : "Jack Jiang"
   bio         : "Product Manager at Microsoft"
-  avatar      : "https://github.com/jakjang/profilepic/blob/main/jack_headshot.jpg?raw=true" 
+  avatar      : "https://github.com/jakjang/profilepic/blob/main/jack_headshot.jpg?raw=true"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
@@ -252,7 +252,7 @@ Jack Jiang:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/jakjang"
-      
+
 Ally Ford:
   name        : "Ally Ford"
   bio         : "Product Manager 2 at Microsoft"
@@ -263,7 +263,7 @@ Ally Ford:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/allyford"
-      
+
 Sarah Zhou:
   name        : "Sarah Zhou"
   bio         : "Product Manager at Microsoft"
@@ -300,6 +300,28 @@ Francis Yu:
   bio      : "Francis is a Product Manager and focuses on optimizing storage orchestration for Kubernetes workloads."
   avatar   : "https://avatars.githubusercontent.com/u/23534998?v=4"
 
+Anson Qian:
+  name        : "Anson Qian"
+  bio         : "Software Engineer at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/aqian/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/anson627"
+
+Alyssa Vu:
+  name        : "Alyssa Vu"
+  bio         : "Software Engineer at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/alyssa-v-23242615a/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/alyssa1303"
+
 Jose Blanquicet:
   name        : "Jose Blanquicet"
   bio         : "Jose is a Senior Software Engineer at Microsoft, using eBPF on Azure Kubernetes Service to boost observability and make troubleshooting simpler."
@@ -311,3 +333,4 @@ Jose Blanquicet:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/blanquicet"
+
