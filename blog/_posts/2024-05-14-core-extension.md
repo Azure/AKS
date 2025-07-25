@@ -59,7 +59,7 @@ Core extensions follow the same [update rules as add-ons](https://learn.microsof
 
 #### Improved security, efficiency and reliability
 
-Extension-manager is moved from user node pool to AKS Control Plane, which improves extension security, efficiency, and reliability.
+Extension-manager is moved from the user node pool to the AKS Control Plane, which improves extension security, efficiency, and reliability.
 
 What Is extension-manager?
 
