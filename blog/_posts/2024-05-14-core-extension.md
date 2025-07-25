@@ -1,6 +1,6 @@
 ---
 title: "Introducing Core Kubernetes Extensions for AKS"
-description: "Learn what are core Kubernetes extensions, and how that extends functionality of your AKS clusters"
+description: "Learn what core Kubernetes extensions are, and how they can extend the functionality of your AKS clusters"
 date: 2025-05-14 # date is important. future dates will not be published
 author: Jane Guo # must match the authors.yml in the _data folder
 categories: 
