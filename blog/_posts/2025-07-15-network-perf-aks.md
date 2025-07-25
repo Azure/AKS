@@ -14,7 +14,7 @@ categories:
 
 As more intelligent applications are deployed and hosted on Azure Kubernetes Service (AKS), network performance becomes increasingly critical to ensuring a seamless user experience. For example, a chatbot server running in an AKS cluster needs to handle high volumes of network traffic with low latency, while retrieving contextual data — such as conversation history and user feedback from a database or cache, and interacting with a LLM (Large Language Model) endpoint through prompt requests and streamed inference responses.
 
-In this blog post, we share how we conducted simple benchmarks to evaluate and compare network performance across various VM (Virtual Machine) SKU and series. We also provide recommendations on key kernel settings to help you explore the trade-offs between network performance and resource usage.
+In this blog post, we share how we conducted simple benchmarks to evaluate and compare network performance across various VM (Virtual Machine) SKUs and series. We also provide recommendations on key kernel settings to help you explore the trade-offs between network performance and resource usage.
 
 ## Benchmark
 
@@ -44,7 +44,7 @@ A higher MTU (Maximum Transmission Unit) and MSS (Maximum Segment Size) allow TC
 
 ![image](/assets/images/network-perf-aks/sku_mtu.png)
 
-We realized there is no way to fully abstract hardware from the application — fundamentally, application network performance is dictated by the capabilities of the underlying CPU, memory, and network interfaces on the physical host. Identifying the appropriate VM SKU and series is essential to ensure the application meets its networking performance requirements.
+We realized there is no way to fully abstract hardware from the application — fundamentally, application network performance is dictated by the capabilities of the underlying CPU, memory, and network interfaces on the physical host. Identifying the appropriate VM SKUs and series is essential to ensure the application meets its networking performance requirements.
 
 ![image](/assets/images/network-perf-aks/sku_cpu_usage.png)
 
@@ -58,7 +58,7 @@ To enable Jumbo Frames across all nodes in an AKS cluster, you can deploy a Daem
 
 ## Kernel Settings Tuning
 
-If migrating to a newer VM SKU or series like Dsv6 isn’t a viable short-term option due to quota limitations or compatibility concerns, kernel-level tuning remains a practical path to improving network performance. In our testing, we explored several tuning parameters and found that adjusting the ring buffer size on the network interface card (NIC) had the most significant impact. As shown below, increasing the NIC receive buffer size from the default 1024 to 2048 packets on a Dsv3 VM resulted in a ~20% improvement in network throughput.
+If migrating to a newer VM SKUs or series like Dsv6 isn’t a viable short-term option due to quota limitations or compatibility concerns, kernel-level tuning remains a practical path to improving network performance. In our testing, we explored several tuning parameters and found that adjusting the ring buffer size on the network interface card (NIC) had the most significant impact. As shown below, increasing the NIC receive buffer size from the default 1024 to 2048 packets on a Dsv3 VM resulted in a ~20% improvement in network throughput.
 
 ![image](/assets/images/network-perf-aks/buffer_throughput.png)
 
@@ -86,4 +86,4 @@ It's important to note that increasing the NIC ring buffer size has memory usage
 
 ## Conclusion
 
-Achieving optimal network performance on AKS requires a combination of choosing the right VM SKU and series  and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. Next we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also intend to measure and analyze the performance implications of container networking solutions (such as Cilium), and to explore additional optimization strategies. Please let us know if there are specific scenarios, workloads, or networking configurations you’d like to see included in future work.
+Achieving optimal network performance on AKS requires a combination of choosing the right VM SKUs and series and fine-tuning kernel-level parameters. By understanding the trade-offs and evaluating different options, AKS users can unlock meaningful improvements in network performance and application responsiveness. Next we plan to expand our benchmarks to include newer Linux 6.x kernels, which incorporate recent [networking enhancements](https://conferences.computer.org/sc-wpub/pdfs/SC-W2024-6oZmigAQfgJ1GhPL0yE3pS/555400a775/555400a775.pdf). We also intend to measure and analyze the performance implications of container networking solutions (such as Cilium), and to explore additional optimization strategies. Please let us know if there are specific scenarios, workloads, or networking configurations you’d like to see included in future work.
