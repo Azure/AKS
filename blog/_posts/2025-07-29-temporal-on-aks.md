@@ -70,14 +70,14 @@ A robust automation system is invaluable for streamlined deployments to Kubernet
 The automated deployment process would generally involve:
 
 1. **Configuration Setup**: Copying and configuring your environment variables in `config.env.`
-2. **Building and Pushing Images**: Building your Docker image (potentially for multiple architectures) and pushing it to Azure Container Registry (ACR).
-3. **Kubernetes Manifest Generation**: Scripts like your `generate-k8s-manifests.sh` would create Kubernetes deployment files, including:
+1. **Building and Pushing Images**: Building your Docker image (potentially for multiple architectures) and pushing it to Azure Container Registry (ACR).
+1. **Kubernetes Manifest Generation**: Scripts like your `generate-k8s-manifests.sh` would create Kubernetes deployment files, including:
 
 * An ACR authentication secret.
 * A ConfigMap for Temporal configuration.
 * A Deployment YAML for your application.
 
-4. **Applying Manifests**: Using `kubectl` to create the necessary Kubernetes namespace, apply Secrets and ConfigMaps, and deploy your application to the AKS cluster.
+1. **Applying Manifests**: Using `kubectl` to create the necessary Kubernetes namespace, apply Secrets and ConfigMaps, and deploy your application to the AKS cluster.
 
 ### Local Development
 
