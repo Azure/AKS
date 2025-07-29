@@ -63,8 +63,7 @@ Containerization is a fundamental step for deploying applications to Kubernetes.
 * Ensure your startup scripts are executable.
 * Define the command to start your worker process.
 
-
-### Automated Deployment Process 
+### Automated Deployment Process
 
 A robust automation system is invaluable for streamlined deployments to Kubernetes. This project’s `deploy.sh` script emulates this, handling everything from building and pushing Docker images to applying Kubernetes manifests. You’d likely substitute in your own automation processes and tools for your use-cases.
 
@@ -73,9 +72,11 @@ The automated deployment process would generally involve:
 1. **Configuration Setup**: Copying and configuring your environment variables in `config.env.`
 2. **Building and Pushing Images**: Building your Docker image (potentially for multiple architectures) and pushing it to Azure Container Registry (ACR).
 3. **Kubernetes Manifest Generation**: Scripts like your `generate-k8s-manifests.sh` would create Kubernetes deployment files, including:
+
 * An ACR authentication secret.
 * A ConfigMap for Temporal configuration.
 * A Deployment YAML for your application.
+
 4. **Applying Manifests**: Using `kubectl` to create the necessary Kubernetes namespace, apply Secrets and ConfigMaps, and deploy your application to the AKS cluster.
 
 ### Local Development
@@ -88,7 +89,7 @@ For efficient development and testing, a local setup is crucial. Your project pr
 
 A quick start script can further simplify this process, allowing you to bring up your local Temporal Worker environment with a single command. `start.sh` is this project’s version.
 
-### Validating Worker Connectivity and Resource Management 
+### Validating Worker Connectivity and Resource Management
 
 After deployment, it's essential to verify that your Temporal Workers have successfully connected to the Temporal server. You can use `kubectl` commands to check pod statuses and examine worker logs for confirmation messages like "Starting worker... Awaiting tasks."
 
