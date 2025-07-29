@@ -1,11 +1,14 @@
 ---
-title: "Streamlining Temporal Worker Deployments on Azure Kubernetes Service (AKS)"
-description: ""
+title: "Streamlining Temporal Worker Deployments on AKS"
+description: "Learn how to deploy and scale Temporal Workers on AKS with ease. This guide walks you through containerizing Temporal applications, automating deployments, and optimizing resource management for resilient, enterprise-grade workflows on Kubernetes. "
 date: 2025-07-29
 authors:
   - Steve Womack
   - Brian Redmond
 categories: developer
+tags:
+  - ai
+  - open-source
 ---
 
 ## Introduction
@@ -14,10 +17,7 @@ categories: developer
 
 Running Temporal Workers efficiently is crucial for scalable and resilient distributed services. Azure Kubernetes Service (AKS) stands out as a leading platform for hosting Temporal workers, offering tight integration with Azure's ecosystem and built-in auto-scaling capabilities with fault tolerance—critical features for enterprise Temporal deployments.
 
-This guide outlines the process of deploying and operating Temporal Workers on AKS. The instructions are broadly applicable to both self-hosted Temporal installations and Temporal Cloud environments.
-
-Everything you need can be found at the following repo: 
-https://github.com/temporal-community/temporal-on-aks-starter
+Everything you need can be found at the following repo: [https://github.com/temporal-community/temporal-on-aks-starter](https://github.com/temporal-community/temporal-on-aks-starter)
 
 ## Getting Started
 
@@ -29,14 +29,14 @@ A well-organized project is key to managing complex deployments. Your project's 
 
 Centralized configuration management is vital. Your project's use of a config.env file simplifies managing environment variables. When deploying to AKS, you'd configure variables such as:
 
-* Azure Subscription ID: Your Azure subscription ID
-* ACR Name: Azure Container Registry name
-* Resource Group: Azure resource group name
-* ACR Username/Password/Email: Credentials for ACR authentication
-* Temporal Address: The address of your Temporal server (whether self-hosted or Temporal Cloud)
-* Temporal Namespace: The Temporal namespace you're using
-* Temporal Task Queue: The name of your task queue
-* Resource Limits: CPU and memory requests and limits for your worker pods.
+* **Azure Subscription ID**: Your Azure subscription ID
+* **ACR Name**: Azure Container Registry name
+* **Resource Group**: Azure resource group name
+* **ACR Username/Password/Email**: Credentials for ACR authentication
+* **Temporal Address**: The address of your Temporal server (whether self-hosted or Temporal Cloud)
+* **Temporal Namespace**: The Temporal namespace you're using
+* **Temporal Task Queue**: The name of your task queue
+* **Resource Limits**: CPU and memory requests and limits for your worker pods.
 
 You would typically set up this configuration by copying an example file and then populating it with your specific Azure and Temporal environment values.
 
