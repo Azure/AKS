@@ -1,7 +1,7 @@
 Brian Redmond:
   name        : "Brian Redmond"
   bio         : "Brian works on AKS and Azure Cloud Native Platforms and is responsible for customer and community efforts globally."
-  avatar      : "https://pbs.twimg.com/profile_images/1061507580202078213/KnOEjBzC_400x400.jpg" # Replace this with your avatar image
+  avatar      : "https://media.licdn.com/dms/image/v2/D5603AQFaQWPv8q2Grw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718286513871?e=1756944000&v=beta&t=wUAh2R27RaUq6XkJhM1Xm9t7cUJDgUk0kpkIGRe7Ueg"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
@@ -334,3 +334,14 @@ Jose Blanquicet:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/blanquicet"
 
+Steve Womack:
+  name        : "Steve Womack"
+  bio         : "Steve is a Solutions Architect at Temporal with over 20 years of experience spanning software development, system architecture, DevOps, and solutions engineering."
+  avatar      : "https://media.licdn.com/dms/image/v2/D5603AQHVcFBHKjfvYw/profile-displayphoto-shrink_800_800/B56ZWRXq_wGsAc-/0/1741900657151?e=1756944000&v=beta&t=VLOk5wgR7eSbc2sS3ohKmbMbzw05HMlXwA2mJ4lCw78"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/stwomack"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/steve-womack-4725ba2/"
