@@ -5,7 +5,9 @@ date: 2025-07-31
 authors:
   - Steve Womack
   - Brian Redmond
-categories: developer
+categories:
+  - developer
+  - ai
 tags:
   - ai
   - open-source
