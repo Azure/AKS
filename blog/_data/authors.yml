@@ -345,3 +345,14 @@ Steve Womack:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/steve-womack-4725ba2/"
+Julia Yin:
+  name        : "Julia Yin"
+  bio         : "Julia is a Product Manager at Microsoft, focusing on Azure Kubernetes Service and cloud-native technologies."
+  avatar      : ""
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/juliayin"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/julia-yin"
