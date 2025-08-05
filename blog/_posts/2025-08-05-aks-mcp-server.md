@@ -1,6 +1,6 @@
 ---
 title: "Announcing the AKS-MCP Server: Unlock Intelligent Kubernetes Operations"
-description: "Learn about AKS-MCP server, latest open-sourced tooling to Unlock intelligent automation 
+description: "Learn about AKS-MCP server, the latest open-source tooling to Unlock intelligent automation 
 by standardizing and streamlining the way AI agents interact with your AKS cluster."
 date: 2025-08-05
 authors: Pavneet Ahluwalia
