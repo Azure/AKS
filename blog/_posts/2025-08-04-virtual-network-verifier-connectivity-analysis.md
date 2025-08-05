@@ -35,7 +35,8 @@ To simplify the network troubleshooting process, we're excited to announce the *
 5. Select a public domain name/endpoint as the destination for the analysis, one example is `mcr.microsoft.com`. The destination IP addresses are also populated automatically.
 6. Run the analysis and wait up to 2 minutes for the results. The analysis result will appear at the top along with a network flow diagram. To view the detailed analysis output, click on the "More details" to open up the JSON output tab.
 
-[insert GIF / demo video here]
+Quick demo of the Connectivity Analysis (Preview) experience:
+![Connectivity Analysis Demo](../assets/images/virtual-network-verifier-connectivity-analysis/vnv-demo.gif)
 
 ## Current Limitations
 
