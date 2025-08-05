@@ -22,7 +22,7 @@ title: "AKS Engineering Blog"
 email: brian.redmond@microsoft.com
 description: >- # this means to ignore newlines until "baseurl:"
   "Insights and best practices from the AKS Engineering Team"
-baseurl: "/AKS" # the subpath of your site, e.g. /blog
+#baseurl: "/AKS" # the subpath of your site, e.g. /blog
 twitter_username: theakscommunity
 github_username:  theakscommunity
 logo: "/assets/images/400x400.png"

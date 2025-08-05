@@ -5,8 +5,8 @@ date: 2025-04-02
 authors: Pavneet Ahluwalia
 categories: general
 tags:
-  - Fleet
-  - AI
+  - fleet
+  - ai
 ---
 
 # Scaling Kubernetes for AI and Data-intensive Workloads: The AKS Fleet Strategy
@@ -27,7 +27,7 @@ With AKS Fleet Manager, you can unlock true limitless scalability by leveraging 
 ---
 ## Proof in Practice: Our 70,000 Node Demonstration
 
-![fleet-multi-cluster!](/AKS/assets/images/fleetmulticluster/overview.png) 
+![fleet-multi-cluster!](/assets/images/fleetmulticluster/overview.png) 
 
 To validate our approach and showcase real-world performance, we recently executed an experiment with Kueue and AKS Fleet Manager to execute batch jobs, which yielded remarkable results. Here are some of the highlights:
 
@@ -36,8 +36,8 @@ To validate our approach and showcase real-world performance, we recently execut
 - **140,000 cores delivering 4.7 pFLOPS of performance**.
 - **Robust Scheduling**: Leveraged [Kueue](https://github.com/kubernetes-sigs/kueue)  and Fleet's multi-cluster resource placement to efficiently schedule and operate workloads seamlessly across all clusters.
 
-![fleetview!](/AKS/assets/images/fleetmulticluster/fleetview.png)
-![multiclusterview!](/AKS/assets/images/fleetmulticluster/multicluster view.png)
+![fleetview!](/assets/images/fleetmulticluster/fleetview.png)
+![multiclusterview!](/assets/images/fleetmulticluster/multicluster view.png)
 
 
 This demonstration highlights AKS' commitment to not just meeting but exceeding customer expectations for scale, stability, and operational ease.

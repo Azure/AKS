@@ -52,7 +52,7 @@ configuration:
               mentionees:
               - az-policy-kube
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         - if:
           - hasLabel:
               label: azure/policy
@@ -63,7 +63,7 @@ configuration:
               mentionees:
               - az-policy-kube
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Virtual Nodes
         - if:
           - hasLabel:
@@ -73,19 +73,9 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - justindavies
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
-        # Kubernetes Dashboard
-        - if:
-          - hasLabel:
-              label: addon/k8s-dashboard
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - qpetraroia
+              - allyford
+              - wdarko1
+              - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # App Routing
@@ -97,21 +87,9 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sabbour
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # App Gateway
-        - if:
-          - hasLabel:
-              label: azure/application-gateway
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - sabbour
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
         # Security Center
         - if:
           - hasLabel:
@@ -123,7 +101,7 @@ configuration:
               mentionees:
               - mayaherskovic
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Security
         - if:
           - hasLabel:
@@ -133,7 +111,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - Azure/teams/aks-security
+              - Azure/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True   
         # Confidential Computing
@@ -145,9 +123,9 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - agowdamsft
+              - jakjang
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Azure Portal
         - if:
           - hasLabel:
@@ -172,7 +150,7 @@ configuration:
               mentionees:
               - Azure/aks-portal
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Azure Government
         - if:
           - hasLabel:
@@ -182,9 +160,9 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - miwithro
+              - weinong
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Networking
         - if:
           - hasLabel:
@@ -195,6 +173,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - chasewilson
+              - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Cilium
@@ -208,9 +187,21 @@ configuration:
               mentionees:
               - chasewilson
               - paulgmiller
-              - wedaly
               - quantumn-a5
               - tamilmani1989
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # ACNS (Advanced Container Networking Services)
+        - if:
+          - hasLabel:
+              label: advanced-container-networking-services
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Pod Identity
@@ -222,9 +213,9 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - Azure/teams/aks-security
+              - Azure/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Windows Containers
         - if:
           - hasLabel:
@@ -262,8 +253,9 @@ configuration:
               mentionees:
               - vishiy
               - saaror
+              - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Log Analytics
         - if:
           - hasLabel:
@@ -275,8 +267,9 @@ configuration:
               mentionees:
               - vishiy
               - saaror
+              - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Azure China
         - if:
           - hasLabel:
@@ -286,9 +279,9 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - miwithro
+              - thomas1206
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Azure Gateway Ingress Controller (AGIC)
         - if:
           - hasLabel:
@@ -298,20 +291,21 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sabbour
+              - chasewilson
               - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # AGC
+        # App Gateway for Containers (AGC)
         - if:
           - hasLabel:
-              label: AGC
+              label: app-gateway-for-containers
           - not:
               isAssignedToSomeone
           then:
           - mentionUsers:
               mentionees:
               - JackStromberg
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # App Gateway
@@ -323,7 +317,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sabbour
+              - chasewilson
               - jackstromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -339,7 +333,7 @@ configuration:
               - squillace
               - bridgetkromhout
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Upstream - Gatekeeper
         - if:
           - hasLabel:
@@ -352,7 +346,7 @@ configuration:
               - sozercan
               - ritazh
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: False
+              assignMentionees: True
         # Service Mesh
         - if:
           - hasLabel:
@@ -363,6 +357,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - azure/aks-traffic
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Mesh networking
@@ -375,6 +370,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - shashankbarsin
+              - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
         # Copilot
@@ -400,7 +396,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - mangalorereshmi
+              - jakjang
+              - toddysm
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Control plane
@@ -412,7 +409,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - pavneeta
+              - robbiezhang
+              - kthakar1990
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Documentation                
@@ -424,7 +422,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - allyford
+              - chasewilson
+              - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
         # Azure Kubernetes Fleet Manager
@@ -448,7 +447,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - qpetraroia
+              - wangyira
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
         # Node pools
@@ -461,7 +460,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - allyford
-              - justindavies
+              - wdarko1
               - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -500,20 +499,32 @@ configuration:
           - mentionUsers:
               mentionees:
               - kaarthis
-              - sdesai345
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True 
-        # Miscellaneous issues
+              assignMentionees: True
+        # Flux
         - if:
           - hasLabel:
-              label: miscellaneous
+              label: extension/flux
           - not:
               isAssignedToSomeone
           then:
           - mentionUsers:
               mentionees:
-              - seguler
+              - dipti-pai
+              - bavneetsingh16
               replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True               
+              assignMentionees: True
+        # GPU
+        - if:
+          - hasLabel:
+              label: GPU
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - sdesai345
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
 onFailure: 
 onSuccess: 

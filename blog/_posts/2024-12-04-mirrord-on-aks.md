@@ -20,7 +20,7 @@ Developing applications for Kubernetes can mean a lot of time spent waiting and 
 
 Tools like this (dubbed "remocal" development tools) are designed to improve your experience when developing applications intended to be deployed in a cluster. The point of mirrord is to shift left on cloud testing and shorten the dev loop from hours to seconds. It's the kind of thing you set up once and then can't imagine living without because it feels like magic.
 
-![Screenshot of the inner dev loop](/AKS/assets/images/mirrord-on-aks/mirrord-dev-loop.png)
+![Screenshot of the inner dev loop](/assets/images/mirrord-on-aks/mirrord-dev-loop.png)
 
 
 
@@ -58,17 +58,17 @@ kubectl get service store-front --output 'jsonpath={..status.loadBalancer.ingres
 
 You should see the store UI before it’s been affected by any of our local changes.
 
-![Screenshot of the AKS pet store demo app](/AKS/assets/images/mirrord-on-aks/aks-pet-store.png)
+![Screenshot of the AKS pet store demo app](/assets/images/mirrord-on-aks/aks-pet-store.png)
 
 Next is installing mirrord: search for "mirrord" in the VSCode extensions tab (or find it [here](https://marketplace.visualstudio.com/items?itemName=MetalBear.mirrord)) and install it - a `mirrord` status icon should show up on the bottom bar of the IDE. Click it once so the circle next to "mirrord" is filled (this means it's enabled).
 
-![Screenshot of the mirrord extension in vs code](/AKS/assets/images/mirrord-on-aks/mirrord-vscode-extension.png)
+![Screenshot of the mirrord extension in vs code](/assets/images/mirrord-on-aks/mirrord-vscode-extension.png)
 
-![Screenshot of the mirrord extension in the vs code toolbar](/AKS/assets/images/mirrord-on-aks/mirrord-vscode-toolbar.png)
+![Screenshot of the mirrord extension in the vs code toolbar](/assets/images/mirrord-on-aks/mirrord-vscode-toolbar.png)
 
 As a quick sanity check, hit F5 to run `product-service` in debug mode (if it asks, let VSCode generate run configurations from `Cargo.toml` and use the configuration called "Debug executable 'product-service'"). mirrord will ask which target to use (that is, the pod or deployment whose traffic, files, and other input and output mirrord should proxy to your local process), so choose the pod from the `product-service` deployment. When you refresh the store front UI in your browser, you should see incoming traffic to `product-service` in the cluster printing out in the terminal.
 
-![Screenshot of the mirrord logs](/AKS/assets/images/mirrord-on-aks/mirrord-logs.png)
+![Screenshot of the mirrord logs](/assets/images/mirrord-on-aks/mirrord-logs.png)
 
 Nice! We're mirroring the traffic coming into the target on the cluster to our local process and all we had to do was download a plugin. This doesn't affect the cluster because mirroring traffic is non-intrusive - requests are handled by the remote pod, and any response we send from our local process is discarded. Now let's get intrusive and change the details of some of our products. Stop the debugger so we don't have to look at constant log spam.
 
@@ -118,7 +118,7 @@ While we have the settings open, let's specify our target so we don't have to ke
 
 This time, when you refresh the store front, you'll see that the product details have changed in line with our local version of `product-service`.
 
-![Screenshot of the updated pet store](/AKS/assets/images/mirrord-on-aks/aks-pet-store-updated.png)
+![Screenshot of the updated pet store](/assets/images/mirrord-on-aks/aks-pet-store-updated.png)
 
 
 When the store-front app in the cluster sent a request to get the product details, mirrord stole the request and sent it to our local version, which sent a response containing our changes that was then sent back to the store front in the cluster through mirrord, showing up on the webpage.
@@ -150,13 +150,13 @@ Open `makeline-service` in VSCode and make sure mirrord is enabled (refer to the
 
 Keep the `store-admin` page open so that we can track orders (grab the IP with `kubectl get service store-admin --output 'jsonpath={..status.loadBalancer.ingress[0].ip}'`) and make sure that new orders are being placed:
 
-![Screenshot of the pet store admin page](/AKS/assets/images/mirrord-on-aks/aks-pet-store-admin-page.png)
+![Screenshot of the pet store admin page](/assets/images/mirrord-on-aks/aks-pet-store-admin-page.png)
 
 Say, for example, that you have had a genius new idea regarding order spam detection: you want to try discarding orders in the queue that contain more than one type of item.
 
 Clicking on some of the orders, you can see that they’re a random collection of usually a few different types of item, like this (note that orders are created in a way such that some will have multiple entries for the same kind of item - we think these are spam too, and we only want to process orders with a single item entry):
 
-![Screenshot of the pet store orders](/AKS/assets/images/mirrord-on-aks/aks-pet-store-orders.png)
+![Screenshot of the pet store orders](/assets/images/mirrord-on-aks/aks-pet-store-orders.png)
 
 We don’t want these, they’re (possibly) spam! Change the contents of `main.go` as follows: replace lines 77-78 with this code for our new anti-spam measure:
 
@@ -175,7 +175,7 @@ err = client.repo.InsertOrders(new_orders)
 
 Re-run the debugger, refresh the `store-admin` page and check for new orders - they should all be orders with only one type of item, which you can check by clicking on the order number:
 
-![Screenshot of the pet store admin orders](/AKS/assets/images/mirrord-on-aks/aks-pet-store-admin-orders.png)
+![Screenshot of the pet store admin orders](/assets/images/mirrord-on-aks/aks-pet-store-admin-orders.png)
 
 Much better. This means that mirrord not only stole traffic for the `makeline-service` deployment - it also read messages from RabbitMQ and wrote new entries to MongoDB, all without messing around with configuration and credentials! It can do this because by targeting the `makeline-service` pod, it reads the environment variables and files from that pod in the cluster.
 
