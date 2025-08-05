@@ -21,7 +21,7 @@ AKS-MCP isn't just another integration layer. It empowers cutting-edge AI assist
 
 We believe, users should have the flexibility to leverage the AI tooling of their choice with AKS. For instance if you have a strong affinity for Claude code or Github-Copilot or some other agent for your workflows, you can plug-in aks-mcp server and unlock intelligent interactions, automation and troubleshooting for your AKS environments.
 
-![aks-mcp-github](blog/assets/images/aks-mcp/aks-mcp-vscode.png)
+![aks-mcp-github](/assets/images/aks-mcp/aks-mcp-github.png)
 
 ## The Problem: Why Do We Need MCP Now?
 
@@ -64,6 +64,8 @@ To make it easy for AKS users to leverage the new AKS-MCP server, we have integr
 4. Instantly start using GitHub Copilot or your favorite AI agent with first-class access to AKS tools.
 
 This one-click setup brings AI-powered Kubernetes operations to every developer's fingertips.
+
+![aksmcp-github](/assets/images/aks-mcp/aks-mcp-vscode.png)
 
 ### Option B: Download Binaries/container image from Github
 
