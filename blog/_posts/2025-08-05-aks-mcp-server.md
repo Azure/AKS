@@ -53,7 +53,7 @@ The AKS MCP server supports a number of tools that surface capabilities to inter
 It provides several observability telemetries to aid users with diagnosing health issues in their environments.
 Currently, AKS MCP server supports the following tools:
 
-- **kubectl commands for kubernetes api**: Read and Write commands such as `get`, `describe`, `logs`, `exec`, `apply`, `delete` etc.
+- **Kubectl commands using the Kubernetes API**: Read and write commands such as `get`, `describe`, `logs`, `exec`, `apply`, `delete` etc.
 - **Azure CLI AKS commands for interacting with Azure APIs**: `show`, `list`, `get-credentials`, nodepool operations, `check-network`
 - **Other Azure resource commands attached to AKS clusters**: Basic, read-only Azure Compute, Networking, Kubernetes Fleet Manager commands
 - **Azure Monitor API commands for retrieving monitoring data**: Pull activity logs, audit logs, metrics, alerts
