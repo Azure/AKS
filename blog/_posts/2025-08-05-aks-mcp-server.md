@@ -19,7 +19,7 @@ We're excited to announce the launch of the **AKS-MCP Server**—an open source 
 
 AKS-MCP isn't just another integration layer. It empowers cutting-edge AI assistants (such as **Claude**, **Cursor**, and **GitHub Copilot**) to interact with AKS through a secure, standards-based protocol—opening new possibilities for automation, observability, and collaborative cloud operations.
 
-We beleive, users should have the flexibility to leverage the AI tooling of thier choice with AKS. For instance if you have a strong affinity for Claude code or Github-Copilot or some other agent for your workflows, you can plug-in aks-mcp sever and unlock intelligent interactions, automation and troubleshooting for your AKS environments.
+We believe, users should have the flexibility to leverage the AI tooling of their choice with AKS. For instance if you have a strong affinity for Claude code or Github-Copilot or some other agent for your workflows, you can plug-in aks-mcp sever and unlock intelligent interactions, automation and troubleshooting for your AKS environments.
 
 ## The Problem: Why Do We Need MCP Now?
 
@@ -71,7 +71,7 @@ You can download the correct binaries from the [AKS-MCP GitHub releases page](ht
 
 AKS-MCP enables intelligent, agent-driven cloud operations. Here are a few hands-on scenarios that you can try in Github Copilot, Claude Code or other mcp compatible agents:
 
-### Diagnose Resoruce Health
+### Diagnose Resource Health
 
 **Prompt**: *"Why is one of my AKS nodes in NotReady state?"*
 
