@@ -252,3 +252,77 @@ Jane Guo:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/ziqi-guo/"
+
+Colin Mixon:
+  name        : "Colin Mixon"
+  bio         : "Product Manager 2 focusing on optimizing HPC and stateful workloads on Azure Kubernetes Service."
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/colinmixon/"
+
+Eric Cheng:
+  name        : "Eric Cheng"
+  bio         : "Eric is a product manager in Azure Storage."
+  avatar      : "https://www.chengeric.com/photo.jpg" # Replace this with your avatar image
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:ericcheng@microsoft.com"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/eh8"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/eh8"
+
+Francis Yu:
+  name     : "Francis Yu"
+  bio      : "Francis is a Product Manager and focuses on optimizing storage orchestration for Kubernetes workloads."
+  avatar   : "https://avatars.githubusercontent.com/u/23534998?v=4"
+
+Anson Qian:
+  name        : "Anson Qian"
+  bio         : "Software Engineer at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/aqian/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/anson627"
+
+Alyssa Vu:
+  name        : "Alyssa Vu"
+  bio         : "Software Engineer at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/alyssa-v-23242615a/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/alyssa1303"
+
+Jose Blanquicet:
+  name        : "Jose Blanquicet"
+  bio         : "Jose is a Senior Software Engineer at Microsoft, using eBPF on Azure Kubernetes Service to boost observability and make troubleshooting simpler."
+  avatar      : "https://github.com/blanquicet.png"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/joseblanquicet"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/blanquicet"
+
+Steve Womack:
+  name        : "Steve Womack"
+  bio         : "Steve is a Solutions Architect at Temporal with over 20 years of experience spanning software development, system architecture, DevOps, and solutions engineering."
+  avatar      : "https://media.licdn.com/dms/image/v2/D5603AQHVcFBHKjfvYw/profile-displayphoto-shrink_800_800/B56ZWRXq_wGsAc-/0/1741900657151?e=1756944000&v=beta&t=VLOk5wgR7eSbc2sS3ohKmbMbzw05HMlXwA2mJ4lCw78"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/stwomack"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/steve-womack-4725ba2/"
