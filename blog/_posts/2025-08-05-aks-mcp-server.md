@@ -42,7 +42,9 @@ AKS-MCP answers this challenge as a universal, protocol-first bridge between AI 
 
 ## Core Capabilities at a Glance
 
-The AKS MCP server supports a number of tools that surface capabilities to interact with Kubernetes and Azure APIs and provide several observability telemetries to aid users with diagnosing health issues in their environments. Currently, AKS MCP server supports the following tools:
+The AKS MCP server supports a number of tools that surface capabilities to interact with Kubernetes and Azure APIs.
+It provide several observability telemetries to aid users with diagnosing health issues in their environments.
+Currently, AKS MCP server supports the following tools:
 
 - **kubectl commands for kubernetes api**: Read and Write commands such as `get`, `describe`, `logs`, `exec`, `apply`, `delete` etc.
 - **Azure CLI AKS commands for interacting with Azure APIs**: `show`, `list`, `get-credentials`, nodepool operations, `check-network`
