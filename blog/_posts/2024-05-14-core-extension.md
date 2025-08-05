@@ -39,16 +39,26 @@ Core Kubernetes extensions are available in all regions supported by AKS across 
 **More native experience for core extensions graduated from [standard extensions](https://learn.microsoft.com/azure/aks/cluster-extensions#currently-available-extensions)**: Currently, we are working on upgrading Azure Backup, which is key functionality, to core extensions for better integrated experience in AKS. More core extensions will come in the future.
 
 CLI commands:
+
 - Create/delete a **standard** extension:
 
 ```bash
-az k8s-extension create/delete --extension-type <type> --resource-group <group> --cluster-name <name> --cluster-type <clusterType> --name <extension name>
+az k8s-extension create/delete 
+--extension-type <type> 
+--resource-group <group> 
+--cluster-name <name> 
+--cluster-type <clusterType> 
+--name <extension name>
 ```
 
 - Create/delete a **core** extension:
 
 ```bash
-az aks extension create/delete --extension-type <type> --resource-group <group> --cluster-name <name> --name <core extension name>
+az aks extension create/delete 
+--extension-type <type> 
+--resource-group <group> 
+--cluster-name <name> 
+--name <core extension name>
 ```
 
 ### Safer version management
@@ -61,7 +71,7 @@ Extension-manager is moved from the user node pool to the AKS Control Plane, whi
 
 #### What Is extension-manager?
 
-Extension-manager is a key component that handles lifecycle operations (create, upgrade, delete, reconcile) for Kubernetes extensions. It periodically polls for version updates on extension instances and reconciles extension configuration settings, ensuring that extensions are managed effectively. Learn more about the flow in [extension architecture](https://learn.microsoft.com/azure/azure-arc/kubernetes/conceptual-extensions#architecture). 
+Extension-manager is a key component that handles lifecycle operations (create, upgrade, delete, reconcile) for Kubernetes extensions. It periodically polls for version updates on extension instances and reconciles extension configuration settings, ensuring that extensions are managed effectively. Learn more about the flow in [extension architecture](https://learn.microsoft.com/azure/azure-arc/kubernetes/conceptual-extensions#architecture).
 
 Previously, extension-manager pods (extension-operator and extension-agent) were deployed in the kube-system namespace on customer worker nodes. Example of a deployment before:
 
