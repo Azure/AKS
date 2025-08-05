@@ -26,6 +26,8 @@ To simplify the network troubleshooting process, we're excited to announce the *
 - User defined routes (route tables)
 - Virtual network peering
 
+The Connectivity Analysis (Preview) feature does not generate any actual traffic on your AKS cluster. Instead, it utilizes under-the-hood algorithms to analyze the configurations of your network resources and checks for any rules/settings which may block traffic to the specific endpoint(s). Third-party or external network resources are not in scope for this analysis, so we recommend that you verify that traffic is not blocked outside of the Azure networking ecosystem if the connectivity test doesn't find any issues.
+
 ## How to use the Connectivity Analysis (Preview) feature
 
 1. Navigate to your AKS cluster in the **Azure Portal**.
