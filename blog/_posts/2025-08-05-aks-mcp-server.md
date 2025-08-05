@@ -14,7 +14,6 @@ tags:
   - open-source
 ---
 
-# Announcing the AKS-MCP Server: Unlock Intelligent Kubernetes Operations
 We're excited to announce the launch of the **AKS-MCP Server**.
 An open source Model Context Protocol (MCP) server designed to make your Azure Kubernetes Service (AKS)
 clusters AI-native and more accessible than ever for developers, SREs, and platform engineers.
