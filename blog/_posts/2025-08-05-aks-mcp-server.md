@@ -68,7 +68,7 @@ For a full list of tools and capabilities please see - [Available tools](https:/
 To make it easy for AKS users to leverage the new AKS-MCP server, we have integrated it with AKS VS Code Extension starting with version 1.6.12.
 
 1. Install the AKS Extension from the VS Code Marketplace.
-2. Run **AKS: Setup AKS MCP Server** from the command palette.
+2. Run **AKS: Setup AKS MCP Server** from the command palette (`Ctrl+Shift+P` on Windows/Linux or `Cmd+Shift+P` on macOS).
 3. The extension auto installs the binary based on the platform, configures the MCP server and updates your VS Code `mcp.json` file.
 4. Instantly start using GitHub Copilot or your favorite AI agent with first-class access to AKS tools.
 
