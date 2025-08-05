@@ -347,8 +347,8 @@ Steve Womack:
       url: "https://www.linkedin.com/in/steve-womack-4725ba2/"
 Julia Yin:
   name        : "Julia Yin"
-  bio         : "Julia is a Product Manager at Microsoft, focusing on Azure Kubernetes Service and cloud-native technologies."
-  avatar      : ""
+  bio         : "Julia is a Product Manager at Microsoft, focusing on Azure Kubernetes Service and building best-in-class observability/troubleshooting experiences."
+  avatar      : "https://media.licdn.com/dms/image/v2/D5603AQF7jn0Y_qeAbg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1693721287868?e=1757548800&v=beta&t=pTtMUZltKJ7np5DAMG1gyLXfdGEOrq1sKKfvgmP_SLY"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
