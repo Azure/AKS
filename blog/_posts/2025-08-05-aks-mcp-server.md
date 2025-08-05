@@ -19,7 +19,7 @@ We're excited to announce the launch of the **AKS-MCP Server**—an open source 
 
 AKS-MCP isn't just another integration layer. It empowers cutting-edge AI assistants (such as **Claude**, **Cursor**, and **GitHub Copilot**) to interact with AKS through a secure, standards-based protocol—opening new possibilities for automation, observability, and collaborative cloud operations.
 
-We believe, users should have the flexibility to leverage the AI tooling of their choice with AKS. For instance if you have a strong affinity for Claude code or Github-Copilot or some other agent for your workflows, you can plug-in aks-mcp server and unlock intelligent interactions, automation and troubleshooting for your AKS environments.
+We believe users should have the flexibility to leverage the AI tooling of their choice with AKS. For instance if you have a strong affinity for Claude code or Github-Copilot or some other agent for your workflows, you can plug-in aks-mcp server and unlock intelligent interactions, automation and troubleshooting for your AKS environments.
 
 ![aks-mcp-github](/assets/images/aks-mcp/aks-mcp-github.png)
 
