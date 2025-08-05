@@ -79,7 +79,9 @@ This one-click setup brings AI-powered Kubernetes operations to every developer'
 
 ### Option B: Download Binaries/container image from Github
 
-You can download the correct binaries from the [AKS-MCP GitHub releases page](https://github.com/Azure/aks-mcp), and then manually configure the mcp server in VSCode or the IDE/agent of your choice. Find information on [how to get install and get started](https://github.com/Azure/aks-mcp#how-to-install).
+You can download the correct binaries from the [AKS-MCP GitHub releases page](https://github.com/Azure/aks-mcp),
+and then manually configure the mcp server in VSCode or the IDE/agent of your choice.
+Find information on [how to get install and get started](https://github.com/Azure/aks-mcp#how-to-install).
 
 ## Real-World Example Use Cases
 
