@@ -57,7 +57,7 @@ Currently, AKS MCP server supports the following tools:
 - **Azure CLI AKS commands for interacting with Azure APIs**: `show`, `list`, `get-credentials`, nodepool operations, `check-network`
 - **Other Azure resource commands attached to AKS clusters**: Basic, read-only Azure Compute, Networking, Kubernetes Fleet Manager commands
 - **Azure Monitor API commands for retrieving monitoring data**: Pull activity logs, audit logs, metrics, alerts
-- **Other Diagnostic information**: Diagnose and solve detectors, Azure Advisor, Inspektor-gadget
+- **Other Diagnostic information**: Diagnose and solve detectors, Azure Advisor, [Inspektor Gadget](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/logs/capture-system-insights-from-aks?tabs=azurelinux30) for real time troubleshooting 
 
 For a full list of tools and capabilities please see - [Available tools](https://github.com/Azure/aks-mcp#available-tools).
 
