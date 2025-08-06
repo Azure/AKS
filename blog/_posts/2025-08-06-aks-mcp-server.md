@@ -40,7 +40,7 @@ but the fragmented, brittle context in which they operate. Organizations today a
 
 ## Our thought process
 
-What we felt is needed here is a building block for real context engineering i.e. "the art of providing all the context for the task to be plausibly solvable by the LLM." - Tobi Lutke. The rise and standardization around the open [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) opens the doors for us to start realizing this vision.
+What we felt is needed here, is a building block for real context engineering i.e. "the art of providing all the context for the task to be plausibly solvable by the LLM." - Tobi Lutke. The rise of and standardization around the open [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) opens the doors for us to start realizing this vision.
 
 Our team thought hard about what should be the tenets of an AKS AI experience and how to realize this, as we had several tradeoffs to navigate, this is what we narrowed it down to:
 
