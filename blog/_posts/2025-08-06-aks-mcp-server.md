@@ -23,7 +23,7 @@ It empowers cutting-edge AI assistants (such as **Claude**, **Cursor**, and **Gi
 to interact with AKS through a secure, standards-based protocol—opening new possibilities for
 automation, observability, and collaborative cloud operations.
 
-![aks-mcp-github](/assets/images/aks-mcp/aks-mcp-announcement.pngg)
+![aks-mcp-github](/assets/images/aks-mcp/aks-mcp-announcement.png)
 
 ## The Problem: Why Do We Need MCP Now?
 
@@ -44,9 +44,9 @@ What we felt is needed here is a building block for real context engineering i.e
 
 Our team thought hard about what should be the tenets of an AKS AI experience and how to realize this, as we had several tradeoffs to navigate, this is what we narrowed it down to:
 
-- **Open-source and community driven**: We launched aks-mcp as an open-sourced (under MIT license) project not just because we wanted to tap into the rich cloud native open source community, but also since security, trust and transparency are top of mind for our users and us. By opening up the source code, and enabling users to contribute, we believe we are closer to that goal.This approach aligns with AKS's commitment to open development, contribution to the community, and cloud-native flexibility for users of all sizes.
+- **Open-source and community driven**: We launched aks-mcp as an open-sourced (under MIT license) project not just because we wanted to tap into the rich cloud native open source community, but also since security, trust and transparency are top of mind for our users and us. By opening up the source code, and enabling users to contribute, we believe we are closer to that goal. This approach aligns with AKS's commitment to open development, contribution to the community, and cloud-native flexibility for users of all sizes.
 - **Plug-and-play AI agent support**: We wanted to be where our customers are, the solutions we build should work out of the box with Claude, Cursor, GitHub Copilot, and more—so you can use the assistants you already love. Hence our investment in the key LEGO building blocks of a best-in-class AI Agent experience for Kubernetes. Step one in that process was building an MCP server for AKS that has the depth of tools needed to provide detailed context, and integrating it into the AKS VS Code extension v1.6.12. But we will not stop here, stay tuned for other announcements!
-![LEGO Building Blocks](blog/assets/images/aks-mcp/image-3.png)
+![LEGO Building Blocks](/assets/images/aks-mcp/image-3.png)
 - **Speed over Perfection**: The underlying technology for AI Agents is changing fast as demonstrated by the growth of MCP servers, and even changes with it - such as the [deprecation of the SSE transport](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/308) in favor of streamable HTTP. This highlights the need to move fast and trust in users' understanding of the evolving ecosystem. That is why we started by releasing the binaries and docker images on GitHub, so that users can run it locally or in-cluster and unlock its benefits, while the community converges on a secure remote MCP server architecture.
 - **Human-in-the-loop workflows first**: AI is delivering massive value and rewards for organizations across the globe, however its non-deterministic nature introduces risks. We believe users want control over actions performed by AI agents. Whether that is deploying a debug pod or creating/deleting resources - users want AI tools to request explicit write permissions. Hence, aks-mcp defaults to read-only tools with explicit user opt-in required for write tool access.
 
@@ -56,13 +56,13 @@ We believe AKS-MCP is that building block and acts as a universal, protocol-firs
 
 - **Secure by default**: Leverage Azure authentication and granular RBAC to keep operations and data safe, the agents can only access the data/resources that users have access to.
 - **Extensible and community-driven**: Fully open source, so you can adapt, extend, and evolve the platform for new tools and future needs.
-- **In-depth troubleshooting tools**: Supports a number of tools to interact with Kubernetes and Azure APIs, monitoring telemetry (activity/audit logs), diagnostic tooling such as [Inspektor Gadget](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/logs/capture-system-insights-from-aks?tabs=azurelinux30). AKS customers have repeatedly shared that troubleshooting Kubernetes and AKS issues is hard, so we have started with that problem and will expand rapidly over the coming weeks.
+- **In-depth troubleshooting tools**: Supports a number of tools to interact with Kubernetes and Azure APIs, monitoring telemetry (activity/audit logs), diagnostic tooling such as [Inspektor Gadget](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/logs/capture-system-insights-from-aks?tabs=azurelinux30). AKS customers have repeatedly shared that troubleshooting Kubernetes and AKS issues is hard, so we have started with that problem and will expand rapidly over the coming weeks.
 
 ![AKS-MCP Architecture](/assets/images/aks-mcp/mcp-arch.png)
 
 For a full list of tools and capabilities please see [Available tools](https://github.com/Azure/aks-mcp#available-tools).
 
-## How does aks-mcp server authenticate and maintain RBAC complaince?
+## How does aks-mcp server authenticate and maintain RBAC compliance?
 
 The AKS-MCP server is designed with security at its core, relying on Azure's industry-standard authentication mechanisms through the Azure SDK's `DefaultAzureCredential` chain (via the `azidentity` library), which checks for environment variables, managed identities, Azure CLI logins, or even browser-based credentials. This means the server never manages user credentials directly; instead, users must authenticate with Azure CLI (`az login`) beforehand, and the server simply reuses this context to obtain secure OAuth tokens for every Azure API call. To further protect operations, AKS-MCP enforces a three-tier access control system—`readonly`, `readwrite`, and `admin`—with a built-in security validator, ensuring every command is checked against configured permission levels before execution. This approach provides seamless, secure access for both automation and interactive use cases, and ensures only authorized actions can be performed, all by building on existing, trusted Azure identity patterns.
 
@@ -103,18 +103,22 @@ AKS-MCP enables intelligent, agent-driven cloud operations. Here are a few hands
 ### Automate Operations
 
 **Prompt**: *"Scale my payments-api deployment to 5 replicas and confirm rollout status."*
+
 The result? AI agents that can reason, act, and surface Azure-specific insights—accelerating DevOps and cloud troubleshooting.
-Let us see an example below, where I am asking Github-copilot for the health of my cluster, and the AI assisted daignostic journey that follows:
-Prompt: How is the health of my cluster? (actually there is a typo, but GHC is able to figure that out)
 
-![ghc-health](blog/assets/images/aks-mcp/ghc-mcp-1.png)
+Let us see an example below, where I am asking GitHub Copilot for the health of my cluster, and the AI assisted diagnostic journey that follows:
 
-![ghc-health](blog/assets/images/aks-mcp/ghc-mcp-2.png)
+**Prompt**: How is the health of my cluster? (actually there is a typo, but GitHub Copilot is able to figure that out)
 
-Now I need help to figure out why there is a outbound connectivity issues in my cluster?
-Prompt 2: daignose the outbound connectivity failure
+![ghc-health](/assets/images/aks-mcp/ghc-mcp-1.png)
 
-![github-aks-mcp](blog/assets/images/aks-mcp/ghc-mcp.png)
+![ghc-health](/assets/images/aks-mcp/ghc-mcp-2.png)
+
+Now I need help to figure out why there is an outbound connectivity issue in my cluster?
+
+**Prompt 2**: diagnose the outbound connectivity failure
+
+![github-aks-mcp](/assets/images/aks-mcp/ghc-mcp.png)
 
 As you can see GitHub Copilot is able to use the aks-mcp server, and make various tool calls to Azure and Kubernetes APIs to figure out that there is a problem,
 and then what the problem is and how to remediate the issue.
@@ -122,4 +126,5 @@ and then what the problem is and how to remediate the issue.
 ## Get Involved
 
 Visit [Azure/aks-mcp](https://github.com/Azure/aks-mcp) on GitHub. We're looking for feedback, contributions, and innovative feature ideas.
+
 Let's take the next step in cloud-native DevOps—where Kubernetes, AI, and open protocols empower every developer.
