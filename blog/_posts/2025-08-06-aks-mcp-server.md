@@ -62,6 +62,10 @@ We believe AKS-MCP is that building block and acts as a universal, protocol-firs
 
 For a full list of tools and capabilities please see [Available tools](https://github.com/Azure/aks-mcp#available-tools).
 
+## How does aks-mcp server authenticate and maintain RBAC complaince?
+
+The AKS-MCP server is designed with security at its core, relying on Azure's industry-standard authentication mechanisms through the Azure SDK's `DefaultAzureCredential` chain (via the `azidentity` library), which checks for environment variables, managed identities, Azure CLI logins, or even browser-based credentials. This means the server never manages user credentials directly; instead, users must authenticate with Azure CLI (`az login`) beforehand, and the server simply reuses this context to obtain secure OAuth tokens for every Azure API call. To further protect operations, AKS-MCP enforces a three-tier access control system—`readonly`, `readwrite`, and `admin`—with a built-in security validator, ensuring every command is checked against configured permission levels before execution. This approach provides seamless, secure access for both automation and interactive use cases, and ensures only authorized actions can be performed, all by building on existing, trusted Azure identity patterns.
+
 ## Getting Started with AKS MCP
 
 ### Option A: VS Code Extension (Recommended)
