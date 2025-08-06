@@ -106,5 +106,4 @@ The result? AI agents that can reason, act, and surface Azure-specific insightsâ
 ## Get Involved
 
 Visit [Azure/aks-mcp](https://github.com/Azure/aks-mcp) on GitHub. We're looking for feedback, contributions, and innovative feature ideas.
-
 Let's take the next step in cloud-native DevOpsâ€”where Kubernetes, AI, and open protocols empower every developer.
