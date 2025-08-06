@@ -100,10 +100,8 @@ AKS-MCP enables intelligent, agent-driven cloud operations. Here are a few hands
 
 **Prompt**: *"Scale my payments-api deployment to 5 replicas and confirm rollout status."*
 
-The result? AI agents that can reason, act, and surface Azure-specific insights—accelerating DevOps and cloud troubleshooting.
-
-
-
+The result? AI agents that can reason, act, and surface Azure-specific insights—accelerating DevOps and cloud troubleshooting. See an example below: 
+![github-aks-mcp](blog/assets/images/aks-mcp/ghc-mcp.png)
 
 ## Get Involved
 
