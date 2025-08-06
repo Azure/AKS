@@ -23,7 +23,7 @@ It empowers cutting-edge AI assistants (such as **Claude**, **Cursor**, and **Gi
 to interact with AKS through a secure, standards-based protocol—opening new possibilities for
 automation, observability, and collaborative cloud operations.
 
-![aks-mcp-github](/assets/images/aks-mcp/aks-mcp-github.png)
+![aks-mcp-github](/assets/images/aks-mcp/aks-mcp-announcement.pngg)
 
 ## The Problem: Why Do We Need MCP Now?
 
@@ -58,7 +58,7 @@ We believe AKS-MCP is that building block and acts as a universal, protocol-firs
 - **Extensible and community-driven**: Fully open source, so you can adapt, extend, and evolve the platform for new tools and future needs.
 - **In-depth troubleshooting tools**: Supports a number of tools to interact with Kubernetes and Azure APIs, monitoring telemetry (activity/audit logs), diagnostic tooling such as [Inspektor Gadget](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/logs/capture-system-insights-from-aks?tabs=azurelinux30). AKS customers have repeatedly shared that troubleshooting Kubernetes and AKS issues is hard, so we have started with that problem and will expand rapidly over the coming weeks.
 
-![AKS-MCP Architecture](blog/assets/images/aks-mcp/mcp-arch.png)
+![AKS-MCP Architecture](/assets/images/aks-mcp/mcp-arch.png)
 
 For a full list of tools and capabilities please see [Available tools](https://github.com/Azure/aks-mcp#available-tools).
 
