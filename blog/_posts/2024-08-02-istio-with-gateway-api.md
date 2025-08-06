@@ -6,7 +6,7 @@ author: Paul Yu
 categories:
   - networking
   - operations
-  - add-ons
+  - add-ons-and-extensions
 tags:
   - istio
   - gateway-api
