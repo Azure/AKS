@@ -5,7 +5,7 @@ date: 2024-08-23
 author: Sachi Desai
 categories:
 - ai
-- add-ons
+- add-ons-and-extensions
 tags:
 - kaito
 ---

@@ -10,8 +10,7 @@ categories:
 # - networking
 # - security
 # - developer
-# - add-ons
-# - extensions
+# - add-ons-and-extensions
 ---
 
 ## Background

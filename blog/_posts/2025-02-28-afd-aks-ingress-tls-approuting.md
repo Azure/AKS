@@ -6,7 +6,7 @@ authors:
   - Steve Griffith
 categories:
   - networking
-  - add-ons
+  - add-ons-and-extensions
 tags:
   - azure-front-door
   - azure-key-vault
