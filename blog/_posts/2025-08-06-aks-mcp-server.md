@@ -99,9 +99,21 @@ AKS-MCP enables intelligent, agent-driven cloud operations. Here are a few hands
 ### Automate Operations
 
 **Prompt**: *"Scale my payments-api deployment to 5 replicas and confirm rollout status."*
+The result? AI agents that can reason, act, and surface Azure-specific insights—accelerating DevOps and cloud troubleshooting.
+Let us see an example below, where I am asking Github-copilot for the health of my cluster, and the AI assisted daignostic journey that follows:
+Prompt: How is the health of my cluster? (actually there is a typo, but GHC is able to figure that out)
 
-The result? AI agents that can reason, act, and surface Azure-specific insights—accelerating DevOps and cloud troubleshooting. See an example below: 
+![ghc-health](blog/assets/images/aks-mcp/ghc-mcp-1.png)
+
+![ghc-health](blog/assets/images/aks-mcp/ghc-mcp-2.png)
+
+Now I need help to figure out why there is a outbound connectivity issues in my cluster?
+Prompt 2: daignose the outbound connectivity failure
+
 ![github-aks-mcp](blog/assets/images/aks-mcp/ghc-mcp.png)
+
+As you can see GitHub Copilot is able to use the aks-mcp server, and make various tool calls to Azure and Kubernetes APIs to figure out that there is a problem,
+and then what the problem is and how to remediate the issue.
 
 ## Get Involved
 
