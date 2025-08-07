@@ -4,13 +4,24 @@ description: "Learn what core Kubernetes extensions are, and how they can extend
 date: 2025-08-04 # date is important. future dates will not be published
 author: Jane Guo # must match the authors.yml in the _data folder
 categories: 
-- add-ons-and-extensions
+- add-ons
+- developer
+- general
+- security
 # - general
 # - operations
 # - networking
 # - security
 # - developer
-# - add-ons-and-extensions
+# - add-ons
+tags:
+  - extensions
+  - add-ons
+  - backup
+  - datadog
+  - flux
+  - cilium
+  - monitoring
 ---
 
 ## What are Kubernetes Extensions?
