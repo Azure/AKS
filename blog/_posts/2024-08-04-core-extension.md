@@ -41,7 +41,7 @@ A Core Kubernetes extension is a Kubernetes extension that provide broader regio
 
 ### Broader region availability
 
-Core Kubernetes extensions are available in all regions supported by AKS across Azure Public cloud, Azure Government and China regions (except Qatar Central and Azure Government secret clouds).
+Core Kubernetes extensions are available in all regions supported by AKS across Azure Public cloud, Azure Government and China regions (except Qatar Central).
 
 ### Native AKS experience
 
