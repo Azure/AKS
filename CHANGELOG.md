@@ -44,10 +44,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
     - Server 2019 Gen1 – [`17763.7558.250714`](vhd-notes/AKSWindows/2019/17763.7558.250714.txt).
     - Server 2022 Gen1/Gen2 – [`20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt).
     - Server 23H2 Gen1/Gen2 – [`25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt).
-- AKS Azure Linux v2 image has been updated to [202507.21.0](vhd-notes/AzureLinux/202507.21.0.txt).
-- AKS Azure Linux v3 image has been updated to [202507.21.0](vhd-notes/AzureLinuxv3/202507.21.0.txt).
-- AKS Ubuntu 22.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.21.0.txt).
-- AKS Ubuntu 24.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.21.0.txt).
+- AKS Azure Linux v2 image has been updated to [202507.21.0](vhd-notes/AzureLinux/202507.21.0.txt) ([image list](vhd-notes/AzureLinux/202507.21.0-image-list.json)).
+- AKS Azure Linux v3 image has been updated to [202507.21.0](vhd-notes/AzureLinuxv3/202507.21.0.txt) ([image list](vhd-notes/AzureLinuxv3/202507.21.0-image-list.json)).
+- AKS Ubuntu 22.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.21.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.21.0-image-list.json)).
+- AKS Ubuntu 24.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.21.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.21.0-image-list.json)).
 - Container Insights has been upgraded to [`3.1.28`](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.28) which includes performance improvements and bug fixes.
 - Azure Disk CSI driver has been upgraded to [`v1.32.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.9), [`v1.33.3`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.3) on AKS 1.32 and 1.33 respectively.
 - Retina Basic agent images have been updated to [`v1.0.0-rc1`](https://github.com/microsoft/retina/releases/tag/v1.0.0-rc1), addressing security vulnerability [GHSA-fv92-fjc5-jj9h](https://github.com/advisories/GHSA-fv92-fjc5-jj9h).
