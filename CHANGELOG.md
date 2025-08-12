@@ -15,6 +15,7 @@ AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` includ
 - Kubelet serving certificate rotation is now enabled in all public cloud regions. For more information on kubelet serving certificate rotation and disablement, refer to the [documentation](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation).
 - [A100 GPU SKU](https://learn.microsoft.com/azure/aks/gpu-cluster) support is now available for Azure Linux 2 and Azure Linux 3 node pools without multi-instance GPU enabled.
 - [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) now supports the following annotation: [`service.beta.kubernetes.io/azure-disable-load-balancer-floating-ip`](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations) for Istio ingress gateways, allowing for [Azure Load Balancer Floating IP configuration](https://learn.microsoft.com/azure/load-balancer/load-balancer-floating-ip).
+- Azure Monitor users can now disable the Retina agent from running on specific nodes by adding the label `networking.azure.com/node-network-metrics=disabled`. This agent collects node network metrics and disabling it on a node will remove the Retina agent and stop all node network metric generation. Review the [documentation](http://learn.microsoft.com/azure/aks/monitor-aks?tabs=cilium#node-network-metrics) for more information.
 
 #### Bug Fixes
 
