@@ -32,7 +32,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 #### Behavior Changes
 
-- When enabling [IMDS restriction](https://learn.microsoft.com/azure/aks/imds-restriction), it is now required to enable the [OIDC issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer).
+- To allow addons that require Microsoft Entra ID authentication to be able to use workload identity while enabling [IMDS restriction](https://learn.microsoft.com/azure/aks/imds-restriction), it is now required to enable the [OIDC issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer) as well.
 - Bring your own CNI clusters don't utilize route tables. To optimize resource usage in such clusters, existing route tables will be deleted and no new ones will be created.
 - Partial updates to  [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) configuration now supports empty revision lists. If no revisions are specified, the system will use existing values instead of returning an error.
 
