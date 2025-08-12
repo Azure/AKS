@@ -8,6 +8,8 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 - AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` include a critical security fix for [CVE-2025-4563](https://github.com/kubernetes/kubernetes/issues/132151) where nodes can bypass dynamic resource allocation authorization checks. This vulnerability affects the NodeRestriction admission controller when the DynamicResourceAllocation feature gate is enabled. Upgrade your clusters to these patched versions or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 - Kubernetes CIS benchmark results and recommendations have been updated to [CIS Kubernetes V1.27 Benchmark v1.11.1](https://www.cisecurity.org/benchmark/kubernetes/). The results are applicable to AKS 1.29.x through AKS 1.32.x.
+- AKS [long term support](https://blog.aks.azure.com/2025/07/25/aks-lts-announcement) now fully supports KEDA.
+- 
 
 ### Release notes
 #### Features
@@ -17,12 +19,15 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 - [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) now supports the following annotation: [`service.beta.kubernetes.io/azure-disable-load-balancer-floating-ip`](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations) for Istio ingress gateways, allowing for [Azure Load Balancer Floating IP configuration](https://learn.microsoft.com/azure/load-balancer/load-balancer-floating-ip).
 - [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) now permits use of the `defaultConfig.proxyHeaders` field in `MeshConfig` as an allowed but unsupported customization. For guidance, see the [MeshConfig documentation](https://learn.microsoft.com/azure/aks/istio-meshconfig) and the [Istio support policy](https://learn.microsoft.com/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations).
 - Azure Monitor users can now disable the Retina agent from running on specific nodes by adding the label `networking.azure.com/node-network-metrics=disabled`. This agent collects node network metrics and disabling it on a node will remove the Retina agent and stop all node network metric generation. Review the [documentation](http://learn.microsoft.com/azure/aks/monitor-aks?tabs=cilium#node-network-metrics) for more information.
+- Availability zones are now available as part of the [Machine Show/List API](https://learn.microsoft.com/cli/azure/release-notes-azure-cli?view=azure-cli-latest#aks).
 
 #### Preview Features
 
 - [Confidential VMs](https://aka.ms/aks/cvm) are now supported using Ubuntu 24.04 (preview). You can create new CVM node pools with Ubuntu 24.04 (preview) or [upgrade your OS version](https://aka.ms/aks/upgrade-os-version) on your existing node pools. Default for 'Ubuntu' os sku will remain Ubuntu 20.04 until Kubernetes version 1.35.
 - [Confidential VMs](https://aka.ms/aks/cvm) are now supported using Azure Linux 3.0 (preview). You can now create CVM node pools with Azure Linux (preview). You cannot update existing node pools to use a Confidential VM size.
-- [Managed Namespaces](https://learn.microsoft.com/en-us/azure/aks/concepts-managed-namespaces) are now available for Azure RBAC enabled clusters. To get started, [review the documentation](https://learn.microsoft.com/azure/aks/managed-namespaces?pivots=azure-cli).
+- [Managed Namespaces](https://learn.microsoft.com/azure/aks/concepts-managed-namespaces) are now available for Azure RBAC enabled clusters. To get started, [review the documentation](https://learn.microsoft.com/azure/aks/managed-namespaces?pivots=azure-cli).
+- [AKS Component Insights](https://learn.microsoft.com//azure/aks/aks-component-versioning) is now available in Preview. Component insights lists versions of components that are running on a cluster and if there are any breaking changes to look forward for in a minor version upgrade.
+  
 #### Bug Fixes
 
 -  Fixes an issue in [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) that was preventing simple TLS origination and addresses [CVE-2025-46821](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-46821) in `1.25.3`.
