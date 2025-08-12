@@ -22,7 +22,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 #### Preview Features
 
-- You can create new [Confidential Virtual Machine]((https://aka.ms/aks/cvm) node pools using Ubuntu 24.04 (preview) or Azure Linux 3.0 (preview). The default OS SKU for `Ubuntu` will remain Ubuntu 20.04 until Kubernetes version 1.35. You can [upgrade existing Ubuntu node pools](https://aka.ms/aks/upgrade-os-version) to Ubuntu 24.04 (preview). Note that you cannot update existing node pools to use a Confidential VM size.
+- You can create new [Confidential Virtual Machine](https://aka.ms/aks/cvm) node pools using Ubuntu 24.04 (preview) or Azure Linux 3.0 (preview). The default OS SKU for `Ubuntu` will remain Ubuntu 20.04 until Kubernetes version 1.35. You can [upgrade existing Ubuntu node pools](https://aka.ms/aks/upgrade-os-version) to Ubuntu 24.04 (preview). Note that you cannot update existing node pools to use a Confidential VM size.
 - [Managed Namespaces](https://learn.microsoft.com/azure/aks/concepts-managed-namespaces) are now available for Azure RBAC enabled clusters. To get started, [review the documentation](https://learn.microsoft.com/azure/aks/managed-namespaces?pivots=azure-cli).
 - [AKS Component Insights](https://learn.microsoft.com//azure/aks/aks-component-versioning) is now available in Preview. Component insights shows breaking changes and component version changes for upcoming minor version upgrades.
   
