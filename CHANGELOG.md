@@ -42,6 +42,7 @@ AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` includ
 - [Azure Monitor managed service for Prometheus addon](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus) is updated to the latest release [07-24-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-24-2025)
 - [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) has been updated with patch releases `1.25.3`  and `1.26.2` for Istio-based service mesh revisions [asm-1-25](https://istio.io/latest/news/releases/1.25.x/announcing-1.25/) and [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/). To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade).
 - Cloud Controller Manager image versions bumped to [`v1.33.2`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.33.2/), [`v1.32.7`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.32.7/), [`v1.31.8`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.31.8/), and [`v1.30.14`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.30.14/).
+- kube-egress-gateway has been bumped to [`v0.1.1`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.1.1)  for Kubernetes 1.34, adding support for Static Egress Gateway in additional regions and fixing service traffic handling in Cilium clusters.
 
 ---
 
