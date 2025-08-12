@@ -7,7 +7,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 ### Announcements
 
 - AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` include a critical security fix for [CVE-2025-4563](https://github.com/kubernetes/kubernetes/issues/132151) where nodes can bypass dynamic resource allocation authorization checks. This vulnerability affects the NodeRestriction admission controller when the DynamicResourceAllocation feature gate is enabled. Upgrade your clusters to these patched versions or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
-- Kubernetes CIS benchmark results and recommendations have been updated to [CIS Kubernetes V1.27 Benchmark v1.11.1](https://www.cisecurity.org/benchmark/kubernetes/). The results are applicable to AKS 1.29.x through AKS 1.32.x.
+- Kubernetes CIS benchmark results and recommendations have been updated to [CIS Kubernetes V1.27 Benchmark v1.11.1](https://learn.microsoft.com/azure/aks/cis-kubernetes). The results are applicable to AKS 1.29.x through AKS 1.32.x.
 - AKS [long term support](https://blog.aks.azure.com/2025/07/25/aks-lts-announcement) now fully supports KEDA.
 
 ### Release notes
