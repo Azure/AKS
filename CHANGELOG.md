@@ -31,11 +31,11 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 #### Bug Fixes
 
 -  Fixes an issue in [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) that was preventing simple TLS origination using system certificates. Addresses [CVE-2025-46821](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-46821) in `1.25.3`.
+- [Bring your own CNI clusters](https://learn.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) don't utilize route tables. To optimize resource usage in such clusters, existing route tables will be deleted and no new ones will be created.
 
 #### Behavior Changes
 
 - To allow addons that require Microsoft Entra ID authentication to be able to use workload identity while enabling [IMDS restriction](https://learn.microsoft.com/azure/aks/imds-restriction), it is now required to enable the [OIDC issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer) as well.
-- Bring your own CNI clusters don't utilize route tables. To optimize resource usage in such clusters, existing route tables will be deleted and no new ones will be created.
 - For Istio-based service mesh add-on for AKS, partial updates to [serviceMeshProfile](https://learn.microsoft.com/rest/api/aks/managed-clusters/create-or-update?view=rest-aks-2025-05-01&tabs=HTTP#servicemeshprofile) in AKS managedClusters API now supports empty revision lists. If no revisions are specified, the system will use existing revision values instead of returning an error.
 
 #### Component Updates
