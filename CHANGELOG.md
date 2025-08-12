@@ -20,48 +20,27 @@ AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` includ
 
 #### Bug Fixes
 
+-  Fixes an issue in [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) that was preventing simple TLS origination and addresses [CVE-2025-46821](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-46821) in `1.25.3`.
+-  
 #### Behavior Changes
 
 - When enabling [IMDS restriction](https://learn.microsoft.com/azure/aks/imds-restriction), it is now required to enable the [OIDC issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer).
 - Bring your own CNI clusters don't utilize route tables. To optimize resource usage in such clusters, existing route tables will be deleted and no new ones will be created.
-
-- To provide better service mesh configuration flexibility, ingress gateway service's annotation for disabling floating IP can now be customized.
-  - Related PRs: [PR 13052798](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13052798)
+- The `ama-metrics-clusterrole` used by the Azure Monitor managed service for Prometheus addon now includes additional permissions to get/list/watch Secrets. The `prometheus-operator` watches for secrets to be able to retrive them for the [Pod and Service Monitor basic auth functionality](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#basicauth).
 
 #### Component Updates
 
-- `Container Insights` has been upgraded to [`3.1.28`](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.28) which includes performance improvements and bug fixes.
-  - Related PRs: [PR 12983143](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12983143)
-
-- `Azure Disk CSI driver` has been upgraded on AKS 1.32 and 1.33 clusters to improve storage functionality.
-  - Related PRs: [PR 13054562](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13054562)
-
-- `Retina Basic` agent images have been updated to [`v1.0.0-rc1`](https://github.com/microsoft/retina/releases/tag/v1.0.0-rc1), addressing security vulnerability [GHSA-fv92-fjc5-jj9h](https://github.com/advisories/GHSA-fv92-fjc5-jj9h).
-  - Related PRs: [PR 13007776](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13007776)
-
-- `Retina` registration component has been updated to `v0.2.17` for Retina enablement changes.
-  - Related PRs: [PR 13031408](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13031408)
-
-- `Node Auto Provisioning (NAP)` has been updated to release `1.6.x` with improvements and bug fixes.
-  - Related PRs: [PR 13028006](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13028006)
-
-- `Managed Prometheus` July release with performance improvements and reliability enhancements.
-  - Related PRs: [PR 13031909](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13031909)
-
-- `Azure Service Mesh (ASM)` has been updated with patch tags for ASM-1-25 and ASM-1-26, and maximum supported version of ASM-1-26 has been updated.
-  - Related PRs: [PR 13048427](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13048427), [PR 12981292](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12981292)
-
-- `Cloud Controller Manager` versions have been updated to improve cloud integration functionality.
-  - Related PRs: [PR 12989051](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12989051)
-
-- `AgentBaker` has been upgraded to [`v0.20250721.1`](https://github.com/Azure/AgentBaker/compare/v0.20250715.0...v0.20250721.1) with various node image and configuration improvements.
-  - Related PRs: [PR 12996881](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12996881)
-
-- `Windows node image` has been updated to the 7B release with improvements and security patches.
-  - Related PRs: [PR 12977200](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12977200)
-
-- `Container Insights` resource limits have been increased to improve monitoring performance - CPU limit increased for ICM 659588501 and memory limit increased for ICM 641503832.
-  - Related PRs: [PR 13082513](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13082513), [PR 13074407](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13074407), [PR 12998374](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12998374)
+- Windows node images  
+    - Server 2019 Gen1 – [`17763.7558.250714`](vhd-notes/AKSWindows/2019/17763.7558.250714.txt).
+    - Server 2022 Gen1/Gen2 – [`20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt).
+    - Server 23H2 Gen1/Gen2 – [`25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt).
+- Container Insights has been upgraded to [`3.1.28`](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.28) which includes performance improvements and bug fixes.
+- Azure Disk CSI driver has been upgraded to [`v1.32.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.9) , [`v1.33.3`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.4)  on AKS 1.32, 1.33 respectively.
+- Retina Basic agent images have been updated to [`v1.0.0-rc1`](https://github.com/microsoft/retina/releases/tag/v1.0.0-rc1), addressing security vulnerability [GHSA-fv92-fjc5-jj9h](https://github.com/advisories/GHSA-fv92-fjc5-jj9h).
+- Node Auto Provisioning (NAP) has been updated to Karpenter release [`1.6.1`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.6.1) with improvements and bug fixes.
+- [Azure Monitor managed service for Prometheus addon](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus) is updated to the latest release [07-24-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-24-2025)
+- [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) has been updated with patch releases `1.25.3`  and `1.26.2` for Istio-based service mesh revisions [asm-1-25](https://istio.io/latest/news/releases/1.25.x/announcing-1.25/) and [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/). To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade).
+- Cloud Controller Manager image versions bumped to [`v1.33.2`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.33.2/), [`v1.32.7`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.32.7/), [`v1.31.8`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.31.8/), and [`v1.30.14`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.30.14/).
 
 ---
 
