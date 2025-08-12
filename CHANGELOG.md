@@ -35,7 +35,7 @@ AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` includ
     - Server 2022 Gen1/Gen2 – [`20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt).
     - Server 23H2 Gen1/Gen2 – [`25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt).
 - Container Insights has been upgraded to [`3.1.28`](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.28) which includes performance improvements and bug fixes.
-- Azure Disk CSI driver has been upgraded to [`v1.32.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.9) , [`v1.33.3`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.4)  on AKS 1.32, 1.33 respectively.
+- Azure Disk CSI driver has been upgraded to [`v1.32.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.9) , [`v1.33.3`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.3)  on AKS 1.32, 1.33 respectively.
 - Retina Basic agent images have been updated to [`v1.0.0-rc1`](https://github.com/microsoft/retina/releases/tag/v1.0.0-rc1), addressing security vulnerability [GHSA-fv92-fjc5-jj9h](https://github.com/advisories/GHSA-fv92-fjc5-jj9h).
 - Node Auto Provisioning (NAP) has been updated to Karpenter release [`1.6.1`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.6.1) with improvements and bug fixes.
 - [Azure Monitor managed service for Prometheus addon](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus) is updated to the latest release [07-24-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-24-2025)
