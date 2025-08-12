@@ -36,7 +36,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 
 - To allow addons that require Microsoft Entra ID authentication to be able to use workload identity while enabling [IMDS restriction](https://learn.microsoft.com/azure/aks/imds-restriction), it is now required to enable the [OIDC issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer) as well.
 - Bring your own CNI clusters don't utilize route tables. To optimize resource usage in such clusters, existing route tables will be deleted and no new ones will be created.
-- Partial updates to  [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) configuration now supports empty revision lists. If no revisions are specified, the system will use existing values instead of returning an error.
+- Partial updates to [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) configuration now supports empty revision lists. If no revisions are specified, the system will use existing values instead of returning an error.
 
 #### Component Updates
 
@@ -49,13 +49,13 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 - AKS Ubuntu 22.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.21.0.txt).
 - AKS Ubuntu 24.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.21.0.txt).
 - Container Insights has been upgraded to [`3.1.28`](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.28) which includes performance improvements and bug fixes.
-- Azure Disk CSI driver has been upgraded to [`v1.32.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.9) , [`v1.33.3`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.3)  on AKS 1.32, 1.33 respectively.
+- Azure Disk CSI driver has been upgraded to [`v1.32.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.9), [`v1.33.3`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.3) on AKS 1.32 and 1.33 respectively.
 - Retina Basic agent images have been updated to [`v1.0.0-rc1`](https://github.com/microsoft/retina/releases/tag/v1.0.0-rc1), addressing security vulnerability [GHSA-fv92-fjc5-jj9h](https://github.com/advisories/GHSA-fv92-fjc5-jj9h).
 - Node Auto Provisioning (NAP) has been updated to Karpenter release [`1.6.1`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.6.1) with improvements and bug fixes.
 - [Azure Monitor managed service for Prometheus addon](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus) is updated to the latest release [07-24-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-24-2025)
 - [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) has been updated with patch releases `1.25.3`  and `1.26.2` for Istio-based service mesh revisions [asm-1-25](https://istio.io/latest/news/releases/1.25.x/announcing-1.25/) and [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/). To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade).
-- Cloud Controller Manager image versions bumped to [`v1.33.2`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.33.2/), [`v1.32.7`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.32.7/), [`v1.31.8`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.31.8/), and [`v1.30.14`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.30.14/).
-- kube-egress-gateway has been bumped to [`v0.1.1`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.1.1)  for Kubernetes 1.34, adding support for Static Egress Gateway in additional regions and fixing service traffic handling in Cilium clusters.
+- Cloud Controller Manager image versions updated to [`v1.33.2`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.33.2/), [`v1.32.7`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.32.7/), [`v1.31.8`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.31.8/), and [`v1.30.14`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.30.14/).
+- kube-egress-gateway has been updated to [`v0.1.1`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.1.1)  for Kubernetes 1.34, adding support for Static Egress Gateway in additional regions and fixing service traffic handling in Cilium clusters.
 
 ---
 
