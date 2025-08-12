@@ -23,10 +23,10 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 #### Preview Features
 
 - You can create new [Confidential Virtual Machine](https://aka.ms/aks/cvm) node pools using Ubuntu 24.04 (preview) or Azure Linux 3.0 (preview). The default OS SKU for `Ubuntu` will remain Ubuntu 20.04 until Kubernetes version 1.35. You can [upgrade existing Ubuntu node pools](https://aka.ms/aks/upgrade-os-version) to Ubuntu 24.04 (preview). Note that you cannot update existing node pools to use a Confidential VM size.
-- [Managed Namespaces](https://learn.microsoft.com/azure/aks/concepts-managed-namespaces) are now available for Azure RBAC enabled clusters. To get started, [review the documentation](https://learn.microsoft.com/azure/aks/managed-namespaces?pivots=azure-cli).
-- [AKS Component Insights](https://learn.microsoft.com//azure/aks/aks-component-versioning) is now available in Preview. Component insights shows breaking changes and component version changes for upcoming minor version upgrades.
+- [Managed Namespaces](https://learn.microsoft.com/azure/aks/concepts-managed-namespaces) is now available as preview with Azure RBAC enabled clusters. To get started, [review the documentation](https://learn.microsoft.com/azure/aks/managed-namespaces?pivots=azure-cli).
+- [AKS Component Insights](https://learn.microsoft.com/azure/aks/aks-component-versioning) is now available in Preview. Component insights shows breaking changes and component version changes for upcoming minor version upgrades.
 - [AKS MCP Server](https://github.com/Azure/aks-mcp) is now in public preview.
-- [Agentic CLI for AKS](https://azure.microsoft.com/en-us/updates?id=499377) is now in private preview. This experience focuses on enabling users to diagnose and resolve cluster issues using natural language. You can signup at [aka.ms/aks/cli-agent/signup]/(https://aka.ms/aks/cli-agent/signup) for early access.
+- [Agentic CLI for AKS](https://azure.microsoft.com/updates?id=499377) is now in private preview. This experience focuses on enabling users to diagnose and resolve cluster issues using natural language. You can signup at [aka.ms/aks/cli-agent/signup]/(https://aka.ms/aks/cli-agent/signup) for early access.
   
 #### Bug Fixes
 
@@ -55,7 +55,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
 - [Azure Monitor managed service for Prometheus addon](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview#azure-monitor-managed-service-for-prometheus) is updated to the latest release [07-24-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-24-2025)
 - [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) has been updated with patch releases `1.25.3`  and `1.26.2` for Istio-based service mesh revisions [asm-1-25](https://istio.io/latest/news/releases/1.25.x/announcing-1.25/) and [asm-1-26](https://istio.io/latest/news/releases/1.26.x/announcing-1.26/). To adopt the new revision, follow the [canary upgrade guidance](https://learn.microsoft.com/azure/aks/istio-upgrade).
 - Cloud Controller Manager image versions updated to [`v1.33.2`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.33.2/), [`v1.32.7`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.32.7/), [`v1.31.8`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.31.8/), and [`v1.30.14`](https://cloud-provider-azure.sigs.k8s.io/blog/2025/07/19/v1.30.14/).
-- kube-egress-gateway has been updated to [`v0.1.1`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.1.1)  for Kubernetes 1.34, adding support for Static Egress Gateway in additional regions and fixing service traffic handling in Cilium clusters.
+- kube-egress-gateway has been updated to [`v0.1.1`](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.1.1) for Kubernetes 1.34, adding support for Static Egress Gateway in additional regions and fixing service traffic handling in Cilium clusters.
 
 ---
 
