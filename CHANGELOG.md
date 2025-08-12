@@ -26,6 +26,7 @@ AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` includ
 - When enabling [IMDS restriction](https://learn.microsoft.com/azure/aks/imds-restriction), it is now required to enable the [OIDC issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer).
 - Bring your own CNI clusters don't utilize route tables. To optimize resource usage in such clusters, existing route tables will be deleted and no new ones will be created.
 - The `ama-metrics-clusterrole` used by the Azure Monitor managed service for Prometheus addon now includes additional permissions to get/list/watch Secrets. The `prometheus-operator` watches for secrets to be able to retrieve them for the [Pod and Service Monitor basic auth functionality](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#basicauth).
+- Partial updates to  [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) configuration now supports empty revision lists. If no revisions are specified, the system will use existing values instead of returning an error.
 
 #### Component Updates
 
