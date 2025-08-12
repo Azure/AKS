@@ -1,5 +1,116 @@
 # Azure Kubernetes Service Changelog
 
+# Release 2025-08-08
+
+Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250808`.
+
+## Announcements
+
+- AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` include a critical security fix for [CVE-2025-4563](https://github.com/kubernetes/kubernetes/issues/132151) where nodes can bypass dynamic resource allocation authorization checks. This vulnerability affects the NodeRestriction admission controller when the DynamicResourceAllocation feature gate is enabled. Upgrade your clusters to these patched versions or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+
+## Preview Features
+
+## Features
+
+- AKS patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` are now available.
+- Kubelet serving certificate rotation is now enabled in all public cloud regions. For more information on kubelet serving certificate rotation and disablement, refer to the [documentation](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation).
+- [A100 GPU SKU](https://learn.microsoft.com/azure/aks/gpu-cluster) support is now available for Azure Linux 2 and Azure Linux 3 node pools without multi-instance GPU enabled.  
+
+## Bug Fixes
+
+- Resolved an issue with `Hubble addon` where Hubble-Generate-Certs Job failed during Hubble addon upgrade.
+  - Related PRs: [PR 13047875](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13047875)
+
+- Resolved an issue with `Managed Prometheus` where target allocator deployment's liveness probe had insufficient initial delay seconds.
+  - Related PRs: [PR 12983932](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12983932)
+
+- Removed duplicate ports from target allocator deployment chart for ama-metrics.
+  - Related PRs: [PR 12965648](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12965648)
+
+## Behavioral Changes
+
+- To improve cluster configuration validation, `SchedulerProfile` validation has been implemented. Previously, PUT ManagedCluster requests could not properly update SchedulerProfile values due to missing validation.
+  - Related PRs: [PR 12764150](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12764150)
+
+- To improve security with IMDS restriction, OIDC issuer is now required to be enabled when enabling IMDS restriction.
+  - Related PRs: [PR 12047394](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12047394)
+
+- To optimize resource usage, bring-your-own CNI (byoCNI) route tables will now be deleted if unused and no new ones will be created when unnecessary.
+  - Related PRs: [PR 8931942](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/8931942)
+
+- To provide better service mesh configuration flexibility, ingress gateway service's annotation for disabling floating IP can now be customized.
+  - Related PRs: [PR 13052798](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13052798)
+
+## Component Updates
+
+- `Container Insights` has been upgraded to [`3.1.28`](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.28) which includes performance improvements and bug fixes.
+  - Related PRs: [PR 12983143](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12983143)
+
+- `Azure Disk CSI driver` has been upgraded on AKS 1.32 and 1.33 clusters to improve storage functionality.
+  - Related PRs: [PR 13054562](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13054562)
+
+- `Retina Basic` agent images have been updated to [`v1.0.0-rc1`](https://github.com/microsoft/retina/releases/tag/v1.0.0-rc1), addressing security vulnerability [GHSA-fv92-fjc5-jj9h](https://github.com/advisories/GHSA-fv92-fjc5-jj9h).
+  - Related PRs: [PR 13007776](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13007776)
+
+- `Retina` registration component has been updated to `v0.2.17` for Retina enablement changes.
+  - Related PRs: [PR 13031408](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13031408)
+
+- `Node Auto Provisioning (NAP)` has been updated to release `1.6.x` with improvements and bug fixes.
+  - Related PRs: [PR 13028006](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13028006)
+
+- `Managed Prometheus` July release with performance improvements and reliability enhancements.
+  - Related PRs: [PR 13031909](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13031909)
+
+- `Azure Service Mesh (ASM)` has been updated with patch tags for ASM-1-25 and ASM-1-26, and maximum supported version of ASM-1-26 has been updated.
+  - Related PRs: [PR 13048427](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13048427), [PR 12981292](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12981292)
+
+- `Cloud Controller Manager` versions have been updated to improve cloud integration functionality.
+  - Related PRs: [PR 12989051](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12989051)
+
+- `AgentBaker` has been upgraded to [`v0.20250721.1`](https://github.com/Azure/AgentBaker/compare/v0.20250715.0...v0.20250721.1) with various node image and configuration improvements.
+  - Related PRs: [PR 12996881](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12996881)
+
+- `Windows node image` has been updated to the 7B release with improvements and security patches.
+  - Related PRs: [PR 12977200](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12977200)
+
+- `Container Insights` resource limits have been increased to improve monitoring performance - CPU limit increased for ICM 659588501 and memory limit increased for ICM 641503832.
+  - Related PRs: [PR 13082513](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13082513), [PR 13074407](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13074407), [PR 12998374](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12998374)
+
+---
+
+## PR Checklist
+
+List all the PRs collected by the script in step 1:
+
+| PR ID | Title | Author | PR Link | Linked in Release Notes |
+|-------|-------|--------|---------|------------------------|
+| 13082513 | [Container Insights] CPU limit increase for icm: 659588501 | Sunil Yadav | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13082513) | ✅ (Component Updates) |
+| 13074407 | Memory limit increase for icm: 641503832 | Sunil Yadav | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13074407) | ✅ (Component Updates) |
+| 13047875 | [ACNS] [Hubble] Fix Hubble-Generate-Certs Job on Hubble Addon Upgrade | Isaiah Raya | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13047875) | ✅ (Bug Fixes) |
+| 13054562 | chore: upgrade Azure Disk CSI driver image on AKS 1.32, 1.33 | Andy Zhang (OSTC) | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13054562) | ✅ (Component Updates) |
+| 13048427 | asm: bump asm-1-25 and asm-1-26 patch tags | Sanya Kochhar | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13048427) | ✅ (Component Updates) |
+| 12764150 | implement validation for mc schedulerprofile | Pedro Tôrres | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12764150) | ✅ (Behavioral Changes) |
+| 13052798 | Allow customization of ingress gateway service's annotation for disabling floating ip | Fuyuan Bie | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13052798) | ✅ (Behavioral Changes) |
+| 12983143 | Container Insights 3.1.28 release | Sunil Yadav | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12983143) | ✅ (Component Updates) |
+| 13028006 | [NAP] chore: release 1.6.x | Alex Leites | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13028006) | ✅ (Component Updates) |
+| 13031909 | feat: Managed Prometheus July Release | Grace Wehner | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13031909) | ✅ (Component Updates) |
+| 13031408 | [ACNS] [Retina] Bumped ccp/registration to v0.2.17 for Retina Enablement Changes | Isaiah Raya | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13031408) | ✅ (Component Updates) |
+| 13007776 | [ACNS] [Retina] Retina Basic Release - v1.0.0-rc1 | Mereta Degutyte | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/13007776) | ✅ (Component Updates) |
+| 8931942 | feat: delete byoCNI route tables if unused and do not create new ones | Fuyuan Bie | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/8931942) | ✅ (Behavioral Changes) |
+| 12989051 | chore: Bump cloud-controller-manager versions | Qi Ni | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12989051) | ✅ (Component Updates) |
+| 12996881 | Automated PR for AgentBaker version bump to v0.20250721.1 | Cameron Meissner | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12996881) | ✅ (Component Updates) |
+| 12823880 | Add new patch version 1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14 | Wen Huang | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12823880) | ✅ (Features & Announcements) |
+| 12899968 | feat: enable kubelet serving certificate rotation in all public cloud regions | Cameron Meissner | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12899968) | ✅ (Features) |
+| 12047394 | [IMDS] Update validator to require OIDC issuer to be enabled when enabling IMDS restriction | Tongyao Si | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12047394) | ✅ (Behavioral Changes) |
+| 12998374 | Container Insights - Increase DS CPU to 1 core for ICM 659588501 | Sunil Yadav | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12998374) | ✅ (Component Updates) |
+| 12983932 | increase initial delayseconds for targetallcoator deployment's livenessprobe | Rashmi Chandrashekar | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12983932) | ✅ (Bug Fixes) |
+| 12391918 | [Copilot Agent] Adding support for A100 GPU SKU for AzureLinux2/3 and Mariner when MIG is disabled | Sylvain Boily | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12391918) | ✅ (Features) |
+| 12981292 | update max supported version of asm-1-26 | Irene Zhong | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12981292) | ✅ (Component Updates) |
+| 12977200 | chore: Windows 7B release | Christian Smith | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12977200) | ✅ (Component Updates) |
+| 12965648 | Remove duplicate ports from TA deployment chart for ama-metrics | Rashmi Chandrashekar | [PR link](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/12965648) | ✅ (Bug Fixes) |
+
+**Validation Complete:** ✅ All 24 PRs from the external impact script are included in the release notes.
+
 ## Release 2025-07-20
 
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250720`.
