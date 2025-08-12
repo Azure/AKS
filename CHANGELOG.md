@@ -18,6 +18,10 @@ AKS Kubernetes patch versions `1.33.2, 1.32.6, 1.31.10, 1.30.13, 1.30.14` includ
 - [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) now permits use of the `defaultConfig.proxyHeaders` field in `MeshConfig` as an allowed but unsupported customization. For guidance, see the [MeshConfig documentation](https://learn.microsoft.com/azure/aks/istio-meshconfig) and the [Istio support policy](https://learn.microsoft.com/azure/aks/istio-support-policy#allowed-supported-and-blocked-customizations).
 - Azure Monitor users can now disable the Retina agent from running on specific nodes by adding the label `networking.azure.com/node-network-metrics=disabled`. This agent collects node network metrics and disabling it on a node will remove the Retina agent and stop all node network metric generation. Review the [documentation](http://learn.microsoft.com/azure/aks/monitor-aks?tabs=cilium#node-network-metrics) for more information.
 
+#### Preview Features
+
+- [Confidential VMs](https://aka.ms/aks/cvm) are now supported using Ubuntu 24.04 (preview). You can create new CVM node pools with Ubuntu 24.04 (preview) or [upgrade your OS version](https://aka.ms/aks/upgrade-os-version) on your existing node pools. Default for 'Ubuntu' os sku will remain Ubuntu 20.04 until Kubernetes version 1.35.
+-  [Confidential VMs](https://aka.ms/aks/cvm) are now supported using Azure Linux 3.0 (preview). You can now create CVM node pools with Azure Linux (preview). You cannot update existing node pools to use a Confidential VM size. 
 #### Bug Fixes
 
 -  Fixes an issue in [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) that was preventing simple TLS origination and addresses [CVE-2025-46821](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-46821) in `1.25.3`.
