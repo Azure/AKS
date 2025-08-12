@@ -28,7 +28,7 @@ Monitor the release status by region at [AKS-Release-Tracker](https://releases.a
   
 #### Bug Fixes
 
--  Fixes an issue in [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) that was preventing simple TLS origination and addresses [CVE-2025-46821](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-46821) in `1.25.3`.
+-  Fixes an issue in [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) that was preventing simple TLS origination using system certificates. Addresses [CVE-2025-46821](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-46821) in `1.25.3`.
 
 #### Behavior Changes
 
