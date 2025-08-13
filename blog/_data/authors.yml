@@ -1,7 +1,7 @@
 Brian Redmond:
   name        : "Brian Redmond"
   bio         : "Brian works on AKS and Azure Cloud Native Platforms and is responsible for customer and community efforts globally."
-  avatar      : "https://pbs.twimg.com/profile_images/1061507580202078213/KnOEjBzC_400x400.jpg" # Replace this with your avatar image
+  avatar      : "https://media.licdn.com/dms/image/v2/D5603AQFaQWPv8q2Grw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718286513871?e=1756944000&v=beta&t=wUAh2R27RaUq6XkJhM1Xm9t7cUJDgUk0kpkIGRe7Ueg"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
@@ -39,7 +39,7 @@ Kaarthikeyan Subramanian:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/kaarthis"
-      
+
 Paul Yu:
   name        : "Paul Yu"
   bio         : "Cloud Native Developer Advocate. Loves pineapple on pizza, dogs, and writing code."
@@ -226,7 +226,7 @@ Bob Mital:
 Suraj Deshmukh:
   name        : "Suraj Deshmukh"
   bio         : "Software Engineer at Microsoft, involved in Kubernetes and Open Source."
-  avatar      : "https://github.com/surajssd.png" 
+  avatar      : "https://github.com/surajssd.png"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
@@ -237,11 +237,11 @@ Suraj Deshmukh:
     - label: "Blog"
       icon: "fas fa-fw fa-link"
       url: "https://suraj.io/"
-      
+
 Ernest Wong:
   name        : "Ernest Wong"
   bio         : "Software Engineer at Microsoft"
-  avatar      : "https://github.com/chewong.png" 
+  avatar      : "https://github.com/chewong.png"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
@@ -253,7 +253,7 @@ Ernest Wong:
 Jack Jiang:
   name        : "Jack Jiang"
   bio         : "Product Manager at Microsoft"
-  avatar      : "https://github.com/jakjang/profilepic/blob/main/jack_headshot.jpg?raw=true" 
+  avatar      : "https://github.com/jakjang/profilepic/blob/main/jack_headshot.jpg?raw=true"
   links:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
@@ -261,7 +261,7 @@ Jack Jiang:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/jakjang"
-      
+
 Ally Ford:
   name        : "Ally Ford"
   bio         : "Product Manager 2 at Microsoft"
@@ -272,7 +272,7 @@ Ally Ford:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/allyford"
-      
+
 Sarah Zhou:
   name        : "Sarah Zhou"
   bio         : "Product Manager at Microsoft"
@@ -280,6 +280,15 @@ Sarah Zhou:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/sarahjzhou/"
+
+Jane Guo:
+  name: "Jane Guo"
+  bio: "Product Manager at Microsoft Azure"
+  avatar: "https://avatars.githubusercontent.com/u/114879471?s=400&u=4bccf4353a3b4514327bc3ac9bb6fa6b5c958bd1&v=4" 
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/ziqi-guo/"
 
 Colin Mixon:
   name        : "Colin Mixon"
@@ -308,3 +317,49 @@ Francis Yu:
   name     : "Francis Yu"
   bio      : "Francis is a Product Manager and focuses on optimizing storage orchestration for Kubernetes workloads."
   avatar   : "https://avatars.githubusercontent.com/u/23534998?v=4"
+
+Anson Qian:
+  name        : "Anson Qian"
+  bio         : "Software Engineer at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/aqian/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/anson627"
+
+Alyssa Vu:
+  name        : "Alyssa Vu"
+  bio         : "Software Engineer at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/alyssa-v-23242615a/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/alyssa1303"
+
+Jose Blanquicet:
+  name        : "Jose Blanquicet"
+  bio         : "Jose is a Senior Software Engineer at Microsoft, using eBPF on Azure Kubernetes Service to boost observability and make troubleshooting simpler."
+  avatar      : "https://github.com/blanquicet.png"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/joseblanquicet"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/blanquicet"
+
+Steve Womack:
+  name        : "Steve Womack"
+  bio         : "Steve is a Solutions Architect at Temporal with over 20 years of experience spanning software development, system architecture, DevOps, and solutions engineering."
+  avatar      : "https://media.licdn.com/dms/image/v2/D5603AQHVcFBHKjfvYw/profile-displayphoto-shrink_800_800/B56ZWRXq_wGsAc-/0/1741900657151?e=1756944000&v=beta&t=VLOk5wgR7eSbc2sS3ohKmbMbzw05HMlXwA2mJ4lCw78"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/stwomack"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/steve-womack-4725ba2/"
