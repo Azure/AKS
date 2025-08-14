@@ -363,3 +363,15 @@ Steve Womack:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/steve-womack-4725ba2/"
+
+Wilson Darko:
+  name        : "Wilson Darko"
+  bio         : "Product Manager at Microsoft"
+  avatar      : https://avatars.githubusercontent.com/u/172273315
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/wilsondarko/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/wdarko1"
