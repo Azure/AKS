@@ -4,6 +4,7 @@
 ## Prerequisites
 
 * Fill out this [form](https://aka.ms/aks/identity-bindings/private-preview-form) to provide subscription(s) where AKS needs to enable the feature flag (Microsoft.ContainerService/IdentityBinding) for this private preview.
+
 * Install `aks-preview` Azure CLI extension of version >= `18.0.0b26`:    
     ```bash
     # Install the aks-preview extension
@@ -12,6 +13,7 @@
     # Update to the latest version if already installed
     az extension update --name aks-preview
     ```
+
 * To complete the set up and usage of identity bindings, the following permissions are required:
   * Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/write
   * Microsoft.ContainerService/managedClusters/write
@@ -42,12 +44,15 @@ In this section you will map a managed identity to an AKS cluster using an ident
   az aks identity-binding create -g $RESOURCE_GROUP --cluster-name $CLUSTER -n "$MI_NAME-ib" --managed-identity-resource-id $MI_RESOURCE_ID
   ```
 
-3. AKS creates a unique OIDC issuer per managed identity and populates that in the identity binding resource. Check the identity binding resource to obtain the OIDC issuer URL for this managed identity"
+3. AKS creates a unique OIDC issuer per managed identity and populates that in the identity binding resource. Check the identity binding resource to obtain the OIDC issuer URL for this managed identity:
 
-   ```bash
+  ```bash
   az aks identity-binding show -g $RESOURCE_GROUP --cluster-name $CLUSTER -n "$MI_NAME-ib"
   ```
+
   Output should be similar to:
+  
+  ```
   {
     // omitted other fields
     "oidcIssuer": {
@@ -55,11 +60,13 @@ In this section you will map a managed identity to an AKS cluster using an ident
         },
     // omitted other fields      
   }
-You should be able to find the FIC with name "aks-identity-binding" created under the managed identity, siimlar to this:
+  ```
+  
+  You should be able to find the FIC with name "aks-identity-binding" created under the managed identity, siimlar to this:
 
-![Federated identity credentials created by identity bindings](media/identity-bindings-fic.png)
+  ![Federated identity credentials created by identity bindings](media/identity-bindings-fic.png)
 
-Once you see output similar to the above, it confirms that the control plane resources have been successfully created.
+  Once you see output similar to the above, it confirms that the control plane resources have been successfully created.
 
 ## Setup - In-cluster Resource
 
