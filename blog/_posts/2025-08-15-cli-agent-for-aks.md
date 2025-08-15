@@ -137,7 +137,7 @@ This omnichannel strategy ensures that every AKS user across developers, operato
 
 ## 📣 Join the Preview
 
-We’re actively gathering feedback and iterating throughout the process before officially launching the CLI Agent for AKS via our Limited Preview: aka.ms/cli-agent/signup. Please feel free to share your experience with the CLI Agent or AKS-MCP via GitHub issues or through email at aksagentcli@service.microsoft.com.
+We’re actively gathering feedback and iterating throughout the process before officially launching the CLI Agent for AKS via our Limited Preview: aka.ms/cli-agent/signup. Please feel free to share your experience with the CLI Agent or AKS-MCP via GitHub issues or through our feedback form [ADD LINK].
 
 ## 💬 Final Thoughts
 
