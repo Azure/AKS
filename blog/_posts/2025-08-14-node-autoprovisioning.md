@@ -19,7 +19,7 @@ With node auto provisioning (NAP), our managed add-on for the open-source [Karpe
 
 - More networking options: Azure CNI with or without Overlay is supported, Cilium dataplane is supported; BYO CNI is allowed. Custom Virtual Networks (VNet) is supported. For more on networking, visit our [NAP networking documentation](https://learn.microsoft.com/azure/aks/node-autoprovision-networking)
 - New method of node bootstrapping; much better reliability, from compatibility with AKS VM image releases and AKS bootstrapping configuration updates.
-- Improved upgrade experience, including support for [AKS Maintenance Windows](https://learn.microsoft.com/azure/aks/planned-maintenance) (and Karpenter disruption budgets)
+- Improved upgrade experience, including support for [AKS Maintenance Windows](https://learn.microsoft.com/azure/aks/planned-maintenance)(and Karpenter disruption budgets)
 - New Karpenter core capabilities integrated and supported: v1 NodePool API, support for [disruption budgets](https://learn.microsoft.com/en-us/azure/aks/node-autoprovision-disruption) (allows users to control the speed of disruption in the cluster), terminationGracePeriod, consolidateAfter, forceful expiration, node repair, and more. NodePools now have status conditions that indicate if they are ready. See core releases for details.
 - New Azure Karpenter Provider capabilities: support for Azure Linux (including v3), ephemeral disk placement, Linux admin username, custom kubelet configuration, tagging of Azure resources, artifact streaming, non-zonal regions and VM SKUs, zone constraint in NodePool requirements (and generally cleaner set of selectors), node auto-repair, network interface garbage collection, support for NVMe-only VM SKUs, AKS/Kubernetes 1.30-33, readiness status in AKSNodeClass, and more. See [Azure Karpenter provider releases](https://github.com/Azure/karpenter-provider-azure/releases) for details.
 - Improved observability, via rich set of metrics (accessible through [Managed Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview)), accessible and improved logs through [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/metrics/data-platform-metrics), NodePool / AKSNodeClass / NodeClaim conditions (including reasons for drift or provisioning failures), and events.
@@ -37,6 +37,7 @@ Cluster autoscaler, the standard Kubernetes autoscaler solution, requires the us
 Karpenter is the OSS project that schedules workloads for efficient compute usage. Our [AKS Karpenter Provider (self-hosted)(https://github.com/Azure/karpenter-provider-azure) makes use of Karpenter on Azure available. Node Auto-provisioning (NAP) is our managed add-on for Karpenter on AKS that manages certain aspects of the Karpenter experience on Azure. NAP is the recommended mode for most users for a few reasons.
 
 NAP manages:
+
 - Node Image upgrades (Linux)
 - Kubernetes version upgrades
 - Karpenter version updates
