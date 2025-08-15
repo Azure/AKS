@@ -30,7 +30,7 @@ The first tradeoff we faced was whether we should solve for a breadth of use cas
 
 Troubleshooting in Kubernetes is notoriously complex. AKS customers from cloud-native startups to large enterprises face several recurring challenges. One example is the overwhelming signal fragmentation and struggle to correlate metrics, logs, and traces across layers and tools. This is exacerbated without the deep Kubernetes and Azure expertise needed to interpret all of these cluster signals. Troubleshooting is further complicated by the need to manually wrangle multiple tools, leading to high mean-time-to-resolution (MTTR) and avoidable support costs. Existing tools can surface raw data but lack built-in intelligence to guide users through diagnosis and resolution, making AI-powered assistance both timely and essential.
 
-The AKS Agentic CLI is designed to solve these problems to reduce downtime, bridge  the knowledge gap, and empower users to troubleshoot and manage their AKS environments with confidence.
+The AKS Agentic CLI is designed to solve these problems to reduce downtime, bridge the knowledge gap, and empower users to troubleshoot and manage their AKS environments with confidence.
 
 ![target-customer-pain-points](/assets/images/cli-agent-for-aks/target-customer-pain-points.png)
 ![target-customer-benefits](/assets/images/cli-agent-for-aks/cli-agent-benefits.png)
