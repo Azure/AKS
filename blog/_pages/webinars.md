@@ -34,60 +34,6 @@ header-includes: |
 intro: 
   - excerpt: "<div class='compact-intro'>Welcome to the AKS Community Calls! These sessions foster direct interaction between our product teams and the AKS community. Engage with our teams, hear the latest updates, and gain insights into the product’s development. Join our monthly public calls to discuss the product roadmap, provide feedback, and learn from others’ experiences with AKS. Check out the <a href='https://github.com/orgs/Azure/projects/685/views/1' style='color:white'>public feature roadmap</a> for details on features in development, public preview, and general availability.</div>"
 
-agendarow1:
-  - title: "Agenda (June 2025)"
-    excerpt: "<div class='agenda-container compact'>
-                <div class='agenda-section'>
-                  <div class='agenda-item'>
-                    <div class='agenda-time'></div>
-                    <div class='agenda-content'>
-                      <h4>Announcements</h4>
-                      <ul class='compact-list'>
-                        <li>AKS Labs on Microsoft Reactor</li>
-                        <li>Cost Management Video Series</li>
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div class='agenda-item'>
-                    <div class='agenda-time'></div>
-                    <div class='agenda-content'>
-                      <h4>Community Content Showcase</h4>
-                    </div>
-                  </div>
-                  
-                  <div class='agenda-item'>
-                    <div class='agenda-time'></div>
-                    <div class='agenda-content'>
-                      <h4>Deprecated Features</h4>
-                    </div>
-                  </div>
-                  
-                  <div class='agenda-item featured'>
-                    <div class='agenda-time'></div>
-                    <div class='agenda-content'>
-                      <h4>Feature Deepdive: Cost Management</h4>
-                      <p>By <strong>Kaysie Yu</strong>, PM (AKS)</p>
-                    </div>
-                  </div>
-                  
-                  <div class='agenda-item'>
-                    <div class='agenda-time'></div>
-                    <div class='agenda-content'>
-                      <h4>Feature Roadmap</h4>
-                    </div>
-                  </div>
-                  
-                  <div class='agenda-item'>
-                    <div class='agenda-time'></div>
-                    <div class='agenda-content'>
-                      <h4>Q&A Session</h4>
-                    </div>
-                  </div>
-                </div>
-              </div>"
-    notice: notice--info
-
 
 timezones1:
   - title: "Americas & Europe"
@@ -105,6 +51,14 @@ timezones1:
     btn_label: "Join"
     btn_class: "btn--primary"
     url: 'https://aka.ms/aks/communitycalls-apac/roadmap/joinnow'
+
+oof_row:
+  - title: "Out of Office - August 2025"
+    excerpt: "<div class='agenda-container compact'>
+                  The team will be out for month of August. The community calls will return back to the monthly cadence starting September 2025. 
+              </div>"
+    alt: "Out of Office for August 2025"
+    class: "agenda-feature"
 
 combined_row:
   - title: "Agenda (July 2025)"
@@ -192,5 +146,5 @@ combined_row:
 </div>
 
 <div class="combined-row-container">
-  {% include feature_row id="combined_row" type="justified" %}
+  {% include feature_row id="oof_row" type="justified" %}
 </div>
