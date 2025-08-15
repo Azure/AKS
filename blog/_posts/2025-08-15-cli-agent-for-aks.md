@@ -18,7 +18,7 @@ Last week at KubeCon India, the AKS team shared our newest Agentic AI-powered fe
 
 Built on **open-source building blocks** — including the CNCF-pending [HolmesGPT](https://github.com/robusta-dev/holmesgpt) agent and the [AKS Model Context Protocol (MCP) server](https://github.com/Azure/aks-mcp) — the Agentic CLI brings secure, extensible, and intelligent agentic workflows directly to your terminal.
 
-We have been working on this experience for the last the months, starting with a focus on the number one pain point for most Kubernetes users: troubleshooting and diagnosing issues in their environments. We are currently providing early access to a limited set of users to collaborate closely with and gather feedback, please sign up here if you are interested: aka.ms/cli-agent/signup
+We have been working on this experience for the last few months, starting with a focus on the number one pain point for most Kubernetes users: troubleshooting and diagnosing issues in their environments. We are currently providing early access to a limited set of users to collaborate closely with and gather feedback, please sign up here if you are interested: aka.ms/cli-agent/signup
 
 ![cli-agent-vision](/assets/images/cli-agent-for-aks/cli-agent-vision.png)
 
