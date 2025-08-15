@@ -39,7 +39,7 @@ The AKS Agentic CLI is designed to solve these problems—reducing downtime, bri
 
 Another question we wrestled with was: should we build something proprietary or build/contribute in the Open Source community? This was a simple decision because "Working in the Open Source community" is one of the core product pillars for AKS, so that is what we did.
 
-**The agent framework - HolmesGPT**: HolmesGPT is an open-source agentic AI framework that performs root cause analysis (RCA), executes diagnostic tools, and synthesizes insights using natural language prompts. Before deciding on an open-source project to work with, we conducted a thorough due dilligence of several existing open-source solutions and even built internal prototypes. In the end, we decided to work with the team at Robusta.dev on HolmesGPT because of several reasons:
+**The agent framework - HolmesGPT**: HolmesGPT is an open-source agentic AI framework that performs root cause analysis (RCA), executes diagnostic tools, and synthesizes insights using natural language prompts. Before deciding on an open-source project to work with, we conducted a thorough due diligence of several existing open-source solutions and even built internal prototypes. In the end, we decided to work with the team at Robusta.dev on HolmesGPT because of several reasons:
 
 - Highly extensible architecture with built-in support for modular toolsets, MCP servers, and custom runbooks
 - Extensible and comprehensive prompts tailored for Kubernetes environments
@@ -83,16 +83,16 @@ The Agentic CLI is designed to adapt to your environment:
 - **Runbook Plugins**: Add your own troubleshooting workflows or use community-contributed ones.
 - **MCP Server Support**: Expand capabilities by connecting to AKS-MCP or other MCP servers for advanced diagnostics, including AppLens detectors, Azure Monitor, and debug pod deployment.
 
-## How to Get Started:
+## How to Get Started
 
 Once you have signed up for the limited preview, we will reach out to everyone in batches and provide access to the CLI installation guide, documentation and next steps.
 
 You can start by simply running the following command to understand what commands and capabilities CLI Agent for AKS has to offer:
 
 $ az aks agent --help
-// or $ az aks agent "how is my cluster <Cluster-name> in resource group <Resource-group-name>".
+// or $ az aks agent "how is my cluster [Cluster-name] in resource group [Resource-group-name]".
 
-Here are a few more examples of different ways you can use the CLI Agent: 
+Here are a few more examples of different ways you can use the CLI Agent:
 
 ### 🧠 Node NotReady
 
@@ -118,7 +118,7 @@ Pinpoint PDB violations, quota issues, and IP exhaustion:
 
 $ az aks agent "my AKS cluster is in a failed state, what happened?"
 
-### General CloudOps and Optimizations 
+### General CloudOps and Optimizations
 
 $ az aks agent " how can optimize the cost of my cluster?"
 
