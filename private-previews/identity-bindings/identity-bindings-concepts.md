@@ -2,7 +2,8 @@
 
 ## Context
 
-[Workload identity feature exists for AKS today]() but has scale limitations in not being able to go beyond 20 Federated Identity Credentials (FICs) per identity. For customers having large scale K8s platform spanning across more than 20 clusters (thus more than 20 issuers => more than 20 FICs required) or having a lot of `<namespace, service-account>` combinations to create FIC mappings for the same identity, this a blocker today.
+
+[Workload identity feature exists for AKS today](https://learn.microsoft.com/azure/aks/workload-identity-overview) but has scale limitations in not being able to go beyond 20 Federated Identity Credentials (FICs) per identity. For customers having large scale K8s platform spanning across more than 20 clusters (thus more than 20 issuers => more than 20 FICs required) or having a lot of `<namespace, service-account>` combinations to create FIC mappings for the same identity, this a blocker today.
 
 ## Conceptual Introduction
 
@@ -50,3 +51,7 @@ There's currently no garbage collection for the FIC when the last identity bindi
 Before identity bindings, workload identity feature required egress to be allowed for `login.microsoftonline.com` so that workloads could send requests to eSTS to exchange service account tokens for Entra access tokens.
 
 With the identity binding feature, there's no need for `login.microsoftonline.com` as token exchange requests are routed via a cluster-specific identity binding specific proxy deploy on AKS service.
+
+## Next Steps
+
+[Set up identity bindings](./identity-bindings-how-to-guide.md) based on the how-to guide.
