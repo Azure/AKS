@@ -2,7 +2,6 @@
 
 ## Context
 
-
 [Workload identity feature exists for AKS today](https://learn.microsoft.com/azure/aks/workload-identity-overview) but has scale limitations in not being able to go beyond 20 Federated Identity Credentials (FICs) per identity. For customers having large scale K8s platform spanning across more than 20 clusters (thus more than 20 issuers => more than 20 FICs required) or having a lot of `<namespace, service-account>` combinations to create FIC mappings for the same identity, this a blocker today.
 
 ## Conceptual Introduction
