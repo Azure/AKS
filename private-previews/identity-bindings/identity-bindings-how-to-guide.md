@@ -57,7 +57,7 @@ In this section you will map a managed identity to an AKS cluster using an ident
   }
 You should be able to find the FIC with name "aks-identity-binding" created under the managed identity, siimlar to this:
 
-![Federated identity credentials created by identity bindings](identity-bindings-fic.png)
+![Federated identity credentials created by identity bindings](media/identity-bindings-fic.png)
 
 Once you see output similar to the above, it confirms that the control plane resources have been successfully created.
 
@@ -124,7 +124,7 @@ In this section you will create a cluster level role and role binding to grant y
   kubectl -n kube-system get configmap azure-wi-webhook-config -o yaml
   ```
 
-  ![Identity bindings webhook ConfigMap](identity-bindings-webhook-config-map.png)
+  ![Identity bindings webhook ConfigMap](media/identity-bindings-webhook-config-map.png)
 
 3. Create service account with required annotations with managed identity information:
 
@@ -172,7 +172,7 @@ In this section you will create a cluster level role and role binding to grant y
 
   If you see the environment variables and mounts similar to the below, then it means the pod is configured correctly.
 
-  ![Results of describing demo pod](identity-bindings-demo-pod-describe.png)
+  ![Results of describing demo pod](media/identity-bindings-demo-pod-describe.png)
 
 5. Exec into the pod for shell access. Inside the pod shell, use `curl` to obtain Entra access token for the managed identity:
 
@@ -184,4 +184,4 @@ In this section you will create a cluster level role and role binding to grant y
 
   You can also paste this token in https://jwt.ms/ to get decoded output similar to the following:
 
-  ![Decoded Entra access token](identity-bindings-demo-pod-describe.png)
+  ![Decoded Entra access token](media/identity-bindings-demo-pod-describe.png)

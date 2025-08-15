@@ -17,7 +17,7 @@ AKS service maintains a unique OIDC issuer for each user-assigned managed identi
 
 This way even if the same user-assigned managed identity is needed by workloads running across multiple clusters, only one Federated Identity Credential is required for this user-assigned managed identity thus addressing the 20 FIC limitation. When the cluster operator creates an identity binding, this single federated identity credential is automatically created with the OIDC issuer maintained by AKS for this user assigned managed identity.
 
-![Identity Binding Concepts](identity-bindings-concepts.png)
+![Identity Binding Concepts](media/identity-bindings-concepts.png)
 
 While the above step allows for usage of a particular user-assigned managed identity within the cluster, the cluster operator is then expected to create ClusterRole/ClusterRoleBinding identifying the namespace and the service accounts (either granularly or collectively across namespace or cluster) that are allowed to use this user-assigned managed identity for Entra authentication.
 
