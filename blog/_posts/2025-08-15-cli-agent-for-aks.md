@@ -120,7 +120,7 @@ $ az aks agent "my AKS cluster is in a failed state, what happened?"
 
 ### General CloudOps and Optimizations
 
-$ az aks agent " how can optimize the cost of my cluster?"
+$ az aks agent "how can I optimize the cost of my cluster?"
 
 Each scenario is powered by AI-driven reasoning, tool execution, and actionable recommendations to bridge the gap between raw telemetry and real insights.
 
