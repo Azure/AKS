@@ -78,9 +78,9 @@ In this section you will create a cluster level role and role binding to grant y
   # Obtain credentials needed to access the cluster
   az aks get-credentials -g $RESOURCE_GROUP -n $CLUSTER -a -f "${CLUSTER}.kubeconfig"
   export KUBECONFIG="$(pwd)/${CLUSTER}.kubeconfig"
-
   export MI_CLIENT_ID=$(az identity show -g $RESOURCE_GROUP -n $MI_NAME --query clientId -o tsv)
-  cat > cluster-role.yaml <<EOF
+  
+  kubectl apply -f - <<EOF
   ---
   apiVersion: rbac.authorization.k8s.io/v1
   kind: ClusterRole
@@ -104,7 +104,6 @@ In this section you will create a cluster level role and role binding to grant y
       name: default
       namespace: default
   EOF
-  kubectl apply -f cluster-role.yaml
   ```
 
 2. Identity binding private preview provides a webhook specifically for the private preview (for public preview, the managed workload identity webhook will add support for identity bindings). Install workload identity webhook using the following step:
@@ -115,6 +114,7 @@ In this section you will create a cluster level role and role binding to grant y
   export SNI=$(az aks show -g $RESOURCE_GROUP -n $CLUSTER --query resourceUid -o tsv | read -r input; echo -n "identity-binding$input" | sha256sum | cut -d' ' -f1 | read -r input; echo "${input}.ests.aks")
   export MI_CLIENT_ID=$(az identity show -g $RESOURCE_GROUP -n $MI_NAME --query clientId -o tsv)
   export MI_TENANT_ID=$(az identity show -g $RESOURCE_GROUP -n $MI_NAME --query tenantId -o tsv)
+  
   helm upgrade azure-wi-identity-binding azure-workload-identity/manifest_staging/charts/workload-identity-webhook --install --wait --timeout=5m -v=5 --namespace=kube-system --set azureTenantID="$MI_TENANT_ID" --set image.repository=mcr.microsoft.com/oss/v2/azure/workload-identity/webhook --set image.release=v1.6.0-alpha.1 --set customTokenEndpoint.azureKubernetesTokenEndpoint="https://kubernetes.default.svc" --set customTokenEndpoint.azureKubernetesCAConfigMapName="kube-root-ca.crt" --set customTokenEndpoint.azureKubernetesSniName="$SNI"
   ```
 
@@ -122,6 +122,11 @@ In this section you will create a cluster level role and role binding to grant y
 
   ```bash
   kubectl -n kube-system get pods -l app=workload-identity-webhook
+  ```
+
+  Expected output should be similar to:
+
+  ```
   NAME                                                  READY   STATUS    RESTARTS   AGE
   azure-wi-webhook-controller-manager-bfdd576c6-cdzq4   1/1     Running   0          7m28s
   azure-wi-webhook-controller-manager-bfdd576c6-rzn6c   1/1     Running   0          7m28s
@@ -130,6 +135,7 @@ In this section you will create a cluster level role and role binding to grant y
   ```bash
   kubectl -n kube-system get configmap azure-wi-webhook-config -o yaml
   ```
+  Expected output should be similar to:
 
   ![Identity bindings webhook ConfigMap](media/identity-bindings-webhook-config-map.png)
 
@@ -167,6 +173,11 @@ In this section you will create a cluster level role and role binding to grant y
 
   ```bash
   kubectl get pod
+  ```
+
+  Expected output should be similar to:
+
+  ```
   NAME         READY   STATUS    RESTARTS   AGE
   test-shell   1/1     Running   0          99s
   ```
@@ -189,6 +200,10 @@ In this section you will create a cluster level role and role binding to grant y
   curl  "https://${AZURE_KUBERNETES_SNI_NAME}" --cacert $AZURE_KUBERNETES_CA_FILE --resolve "${AZURE_KUBERNETES_SNI_NAME}:443:10.0.0.1" -d "grant_type=client_credentials" -d "client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer" -d "scope=https://management.azure.com//.default" -d "client_assertion=$(cat $AZURE_FEDERATED_TOKEN_FILE)" -d "client_id=$AZURE_CLIENT_ID"
   ```
 
-  You can also paste this token in https://jwt.ms/ to get decoded output similar to the following:
+  You can also paste this token (value of access_token field in the response) in https://jwt.ms/ to get decoded output similar to the following:
 
   ![Decoded Entra access token](media/identity-bindings-demo-pod-describe.png)
+
+## Next Steps
+
+Identity binding allows you to map multiple AKS clusters to the same MI and to go beyond the [20 FIC limit that existed with workload identity federation with Entra](https://learn.microsoft.com/entra/workload-id/workload-identity-federation-considerations#general-federated-identity-credential-considerations). So try creating more identity bindings for more clusters to the same identity. And you can also try allowing more subjects to use the MI within those clusters.
