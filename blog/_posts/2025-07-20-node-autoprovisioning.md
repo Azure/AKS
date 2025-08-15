@@ -1,6 +1,6 @@
 ---
 title: "Announcement - Node Auto-provisioning"
-description: "Sample - Add your description"
+description: "Learn about Node Auto Provisioning, the managed add-on for Karpenter on Azure, and how you can simplify the scaling experience for your workloads on AKS."
 date: 2025-08-14
 author: Wilson Darko # must match the authors.yml in the _data folder
 categories: 
@@ -26,7 +26,26 @@ With node auto provisioning (NAP), our managed add-on for the open-source [Karpe
 - Default NAP node pools are now optional; disabling NAP is supported. 
 - Better performance, reliability, error handling (including handling of provisioning failures), and security. Numerous bugfixes and issues resolved. 
 - [Extensive test coverage](https://github.com/Azure/karpenter-provider-azure/tree/main/test). Eight new E2E test suites, ~100 total scenarios. 95% unit test coverage. 
-- Github Contributions welcome! (GitHub Codespace-based dev/test environment in 5 min) 
+- Github Contributions welcome! (GitHub Codespace-based dev/test environment in 5 min)
+
+## Node auto provisioning vs. cluster autoscaler
+
+Cluster autoscaler, the standard Kubernetes autoscaler solution, requires the use of same VM size node pools, and scales pre-existing node pools up or down. NAP works instead at the cluster level, and manages single-instance VMs, also handling the provisioning experience for multiple VM sizes and architecture at once. NAP allows for better bin-packing, cost savings, and performance than cluster autoscaler.  
+
+## NAP vs Self-Hosted Karpenter
+
+Karpenter is the OSS project that schedules workloads for efficient compute usage. Our [AKS Karpenter Provider (self-hosted)(https://github.com/Azure/karpenter-provider-azure) makes use of Karpenter on Azure available. Node Auto-provisioning (NAP) is our managed add-on for Karpenter on AKS that manages certain aspects of the Karpenter experience on Azure. NAP is the recommended mode for most users for a few reasons.
+
+NAP manages:
+	- Node Image upgrades (Linux)
+	- Kubernetes version upgrades
+	- Karpenter version updates
+	- VM OS disk updates
+	- Karpenter Logs (through Azure Monitor)
+  - Metrics (through Managed Prometheus)
+
+In self-hosted Karpenter, users are responsible for managing these processes. Self-hosted mode is useful for advanced users who want to customize or experiment with Karpenter's deployment. The managed add-on NAP simplifies this experience and allows you to focus on your workloads rather than infrastructure. 
+
 
 ## Getting Started with NAP
 
@@ -34,20 +53,16 @@ To get started with NAP, you can visit the [Node Auto Provisioning documentation
 
 ## Roadmap + Next Steps 
 
-We’re continuing to expand the capabilities for NAP for additional feature support and performance. Stay on the 
+We’re continuing to expand the capabilities for NAP for additional feature support and performance. Our upcoming roadmap of feature support includes:
 
 - Sovereign Cloud + Air-Gapped Cloud Support 
-- FIPS Support 
+- FIPS compliant node image support 
 - Disk Encryption Sets
 - Custom CA Certificates 
 - Windows support
 - Private Cluster Support
 - and more ... 
 
-## Section 2
+## Get Involved 
 
-
-## Section 3
-
-
-## Summary
+Contribute to the open-source [Azure Karpenter Provider](https://github.com/Azure/karpenter-provider-azure), which Node Auto Provisioning is based on. The provider features over 37 releases, 1000+ PRs, 14,000 CI runs, and a growing communitiy of contributors. 
