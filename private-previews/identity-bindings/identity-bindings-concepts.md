@@ -4,6 +4,8 @@
 
 [Workload identity feature exists for AKS today](https://learn.microsoft.com/azure/aks/workload-identity-overview) but has scale limitations in not being able to go beyond 20 Federated Identity Credentials (FICs) per identity. For customers having large scale K8s platform spanning across more than 20 clusters (thus more than 20 issuers => more than 20 FICs required) or having a lot of `<namespace, service-account>` combinations to create FIC mappings for the same identity, this a blocker today.
 
+Identity Binding is an evolution of workload identity on AKS to provide a more scalable and secure experience. For users requiring Entra authentication from workloads running on AKS, identity binding is recommended as it presents a scalable solution as users scale their application across multiple Kubernetes clusters.
+
 ## Conceptual Introduction
 
 An Identity binding is a mapping resource that allows customers to create mapping between one user assigned managed identity and one AKS cluster where there are workloads that require authentication to Entra using this user assigned managed identity. So let's say you have a UAMI MI-1 which needs to be used in AKS cluster AKS-1, AKS-2, AKS-3,.... you'll create the following identity binding mappings:
@@ -19,8 +21,6 @@ This way even if the same user-assigned managed identity is needed by workloads 
 ![Identity Binding Concepts](media/identity-bindings-concepts.png)
 
 While the above step allows for usage of a particular user-assigned managed identity within the cluster, the cluster operator is then expected to create ClusterRole/ClusterRoleBinding identifying the namespace and the service accounts (either granularly or collectively across namespace or cluster) that are allowed to use this user-assigned managed identity for Entra authentication.
-
-This OIDC issuer itself functions similarly to the AKS cluster's OIDC issuer by exposing OIDC discovery documents. Workloads running within the cluster can request a client assertion signed by the internal token provider using this issuer's dedicated signing keys. That assertion can then be exchanged for an Azure Entra token via the federated identity flow.
 
 ## FAQ
 

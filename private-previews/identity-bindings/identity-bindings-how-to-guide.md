@@ -202,7 +202,7 @@ In this section you will create a cluster level role and role binding to grant y
 
   You can also paste this token (value of access_token field in the response) in https://jwt.ms/ to get decoded output similar to the following:
 
-  ![Decoded Entra access token](media/identity-bindings-demo-pod-describe.png)
+  ![Decoded Entra access token](media/identity-bindings-entra-token.png)
 
 ## Next Steps
 
