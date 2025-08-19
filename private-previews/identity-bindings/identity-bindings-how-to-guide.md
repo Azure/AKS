@@ -33,7 +33,7 @@ In this section you will map a managed identity to an AKS cluster using an ident
 
   # Create resource group, AKS cluster, and identity bindings
   az group create --name $RESOURCE_GROUP -l $LOCATION
-  az aks create -g $RESOURCE_GROUP -n $CLUSTER -l $LOCATION --no-ssh-key
+  az aks create -g $RESOURCE_GROUP -n $CLUSTER -l $LOCATION --no-ssh-key --enable-workload-identity
   az identity create -g $RESOURCE_GROUP -n $MI_NAME
   ```
 
@@ -62,11 +62,13 @@ In this section you will map a managed identity to an AKS cluster using an ident
   }
   ```
   
-  You should be able to find the FIC with name "aks-identity-binding" created under the managed identity, siimlar to this:
+  You should be able to find the FIC with name "aks-identity-binding" created under the managed identity, similar to this:
 
   ![Federated identity credentials created by identity bindings](media/identity-bindings-fic.png)
 
   Once you see output similar to the above, it confirms that the control plane resources have been successfully created.
+
+  **Note:** This FIC is managed by AKS as part of the identity binding. User should not make changes to this FIC to ensure identity bindings and identity federation are unimpacted.
 
 ## Setup - In-cluster Resource
 
@@ -81,6 +83,16 @@ In this section you will create a cluster level role and role binding to grant y
   export MI_CLIENT_ID=$(az identity show -g $RESOURCE_GROUP -n $MI_NAME --query clientId -o tsv)
   
   kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: demo
+  ---
+  apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: demo
+    namespace: demo
   ---
   apiVersion: rbac.authorization.k8s.io/v1
   kind: ClusterRole
@@ -101,52 +113,19 @@ In this section you will create a cluster level role and role binding to grant y
     name: test
   subjects:
     - kind: ServiceAccount
-      name: default
-      namespace: default
+      name: demo
+      namespace: demo
   EOF
   ```
 
-2. Identity binding private preview provides a webhook specifically for the private preview (for public preview, the managed workload identity webhook will add support for identity bindings). Install workload identity webhook using the following step:
+2. Create service account with required annotations with managed identity information:
 
   ```bash
-  git clone --branch feature/custom-token-endpoint https://github.com/Azure/azure-workload-identity.git
-
-  export SNI=$(az aks show -g $RESOURCE_GROUP -n $CLUSTER --query resourceUid -o tsv | read -r input; echo -n "identity-binding$input" | sha256sum | cut -d' ' -f1 | read -r input; echo "${input}.ests.aks")
-  export MI_CLIENT_ID=$(az identity show -g $RESOURCE_GROUP -n $MI_NAME --query clientId -o tsv)
-  export MI_TENANT_ID=$(az identity show -g $RESOURCE_GROUP -n $MI_NAME --query tenantId -o tsv)
-  
-  helm upgrade azure-wi-identity-binding azure-workload-identity/manifest_staging/charts/workload-identity-webhook --install --wait --timeout=5m -v=5 --namespace=kube-system --set azureTenantID="$MI_TENANT_ID" --set image.repository=mcr.microsoft.com/oss/v2/azure/workload-identity/webhook --set image.release=v1.6.0-alpha.1 --set customTokenEndpoint.azureKubernetesTokenEndpoint="https://kubernetes.default.svc" --set customTokenEndpoint.azureKubernetesCAConfigMapName="kube-root-ca.crt" --set customTokenEndpoint.azureKubernetesSniName="$SNI"
+  kubectl annotate sa demo -n demo azure.workload.identity/tenant-id=$MI_TENANT_ID
+  kubectl annotate sa demo -n demo azure.workload.identity/client-id=$MI_CLIENT_ID
   ```
 
-  You can verify the installation by checking the pods and configmap:
-
-  ```bash
-  kubectl -n kube-system get pods -l app=workload-identity-webhook
-  ```
-
-  Expected output should be similar to:
-
-  ```
-  NAME                                                  READY   STATUS    RESTARTS   AGE
-  azure-wi-webhook-controller-manager-bfdd576c6-cdzq4   1/1     Running   0          7m28s
-  azure-wi-webhook-controller-manager-bfdd576c6-rzn6c   1/1     Running   0          7m28s
-  ```
-
-  ```bash
-  kubectl -n kube-system get configmap azure-wi-webhook-config -o yaml
-  ```
-  Expected output should be similar to:
-
-  ![Identity bindings webhook ConfigMap](media/identity-bindings-webhook-config-map.png)
-
-3. Create service account with required annotations with managed identity information:
-
-  ```bash
-  kubectl annotate sa default -n default azure.workload.identity/tenant-id=$MI_TENANT_ID
-  kubectl annotate sa default -n default azure.workload.identity/client-id=$MI_CLIENT_ID
-  ```
-
-4. Deploy workload with required labels and annotations:
+3. Deploy workload with required labels and annotations:
 
   ```bash
   kubectl apply -f - <<EOF
@@ -154,13 +133,13 @@ In this section you will create a cluster level role and role binding to grant y
   kind: Pod
   metadata:
     name: test-shell
-    namespace: default
+    namespace: demo
     labels:
       azure.workload.identity/use: "true"
     annotations:
       azure.workload.identity/use-identity-binding: "true"          
   spec:
-    serviceAccount: default
+    serviceAccount: demo
     containers:
       - name: azure-cli
         image: mcr.microsoft.com/azure-cli:cbl-mariner2.0
@@ -192,7 +171,7 @@ In this section you will create a cluster level role and role binding to grant y
 
   ![Results of describing demo pod](media/identity-bindings-demo-pod-describe.png)
 
-5. Exec into the pod for shell access. Inside the pod shell, use `curl` to obtain Entra access token for the managed identity:
+4. Exec into the pod for shell access. Inside the pod shell, use `curl` to obtain Entra access token for the managed identity:
 
   ```bash
   kubectl exec -it test-shell -- bash
