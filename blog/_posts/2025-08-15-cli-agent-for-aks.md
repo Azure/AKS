@@ -126,7 +126,7 @@ Each scenario is powered by AI-driven reasoning, tool execution, and actionable 
 
 ## 🌐 Vision: Omnichannel AI Across AKS Interfaces
 
-The CLI Agent for AKS is just the beginning. We want to be where our customers are, and we understand that every user has preference of tooling - some prefer command-line interfaces, others use the AKS VS Code Extension, and others use Azure Copilot. Hence, our long-term vision is to integrate wtih all the user's touchpoints so that they can get a consistent and comprehensive experience wherever they are. Some of our next focus areas include:
+The CLI Agent for AKS is just the beginning. We want to be where our customers are, and we understand that every user has preference of tooling - some prefer command-line interfaces, others use the AKS VS Code Extension, and others use Azure Copilot. Hence, our long-term vision is to integrate with all the user's touchpoints so that they can get a consistent and comprehensive experience wherever they are. Some of our next focus areas include:
 
 - **Azure Portal**: Integrated agentic capabilities such as diagnostics and operations via Copilot and Diagnose & Solve.
 - **Visual Studio Code**: One-click troubleshooting via the AKS VS Code Extension and MCP integration.
