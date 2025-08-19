@@ -14,11 +14,11 @@ tags:
 
 ---
 
-Last week at KubeCon India, the AKS team shared our newest Agentic AI-powered feature with the broader Kubernetes community: the **CLI Agent for AKS**. CLI Agent for AKS is a new AI-powered command-line experience designed to help Azure Kubernetes Service (AKS) users troubleshoot, optimize, and operate their clusters with unprecedented ease and intelligence.
+At KubeCon India earlier this month, the AKS team shared our newest Agentic AI-powered feature with the broader Kubernetes community: the **CLI Agent for AKS**. CLI Agent for AKS is a new AI-powered command-line experience designed to help Azure Kubernetes Service (AKS) users troubleshoot, optimize, and operate their clusters with unprecedented ease and intelligence.
 
 Built on **open-source building blocks** — including the CNCF-pending [HolmesGPT](https://github.com/robusta-dev/holmesgpt) agent and the [AKS Model Context Protocol (MCP) server](https://github.com/Azure/aks-mcp) — the Agentic CLI brings secure, extensible, and intelligent agentic workflows directly to your terminal.
 
-We have been working on this experience for the last few months, starting with a focus on the number one pain point for most Kubernetes users: troubleshooting and diagnosing issues in their environments. We are currently providing early access to a limited set of users to collaborate closely with and gather feedback, please sign up here if you are interested: aka.ms/cli-agent/signup
+We have been working on this experience for the last few months, starting with a focus on the number one pain point for most Kubernetes users: troubleshooting and diagnosing issues in their environments. We are currently providing early access to a limited set of users to collaborate closely with and gather feedback. If you are interested in participating, please fill out our [sign up form](https://aka.ms/cli-agent/signup).
 
 ![cli-agent-vision](/assets/images/cli-agent-for-aks/cli-agent-vision.png)
 
@@ -47,7 +47,7 @@ Another question we wrestled with was: should we build something proprietary or 
 
 The Microsoft AKS team is now a co-maintainer of HolmesGPT and Robusta has kindly donated it to CNCF as a Sandbox project. We welcome you all to join this community and contribute: [HolmesGPT](https://github.com/robusta-dev/holmesgpt).
 
-**The tools and capabilities - AKS-MCP Server**: The AKS Model Context Protocol (MCP) server provides a secure, protocol-first bridge between AI agents and AKS clusters. It exposes Kubernetes and Azure APIs, observability signals, and diagnostic tools to AI agents via a standardized interface. Today, you can use AKS-MCP (or any MCP server of your choosing) in combination with HolmesGPT (learn more here !!replace), and we will add a more seamless integration as we add more functionality and best practice knowledge into the [AKS-MCP project](https://github.com/Azure/aks-mcp).
+**The tools and capabilities - AKS-MCP Server**: The AKS Model Context Protocol (MCP) server provides a secure, protocol-first bridge between AI agents and AKS clusters. It exposes Kubernetes and Azure APIs, observability signals, and diagnostic tools to AI agents via a standardized interface. Today, you can use AKS-MCP (or any MCP server of your choosing) in combination with HolmesGPT (learn more [here](https://docs.robusta.dev/master/configuration/holmesgpt/remote_mcp_servers.html)), and we will add a more seamless integration as we add more functionality and best practice knowledge into the [AKS-MCP project](https://github.com/Azure/aks-mcp).
 
 Together, these components form a **lego-block architecture** that allows users to plug in their preferred AI providers, observability tools, and cluster configurations all while maintaining full control over data and execution.
 
@@ -73,7 +73,7 @@ Security and privacy are core to the Agentic CLI experience:
 
 - **Runs locally**: All diagnostics and data collection are performed on the user’s machine, ensuring that no data leaves your client or is stored elsewhere.
 - **Uses Azure CLI Auth**: Inherits Azure identity and RBAC permissions from the user, ensuring access only to authorized resources.
-- **Bring Your Own AI**: Users configure their own AI provider (OpenAI, Azure OpenAI, Anthropic, etc.) so no telemetry is sent to Microsoft or third-party services.
+- **Bring Your Own AI**: Users configure their own AI provider (OpenAI, Azure OpenAI, Anthropic, etc.) so no user data is retained by Microsoft. Users can bring their own LLMs approved by their organization - including Azure OpenAI instances deployed in their own subscriptions and virtual network.
 
 ## 🔌 Extensible and Customizable
 
@@ -85,9 +85,9 @@ The Agentic CLI is designed to adapt to your environment:
 
 ## How to Get Started
 
-Once you have signed up for the limited preview, we will reach out to everyone in batches and provide access to the CLI installation guide, documentation and next steps.
+Once you have signed up for the [limited preview](https://aka.ms/aks/cli-agent/signup), we will reach out to everyone in batches and provide access to the CLI installation guide, documentation and next steps.
 
-You can start by simply running the following command to understand what commands and capabilities CLI Agent for AKS has to offer:
+Once you have access, get started the following command to understand what commands and capabilities CLI Agent for AKS has to offer:
 
 $ az aks agent --help
 // or $ az aks agent "how is my cluster [Cluster-name] in resource group [Resource-group-name]".
@@ -126,18 +126,16 @@ Each scenario is powered by AI-driven reasoning, tool execution, and actionable 
 
 ## 🌐 Vision: Omnichannel AI Across AKS Interfaces
 
-The Agentic CLI is just the beginning. Our long-term vision is to bring **agentic AI** troubleshooting across all AKS interfaces:
+The CLI Agent for AKS is just the beginning. We want to be where our customers are, and we understand that every user has preference of tooling - some prefer command-line interfaces, others use the AKS VS Code Extension, and others use Azure Copilot. Hence, our long-term vision is to integrate wtih all the user's touchpoints so that they can get a consistent and comprehensive experience wherever they are. Some of our next focus areas include:
 
-- **Azure Portal**: Integrated diagnostics via Copilot and Diagnose & Solve.
-- **Visual Studio Code**: One-click troubleshooting via the AKS extension and MCP integration.
-- **AKS Desktop**: Native agent mode powered by HolmesGPT.
-- **Azure CLI**: Fully managed experience via az aks agent available to all AKS users by default.
+- **Azure Portal**: Integrated agentic capabilities such as diagnostics and operations via Copilot and Diagnose & Solve.
+- **Visual Studio Code**: One-click troubleshooting via the AKS VS Code Extension and MCP integration.
 
 This omnichannel strategy ensures that every AKS user across developers, operators, or SREs can access intelligent troubleshooting wherever they work.
 
 ## 📣 Join the Preview
 
-We’re actively gathering feedback and iterating throughout the process before officially launching the CLI Agent for AKS via our Limited Preview: aka.ms/cli-agent/signup. Please feel free to share your experience with the CLI Agent or AKS-MCP via GitHub issues or through our feedback form [ADD LINK].
+We’re actively gathering feedback and iterating throughout the process before officially launching the CLI Agent for AKS via our Limited Preview: aka.ms/cli-agent/signup. Please feel free to share your experience with the CLI Agent or AKS-MCP via GitHub issues or through our [feedback form](https://aka.ms/aks/cli-agent/feedback).
 
 ## 💬 Final Thoughts
 
