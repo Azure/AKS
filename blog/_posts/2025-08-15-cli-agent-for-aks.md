@@ -18,7 +18,7 @@ At KubeCon India earlier this month, the AKS team shared our newest Agentic AI-p
 
 Built on **open-source building blocks** — including the CNCF-pending [HolmesGPT](https://github.com/robusta-dev/holmesgpt) agent and the [AKS Model Context Protocol (MCP) server](https://github.com/Azure/aks-mcp) — the Agentic CLI brings secure, extensible, and intelligent agentic workflows directly to your terminal.
 
-We have been working on this experience for the last few months, starting with a focus on the number one pain point for most Kubernetes users: troubleshooting and diagnosing issues in their environments. We are currently providing early access to a limited set of users to collaborate closely with and gather feedback. If you are interested in participating, please fill out our [sign up form](https://aka.ms/cli-agent/signup).
+We have been working on this experience for the last few months, starting with a focus on the number one pain point for most Kubernetes users: troubleshooting and diagnosing issues in their environments. We are currently providing early access to a limited set of users to collaborate closely with and gather feedback. If you are interested in participating, please fill out our [sign up form](https://aka.ms/aks/cli-agent/signup).
 
 ![cli-agent-vision](/assets/images/cli-agent-for-aks/cli-agent-vision.png)
 
@@ -91,8 +91,10 @@ Once you have signed up for the [limited preview](https://aka.ms/aks/cli-agent/s
 
 Once you have access, get started the following command to understand what commands and capabilities CLI Agent for AKS has to offer:
 
-$ az aks agent --help
+```
+az aks agent --help
 // or $ az aks agent "how is my cluster [Cluster-name] in resource group [Resource-group-name]".
+```
 
 Here are a few more examples of different ways you can use the CLI Agent:
 
@@ -100,29 +102,39 @@ Here are a few more examples of different ways you can use the CLI Agent:
 
 Diagnose kubelet crashes, CNI failures, and resource pressure:
 
-$ az aks agent "why is one of my nodes in NotReady state?"
+```
+az aks agent "why is one of my nodes in NotReady state?"
+```
 
 ### 🌐 DNS Failures
 
 Identify CoreDNS issues, NSG misconfigurations, and upstream DNS problems:
 
-$ az aks agent "why are my pods failing DNS lookups?"
+```
+az aks agent "why are my pods failing DNS lookups?"
+```
 
 ### 🕵️ Pod Scheduling Failures
 
 Detect resource constraints, affinity mismatches, and zone limitations:
 
-$ az aks agent "why is my pod stuck in Pending state?"
+```
+az aks agent "why is my pod stuck in Pending state?"
+```
 
 ### 🔄 Upgrade Failures
 
 Pinpoint PDB violations, quota issues, and IP exhaustion:
 
-$ az aks agent "my AKS cluster is in a failed state, what happened?"
+```
+az aks agent "my AKS cluster is in a failed state, what happened?"
+```
 
 ### General CloudOps and Optimizations
 
-$ az aks agent "how can I optimize the cost of my cluster?"
+```
+az aks agent "how can I optimize the cost of my cluster?"
+```
 
 Each scenario is powered by AI-driven reasoning, tool execution, and actionable recommendations to bridge the gap between raw telemetry and real insights.
 
