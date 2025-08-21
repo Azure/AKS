@@ -75,6 +75,8 @@ Security and privacy are core to the Agentic CLI experience:
 - **Uses Azure CLI Auth**: Inherits Azure identity and RBAC permissions from the user, ensuring access only to authorized resources.
 - **Bring Your Own AI**: Users configure their own AI provider (OpenAI, Azure OpenAI, Anthropic, etc.) so no user data is retained by Microsoft. Users can bring their own LLMs approved by their organization - including Azure OpenAI instances deployed in their own subscriptions and virtual network.
 
+![cli-agent-demo](/assets/images/cli-agent-for-aks/cli-agent-demo.gif)
+
 ## 🔌 Extensible and Customizable
 
 The Agentic CLI is designed to adapt to your environment:
