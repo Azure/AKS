@@ -94,7 +94,7 @@ Once you have signed up for the [limited preview](https://aka.ms/aks/cli-agent/s
 
 Once you have access, get started the following command to understand what commands and capabilities CLI Agent for AKS has to offer:
 
-```
+```bash
 az aks agent --help
 // or $ az aks agent "how is my cluster [Cluster-name] in resource group [Resource-group-name]".
 ```
@@ -105,7 +105,7 @@ Here are a few more examples of different ways you can use the CLI Agent:
 
 Diagnose kubelet crashes, CNI failures, and resource pressure:
 
-```
+```bash
 az aks agent "why is one of my nodes in NotReady state?"
 ```
 
@@ -113,7 +113,7 @@ az aks agent "why is one of my nodes in NotReady state?"
 
 Identify CoreDNS issues, NSG misconfigurations, and upstream DNS problems:
 
-```
+```bash
 az aks agent "why are my pods failing DNS lookups?"
 ```
 
@@ -121,7 +121,7 @@ az aks agent "why are my pods failing DNS lookups?"
 
 Detect resource constraints, affinity mismatches, and zone limitations:
 
-```
+```bash
 az aks agent "why is my pod stuck in Pending state?"
 ```
 
@@ -129,13 +129,13 @@ az aks agent "why is my pod stuck in Pending state?"
 
 Pinpoint PDB violations, quota issues, and IP exhaustion:
 
-```
+```bash
 az aks agent "my AKS cluster is in a failed state, what happened?"
 ```
 
 ### General CloudOps and Optimizations
 
-```
+```bash
 az aks agent "how can I optimize the cost of my cluster?"
 ```
 
