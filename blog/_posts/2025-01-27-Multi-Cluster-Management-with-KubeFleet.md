@@ -34,7 +34,7 @@ This allows KubeFleet to manage clusters across cloud providers and on-prem.
     This intelligent scheduling is based on various factors such as names, labels, capacity, cluster size, and cost. It also has powerful override capabilities to allow users to customize the resources based on the selected cluster. 
     On top of that, KubeFleet provides dynamic scheduling features to allow users to move resources between clusters in the runtime.
 
- * Intelligent Rollouts: KubeFleet provides multiple ways for the suer to centrally manage the rollout of changes to your applications across multiple clusters. This feature ensures that updates are deployed in a controlled and efficient manner without causing multi-cluster failures. 
+ * Intelligent Rollouts: KubeFleet provides multiple ways for the user to centrally manage the rollout of changes to your applications across multiple clusters. This feature ensures that updates are deployed in a controlled and efficient manner without causing multi-cluster failures. 
 
  * Config Management: KubeFleet streamlines config management by allowing teams to manage Kubernetes native configurations, such as resource quotas, RBAC, and network policies, at scale.  
    It also provides a set of powerful tools to allow users to perform takeover actions, detect drifting, and report differences between the desired version and the applied resources on each cluster. 
