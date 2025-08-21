@@ -2,7 +2,10 @@
 title: "Announcing the CLI Agent for AKS: Agentic AI-powered operations and diagnostics at your fingertips"
 description: "Learn more about the Agentic AI-powered CLI experience for AKS and how it can streamline your cluster diagnostics and operational workflows."
 date: 2025-08-15
-author: Pavneet Ahluwalia, Julia Yin, Aritra Ghosh
+authors:
+- Pavneet Ahluwalia
+- Julia Yin
+- Aritra Ghosh
 categories: 
 - general 
 - ai
