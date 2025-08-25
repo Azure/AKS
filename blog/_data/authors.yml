@@ -377,3 +377,15 @@ Aritra Ghosh:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/aritraghosh"
+
+Qasim Sarfraz:
+  name        : "Qasim Sarfraz"
+  bio         : "Qasim is a Software Engineer at Microsoft, working on Containers, Kubernetes, and Open Source projects."
+  avatar      : "https://github.com/mqasimsarfraz.png"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/mqasimsarfraz/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/mqasimsarfraz"
