@@ -74,7 +74,7 @@ This model allows us to validate the AI’s reasoning, gather feedback, and iter
 
 Security and privacy are core to the Agentic CLI experience:
 
-- **Runs locally**: All diagnostics and data collection are performed on the user’s machine, ensuring that no data leaves your client or is stored elsewhere.
+- **Runs locally**: All diagnostics and data collection are performed on the user’s machine, and is sent to the user configured LLM Model, it is not sent to or stored in AKS systems.
 - **Uses Azure CLI Auth**: Inherits Azure identity and RBAC permissions from the user, ensuring access only to authorized resources.
 - **Bring Your Own AI**: Users configure their own AI provider (OpenAI, Azure OpenAI, Anthropic, etc.) so no user data is retained by Microsoft. Users can bring their own LLMs approved by their organization - including Azure OpenAI instances deployed in their own subscriptions and virtual network.
 
