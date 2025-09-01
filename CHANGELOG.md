@@ -2,7 +2,7 @@
 
 ## Release 2025-08-29
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250829`.
 
 ### Announcements
 
