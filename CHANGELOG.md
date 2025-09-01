@@ -43,17 +43,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 #### Component Updates
 
 - Windows node images  
-  - windows-2019-containerd [17763.7678.250823]() 
-  - windows-2022-containerd [20348.4052.250823]() 
-  - windows-2022-containerd-gen2 [20348.4052.250823]() 
-  - windows-2025 [26100.4946.250823]() 
-  - windows-2025-gen2 [26100.4946.250823]()  
-  - windows-23H2 [25398.1791.250823]()  
-  - windows-23H2-gen2 [25398.1791.250823]()  
-- AKS Azure Linux v2 image has been updated to [202507.21.0](vhd-notes/AzureLinux/202507.21.0.txt) ([image list](vhd-notes/AzureLinux/202507.21.0-image-list.json)).
-- AKS Azure Linux v3 image has been updated to [202507.21.0](vhd-notes/AzureLinuxv3/202507.21.0.txt) ([image list](vhd-notes/AzureLinuxv3/202507.21.0-image-list.json)).
-- AKS Ubuntu 22.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.21.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202507.21.0-image-list.json)).
-- AKS Ubuntu 24.04 node image has been updated to [202507.21.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.21.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202507.21.0-image-list.json)).
+  - Server 2019 Gen1 – [17763.7678.250823](vhd-notes/AKSWindows/2019/17763.7678.250823.txt) 
+  - Server 2022 Gen1/Gen2 – [20348.4052.250823](vhd-notes/AKSWindows/2022/20348.4052.250823.txt) 
+  - Server 23H2 Gen1/Gen2 –  [25398.1791.250823](vhd-notes/AKSWindows/23H2/25398.1791.250823.txt)   
+  - Server 2025 Gen1/Gen2 –  [26100.4946.250823](vhd-notes/AKSWindows/2025/26100.4946.250823.txt) 
+- AKS Azure Linux v2 image has been updated to [202508.20.0](vhd-notes/AzureLinux/202508.20.0.txt). ([image list](vhd-notes/AzureLinuxv3/202508.20.0-image-list.json)).
+- AKS Azure Linux v3 image has been updated to [202508.20.0](vhd-notes/AzureLinuxv3/202508.20.0.txt) ([image list](vhd-notes/AzureLinuxv3/202508.20.0-image-list.json)).
+- AKS Ubuntu 22.04 node image has been updated to [202508.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202508.20.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202508.20.0-image-list.json)).
+- AKS Ubuntu 24.04 node image has been updated to [202508.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202508.20.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202508.20.0-image-list.json)).
 * `Azure File CSI driver` has been upgraded to [`v1.33.4`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.4) on AKS 1.33, which includes performance improvements and bug fixes.
 * `Azure Disk CSI driver` has been upgraded to [`v1.33.4`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.4) on AKS 1.33, which includes performance improvements and bug fixes.
 * `NPM (Network Policy Manager)` has been upgraded to [`v1.6.33`](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.33) to resolve multiple CVEs: CVE-2025-5702, CVE-2025-32988, CVE-2025-32989, CVE-2025-32990, CVE-2025-6395, CVE-2025-40909, CVE-2025-47907.
