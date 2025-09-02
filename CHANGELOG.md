@@ -12,7 +12,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) is now compatible with [AKS Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) for Istio revisions asm-1-25+ and AKS versions 1.28+. Please note that not every Istio revision will be compatible with every AKS LTS version. It is recommended to review the [Istio add-on support policy](https://learn.microsoft.com/azure/aks/istio-support-policy)  for an overview of this feature's support.
 * [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in the following additional regions: centralus, austriaeast, chilecentral, denmarkeast, israelnorthwest, malaysiawest, southcentralus2, southeastus3, southeastus5, southwestus, and usgovtexas. For the latest list of supported regions, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability).
 * 1.30 Kubernetes version is now officially End of Life. Please [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to 1.31 version. If you require 1.30 version, then switch to [AKS Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support).
-* Security Patch tab under [AKS-Release-Tracker](https://releases.aks.azure.com/) now provides information for Azure Linux v3.
+* Security Patch tab under [AKS-Release-Tracker](https://releases.aks.azure.com/) now provides information for Azure Linux v3. This provides real time info on the security patch contents and timestamp of actual release.
 
 ### Release notes
 #### Features
