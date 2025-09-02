@@ -6,7 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) is now generally available. AKS Automatic is based on three key pillars: production-ready by default, integrated best practices and safeguards, and code to Kubernetes in minutes.
+* [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) is now generally available. AKS Automatic is based on three key pillars: production-ready by default, integrated best practices and safeguards, and code to Kubernetes in minutes. Sign up to watch the [AKS Automatic Virtual Launch](https://developer.microsoft.com/en-us/reactor/events/26173/) on September 16th from 8:00 AM - 12:00 PM (UTC-07:00).
   * New Automatic cluster creation is only allowed in [API Server Vnet Integration GA supported regions](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability). Migrating from SKU: "Base" to SKU: "Automatic" is only allowed in API Server Vnet Integration GA supported regions. Operations on existing Automatic clusters will not be blocked even if the cluster is not in API Server Vnet Integration GA supported regions.
   * Disallow adding non-Node auto provisioning pools to AKS Automatic clusters. There is no effect on existing Automatic Clusters that have non-Node auto provisioning pools.
 * Azure CNI Overlay is now GA and compatible with [Application Gateway for Containers](https://learn.microsoft.com/azure/application-gateway/for-containers/) and [Application Gateway Ingress Controller](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview). See [AGC networking](https://learn.microsoft.com/en-us/azure/application-gateway/for-containers/container-networking) for details on Overlay compatibility.
@@ -26,6 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in the following additional regions: centralus, austriaeast, chilecentral, denmarkeast, israelnorthwest, malaysiawest, southcentralus2, southeastus3, southeastus5, southwestus, and usgovtexas. For the latest list of supported regions, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability).
 * [OpenID Connect (OIDC) issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer) is now enabled by default on new cluster creation for Kubernetes version 1.34 and above.
 * [Node Auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) enabled clusters can use [planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) for scheduling node image upgrades that adhere to aksManagedNodeOSUpgradeSchedule.
+* When upgrading from kubenet to Azure CNI Overlay, customers can now specify a different pod CIDR using the --pod-cidr parameter. See [Upgrade Azure CNI](https://docs.azure.cn/en-us/aks/upgrade-azure-cni#upgrade-to-azure-cni-overlay) for more information.
 
 #### Bug Fixes
 
@@ -35,7 +36,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * All AKS Automatic clusters, and AKS Standard clusters that enabled [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) via the safeguardsProfile, will now have a new DeploymentSafeguards resource created in the same resource group as the cluster. See [Use Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) for more information.
 * [Kata VM Isolation](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) runTimeClassName changed from kata-mshv-vm-isolation to kata-vm-isolation.
-* When upgrading from kubenet to Azure CNI Overlay, customers can now specify a different pod CIDR using the --pod-cidr parameter. 
 
 #### Component Updates
 
