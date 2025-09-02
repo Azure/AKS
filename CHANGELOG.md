@@ -24,7 +24,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Ubuntu 24.04 CVM](https://learn.microsoft.com/azure/aks/use-cvm) is now enabled by default.
 * AzureLinuxV3 Kata VHD image is now available for customers to use with Kata containers, including 600Mi Pod Overhead for kata pods when customers don't set a pod limit.
 * [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in the following additional regions: centralus, austriaeast, chilecentral, denmarkeast, israelnorthwest, malaysiawest, southcentralus2, southeastus3, southeastus5, southwestus, and usgovtexas. For the latest list of supported regions, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability).
-* [OIDC (OpenID Connect)](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer) is now enabled by default on new cluster creation for Kubernetes version 1.34 and above.
+* [OpenID Connect (OIDC) issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer) is now enabled by default on new cluster creation for Kubernetes version 1.34 and above.
 * [Node Auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) enabled clusters can use of maintenance windows for scheduling node image upgrades on the aksManagedNodeOSUpgradeSchedule channel. This change enables NAP node image upgrades to respect any defined aksManagedNodeOSUpgradeSchedule maintenance window.
 
 #### Bug Fixes
