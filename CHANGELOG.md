@@ -19,7 +19,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Disabling SSH](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) on Windows node pools is now available.
 * [Ubuntu 24.04 CVM](https://learn.microsoft.com/azure/aks/use-cvm) is now enabled by default for K8s version 1.34-1.38.
 * [OpenID Connect (OIDC) issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer) is now enabled by default on new cluster creation for Kubernetes version 1.34 and above.
-* [Node Auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) enabled clusters can use [planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) for scheduling node image upgrades that adhere to aksManagedNodeOSUpgradeSchedule.
+* [Node Auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) enabled clusters can use [planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) for scheduling node image upgrades that adhere to `aksManagedNodeOSUpgradeSchedule`.
 * When upgrading from kubenet to Azure CNI Overlay, customers can now specify a different pod CIDR using the --pod-cidr parameter. See [Upgrade Azure CNI](https://docs.azure.cn/aks/upgrade-azure-cni#upgrade-to-azure-cni-overlay) for more information.
 
 #### Bug Fixes
