@@ -42,7 +42,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 - Windows node images  
   - Server 2019 Gen1 – [17763.7678.250823](vhd-notes/AKSWindows/2019/17763.7678.250823.txt) 
   - Server 2022 Gen1/Gen2 – [20348.4052.250823](vhd-notes/AKSWindows/2022/20348.4052.250823.txt) 
-  - Server 23H2 Gen1/Gen2 –  [25398.1791.250823](vhd-notes/AKSWindows/23H2/25398.1791.250823.txt)   
+  - Server 23H2 Gen1/Gen2 – [25398.1791.250823](vhd-notes/AKSWindows/23H2/25398.1791.250823.txt)   
   - Server 2025 Gen1/Gen2 –  [26100.4946.250823](vhd-notes/AKSWindows/2025/26100.4946.250823.txt) 
 - AKS Azure Linux v2 image has been updated to [202508.20.0](vhd-notes/AzureLinux/202508.20.0.txt). ([image list](vhd-notes/AzureLinuxv3/202508.20.0-image-list.json)).
 - AKS Azure Linux v3 image has been updated to [202508.20.0](vhd-notes/AzureLinuxv3/202508.20.0.txt) ([image list](vhd-notes/AzureLinuxv3/202508.20.0-image-list.json)).
