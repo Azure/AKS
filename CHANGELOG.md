@@ -1,5 +1,58 @@
 # Azure Kubernetes Service Changelog
 
+## Release 2025-08-29
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250829`.
+
+### Announcements
+
+* [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) is now generally available. AKS Automatic is based on three key pillars: production-ready by default, integrated best practices and safeguards, and code to Kubernetes in minutes. Sign up to watch the [AKS Automatic Virtual Launch](https://developer.microsoft.com/reactor/events/26173/) on September 16th from 8:00 AM - 12:00 PM (UTC-07:00).
+  * New Automatic cluster creation is only allowed in [API Server Vnet Integration GA supported regions](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability). Migrating from SKU: "Base" to SKU: "Automatic" is only allowed in API Server Vnet Integration GA supported regions. Operations on existing Automatic clusters will not be blocked even if the cluster is not in API Server Vnet Integration GA supported regions.
+* AKS patch versions `1.33.3`, `1.32.7`, and `1.30.11` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+* [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) is now compatible with [AKS Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) for Istio revisions asm-1-25+ and AKS versions 1.28+. Please note that not every Istio revision will be compatible with every AKS LTS version. It is recommended to review the [Istio add-on support policy](https://learn.microsoft.com/azure/aks/istio-support-policy)  for an overview of this feature's support.
+* [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in the following additional regions: centralus, austriaeast, chilecentral, denmarkeast, israelnorthwest, malaysiawest, southcentralus2, southeastus3, southeastus5, southwestus, and usgovtexas. For the latest list of supported regions, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability).
+
+### Release notes
+#### Features
+* Azure CNI Overlay is now GA and compatible with [Application Gateway for Containers](https://learn.microsoft.com/azure/application-gateway/for-containers) and [Application Gateway Ingress Controller](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview). See [AGC networking](https://learn.microsoft.com/azure/application-gateway/for-containers/container-networking) for details on Overlay compatibility.
+* [Advanced Container Networking Services: Layer 7 Policies](https://learn.microsoft.com/azure/aks/azure-cni-network-security) reached General Availability.
+* [Disabling SSH](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?tabs=node-shell#disable-ssh-overview) on Windows node pools is now available.
+* [Ubuntu 24.04 CVM](https://learn.microsoft.com/azure/aks/use-cvm) is now enabled by default for K8s version 1.34-1.38.
+* [OpenID Connect (OIDC) issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer) is now enabled by default on new cluster creation for Kubernetes version 1.34 and above.
+* [Node Auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) enabled clusters can use [planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) for scheduling node image upgrades that adhere to `aksManagedNodeOSUpgradeSchedule`.
+* When upgrading from kubenet to Azure CNI Overlay, customers can now specify a different pod CIDR using the --pod-cidr parameter. See [Upgrade Azure CNI](https://docs.azure.cn/aks/upgrade-azure-cni#upgrade-to-azure-cni-overlay) for more information.
+
+#### Bug Fixes
+
+* Fixed a bug where [ETag](https://azure.github.io/azure-sdk/general_design.html#conditional-requests) was not returned in [ManagedClusters](https://learn.microsoft.com/rest/api/aks/managed-clusters?view=rest-aks-2025-05-01) or [AgentPools](https://learn.microsoft.com/rest/api/aks/agent-pools?view=rest-aks-2025-05-01) responses in API versions 2024-09-01 or newer, even though the API specification said it would be.
+
+#### Behavioral Changes
+
+* All AKS Automatic clusters, and AKS Standard clusters that enabled [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) via the safeguardsProfile, will now have a new `Microsoft.ContainerService/deploymentSafeguards` sub-resource created under `managedClusters`. See [Use Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) for more information.
+* Disallow adding non-Node auto provisioning pools to [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) clusters. There is no effect on existing Automatic Clusters that have non-Node auto provisioning pools.
+* [Kata VM Isolation](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) runTimeClassName changed from `kata-mshv-vm-isolation` to `kata-vm-isolation`.
+* Starting with Kubernetes version 1.34, all AKS Automatic clusters will include a new AKS-managed component named `Cluster Health Monitor` within the kube-system namespace. This component is designed to collect metrics related to the cluster’s control plane and AKS-managed components, helping ensure these services are operating as expected and improving overall observability.
+
+#### Component Updates
+
+- Windows node images  
+  - Server 2019 Gen1 – [17763.7678.250823](vhd-notes/AKSWindows/2019/17763.7678.250823.txt) 
+  - Server 2022 Gen1/Gen2 – [20348.4052.250823](vhd-notes/AKSWindows/2022/20348.4052.250823.txt) 
+  - Server 23H2 Gen1/Gen2 – [25398.1791.250823](vhd-notes/AKSWindows/23H2/25398.1791.250823.txt)   
+  - Server 2025 Gen1/Gen2 – [26100.4946.250823](vhd-notes/AKSWindows/2025/26100.4946.250823.txt) 
+- AKS Azure Linux v2 image has been updated to [202508.20.0](vhd-notes/AzureLinux/202508.20.0.txt) ([image list](vhd-notes/AzureLinuxv3/202508.20.0-image-list.json)).
+- AKS Azure Linux v3 image has been updated to [202508.20.0](vhd-notes/AzureLinuxv3/202508.20.0.txt) ([image list](vhd-notes/AzureLinuxv3/202508.20.0-image-list.json)).
+- AKS Ubuntu 22.04 node image has been updated to [202508.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202508.20.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202508.20.0-image-list.json)).
+- AKS Ubuntu 24.04 node image has been updated to [202508.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202508.20.0.txt) ([image list](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202508.20.0-image-list.json)).
+* `Azure File CSI driver` has been upgraded to [`v1.33.4`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.4) on AKS 1.33, which includes performance improvements and bug fixes.
+* `Azure Disk CSI driver` has been upgraded to [`v1.33.4`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.4) on AKS 1.33, which includes performance improvements and bug fixes.
+* `NPM (Network Policy Manager)` has been upgraded to [`v1.6.33`](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.33) to resolve multiple CVEs: [CVE-2025-5702](https://nvd.nist.gov/vuln/detail/CVE-2025-5702), CVE-2025-32988](https://nvd.nist.gov/vuln/detail/CVE-2025-32988), [CVE-2025-32989](https://nvd.nist.gov/vuln/detail/CVE-2025-32989), [CVE-2025-32990](https://nvd.nist.gov/vuln/detail/CVE-2025-32990), [CVE-2025-6395](https://nvd.nist.gov/vuln/detail/CVE-2025-6395), [CVE-2025-40909](https://nvd.nist.gov/vuln/detail/CVE-2025-40909), [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907).
+* `Gatekeeper` has been upgraded to [`v3.20.0`](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.20.0), which includes policy engine improvements and bug fixes.
+* `Managed Prometheus/AMA-Metrics` has been upgraded to [08-13-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-08-13-2025), which updates PodMonitor and ServiceMonitor CRDs. Refer to [release notes 08-13-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-08-13-2025) for details.
+* [Application routing operator](https://learn.microsoft.com/azure/aks/app-routing) has been upgraded to [`v0.2.8`](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.8), which upgrades ExternalDNS from [0.15.0](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.15.0) to [0.17.0](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.17.0).
+
+---
+
 ## Release 2025-08-08
 
 Monitor the release status by region at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250808`.
