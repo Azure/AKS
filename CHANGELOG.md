@@ -35,6 +35,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * All AKS Automatic clusters, and AKS Standard clusters that enabled [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) via the safeguardsProfile, will now have a new DeploymentSafeguards resource created in the same resource group as the cluster. See [Use Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) for more information.
 * [Kata VM Isolation](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) runTimeClassName changed from kata-mshv-vm-isolation to kata-vm-isolation.
+* Starting with Kubernetes version 1.34, all AKS Automatic clusters will include a new AKS-managed component named `Cluster Health Monitor` within the kube-system namespace. This component is designed to collect metrics related to the cluster’s control plane and AKS-managed components, helping ensure these services are operating as expected and improving overall observability.
 
 #### Component Updates
 
