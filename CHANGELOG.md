@@ -10,7 +10,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * New Automatic cluster creation is only allowed in [API Server Vnet Integration GA supported regions](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability). Migrating from SKU: "Base" to SKU: "Automatic" is only allowed in API Server Vnet Integration GA supported regions. Operations on existing Automatic clusters will not be blocked even if the cluster is not in API Server Vnet Integration GA supported regions.
   * Disallow adding non-Node auto provisioning pools to AKS Automatic clusters. There is no effect on existing Automatic Clusters that have non-Node auto provisioning pools.
 * AKS patch versions `1.33.3`, `1.32.7`, and `1.30.11` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
-* [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) is now compatible with [AKS Long Term Support (LTS)](https://learn.microsoft.com/en-us/azure/aks/long-term-support) for Istio revisions asm-1-25+ and AKS versions 1.28+. Please note that not every Istio revision will be compatible with every AKS LTS version. It is recommended to review the [Istio add-on support policy](https://learn.microsoft.com/azure/aks/istio-support-policy)  for an overview of this feature's support.
+* [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) is now compatible with [AKS Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) for Istio revisions asm-1-25+ and AKS versions 1.28+. Please note that not every Istio revision will be compatible with every AKS LTS version. It is recommended to review the [Istio add-on support policy](https://learn.microsoft.com/azure/aks/istio-support-policy)  for an overview of this feature's support.
 * [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in the following additional regions: centralus, austriaeast, chilecentral, denmarkeast, israelnorthwest, malaysiawest, southcentralus2, southeastus3, southeastus5, southwestus, and usgovtexas. For the latest list of supported regions, see the [API Server VNet Integration documentation](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limited-availability).
 
 ### Release notes
@@ -21,7 +21,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Ubuntu 24.04 CVM](https://learn.microsoft.com/azure/aks/use-cvm) is now enabled by default for K8s version 1.34-1.38.
 * [OpenID Connect (OIDC) issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer) is now enabled by default on new cluster creation for Kubernetes version 1.34 and above.
 * [Node Auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) enabled clusters can use [planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) for scheduling node image upgrades that adhere to aksManagedNodeOSUpgradeSchedule.
-* When upgrading from kubenet to Azure CNI Overlay, customers can now specify a different pod CIDR using the --pod-cidr parameter. See [Upgrade Azure CNI](https://docs.azure.cn/en-us/aks/upgrade-azure-cni#upgrade-to-azure-cni-overlay) for more information.
+* When upgrading from kubenet to Azure CNI Overlay, customers can now specify a different pod CIDR using the --pod-cidr parameter. See [Upgrade Azure CNI](https://docs.azure.cn/aks/upgrade-azure-cni#upgrade-to-azure-cni-overlay) for more information.
 
 #### Bug Fixes
 
@@ -29,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 #### Behavioral Changes
 
-* All AKS Automatic clusters, and AKS Standard clusters that enabled [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) via the safeguardsProfile, will now have a new DeploymentSafeguards resource created in the same resource group as the cluster. See [Use Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) for more information.
+* All AKS Automatic clusters, and AKS Standard clusters that enabled [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) via the safeguardsProfile, will now have a new `Microsoft.ContainerService/deploymentSafeguards` sub-resource created `managedClusters`. See [Use Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) for more information.
 * [Kata VM Isolation](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) runTimeClassName changed from kata-mshv-vm-isolation to kata-vm-isolation.
 * Starting with Kubernetes version 1.34, all AKS Automatic clusters will include a new AKS-managed component named `Cluster Health Monitor` within the kube-system namespace. This component is designed to collect metrics related to the cluster’s control plane and AKS-managed components, helping ensure these services are operating as expected and improving overall observability.
 
