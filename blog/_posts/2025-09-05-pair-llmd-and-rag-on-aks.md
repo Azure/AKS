@@ -152,11 +152,14 @@ curl -X POST http://localhost:8000/v1/chat/completions \
 We get the following output:
 
 ```bash
-In his letter, Warren Buffett discusses Berkshire Hathaway's performance and strategy. He notes that the company has made 
-mistakes, but emphasizes the importance of acknowledging and correcting them. Buffett highlights Berkshire's core business,
+In his letter, Warren Buffett discusses Berkshire Hathaway's
+performance and strategy. He notes that the company has made 
+mistakes, but emphasizes the importance of acknowledging and
+correcting them. Buffett highlights Berkshire's core business,
 property-casualty insurance, and its unique financial model. 
-He also shares a personal anecdote about Pete Liegl, the founder of Forest River, 
-and explains Berkshire's approach to investing in both controlled businesses and marketable equities.
+He also shares a personal anecdote about Pete Liegl, the founder 
+of Forest River, and explains Berkshire's approach to investing 
+in both controlled businesses and marketable equities.
 ```
 
 We can also verify this response by looking at the story of Pete Liegl on Page 6 of BRK-B’s 10-K:
