@@ -32,7 +32,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * All AKS Automatic clusters, and AKS Standard clusters that enabled [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) via the safeguardsProfile, will now have a new `Microsoft.ContainerService/deploymentSafeguards` sub-resource created under `managedClusters`. See [Use Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) for more information.
 * Disallow adding non-Node auto provisioning pools to [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) clusters. There is no effect on existing Automatic Clusters that have non-Node auto provisioning pools.
-* [Kata VM Isolation](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) runTimeClassName changed from `kata-mshv-vm-isolation` to `kata-vm-isolation`.
+* A new runTimeClassName, `kata-vm-isolation`, has been added for [Pod Sandboxing](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) in preparation for deprecating the old `kata-mshv-vm-isolation` name. Users can continue using the original name for the time being.
 * Starting with Kubernetes version 1.34, all AKS Automatic clusters will include a new AKS-managed component named `Cluster Health Monitor` within the kube-system namespace. This component is designed to collect metrics related to the cluster’s control plane and AKS-managed components, helping ensure these services are operating as expected and improving overall observability.
 
 #### Component Updates
@@ -1315,7 +1315,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * In Kubernetes versions >= 1.29, AMA metrics profile automatically enables basic network observability metrics at the node level. This involves installing the Retina agent on your clusters to gather and process network data. To learn more visit [Monitor AKS](https://learn.microsoft.com/en-us/azure/aks/monitor-aks#network-observability)
 
 * Bug fixes
-  * [Pod overhead](https://kubernetes.io/docs/concepts/containers/runtime-class/#pod-overhead) of memory 2Gi added to `kata-cc-isolation` [RuntimeClass](https://kubernetes.io/docs/concepts/containers/runtime-class/) to address issue where too many pods being created to use too much of the node's memory was resulting in random processes being OOM killed.
   * Fixed issue that was causing PUT operations on AKS clusters that were using [Bring your own Container Network Interface (CNI) plugin](https://learn.microsoft.com/azure/aks/use-byo-cni?tabs=azure-cli) to fail when the request didn't contain the `networkProfile.podCIDR` property.
   * In AKS clusters of version >= 1.27.0, fixed a race condition in the iptables mode of kube-proxy that could result in some updates getting lost (for example, when a service gets a new endpoint).
   * Fixed a race condition that could cause [upgrade from kubenet to Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay?tabs=kubectl#kubenet-cluster-upgrade) to fail.
