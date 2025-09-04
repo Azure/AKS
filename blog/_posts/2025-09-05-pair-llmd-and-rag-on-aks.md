@@ -3,7 +3,7 @@ title: "Pair llm-d Inference with KAITO RAG Advanced Search to Enhance your AI W
 description: "Accelerate AI-driven discovery on Kubernetes with faster insights, greater accuracy, and scalable performance."
 date: 2025-09-05
 author: Ernest Wong, Sachi Desai
-categories: 
+categories:
 - ai
 - developer
 tags:
@@ -26,11 +26,10 @@ But there’s a catch:
 
 ⚠️ Setting up a RAG pipeline involves infrastructure: vector databases, LLM inference, embedding models, and orchestration - what do these components do?
 
-| RAG component | Purpose | Example |
+|RAG component|Purpose|Example|
 |--|--|--|
-| Vector store | Stores text data (documents, FAQs, etc.) in a vector format, or numerical representations of meaning. This allows the system to find relevant pieces of information, even if the user’s question uses different words than the original text (semantic search). | [FAISS](https://faiss.ai/) (Facebook AI Similarity Search) is widely used and is like a memory system that understands meaning and not just keywords.
-| Embedding model | Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the system sees that they are semantically close. | Sentence-BERT (sBERT) and HuggingFace embedding models
-| Retriever + LLM | The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized. | [LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data.
+|Vector store|Stores text data (documents, FAQs, etc.) in a vector format, or numerical representations of meaning. This allows the system to find relevant pieces of information, even if the user’s question uses different words than the original text (semantic search)| [FAISS](https://faiss.ai/) (Facebook AI Similarity Search) is widely used and is like a memory system that understands meaning and not just keywords|Embedding model|Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the system sees that they are semantically close|Sentence-BERT (sBERT) and HuggingFace embedding models
+|Retriever + LLM|The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized|[LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data.
 
 There is where [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) RAGEngine brings cloud-native agility to AI application development. By automatically configuring and orchestrating the RAG pipeline on Kubernetes, it lets data scientists and developers focus on building high-impact AI apps, while the engine helps cluster operators and platform engineers handle scaling, rapid iteration, and real-time data grounding.
 
@@ -49,11 +48,11 @@ In this blog, the inference endpoint will be provisioned via the [llm-d](https:/
 
 ### Quick vocab check
 
-Before diving in, here's a quick breakdown of terms that will clarify the steps ahead: 
+Before diving in, here's a quick breakdown of terms that will clarify the steps ahead:
 
-* **Prefill Stage**: The initial phase of LLM inference where the model processes the complete input prompt, computing attention and embeddings to establish the internal context for generation. 
-* **Decode Stage**: The autoregressive phase of LLM inference where the model generates output tokens sequentially, one at a time, based on the context from the prefill stage. 
-* **Prefill/Decode (P/D) Disaggregation**: The optimization technique of distributing the computationally intensive prefill stage and the lighter, iterative decode stage across separate hardware resources to enhance efficiency and inference speed. 
+* **Prefill Stage**: The initial phase of LLM inference where the model processes the complete input prompt, computing attention and embeddings to establish the internal context for generation.
+* **Decode Stage**: The autoregressive phase of LLM inference where the model generates output tokens sequentially, one at a time, based on the context from the prefill stage.
+* **Prefill/Decode (P/D) Disaggregation**: The optimization technique of distributing the computationally intensive prefill stage and the lighter, iterative decode stage across separate hardware resources to enhance efficiency and inference speed.
 * **KV Cache (Key-Value Cache)**: Stores key and value tensors from the prefill stage’s attention computations, enabling the decode stage to reuse these results for faster token generation, with reduced computational overhead.
 
 ## Benefits of llm-d and its intersection with RAG
@@ -62,15 +61,14 @@ The llm-d framework, built on open-source technologies like [vLLM](https://docs.
 
 ![llm-d architecture](/assets/images/pair-llmd-and-rag-on-aks/llmd-arch.png)
 
-| llm-d feature | What it does | Benefits to RAG workflows
+|llm-d feature|What it does|Benefits to RAG workflows|
 |--|--|--|
-| Prefill/Decode (P/D) Disaggregation | Separates the compute-heavy prefill stage (KV cache building) from the decode stage (autoregressive token generation) on dedicated GPUs, where each GPU pool can be independently scheduled and scaled. | Optimizes throughput for long contexts; prevents resource contention for concurrent requests when processing long RAG queries; enables flexible scaling and lowers time-to-first-token (TTFT) and improves overall token output time (TPOT).
-| Intelligent routing (via Gateway API Inference Extension's Endpoint Picker) | Schedules requests based not only on server queue length and available KV cache size, but also prefix cache hit probability. Maximize the reuse of KV cache for queries with overlapping system prompts and common context retrieved from the vector store. | Minimizes latency; enables efficient reuse of KV cache for similar or repeated contexts; handles RAG queries of mixed context length and structure robustly.
-| Disaggregated KV cache management | Offloads KV cache across local or remote stores, with orchestration from decode-sidecar and advanced cache eviction policies for efficient memory use. | Supports much longer input contexts and multiple concurrent sessions with reduced GPU memory overhead, enabling scalability for large RAG pipelines. |
+| Prefill/Decode (P/D) Disaggregation| Separates the compute-heavy prefill stage (KV cache building) from the decode stage (autoregressive token generation) on dedicated GPUs, where each GPU pool can be independently scheduled and scaled|Optimizes throughput for long contexts; prevents resource contention for concurrent requests when processing long RAG queries; enables flexible scaling and lowers time-to-first-token (TTFT) and improves overall token output time (TPOT)
+|Intelligent routing (via Gateway API Inference Extension's Endpoint Picker)|Schedules requests based not only on server queue length and available KV cache size, but also prefix cache hit probability. Maximize the reuse of KV cache for queries with overlapping system prompts and common context retrieved from the vector store|Minimizes latency; enables efficient reuse of KV cache for similar or repeated contexts; handles RAG queries of mixed context length and structure robustly|Disaggregated KV cache management|Offloads KV cache across local or remote stores, with orchestration from decode-sidecar and advanced cache eviction policies for efficient memory use|Supports much longer input contexts and multiple concurrent sessions with reduced GPU memory overhead, enabling scalability for large RAG pipelines|
 
 ## Let’s get started: KAITO RAGEngine backed by llm-d with P/D Disaggregation
 
-With the [prerequisites](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#prerequisites) covered, this guide will dive into the creation of two distinct but related endpoints: 
+With the [prerequisites](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#prerequisites) covered, this guide will dive into the creation of two distinct but related endpoints:
 
 1. **Inference Endpoint**: an OpenAI API compatible inference service in Kubernetes, created by the llm-d stack. Jump to the [llm-d inference endpoint](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#inference-endpoint) section in our GitHub repository to set it up.
 
@@ -162,7 +160,7 @@ We’ve built a system that makes it easy to search and understand complex finan
 
 ## Next steps
 
-Now that you've deployed an OpenAI-compatible endpoint using llm-d and integrated it with KAITO RAGEngine on AKS, you're well-positioned to scale this setup for enterprise use cases. Here’s how to continue building on what you’ve learned: 
+Now that you've deployed an OpenAI-compatible endpoint using llm-d and integrated it with KAITO RAGEngine on AKS, you're well-positioned to scale this setup for enterprise use cases. Here’s how to continue building on what you’ve learned:
 
 * Dynamically scale your llm-d inference by creating a [Kubernetes Event-Driven Autoscaling](https://keda.sh/) (KEDA) `ScaledObject` based on key vLLM metrics.
 * Introduce an automated data processing pipeline to index more extensive data efficiently as your RAG system grows over time.
