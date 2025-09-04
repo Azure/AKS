@@ -27,6 +27,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 #### Bug Fixes
 
 * Fixed a bug where [ETag](https://azure.github.io/azure-sdk/general_design.html#conditional-requests) was not returned in [ManagedClusters](https://learn.microsoft.com/rest/api/aks/managed-clusters?view=rest-aks-2025-05-01) or [AgentPools](https://learn.microsoft.com/rest/api/aks/agent-pools?view=rest-aks-2025-05-01) responses in API versions 2024-09-01 or newer, even though the API specification said it would be.
+* Fixed [cluster autoscaler bug 7694](https://github.com/kubernetes/autoscaler/issues/7964) in kubernetes version 1.31+, where the "DeletionCandidateOfClusterAutoscaler" taint would persist on some of the remaining nodes after scale-down. This incorrect tainting prevented new pods from being scheduled on those nodes.
 
 #### Behavioral Changes
 
