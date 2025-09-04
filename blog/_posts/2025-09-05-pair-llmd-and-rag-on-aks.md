@@ -28,8 +28,9 @@ But there’s a catch:
 
 |RAG component|Purpose|Example|
 |--|--|--|
-|Vector store|Stores text data (documents, FAQs, etc.) in a vector format, or numerical representations of meaning. This allows the system to find relevant pieces of information, even if the user’s question uses different words than the original text (semantic search)| [FAISS](https://faiss.ai/) (Facebook AI Similarity Search) is widely used and is like a memory system that understands meaning and not just keywords|Embedding model|Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the system sees that they are semantically close|Sentence-BERT (sBERT) and HuggingFace embedding models
-|Retriever + LLM|The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized|[LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data.
+|Vector store|Stores text data (documents, FAQs, etc.) in a vector format, or numerical representations of meaning. This allows the system to find relevant pieces of information, even if the user’s question uses different words than the original text (semantic search)|[FAISS](https://faiss.ai/) (Facebook AI Similarity Search) is widely used and is like a memory system that understands meaning and not just keywords|
+|Embedding model|Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the system sees that they are semantically close|Sentence-BERT (sBERT) and HuggingFace embedding models|
+|Retriever + LLM|The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized|[LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data|
 
 There is where [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) RAGEngine brings cloud-native agility to AI application development. By automatically configuring and orchestrating the RAG pipeline on Kubernetes, it lets data scientists and developers focus on building high-impact AI apps, while the engine helps cluster operators and platform engineers handle scaling, rapid iteration, and real-time data grounding.
 
@@ -63,8 +64,9 @@ The llm-d framework, built on open-source technologies like [vLLM](https://docs.
 
 |llm-d feature|What it does|Benefits to RAG workflows|
 |--|--|--|
-| Prefill/Decode (P/D) Disaggregation| Separates the compute-heavy prefill stage (KV cache building) from the decode stage (autoregressive token generation) on dedicated GPUs, where each GPU pool can be independently scheduled and scaled|Optimizes throughput for long contexts; prevents resource contention for concurrent requests when processing long RAG queries; enables flexible scaling and lowers time-to-first-token (TTFT) and improves overall token output time (TPOT)
-|Intelligent routing (via Gateway API Inference Extension's Endpoint Picker)|Schedules requests based not only on server queue length and available KV cache size, but also prefix cache hit probability. Maximize the reuse of KV cache for queries with overlapping system prompts and common context retrieved from the vector store|Minimizes latency; enables efficient reuse of KV cache for similar or repeated contexts; handles RAG queries of mixed context length and structure robustly|Disaggregated KV cache management|Offloads KV cache across local or remote stores, with orchestration from decode-sidecar and advanced cache eviction policies for efficient memory use|Supports much longer input contexts and multiple concurrent sessions with reduced GPU memory overhead, enabling scalability for large RAG pipelines|
+|Prefill/Decode (P/D) Disaggregation|Separates the compute-heavy prefill stage (KV cache building) from the decode stage (autoregressive token generation) on dedicated GPUs, where each GPU pool can be independently scheduled and scaled|Optimizes throughput for long contexts; prevents resource contention for concurrent requests when processing long RAG queries; enables flexible scaling and lowers time-to-first-token (TTFT) and improves overall token output time (TPOT)|
+|Intelligent routing (via Gateway API Inference Extension's Endpoint Picker)|Schedules requests based not only on server queue length and available KV cache size, but also prefix cache hit probability. Maximize the reuse of KV cache for queries with overlapping system prompts and common context retrieved from the vector store|Minimizes latency; enables efficient reuse of KV cache for similar or repeated contexts; handles RAG queries of mixed context length and structure robustly|
+|Disaggregated KV cache management|Offloads KV cache across local or remote stores, with orchestration from decode-sidecar and advanced cache eviction policies for efficient memory use|Supports much longer input contexts and multiple concurrent sessions with reduced GPU memory overhead, enabling scalability for large RAG pipelines|
 
 ## Let’s get started: KAITO RAGEngine backed by llm-d with P/D Disaggregation
 
@@ -120,7 +122,8 @@ curl -X POST http://localhost:8000/v1/chat/completions \
 Which results in the output:
 
 ```bash
-According to the provided documents, NVIDIA's revenue for the years ended January 26, 2025 and January 28, 2024 were:
+According to the provided documents, NVIDIA's revenue for the years
+ended January 26, 2025 and January 28, 2024 were:
 * Year Ended January 26, 2025: $130,497 million
 * Year Ended January 28, 2024: $60,922 million
 ```
@@ -149,7 +152,11 @@ curl -X POST http://localhost:8000/v1/chat/completions \
 We get the following output:
 
 ```bash
-In his letter, Warren Buffett discusses Berkshire Hathaway's performance and strategy. He notes that the company has made mistakes, but emphasizes the importance of acknowledging and correcting them. Buffett highlights Berkshire's core business, property-casualty insurance, and its unique financial model. He also shares a personal anecdote about Pete Liegl, the founder of Forest River, and explains Berkshire's approach to investing in both controlled businesses and marketable equities.
+In his letter, Warren Buffett discusses Berkshire Hathaway's performance and strategy. He notes that the company has made 
+mistakes, but emphasizes the importance of acknowledging and correcting them. Buffett highlights Berkshire's core business,
+property-casualty insurance, and its unique financial model. 
+He also shares a personal anecdote about Pete Liegl, the founder of Forest River, 
+and explains Berkshire's approach to investing in both controlled businesses and marketable equities.
 ```
 
 We can also verify this response by looking at the story of Pete Liegl on Page 6 of BRK-B’s 10-K:
