@@ -53,6 +53,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * `Gatekeeper` has been upgraded to [`v3.20.0`](https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.20.0), which includes policy engine improvements and bug fixes.
 * `Managed Prometheus/AMA-Metrics` has been upgraded to [08-13-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-08-13-2025), which updates PodMonitor and ServiceMonitor CRDs. Refer to [release notes 08-13-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-08-13-2025) for details.
 * [Application routing operator](https://learn.microsoft.com/azure/aks/app-routing) has been upgraded to [`v0.2.8`](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.8), which upgrades ExternalDNS from [0.15.0](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.15.0) to [0.17.0](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.17.0).
+* Azure Policy add-on has been upgraded to [v1.13.1](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1131) to address [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907).
 
 ---
 
