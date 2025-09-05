@@ -2,16 +2,18 @@
 title: "Pair llm-d Inference with KAITO RAG Advanced Search to Enhance your AI Workflows"
 description: "Accelerate AI-driven discovery on Kubernetes with faster insights, greater accuracy, and scalable performance."
 date: 2025-09-05
-author: Ernest Wong, Sachi Desai
+authors: 
+- Ernest Wong
+- Sachi Desai
 categories:
 - ai
 - developer
 tags:
 - llm-d
-- KAITO
-- RAG
-- FAISS
-- HuggingFace
+- kaito
+- rag
+- faiss
+- huggingface
 ---
 
 ## Overview
@@ -49,7 +51,7 @@ In this blog, the inference endpoint will be provisioned via the [llm-d](https:/
 
 ### Quick vocab check
 
-Before diving in, here's a quick breakdown of terms that will clarify the steps ahead:
+Before diving in, here's a quick breakdown of terms used with regard to llm-d that will clarify the steps ahead:
 
 * **Prefill Stage**: The initial phase of LLM inference where the model processes the complete input prompt, computing attention and embeddings to establish the internal context for generation.
 * **Decode Stage**: The autoregressive phase of LLM inference where the model generates output tokens sequentially, one at a time, based on the context from the prefill stage.
