@@ -18,7 +18,7 @@ tags:
 
 ## Overview
 
-In this blog, we'll guide you through setting up an OpenAI API compatible inference endpoint with llm-d and integrating with [RAG](https://kaito-project.github.io/kaito/docs/rag) on AKS, and showcasing its value in a key finance use case: indexing the latest SEC 10-K filings for the two S&P 500 companies and querying them. We’ll also highlight the benefits of llm-d based on its architecture and its synergy with RAG.
+In this blog, we'll guide you through setting up an OpenAI API compatible inference endpoint with [llm-d](https://llm-d.ai/docs/architecture) and integrating with [RAG](https://kaito-project.github.io/kaito/docs/rag) on AKS, and showcasing its value in a key finance use case: indexing the latest SEC 10-K filings for the two S&P 500 companies and querying them. We’ll also highlight the benefits of llm-d based on its architecture and its synergy with RAG.
 
 ## Introduction
 
@@ -34,11 +34,9 @@ But there’s a catch:
 |Embedding model|Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the system sees that they are semantically close|Sentence-BERT (sBERT) and HuggingFace embedding models|
 |Retriever + LLM|The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized|[LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data|
 
-There is where [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) RAGEngine brings cloud-native agility to AI application development. By automatically configuring and orchestrating the RAG pipeline on Kubernetes, it lets data scientists and developers focus on building high-impact AI apps, while the engine helps cluster operators and platform engineers handle scaling, rapid iteration, and real-time data grounding.
+There is where [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) RAGEngine brings cloud-native agility to AI application development. KAITO is a CNCF Sandbox project that makes it easy to deploy, serve, and scale LLMs on Kubernetes, without needing to become a DevOps expert. By automatically configuring and orchestrating the RAG pipeline on Kubernetes, it lets developers focus on building high-impact AI apps, while the engine helps cluster operators and platform engineers handle scaling, rapid iteration, and real-time data grounding.
 
 ![KAITO RAGEngine Architecture](/assets/images/pair-llmd-and-rag-on-aks/kaito-rag-arch.png)
-
-KAITO is a CNCF Sandbox project that makes it easy to deploy, serve, and scale LLMs on Kubernetes, without needing to become a DevOps expert.
 
 The RAGEngine preset gives you an end-to-end RAG pipeline out of the box, including:
 
