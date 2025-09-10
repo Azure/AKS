@@ -34,7 +34,9 @@ But there’s a catch:
 |Embedding model|Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the system sees that they are semantically close|Sentence-BERT (sBERT) and HuggingFace embedding models|
 |Retriever + LLM|The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized|[LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data|
 
-There is where [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) RAGEngine brings cloud-native agility to AI application development. KAITO is a CNCF Sandbox project that makes it easy to deploy, serve, and scale LLMs on Kubernetes, without needing to become a DevOps expert. By automatically configuring and orchestrating the RAG pipeline on Kubernetes, it lets developers focus on building high-impact AI apps, while the engine helps cluster operators and platform engineers handle scaling, rapid iteration, and real-time data grounding.
+There is where [Kubernetes AI Toolchain Operator](https://kaito-project.github.io/kaito/docs/) (KAITO) [RAGEngine](https://kaito-project.github.io/kaito/docs/rag/) brings cloud-native agility to AI application development. KAITO is a CNCF Sandbox project that makes it easy to deploy, serve, and scale LLMs on Kubernetes, without needing to become a DevOps expert. Using RAGEngine, you can quickly stand up a service that indexes documents and queries them in conjunction with an existing LLM inference endpoint. This enables your large language model to answer questions based on your own private content.
+
+By automatically configuring and orchestrating the RAG pipeline on Kubernetes, KAITO lets developers focus on building high-impact AI apps, while the engine helps cluster operators and platform engineers handle scaling, rapid iteration, and real-time data grounding. 
 
 ![KAITO RAGEngine Architecture](/assets/images/pair-llmd-and-rag-on-aks/kaito-rag-arch.png)
 
@@ -74,7 +76,7 @@ With the [prerequisites](https://github.com/kaito-project/kaito-cookbook/tree/ma
 
 1. **Inference Endpoint**: an OpenAI API compatible inference service in Kubernetes, created by the llm-d stack. Jump to the [llm-d inference endpoint](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#inference-endpoint) section in our GitHub repository to set it up.
 
-1. **RAG Endpoint**: a RAG service provisioned by KAITO with the inference endpoint pointed to step (1) for users to efficiently index and query their documents. Check out the steps in this [RAG endpoint](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#rag-endpoint) GitHub repo section to spin up and verify your RAGEngine workspace, which includes a YAML manifest that looks like:
+1. **RAG Endpoint**: a RAG service provisioned by KAITO with the inference endpoint pointed to step (1) for users to efficiently index and query their documents. Check out the steps in this [RAG endpoint](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#rag-endpoint) GitHub cookbook section to spin up and verify your RAGEngine workspace, which includes a YAML manifest that looks like:
 
 ```bash
 apiVersion: kaito.sh/v1alpha1 
@@ -102,9 +104,11 @@ Now, we'll pair llm-d inference with KAITO RAGEngine to index the latest SEC 10-
 
 Investors, analysts, and researchers benefit from this approach by bypassing manual document review and accessing accurate, up-to-date information through natural language queries - all within their Kubernetes cluster!
 
-Stepping through this [finance example section](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#practical-example-indexing-and-querying-10-k-filings), you can specify the context of the `10-K` filings index with a request like:
+Stepping through this [finance cookbook example](https://github.com/kaito-project/kaito-cookbook/tree/master/examples/ragengine-llm-d#practical-example-indexing-and-querying-10-k-filings), you can port-forward the RAGEngine service to access your endpoint locally, and specify the context of the `10-K` filings index as follows:
 
 ```bash
+kubectl port-forward svc/ragengine-llm-d 8000:80
+
 curl -X POST http://localhost:8000/v1/chat/completions \
  -H "Content-Type: application/json" \
  -d '{
