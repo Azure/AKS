@@ -83,10 +83,10 @@ metadata:
   name: ragengine-llm-d 
 spec: 
   compute: 
-    instanceType: "Standard_DS2_v2" 
+    instanceType: "Standard_DS2_v4" 
     labelSelector: 
       matchLabels: 
-        node.kubernetes.io/instance-type: Standard_DS2_v2
+        node.kubernetes.io/instance-type: Standard_DS2_v4
   embedding:
     local:
       modelID: "BAAI/bge-small-en-v1.5"
@@ -94,7 +94,7 @@ spec:
     url: "http://<inference-url>/v1/chat/completions"
 ```
 
-> **Note**: This RAG service only requires general-purpose compute, like the Azure `Standard_DS2_v2` SKU shown above, which often provides a more cost-effective and accessible alternative to the GPU-intensive process of continuous fine-tuning.
+> **Note**: This RAG service only requires general-purpose compute, like the Azure `Standard_DS2_v4` SKU shown above, which often provides a more cost-effective and accessible alternative to the GPU-intensive process of continuous fine-tuning.
 
 ## Practical Example: Indexing and Querying 10-K Filings
 
