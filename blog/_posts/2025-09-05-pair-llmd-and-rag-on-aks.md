@@ -19,7 +19,8 @@ tags:
 ## Overview
 
 In this blog, we'll guide you through setting up an OpenAI API compatible inference
-endpoint with [llm-d](https://llm-d.ai/docs/architecture) and integrating with [RAG](https://kaito-project.github.io/kaito/docs/rag) on AKS, and showcasing its value
+endpoint with [llm-d](https://llm-d.ai/docs/architecture) and integrating with [retrieval-augmented generation](https://kaito-project.github.io/kaito/docs/rag) (RAG) on AKS. 
+This blog will showcase its value
 in a key finance use case: indexing the latest SEC 10-K filings for the two S&P 500
 companies and querying them. We’ll also highlight the benefits of llm-d based on
 its architecture and its synergy with RAG.
@@ -138,10 +139,10 @@ metadata:
   name: ragengine-llm-d 
 spec: 
   compute: 
-    instanceType: "Standard_DS2_v4" 
+    instanceType: "Standard_D2s_v4" 
     labelSelector: 
       matchLabels: 
-        node.kubernetes.io/instance-type: Standard_DS2_v4
+        node.kubernetes.io/instance-type: Standard_D2s_v4
   embedding:
     local:
       modelID: "BAAI/bge-small-en-v1.5"
