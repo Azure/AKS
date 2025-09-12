@@ -40,7 +40,7 @@ domain-specific knowledge simply by updating the underlying data store.
 
 But there’s a catch:
 
-⚠️ Setting up a RAG pipeline involves infrastructure: vector databases, LLM
+Setting up a RAG pipeline involves infrastructure: vector databases, LLM
 inference, embedding models, and orchestration - what do these components do?
 
 | RAG component | Purpose | Example |
@@ -80,6 +80,9 @@ documents as context and user queries in natural language
 
 In this blog, the inference endpoint will be provisioned via the [llm-
 d](https://llm-d.ai/docs/architecture) framework.
+
+> **Note** Both `llm-d` and `RAGEngine` are deployed as open-source
+solutions in the following example, and are not currently managed on AKS.
 
 ### Quick vocab check
 
