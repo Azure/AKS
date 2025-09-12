@@ -3,7 +3,7 @@ title: "Pair llm-d Inference with KAITO RAG Advanced Search to Enhance your AI
 Workflows"
 description: "Accelerate AI-driven discovery on Kubernetes with faster insights,
 greater accuracy, and scalable performance."
-date: 2025-09-05
+date: 2025-09-12
 authors: 
 - Ernest Wong
 - Sachi Desai
