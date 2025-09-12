@@ -24,7 +24,7 @@ In this blog, we'll guide you through setting up an OpenAI API compatible
 inference endpoint with [llm-d](https://llm-d.ai/docs/architecture) and
 integrating with [retrieval-
 augmented generation](https://kaito-project.github.io/kaito/docs/rag)
-(RAG) on AKS. This blog will showcase its value in a key finance use case: 
+(RAG) on AKS. This blog will showcase its value in a key finance use case:
 indexing the latest SEC 10-K filings for the two S&P 500 companies and
 querying them. We’ll also highlight the benefits of llm-d based on
 its architecture and its synergy with RAG.
@@ -43,12 +43,12 @@ But there’s a catch:
 ⚠️ Setting up a RAG pipeline involves infrastructure: vector databases, LLM
 inference, embedding models, and orchestration - what do these components do?
 
-|RAG component|Purpose|Example|
-|--|--|--|
-|Vector store|Stores text data (documents, FAQs, etc.) in a vector format, or numerical representations of meaning. This allows the system to find relevant pieces of information, even if the user’s question uses different words than the original text (semantic search)|[FAISS](https://faiss.ai/) (Facebook AI Similarity Search) is widely used and is like a memory system that understands meaning and not just keywords|
-|Embedding model|Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the
-system sees that they are semantically close|Sentence-BERT (sBERT) and HuggingFace embedding models|
-|Retriever + LLM|The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized [LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data|
+| RAG component | Purpose | Example |
+| :-- | :-- | :-- |
+| Vector store | Stores text data (documents, FAQs, etc.) in a vector format, or numerical representations of meaning. This allows the system to find relevant pieces of information, even if the user’s question uses different words than the original text (semantic search) | [FAISS](https://faiss.ai/) (Facebook AI Similarity Search) is widely used and is like a memory system that understands meaning and not just keywords |
+| Embedding model | Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the
+system sees that they are semantically close | Sentence-BERT (sBERT) and HuggingFace embedding models |
+| Retriever + LLM | The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized. | [LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data |
 
 There is where [Kubernetes AI Toolchain
 Operator](https://kaito-project.github.io/kaito/docs/) (KAITO)
@@ -65,7 +65,7 @@ KAITO lets developers focus on building high-impact AI apps, while the engine
 helps cluster operators and platform engineers handle scaling, rapid iteration,
 and real-time data grounding.
 
-![KAITO RAGEngine 
+![KAITO RAGEngine
 Architecture](/assets/images/pair-llmd-and-rag-on-aks/kaito-rag-arch.png)
 
 The RAGEngine preset gives you an end-to-end RAG pipeline out of the box,
