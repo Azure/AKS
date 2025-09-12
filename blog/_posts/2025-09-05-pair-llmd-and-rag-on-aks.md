@@ -46,8 +46,7 @@ inference, embedding models, and orchestration - what do these components do?
 | RAG component | Purpose | Example |
 | :-- | :-- | :-- |
 | Vector store | Stores text data (documents, FAQs, etc.) in a vector format, or numerical representations of meaning. This allows the system to find relevant pieces of information, even if the user’s question uses different words than the original text (semantic search) | [FAISS](https://faiss.ai/) (Facebook AI Similarity Search) is widely used and is like a memory system that understands meaning and not just keywords |
-| Embedding model | Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the
-system sees that they are semantically close | Sentence-BERT (sBERT) and HuggingFace embedding models |
+| Embedding model | Converts text (like a phrase or sentence) into a vector that captures the meaning of the text. Even if the words in different searches don’t match exactly, an embedding model can produce similar vectors that indicate the system sees that they are semantically close | Sentence-BERT (sBERT) and HuggingFace embedding models |
 | Retriever + LLM | The retriever finds useful information to help the LLM give a more accurate or update-to-date answer. Together, they make the RAG system flexible and grounded in real, relevant data and not just what the model memorized. | [LlamaIndex](https://docs.llamaindex.ai/) and [LangChain](https://python.langchain.com/docs/introduction/) offer open-source retrievers that are useful for different types of data |
 
 There is where [Kubernetes AI Toolchain
