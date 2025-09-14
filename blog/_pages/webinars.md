@@ -61,15 +61,16 @@ oof_row:
     class: "agenda-feature"
 
 combined_row:
-  - title: "Agenda (July 2025)"
+  - title: "Agenda (September 2025)"
     excerpt: "<div class='agenda-container compact'>
                 <div class='agenda-section'>
                   <div class='agenda-item'>
                     <div class='agenda-content'>
                       <h4>Welcome & Announcements</h4>
                       <ul class='compact-list'>
-                        <li>Node AutoProvision GA</li>
-                        <li>Video Series: AKS Me Anything</li>
+                        <li>AKS Automatic GA</li>
+                        <li>Video Series: Upstream @ AKS</li>
+                        <li>Video Series: AKS Me Anything: Season 2</li>
                       </ul>
                     </div>
                   </div>
@@ -90,8 +91,8 @@ combined_row:
                   
                   <div class='agenda-item featured'>
                     <div class='agenda-content'>
-                      <h4>Feature Deepdive: AI ok AKS</h4>
-                      <p>By <strong>Sachi Desai</strong>, PM (AKS)</p>
+                      <h4>Feature Deepdive: App Gateway for Containers (AGC)</h4>
+                      <p>By <strong>Jack Stromberg</strong>, Principal PM (Networking)</p>
                       <p class='agenda-description'></p>
                     </div>
                   </div>
@@ -146,5 +147,5 @@ combined_row:
 </div>
 
 <div class="combined-row-container">
-  {% include feature_row id="oof_row" type="justified" %}
+  {% include feature_row id="combined_row" type="justified" %}
 </div>
