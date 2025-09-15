@@ -142,10 +142,6 @@ combined_row:
     class: "timezone-feature"
 
 ---
-<div class="intro-container">
-  {% include feature_row id="intro" type="justified" %}
-</div>
+{% include feature_row id="intro" type="justified" %}
 
-<div class="combined-row-container">
-  {% include feature_row id="combined_row" type="justified" %}
-</div>
+{% include feature_row id="combined_row" type="justified" %}
