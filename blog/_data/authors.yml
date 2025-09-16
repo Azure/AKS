@@ -389,3 +389,15 @@ Qasim Sarfraz:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/mqasimsarfraz"
+
+Diego Casati:
+  name        : "Diego Casati"
+  bio         : "Microsoft's Azure Global Black Belt team, working on cloud native solutions using Kubernetes on Azure."
+  avatar      : "https://media.licdn.com/dms/image/v2/D5603AQFbRYZB9eQBfg/profile-displayphoto-shrink_200_200/B56ZgperpEHkAY-/0/1753042569420?e=1759968000&v=beta&t=fa5vVvLNra2VKvAulwECic6aius7gtpkuca9oWzVGCA"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/dcasati"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/diegocasati/"
