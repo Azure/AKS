@@ -1,7 +1,7 @@
 ---
 title: "Azure Monitor dashboards with Grafana in Azure Portal"
 description: "Explore the new Grafana dashboards built directly into Azure Monitor and learn how they empower observability and when to reach for Azure Managed Grafana."
-date: 2025-05-29
+date: 2025-09-18
 authors: 
    - Aritra Ghosh
    - Kayode Prince
