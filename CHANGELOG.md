@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [OpenID Connect (OIDC) issuer](https://learn.microsoft.com/azure/aks/use-oidc-issuer) is now enabled by default on new cluster creation for Kubernetes version 1.34 and above.
 * [Node Auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision?tabs=azure-cli) enabled clusters can use [planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli) for scheduling node image upgrades that adhere to `aksManagedNodeOSUpgradeSchedule`.
 * When upgrading from kubenet to Azure CNI Overlay, customers can now specify a different pod CIDR using the --pod-cidr parameter. See [Upgrade Azure CNI](https://docs.azure.cn/aks/upgrade-azure-cni#upgrade-to-azure-cni-overlay) for more information.
-* Azure Linux 3.0 now supports [NVIDIA NC A100](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux#azure-linux-container-host-supported-gpu-virtual-machine-sizes) on AKS.
+* Azure Linux 3.0 now supports the [NVIDIA NC A100](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux#azure-linux-container-host-supported-gpu-virtual-machine-sizes) GPU on AKS.
 * AKS now supports a new OS Sku enum, [`AzureLinux3`](https://learn.microsoft.com/azure/aks/upgrade-os-version#migrate-to-azure-linux-30). This enum is now GA and supported in Kubernetes versions 1.28 to 1.36 using Azure CLI version 18.0.0b36 or later for preview and version 2.78.0 or later for GA. OS Sku  `AzureLinux3` is recommended if you need to migrate to Azure Linux 3.0 without upgrading your Kubernetes version.
 
 #### Bug Fixes
