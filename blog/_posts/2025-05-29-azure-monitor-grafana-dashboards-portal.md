@@ -92,7 +92,6 @@ Once the dashboard is created, select **+ Add** and chose **Add Visualization**
 
 This feature is available out of the box for all customers.. For more information on customization, refer to the [Learn documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/visualize-use-grafana-dashboards).
 
-
 ### Real-world Use Cases
 
 - **Troubleshooting node issues:** A platform SRE spots CPU saturation on the `prod-nodepool`; by filtering the dashboard by node pool, they view CPU and memory trends and identify the problematic pod in under two minutes.
