@@ -271,6 +271,27 @@ Sarah Zhou:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/sarahjzhou/"
+Aritra Ghosh:
+  name        : "Aritra Ghosh"
+  bio         : "Senior Product Manager at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/aritraghoshpm/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/aritraghosh"
+
+Kayode Prince:
+  name        : "Kayode Prince"
+  bio         : "Senior Program Manager at Microsoft"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/kayodeprince/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/kayodeprinceMS"
 
 Jane Guo:
   name: "Jane Guo"
