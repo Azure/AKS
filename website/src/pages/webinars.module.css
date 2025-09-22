@@ -289,6 +289,26 @@
 }
 
 /* Dark mode tweaks */
+[data-theme="dark"] .introBox {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .agendaItem p {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .agendaDescription {
+  color: var(--ifm-color-emphasis-700);
+}
+
+[data-theme="dark"] .timezoneCardHeader h4 {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .timezoneCardBody p {
+  color: var(--ifm-font-color-base);
+}
+
 [data-theme="dark"] .timezoneCard {
   background: var(--ifm-background-surface-color);
   border-color: var(--ifm-color-emphasis-400);
