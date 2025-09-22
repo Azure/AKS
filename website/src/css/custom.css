@@ -1,0 +1,494 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Import modern, highly legible fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
+
+/* Minimal Mistakes Jekyll Theme Color Scheme - matching AKS Blog exactly */
+:root {
+  /* Primary purple color scheme */
+  --ifm-color-primary: #9f62eb;
+  --ifm-color-primary-dark: #8e42e6;
+  --ifm-color-primary-darker: #8637e3;
+  --ifm-color-primary-darkest: #6f2bc7;
+  --ifm-color-primary-light: #b082f0;
+  --ifm-color-primary-lighter: #b68df2;
+  --ifm-color-primary-lightest: #c8a8f6;
+
+  /* Link colors using purple variations */
+  --ifm-link-color: #9f62eb;
+  --ifm-link-hover-color: #8e42e6;
+
+  /* Text and background colors */
+  --ifm-font-color-base: #111;
+  --ifm-background-color: #fff;
+  --ifm-background-surface-color: #f8f8f8;
+
+  /* Navbar */
+  --ifm-navbar-background-color: #f8f5fe;
+  --ifm-navbar-shadow: 0 2px 4px -1px rgba(159, 98, 235, 0.15);
+  --ifm-navbar-link-color: #4a3d5a;
+  --ifm-navbar-link-hover-color: #9f62eb;
+
+  /* Footer */
+  --ifm-footer-background-color: #6f2bc7;
+  --ifm-footer-color: #ffffff;
+  --ifm-footer-link-color: #ffffff;
+  --ifm-footer-link-hover-color: #c8a8f6;
+
+  /* Emphasis colors */
+  --ifm-color-emphasis-100: #f5f5f5;
+  --ifm-color-emphasis-200: #eee;
+  --ifm-color-emphasis-300: #ddd;
+  --ifm-color-emphasis-600: #777;
+  --ifm-color-emphasis-700: #666;
+  --ifm-color-emphasis-800: #555;
+
+  /* Other colors */
+  --ifm-color-secondary: #777;
+  --ifm-color-info: #9f62eb;
+  --ifm-color-success: #5cb85c;
+  --ifm-color-warning: #f0ad4e;
+  --ifm-color-danger: #d9534f;
+
+  /* Typography */
+  --ifm-font-family-base: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.6;
+  --ifm-code-font-size: 0.875em;
+  --ifm-code-font-family: "JetBrains Mono", "SF Mono", Monaco, Inconsolata,
+    "Roboto Mono", "Source Code Pro", Consolas, "Courier New", monospace;
+
+  /* Headings */
+  --ifm-h1-font-size: 2.441em;
+  --ifm-h2-font-size: 1.953em;
+  --ifm-h3-font-size: 1.563em;
+  --ifm-h4-font-size: 1.25em;
+  --ifm-heading-font-weight: 600;
+  --ifm-font-weight-semibold: 600;
+  --ifm-font-weight-bold: 700;
+
+  /* Improved text rendering */
+  --ifm-font-feature-settings: "kern" 1;
+
+  /* Layout */
+  --ifm-navbar-height: 60px;
+
+  /* Code highlighting */
+  --docusaurus-highlighted-code-line-bg: rgba(159, 98, 235, 0.1);
+}
+
+/* Dark theme - Purple theme */
+[data-theme="dark"] {
+  --ifm-color-primary: #b082f0;
+  --ifm-color-primary-dark: #9f62eb;
+  --ifm-color-primary-darker: #8e42e6;
+  --ifm-color-primary-darkest: #6f2bc7;
+  --ifm-color-primary-light: #c8a8f6;
+  --ifm-color-primary-lighter: #d2b5f8;
+  --ifm-color-primary-lightest: #e6d3fc;
+
+  --ifm-link-color: #b082f0;
+  --ifm-link-hover-color: #c8a8f6;
+
+  --ifm-background-color: #1b1b1d;
+  --ifm-background-surface-color: #2e2e30;
+
+  --ifm-font-color-base: #eeeeee;
+  --ifm-color-emphasis-100: #2e2e30;
+  --ifm-color-emphasis-200: #404040;
+  --ifm-color-emphasis-300: #606060;
+  --ifm-color-emphasis-600: #a0a0a0;
+  --ifm-color-emphasis-700: #c0c0c0;
+
+  --ifm-navbar-background-color: #2a1b3d;
+  --ifm-navbar-link-color: #e6d3fc;
+  --ifm-footer-background-color: #1a0d26;
+
+  --docusaurus-highlighted-code-line-bg: rgba(176, 130, 240, 0.2);
+}
+
+/* Clean blog styling */
+.blog-post-title {
+  color: var(--ifm-font-color-base);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.blog-post-meta {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.blog-post-reading-time {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.875rem;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Improved typography for all text */
+html {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading improvements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--ifm-heading-font-weight);
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 600;
+}
+
+/* Paragraph improvements */
+p {
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+/* Better link styling */
+a {
+  font-weight: 500;
+}
+
+/* Code font improvements */
+code {
+  font-family: var(--ifm-code-font-family);
+}
+
+/* Navigation */
+.navbar {
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  box-shadow: var(--ifm-navbar-shadow);
+}
+
+.navbar__brand {
+  font-weight: 700;
+  color: var(--ifm-navbar-link-color);
+  letter-spacing: -0.025em;
+}
+
+.navbar__item .navbar__link {
+  font-weight: 500;
+  color: var(--ifm-navbar-link-color);
+}
+
+.navbar__item .navbar__link:hover {
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--ifm-footer-background-color);
+  color: var(--ifm-footer-color);
+  padding: 3rem 0 1rem;
+}
+
+.footer__title {
+  color: #b082f0;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.footer__item {
+  color: #ffffff;
+}
+
+.footer__link-item {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-footer-link-hover-color);
+}
+
+.footer__copyright {
+  color: var(--ifm-footer-link-color);
+  font-size: 0.875rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* Blog post list */
+.blog-list-item {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+
+.blog-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Tags */
+.blog-tags {
+  margin-top: 1rem;
+}
+
+.blog-tag {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800) !important;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 0.5rem;
+  margin-bottom: 0.25rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.blog-tag:hover {
+  background-color: var(--ifm-color-primary);
+  color: white !important;
+}
+
+/* Content styling */
+.markdown h1 {
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  padding-bottom: 0.5rem;
+}
+
+.markdown h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.markdown h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown blockquote {
+  border-left: 4px solid var(--ifm-color-emphasis-300);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* Code blocks */
+.prism-code {
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar__brand {
+    font-size: 1rem;
+  }
+}
+
+/* Reduce container padding and increase content width */
+.container {
+  max-width: 1400px !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+@media (min-width: 997px) {
+  .container {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+}
+
+/* Stretch main content area */
+.main-wrapper {
+  max-width: none !important;
+}
+
+/* Blog layout adjustments */
+.blog-wrapper {
+  max-width: none !important;
+}
+
+.blog-wrapper .container {
+  max-width: 1400px !important;
+}
+
+/* Navbar container adjustments */
+.navbar .container-fluid,
+.navbar .container {
+  max-width: 1400px !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+/* Footer container adjustments */
+.footer .container {
+  max-width: 1400px !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+/* Hero banner container */
+.heroBanner .container {
+  max-width: 1400px !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+/* Content area full width utilization */
+.theme-doc-markdown,
+.markdown {
+  max-width: none !important;
+}
+
+/* Blog post container adjustments */
+.blog-post-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Recent posts section */
+.recentPosts .container {
+  max-width: 1400px !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+/* Reduce sidebar spacing if present */
+.theme-doc-sidebar-container {
+  --doc-sidebar-width: 280px !important;
+}
+
+/* Adjust main content margin */
+.docusaurus-mt-lg {
+  margin-top: 1rem !important;
+}
+
+@media (max-width: 996px) {
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .navbar .container-fluid,
+  .navbar .container,
+  .footer .container,
+  .heroBanner .container,
+  .recentPosts .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .blog-post-container {
+    padding: 0 1rem;
+  }
+}
+
+/* Table styling */
+.markdown table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.markdown table th,
+.markdown table td {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.markdown table th {
+  background-color: var(--ifm-color-emphasis-100);
+  font-weight: 700;
+}
+
+/* Categories page styling */
+.card--full-height {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card--full-height .card__body {
+  flex: 1;
+}
+
+.card__title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card__title-link:hover {
+  text-decoration: none;
+  color: var(--ifm-link-hover-color);
+}
+
+.card__description {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Category avatar styling */
+.avatar__photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.avatar__intro {
+  margin-left: 1rem;
+  flex: 1;
+}
+
+.avatar__name {
+  margin-bottom: 0;
+  font-size: 1.25rem;
+}
+
+/* Tag count styling for classes starting with tagWithCount_ */
+[class^="tagWithCount_"] span,
+[class*="tagWithCount_"] span,
+.tagWithCount_h2kH span {
+  background-color: var(--ifm-link-color) !important;
+  color: white !important;
+}
+
+[data-theme="dark"] [class^="tagWithCount_"] span,
+[data-theme="dark"] [class*="tagWithCount_"] span,
+[data-theme="dark"] .tagWithCount_h2kH span {
+  background-color: var(--ifm-link-color) !important;
+  color: white !important;
+}
+
+/* Responsive cards */
+@media (max-width: 768px) {
+  .categories-grid .col {
+    margin-bottom: 1.5rem;
+  }
+}
