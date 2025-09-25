@@ -16,7 +16,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Release notes
 #### Features
 
-* [`LocalDNS`](https://learn.microsoft.com/azure/aks/localdns-custom) feature is now generally available. LocalDNS is a feature in Azure Kubernetes Service (AKS) designed to enhance the Domain Name System (DNS) resolution performance and resiliency for workloads running in your cluster.
 * [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in East US region.
 * AKS Node Problem Detector (NPD) conducts [GPU health monitoring](https://aka.ms/aks/gpu-health-monitoring) to enable automatic detection and reporting of issues impacting select GPU-enabled VM sizes, and is now generally available.
 * [Kubelet Serving Certificate Rotation (KSCR)](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation) is now enabled by default in Sovereign cloud regions. Existing node pools in these regions will have KSCR enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. Kubelet serving certificate rotation allows AKS to utilize kubelet server TLS bootstrapping for both bootstrapping and rotating serving certificates signed by the Cluster CA. See [documentation](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation) for detailed instructions.
