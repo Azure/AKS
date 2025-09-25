@@ -11,13 +11,15 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * AKS Kubernetes version `1.34` is now available in preview. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
 Starting on 30 November 2025, AKS will no longer support or provide security updates for Azure Linux 2.0. Starting on 31 March 2026, node images will be removed, and you'll be unable to scale your node pools. Migrate to a supported Azure Linux version by [upgrading your node pools](https://learn.microsoft.com/zure/aks/upgrade-aks-cluster?tabs=azure-cli) to a supported Kubernetes version or migrating to [osSku AzureLinux3](https://learn.microsoft.com/azure/aks/upgrade-os-version). For more information, see [\[Retirement\] Azure Linux 2.0 node pools on AKS](https://github.com/Azure/AKS/issues/4988).
 * Security patch information for Ubuntu 24.04 is available in [AKS-Release-Tracker](https://releases.aks.azure.com/). 
+* Azure Kubernetes Service no longer supports the `--skip-gpu-driver-install` node pool tag to skip automatic driver installation. This node pool tag can no longer be used at AKS node pool creation time to install custom GPU drivers or use the GPU Operator. Alternatively, you should use the generally available `gpu-driver` API field to update your existing node pools or create new GPU-enabled node pools to [skip automatic GPU driver installation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation).
 
 ### Release notes
 #### Features
 
-* [`LocalDNS`](https://learn.microsoft.com/azure/aks/localdns-custom) feature is now generally available.
+* [`LocalDNS`](https://learn.microsoft.com/azure/aks/localdns-custom) feature is now generally available. LocalDNS is a feature in Azure Kubernetes Service (AKS) designed to enhance the Domain Name System (DNS) resolution performance and resiliency for workloads running in your cluster.
 * [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in East US region.
-* [Kubelet Serving Certificate Rotation (KSCR)](https://learn.microsoft.com/azure/aks/certificate-rotation) is now enabled by default in Sovereign cloud regions. Existing node pools in these regions will have KSCR enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater.
+* AKS Node Problem Detector (NPD) conducts [GPU health monitoring](https://aka.ms/aks/gpu-health-monitoring) to enable automatic detection and reporting of issues impacting select GPU-enabled VM sizes, and is now generally available.
+* [Kubelet Serving Certificate Rotation (KSCR)](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation) is now enabled by default in Sovereign cloud regions. Existing node pools in these regions will have KSCR enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. Kubelet serving certificate rotation allows AKS to utilize kubelet server TLS bootstrapping for both bootstrapping and rotating serving certificates signed by the Cluster CA. See [documentation](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation) for detailed instructions.
 
 #### Bug Fixes
 * Fixed an issue where [KAITO](https://learn.microsoft.com/azure/aks/aks-extension-kaito) workspace creation would fail on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) because gpu-provisioner creates an agentPool. Non-node auto provisioning pools, such as agentPool, are now allowed to be added to AKS Automatic clusters.
@@ -25,12 +27,11 @@ Starting on 30 November 2025, AKS will no longer support or provide security upd
 
 #### Behavioral Changes
 
-* Deployment Safeguards will stop enforcing readiness and liveness probes on the placeholder pods that Application Routing creates to mount synchronized secrets from Azure Key Vault.
-* [`SkipGPUDriverInstall nodepool tags`](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation) will now be blocked on cluster creation.
+* [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) will stop enforcing readiness and liveness probes on the placeholder pods that [Application Routing](https://learn.microsoft.com/azure/aks/app-routing) creates to mount synchronized secrets from Azure Key Vault.
 * [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) system pool needs to have at least 3 availability zones, ephemeral OS disk, and Azure Linux OS.
 * Starting with 20250902-preview API, the `enableCustomCATrust` field is removed. This field is not required when using the GA feature, and is only used by a deprecated version of the feature. When using Custom Certificate Authority, you no longer need to specify `enableCustomCATrust`. You can just add certificates to your cluster by specifying your text file for the --custom-ca-trust-certificates parameter. See [documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) for detailed instructions.
 * Starting September 2025, new AKS clusters that use the AKS-managed virtual network option will place cluster subnets into private subnets by default (defaultOutboundAccess = false). This setting does not impact AKS-managed cluster traffic, which uses explicitly configured outbound paths. It may affect unsupported scenarios, such as deploying other resources (e.g., VMs) into the same subnet. Clusters using BYO VNets are unaffected by this change. In supported configurations, no action is required.
-* For [Pod Sandboxing](https://learn.microsoft.com/azure/aks/use-pod-sandboxing), `kata-mshv-vm-isolation` will be replaced `with kata-vm-isolation` while the `--workload-runtime` used when creating a cluster will be changed from `KataMshvVmIsolation` to `KataVmIsolation`. Make sure you use the correct name when creating Pod Sandboxing clusters.
+* For [Pod Sandboxing](https://learn.microsoft.com/azure/aks/use-pod-sandboxing), `kata-mshv-vm-isolation` will be replaced `with kata-vm-isolation` while the `--workload-runtime` used when creating a cluster will be changed from `KataMshvVmIsolation` to `KataVmIsolation`. Make sure you use the correct name when creating Pod Sandboxing clusters. 
 
 #### Component Updates
 
