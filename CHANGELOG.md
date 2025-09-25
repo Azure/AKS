@@ -23,7 +23,7 @@ Starting on 30 November 2025, AKS will no longer support or provide security upd
 
 #### Bug Fixes
 * Fixed an issue where [KAITO](https://learn.microsoft.com/azure/aks/aks-extension-kaito) workspace creation would fail on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) because gpu-provisioner creates an agentPool. Non-node auto provisioning pools, such as agentPool, are now allowed to be added to AKS Automatic clusters.
-* Fixed a bug where ETag was not returned in ManagedClusters or AgentPools responses in API versions 2024-09-01 or newer, even though the API specification said it would be.
+* Fixed a bug where [ETag](https://learn.microsoft.com/azure/aks/use-etags) was not returned in ManagedClusters or AgentPools responses in API versions 2024-09-01 or newer, even though the API specification said it would be.
 
 #### Behavioral Changes
 
