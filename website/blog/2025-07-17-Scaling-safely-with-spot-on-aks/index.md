@@ -4,6 +4,7 @@ date: "2025-07-17"
 description: "How to improve workload resilience when using spot VMs in Azure AKS, specifically how to use cluster autoscaler priority expander and other best practices."
 authors: ["pavneet-ahluwalia"]
 tags: ["scaling", "spot"]
+slug: "/2025/07/17/Scaling-safely-with-spot-on-aks"
 ---
 
 As engineering teams seek to optimize costs and maintain scalability in the cloud, leveraging Azure Spot Virtual Machines (VMs) in Azure Kubernetes Service (AKS) can help dramatically reduce compute costs for workloads tolerant of interruption.

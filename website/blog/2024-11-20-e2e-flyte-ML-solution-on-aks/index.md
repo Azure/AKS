@@ -4,6 +4,7 @@ date: "2024-11-20"
 description: "Learn about the open-source Flyte tools and how to deploy them securely on Azure Kubernetes Service (AKS)"
 authors: ["sachi-desai"]
 tags: ["ai", "operations", "mlops", "flyte"]
+slug: "/2024/11/20/e2e-flyte-ML-solution-on-aks"
 ---
 
 Data is often at the heart of application design and development - it fuels user-centric design, provides insights for feature enhancements, and represents the value of an application as a whole. In that case, shouldn’t we use data science tools and workflows that are flexible and scalable on a platform like Kubernetes, for a range of application types?

@@ -6,6 +6,7 @@ authors: ["kaarthikeyan-subramanian"]
 tags:
   - security
   - operations
+slug: /2025/04/22/Enhance-security-OS-Security-Patch
 ---
 
 ## Traditional patching and the need for Managed patching

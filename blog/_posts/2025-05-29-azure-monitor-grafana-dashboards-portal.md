@@ -2,30 +2,29 @@
 title: "Azure Monitor dashboards with Grafana in Azure Portal"
 description: "Explore the new Grafana dashboards built directly into Azure Monitor and learn how they empower observability and when to reach for Azure Managed Grafana."
 date: 2025-09-18
-authors: 
-   - Aritra Ghosh
-   - Kayode Prince
-categories: 
-- operations
+authors:
+  - Aritra Ghosh
+  - Kayode Prince
+categories:
+  - operations
 tags:
   - azure-monitor
   - metrics
   - grafana
-  - observability 
+  - observability
   - aks
 ---
-
 
 ### Introduction
 
 As Kubernetes adoption accelerates, engineers need streamlined, cost-effective tools for cluster observability. Until now, this often meant deploying and managing separate monitoring stacks. Azure Monitor's latest integration with Grafana changes this: cluster insights are now just a click away in the Azure portal.
 
-We are thrilled to announce that Azure Kubernetes Service (AKS) now offers native Grafana dashboards within the Azure portal at no additional cost. This integration eliminates the complexity of maintaining separate visualization tools while delivering Grafana's powerful capabilities directly where you need them. Metrics from [Container Insights]([https://docs.azure.cn/azure-monitor/containers/container-insights-overview](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable?tabs=cli#container-logs)), the Kubernetes metrics server, and any configured [Azure Managed Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview) endpoints are available out-of-the-box, providing comprehensive cluster observability.
+We are thrilled to announce that Azure Kubernetes Service (AKS) now offers native Grafana dashboards within the Azure portal at no additional cost. This integration eliminates the complexity of maintaining separate visualization tools while delivering Grafana's powerful capabilities directly where you need them. Metrics from [Container Insights](https://docs.azure.cn/azure-monitor/containers/container-insights-overview), the Kubernetes metrics server, and any configured [Azure Managed Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview) endpoints are available out-of-the-box, providing comprehensive cluster observability.
 
-To get started, navigate to your AKS cluster in the Azure portal and select **Monitoring** > **Dashboards with Grafana (preview)**. You will be presented with prebuilt dashboards for cluster health, node utilization, and pod performance. From there, you may edit and add  panels, configure template variables scoped to namespaces or node pools, and save custom dashboards - all within the familiar AKS management experience. Because no Grafana server needs to be provisioned or maintained, teams can quickly adopt and customize dashboards within the AKS portal- reducing setup time, operational complexity, and accelerating access to actionable insights for SRE and DevOps workflows.
+To get started, navigate to your AKS cluster in the Azure portal and select **Monitoring** > **Dashboards with Grafana (preview)**. You will be presented with prebuilt dashboards for cluster health, node utilization, and pod performance. From there, you may edit and add panels, configure template variables scoped to namespaces or node pools, and save custom dashboards - all within the familiar AKS management experience. Because no Grafana server needs to be provisioned or maintained, teams can quickly adopt and customize dashboards within the AKS portal- reducing setup time, operational complexity, and accelerating access to actionable insights for SRE and DevOps workflows.
 
 ![Cluster Dashboard in AKS](../assets/images/azure-monitor-grafana-dashboards/sample-grafana-dashboard.png)
-*Figure 1: Comprehensive AKS cluster dashboard showing resource utilization, performance metrics, and health status directly within the Azure portal.*
+_Figure 1: Comprehensive AKS cluster dashboard showing resource utilization, performance metrics, and health status directly within the Azure portal._
 
 ### Why Grafana in Azure Portal?
 
@@ -50,16 +49,16 @@ While Dashboards with Grafana in the Azure portal cover most common visualizatio
 
 #### Feature Comparison
 
-| Feature | Azure Monitor dashboards with Grafana (preview) | Azure Managed Grafana |
-|---------|--------------------------------|----------------------|
-| **Access** | Azure portal | Grafana Web Interface |
-| **Pricing** | No cost | Per user pricing plus compute costs for Standard SKU |
-| **Data Sources** | Azure Monitor and Azure Prometheus | Azure Monitor, Azure Prometheus, Azure Data Explorer, OSS data sources, Enterprise data sources available with license |
-| **Data source Authentication** | Current-user only | User-configurable: Current-user, Managed Identity, App registration |
-| **Customization** | Basic - Azure-managed plugins only | Advanced - Custom plugins, dashboards, and settings |
-| **Alerting** | Azure Monitor alerts only | Full Grafana alerting capabilities |
-| **Enterprise Features** | Not supported | Reporting, team collaboration, enterprise plugins |
-| **Deployment Model** | Managed SaaS | Dedicated VM scale sets with private networking options |
+| Feature                        | Azure Monitor dashboards with Grafana (preview) | Azure Managed Grafana                                                                                                  |
+| ------------------------------ | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Access**                     | Azure portal                                    | Grafana Web Interface                                                                                                  |
+| **Pricing**                    | No cost                                         | Per user pricing plus compute costs for Standard SKU                                                                   |
+| **Data Sources**               | Azure Monitor and Azure Prometheus              | Azure Monitor, Azure Prometheus, Azure Data Explorer, OSS data sources, Enterprise data sources available with license |
+| **Data source Authentication** | Current-user only                               | User-configurable: Current-user, Managed Identity, App registration                                                    |
+| **Customization**              | Basic - Azure-managed plugins only              | Advanced - Custom plugins, dashboards, and settings                                                                    |
+| **Alerting**                   | Azure Monitor alerts only                       | Full Grafana alerting capabilities                                                                                     |
+| **Enterprise Features**        | Not supported                                   | Reporting, team collaboration, enterprise plugins                                                                      |
+| **Deployment Model**           | Managed SaaS                                    | Dedicated VM scale sets with private networking options                                                                |
 
 A detailed difference is available on the [solution comparison](https://learn.microsoft.com/azure/azure-monitor/visualize/visualize-grafana-overview#solution-comparison)
 
@@ -68,26 +67,26 @@ A detailed difference is available on the [solution comparison](https://learn.mi
 The native Grafana experience in Azure Monitor includes many of the customization features you expect:
 
 - **Variables & Templating:** Define dashboard variables for dynamic filtering across subscriptions, resource groups, or services.
-- **Themes & Layouts:**  Automatically switches theme based on the Azure portal's theme, resize panels, and arrange layouts with drag-and-drop.
+- **Themes & Layouts:** Automatically switches theme based on the Azure portal's theme, resize panels, and arrange layouts with drag-and-drop.
 - **Cross-workspace & cross-source queries:** Query data from multiple Log Analytics workspaces, metrics namespaces.
-- **Alerts:**  View Azure alerts state and history in Grafana dashboards.
+- **Alerts:** View Azure alerts state and history in Grafana dashboards.
 
 ### Getting Started
 
 > **Note:** To view telemetry in Grafana dashboards, ensure you have at least **Reader** access to the relevant resource (Azure Monitor or Log Analytics workspace).
 > **Note:** Currently, the AKS cluster entry point is gated by the enablement of Managed Prometheus. This will likely change in the future as we incorporate dashboards which leverage platform metrics or Container Insights based logs
 
-The default dashboards are  available in the AKS cluster page under **Dashboards with Grafana**
+The default dashboards are available in the AKS cluster page under **Dashboards with Grafana**
 
 ![Sample Dashboards view in AKS](../assets/images/azure-monitor-grafana-dashboards/dashboards-with-grafana.png)
-*Figure 2: Navigation view showing the collection of pre-built Grafana dashboards available in the AKS monitoring section, providing one-click access to various visualization templates.*
+_Figure 2: Navigation view showing the collection of pre-built Grafana dashboards available in the AKS monitoring section, providing one-click access to various visualization templates._
 
 To create a new dashboard
 
 1. In the Azure portal, go to **Azure Monitor** > **Dashboards with Grafana**.
-2. Click **+ New** and select **New  Dashboard**.
+2. Click **+ New** and select **New Dashboard**.
 3. Provide a title for the dashboard and the subscription, resource group for the dashboard. Click on Create.
-Once the dashboard is created, select **+ Add** and chose **Add Visualization**
+   Once the dashboard is created, select **+ Add** and chose **Add Visualization**
 4. Choose data sources (Log Analytics, Metrics, Prometheus, Azure Resource Graph) and start adding panels.
 
 This feature is available out of the box for all customers. For more information on customization, refer to the [Learn documentation](https://learn.microsoft.com/azure/azure-monitor/visualize/visualize-use-grafana-dashboards).
@@ -105,11 +104,11 @@ This feature is available out of the box for all customers. For more information
 Building on the public preview launch of Grafana dashboards in AKS, we have a lot of exciting features on the our roadmap. Some of these are listed here
 
 - **In-portal Grafana Explore integration:**
-Embed Grafana’s [Explore](https://grafana.com/docs/grafana/latest/explore/) mode directly in the Azure portal—providing query builders, logs/metrics toggle, and inline documentation to help users investigate time series and log data without leaving Azure Monitor
+  Embed Grafana’s [Explore](https://grafana.com/docs/grafana/latest/explore/) mode directly in the Azure portal—providing query builders, logs/metrics toggle, and inline documentation to help users investigate time series and log data without leaving Azure Monitor
 
 - **Expanded Azure resource support:**
 
- Add native integrations for additional resources —so metrics and logs from these resources appear in Grafana dashboards
+Add native integrations for additional resources —so metrics and logs from these resources appear in Grafana dashboards
 
 - **Seamless migration tooling:**
 
