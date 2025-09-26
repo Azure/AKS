@@ -1,5 +1,63 @@
 # Azure Kubernetes Service Changelog
 
+## Release Notes 2025-09-21
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250921`.
+
+### Announcements
+
+* AKS Kubernetes version `1.31` standard support will be deprecated by November 1, 2025. Kindly upgrade your clusters to 1.32 community version or enable [Long Term Support](https://learn.microsoft.com/azure/aks/long-term-support) with 1.31 in order to continue in the same version. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) for more information.
+* Revision asm-1-24 of the Istio add-on has been deprecated. Please migrate to a supported revision following the [Istio add-on upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
+* AKS Kubernetes version `1.34` is now available in preview. Refer to [1.34 Release Notes](https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
+* Starting on 30 November 2025, AKS will no longer support or provide security updates for Azure Linux 2.0. Migrate to a supported Azure Linux version by [upgrading your node pools](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) to a supported Kubernetes version or migrating to [osSku AzureLinux3](https://learn.microsoft.com/azure/aks/upgrade-os-version). For more information, see [\[Retirement\] Azure Linux 2.0 node pools on AKS](https://github.com/Azure/AKS/issues/4988).
+* Security patch information for Ubuntu 24.04 is available in [AKS-Release-Tracker](https://releases.aks.azure.com/). 
+* Azure Kubernetes Service no longer supports the `--skip-gpu-driver-install` node pool tag to skip automatic driver installation. This node pool tag can no longer be used at AKS node pool creation time to install custom GPU drivers or use the GPU Operator. Alternatively, you should use the generally available `gpu-driver` API field to update your existing node pools or create new GPU-enabled node pools to [skip automatic GPU driver installation](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation).
+* AKS Automatic is generally available. Find the recording to the virtual launch event on [Youtube](https://www.youtube.com/live/1usnu6dS51M?si=iYw6xSFSI6qNZ0Rk).
+
+### Release notes
+#### Features
+
+* [API Server Vnet Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration) is now available in East US region.
+* AKS Node Problem Detector (NPD) conducts [GPU health monitoring](https://aka.ms/aks/gpu-health-monitoring) to enable automatic detection and reporting of issues impacting select GPU-enabled VM sizes, and is now generally available.
+* [Kubelet Serving Certificate Rotation (KSCR)](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation) is now enabled by default in Sovereign cloud regions. Existing node pools in these regions will have KSCR enabled by default when they perform their first upgrade to any kubernetes version 1.27 or greater. Kubelet serving certificate rotation allows AKS to utilize kubelet server TLS bootstrapping for both bootstrapping and rotating serving certificates signed by the Cluster CA. See [documentation](https://learn.microsoft.com/azure/aks/certificate-rotation#kubelet-serving-certificate-rotation) for detailed instructions.
+
+#### Bug Fixes
+* Fixed an issue where [KAITO](https://learn.microsoft.com/azure/aks/aks-extension-kaito) workspace creation would fail on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) because gpu-provisioner creates an agentPool. Non-node auto provisioning pools, such as agentPool, are now allowed to be added to AKS Automatic clusters.
+* Fixed a bug where [ETag](https://learn.microsoft.com/azure/aks/use-etags) was not returned in ManagedClusters or AgentPools responses in API versions 2024-09-01 or newer, even though the API specification said it would be.
+
+#### Behavioral Changes
+
+* [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) will stop enforcing readiness and liveness probes on the placeholder pods that [Application Routing](https://learn.microsoft.com/azure/aks/app-routing) creates to mount synchronized secrets from Azure Key Vault.
+* [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) system pool needs to have at least 3 availability zones, ephemeral OS disk, and Azure Linux OS.
+* Starting with [20250902-preview API](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview), the `enableCustomCATrust` field is removed. This field is not required when using the GA feature, and is only used by a deprecated version of the feature. When using Custom Certificate Authority, you no longer need to specify `enableCustomCATrust`. You can just add certificates to your cluster by specifying your text file for the `--custom-ca-trust-certificates` parameter. See [documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) for detailed instructions.
+* Starting September 2025, new AKS clusters that use the AKS-managed virtual network option will place cluster subnets into private subnets by default (defaultOutboundAccess = false) in alignment with [egress best practices](https://learn.microsoft.com/azure/virtual-network/ip-services/default-outbound-access#why-is-disabling-default-outbound-access-recommended). This setting does not impact AKS-managed cluster traffic, which uses explicitly configured outbound paths. It may affect unsupported scenarios, such as deploying other resources (e.g., VMs) into the same subnet. Clusters using BYO VNets are unaffected by this change. In supported configurations, no action is required.
+* For [Pod Sandboxing](https://learn.microsoft.com/azure/aks/use-pod-sandboxing), `kata-mshv-vm-isolation` will be replaced with `kata-vm-isolation` while the `--workload-runtime` used when creating a cluster will be changed from `KataMshvVmIsolation` to `KataVmIsolation`. Make sure you use the correct name when creating Pod Sandboxing clusters. 
+
+#### Component Updates
+
+* Windows node images  
+  * Server 2019 Gen1 – [17763.7792.250910](vhd-notes/AKSWindows/2019/17763.7792.250910.txt) 
+  * Server 2022 Gen1/Gen2 – [20348.4171.250910](vhd-notes/AKSWindows/2022/20348.4171.250910.txt) 
+  * Server 23H2 Gen1/Gen2 – [25398.1849.250910](vhd-notes/AKSWindows/23H2/25398.1849.250910.txt)   
+  * Server 2025 Gen1/Gen2 – [26100.6584.250910](vhd-notes/AKSWindows/2025/26100.6584.250910.txt) 
+* AKS Azure Linux v2 image has been updated to [202509.11.0](vhd-notes/AzureLinux/202509.11.0.txt)
+* AKS Azure Linux v3 image has been updated to [202509.18.0](vhd-notes/AKSAzureLinuxv3/202509.18.0.txt).
+* AKS Ubuntu 22.04 node image has been updated to [202509.11.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202509.11.0.txt).
+* AKS Ubuntu 24.04 node image has been updated to [202509.11.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202509.11.0.txt).
+* `Azure File CSI driver` has been upgraded to [`v1.32.7`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.7) on AKS 1.32, and [`v1.33.5`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.5) on AKS 1.33.
+* `Azure Policy addon` has been upgraded to [`v1.13.1`](https://github.com/Azure/azure-policy/releases/tag/v1.13.1) to address [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907).
+* `Azure Blob CSI driver` has been upgraded to [`v1.26.7`](https://github.com/kubernetes-sigs/azureblob-csi-driver/releases/tag/v1.26.7) on AKS 1.33.
+* `Azure Disk CSI driver` has been upgraded to [`v1.32.10`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.10) on AKS 1.32.
+* `Karpenter` has been upgraded to [`v1.6.3`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.6.3) with FIPS support for Node Auto Provisioning, Ubuntu 2404 ImageFamily support, and various improvements.
+* `Cilium` has been upgraded to `v1.14.20-2` on AKS 1.29 and 1.30, [`v1.16.13`](https://github.com/cilium/cilium/releases/tag/v1.16.13) on AKS 1.31, and [`v1.17.7`](https://github.com/cilium/cilium/releases/tag/v1.17.7) on AKS 1.32 addressing multiple CVEs.
+* Istio-based service mesh add-on revisions asm-1-25, asm-1-26, and asm-1-27 have been upgraded to [v1.25.5](https://istio.io/latest/news/releases/1.25.x/announcing-1.25.5/), [v1.26.4](https://istio.io/latest/news/releases/1.26.x/announcing-1.26.4/), and [v1.27.1](https://istio.io/latest/news/releases/1.27.x/announcing-1.27.1/). Users can restart workload pods to trigger re-injection of the updated istio-proxy version. More details on patch upgrades are available [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
+* Calico bumped to version [3.30.3](https://github.com/projectcalico/calico/releases/tag/v3.30.3), [3.29.5](https://github.com/projectcalico/calico/releases/tag/v3.29.5)
+* Tigera Operator bumped to version [1.38.6](https://github.com/tigera/operator/releases/tag/v1.38.6), [1.36.13](https://github.com/tigera/operator/releases/tag/v1.36.13)
+* `Container Insights` has been upgraded to [`v3.1.29`](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#09092025--).
+* `Cluster Autoscaler` has been upgraded to [`v1.31.5`](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.31.5) for AKS 1.31, [`v1.32.2`](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.32.2) for AKS 1.32, and [`v1.33.0-aks`](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.0) for AKS 1.33.
+
+---
+
 ## Release 2025-08-29
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20250829`.
