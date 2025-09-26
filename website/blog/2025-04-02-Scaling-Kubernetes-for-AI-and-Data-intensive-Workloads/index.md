@@ -4,6 +4,7 @@ date: "2025-04-02"
 description: "Using Multi-cluster approach to achieving high compute scale on K8s, why, and how to do it with Azure Kubernetes Fleet Manager"
 authors: ["pavneet-ahluwalia"]
 tags: ["general", "operations", "kube-fleet", "kueue", "ai"]
+slug: "/2025/04/02/Scaling-Kubernetes-for-AI-and-Data-intensive-Workloads"
 ---
 
 With the fast-paced advancement of AI workloads, building and fine-tuning of multi-modal models, and extensive batch data processing jobs, more and more enterprises are leaning into Kubernetes platforms to take advantage of its ability to scale and optimize compute resources. With AKS, you can manage up to 5,000 nodes (upstream K8s limit) in a single cluster under optimal conditions, but for some large enterprises, that might not be enough.

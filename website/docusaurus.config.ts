@@ -83,7 +83,7 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
-        { to: '/', label: 'Posts', position: 'left' },
+        { to: '/', label: 'Posts', position: 'left', exact: true },
         { to: '/tags', label: 'Tags', position: 'left' },
         {
           type: 'dropdown',

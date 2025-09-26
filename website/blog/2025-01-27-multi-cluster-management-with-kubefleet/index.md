@@ -4,6 +4,7 @@ date: "2025-01-27"
 description: "KubeFleet helps easily manage multiple Kubernetes clusters. This Microsoft-led, open source project was recently accepted as a CNCF sandbox project."
 authors: ["ryan-zhang"]
 tags: ["general", "operations", "multi-cluster", "kube-fleet"]
+slug: "/2025/01/27/Multi-Cluster-Management-with-KubeFleet"
 ---
 
 In the ever-evolving world of cloud native technologies, managing multiple Kubernetes clusters efficiently is a common challenge that still does not have a well received community driven solution.
