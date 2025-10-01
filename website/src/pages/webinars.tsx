@@ -48,14 +48,14 @@ const timezoneCalls: TimezoneCall[] = [
     region: "Americas, Europe",
     schedule:
       "3rd Wednesday<br/>every month<br/><br/>8 AM PST<br/>11 AM EST<br/>3 PM GMT",
-    icsHref: "/calendar/AKS-Community-Roadmap-Call-US.ics",
+    icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
     joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
   },
   {
     region: "India, APAC, ANZ",
     schedule:
       "4th Wednesday<br/>every month<br/><br/>10:30 AM IST<br/>1 PM SST<br/>3 PM AEST",
-    icsHref: "/calendar/AKS-Community-Roadmap-Call-APAC.ics",
+    icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-APAC.ics",
     joinHref: "https://aka.ms/aks/communitycalls-apac/roadmap/joinnow",
   },
 ];
@@ -269,8 +269,8 @@ function AgendaPanel(): ReactNode {
               >
                 <h4>{item.title}</h4>
                 {item.presenter && (
-                  <p>
-                    <strong>{item.presenter}</strong>
+                  <p><i>
+                    {item.presenter}</i>
                   </p>
                 )}
                 {item.description && (
