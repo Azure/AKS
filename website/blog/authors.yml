@@ -341,3 +341,13 @@ kayode-prince:
   socials:
     linkedin: kayodeprince
     github: kayodeprinceMS
+
+flora-taagen:
+  name: Flora Taagen
+  title: Product Manager 2 at Microsoft
+  url: https://www.linkedin.com/in/florataagen/
+  image_url: https://github.com/flora-taagen.png
+  page: true
+  socials:
+    linkedin: florataagen
+    github: flora-taagen
