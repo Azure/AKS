@@ -47,6 +47,11 @@ azure-key-vault:
   permalink: /azure-key-vault
   description: Managing secrets, certificates, and keys for AKS workloads using Key Vault and CSI driver.
 
+azure-linux:
+  label: Azure Linux
+  permalink: /azure-linux
+  description: Microsoft Linux distribution available on AKS.
+
 azure-monitor:
   label: Azure Monitor
   permalink: /azure-monitor
