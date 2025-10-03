@@ -55,7 +55,7 @@ az aks nodepool update \
 ```
 My node pool is now using the new OS version! I can continue to upgrade additional node pools until I feel confident that my workloads will run on the new OS version without issues.
 
-**Scenario 2**: Minimizing Workload Disruption
+**Scenario 2**: Rolling Back Version Upgrades with Unexpected Changes
 - **Challenge**: Upgrading your OS version can also introduce changes that might impact existing workloads. Without a straightforward rollback mechanism, customers may find themselves in a regressed state if compatibility issues arise. For example, when AKS customers upgraded to Ubuntu 22.04 on Kubernetes 1.25, the switch from cgroup v1 to cgroup v2 caused [unexpected memory pressure and increased usage](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/aks-memory-saturation-after-upgrade) in Java, Node.js, and .NET applications. If a rollback option had been available, customers could have quickly reverted to a stable OS version, minimizing disruption and restoring expected performance.
 - **Recommendation**: If you’re using the default OS Skus (`Ubuntu` or `AzureLinux`), a Kubernetes version upgrade may introduce a new OS version. If this causes issues for your workload, you can now rollback your OS version by performing a node pool update command. As a part of the node pool update, your nodes will reimage to use the latest node image for the new OS version.
 - **Example**: I’m using the default `Ubuntu` OS Sku for all of my node pools. When I upgraded to Kubernetes version 1.35, my OS version automatically upgraded to Ubuntu 24.04. This caused my workloads to break! However, I can update my existing node pools to roll back to Ubuntu 22.04 by running the following command:
