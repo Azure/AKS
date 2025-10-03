@@ -22,3 +22,15 @@ In Azure Kubernetes Service (AKS), the operating system (OS) serves as the found
 ![AKS Linux Node ](node.png)
 
 _Figure 1: AKS Linux Node Image including Operating system, container runtime, and core Kubernetes node components._
+
+Keeping your OS version up to date is essential for maintaining security, performance, and compatibility. There are two kinds of OS upgrades that can be made to keep you on the latest OS version: 
+
+1.	**Minor Version Upgrade or Patch Upgrade**: Upgrading your node image version so that you have the latest release within an OS version. For example, upgrading your Ubuntu 22.04 node image from the 202509.11.0 release to the 202509.18.0 release. When you perform a minor version or patch upgrade you benefit from the latest OS-level security patches, resolved bugs, and ensure alignment with AKS lifecycle guarantees.
+2.	**Major Version Upgrade**: Upgrading your OS version when a new major version becomes available.[SH3.1][FT3.2] For example, upgrading your OS version from Azure Linux 2.0 to Azure Linux 3.0.[KS4.1][KS4.2] When you perform a major OS version upgrade you benefit from new package versions, performance improvements, security enhancements, improved developer tooling, and more.
+
+![AKS Major OS Version Upgrade ](upgrade.png)
+
+_Figure 2: Major version upgrade from Azure Linux 2.0 to Azure Linux 3.0,_
+
+
+
