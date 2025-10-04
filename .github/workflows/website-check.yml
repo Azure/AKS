@@ -61,6 +61,7 @@ jobs:
     name: Run markdown linter
     runs-on: ubuntu-latest
     needs: get-files-changed
+    if: ${{ needs.get-files-changed.outputs.files != '[]' }}
 
     strategy:
       fail-fast: false
