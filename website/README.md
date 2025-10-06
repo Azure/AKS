@@ -51,7 +51,7 @@ your-id:
   title: Short public-facing title / role
   url: https://optional-profile-url
   image_url: https://link.to/avatar.png
-  page: true # set true to generate an author page
+  page: true # set true to generate an author page - must be sure to have 1+ post otherwise a build error occurs
   socials: # omit keys you don't use
     x: handle-without-@
     linkedin: linkedin-handle
