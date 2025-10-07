@@ -15,7 +15,7 @@ While our example used network metrics, the same pattern applies to any custom d
 
 A common question we hear from Kubernetes users is:
 
-**"How can I scrape a specific set of custom metrics from my cluster without adding too much operational overhead?"**
+"How can I scrape a specific set of custom metrics from my cluster without adding too much operational overhead?"
 
 If you're running Azure Kubernetes Service (AKS), the good news is that you can do exactly that with a lightweight, extensible solution:
 **Telegraf + Azure Managed Prometheus + Azure Managed Grafana**.
@@ -40,7 +40,7 @@ This approach gives you:
 
 Here’s the workflow we’re setting up:
 
-```
+```text
 +-----------------+    +------------------+    +-----------------+ 
 |   AKS Nodes     |    |  Azure Managed   |    |  Azure Managed  | 
 |                 |    |   Prometheus     |    |    Grafana      | 
@@ -122,7 +122,7 @@ AZ_MONITOR_WORKSPACE_ID=$(az monitor account show \
   --query id -o tsv)
 ```
 
-Create a Grafana instance. The Azure CLI extension for Azure Managed Grafana (amg) will be used for this. 
+Create a Grafana instance. The Azure CLI extension for Azure Managed Grafana (amg) will be used for this.
 
 ```bash
 # Add the Azure Managed Grafana extension to az cli:
@@ -502,7 +502,7 @@ We’ll deploy a single YAML manifest that contains:
 
 1. Verification
 
-   After a minute or two, verify everything is running: 
+   After a minute or two, verify everything is running:
 
    ```bash
    kubectl get daemonset telegraf
@@ -567,6 +567,7 @@ topk(10, network_interface_stats_tx_bytes)
 # Packet drops
 sum(rate(network_interface_stats_rx_dropped[5m])) by (interface)
 ```
+
 ## Cleaning up
 
 To remove these resources, you can run this command:
