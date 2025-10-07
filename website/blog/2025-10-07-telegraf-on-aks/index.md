@@ -522,7 +522,7 @@ We’ll deploy a single YAML manifest that contains:
 
    Sample output:  
 
-   ```
+   ```text
    # HELP network_interface_stats_rx_bytes Telegraf collected metric
    # TYPE network_interface_stats_rx_bytes untyped
    network_interface_stats_rx_bytes{interface="eth0",host="aks-node-1"} 16876971289
