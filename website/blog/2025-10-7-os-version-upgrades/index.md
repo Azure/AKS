@@ -1,7 +1,7 @@
 ---
 title: "Recommendations for Major OS Version Upgrades with Azure Kubernetes Service (AKS)"
 description: "Discover best practices and actionable guidance to plan and execute major OS version upgrades on AKS with confidence and minimal disruption."
-date: 2025-09-18
+date: 2025-10-07
 authors: [flora-taagen, ally-ford]
 tags:
   - azure-linux
