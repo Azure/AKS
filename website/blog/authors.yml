@@ -350,3 +350,13 @@ flora-taagen:
   socials:
     linkedin: florataagen
     github: flora-taagen
+
+diego-casati:
+  name: Diego casati
+  title: Microsoft App Innovation Global Blackbelt team
+  url: https://www.linkedin.com/in/diegocasati
+  image_url: https://github.com/dcasati.png
+  page: true
+  socials:
+    linkedin: diegocasati
+    github: dcasati
