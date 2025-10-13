@@ -94,7 +94,7 @@ export MANAGED_IDENTITY_NAME=mi-$RANDOM_NAME
 
 ## Provision Azure resources
 
-You're now ready to create the necessary Azure resources. Run the following command to create a resource group and retrieve the resource group ID.
+You're now ready to create the necessary Azure resources. Run the following command to create a resource group and retrieve the resource group ID. This will be used later when assigning Azure RBAC roles to the managed identity.
 
 ```sh
 read -r RESOURCE_GROUP_ID <<< \
@@ -104,10 +104,10 @@ read -r RESOURCE_GROUP_ID <<< \
   --query '{id:id}' -o tsv)"
 ```
 
-Create an AKS cluster with Workload Identity enabled and retrieve the AKS resource ID and OIDC issuer URL.
+For demonstration puposes, we can create a single node AKS cluster. Run the following command to create one with Workload Identity enabled and retrieve the OIDC issuer URL. This value will be used later when configuring the federated identity credential.
 
 ```sh
-read -r AKS_RESOURCE_ID AKS_OIDC_ISSUER_URL <<< \
+read -r AKS_OIDC_ISSUER_URL <<< \
   "$(az aks create \
     --resource-group $RESOURCE_GROUP_NAME \
     --name $AKS_CLUSTER_NAME \
@@ -115,18 +115,18 @@ read -r AKS_RESOURCE_ID AKS_OIDC_ISSUER_URL <<< \
     --enable-oidc-issuer \
     --ssh-access disabled \
     --node-count 1 \
-    --query '{id:id, oidcIssuerUrl:oidcIssuerProfile.issuerUrl}' -o tsv)"
+    --query '{oidcIssuerUrl:oidcIssuerProfile.issuerUrl}' -o tsv)"
 ```
 
 :::info
 
-The `--ssh-access disabled` flag is used to disable SSH access to the nodes in the AKS cluster. This is a security best practice, especially when using Workload Identity, as it reduces the attack surface of the cluster.
+The `--ssh-access disabled` flag is used to disable SSH access to the nodes in the AKS cluster. This is a security best practice as it reduces the attack surface of the cluster.
 
 :::
 
 In order to allow the MCP server to authenticate to Azure, you'll need to create a User-Assigned Managed Identity and configure it for Workload Identity.
 
-Create a new User-Assigned Managed Identity in the same resource group as your AKS cluster and retrieve its principal ID and client ID which will be used to configure Azure RBAC and annotate the Service Account.
+Create a new User-Assigned Managed Identity in the same resource group as your AKS cluster and retrieve its principal ID and client ID which will be used to configure Azure role assignment and Service Account annotation.
 
 ```sh
 read -r PRINCIPAL_ID CLIENT_ID <<< \
@@ -299,7 +299,7 @@ Wait for the MCP server pod to be in the `Running` state.
 kubectl get pods -l app=aks-mcp -w
 ```
 
-You can also check the logs of the MCP server pod to ensure it's running correctly.
+You can also check the logs of the MCP server pod to ensure it's running correctly. Here is an example of what the logs should look like:
 
 ```text
 $ kubectl logs deploy/aks-mcp
