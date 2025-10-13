@@ -74,7 +74,7 @@ With the prerequisites in place, you're ready to start setting up the AKS MCP se
 Run the following command to export a random name variable to use for resource names to avoid naming conflicts.
 
 ```sh
-export RANDOM_NAME=$(petname) # or use any random name of your choice
+export RANDOM_NAME=$(petname) # If you don't have petname, replace this entire command with e.g. export RANDOM_NAME=myrandomname
 ```
 
 :::info
