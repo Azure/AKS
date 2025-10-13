@@ -22,7 +22,7 @@ az aks nodepool add --resource-group <resource-group> --cluster-name <cluster-na
 az aks get-credentials --resource-group <resource-group> --name <cluster-name>
 
 helm install gpu-operator gpu-operator --repo https://helm.ngc.nvidia.com/nvidia \
- --version v25.3.3 -n gpu-operator --create-namespace --set devicePlugin.enabled=false
+ --version v25.3.3 -n gpu-operator --create-namespace --set devicePlugin.enabled=false --set-string 'toolkit.env[0].name=ACCEPT_NVIDIA_VISIBLE_DEVICES_ENVVAR_WHEN_UNPRIVILEGED,toolkit.env[0].value=false'
 
 helm install nvidia-dra-driver-gpu oci://ghcr.io/nvidia/k8s-dra-driver-gpu --version 25.8.0-dev-13a73595-chart \
  -n k8s-dra-driver-gpu --create-namespace -f <(cat <<EOF
