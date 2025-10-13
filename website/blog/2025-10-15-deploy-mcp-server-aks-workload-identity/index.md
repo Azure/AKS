@@ -104,7 +104,7 @@ read -r RESOURCE_GROUP_ID <<< \
   --query '{id:id}' -o tsv)"
 ```
 
-For demonstration puposes, we can create a single node AKS cluster. Run the following command to create one with Workload Identity enabled and retrieve the OIDC issuer URL. This value will be used later when configuring the federated identity credential.
+For demonstration purposes, we can create a single node AKS cluster. Run the following command to create one with Workload Identity enabled and retrieve the OIDC issuer URL. This value will be used later when configuring the federated identity credential.
 
 ```sh
 read -r AKS_OIDC_ISSUER_URL <<< \
