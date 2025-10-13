@@ -178,7 +178,7 @@ Output:
 
 This can be verified by running this test [https://github.com/kubernetes/kubernetes/blob/v1.34.1/test/e2e/dra/dra.go#L180](https://github.com/kubernetes/kubernetes/blob/v1.34.1/test/e2e/dra/dra.go#L180) 
 
-With an 1.34 AKS cluster:
+With a 1.34 AKS cluster:
 
 ```
 % make WHAT="github.com/onsi/ginkgo/v2/ginkgo k8s.io/kubernetes/test/e2e/e2e.test" && KUBERNETES_PROVIDER=local hack/ginkgo-e2e.sh -ginkgo.focus='must map configs and devices to the right containers'
