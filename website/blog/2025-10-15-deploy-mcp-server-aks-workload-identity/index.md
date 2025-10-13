@@ -283,6 +283,8 @@ Let's break down some of the key parameters used in the Deployment manifest abov
   - `--port=8000`: This sets the port on which the MCP server will listen for incoming requests.
   - `--timeout=600`: This sets the timeout for requests to 600 seconds.
 
+You can refer to the [AKS MCP documentation](https://github.com/Azure/aks-mcp?tab=readme-ov-file#options) for additional configuration options.
+
 :::
 
 :::danger
