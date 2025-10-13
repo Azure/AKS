@@ -79,7 +79,7 @@ export RANDOM_NAME=$(petname) # or use any random name of your choice
 
 :::info
 
-I am working on a Ubuntu 24.04 LTS machine with the [petname](https://manpages.ubuntu.com/manpages/jammy/en/man1/petname.1.html) utility installed to generate random names. If you don't have access to this package, can simply replace the `petname` command with any random name of your choice.
+I am working on a Ubuntu 24.04 LTS machine with the [petname](https://manpages.ubuntu.com/manpages/jammy/en/man1/petname.1.html) utility installed to generate random names. If you don't have access to this package, you can simply replace the `petname` command with any random name of your choice.
 
 :::
 
