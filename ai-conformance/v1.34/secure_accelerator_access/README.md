@@ -80,32 +80,33 @@ Update the deployment to request a resource:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dra-gpu-example
+  name: pytorch-cuda-check
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dra-gpu-example
+      app: pytorch-cuda-check
   template:
     metadata:
       labels:
-        app: dra-gpu-example
+        app: pytorch-cuda-check
     spec:
       containers:
-      - name: ctr
-        image: ubuntu:22.04
-        command: ["bash", "-c"]
-        args: ["while [ 1 ]; do date; echo $(nvidia-smi -L || echo Waiting...); sleep 60; done"]
-        resources:
-          claims:
-          - name: single-gpu
+        - name: pytorch-cuda-check
+          image: nvcr.io/nvidia/pytorch:25.09-py3
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              while true; do
+                python3 -c "import torch; print(torch.cuda.device_count())"
+                sleep 30
+              done
+          resources:
+            claims:
+              - name: single-gpu
       resourceClaims:
-      - name: single-gpu
-        resourceClaimTemplateName: gpu-claim-template
-      tolerations:
-      - key: "nvidia.com/gpu"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - name: single-gpu
+          resourceClaimTemplateName: gpu-claim-template
 ```
 
 Observe that the deployment is running:
@@ -116,9 +117,9 @@ kubectl get pods -w
 
 Output:
 
-```output
-NAME                               READY   STATUS              RESTARTS   AGE
-dra-gpu-example-68f595d7dc-mgwqw   1/1     Running             0          3h4m
+```output                                    
+NAME                                  READY   STATUS    RESTARTS   AGE
+pytorch-cuda-check-64f4757498-stx82   1/1     Running   0          4m12s
 ```
 
 
@@ -128,46 +129,47 @@ dra-gpu-example-68f595d7dc-mgwqw   1/1     Running             0          3h4m
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dra-gpu-example
+  name: pytorch-cuda-check
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dra-gpu-example
+      app: pytorch-cuda-check
   template:
     metadata:
       labels:
-        app: dra-gpu-example
+        app: pytorch-cuda-check
     spec:
       containers:
-      - name: ctr
-        image: ubuntu:22.04
-        command: ["bash", "-c"]
-        args: ["while [ 1 ]; do date; echo $(nvidia-smi -L || echo Waiting...); sleep 60; done"]
-        #resources:
-        #  claims:
-        #  - name: single-gpu
+        - name: pytorch-cuda-check
+          image: nvcr.io/nvidia/pytorch:25.09-py3
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              while true; do
+                python3 -c "import torch; print(torch.cuda.device_count())"
+                sleep 30
+              done
+          # resources:
+          #   claims:
+          #     - name: single-gpu
       resourceClaims:
-      - name: single-gpu
-        resourceClaimTemplateName: gpu-claim-template
-      tolerations:
-      - key: "nvidia.com/gpu"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - name: single-gpu
+          resourceClaimTemplateName: gpu-claim-template
 ```
 
 Retrieve the logs, they should show a failure:
 
 ```bash
-kubectl logs dra-gpu-example-5c97694b59-5tmqr
+kubectl logs pytorch-cuda-check-64f4757498-n82f6
 ```
 
 Output:
 
 ```output
-Fri Oct 10 01:12:14 UTC 2025
-bash: line 1: nvidia-smi: command not found
-Waiting...
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+0
 ```
 
 ### Test 2: Ensure that access to accelerators from within containers is properly isolated.
