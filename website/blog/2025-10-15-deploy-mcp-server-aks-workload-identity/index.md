@@ -436,7 +436,7 @@ To stop the MCP Inspector tool, press `Ctrl+C` in the terminal where it is runni
 To stop the port forwarding, run the following command:
 
 ```sh
-kill %1
+pkill -f 'kubectl port-forward'
 ```
 
 To delete the resources created in this post, run the following command:
