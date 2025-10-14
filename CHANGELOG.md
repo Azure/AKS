@@ -35,7 +35,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Starting September 2025, new AKS clusters that use the AKS-managed virtual network option will place cluster subnets into private subnets by default (defaultOutboundAccess = false) in alignment with [egress best practices](https://learn.microsoft.com/azure/virtual-network/ip-services/default-outbound-access#why-is-disabling-default-outbound-access-recommended). This setting does not impact AKS-managed cluster traffic, which uses explicitly configured outbound paths. It may affect unsupported scenarios, such as deploying other resources (e.g., VMs) into the same subnet. Clusters using BYO VNets are unaffected by this change. In supported configurations, no action is required.
 * For [Pod Sandboxing](https://learn.microsoft.com/azure/aks/use-pod-sandboxing), `kata-mshv-vm-isolation` will be replaced with `kata-vm-isolation` while the `--workload-runtime` used when creating a cluster will be changed from `KataMshvVmIsolation` to `KataVmIsolation`. Make sure you use the correct name when creating Pod Sandboxing clusters.
 * Cluster Autoscaler will delete nodes that encounter provisioning errors/ failures immediately, instead of waiting for the full max-node-provision-time defined in the [cluster autoscaler profile](https://learn.microsoft.com/azure/aks/cluster-autoscaler?tabs=azure-cli#use-the-cluster-autoscaler-profile). This change significantly reduces scale-up delays caused by failed node provisioning attempts.
-
+* In ingress-nginx managed via the application routing add-on, the metric `ingress_upstream_latency_seconds` has been [removed](https://github.com/kubernetes/ingress-nginx/releases/tag/controller-v1.12.0) following its deprecation upstream.
+  
 #### Component Updates
 
 * Windows node images  
@@ -58,7 +59,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Tigera Operator bumped to version [1.38.6](https://github.com/tigera/operator/releases/tag/v1.38.6), [1.36.13](https://github.com/tigera/operator/releases/tag/v1.36.13)
 * `Container Insights` has been upgraded to [`v3.1.29`](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md#09092025--).
 * `Cluster Autoscaler` has been upgraded to [`v1.31.5`](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.31.5) for AKS 1.31, [`v1.32.2`](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.32.2) for AKS 1.32, and [`v1.33.0-aks`](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.0) for AKS 1.33.
-
+* App Routing add-on updated to version [0.2.10](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.10) with ingress-nginx bumped to [v1.13.1](https://github.com/Azure/aks-app-routing-operator/pull/497) addressing [CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874) , [CVE-2025-47906](https://nvd.nist.gov/vuln/detail/CVE-2025-47906) , and [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907).
 ---
 
 ## Release 2025-08-29
