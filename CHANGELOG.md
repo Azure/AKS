@@ -17,10 +17,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Kubernetes 1.29.100-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.29-lts/CHANGELOG/CHANGELOG-1.29.md#v129100-akslts)
   * Kubernetes 1.30.100-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.30-lts/CHANGELOG/CHANGELOG-1.30.md#v130100-akslts)
 
-### Preview Features
-
-* Managed GPU Experience is in public preview, which deploys the Nvidia GPU device plugin and DCGM exporter for GPU metrics.
-
 ### Features
 
 * AKS now allows the use of unsupported GPU vm sizes after skipping gpu driver installation. If a GPU vm size is not in our list of supported vm sizes, we do not install the necessary gpu components or provide support. For more information, see [Skip GPU drivers](https://aka.ms/aks/skip-gpu-drivers).
