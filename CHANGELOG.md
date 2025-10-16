@@ -42,11 +42,11 @@ Envoy filters are now allowed in the Istio add-on for AKS. While you can use the
 
 * Istio revision asm-1-27 is now available for the Istio-based service mesh add-on. Customers can follow canary upgrade guidance to adopt the new revision. Note that native sidecar mode is enabled by default starting asm-1-27. For full details, see the [Istio 1.27 release notes](https://istio.io/latest/news/releases/1.27.x/) and [Native sidecar mode for Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-native-sidecar).
 * Azure Policy Add-on has been upgraded to [v1.14.2](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1142).
+* AKS Azure Linux image has been updated to [202510.03.0](vhd-notes/AzureLinux/202510.03.0.txt).
 * AKS Azure Linux v3 image has been updated to [202510.03.0](vhd-notes/AzureLinuxv3/202510.03.0.txt).
 * AKS Ubuntu 22.04 node image has been updated to [202510.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt).
 * AKS Ubuntu 24.04 node image has been updated to [202510.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202510.03.0.txt).
 * App Routing updated to version 0.2.10 with ingress-nginx bumped to [v1.13.1](https://github.com/Azure/aks-app-routing-operator/pull/497) addressing [CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874), [CVE-2025-47906](https://nvd.nist.gov/vuln/detail/CVE-2025-47906), and [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907).
-* Azure Policy Add-on has been upgraded to [v1.14.2](https://github.com/MicrosoftDocs/azure-docs-pr/pull/306428/files).
 * Blob CSI Driver has been upgraded:
   * [v1.26.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.7) on AKS Kubernetes 1.32
 * VPA (Vertical Pod Autoscaler) has been updated to [1.4.2](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-1.4.2) on AKS 1.34.
@@ -58,9 +58,7 @@ Envoy filters are now allowed in the Istio add-on for AKS. While you can use the
 * Retina Basic Image has been updated to [v1.0.0-rc3](https://github.com/microsoft/retina/releases/tag/v1.0.0-rc3) on both Linux and Windows to resolve [GHSA-2464-8j7c-4cjm](https://github.com/advisories/GHSA-2464-8j7c-4cjm). See [#1824](https://github.com/microsoft/retina/pull/1824) and [#1881](https://github.com/microsoft/retina/pull/1881) for details.
 * Container Insights has been upgraded to version [3.1.30](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.30).
 * Azure Monitor Metrics (ama-metrics) has been updated to the [release-09-29-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-09-29-2025).  
-* VPA (Vertical Pod Autoscaler) has been updated to [1.4.2](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-1.4.2) on AKS 1.34 with InPlaceOrRecreate feature gate enabled.
 * App monitoring add-on has been updated to [1.0.0-beta.9](https://github.com/microsoft/Docker-Provider/releases/tag/appmonitoring-1.0.0-beta.9).
-* `policy-kubernetes-addon-prod` and `policy-kubernetes-webhook` have been updated to version [1.14.1](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1141).
 * Update apiserver-network-proxy to [v0.31.4](https://github.com/kubernetes-sigs/apiserver-network-proxy/compare/v0.30.3...release-0.31) with bug fix , error message improvements [1](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/640), [2](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/765) and log improvements [1](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/762) , [2](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/753) , [3](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/758).
 * Azure CNI and CNS have been updated to version [1.7.4](https://github.com/Azure/azure-container-networking/releases/tag/v1.7.4).
 * Secrets Store CSI Driver resource requests have been optimized:
