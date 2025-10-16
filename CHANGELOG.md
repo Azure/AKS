@@ -39,8 +39,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * A $0.16 cluster / hour hosted control plane fee will also begin rolling out across regions.
 * AKS now automatically reimages all node pools in the cluster when you update the [HTTP proxy configuration](https://learn.microsoft.com/azure/aks/http-proxy) on your cluster using the `az aks update` command. You can use [Pod Disruption Budgets (PDBs)](https://learn.microsoft.com/azure/aks/operator-best-practices-scheduler) to safeguard disruption to critical pods during reimage.
 * AKS now by default applies dynamic sizing logic for `ama-logs` and `ama-metrics` requests in production regions for AKS Automatic. This enhancement streamlines resource allocation, cost optimization, and scalability for monitoring workloads.
-* Customers in `ussec` and `usnat` regions will start using `ama-logs` managed identity mode when they create new clusters, providing enhanced functionality. Existing clusters are not impacted. This follows the deprecation announcement for legacy authentication mode.
-
+* Customers in `ussec` and `usnat` regions will start using `ama-logs` managed identity mode when they create new clusters, providing enhanced functionality. Existing clusters are not impacted. This follows the d[eprecation announcement for legacy authentication mode](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-authentication).
 
 ### Component Updates
 
