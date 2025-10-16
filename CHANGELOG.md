@@ -23,13 +23,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Features
 
-* [Managed namespaces](https://learn.microsoft.com/azure/aks/concepts-managed-namespaces) is now generally available.
 * AKS now allows the use of unsupported GPU vm sizes after skipping gpu driver installation. If a GPU vm size is not in our list of supported vm sizes, we do not install the necessary gpu components or provide support. For more information, see [Skip GPU drivers](https://aka.ms/aks/skip-gpu-drivers).
 * Advanced Container Networking now enforces [Layer 7 (L7) policy](https://learn.microsoft.com/azure/aks/container-network-security-l7-policy-concepts) restrictions in Cilium network policies. 
 * [AKS Automatic clusters](https://learn.microsoft.com/azure/aks/intro-aks-automatic) can now only be created with the `stable` upgrade channel and the `NodeImage` Node OS upgrade channel. Existing clusters are not affected.
 
 ### Behavioral Changes
-
 
 * Envoy filters are now supported in the Istio add-on for AKS, enabling advanced traffic customization. Learn more at [istio add-on envoy filter](aka.ms/istio-add-on-envoy-filter).
 * Cluster Autoscaler will delete nodes that encounter provisioning errors/failures immediately, instead of waiting for the full max-node-provision-time defined in the [cluster autoscaler profile](https://learn.microsoft.com/azure/aks/cluster-autoscaler?tabs=azure-cli#cluster-autoscaler-profile-settings). This change significantly reduces scale-up delays caused by failed node provisioning attempts.
@@ -70,11 +68,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Azure Monitor Metrics (ama-metrics) has been updated to the [release-09-29-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-09-29-2025).  
 * VPA (Vertical Pod Autoscaler) has been updated to [1.4.2](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-1.4.2) on AKS 1.34 with InPlaceOrRecreate feature gate enabled.
 * App monitoring add-on has been updated to [1.0.0-beta.9](https://github.com/microsoft/Docker-Provider/releases/tag/appmonitoring-1.0.0-beta.9).
-* Gatekeeper has been updated to version [3.20.1-2](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1142).
 * `policy-kubernetes-addon-prod` and `policy-kubernetes-webhook` have been updated to version [1.14.1](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1141).
 * Update apiserver-network-proxy to [v0.31.4](https://github.com/kubernetes-sigs/apiserver-network-proxy/compare/v0.30.3...release-0.31) with bug fix , error message improvements [1](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/640), [2](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/765) and log improvements [1](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/762) , [2](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/753) , [3](https://github.com/kubernetes-sigs/apiserver-network-proxy/pull/758).
 * Azure CNI and CNS have been updated to version [1.7.4](https://github.com/Azure/azure-container-networking/releases/tag/v1.7.4).
-* Pause Containers have been migrated to DALEC built versions under `mcr.microsoft.com/oss/v2` with unified versions: 3.6 for Linux and 3.10.1 for Windows.
 * Secrets Store CSI Driver resource requests have been optimized:
   * `aks-secrets-store-provider-azure.provider-azure-installer`: CPU 50m→16m, Memory 100Mi→50Mi
   * `aks-secrets-store-csi-driver.node-driver-registrar`: CPU 10m→5m, Memory 20Mi→10Mi
