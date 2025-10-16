@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Behavioral Changes
 
-* Envoy filters are now supported in the Istio add-on for AKS, enabling advanced traffic customization. Learn more at [istio add-on envoy filter](aka.ms/istio-add-on-envoy-filter).
+Envoy filters are now allowed in the Istio add-on for AKS. While you can use them to customize traffic handling, issues caused by Envoy filters aren’t covered by Microsoft Support. Learn more at [aka.ms/istio-add-on-envoy-filter](https://aka.ms/istio-add-on-envoy-filter).
 * Cluster Autoscaler will delete nodes that encounter provisioning errors/failures immediately, instead of waiting for the full max-node-provision-time defined in the [cluster autoscaler profile](https://learn.microsoft.com/azure/aks/cluster-autoscaler?tabs=azure-cli#cluster-autoscaler-profile-settings). This change significantly reduces scale-up delays caused by failed node provisioning attempts.
 * [AKS Automatic clusters](https://learn.microsoft.com/azure/aks/intro-aks-automatic) can now only be created with the `stable` upgrade channel and the `NodeImage` Node OS upgrade channel. Existing clusters are not affected.
 * [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) default `AKSNodeClass` will now use Ubuntu 22.04 for Kubernetes versions < 1.34 and Ubuntu 24.04 for Kubernetes versions 1.34+. This ensures consistency across AKS node image defaults. This does not affect existing clusters' default `AKSNodeClass`.
