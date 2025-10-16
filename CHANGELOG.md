@@ -57,7 +57,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Azure Policy Add-on has been upgraded to [v1.14.2](https://github.com/MicrosoftDocs/azure-docs-pr/pull/306428/files).
 * Blob CSI Driver has been upgraded:
   * [v1.26.7](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.7) on AKS Kubernetes 1.32
-  * [v1.25.10](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.25.10) on AKS Kubernetes 1.31
+* VPA (Vertical Pod Autoscaler) has been updated to [1.4.2](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-1.4.2) on AKS 1.34.
 * Azure Disk CSI Driver has been upgraded:
   * [v1.33.5](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.5) on AKS 1.33
   * [v1.32.11](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.4) on AKS 1.32
