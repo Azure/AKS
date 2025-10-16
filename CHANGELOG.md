@@ -20,6 +20,10 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * Compute charges based on the duration and type of virtual machines used by AKS Automatic clusters will be applied on 19 October 2025.
  * A $0.16 cluster / hour hosted control plane fee will also begin rolling out across regions. For more information, see [Pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/)
 
+### Preview Features
+
+- Force Upgrade and override drain now support async validations for PDB-blocking evictions and can be used to bypass PDB restrictions. Requires Azure CLI 2.79.0+ or stable API version 2025-09-01+.
+
 ### Features
 
 * AKS now allows the use of unsupported GPU vm sizes after skipping gpu driver installation. If a GPU vm size is not in our list of supported vm sizes, we do not install the necessary gpu components or provide support. For more information, see [Skip GPU drivers](https://aka.ms/aks/skip-gpu-drivers).
