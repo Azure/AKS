@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Preview features
 
-* `InPlaceOrRecreate` mode is available with vertical pod autoscaler on AKS 1.34+. For more details on the feature: [Official feature doc](https://kubernetes.io/blog/2025/05/16/kubernetes-v1-33-in-place-pod-resize-beta/), [Upstream release note](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-1.4.2).
+* `InPlaceOrRecreate` mode is available with vertical pod autoscaler on AKS 1.34+. More details can be found under [upstream announcement](https://kubernetes.io/blog/2025/05/16/kubernetes-v1-33-in-place-pod-resize-beta/) and [upstream release note](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-1.4.2).
 
 ### Features
 
