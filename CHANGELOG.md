@@ -71,6 +71,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * `aks-secrets-store-csi-driver.secrets-store`: CPU 50m→23m, Memory 100Mi→88Mi
   * `aks-secrets-store-csi-driver.liveness-probe`: CPU 10m→5m, Memory 20Mi→10Mi
 
+---
 
 ## Release Notes 2025-09-21
 
