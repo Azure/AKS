@@ -22,7 +22,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Preview Features
 
-- Force Upgrade and override drain now support async validations for PDB-blocking evictions and can be used to bypass PDB restrictions. Requires Azure CLI 2.79.0+ or stable API version 2025-09-01+.
+- [Force Upgrade and override drain](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli#view-the-upgrade-events) now support async validations for PDB-blocking evictions and can be used to bypass PDB restrictions. Requires Azure CLI 2.79.0+ or stable API version 2025-09-01+.
 
 ### Features
 
