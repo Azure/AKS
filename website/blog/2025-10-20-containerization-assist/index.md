@@ -49,6 +49,8 @@ We've built an MCP that's fundamentally different from existing containerization
 
 This has resulted in a more seamless experience that fits naturally into how developers are actually using AI tools in 2025. Every operation logs clear "Starting" and "Completed" messages that your AI assistant can interpret, summarize, and build upon in conversation. We've built in Docker and Kubernetes integration, vulnerability scanning powered by Trivy, and intelligent tool routing that automatically handles dependencies. You can start creating production-ready containers today without becoming a containerization expert overnight.
 
+## Get started
+
 Visit https://aka.ms/aks/containerization-assist to get started today!
 
 ![Containerization Assist Gif](ca-demo-fullscreen.gif)
