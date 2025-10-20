@@ -22,6 +22,7 @@ Running MCP servers on AKS offers several potential advantages, depending on you
 - **Secure authentication**: Use Workload Identity for passwordless authentication with fine-grained access control
 - **Multi-client access**: Enable different teams, applications, or autonomous agents to connect to the same MCP server instance over HTTP
 - **Standardized patterns**: Establish a repeatable deployment pattern that can be applied to other MCP servers beyond just the AKS MCP server
+- **Governance and auditability**: Maintain centralized control over authentication and audit trails by collecting MCP server logs in one place, providing visibility into all tool invocations across your organization
 
 That said, this approach isn't the only way—or necessarily the best way—to run MCP servers. Local installations may be simpler for individual users, while other deployment patterns might better suit different use cases. The key is choosing the right approach for your specific requirements.
 
@@ -354,6 +355,12 @@ Run the following command to port-forward the AKS MCP service to your local mach
 kubectl port-forward svc/aks-mcp 8000:8000 &
 ```
 
+:::tip
+
+This service is only accessible within the AKS cluster. Port-forwarding allows you to access the service from your local machine for testing purposes. In a production environment, you would typically expose the service using an Ingress controller. See the AKS documentation on [managed NGINX ingress with the application routing add-on](https://learn.microsoft.com/azure/aks/app-routing) for more details.
+
+:::
+
 To test the MCP server, we'll use the MCP Inspector tool, which is a web-based tool that allows you to interact with the MCP server.
 
 Run the following command to start the MCP Inspector tool.
@@ -420,9 +427,15 @@ Remember, the configuration used in this guide grants broad permissions for demo
 
 ## What's next
 
-Now that you have the AKS MCP server running on AKS, I'll leave it to you to explore the various tools and capabilities available through the MCP server. One area I'm particularly excited about is how autonomous agents can leverage this centralized deployment to orchestrate complex infrastructure operations.
+Now that you have the AKS MCP server running on AKS, I'll leave it to you to explore the various tools and capabilities available through the MCP server. Consider these next steps:
 
-Stay tuned for a future post where I'll dive into using this AKS MCP server deployment with autonomous agents to automate real-world scenarios.
+- **Expand to other MCP servers**: Apply this same pattern to deploy other MCP servers (database tools, cloud providers, etc.) creating a centralized MCP hub
+- **Configure monitoring and logging**: Set up Azure Monitor and Container Insights to track the health and performance of your MCP servers, and enable centralized audit logging for governance and compliance
+- **Implement network policies**: Add Kubernetes Network Policies to control traffic flow to and from your MCP servers
+- **Set up ingress**: Replace the port-forward approach with an Ingress controller to enable remote access for multiple clients or autonomous agents
+- **Scale for production**: Adjust replica counts, resource requests/limits, and implement autoscaling based on your workload requirements
+
+One area I'm particularly excited about is how autonomous agents can leverage this centralized deployment to orchestrate complex infrastructure operations. Stay tuned for a future post where I'll dive into using this AKS MCP server deployment with autonomous agents to automate real-world scenarios.
 
 ## Troubleshooting
 
