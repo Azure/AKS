@@ -41,7 +41,7 @@ Our tool ecosystem provides 13 specialized capabilities that cover the complete 
 
 By providing prioritized and composable implementations for Java Spring Boot multi-stage builds, .NET minimal APIs, Node.js Alpine optimizations, security hardening with distroless images and non-root users, performance techniques for build optimization and layer caching, and deep cloud provider integration patterns. Each entry includes implementation examples, severity classifications, and contextual tags that enable precise matching against your detected application characteristics.
 
-### What makes this different from other tools?
+## What makes this different from other tools?
 
 We've built an MCP that's fundamentally different from existing containerization approaches. Instead of relying on static templates that someone has to manually maintain, or direct AI generators that give you different results every time, our tools return structured data that your AI client can consume to generate artifacts. This means you get the consistency you need for production while still having the flexibility to adapt things to your specific requirements.
 
