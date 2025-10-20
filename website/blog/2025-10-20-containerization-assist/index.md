@@ -20,7 +20,7 @@ It doesn’t take long in a cloud-native journey to realize that containerizing 
 
 That’s why today we’re introducing Containerization Assist, an AI-powered MCP server designed to simplify the process of containerizing your applications. Without requiring deep Docker expertise, Containerization Assist guides you step by step through creating Dockerfiles and Kubernetes deployment manifests, all from within your development environment using natural language. Best of all, no matter your stack, whether you're using GitHub Copilot, Cursor, Claude Code, or another tool, Containerization Assist works seamlessly wherever MCP servers are supported.
 
-### So how does it work?
+## So how does it work?
 
 What makes Containerization Assist truly powerful is its knowledge-enhanced architecture. At its core sits a comprehensive knowledge base that we've built up with language-specific optimizations, security hardening patterns, performance techniques, and cloud provider best practices. Instead of relying on generic templates, the system matches your specific application characteristics against curated knowledge entries that contain patterns, recommendations, and contextual tags.
 
