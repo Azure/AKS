@@ -16,6 +16,8 @@ tags:
 
 AI has quickly become an integral part of the modern developer's workflow. Whether it’s GitHub Copilot, MCPs, or other emerging tools, AI is now central to how developers build, test, and ship software. Inspired by the productivity gains AI enables, the AKS DevX team began exploring how it could simplify and accelerate the creation of Kubernetes deployment artifacts. In AKS, we’ve consistently seen how challenging it can be for customers to containerize legacy applications and move them onto Kubernetes. The process is rarely straightforward, often requiring more time and effort than it ideally should.
 
+<!-- truncate -->
+
 It doesn’t take long in a cloud-native journey to realize that containerizing an application requires much more than just executing a single command. It involves a deep understanding of your app’s dependencies, writing secure and optimized Dockerfiles, producing the right Kubernetes manifests, and deploying everything reliably. Each of these steps can introduce its own set of challenges, from dependency mismatches to subtle configuration issues that slow you down and distract you from building features that matter. 
 
 That’s why today we’re introducing Containerization Assist, an AI-powered MCP server designed to simplify the process of containerizing your applications. Without requiring deep Docker expertise, Containerization Assist guides you step by step through creating Dockerfiles and Kubernetes deployment manifests, all from within your development environment using natural language. Best of all, no matter your stack, whether you're using GitHub Copilot, Cursor, Claude Code, or another tool, Containerization Assist works seamlessly wherever MCP servers are supported.
