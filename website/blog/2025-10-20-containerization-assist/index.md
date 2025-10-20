@@ -31,7 +31,7 @@ This approach gives you some serious advantages. Because the knowledge queries u
 ![Containerization Assist Flow](containerization-assist-flow.png)
 _Figure 1: The workflow of the containerization assist MCP server._ 
 
-### Going beyond basic file detection
+## Going beyond basic file detection
 
 Most traditional containerization tools do basic file detection. They look for `package.json` or `pom.xml` files and call it a day. Containerization Assist uses sophisticated analysis that actually understands modern application architectures. It automatically identifies independently deployable services in complex monorepo structures by analyzing workspace configurations, separate build files, and independent entry points while intelligently excluding shared libraries and utility folders. 
 
