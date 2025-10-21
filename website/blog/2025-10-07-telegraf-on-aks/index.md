@@ -15,6 +15,7 @@ In this post, we saw an approach on how to integrate custom metrics into Azure's
 <!-- truncate -->
 
 By default, AKS and Azure Monitor give you a rich set of out-of-the-box insights: CPU and memory utilization, pod restarts, node health, and Kubernetes control plane metrics. But many teams need more visibility into what’s happening *inside* their workloads — for example:
+
 - Application-specific metrics such as API request latency or queue depth  
 - Custom business metrics like transactions per second or user sessions  
 - System-level data such as network interface stats, disk I/O, or custom log counters  
