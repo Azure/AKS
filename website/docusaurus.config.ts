@@ -75,7 +75,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/social-card.jpg',
+    image: 'img/logo.png',
     navbar: {
       title: 'AKS Engineering Blog',
       logo: {
