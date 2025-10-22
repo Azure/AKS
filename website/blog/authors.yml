@@ -360,3 +360,13 @@ sertac-ozercan:
     x: sozercan
     linkedin: sozercan
     github: sozercan
+
+rita-zhang:
+  name: Rita Zhang
+  title: Partner Software Engineering at Microsoft
+  url: https://www.linkedin.com/in/ritazhang/
+  image_url: https://github.com/ritazh.png
+  socials:
+    x: ritazzhang
+    linkedin: ritazhang
+    github: ritazh
