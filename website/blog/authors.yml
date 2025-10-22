@@ -350,3 +350,13 @@ flora-taagen:
   socials:
     linkedin: florataagen
     github: flora-taagen
+
+sertac-ozercan:
+  name: Sertaç Özercan
+  title: Principal Engineering Manager for Azure Upstream
+  url: https://www.linkedin.com/in/sozercan/
+  image_url: https://avatars.githubusercontent.com/u/852750?s=400
+  socials:
+    x: sozercan
+    linkedin: sozercan
+    github: sozercan
