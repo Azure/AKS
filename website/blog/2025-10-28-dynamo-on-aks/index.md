@@ -28,7 +28,7 @@ deployment. Frameworks like the [open-source NVIDIA Dynamo project](https://gith
 play a crucial role by coordinating execution across nodes, managing
 memory resources efficiently, and accelerating data transfers between GPUs
 to keep latency low.
- 
+
 However, software alone cannot solve these challenges. The underlying hardware
 must also support this level of scale and throughput. Rack-scale systems like
 [Azure ND GB200-v6](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nd-gb200-v6-series)
@@ -37,9 +37,9 @@ in a distributed GPU setup connected via high-bandwidth, low-latency
 interconnect. This architecture uses the rack as a unified compute engine
 and enables fast, efficient communication and scaling that traditional
 multi-node setups struggle to achieve.
- 
+
 Yet, even combining advanced hardware and distributed inference frameworks
-is not sufficient on its own. Inference traffic spikes unpredictably. 
+is not sufficient on its own. Inference traffic spikes unpredictably.
 Fixed, static inference configurations and setups with predetermined resource
 allocation can lead to GPU underutilization or overprovisioning. Instead,
 inference infrastructure must dynamically adjust in real time, scaling
@@ -204,7 +204,7 @@ language outputs per session.
     relevant KV cache, avoiding redundant computation.
 
     In our e-commerce example:
-    
+
     * A user browses five similar items in one session.
     * Dynamo routes all requests to the same GPU that already has the user’s
     or product’s context cached.
@@ -221,7 +221,7 @@ language outputs per session.
     **Dynamo Solution**: The KV Block Manager (KVBM) offloads cold/unused KV
     cache data to CPU RAM, NVMe, or networked storage freeing valuable GPU
     memory for active requests.
-    
+
     In our e-commerce example:
 
     * Without cache offloading: increasing number of concurrent sessions
