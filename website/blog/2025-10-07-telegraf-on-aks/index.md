@@ -1,6 +1,6 @@
 ---
 title: "Collecting Custom Metrics on AKS with Telegraf"
-date: "2025-10-07"
+date: "2025-10-23"
 description: "Learn how to set up and deploy Telegraf on Azure Kubernetes Service (AKS) to monitor your Kubernetes clusters efficiently by collecting custom metrics and exposing them to Prometheus. This guide covers best practices, step-by-step instructions, and common troubleshooting tips for AKS monitoring with Telegraf." 
 authors: ["diego-casati"]
 tags:
@@ -35,7 +35,7 @@ A common question we hear from Kubernetes users is:
 If you're running Azure Kubernetes Service (AKS), the good news is that you can do exactly that with a lightweight, extensible solution:
 **Telegraf + Azure Managed Prometheus + Azure Managed Grafana**.
 
-In this post, we'll deploy a **Telegraf DaemonSet** to collect a set of **custom metrics** — in our example, we’ll use *per-interface network statistics*, but the same pattern applies to **any metric source you want**. We’ll expose these metrics in **Prometheus format** and visualize them in **Azure Managed Grafana** — all with minimal setup. 
+In this post, we'll deploy a **Telegraf DaemonSet** to collect a set of **custom metrics** — in our example, we’ll use *per-interface network statistics*, but the same pattern applies to **any metric source you want**. We’ll expose these metrics in **Prometheus format** and visualize them in **Azure Managed Grafana** — all with minimal setup.
 
 Before we dive into the setup, let’s look at why this approach is so effective for extending AKS monitoring.
 
