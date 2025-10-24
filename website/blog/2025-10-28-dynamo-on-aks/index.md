@@ -18,8 +18,6 @@ tags: ["ai", "gpu", "oss", "GB200"]
 that help customers run AI inference at scale using Azure Kubernetes Service
 (AKS) and NVIDIA’s advanced hardware and distributed inference frameworks.*
 
-# Evolving Kubernetes Architectures for Large Models
-
 Modern language models now routinely exceed the compute and memory capacity of
 a single GPU or even a whole node on Kubernetes. Consequently, inference at the
 scale of billions of model parameters demands multi-node, distributed
