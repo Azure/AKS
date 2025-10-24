@@ -19,7 +19,8 @@ that help customers run AI inference at scale using Azure Kubernetes Service
 (AKS) and NVIDIA’s advanced hardware and distributed inference frameworks.*
 
 Modern language models now routinely exceed the compute and memory capacity of
-a single GPU or even a whole node on Kubernetes. Consequently, inference at the
+a single GPU or even a whole node with multiple GPUs on Kubernetes.
+Consequently, inference at the
 scale of billions of model parameters demands multi-node, distributed
 deployment. Frameworks like the [open-source NVIDIA Dynamo platform](https://github.com/ai-dynamo/dynamo)
 play a crucial role by coordinating execution across nodes, managing
@@ -36,7 +37,7 @@ interconnect. This architecture uses the rack as a unified compute engine
 and enables fast, efficient communication and scaling that traditional
 multi-node setups struggle to achieve.
 
-Yet, even combining advanced hardware and distributed inference frameworks
+For some more demanding or unpredictable workloads, even combining advanced hardware and distributed inference frameworks
 is not sufficient on its own. Inference traffic spikes unpredictably.
 Fixed, static inference configurations and setups with predetermined resource
 allocation can lead to GPU underutilization or overprovisioning. Instead,
@@ -60,7 +61,7 @@ is the liquid-cooled NVIDIA GB200 NVL72 system, a rack-scale architecture
 that integrates 72 NVIDIA Blackwell GPUs and 36 NVIDIA Grace™ CPUs into a
 single, tightly coupled domain.
 
-The rack-scale design of ND GB200-v6 enables model serving patterns that were
+The rack-scale design of ND GB200-v6 unlocks model serving patterns that were
 previously infeasible due to interconnect and memory bandwidth constraints.
 
 ![NVIDIA GB200 NVL72 system](./GB200_v6_arch.png)
@@ -95,9 +96,10 @@ manages the key-value (KV) cache across large GPU clusters by hashing requests
 and tracking cache locations. It calculates overlap scores between incoming
 requests and cached KV blocks, routing requests to GPUs that maximize cache
 reuse while balancing workload. This cache-aware routing reduces costly KV
-recomputation and avoids bottlenecks, improving performance, especially for
-large models with long context windows. To reduce GPU memory overhead, the
-Dynamo
+recomputation and avoids bottlenecks, which in turn improves performance, especially for
+large models with long context windows. 
+
+To reduce GPU memory overhead, the Dynamo
 [KV Block Manager](https://github.com/ai-dynamo/dynamo/blob/f93b619ad9c6dfe820fbf08b79f1f9eedec4a62c/docs/kvbm/kvbm_architecture.md)
 offloads infrequently accessed KV blocks to CPU RAM, SSDs, or object storage.
 It supports hierarchical caching and intelligent eviction policies across
@@ -236,9 +238,11 @@ We set out to deploy the popular open-source
 [GPT-OSS 120B](https://huggingface.co/openai/gpt-oss-120b) reasoning model
 using Dynamo on AKS on GB200 NVL72, adapting the
 [SemiAnalysis InferenceMAX](https://inferencemax.semianalysis.com/) recipe
-for a large scale, production-grade environment. Our approach: leverage Dynamo
-as the inference server and swap GB200 NVL72 nodes in place of NVIDIA
-HGX™ B200, scaling the deployment across multiple nodes.
+for a large scale, production-grade environment. 
+
+**Our approach**: leverage Dynamo as the inference server and swap GB200 NVL72
+nodes in place of NVIDIA HGX™ B200, scaling the deployment
+across multiple nodes.
 
 Our goal was to replicate the performance results reported by SemiAnalysis,
 but at a larger scale within an AKS environment, proving that enterprise-scale
@@ -254,10 +258,7 @@ each stage of the deployment:
 inference set up with the prerequisites you will need.
 1. *Deploy Dynamo via Helm:* Get the inference server running with the right
 configurations for GB200 NVL72.
-1. *Enable production features:* Integrate autoscaling and GPU telemetry to
-make your deployment production-ready.
-1. *Troubleshoot common challenges:* Navigate memory pressure,
-pod affinity, and multi-GPU scheduling issues with tested solutions.
+1. *Benchmark performance with your serving engine:* Test and optimize latency/throughput under production conditions.
 
 Find the complete recipe for GPT-OSS 120B at
 [aka.ms/dynamo-recipe-gpt-oss-120b](https://aka.ms/dynamo-recipe-gpt-oss-120b)
