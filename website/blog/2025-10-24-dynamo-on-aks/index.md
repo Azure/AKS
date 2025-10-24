@@ -97,7 +97,7 @@ and tracking cache locations. It calculates overlap scores between incoming
 requests and cached KV blocks, routing requests to GPUs that maximize cache
 reuse while balancing workload. This cache-aware routing reduces costly KV
 recomputation and avoids bottlenecks, which in turn improves performance, especially for
-large models with long context windows. 
+large models with long context windows.
 
 To reduce GPU memory overhead, the Dynamo
 [KV Block Manager](https://github.com/ai-dynamo/dynamo/blob/f93b619ad9c6dfe820fbf08b79f1f9eedec4a62c/docs/kvbm/kvbm_architecture.md)
@@ -238,7 +238,7 @@ We set out to deploy the popular open-source
 [GPT-OSS 120B](https://huggingface.co/openai/gpt-oss-120b) reasoning model
 using Dynamo on AKS on GB200 NVL72, adapting the
 [SemiAnalysis InferenceMAX](https://inferencemax.semianalysis.com/) recipe
-for a large scale, production-grade environment. 
+for a large scale, production-grade environment.
 
 **Our approach**: leverage Dynamo as the inference server and swap GB200 NVL72
 nodes in place of NVIDIA HGX™ B200, scaling the deployment
