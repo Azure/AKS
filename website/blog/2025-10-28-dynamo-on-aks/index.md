@@ -251,7 +251,7 @@ possible, but practical.
 Ready to build the same setup? Our comprehensive guide walks you through
 each stage of the deployment:
 
-1. *Setting up your foundation:* Configure GPU node pools and prepare your
+1. *Set up your foundation:* Configure GPU node pools and prepare your
 inference set up with the prerequisites you will need.
 1. *Deploy Dynamo via Helm:* Get the inference server running with the right
 configurations for GB200 NVL72.
