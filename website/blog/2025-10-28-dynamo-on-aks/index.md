@@ -111,7 +111,7 @@ phases. The Azure Research paper ["Splitwise: Efficient generative LLM
 inference using phase splitting"](https://www.microsoft.com/en-us/research/wp-content/uploads/2023/12/Splitwise_ISCA24.pdf)
 demonstrated the benefits of separating the compute-intensive prefill and
 memory-bound decode phases of LLM inference onto different hardware. We will
-explore this disaggregated model in detail in Part 2.
+explore this disaggregated model in detail in an upcoming blog post.
 
 ![Dynamo project key features](./dynamo_features.png)
 
