@@ -1,6 +1,5 @@
 ---
-title: "Scaling multi-node LLM inference with Dynamo and ND GB200-v6 GPUs on 
-AKS"
+title: "Scaling multi-node LLM inference with Dynamo and ND GB200-v6 GPUs on AKS"
 description: "Learn how optimizing routing, planning, and system setup boosts
 the efficiency and reliability of multi-node LLM inference on AKS with
 OSS Dynamo and ND GB200-v6 GPUs."
