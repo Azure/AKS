@@ -61,7 +61,7 @@ is the liquid-cooled NVIDIA GB200 NVL72 system, a rack-scale architecture
 that integrates 72 NVIDIA Blackwell GPUs and 36 NVIDIA Grace CPUs into a
 single, tightly coupled domain.
 
-The rack-scale design of NV GB200-v6 enables model serving patterns that were
+The rack-scale design of ND GB200-v6 enables model serving patterns that were
 previously infeasible due to interconnect and memory bandwidth constraints.
 
 ![NVIDIA GB200 NVL72 system](./GB200_v6_arch.png)
@@ -280,9 +280,11 @@ the software stack. By combining GB200 NVL72 nodes and the open-source Dynamo
 project on AKS, we’ve taken a step toward making distributed inference faster,
 more efficient, and more responsive to real-world demands.
 
-This post focused on the foundational, aggregated serving stack. In upcoming
+This post focused on the foundational serving stack. In upcoming
 blogs, we will build on this foundation and explore more of Dynamo's
-advanced features, such as Disaggregated Serving and SLO planner. We'll
+advanced features, such as
+[Disaggregated Serving](https://github.com/ai-dynamo/dynamo/blob/9defc01b9b9c51a4a21abbb02907a4f1d5d2a2d2/examples/basics/disaggregated_serving/README.md#L4)
+and [SLA-based Planner](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner_quickstart.md). We'll
 demonstrate how these features allow for even greater efficiency, moving
 from a static, holistic deployment to a flexible, phase-splitted architecture.
 Moving forward, we also plan to extend our testing to include larger MoE
