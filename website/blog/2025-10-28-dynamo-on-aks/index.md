@@ -10,15 +10,15 @@ authors:
 tags: ["ai", "gpu", "oss", "GB200"]
 ---
 
-*Our collaboration with
+*This blog post is co-authored with
 [Rohan Varma](https://www.linkedin.com/in/rohan-s-varma/),
 [Saurabh Aggarwal](https://www.linkedin.com/in/sa126/),
 [Anish Maddipoti](https://www.linkedin.com/in/anish-maddipoti/), and
-[Amr Elmeleegy](https://www.linkedin.com/in/meleegy/) from the
-NVIDIA team has been instrumental in driving
-innovation and pushing the boundaries of what’s possible with AKS.
-Together, we’ve co-authored this blog to highlight advanced
-solutions that empower customers to run AI inference at scale.*
+[Amr Elmeleegy](https://www.linkedin.com/in/meleegy/) to showcase solutions
+that help customers run AI inference at scale using Azure Kubernetes Service
+(AKS) and NVIDIA’s advanced hardware and distributed inference frameworks.*
+
+# Evolving Kubernetes Architectures for Large Models
 
 Modern language models now routinely exceed the compute and memory capacity of
 a single GPU or even a whole node on Kubernetes. Consequently, inference at the
@@ -251,13 +251,13 @@ possible, but practical.
 Ready to build the same setup? Our comprehensive guide walks you through
 each stage of the deployment:
 
-1. *Setting up your foundation.* Configure GPU node pools and prepare your
+1. *Setting up your foundation:* Configure GPU node pools and prepare your
 inference set up with the prerequisites you will need.
-1. *Deploy Dynamo via Helm.* Get the inference server running with the right
+1. *Deploy Dynamo via Helm:* Get the inference server running with the right
 configurations for GB200 NVL72.
-1. *Enabling production features.* Integrate autoscaling and GPU telemetry to
+1. *Enable production features:* Integrate autoscaling and GPU telemetry to
 make your deployment production-ready.
-1. *Troubleshooting common challenges.* Navigate memory pressure,
+1. *Troubleshoot common challenges:* Navigate memory pressure,
 pod affinity, and multi-GPU scheduling issues with tested solutions.
 
 Find the complete recipe for GPT-OSS 120B at
