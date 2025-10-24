@@ -1,5 +1,5 @@
 ---
-title: "Scaling multi-node LLM inference with Dynamo and ND GB200-v6 GPUs on AKS"
+title: "Scaling multi-node LLM inference with NVIDIA Dynamo and ND GB200 NVL72 GPUs on AKS"
 description: "Learn how optimizing routing, planning, and system setup boosts
 the efficiency and reliability of multi-node LLM inference on AKS with
 OSS Dynamo and ND GB200-v6 GPUs."
@@ -21,7 +21,7 @@ that help customers run AI inference at scale using Azure Kubernetes Service
 Modern language models now routinely exceed the compute and memory capacity of
 a single GPU or even a whole node on Kubernetes. Consequently, inference at the
 scale of billions of model parameters demands multi-node, distributed
-deployment. Frameworks like the [open-source NVIDIA Dynamo project](https://github.com/ai-dynamo/dynamo)
+deployment. Frameworks like the [open-source NVIDIA Dynamo platform](https://github.com/ai-dynamo/dynamo)
 play a crucial role by coordinating execution across nodes, managing
 memory resources efficiently, and accelerating data transfers between GPUs
 to keep latency low.
@@ -29,8 +29,9 @@ to keep latency low.
 However, software alone cannot solve these challenges. The underlying hardware
 must also support this level of scale and throughput. Rack-scale systems like
 [Azure ND GB200-v6](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nd-gb200-v6-series)
-instances, powered by NVIDIA GB200 NVL72, meet this need by integrating 72 GPUs
-in a distributed GPU setup connected via high-bandwidth, low-latency
+VMs, accelerated by NVIDIA GB200 NVL72, meet this need by integrating
+72 NVIDIA Blackwell
+GPUs in a distributed GPU setup connected via high-bandwidth, low-latency
 interconnect. This architecture uses the rack as a unified compute engine
 and enables fast, efficient communication and scaling that traditional
 multi-node setups struggle to achieve.
@@ -43,11 +44,11 @@ inference infrastructure must dynamically adjust in real time, scaling
 resources up or down to align with current demand without wasting GPU capacity
 or risking performance degradation.
 
-## A holistic solution: ND GB200-v6 GPU and Dynamo on AKS
+## A holistic solution: ND GB200-v6 VMs and Dynamo on AKS
 
 To effectively address the variability in inference traffic in distributed
 deployments, our approach combines three key components: ND GB200-v6
-instances, the NVIDIA Dynamo inference framework, with an Azure Kubernetes
+VMs, the NVIDIA Dynamo inference framework, with an Azure Kubernetes
 Service (AKS) cluster. Together, these technologies provide the scale,
 flexibility, and responsiveness necessary to meet the demands of modern,
 large-scale inference workloads.
@@ -56,7 +57,7 @@ large-scale inference workloads.
 
 At the core of Azure’s [ND GB200-v6 VM series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nd-gb200-v6-series)
 is the liquid-cooled NVIDIA GB200 NVL72 system, a rack-scale architecture
-that integrates 72 NVIDIA Blackwell GPUs and 36 NVIDIA Grace CPUs into a
+that integrates 72 NVIDIA Blackwell GPUs and 36 NVIDIA Grace™ CPUs into a
 single, tightly coupled domain.
 
 The rack-scale design of ND GB200-v6 enables model serving patterns that were
@@ -66,7 +67,7 @@ previously infeasible due to interconnect and memory bandwidth constraints.
 
 ### NVIDIA Dynamo: a distributed inference framework
 
-[NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) is an open source
+[NVIDIA Dynamo](https://www.nvidia.com/en-us/ai/dynamo/) is an open source
 distributed inference serving framework that supports multiple engine
 backends, including [vLLM](https://github.com/vllm-project/vllm),
 [TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM), and
@@ -236,8 +237,8 @@ We set out to deploy the popular open-source
 using Dynamo on AKS on GB200 NVL72, adapting the
 [SemiAnalysis InferenceMAX](https://inferencemax.semianalysis.com/) recipe
 for a large scale, production-grade environment. Our approach: leverage Dynamo
-as the inference server and swap GB200 NVL72 nodes in place of B200, scaling
-the deployment across multiple nodes.
+as the inference server and swap GB200 NVL72 nodes in place of NVIDIA
+HGX™ B200, scaling the deployment across multiple nodes.
 
 Our goal was to replicate the performance results reported by SemiAnalysis,
 but at a larger scale within an AKS environment, proving that enterprise-scale
@@ -282,8 +283,11 @@ This post focused on the foundational serving stack. In upcoming
 blogs, we will build on this foundation and explore more of Dynamo's
 advanced features, such as
 [Disaggregated Serving](https://github.com/ai-dynamo/dynamo/blob/9defc01b9b9c51a4a21abbb02907a4f1d5d2a2d2/examples/basics/disaggregated_serving/README.md#L4)
-and [SLA-based Planner](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner_quickstart.md). We'll
-demonstrate how these features allow for even greater efficiency, moving
+and [SLA-based Planner](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner_quickstart.md).
+We'll demonstrate how these features allow for even greater efficiency, moving
 from a static, holistic deployment to a flexible, phase-splitted architecture.
-Moving forward, we also plan to extend our testing to include larger MoE
-reasoning models such as DeepSeek R1.
+Moving forward, we also plan to extend our testing to include larger
+mixture-of-experts (MoE) reasoning models such as DeepSeek R1.
+We encourage you to try out the
+[Dynamo recipe](https://aka.ms/dynamo-recipe-gpt-oss-120b)
+in this blog on [AKS](https://aka.ms/aks-dynamo) and share your feedback!
