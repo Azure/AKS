@@ -14,7 +14,8 @@ tags: ["ai", "gpu", "oss", "GB200"]
 [Rohan Varma](https://www.linkedin.com/in/rohan-s-varma/),
 [Saurabh Aggarwal](https://www.linkedin.com/in/sa126/),
 [Anish Maddipoti](https://www.linkedin.com/in/anish-maddipoti/), and
-[Amr Elmeleegy](https://www.linkedin.com/in/meleegy/) to showcase solutions
+[Amr Elmeleegy](https://www.linkedin.com/in/meleegy/) from NVIDIA
+to showcase solutions
 that help customers run AI inference at scale using Azure Kubernetes Service
 (AKS) and NVIDIA’s advanced hardware and distributed inference frameworks.*
 
