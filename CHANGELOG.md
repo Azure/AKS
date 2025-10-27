@@ -24,6 +24,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * `InPlaceOrRecreate` mode is available with vertical pod autoscaler on AKS 1.34+. More details can be found under [upstream announcement](https://kubernetes.io/blog/2025/05/16/kubernetes-v1-33-in-place-pod-resize-beta/) and [upstream release note](https://github.com/kubernetes/autoscaler/releases/tag/vertical-pod-autoscaler-1.4.2).
 
+* AKS Version [1.34 Preview](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md#v1340) is being rolled out to multiple regions and is expected to complete by early November.
+
 ### Features
 
 * AKS now allows the use of unsupported GPU vm sizes after skipping gpu driver installation. If a GPU vm size is not in our list of supported vm sizes, we do not install the necessary gpu components or provide support. For more information, see [Skip GPU drivers](https://aka.ms/aks/skip-gpu-drivers).
