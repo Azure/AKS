@@ -13,8 +13,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
  * If you are currently using Ubuntu 18.04 with FIPS, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?) your Kubernetes version to 1.27+ where Ubuntu 20.04 will be the default FIPS Ubuntu version.
 * AKS is now blocking creation of new clusters with Basic Load Balancer [retired on 30 September 2025](https://learn.microsoft.com/en-us/answers/questions/1033471/retirement-announcement-basic-load-balancer-will-b).
 * Starting 19 October 2025, AKS Automatic clusters will transition to a new billing model in alignment with the service moving from preview to General Availability. To learn more about Azure Kubernetes Service pricing, please visit the pricing page. As part of this transition, the following pricing updates will take effect in supported regions:
- * Compute charges based on the duration and type of virtual machines used by AKS Automatic clusters will be applied on 19 October 2025.
- * A $0.16 cluster / hour hosted control plane fee will also begin rolling out across regions. For more information, see [Pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/)
+  * Compute charges based on the duration and type of virtual machines used by AKS Automatic clusters will be applied on 19 October 2025.
+  * A $0.16 cluster / hour hosted control plane fee will also begin rolling out across regions. For more information, see [Pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/)
 
 ### Kubernetes Version
 
