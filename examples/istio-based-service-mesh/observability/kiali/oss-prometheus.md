@@ -95,7 +95,7 @@ done
 
 #### Kiali Dashboard
 >[!Note]
-To learn about the full set of features supported by Kiali, see the [website](https://kiali.io/docs/features/)  
+>To learn about the full set of features supported by Kiali, see the [website](https://kiali.io/docs/features/)  
 
 Navigate to ```http://${KIALI_EXTERNAL_IP}:20001``` in your browser to access the Kiali dashboard to visualize different aspects of your service mesh.   
 

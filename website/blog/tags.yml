@@ -1,0 +1,294 @@
+# Centralized tag metadata for the AKS blog.
+# Keys are canonical tag IDs used in front matter. Keep them stable.
+# To add a new tag: choose a concise kebab-case key, human-friendly label, and 1-line description.
+
+acstor:
+  label: ACStor
+  permalink: /acstor
+  description: ACStor for managing and optimizing storage resources in AKS.
+
+add-ons:
+  label: Add-ons
+  permalink: /add-ons
+  description: AKS built-in or optional platform add-ons and managed integrations.
+
+agent:
+  label: Agent
+  permalink: /agent
+  description: AI agents and agent frameworks running on AKS.
+
+ai:
+  label: AI
+  permalink: /ai
+  description: Artificial intelligence workloads, patterns, model deployment, and orchestration on AKS.
+
+airflow:
+  label: Airflow
+  permalink: /airflow
+  description: Using Apache Airflow for orchestrating data and machine learning workflows on AKS.
+
+aks-mcp:
+  label: AKS-MCP
+  permalink: /aks-mcp
+  description: Model Context Protocol (MCP) server and client usage on AKS.
+
+anyscale:
+  label: Anyscale
+  permalink: /anyscale
+  description: Using Anyscale and Ray for distributed AI/ML workloads on AKS.
+
+app-routing:
+  label: App Routing
+  permalink: /app-routing
+  description: AKS Application Routing add-on usage, ingress, certificates, and traffic management.
+
+azure-front-door:
+  label: Azure Front Door
+  permalink: /azure-front-door
+  description: Global load balancing, edge security, and CDN scenarios integrating Azure Front Door with AKS.
+
+azure-key-vault:
+  label: Azure Key Vault
+  permalink: /azure-key-vault
+  description: Managing secrets, certificates, and keys for AKS workloads using Key Vault and CSI driver.
+
+azure-linux:
+  label: Azure Linux
+  permalink: /azure-linux
+  description: Microsoft Linux distribution available on AKS.
+
+azure-monitor:
+  label: Azure Monitor
+  permalink: /azure-monitor
+  description: Integrating Azure Monitor for metrics, logs, and alerts with AKS clusters.
+
+backup:
+  label: Backup
+  permalink: /backup
+  description: Protecting and restoring Kubernetes applications and data (e.g., Azure Backup for AKS).
+
+best-practices:
+  label: Best Practices
+  permalink: /best-practices
+  description: Recommended patterns, anti-patterns, and guidance for running workloads on AKS.
+
+certbot:
+  label: Certbot
+  permalink: /certbot
+  description: Using Certbot and Let’s Encrypt to obtain and manage TLS certificates for AKS ingress.
+
+cilium:
+  label: Cilium
+  permalink: /cilium
+  description: Cilium CNI, eBPF networking, observability, and security features on AKS.
+
+databases:
+  label: Databases
+  permalink: /databases
+  description: Running and optimizing database workloads (e.g., PostgreSQL) on AKS.
+
+datadog:
+  label: Datadog
+  permalink: /datadog
+  description: Integrating Datadog for monitoring, metrics, logs, and APM with AKS clusters.
+
+debugging:
+  label: Debugging
+  permalink: /debugging
+  description: Techniques and tools to diagnose and resolve AKS workload or platform issues.
+
+developer:
+  label: Developer
+  permalink: /developer
+  description: Developer-focused guidance, productivity patterns, and application development on AKS.
+
+dns:
+  label: DNS
+  permalink: /dns
+  description: Domain Name System behavior, resolution paths, and troubleshooting inside AKS.
+
+dns-performance:
+  label: DNS Performance
+  permalink: /dns-performance
+  description: Improving and accelerating DNS query performance within AKS clusters.
+
+extensions:
+  label: Extensions
+  permalink: /extensions
+  description: AKS cluster extensions architecture, lifecycle, and ecosystem integrations.
+
+faiss:
+  label: FAISS
+  permalink: /faiss
+  description: Vector indexing with FAISS for similarity search and RAG pipelines on AKS.
+
+flux:
+  label: Flux
+  permalink: /flux
+  description: GitOps workflows using Flux for continuous delivery to AKS.
+
+flyte:
+  label: Flyte
+  permalink: /flyte
+  description: Using Flyte for orchestrating and managing machine learning workflows on AKS.
+
+gateway-api:
+  label: Gateway API
+  permalink: /gateway-api
+  description: Managing ingress traffic and API routing using the Gateway API on AKS.
+
+general:
+  label: General
+  permalink: /general
+  description: Broad AKS topics, announcements, conceptual overviews, and cross-cutting guidance.
+
+grafana:
+  label: Grafana
+  permalink: /grafana
+  description: Integrating Grafana for visualization and dashboards with AKS metrics and logs.
+
+huggingface:
+  label: Hugging Face
+  permalink: /huggingface
+  description: Leveraging Hugging Face models, datasets, and tooling in AKS AI workloads.
+
+ingress-nginx:
+  label: Ingress NGINX
+  permalink: /ingress-nginx
+  description: Configuration and optimization of the NGINX ingress controller in AKS.
+
+inspektor-gadget:
+  label: Inspektor Gadget
+  permalink: /inspektor-gadget
+  description: Using Inspektor Gadget for Kubernetes observability and live troubleshooting.
+
+istio:
+  label: Istio
+  permalink: /istio
+  description: Service mesh architecture, traffic management, and security features using Istio on AKS.
+
+kaito:
+  label: KAITO
+  permalink: /kaito
+  description: KAITO project usage for model fine-tuning, inference, and RAG on AKS.
+
+kube-fleet:
+  label: Kube-Fleet
+  permalink: /kube-fleet
+  description: Using Kube-Fleet for multi-cluster application deployment and management with AKS.
+
+kueue:
+  label: Kueue
+  permalink: /kueue
+  description: Kueue workload queueing and scheduling for batch AI/ML jobs on AK
+
+kro:
+  label: KRO
+  permalink: /kro
+  description: Kubernetes Resource Operator (KRO) for resource management and automation in AKS.
+
+llm-d:
+  label: llm-d
+  permalink: /llm-d
+  description: Deploying and integrating llm-d for large language model inference on AKS.
+
+load-balancers:
+  label: Load Balancers
+  permalink: /load-balancers
+  description: Configuring and optimizing Azure Load Balancers for AKS clusters.
+
+mcp:
+  label: MCP
+  permalink: /mcp
+  description: Model Context Protocol (MCP) for AKS.
+
+metrics:
+  label: Metrics
+  permalink: /metrics
+  description: Collecting, storing, and visualizing metrics from AKS clusters and workloads.
+
+mlops:
+  label: MLOps
+  permalink: /mlops
+  description: Machine learning operations, CI/CD, and lifecycle management for AI workloads on AKS.
+
+monitoring:
+  label: Monitoring
+  permalink: /monitoring
+  description: Metrics, logging, tracing, and health visibility strategies for AKS clusters.
+
+multi-cluster:
+  label: Multi-Cluster
+  permalink: /multi-cluster
+  description: Managing and operating multiple AKS clusters with tools like Azure Arc and Rancher.
+
+networking:
+  label: Networking
+  permalink: /networking
+  description: Cluster and application networking, eBPF, traffic management, and connectivity patterns.
+
+observability:
+  label: Observability
+  permalink: /observability
+  description: End-to-end telemetry collection, tracing, logging, and insight generation on AKS.
+
+open-source:
+  label: Open Source
+  permalink: /open-source
+  description: Open source projects, community tooling, and contributions related to AKS.
+
+operations:
+  label: Operations
+  permalink: /operations
+  description: Operational best practices and management strategies for AKS.
+
+performance:
+  label: Performance
+  permalink: /performance
+  description: Throughput, latency, scale, and resource efficiency tuning for AKS workloads.
+
+rag:
+  label: RAG
+  permalink: /rag
+  description: Retrieval-Augmented Generation architectures, vector search, and context enrichment on AKS.
+
+ray:
+  label: Ray
+  permalink: /ray
+  description: KubeRay operator usage for distributed AI/ML workloads on AKS.
+
+scaling:
+  label: Scaling
+  permalink: /scaling
+  description: Horizontal and vertical scaling strategies, autoscaler tuning, and capacity planning.
+
+security:
+  label: Security
+  permalink: /security
+  description: Securing clusters, workloads, supply chain, identities, and network boundaries in AKS.
+
+spot:
+  label: Spot
+  permalink: /spot
+  description: Cost optimization and resilience patterns using Azure Spot node pools in AKS.
+
+storage:
+  label: Storage
+  permalink: /storage
+  description: Persistent storage, data performance, CSI drivers, and Azure storage integrations for AKS.
+
+traffic-management:
+  label: Traffic Management
+  permalink: /traffic-management
+  description: Load balancing, ingress controllers, and traffic routing strategies for AKS.
+
+troubleshooting:
+  label: Troubleshooting
+  permalink: /troubleshooting
+  description: Systematic diagnosis of cluster, networking, performance, and application issues.
+
+workload-identity:
+  label: Workload Identity
+  permalink: /workload-identity
+  description: Using Microsoft Entra Workload Identity for secure pod identity and access management in AKS.
+# NOTE: If you remove or rename a tag key, search the repo for usages first to avoid broken references.

@@ -1,0 +1,361 @@
+/* RESTORED ORIGINAL RICH STYLES (with comments) */
+/* Feel free to tweak text or colors; structure kept same as before refactor. */
+
+.heroOverlay {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  padding: 5rem 0 3.5rem;
+  color: var(--ifm-font-color-base-inverse);
+  text-align: left;
+  overflow: hidden;
+  --hero-accent: var(--ifm-color-primary);
+  --hero-accent-alt: hsl(
+    var(--ifm-color-primary-h) var(--ifm-color-primary-s)
+      calc(var(--ifm-color-primary-l) + 8%)
+  );
+}
+.heroOverlay::before,
+.heroOverlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.heroOverlay::before {
+  background: linear-gradient(
+      115deg,
+      rgba(25, 17, 46, 0.9) 0%,
+      rgba(65, 31, 120, 0.82) 45%,
+      rgba(119, 74, 203, 0.78) 70%,
+      rgba(25, 17, 46, 0.92) 100%
+    ),
+    radial-gradient(
+      circle at 75% 30%,
+      rgba(255, 255, 255, 0.12),
+      transparent 55%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.25));
+  z-index: 0;
+}
+.heroOverlay::after {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.05) 0 2px,
+    transparent 2px 6px
+  );
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+.heroOverlayInner {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.heroOverlayInner h1 {
+  font-size: clamp(2.3rem, 4.2vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.07;
+  background: linear-gradient(90deg, #ffffff 0%, #f2e9ff 40%, #d2baff 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+  margin-bottom: 1.25rem;
+}
+.heroButtons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 768px) {
+  .heroOverlay {
+    text-align: center;
+    padding: 4rem 0 2.5rem;
+  }
+  .heroOverlayInner {
+    padding: 0 1rem;
+  }
+  .heroButtons {
+    justify-content: center;
+  }
+}
+
+.introBox {
+  max-width: 1200px;
+  margin: 2rem auto 1rem;
+  padding: 1rem 2rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-800);
+}
+.introBox a {
+  text-decoration: underline;
+}
+
+.gridColumns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  padding: 0 2rem;
+  align-items: stretch;
+}
+.agendaColumn {
+  flex: 2 1 480px;
+  min-width: 320px;
+}
+.timezoneColumn {
+  flex: 2 1 420px;
+  min-width: 320px;
+}
+@media screen and (max-width: 992px) {
+  .gridColumns {
+    flex-direction: column;
+  }
+}
+
+.panel {
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.panelHeader {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base-inverse);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  font-size: 1.05rem;
+  position: relative;
+}
+.panelHeader.calendar::after {
+  content: "📅";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.8;
+}
+.panelBody {
+  padding: 0.75rem 1rem 1rem;
+  flex: 1;
+}
+
+/* Agenda */
+.agendaList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.agendaItem {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding: 0.75rem 0;
+}
+.agendaItem:last-child {
+  border-bottom: none;
+}
+.agendaItem h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+}
+.agendaItem.featured {
+  background: var(--ifm-color-emphasis-50);
+  border-radius: 4px;
+  padding: 0.9rem 0 0.9rem 0;
+}
+.agendaItem.featured h4 {
+  font-size: 0.95rem;
+  font-style: italic;
+}
+.agendaItem ul {
+  margin: 0.25rem 0 0.25rem 1.1rem;
+  padding: 0;
+  font-size: 0.8rem;
+}
+.agendaItem ul li {
+  margin-bottom: 0.25rem;
+}
+.agendaItem p {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+.agendaDescription {
+  font-style: italic;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.7rem;
+}
+
+/* Timezone cards */
+.timezoneCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.timezoneCard {
+  flex: 1 1 220px;
+  min-width: 250px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  transition: box-shadow 0.14s ease, transform 0.14s ease,
+    border-color 0.14s ease;
+}
+.timezoneCard:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  border-color: var(--ifm-color-emphasis-400);
+}
+.timezoneCardHeader {
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-emphasis-900);
+  padding: 0.55rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  position: relative;
+}
+.timezoneCardHeader::before {
+  content: "";
+  width: 4px;
+  height: 1.2em;
+  border-radius: 2px;
+  background: var(--ifm-color-primary);
+  box-shadow: 0 0 0 1px rgba(var(--ifm-color-primary-rgb), 0.35);
+  opacity: 0.9;
+}
+.timezoneCardHeader h4 {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1.1;
+}
+.timezoneCardBody {
+  min-height: 0;
+  height: auto;
+  overflow: visible;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.85rem 0.85rem 1rem;
+  text-align: center;
+  background: var(--ifm-background-color);
+}
+.timezoneCardBody p {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.calendarLink {
+  display: inline-block;
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem;
+  padding: 2px 0;
+  position: relative;
+  color: var(--ifm-link-color);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+.calendarLink:hover {
+  border-color: var(--ifm-link-hover-color);
+  text-decoration: none;
+}
+.timezoneButtons {
+  margin-top: auto;
+}
+@media screen and (max-width: 480px) {
+  .timezoneCards {
+    flex-direction: column;
+  }
+  .timezoneCard {
+    width: 100%;
+  }
+  .timezoneCardBody {
+    padding: 0.85rem 0.5rem 1rem;
+    min-height: 0;
+    height: auto;
+    overflow: visible;
+  }
+  .timezoneButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 0.5rem;
+  }
+  .timezoneButtons .button {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+/* Dark mode tweaks */
+[data-theme="dark"] .introBox {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .agendaItem p {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .agendaDescription {
+  color: var(--ifm-color-emphasis-700);
+}
+
+[data-theme="dark"] .timezoneCardHeader h4 {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .timezoneCardBody p {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .timezoneCard {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-400);
+}
+[data-theme="dark"] .timezoneCardHeader {
+  background: var(--ifm-background-surface-color);
+  border-bottom-color: var(--ifm-color-emphasis-400);
+}
+[data-theme="dark"] .timezoneCardHeader::before {
+  box-shadow: 0 0 0 1px rgba(var(--ifm-color-primary-rgb), 0.45);
+}
+[data-theme="dark"] .timezoneCard:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+/* (Legacy simple classes kept in case future fallback desired) */
+/* Removed temporary simple-class placeholders to avoid empty ruleset lint error. */
