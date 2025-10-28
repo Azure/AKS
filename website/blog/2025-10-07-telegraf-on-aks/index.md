@@ -20,22 +20,13 @@ By default, AKS and Azure Monitor give you a rich set of out-of-the-box insights
 - Custom business metrics like transactions per second or user sessions  
 - System-level data such as network interface stats, disk I/O, or custom log counters  
 
-Traditionally, enabling this kind of deep observability required deploying and managing a full Prometheus stack — configuring storage, scaling scrapers, and handling upgrades. That adds operational complexity, especially when all you need is a few targeted custom metrics.  
-
-This is where Azure Managed Prometheus comes in — it takes care of high availability, storage, and scaling, so you can focus entirely on defining the metrics that matter most. And by using **Telegraf** as a lightweight collector, you can easily publish custom metrics from your workloads or nodes directly into your managed monitoring environment, with no self-managed Prometheus servers required.
-
-In this post, we’ll walk through how to set up **Telegraf on AKS** to collect and expose custom metrics that integrate seamlessly with **Azure Managed Prometheus** and **Azure Managed Grafana**. This approach lets you extend Azure’s managed observability stack with your own metrics — keeping monitoring simple, flexible, and fully managed.
+Traditionally, enabling this kind of deep observability required deploying and managing a full Prometheus stack — configuring storage, scaling scrapers, and handling upgrades. That adds operational complexity, especially when all you need is a few targeted custom metrics.  This is where Azure Managed Prometheus comes in — it takes care of high availability, storage, and scaling, so you can focus entirely on defining the metrics that matter most. And by using **Telegraf** as a lightweight collector, you can easily publish custom metrics from your workloads or nodes directly into your managed monitoring environment, with no self-managed Prometheus servers required.
 
 While our example uses network metrics, the same pattern applies to any custom data source you want to monitor in AKS. If you want to take this example one step further, we have a hands-on experience with the [AKS Labs: Advanced Observability Concepts](https://azure-samples.github.io/aks-labs/docs/operations/observability-and-monitoring) and the [Observability with Managed Prometheus and Managed Grafana at the Microsoft Reactor](https://www.youtube.com/watch?v=Dc0TqbAkQX0).
 
 A common question we hear from Kubernetes users is:
 
 "How can I scrape a specific set of custom metrics from my cluster without adding too much operational overhead?"
-
-If you're running Azure Kubernetes Service (AKS), the good news is that you can do exactly that with a lightweight, extensible solution:
-**Telegraf + Azure Managed Prometheus + Azure Managed Grafana**.
-
-In this post, we'll deploy a **Telegraf DaemonSet** to collect a set of **custom metrics** — in our example, we’ll use *per-interface network statistics*, but the same pattern applies to **any metric source you want**. We’ll expose these metrics in **Prometheus format** and visualize them in **Azure Managed Grafana** — all with minimal setup.
 
 Before we dive into the setup, let’s look at why this approach is so effective for extending AKS monitoring.
 
