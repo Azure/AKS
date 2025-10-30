@@ -1,0 +1,161 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cost-analysis
+  labels:
+    name: cost-analysis
+    app.kubernetes.io/name: aks-cost-analysis
+    app.kubernetes.io/component: cost-export
+    azure.workload.identity/use: "true"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cost-analysis-sa
+  namespace: cost-analysis
+  labels:
+    app.kubernetes.io/name: aks-cost-analysis
+    app.kubernetes.io/component: cost-export
+    azure.workload.identity/use: "true"
+  annotations:
+    azure.workload.identity/client-id: "PLACEHOLDER_CLIENT_ID"
+    azure.workload.identity/tenant-id: "PLACEHOLDER_TENANT_ID"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cost-analysis-agent-svc
+  namespace: kube-system
+spec:
+  selector:
+    app: cost-analysis-agent
+    kubernetes.azure.com/managedby: aks
+  ports:
+    - protocol: TCP
+      port: 9094
+      targetPort: 9094
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: aks-cost-analysis-export
+  namespace: cost-analysis
+  labels:
+    app.kubernetes.io/name: aks-cost-analysis
+    app.kubernetes.io/component: cost-export
+    app.kubernetes.io/version: "1.0"
+spec:
+  schedule: "10 0 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            azure.workload.identity/use: "true"
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: cost-analysis-sa
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: cost-analysis-export
+            image: your-registry/aks-cost-analysis:latest
+            args: ["both"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 65534
+              runAsGroup: 65534
+              capabilities:
+                drop:
+                - ALL
+            env:
+            - name: COST_ANALYSIS_URL
+              value: "http://cost-analysis-agent-svc.kube-system:9094"
+            - name: AZURE_STORAGE_BLOB_NAME
+              value: "https://PLACEHOLDER_STORAGE_ACCOUNT.blob.core.windows.net/"
+            - name: AZURE_STORAGE_CONTAINER_NAME
+              value: "cost-exports"
+            - name: AZURE_STORAGE_AKS_DATA_PREFIX
+              value: "cost-analysis/"
+            - name: AZURE_STORAGE_COST_EXPORT_PREFIX
+              value: "cost-management/"
+            volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "500m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+          volumes:
+          - name: tmp
+            emptyDir:
+              sizeLimit: "2Gi"
+---
+# Example: Export-only CronJob (uncomment to use separate export/merge)
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: aks-cost-analysis-export-only
+#   namespace: cost-analysis
+#   labels:
+#     app.kubernetes.io/name: aks-cost-analysis
+#     app.kubernetes.io/component: cost-export
+#     app.kubernetes.io/version: "1.0"
+# spec:
+#   schedule: "10 0 * * *"  # Export runs daily at 00:10
+#   concurrencyPolicy: Forbid
+#   jobTemplate:
+#     spec:
+#       template:
+#         metadata:
+#           labels:
+#             azure.workload.identity/use: "true"
+#         spec:
+#           restartPolicy: OnFailure
+#           serviceAccountName: cost-analysis-sa
+#           # ... (same security context and volumes as above)
+#           containers:
+#           - name: cost-analysis-export
+#             image: your-registry/aks-cost-analysis:latest
+#             args: ["export"]
+#             # ... (same env, volumeMounts, resources as above)
+---
+# Example: Merge-only CronJob (uncomment to use separate export/merge)
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: aks-cost-analysis-merge-only
+#   namespace: cost-analysis
+#   labels:
+#     app.kubernetes.io/name: aks-cost-analysis
+#     app.kubernetes.io/component: cost-merge
+#     app.kubernetes.io/version: "1.0"
+# spec:
+#   schedule: "30 0 * * *"  # Merge runs daily at 00:30 (after exports)
+#   concurrencyPolicy: Forbid
+#   jobTemplate:
+#     spec:
+#       template:
+#         metadata:
+#           labels:
+#             azure.workload.identity/use: "true"
+#         spec:
+#           restartPolicy: OnFailure
+#           serviceAccountName: cost-analysis-sa
+#           # ... (same security context and volumes as above)
+#           containers:
+#           - name: cost-analysis-merge
+#             image: your-registry/aks-cost-analysis:latest
+#             args: ["merge"]
+#             # ... (same env, volumeMounts, resources as above)
