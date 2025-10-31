@@ -27,6 +27,11 @@ airflow:
   permalink: /airflow
   description: Using Apache Airflow for orchestrating data and machine learning workflows on AKS.
 
+aks-mcp:
+  label: AKS-MCP
+  permalink: /aks-mcp
+  description: Model Context Protocol (MCP) server and client usage on AKS.
+
 anyscale:
   label: Anyscale
   permalink: /anyscale
@@ -46,6 +51,11 @@ azure-key-vault:
   label: Azure Key Vault
   permalink: /azure-key-vault
   description: Managing secrets, certificates, and keys for AKS workloads using Key Vault and CSI driver.
+
+azure-linux:
+  label: Azure Linux
+  permalink: /azure-linux
+  description: Microsoft Linux distribution available on AKS.
 
 azure-monitor:
   label: Azure Monitor
@@ -276,4 +286,9 @@ troubleshooting:
   label: Troubleshooting
   permalink: /troubleshooting
   description: Systematic diagnosis of cluster, networking, performance, and application issues.
+
+workload-identity:
+  label: Workload Identity
+  permalink: /workload-identity
+  description: Using Microsoft Entra Workload Identity for secure pod identity and access management in AKS.
 # NOTE: If you remove or rename a tag key, search the repo for usages first to avoid broken references.

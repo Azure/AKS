@@ -1,0 +1,538 @@
+{
+    "Resources": [
+        {
+            "ID": "/subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/MC_akhantimirov_akhantimirov-aks_westus3/providers/Microsoft.Compute/disks/aks-nodepool1-370765aks-nodepool1-3707653disk1_c7b097bc9d0840868520359bd137361f",
+            "Name": "aks-nodepool1-370765aks-nodepool1-3707653disk1_c7b097bc9d0840868520359bd137361f",
+            "Kind": "storage",
+            "Splits": [
+                {
+                    "Fraction": 0.220219913,
+                    "SplitKey": {},
+                    "SplitBucket": "idle"
+                },
+                {
+                    "Fraction": 0.1392640074,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "metrics-server"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.114533464,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "ama-logs-rs"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0886175382,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "coredns"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0853216437,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "ama-logs"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0722042972,
+                    "SplitKey": {
+                        "namespace": "gatekeeper-system",
+                        "object_kind": "deployment",
+                        "object_name": "gatekeeper-controller"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0438972176,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "azure-ip-masq-agent"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0433561514,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "kube-proxy"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0361021486,
+                    "SplitKey": {
+                        "namespace": "gatekeeper-system",
+                        "object_kind": "deployment",
+                        "object_name": "gatekeeper-audit"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0270040515,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "cost-analysis-agent",
+                        "label_app": "cost-analysis-agent"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0224630482,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "cloud-node-manager"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0222917294,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "azure-cns"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0179969945,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "konnectivity-agent",
+                        "label_app": "konnectivity-agent"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0141502523,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "csi-azurefile-node",
+                        "label_app": "csi-azurefile-node"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0141344378,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "csi-azuredisk-node",
+                        "label_app": "csi-azuredisk-node"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0104170353,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "azure-policy-webhook",
+                        "label_app": "azure-policy-webhook"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0104170353,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "azure-policy",
+                        "label_app": "azure-policy"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0088068638,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "coredns-autoscaler"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0088021708,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "konnectivity-agent-autoscaler",
+                        "label_app": "konnectivity-agent-autoscaler"
+                    },
+                    "SplitBucket": "usage"
+                }
+            ]
+        },
+        {
+            "ID": "/subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/MC_akhantimirov_akhantimirov-aks_westus3/providers/Microsoft.Compute/disks/pvc-d5191b8c-29c3-4ea7-82d4-94a841e86c1f",
+            "Name": "pvc-d5191b8c-29c3-4ea7-82d4-94a841e86c1f",
+            "Kind": "storage",
+            "Splits": [
+                {
+                    "Fraction": 1,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "cost-analysis-agent",
+                        "label_app": "cost-analysis-agent"
+                    },
+                    "SplitBucket": "usage"
+                }
+            ]
+        },
+        {
+            "ID": "/subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/MC_akhantimirov_akhantimirov-aks_westus3/providers/Microsoft.Network/loadBalancers/kubernetes",
+            "Name": "kubernetes",
+            "Kind": "network",
+            "Splits": [
+                {
+                    "Fraction": 1,
+                    "SplitKey": {},
+                    "SplitBucket": "idle"
+                }
+            ]
+        },
+        {
+            "ID": "/subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/MC_akhantimirov_akhantimirov-aks_westus3/providers/Microsoft.Network/loadBalancers/kubernetes-internal",
+            "Name": "kubernetes-internal",
+            "Kind": "network",
+            "Splits": [
+                {
+                    "Fraction": 1,
+                    "SplitKey": {},
+                    "SplitBucket": "idle"
+                }
+            ]
+        },
+        {
+            "ID": "/subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/MC_akhantimirov_akhantimirov-aks_westus3/providers/Microsoft.Network/publicIPAddresses/ffe9d134-ba69-4889-9baa-be680c3dba33",
+            "Name": "134.33.27.130",
+            "Kind": "network",
+            "Splits": [
+                {
+                    "Fraction": 1,
+                    "SplitKey": {},
+                    "SplitBucket": "system"
+                }
+            ]
+        },
+        {
+            "ID": "/subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/mc_akhantimirov_akhantimirov-aks_westus3/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-37076539-vmss",
+            "Name": "aks-nodepool1-37076539-vmss",
+            "Kind": "compute",
+            "Splits": [
+                {
+                    "Fraction": 0.1392640074,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "metrics-server"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.1384188013,
+                    "SplitKey": {},
+                    "SplitBucket": "idle"
+                },
+                {
+                    "Fraction": 0.114533464,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "ama-logs-rs"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0886175382,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "coredns"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0853216437,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "ama-logs"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0818011117,
+                    "SplitKey": {},
+                    "SplitBucket": "system"
+                },
+                {
+                    "Fraction": 0.0722042972,
+                    "SplitKey": {
+                        "namespace": "gatekeeper-system",
+                        "object_kind": "deployment",
+                        "object_name": "gatekeeper-controller"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0438972176,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "azure-ip-masq-agent"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0433561514,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "kube-proxy"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0361021486,
+                    "SplitKey": {
+                        "namespace": "gatekeeper-system",
+                        "object_kind": "deployment",
+                        "object_name": "gatekeeper-audit"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0270040515,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "cost-analysis-agent",
+                        "label_app": "cost-analysis-agent"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0224630482,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "cloud-node-manager"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0222917294,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "azure-cns"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0179969945,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "konnectivity-agent",
+                        "label_app": "konnectivity-agent"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0141502523,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "csi-azurefile-node",
+                        "label_app": "csi-azurefile-node"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0141344378,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "daemonset",
+                        "object_name": "csi-azuredisk-node",
+                        "label_app": "csi-azuredisk-node"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0104170353,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "azure-policy",
+                        "label_app": "azure-policy"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0104170353,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "azure-policy-webhook",
+                        "label_app": "azure-policy-webhook"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0088068638,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "coredns-autoscaler"
+                    },
+                    "SplitBucket": "usage"
+                },
+                {
+                    "Fraction": 0.0088021708,
+                    "SplitKey": {
+                        "namespace": "kube-system",
+                        "object_kind": "deployment",
+                        "object_name": "konnectivity-agent-autoscaler",
+                        "label_app": "konnectivity-agent-autoscaler"
+                    },
+                    "SplitBucket": "usage"
+                }
+            ]
+        }
+    ],
+    "Metrics": {
+        "avg_node_count_24h": [
+            {
+                "metric": {},
+                "value": [
+                    1750284763.178,
+                    "2"
+                ]
+            }
+        ],
+        "cost_analysis_container_cpu_usage_seconds_24h": [
+            {
+                "metric": {
+                    "container": "cost-analysis-agent"
+                },
+                "value": [
+                    1750284763.177,
+                    "10.504745"
+                ]
+            },
+            {
+                "metric": {
+                    "container": "cost-analysis-opencost"
+                },
+                "value": [
+                    1750284763.177,
+                    "65.55212599999999"
+                ]
+            },
+            {
+                "metric": {
+                    "container": "cost-analysis-victoria-metrics"
+                },
+                "value": [
+                    1750284763.177,
+                    "160.53802199999998"
+                ]
+            }
+        ],
+        "cost_analysis_container_memory_working_set_bytes_max_24h": [
+            {
+                "metric": {
+                    "container": "cost-analysis-agent"
+                },
+                "value": [
+                    1750284763.177,
+                    "17551360"
+                ]
+            },
+            {
+                "metric": {
+                    "container": "cost-analysis-opencost"
+                },
+                "value": [
+                    1750284763.177,
+                    "73826304"
+                ]
+            },
+            {
+                "metric": {
+                    "container": "cost-analysis-victoria-metrics"
+                },
+                "value": [
+                    1750284763.177,
+                    "302264320"
+                ]
+            }
+        ],
+        "max_container_count_24h": [
+            {
+                "metric": {},
+                "value": [
+                    1750284763.177,
+                    "53"
+                ]
+            }
+        ],
+        "max_node_count_24h": [
+            {
+                "metric": {},
+                "value": [
+                    1750284763.177,
+                    "2"
+                ]
+            }
+        ],
+        "total_container_count_24h": [
+            {
+                "metric": {},
+                "value": [
+                    1750284763.179,
+                    "53"
+                ]
+            }
+        ],
+        "total_node_count_24h": [
+            {
+                "metric": {},
+                "value": [
+                    1750284763.177,
+                    "2"
+                ]
+            }
+        ],
+        "total_pod_count_24h": [
+            {
+                "metric": {},
+                "value": [
+                    1750284763.179,
+                    "34"
+                ]
+            }
+        ]
+    }
+}
