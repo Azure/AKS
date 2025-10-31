@@ -15,7 +15,6 @@ configuration:
         - isAction:
             action: Labeled
         then:
-        # Container Insights
         - if:
           - hasLabel:
               label: addon/container-insights
@@ -28,7 +27,6 @@ configuration:
               - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Azure Monitor
         - if:
           - hasLabel:
               label: addon/ama-metrics
@@ -41,7 +39,6 @@ configuration:
               - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Policy
         - if:
           - hasLabel:
               label: addon/policy
@@ -64,7 +61,6 @@ configuration:
               - az-policy-kube
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Virtual Nodes
         - if:
           - hasLabel:
               label: addon/virtual-nodes
@@ -78,7 +74,6 @@ configuration:
               - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # App Routing
         - if:
           - hasLabel:
               label: addon/app-routing
@@ -90,7 +85,6 @@ configuration:
               - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Security Center
         - if:
           - hasLabel:
               label: azure/security-center
@@ -102,7 +96,6 @@ configuration:
               - mayaherskovic
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Security
         - if:
           - hasLabel:
               label: Security
@@ -114,7 +107,6 @@ configuration:
               - Azure/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True   
-        # Confidential Computing
         - if:
           - hasLabel:
               label: azure/confidentialCompute
@@ -126,7 +118,6 @@ configuration:
               - jakjang
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Azure Portal
         - if:
           - hasLabel:
               label: azure/portal
@@ -151,7 +142,6 @@ configuration:
               - Azure/aks-portal
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Azure Government
         - if:
           - hasLabel:
               label: AzGov
@@ -163,7 +153,6 @@ configuration:
               - weinong
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Networking
         - if:
           - hasLabel:
               label: networking
@@ -176,7 +165,6 @@ configuration:
               - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Cilium
         - if:
           - hasLabel:
               label: Cilium
@@ -191,7 +179,6 @@ configuration:
               - tamilmani1989
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # ACNS (Advanced Container Networking Services)
         - if:
           - hasLabel:
               label: advanced-container-networking-services
@@ -204,7 +191,6 @@ configuration:
               - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Pod Identity
         - if:
           - hasLabel:
               label: pod-identity
@@ -216,7 +202,6 @@ configuration:
               - Azure/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Windows Containers
         - if:
           - hasLabel:
               label: windows
@@ -229,7 +214,6 @@ configuration:
               - thecloudtaylor
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Storage
         - if:
           - hasLabel:
               label: storage
@@ -242,7 +226,6 @@ configuration:
               - AllenWen-at-Azure
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True 
-        # OMS
         - if:
           - hasLabel:
               label: azure/oms
@@ -256,7 +239,6 @@ configuration:
               - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Log Analytics
         - if:
           - hasLabel:
               label: azure/log-analytics
@@ -270,7 +252,6 @@ configuration:
               - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Azure China
         - if:
           - hasLabel:
               label: AzChina
@@ -282,7 +263,6 @@ configuration:
               - thomas1206
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Azure Gateway Ingress Controller (AGIC)
         - if:
           - hasLabel:
               label: addon/agic
@@ -295,7 +275,6 @@ configuration:
               - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # App Gateway for Containers (AGC)
         - if:
           - hasLabel:
               label: app-gateway-for-containers
@@ -308,7 +287,6 @@ configuration:
               - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # App Gateway
         - if:
           - hasLabel:
               label: azure/application-gateway
@@ -321,7 +299,6 @@ configuration:
               - jackstromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Upstream - Helm
         - if:
           - hasLabel:
               label: upstream/helm
@@ -334,7 +311,6 @@ configuration:
               - bridgetkromhout
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Upstream - Gatekeeper
         - if:
           - hasLabel:
               label: upstream/gatekeeper
@@ -347,7 +323,6 @@ configuration:
               - ritazh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Service Mesh
         - if:
           - hasLabel:
               label: service-mesh
@@ -360,7 +335,6 @@ configuration:
               - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Mesh networking
         - if:
           - hasLabel:
               label: mesh
@@ -372,7 +346,6 @@ configuration:
               - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
-        # Copilot
         - if:
           - hasLabel:
               label: ai/copilot
@@ -386,7 +359,6 @@ configuration:
               - chandraneel
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Azure Container Registry (ACR)
         - if:
           - hasLabel:
               label: azure/acr
@@ -399,7 +371,6 @@ configuration:
               - toddysm
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Control plane
         - if:
           - hasLabel:
               label: control-plane
@@ -412,7 +383,6 @@ configuration:
               - kthakar1990
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Documentation                
         - if:
           - hasLabel:
               label: docs 
@@ -425,7 +395,6 @@ configuration:
               - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
-        # Azure Kubernetes Fleet Manager
         - if:
           - hasLabel:
               label: fleet
@@ -437,7 +406,6 @@ configuration:
               - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
-        # KEDA
         - if:
           - hasLabel:
               label: keda
@@ -449,7 +417,6 @@ configuration:
               - wangyira
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
-        # Node pools
         - if:
           - hasLabel:
               label: nodepools
@@ -463,7 +430,6 @@ configuration:
               - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Service resiliency
         - if:
           - hasLabel:
               label: resiliency
@@ -475,7 +441,6 @@ configuration:
               - abubinski
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Service scale and performance       
         - if:
           - hasLabel:
               label: Scale and Performance 
@@ -488,7 +453,6 @@ configuration:
               - pavneeta
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Upgrades  
         - if:
           - hasLabel:
               label: upgrade
@@ -500,7 +464,6 @@ configuration:
               - kaarthis
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Flux
         - if:
           - hasLabel:
               label: extension/flux
@@ -513,7 +476,6 @@ configuration:
               - bavneetsingh16
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # GPU
         - if:
           - hasLabel:
               label: GPU
