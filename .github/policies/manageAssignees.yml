@@ -369,6 +369,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
+              - shashankbarsin
               - chasewilson
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True  
@@ -523,30 +524,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - sdesai345
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True
-        # AKS Automatic
-        - if:
-          - hasLabel:
-              label: automatic
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - wangyira
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True
-        # Node Auto Provisioning (NAP)
-        - if:
-          - hasLabel:
-              label: node-auto-provisioning
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - wdarko1
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
 onFailure: 
