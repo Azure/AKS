@@ -64,6 +64,20 @@ configuration:
               - az-policy-kube
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
+        # Virtual Nodes
+        - if:
+          - hasLabel:
+              label: addon/virtual-nodes
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - allyford
+              - wdarko1
+              - stl327
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
         # App Routing
         - if:
           - hasLabel:
@@ -97,7 +111,6 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - shashankbarsin
               - Azure/aks-security
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True   
@@ -450,32 +463,6 @@ configuration:
               - stl327
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Virtual Nodes
-        - if:
-          - hasLabel:
-              label: addon/virtual-nodes
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - allyford
-              - wdarko1
-              - stl327
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True
-        # Node Auto Provisioning (NAP)
-        - if:
-          - hasLabel:
-              label: node-auto-provisioning
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - wdarko1
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True
         # Service resiliency
         - if:
           - hasLabel:
@@ -548,6 +535,18 @@ configuration:
           - mentionUsers:
               mentionees:
               - wangyira
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Node Auto Provisioning (NAP)
+        - if:
+          - hasLabel:
+              label: node-auto-provisioning
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - wdarko1
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
 onFailure: 
