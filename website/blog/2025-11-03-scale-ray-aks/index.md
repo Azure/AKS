@@ -2,9 +2,9 @@
 title: "Scale Ray on AKS"
 description: ""
 date: 2025-11-03
-author:
-- Anson Qian
-- Bob Mital
+authors:
+  - anson-qian
+  - bob-mital
 categories:
 tags: ["ai", "ray", "anyscale"]
 ---
