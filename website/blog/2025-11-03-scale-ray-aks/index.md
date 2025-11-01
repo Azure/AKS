@@ -19,6 +19,8 @@ To address the dual challenges of handling frequent small-scale experiments and 
 
 (Stitch AKS, EKS, GKE clusters with Anyscale)
 
+![Multi Region](./multi-region.png)
+
 ## Scaling in Single Cluster
 
 (Monitor and tune control plane: kuberay/anyscale-operator, kube-controller-manager)
