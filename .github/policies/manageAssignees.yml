@@ -11,7 +11,7 @@ configuration:
       - description: Mention appropriate team members when labels are assigned.
         if:
           - or:
-            - payloadType: Issues
+              - payloadType: Issues
           - isAction:
               action: Labeled
         then:
@@ -24,8 +24,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - ganga1980
-                  - aritraghosh
+                    - ganga1980
+                    - aritraghosh
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Azure Monitor
@@ -37,8 +37,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - vishiy
-                  - aritraghosh
+                    - vishiy
+                    - aritraghosh
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Policy
@@ -50,7 +50,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - az-policy-kube
+                    - az-policy-kube
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           - if:
@@ -61,7 +61,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - az-policy-kube
+                    - az-policy-kube
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # App Routing
@@ -73,7 +73,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
+                    - chasewilson
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Security Center
@@ -85,7 +85,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - mayaherskovic
+                    - mayaherskovic
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Security
@@ -97,8 +97,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - shashankbarsin
-                  - Azure/aks-security
+                    - shashankbarsin
+                    - Azure/aks-security
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Confidential Computing
@@ -110,7 +110,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - jakjang
+                    - jakjang
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Azure Portal
@@ -122,9 +122,9 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - Azure/aks-portal
-                  - smsft
-                  - aritraghosh
+                    - Azure/aks-portal
+                    - smsft
+                    - aritraghosh
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           - if:
@@ -135,7 +135,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - Azure/aks-portal
+                    - chandraneel
+                    - Azure/aks-portal
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Azure Government
@@ -147,7 +148,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - weinong
+                    - weinong
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Networking
@@ -159,8 +160,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
-                  - danbosscher
+                    - chasewilson
+                    - danbosscher
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Cilium
@@ -172,10 +173,10 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
-                  - paulgmiller
-                  - quantumn-a5
-                  - tamilmani1989
+                    - chasewilson
+                    - paulgmiller
+                    - quantumn-a5
+                    - tamilmani1989
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # ACNS (Advanced Container Networking Services)
@@ -187,8 +188,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
-                  - danbosscher
+                    - chasewilson
+                    - danbosscher
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Pod Identity
@@ -200,7 +201,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - Azure/aks-security
+                    - shashankbarsin
+                    - Azure/aks-security
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Windows Containers
@@ -212,8 +214,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - allyford
-                  - thecloudtaylor
+                    - allyford
+                    - thecloudtaylor
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Storage
@@ -225,8 +227,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - azure/azure-container-storage-team
-                  - AllenWen-at-Azure
+                    - azure/azure-container-storage-team
+                    - AllenWen-at-Azure
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # OMS
@@ -238,9 +240,9 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - vishiy
-                  - saaror
-                  - aritraghosh
+                    - vishiy
+                    - saaror
+                    - aritraghosh
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Log Analytics
@@ -252,9 +254,9 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - vishiy
-                  - saaror
-                  - aritraghosh
+                    - vishiy
+                    - saaror
+                    - aritraghosh
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Azure China
@@ -266,7 +268,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - thomas1206
+                    - thomas1206
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Azure Gateway Ingress Controller (AGIC)
@@ -278,8 +280,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
-                  - JackStromberg
+                    - chasewilson
+                    - JackStromberg
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # App Gateway for Containers (AGC)
@@ -291,8 +293,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - JackStromberg
-                  - chasewilson
+                    - JackStromberg
+                    - chasewilson
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # App Gateway
@@ -304,8 +306,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
-                  - jackstromberg
+                    - chasewilson
+                    - jackstromberg
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Upstream - Helm
@@ -317,8 +319,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - squillace
-                  - bridgetkromhout
+                    - squillace
+                    - bridgetkromhout
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Upstream - Gatekeeper
@@ -330,8 +332,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - sozercan
-                  - ritazh
+                    - sozercan
+                    - ritazh
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Service Mesh
@@ -343,8 +345,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - azure/aks-traffic
-                  - chasewilson
+                    - azure/aks-traffic
+                    - chasewilson
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Mesh networking
@@ -356,7 +358,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
+                    - chasewilson
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Copilot
@@ -368,9 +370,9 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - wangyira
-                  - pavneeta
-                  - chandraneel
+                    - wangyira
+                    - pavneeta
+                    - chandraneel
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Azure Container Registry (ACR)
@@ -382,8 +384,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - jakjang
-                  - toddysm
+                    - jakjang
+                    - toddysm
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Control plane
@@ -395,8 +397,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - robbiezhang
-                  - kthakar1990
+                    - robbiezhang
+                    - kthakar1990
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Documentation
@@ -408,8 +410,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - chasewilson
-                  - sjwaight
+                    - chasewilson
+                    - sjwaight
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Azure Kubernetes Fleet Manager
@@ -421,7 +423,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - sjwaight
+                    - sjwaight
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # KEDA
@@ -433,7 +435,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - wangyira
+                    - wangyira
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Node pools
@@ -445,9 +447,9 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - allyford
-                  - wdarko1
-                  - stl327
+                    - allyford
+                    - wdarko1
+                    - stl327
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Virtual Nodes
@@ -459,9 +461,9 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - allyford
-                  - wdarko1
-                  - stl327
+                    - allyford
+                    - wdarko1
+                    - stl327
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Node Autoprovisioning (NAP)
@@ -473,7 +475,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - wdarko1
+                    - wdarko1
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Service resiliency
@@ -485,7 +487,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - abubinski
+                    - abubinski
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Service scale and performance
@@ -497,8 +499,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - AllenWen-at-Azure
-                  - pavneeta
+                    - AllenWen-at-Azure
+                    - pavneeta
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Upgrades
@@ -510,7 +512,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - kaarthis
+                    - kaarthis
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # Flux
@@ -522,8 +524,8 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - dipti-pai
-                  - bavneetsingh16
+                    - dipti-pai
+                    - bavneetsingh16
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # GPU
@@ -535,7 +537,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - sdesai345
+                    - sdesai345
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
           # AKS Automatic
@@ -547,7 +549,7 @@ configuration:
             then:
               - mentionUsers:
                   mentionees:
-                  - wangyira
+                    - wangyira
                   replyTemplate: ${mentionees} would you be able to assist?
                   assignMentionees: True
 onFailure:
