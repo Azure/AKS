@@ -1,18 +1,19 @@
 id: manageAssignees
 name: GitOps.PullRequestIssueManagement
 description: Manage assignees for certain areas of the AKS ecosystem
-owner:
+owner: 
 resource: repository
 disabled: false
-where:
+where: 
 configuration:
   resourceManagementConfiguration:
     eventResponderTasks:
-      - description: Mention appropriate team members when labels are assigned.
+      - description: When certain labels are added to an issue, mention the appropriate team members to assist. 
         if:
-        - payloadType: Issues
+        - or:
+          - payloadType: Issues
         - isAction:
-            action: Opened
+            action: Labeled
         then:
         # Container Insights
         - if:
@@ -23,533 +24,507 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-                - ganga1980
-                - aritraghosh
-            replyTemplate: ${mentionees} would you be able to assist?
-            assignMentionees: True
-      # Azure Monitor
-      # - if:
-      #   - hasLabel:
-      #       label: addon/ama-metrics
-      #   - not:
-      #       isAssignedToSomeone
-      #   then:
-      #   - mentionUsers:
-      #       mentionees:
-      #         - vishiy
-      #         - aritraghosh
-      #       replyTemplate: ${mentionees} would you be able to assist?
-      #       assignMentionees: True
-      # # Policy
-      # - if:
-      #     - hasLabel:
-      #         label: addon/policy
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - az-policy-kube
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # - if:
-      #     - hasLabel:
-      #         label: azure/policy
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - az-policy-kube
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # App Routing
-      # - if:
-      #     - hasLabel:
-      #         label: addon/app-routing
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Security Center
-      # - if:
-      #     - hasLabel:
-      #         label: azure/security-center
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - mayaherskovic
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Security
-      # - if:
-      #     - hasLabel:
-      #         label: Security
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - shashankbarsin
-      #           - Azure/aks-security
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Confidential Computing
-      # - if:
-      #     - hasLabel:
-      #         label: azure/confidentialCompute
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - jakjang
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Azure Portal
-      # - if:
-      #     - hasLabel:
-      #         label: azure/portal
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - Azure/aks-portal
-      #           - smsft
-      #           - aritraghosh
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # - if:
-      #     - hasLabel:
-      #         label: client/portal
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chandraneel
-      #           - Azure/aks-portal
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Azure Government
-      # - if:
-      #     - hasLabel:
-      #         label: AzGov
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - weinong
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Networking
-      # - if:
-      #     - hasLabel:
-      #         label: networking
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #           - danbosscher
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Cilium
-      # - if:
-      #     - hasLabel:
-      #         label: Cilium
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #           - paulgmiller
-      #           - quantumn-a5
-      #           - tamilmani1989
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # ACNS (Advanced Container Networking Services)
-      # - if:
-      #     - hasLabel:
-      #         label: advanced-container-networking-services
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #           - danbosscher
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Pod Identity
-      # - if:
-      #     - hasLabel:
-      #         label: pod-identity
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - shashankbarsin
-      #           - Azure/aks-security
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Windows Containers
-      # - if:
-      #     - hasLabel:
-      #         label: windows
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - allyford
-      #           - thecloudtaylor
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Storage
-      # - if:
-      #     - hasLabel:
-      #         label: storage
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - azure/azure-container-storage-team
-      #           - AllenWen-at-Azure
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # OMS
-      # - if:
-      #     - hasLabel:
-      #         label: azure/oms
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - vishiy
-      #           - saaror
-      #           - aritraghosh
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Log Analytics
-      # - if:
-      #     - hasLabel:
-      #         label: azure/log-analytics
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - vishiy
-      #           - saaror
-      #           - aritraghosh
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Azure China
-      # - if:
-      #     - hasLabel:
-      #         label: AzChina
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - thomas1206
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Azure Gateway Ingress Controller (AGIC)
-      # - if:
-      #     - hasLabel:
-      #         label: addon/agic
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #           - JackStromberg
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # App Gateway for Containers (AGC)
-      # - if:
-      #     - hasLabel:
-      #         label: app-gateway-for-containers
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - JackStromberg
-      #           - chasewilson
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # App Gateway
-      # - if:
-      #     - hasLabel:
-      #         label: azure/application-gateway
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #           - jackstromberg
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Upstream - Helm
-      # - if:
-      #     - hasLabel:
-      #         label: upstream/helm
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - squillace
-      #           - bridgetkromhout
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Upstream - Gatekeeper
-      # - if:
-      #     - hasLabel:
-      #         label: upstream/gatekeeper
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - sozercan
-      #           - ritazh
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Service Mesh
-      # - if:
-      #     - hasLabel:
-      #         label: service-mesh
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - azure/aks-traffic
-      #           - chasewilson
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Mesh networking
-      # - if:
-      #     - hasLabel:
-      #         label: mesh
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Copilot
-      # - if:
-      #     - hasLabel:
-      #         label: ai/copilot
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - wangyira
-      #           - pavneeta
-      #           - chandraneel
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Azure Container Registry (ACR)
-      # - if:
-      #     - hasLabel:
-      #         label: azure/acr
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - jakjang
-      #           - toddysm
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Control plane
-      # - if:
-      #     - hasLabel:
-      #         label: control-plane
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - robbiezhang
-      #           - kthakar1990
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Documentation
-      # - if:
-      #     - hasLabel:
-      #         label: docs
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - chasewilson
-      #           - sjwaight
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Azure Kubernetes Fleet Manager
-      # - if:
-      #     - hasLabel:
-      #         label: fleet
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - sjwaight
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # KEDA
-      # - if:
-      #     - hasLabel:
-      #         label: keda
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - wangyira
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Node pools
-      # - if:
-      #     - hasLabel:
-      #         label: nodepools
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - allyford
-      #           - wdarko1
-      #           - stl327
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Virtual Nodes
-      # - if:
-      #     - hasLabel:
-      #         label: addon/virtual-nodes
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - allyford
-      #           - wdarko1
-      #           - stl327
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Node Autoprovisioning (NAP)
-      # - if:
-      #     - hasLabel:
-      #         label: node-auto-provisioning
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - wdarko1
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Service resiliency
-      # - if:
-      #     - hasLabel:
-      #         label: resiliency
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - abubinski
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Service scale and performance
-      # - if:
-      #     - hasLabel:
-      #         label: Scale and Performance
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - AllenWen-at-Azure
-      #           - pavneeta
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Upgrades
-      # - if:
-      #     - hasLabel:
-      #         label: upgrade
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - kaarthis
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # Flux
-      # - if:
-      #     - hasLabel:
-      #         label: extension/flux
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - dipti-pai
-      #           - bavneetsingh16
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # GPU
-      # - if:
-      #     - hasLabel:
-      #         label: GPU
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - sdesai345
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-      # # AKS Automatic
-      # - if:
-      #     - hasLabel:
-      #         label: automatic
-      #     - not:
-      #         isAssignedToSomeone
-      #   then:
-      #     - mentionUsers:
-      #         mentionees:
-      #           - wangyira
-      #         replyTemplate: ${mentionees} would you be able to assist?
-      #         assignMentionees: True
-onFailure:
-onSuccess:
+              - ganga1980
+              - aritraghosh
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Azure Monitor
+        - if:
+          - hasLabel:
+              label: addon/ama-metrics
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - vishiy
+              - aritraghosh
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Policy
+        - if:
+          - hasLabel:
+              label: addon/policy
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - az-policy-kube
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        - if:
+          - hasLabel:
+              label: azure/policy
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - az-policy-kube
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Virtual Nodes
+        - if:
+          - hasLabel:
+              label: addon/virtual-nodes
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - allyford
+              - wdarko1
+              - stl327
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # App Routing
+        - if:
+          - hasLabel:
+              label: addon/app-routing
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Security Center
+        - if:
+          - hasLabel:
+              label: azure/security-center
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - mayaherskovic
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Security
+        - if:
+          - hasLabel:
+              label: Security
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - Azure/aks-security
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True   
+        # Confidential Computing
+        - if:
+          - hasLabel:
+              label: azure/confidentialCompute
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - jakjang
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Azure Portal
+        - if:
+          - hasLabel:
+              label: azure/portal
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - Azure/aks-portal
+              - smsft
+              - aritraghosh
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        - if:
+          - hasLabel:
+              label: client/portal
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - Azure/aks-portal
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Azure Government
+        - if:
+          - hasLabel:
+              label: AzGov
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - weinong
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Networking
+        - if:
+          - hasLabel:
+              label: networking
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - danbosscher
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Cilium
+        - if:
+          - hasLabel:
+              label: Cilium
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - paulgmiller
+              - quantumn-a5
+              - tamilmani1989
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # ACNS (Advanced Container Networking Services)
+        - if:
+          - hasLabel:
+              label: advanced-container-networking-services
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - danbosscher
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Pod Identity
+        - if:
+          - hasLabel:
+              label: pod-identity
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - Azure/aks-security
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Windows Containers
+        - if:
+          - hasLabel:
+              label: windows
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - allyford
+              - thecloudtaylor
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Storage
+        - if:
+          - hasLabel:
+              label: storage
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - azure/azure-container-storage-team
+              - AllenWen-at-Azure
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True 
+        # OMS
+        - if:
+          - hasLabel:
+              label: azure/oms
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - vishiy
+              - saaror
+              - aritraghosh
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Log Analytics
+        - if:
+          - hasLabel:
+              label: azure/log-analytics
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - vishiy
+              - saaror
+              - aritraghosh
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Azure China
+        - if:
+          - hasLabel:
+              label: AzChina
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - thomas1206
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Azure Gateway Ingress Controller (AGIC)
+        - if:
+          - hasLabel:
+              label: addon/agic
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - JackStromberg
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # App Gateway for Containers (AGC)
+        - if:
+          - hasLabel:
+              label: app-gateway-for-containers
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - JackStromberg
+              - chasewilson
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # App Gateway
+        - if:
+          - hasLabel:
+              label: azure/application-gateway
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - jackstromberg
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Upstream - Helm
+        - if:
+          - hasLabel:
+              label: upstream/helm
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - squillace
+              - bridgetkromhout
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Upstream - Gatekeeper
+        - if:
+          - hasLabel:
+              label: upstream/gatekeeper
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - sozercan
+              - ritazh
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Service Mesh
+        - if:
+          - hasLabel:
+              label: service-mesh
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - azure/aks-traffic
+              - chasewilson
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Mesh networking
+        - if:
+          - hasLabel:
+              label: mesh
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - shashankbarsin
+              - chasewilson
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True  
+        # Copilot
+        - if:
+          - hasLabel:
+              label: ai/copilot
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - wangyira
+              - pavneeta
+              - chandraneel
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Azure Container Registry (ACR)
+        - if:
+          - hasLabel:
+              label: azure/acr
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - jakjang
+              - toddysm
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Control plane
+        - if:
+          - hasLabel:
+              label: control-plane
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - robbiezhang
+              - kthakar1990
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Documentation                
+        - if:
+          - hasLabel:
+              label: docs 
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - chasewilson
+              - sjwaight
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True  
+        # Azure Kubernetes Fleet Manager
+        - if:
+          - hasLabel:
+              label: fleet
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - sjwaight
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True  
+        # KEDA
+        - if:
+          - hasLabel:
+              label: keda
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - wangyira
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True  
+        # Node pools
+        - if:
+          - hasLabel:
+              label: nodepools
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - allyford
+              - wdarko1
+              - stl327
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Service resiliency
+        - if:
+          - hasLabel:
+              label: resiliency
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - abubinski
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Service scale and performance       
+        - if:
+          - hasLabel:
+              label: Scale and Performance 
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - AllenWen-at-Azure
+              - pavneeta
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Upgrades  
+        - if:
+          - hasLabel:
+              label: upgrade
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - kaarthis
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # Flux
+        - if:
+          - hasLabel:
+              label: extension/flux
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - dipti-pai
+              - bavneetsingh16
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # GPU
+        - if:
+          - hasLabel:
+              label: GPU
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - sdesai345
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+onFailure: 
+onSuccess: 
