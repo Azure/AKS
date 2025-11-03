@@ -8,7 +8,7 @@ where:
 configuration:
   resourceManagementConfiguration:
     eventResponderTasks:
-      - description: When certain labels are added to an issue, mention the appropriate team members to assist. 
+      - description: When certain labels are added to an issue, mention the appropriate team members to assist.
         if:
         - or:
           - payloadType: Issues
@@ -528,3 +528,4 @@ configuration:
               assignMentionees: True
 onFailure: 
 onSuccess: 
+
