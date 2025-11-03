@@ -10,10 +10,10 @@ configuration:
     eventResponderTasks:
       - description: Mention appropriate team members when labels are assigned.
         if:
-          - or:
-              - payloadType: Issues
-          - isAction:
-              action: Labeled
+          - payloadType: Issues
+          - and:
+            - isAction:
+                action: Labeled
         then:
           # Container Insights
           - if:
