@@ -13,7 +13,7 @@ configuration:
           - payloadType: Issues
           - and:
               - isAction:
-                action: Labeled
+                  action: Labeled
         then:
           # Container Insights
           - if:
