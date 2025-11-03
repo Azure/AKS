@@ -11,21 +11,20 @@ configuration:
     - description: Mention appropriate team members when labels are assigned.
       if:
       - payloadType: Issues
-      - and:
       - isAction:
-          action: Labeled
+          action: Opened
       then:
       # Container Insights
       - if:
         - hasLabel:
-          label: addon/container-insights
+            label: addon/container-insights
         - not:
             isAssignedToSomeone
         then:
         - mentionUsers:
-          mentionees:
-            - ganga1980
-            - aritraghosh
+            mentionees:
+              - ganga1980
+              - aritraghosh
           replyTemplate: ${mentionees} would you be able to assist?
           assignMentionees: True
       # Azure Monitor
