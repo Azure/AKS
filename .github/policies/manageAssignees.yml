@@ -10,10 +10,10 @@ configuration:
     eventResponderTasks:
       - description: When certain labels are added to an issue, mention the appropriate team members to assist.
         if:
-        - or:
-          - payloadType: Issues
-        - isAction:
-            action: Labeled
+         - or:
+           - payloadType: Issues
+         - isAction:
+             action: Labeled
         then:
         # Container Insights
         - if:
@@ -528,4 +528,5 @@ configuration:
               assignMentionees: True
 onFailure: 
 onSuccess: 
+
 
