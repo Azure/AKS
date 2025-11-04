@@ -68,4 +68,14 @@ this repository must:
 
 ## Open Positions
 
+### US
+Principal Software Engineer
+- https://jobs.careers.microsoft.com/global/en/job/1893716/Principal-Software-Engineer---Azure-Kubernetes-Services  
+- https://jobs.careers.microsoft.com/global/en/job/1879714/Principal-Software-Engineer
 
+Senior Software Engineer
+- https://jobs.careers.microsoft.com/global/en/job/1893726/Senior-Software-Engineer---Azure-Kubernetes-Service
+
+### AUS
+Senior Software Engineer
+- https://jobs.careers.microsoft.com/global/en/job/1892449/Senior-Software-Engineer 
