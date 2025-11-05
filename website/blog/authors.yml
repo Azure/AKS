@@ -418,3 +418,14 @@ thilo-fromm:
   socials:
     linkedin: thilo-fromm-b6832a56
     github: t-lo
+
+johnson-shi:
+  name: Johnson Shi
+  title: Senior Product Manager at Microsoft
+  url: https://johnsonshi.com
+  image_url: https://github.com/johnsonshi.png
+  page: true
+  socials:
+    x: johnsonshi86
+    linkedin: johnsonshi
+    github: johnsonshi
