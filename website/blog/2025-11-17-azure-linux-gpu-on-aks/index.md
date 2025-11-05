@@ -96,26 +96,11 @@ provides for your GPU workloads include:
 Deploying your GPU workloads on AKS with Azure Linux 3.0 is simple. Let’s
 use the newly supported NVIDIA NC A100 GPU as our example.
 
-1. To add an NVIDIA NC A100 node pool running on Azure Linux to your AKS
-cluster using the fully managed GPU node experience you can follow these
-instructions. Please note, the following parameters must be specified in
-your `az aks nodepool add` command to create an NVIDIA NC A100 node pool
-running on Azure Linux:
-
-* `--os-sku AzureLinux`: provisions a node pool with the Azure Linux
-container host as the node OS.
-* `--node-vm-size Standard_nc24ads_A100_v4`: provisions a node pool using the
-`Standard_nc24ads_A100_v4` VM size. 
-   * Please note, any of the sizes in the Azure `NC_A100_v4` series are
-   supported: `Standard_NC24ads_A100_v4`, `Standard_NC48ads_A100_v4`, or
-   `Standard_NC96ads_A100_v4`.
-2. With the DCGM exporter installed by default, you can monitor and visualize
-detailed GPU metrics such as utilization, memory consumption, and error states.
-For more information on enabling and consuming GPU metrics in AKS, including
-integration with Azure-managed or self-hosted Prometheus and Grafana, visit
-the [GPU Getting Started](https://aka.ms/aks/gpu-default-experience) and
-[Managed GPU Metrics](https://aka.ms/aks/managed-gpu-metrics) on AKS
-documentation.
+1. To add an NVIDIA NC A100 node pool running on Azure Linux to your AKS cluster using the fully managed GPU node experience you can follow these instructions. Please note, the following parameters must be specified in your `az aks nodepool add` command to create an NVIDIA NC A100 node pool running on Azure Linux:
+    * `--os-sku AzureLinux`: provisions a node pool with the Azure Linux container host as the node OS.
+    * `--node-vm-size Standard_nc24ads_A100_v4`: provisions a node pool using the `Standard_nc24ads_A100_v4` VM size.
+   * Please note, any of the sizes in the Azure `NC_A100_v4` series are supported: `Standard_NC24ads_A100_v4`, `Standard_NC48ads_A100_v4`, or `Standard_NC96ads_A100_v4`.
+2. With the DCGM exporter installed by default, you can monitor and visualize detailed GPU metrics such as utilization, memory consumption, and error states. For more information on enabling and consuming GPU metrics in AKS, including integration with Azure-managed or self-hosted Prometheus and Grafana, visit the [GPU Getting Started](https://aka.ms/aks/gpu-default-experience) and [Managed GPU Metrics](https://aka.ms/aks/managed-gpu-metrics) on AKS documentation.
 
 If you prefer not to use a preview feature, you can follow
 [these instructions](https://aka.ms/aks/use-gpus) to create an NVIDIA NC
@@ -130,13 +115,13 @@ troubleshooting workloads, and enabling cost-efficient scaling in AKS
 clusters. Traditionally, NVIDIA GPU node pools were treated as opaque
 resources - jobs could succeed or fail without visibility into whether
 GPUs were fully utilized or misallocated.
- 
+
 With the DCGM exporter now managed on AKS, cluster operators can collect
 detailed GPU metrics such as utilization, memory consumption, and error
 states, and expose them to Prometheus for analysis. These metrics integrate
 naturally with existing observability pipelines, providing a foundation for
 intelligent automation and alerting.
- 
+
 As an example, a platform team can configure scaling logic in the
 [Cluster Autoscaler (CAS)](https://learn.microsoft.com/azure/aks/cluster-autoscaler)
 or [Kubernetes Event-Driven Autoscaling (KEDA)](https://learn.microsoft.com/azure/aks/keda-about)
@@ -144,7 +129,7 @@ to add A100 nodes when GPU utilization exceeds 70%, or scale down when
 utilization remains low for a defined interval. This enables GPU
 infrastructure to operate as a dynamic, demand-driven resource
 rather than a static, high-cost allocation.
- 
+
 For more information on enabling and consuming GPU metrics in AKS,
 including integration with Azure-managed or self-hosted Prometheus
 and Grafana, visit the
