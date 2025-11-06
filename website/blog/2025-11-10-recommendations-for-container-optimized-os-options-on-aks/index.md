@@ -12,6 +12,8 @@ tags:
 keywords: ["AKS", "Kubernetes", "Azure", "Flatcar", "Azure Linux", "OS Guard"]
 ---
 
+## Introduction
+
 Selecting an operating system for your Kubernetes deployments may appear straightforward; however, this decision can significantly influence both security and operational complexity. In this blog, we’ll share key recommendations to help you select a container optimized OS for your AKS deployments.
 
 <!-- truncate -->
