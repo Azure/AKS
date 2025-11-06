@@ -12,8 +12,6 @@ tags:
 keywords: ["AKS", "Kubernetes", "Azure", "Flatcar", "Azure Linux", "OS Guard"]
 ---
 
-## Introduction
-
 Selecting an operating system for your Kubernetes deployments may appear straightforward; however, this decision can significantly influence both security and operational complexity. In this blog, we’ll share key recommendations to help you select a container optimized OS for your AKS deployments.
 
 <!-- truncate -->
@@ -33,9 +31,11 @@ When deciding between which Linux OS options to use, AKS recommends the followin
 - Use [**Flatcar Container Linux for AKS (preview)**](https://aka.ms/aks/flatcar) if you're looking for a vendor neutral immutable OS with cross-cloud support.
 - Use [**Azure Linux OS Guard (preview)**](https://aka.ms/aks/azure-linux-os-guard) if you're looking for an enterprise-ready immutable OS, recommended by Microsoft.
 - Use [Ubuntu](https://aka.ms/aks/supported-ubuntu-versions) if you're looking for a vendor neutral, general purpose OS with cross-cloud support.
-- Use [Azure Linux Linux](https://aka.ms/aks/use-azure-linux) if you're looking for an enterprise-ready, general purpose OS, recommended by Microsoft.
+- Use [Azure Linux](https://aka.ms/aks/use-azure-linux) if you're looking for an enterprise-ready, general purpose OS, recommended by Microsoft.
 
 ![OS Recommendations on AKS](./os-comparison.png)
+
+_Figure 1: Comparison across OS options supported on AKS, including Flatcar Container Linux for AKS, Azure Linux OS Guard, Ubuntu, and Azure Linux._
 
 ## What's different about a container optimized Linux OS option? 
 
