@@ -10,8 +10,7 @@ tags:
 ---
 
 What if you need to collect **your own custom metrics** from workloads or nodes in AKS, but don't want to run a full monitoring stack?
-In this post, we will discuss how to integrate custom metrics into Azure's managed monitoring stack with minimal setup using `Telegraf DaemonSet`, for flexible metric collection, [
-Azure Monitor managed service for Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/prometheus-metrics-overview), for scraping and storage, and [Azure Managed Grafana](https://learn.microsoft.com/en-us/azure/managed-grafana/overview) for visualization and alerting.
+In this post, we will discuss how to integrate custom metrics into Azure's managed monitoring stack with minimal setup using `Telegraf DaemonSet`, for flexible metric collection, [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/prometheus-metrics-overview), for scraping and storage, and [Azure Managed Grafana](https://learn.microsoft.com/en-us/azure/managed-grafana/overview) for visualization and alerting.
 
 <!-- truncate -->
 
