@@ -370,3 +370,21 @@ rita-zhang:
     x: ritazzhang
     linkedin: ritazhang
     github: ritazh
+
+sudhanva-huruli:
+  name: Sudhanva Huruli
+  title: Principal Program Manager at Microsoft
+  url: https://www.linkedin.com/in/sudhanva-huruli/
+  image_url: https://github.com/suhuruli.png
+  socials:
+    linkedin: sudhanva-huruli
+    github: suhuruli
+
+thilo-fromm:
+  name: Thilo Fromm
+  title: Principal Software Engineering Manager at Microsoft
+  url: https://www.linkedin.com/in/thilo-fromm-b6832a56/
+  image_url: https://github.com/t-lo.png
+  socials:
+    linkedin: thilo-fromm-b6832a56
+    github: t-lo
