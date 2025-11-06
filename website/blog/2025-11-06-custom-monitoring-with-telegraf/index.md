@@ -1,6 +1,6 @@
 ---
 title: "Collecting Custom Metrics on AKS with Telegraf"
-date: "2025-10-23"
+date: "2025-11-06"
 description: "Learn how to set up and deploy Telegraf on Azure Kubernetes Service (AKS) to monitor your Kubernetes clusters efficiently by collecting custom metrics and exposing them to Prometheus. This guide covers best practices, step-by-step instructions, and common troubleshooting tips for AKS monitoring with Telegraf." 
 authors: ["diego-casati"]
 tags:
