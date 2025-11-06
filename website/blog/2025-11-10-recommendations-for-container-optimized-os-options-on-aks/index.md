@@ -70,9 +70,9 @@ Immutable operating systems, by implication, make large parts of a node’s file
 Some AKS features may not be supported when using [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard) or [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar). If you are using a feature that is not supported by the new OS, you will not be able to migrate your existing clusters/node pools. 
 
 When planning to migrate to a container optimized OS option, AKS recommends the following:
-•	Ensure your workloads configure and run successfully on the new OS in test/dev before migrating any production clusters.
-•	If you'd like to migrate existing Linux clusters or node pools to [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard), you can use in-place OS Sku migration. There are pre-requisites and limitations to this process, see documentation for details.
-•	If you'd like to migrate to [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar), you'll need to create new clusters and/or node pools and migrate existing workloads. [Flatcar](https://aka.ms/aks/flatcar) is available on all AKS supported Kubernetes versions.
+- Ensure your workloads configure and run successfully on the new OS in test/dev before migrating any production clusters.
+- If you'd like to migrate existing Linux clusters or node pools to [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard), you can use in-place OS Sku migration. There are pre-requisites and limitations to this process, see documentation for details.
+- If you'd like to migrate to [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar), you'll need to create new clusters and/or node pools and migrate existing workloads. [Flatcar](https://aka.ms/aks/flatcar) is available on all AKS supported Kubernetes versions.
 
 ## Microsoft contributions to container optimized OS options
 
@@ -96,9 +96,9 @@ To engage with, and participate in the Flatcar Container Linux open source proje
 ## Roadmap
 
 We’re excited to continue to extend AKS support for these Kubernetes optimized OS options. Our long-term goals include:
-•	In-place updates of OS and Kubernetes: faster, safer, less resource constraining
-•	Trusted and Confidential computing, locked-down execution through code signing
-•	Making signed execution available to everyone, by means of multiple trust levels and the option for users to use their own signing keys for their workloads
+- In-place updates of OS and Kubernetes: faster, safer, less resource constraining
+- Trusted and Confidential computing, locked-down execution through code signing
+- Making signed execution available to everyone, by means of multiple trust levels and the option for users to use their own signing keys for their workloads
 
 And of course sharing all these achievements with the broader Linux and Kubernetes ecosystem by contributing back and by making building blocks available.
 
