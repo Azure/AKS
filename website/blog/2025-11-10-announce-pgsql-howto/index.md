@@ -14,7 +14,7 @@ We're pleased to share the [newly updated guidance](https://learn.microsoft.com/
 
 <!-- truncate -->
 
-[CloudNativePG](https://cloudnative-pg.io/) now anchors our recommended pattern for running production-ready PostgreSQL on AKS. With EnterpriseDB's latest feedback, the documentation aligns to the refreshed container image catalogs, safer operator rollouts, and updates to the [Barman backup tool](https://pgbarman.org/) that help teams meet availability targets from day one.
+[CloudNativePG](https://cloudnative-pg.io/) now anchors our recommended pattern for running production-ready PostgreSQL on AKS. With the latest feedback from EnterpriseDB (EDB), the documentation aligns to the refreshed container image catalogs, safer operator rollouts, and updates to the [Barman backup tool](https://pgbarman.org/) that help teams meet availability targets from day one.
 
 The updated series walks through the journey end-to-end: an overview of the architecture, infrastructure setup with workload identity and storage RBAC, deployment with the new PostgreSQL 18 image, and day-two validation. You'll see how we folded in the CNPG controller tuning, the move toward self-managed PodMonitors, and guidance on planning for the Barman Cloud plugin as upstream support evolves.
 
@@ -22,6 +22,6 @@ We also expanded the operational coverage: monitoring with Prometheus and Grafan
 
 ## CloudNativePG on AKS, with EDB
 
-If you need production support for CloudNativePG on AKS, reach out to [EnterpriseDB](https://www.enterprisedb.com/) or their offering on [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/saas/enterprisedb-corp.biganimal-prod-v1?tab=Overview). As the stewards of the operator, they offer services and subscriptions that pair well with the deployment guidance so you can keep your clusters compliant, tuned, and ready for future CNPG releases.
+If you need production support for CloudNativePG on AKS, reach out to [EDB](https://www.enterprisedb.com/) or visit their offering on [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/saas/enterprisedb-corp.biganimal-prod-v1?tab=Overview). As the stewards of the operator, they offer services and subscriptions that pair well with the deployment guidance so you can keep your clusters compliant, tuned, and ready for future CNPG releases.
 
-Thanks again to the CloudNativePG team at EnterpriseDB for their collaboration, reviews, and continued support as we bring the latest PostgreSQL best practices to AKS users. Dive in and see how quickly you can stand up a resilient PostgreSQL footprint on AKS.
+Thanks again to the CloudNativePG team at EDB for their collaboration, reviews, and continued support as we bring the latest PostgreSQL best practices to AKS users. Dive in and see how quickly you can stand up a resilient PostgreSQL footprint on AKS.
