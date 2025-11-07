@@ -65,7 +65,7 @@ pod/my-first-ib-pod created
 > Comparing with the original workload identity example, the below highlights the differences when using identity binding feature:
 > ```diff
 > kind: Pod
-> meatadata:
+> metadata:
 >   labels:
 >     azure.workload.identity/use: "true"
 > + annotations:
