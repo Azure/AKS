@@ -28,7 +28,7 @@ You may be asking yourself, why did AKS choose to support two container optimize
 
 When deciding between which Linux OS options to use, AKS recommends the following:
 
-- Use [**Flatcar Container Linux for AKS (preview)**](https://aka.ms/aks/flatcar) if you're looking for a vendor neutral immutable OS with cross-cloud support.
+- Use [**Flatcar Container Linux for AKS (preview)**](https://aka.ms/aks/flatcar) if you're looking for a vendor neutral, community stewarded immutable OS with cross-cloud support.
 - Use [**Azure Linux OS Guard (preview)**](https://aka.ms/aks/azure-linux-os-guard) if you're looking for an enterprise-ready immutable OS, recommended by Microsoft.
 - Use [Ubuntu](https://aka.ms/aks/supported-ubuntu-versions) if you're looking for a vendor neutral, general purpose OS with cross-cloud support.
 - Use [Azure Linux](https://aka.ms/aks/use-azure-linux) if you're looking for an enterprise-ready, general purpose OS, recommended by Microsoft.
@@ -79,7 +79,7 @@ When planning to migrate to a container optimized OS option, AKS recommends the 
 
 ## Microsoft contributions to container optimized OS options
 
-Microsoft has a long history of contributing to Kubernetes-optimized OS options. Internal teams maintain both [Azure Linux OS Guard](https://aka.ms/aks/azure-linux-os-guard) and [Flatcar Container Linux](https://aka.ms/aks/flatcar), while actively collaborating with the Immutable Linux community, the UAPI group, and other open source initiatives.
+Microsoft has a long history of contributing to Kubernetes-optimized OS options. Our teams maintain [Azure Linux OS Guard](https://aka.ms/aks/azure-linux-os-guard), contribute significantly to [Flatcar Container Linux](https://aka.ms/aks/flatcar), and actively collaborate with the Immutable Linux community, the UAPI group, and other open source initiatives.
 
 - **OS Guard research and development excellence**: Contributing to kernel, system, containerd, and other upstream projects to advance trusted execution across the ecosystem
 - **Multi-cloud collaboration**: Working with other cloud vendors to integrate [Flatcar](https://aka.ms/aks/flatcar) as a first-choice OS for running Kubernetes
@@ -92,7 +92,7 @@ Microsoft has a long history of contributing to Kubernetes-optimized OS options.
 
 AKS is built on community stewarded open source projects. Our continued engagement with projects like Flatcar improves the ecosystem for everybody and also empowers our users and customers to actively engage and participate in both development as well as project stewardship – driving the technology as well as determining the course and direction of these projects.
 
-To engage with, and participate in the Flatcar Container Linux open source project, check out:
+Flatcar Container Linux is driven by the open source community and governed by the Cloud Native Computing Foundation. To engage with, and participate in the Flatcar Container Linux open source project, check out:
 
 - [Flatcar's participation how-to](https://github.com/flatcar/Flatcar?tab=readme-ov-file#participate-and-contribute)
 - [Chat with Flatcar contributors over at Matrix](https://app.element.io/?#/room/#flatcar:matrix.org)
