@@ -1,6 +1,6 @@
 ---
-title: "Recommendations for container optimized OS options on Azure Kubernetes Service (AKS)"
-description: "Discover best practices and actionable guidance to help you select a container optimized OS for your AKS deployments."
+title: "Recommendations for container and security optimized OS options on Azure Kubernetes Service (AKS)"
+description: "Discover best practices and actionable guidance to help you select a container or security optimized OS for your AKS deployments."
 date: 2025-11-10
 authors: [ally-ford, thilo-fromm, sudhanva-huruli]
 tags:
@@ -20,9 +20,9 @@ Selecting an operating system for your Kubernetes deployments may appear straigh
 
 When choosing a Linux OS for your Kubernetes deployments, consider your organization's priorities and workload requirements. AKS defaults to Ubuntu Linux because it is a widely adopted, general-purpose, and vendor-neutral option. However, alternative OS options are available to better address specific needs such as enhanced security, immutability, or enterprise support.
 
-AKS has just released support for two new container optimized Linux OS options, [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard) and [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar).
+AKS has just released support for two new optimized Linux OS options. [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard) is designed and integrated by Microsoft, built on top of enterprise-ready Azure Linux with specialized configuration to support containerized workloads with security optimizations. [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar) is a CNCF-based vendor-neutral container-optimized immutable OS, best suited for running on multi-cloud and on-prem environments. 
 
-You may be asking yourself, why did AKS choose to support two container optimized OS options? As contributors to both projects, we've seen the distinct customer requirements for both scenarios. When customers are running in multiple clouds and want a consistent experience as critical OS component updates are released, they use Ubuntu or Flatcar Container Linux. When enterprise customers run mostly on Azure and want a consistent support experience where they benefit from Microsoft ownership, they use Azure Linux or OS Guard. All of these scenarios are both valid and distinct.
+You may be asking yourself, why did AKS choose to support two container optimized OS options? As contributors to both projects, we've seen the distinct customer requirements for both scenarios. When customers are running containerized workloads in multiple clouds and want a consistent experience as critical OS component updates are released, they use Ubuntu or Flatcar Container Linux. When security conscious enterprise customers run mostly on Azure and want a consistent support experience where they benefit from Microsoft ownership, they use Azure Linux or OS Guard. All of these scenarios are both valid and distinct.
 
 ### Recommendations for Linux OS on AKS
 
@@ -37,7 +37,7 @@ When deciding between which Linux OS options to use, AKS recommends the followin
 
 _Figure 1: Comparison across OS options supported on AKS, including Flatcar Container Linux for AKS, Azure Linux OS Guard, Ubuntu, and Azure Linux._
 
-## What's different about a container optimized Linux OS option?
+## What's different about optimized Linux OS options?
 
 The main optimization in OS options like [Azure Linux OS Guard](https://aka.ms/aks/azure-linux-os-guard) and [Flatcar Container Linux](https://aka.ms/aks/flatcar) is their immutability.
 
@@ -60,7 +60,7 @@ While immutability is the core difference, there's typically more security featu
 | Mandatory Access Control | SELinux | SELinux | AppArmor|
 | Secure Boot | Supported by default with UKI (Unified Kernel Image) | Not yet supported with AKS | Supported with certain VM sizes |
 
-## Migration to a container optimized Linux OS option
+## Migration to an optimized Linux OS option
 
 If you'd like to migrate to [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard) or [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar), you'll want to keep in mind the following limitations and recommendations.
 
@@ -71,13 +71,13 @@ Immutable operating systems, by implication, make large parts of a node’s file
 
 Some AKS features may not be supported when using [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard) or [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar). If you are using a feature that is not supported by the new OS, you will not be able to migrate your existing clusters/node pools.
 
-When planning to migrate to a container optimized OS option, AKS recommends the following:
+When planning to migrate to an optimized OS option, AKS recommends the following:
 
 - Ensure your workloads configure and run successfully on the new OS in test/dev before migrating any production clusters.
 - If you'd like to migrate existing Linux clusters or node pools to [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard), you can use in-place OS Sku migration. There are pre-requisites and limitations to this process, see documentation for details.
 - If you'd like to migrate to [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar), you'll need to create new clusters and/or node pools and migrate existing workloads. [Flatcar](https://aka.ms/aks/flatcar) is available on all AKS supported Kubernetes versions.
 
-## Microsoft contributions to container optimized OS options
+## Microsoft contributions to container and security optimized OS options
 
 Microsoft has a long history of contributing to Kubernetes-optimized OS options. Our teams maintain [Azure Linux OS Guard](https://aka.ms/aks/azure-linux-os-guard), contribute significantly to [Flatcar Container Linux](https://aka.ms/aks/flatcar), and actively collaborate with the Immutable Linux community, the UAPI group, and other open source initiatives.
 
@@ -99,7 +99,7 @@ Flatcar Container Linux is driven by the open source community and governed by t
 
 ## Roadmap
 
-We’re excited to continue to extend AKS support for these Kubernetes optimized OS options. Our long-term goals include:
+We’re excited to continue to extend AKS support for these optimized OS options. Our long-term goals include:
 
 - In-place updates of OS and Kubernetes: faster, safer, less resource constraining
 - Trusted and Confidential computing, locked-down execution through code signing
