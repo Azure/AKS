@@ -22,6 +22,6 @@ We also expanded the operational coverage: monitoring with Prometheus and Grafan
 
 ## CloudNativePG on AKS, with EDB
 
-If you need production support for CloudNativePG on AKS, reach out to [EDB](https://www.enterprisedb.com/) or visit their offering on [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/saas/enterprisedb-corp.biganimal-prod-v1?tab=Overview). As the stewards of the operator, they offer services and subscriptions that pair well with the deployment guidance so you can keep your clusters compliant, tuned, and ready for future CNPG releases.
+If you need production support for CloudNativePG on AKS, reach out to [EDB](https://www.enterprisedb.com/) or visit their offering on [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/saas/enterprisedb-corp.edb-cnpg?tab=Overview). As the stewards of the operator, they offer services and subscriptions that pair well with the deployment guidance so you can keep your clusters compliant, tuned, and ready for future CNPG releases.
 
 Thanks again to the CloudNativePG team at EDB for their collaboration, reviews, and continued support as we bring the latest PostgreSQL best practices to AKS users. Dive in and see how quickly you can stand up a resilient PostgreSQL footprint on AKS.
