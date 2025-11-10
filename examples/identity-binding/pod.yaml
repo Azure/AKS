@@ -12,7 +12,7 @@ spec:
   containers:
     - name: azure-sdk
       # source code: https://github.com/Azure/azure-workload-identity/blob/feature/custom-token-endpoint/examples/identitybinding-msal-go/main.go
-      image: ghcr.io/bahe-msft/azure-workload-identity/identitybinding-msal-go@sha256:db1565bc57a2f1ed137d4cba8e79342f33a35bdeea4372509cf01b009f510730
+      image: ghcr.io/bahe-msft/azure-workload-identity/identitybinding-msal-go@sha256:d8a262e2aed015790335650f1d1221cbf9270ee209993337e4c6055b39dd00ae
       env:
         - name: KEYVAULT_URL
           value: https://<your-keyvault-name>.vault.azure.net/
