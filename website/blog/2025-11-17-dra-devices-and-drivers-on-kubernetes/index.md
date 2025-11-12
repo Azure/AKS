@@ -33,7 +33,7 @@ Dynamic resource allocation is currently an **alpha feature** and only enabled w
 
 :::
 
-## Let’s backtrack with a simpler scenario…I’m confused
+## Let’s backtrack with a simpler scenario… I’m confused
 
 Imagine that Kubernetes DRA is a working kitchen, and its staff is preparing a multi-course meal. In this example, the ingredients include:
 
@@ -127,87 +127,237 @@ Pulling this all together, the key components of DRA look like:
 
 ![image](dra-driver-diagram.png)
 
-## Seeing DRA in action
+## Vendor specific drivers
 
-Now, let’s see how the [open-source k8s DRA driver](https://github.com/NVIDIA/k8s-dra-driver/tree/main) works with NVIDIA GPUs on a Kubernetes cluster, specifically how it can provide:
+Vendors can provide driver packages that extend the base DRA capabilities to interact with their own resources. NVIDIA, for instance, has [released DRA drivers](https://github.com/NVIDIA/k8s-dra-driver-gpu) that allow for flexible and dynamic allocation of their GPUs.  
 
-1. Exclusive access to a single GPU when multiple pods ask for it,
-1. Shared access within a pod with multiple containers, or
-1. Shared access across pods requesting that single GPU.
+## Seeing NVIDIA's DRA driver in action
+
+Now, let’s see how NVIDIA's [open-source k8s DRA driver](https://github.com/NVIDIA/k8s-dra-driver/tree/main) works on a Kubernetes cluster. We'll walk through:
+
+1. Setting up your cluster and DRA drivers
+1. Verifying your drivers are installed properly
+1. Running a sample workload to illustrate a GPU being flexibly assigned
 
 :::warning
 
-The following is an **experimental** demo of the **first** scenario on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service.
+The following is an **experimental** demo of the **first** scenario on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service. 
 
 :::
 
-We'll start by creating a cluster having a provisioned GPU node with a `Standard_NC4as_T4_v3` (4 vCPUs, 28 GiB memory) instance on Ubuntu Linux 24.04 and a 64GB system disk size.
-After loading the `"nvcr.io/nvidia/cloud-native/k8s-dra-driver:v0.1.0"` image (that installs the control plane controller and kubelet plugin components) and confirming the `Running` status:
+### Before you begin
 
-```bash
-NAME                                                            READY      STATUS      RESTARTS    AGE
-nvidia-dra-driver-k8s-dra-driver-controller-7d47546f78-wrtvc    1/1        Running     0           7s
-nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-g42c9           1/1        Running     0           7s
+* This article assumes you have an existing AKS cluster. If you don't have a cluster, create one using the [Azure CLI](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli), [Azure PowerShell](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-powershell), [Azure portal](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli), or IaaC tool of your choice.
+* Your GPU node pool should be provisioned with an [NVIDIA GPU enabled VM size](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#options-for-using-nvidia-gpus). Make sure you also [skip GPU driver installation](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation), as we install the drivers via the NVIDIA GPU operator in this tutorial.
+* Your cluster should be on Kubernetes v1.34 or later to have the DRA feature gate enabled by default.
+
+### Get the credentials for your cluster
+
+Get the credentials for your AKS cluster using the [`az aks get-credentials`](https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-credentials) command. The following example command gets the credentials for the *myAKSCluster* in the *myResourceGroup* resource group:
+
+```azurecli-interactive
+az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
 ```
 
-We'll apply the [sample `gpu-test1` demo script](https://github.com/NVIDIA/k8s-dra-driver/tree/main) written by [Kevin Klues](mailto:klueska@nvidia.com) from NVIDIA:
+### Verify DRA is enabled
+
+You can confirm whether or not DRA is enabled on your cluster by checking `deviceclasses` and `resourceslices`.
+
+Check `deviceclasses` via `kubectl get deviceclasses` or check `resourceslices` via `kubectl get resourceslices`. 
+
+The results for both should look similar to:
+
+   ```bash
+   No resources found
+   ```
+
+If DRA isn't enabled on your cluster, you may instead get a response similar to `error: the server doesn't have a resource type "deviceclasses"/"resourceslices"`.
+
+### Install the NVIDIA GPU operator
+
+Set up your GPU operator, ensure GPUs are schedulable, and GPU workloads can be run successfully.
+
+> [!NOTE]
+> Make sure you use a version of the GPU operator that matches or exceeds the version you specify when installing the DRA driver.
+
+1. Install the GPU operator. We will be using the DRA drivers to manage our GPUs, so we also want to ensure we disable the Kubernetes device plugin during install. We will use an `operator-install.yaml` to parameters we'd like the operator to be installed with.
+   
+   - Create `operator-install.yaml` like so:
+
+     ```yaml
+     devicePlugin:
+      enabled: false
+     driver:
+        enabled: true
+      toolkit:
+        env:
+          # Limits containers running in _unprivileged_ mode from requesting access to arbitrary GPU devices 
+          - name: ACCEPT_NVIDIA_VISIBLE_DEVICES_ENVVAR_WHEN_UNPRIVILEGED
+            value: "false"
+     ```
+     
+   - Install the GPU operator
+     
+       ```bash
+       helm install --wait --generate-name -n gpu-operator \
+       --create-namespace nvidia/gpu-operator \
+       --version=v25.10.0 \
+       -f operator-install.yaml
+       ```
+
+1. Make sure all your GPU operator components are running and ready via `kubectl get pod -n gpu-operator`. The result should look similar to:
+
+    ```bash
+    NAME                                                              READY   STATUS      RESTARTS   AGE
+    gpu-feature-discovery-t9xs5                                       1/1     Running     0          2m9s
+    gpu-operator-1761843468-node-feature-discovery-gc-6648dd8449tbx   1/1     Running     0          2m27s
+    gpu-operator-1761843468-node-feature-discovery-master-597bhvwmm   1/1     Running     0          2m27s
+    gpu-operator-1761843468-node-feature-discovery-worker-mvbbt       1/1     Running     0          2m27s
+    gpu-operator-f8577988-p2k9x                                       1/1     Running     0          2m27s
+    nvidia-driver-daemonset-tgf78                                     1/1     Running     0          1m30s
+    nvidia-container-toolkit-daemonset-sqchb                          1/1     Running     0          2m10s
+    nvidia-cuda-validator-f7g97                                       0/1     Completed   0          77s
+    nvidia-dcgm-exporter-6lbxc                                        1/1     Running     0          2m9s
+    nvidia-device-plugin-daemonset-v74ww                              1/1     Running     0          2m9s
+    nvidia-mig-manager-jsnkr                                          1/1     Running     0          16s
+    nvidia-operator-validator-h8s5n                                   1/1     Running     0          2m10s
+    ```
+
+## Installing NVIDIA DRA drivers
+
+The recommended way to install the driver is via Helm. Ensure you have Helm updated to the [correct version](https://helm.sh/docs/topics/version_skew/#supported-version-skew).
+
+1. Add the Helm chart that contains the DRA driver.
+
+   ```azurecli-interactive
+   helm repo add nvidia https://helm.ngc.nvidia.com/nvidia && helm repo update
+   ```
+
+1. Create a `dra-install.yaml` to specify parameters during the installation.
+   
+   ```yaml
+    gpuResourcesEnabledOverride: true
+    resources-computeDomains:
+      enabled: false # We'll be using GPUs, not compute domains.
+    controller:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: In
+                values:
+                - system   # Makes sure system nodes are utilized 
+    nvidiaDriverRoot: "/run/nvidia/driver"
+   ```
+
+   1. Install the DRA driver.
+      
+   ```azurecli-interactive
+   helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
+          # Ensure you select an appropriate version (https://github.com/NVIDIA/k8s-dra-driver-gpu/releases)
+          --version="25.8.0" \
+          --create-namespace \
+          --namespace nvidia-dra-driver-gpu \
+          -f dra-install.yaml \
+   ```
+
+### Verify your installation
+
+Once setup, double check whether all DRA driver components are ready and running:
 
 ```bash
-kubectl apply --filename=demo/specs/quickstart/gpu-test1.yaml
-
-namespace/gpu-test1 created
-pod/pod1 created
-pod/pod2 created
+$ kubectl get pod -n nvidia-dra-driver-gpu
+NAME                                               READY   STATUS    RESTARTS   AGE
+nvidia-dra-driver-gpu-kubelet-plugin-[...]         1/1     Running   0          61m
 ```
 
-The `Standard_NC4as_T4_v3` VM has only one GPU, so in this scenario two pods are requesting exclusive access to the GPU. One pod will be scheduled and one will remain pending, with statuses looking like:
+`deviceclasses` and `resourceslices` should also recognize the new GPU devices. You can use `kubectl get deviceclasses` or `kubectl get resourceslices` to confirm.
 
-```bash
-kubectl get pod -A
+### Run a GPU workload using DRA drivers
 
----
-NAMESPACE      NAME      READY      STATUS      RESTARTS    AGE
-gpu-test1      pod1      1/1        Running     0           4s
-gpu-test1      pod2      0/1        Pending     0           4s
-...
-...
----
+You can run some sample workloads to confirm that DRA drivers are installed and behave as expected. 
 
-kubectl describe pod -n gpu-test1 pod2 | less
+1. Create a namespace that houses the resources for our sample workloads.
 
----
-Name:   pod2
-...
-Status: Pending
-...
-Conditions:
-  Type            Status
-  PodScheduled    False
-Volumes: ...
-...
-Events:
-  Type      Reason              Age                From                Message
-  ----      ------              ---                ----                -------
-  Warning   FailedScheduling    23s (x2 over 25s)  default-scheduler   0/2 nodes are available: 1 cannot allocate all claims...
----
-```
+   ```bash
+   kubectl create namespace dra-gpu-share-test
+   ```
 
-Let's say we delete `pod1`. Now, `pod2` will get exclusive access to the single GPU:
+1. Create a new `ResourceClaimTemplate` that is used to create `ResourceClaims` of 1 GPU for associated workloads. Save this manifest as `my-rct.yaml`.
 
-```bash
-kubectl delete pod -n gpu-test1 pod1
-kubectl get pod -A
+   ```yaml
+   apiVersion: resource.k8s.io/v1
+   kind: ResourceClaimTemplate
+   metadata:
+     namespace: dra-gpu-share-test
+     name: single-gpu
+   spec:
+     spec:
+       devices:
+         requests:
+         - name: gpu
+           exactly:
+             count: 1
+             deviceClassName: gpu.nvidia.com
+   ```
+   
+1. Create a pod manifest, `dra-rct-pod.yaml`, that takes advantage of our `ResourceClaimTemplate`. We spin up a pod that holds two containers, `ctr0` and `ctr1`. Both containers reference the same `ResourceClaim` and therefore share access to the same GPU device.
 
----
-NAMESPACE      NAME      READY      STATUS      RESTARTS    AGE
-gpu-test1      pod2      1/1        Running     0           56s
-...
-...
-```
+   ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     namespace: dra-gpu-share-test
+     name: pod
+     labels:
+       app: pod
+   spec:
+     containers:
+     - name: ctr0
+       image: ubuntu:22.04
+       command: ["bash", "-c"]
+       args: ["nvidia-smi -L; trap 'exit 0' TERM; sleep 9999 & wait"]
+       resources:
+         claims:
+         - name: shared-gpu
+     - name: ctr1
+       image: ubuntu:22.04
+       command: ["bash", "-c"]
+       args: ["nvidia-smi -L; trap 'exit 0' TERM; sleep 9999 & wait"]
+       resources:
+         claims:
+         - name: shared-gpu
+     resourceClaims:
+     - name: shared-gpu
+       resourceClaimTemplateName: single-gpu
+     tolerations:
+     - key: "nvidia.com/gpu"
+       operator: "Exists"
+       effect: "NoSchedule"
+   ```
 
-Through this example and [many others](https://github.com/NVIDIA/k8s-dra-driver/tree/main), we see how the kube-scheduler is told whether a GPU is fully committed to one workload or split across many workloads.
-Through further development of such DRA resource drivers, we can start to create fine-grained configurations to share GPU state across containers or pods, or even leverage multi-instance GPU (MIG) efficiently for AI, HPC, and GPU workloads!
+1. Fetch the containers' logs to check the GPU UUID for both containers
 
-## Acknowledgements
+   ```bash
+   kubectl logs pod -n dra-gpu-share-test --all-containers --prefix
+   ```
 
-Huge thanks to [Alex Benn](https://www.linkedin.com/in/alex-benn-252b26223/) from the AKS team for testing and validating this DRA demo!
+1. The output should look similar to:
+
+   ```bash
+   [pod/pod/ctr0] GPU 0: NVIDIA H100 NVL (UUID: GPU-c552c7e1-3d44-482e-aaaf-507944ab75f7)
+   [pod/pod/ctr1] GPU 0: NVIDIA H100 NVL (UUID: GPU-c552c7e1-3d44-482e-aaaf-507944ab75f7)
+   ```
+
+The results show us that the GPU UUID for both containers matches, confirming that both containers are accessing the same GPU device. 
+
+## Next steps
+
+- Further validate your installation of the DRA drivers with [sample workloads](https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Installation#validate-installation)
+- Learn more about [NVIDIA DRA drivers](https://github.com/NVIDIA/k8s-dra-driver-gpu)
+
+## Questions?
+
+Connect with the AKS team through our [GitHub discussions](https://github.com/Azure/AKS/discussions) or [share your feedback and suggestions](https://github.com/Azure/AKS/issues).
