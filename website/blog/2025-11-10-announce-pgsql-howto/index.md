@@ -16,7 +16,7 @@ We're pleased to share the [newly updated guidance](https://learn.microsoft.com/
 
 [CloudNativePG](https://cloudnative-pg.io/) now anchors our recommended pattern for running production-ready PostgreSQL on AKS. With the latest feedback from EnterpriseDB (EDB), the documentation aligns to the refreshed container image catalogs, safer operator rollouts, and updates to the [Barman backup tool](https://pgbarman.org/) that help teams meet availability targets from day one.
 
-The updated series walks through the journey end-to-end: an overview of the architecture, infrastructure setup with workload identity and storage RBAC, deployment with the new PostgreSQL 18 image, and day-two validation. You'll see how we folded in the CNPG controller tuning, the move toward self-managed PodMonitors, and guidance on planning for the Barman Cloud plugin as upstream support evolves.
+The updated set of articles walks through the journey end-to-end: an overview of the architecture, infrastructure setup with workload identity and storage RBAC, deployment with the new PostgreSQL 18 image, and day-two validation. You'll see how we folded in the CNPG controller tuning, the move toward self-managed PodMonitors, and guidance on planning for the Barman Cloud plugin as upstream support evolves.
 
 We also expanded the operational coverage: monitoring with Prometheus and Grafana, exercising failover across availability zones, and validating backup and restore flows that rely on AKS workload identity. The how-tos keep the commands concise so you can get into the CLI quickly without losing sight of the bigger architectural decisions.
 
