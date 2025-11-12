@@ -1,8 +1,10 @@
 ---
 title: "Delve into Dynamic Resource Allocation, devices, and drivers on Kubernetes"
-date: "2024-11-13"
-description: "An interactive and 'digestible' way to learn about DRA"
-authors: ["sachi-desai"]
+date: "2025-11-17"
+description: "An interactive and 'digestible' way to learn about DRA, followed up with a practical example utilizing NVIDIA's DRA drivers"
+authors:
+- sachi-desai
+- jack-jiang
 tags: ["ai"]
 ---
 
