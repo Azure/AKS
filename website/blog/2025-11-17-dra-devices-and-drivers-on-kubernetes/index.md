@@ -128,7 +128,7 @@ Pulling this all together, the key components of DRA look like:
 
 ## Vendor specific drivers
 
-Vendors can provide driver packages that extend the base DRA capabilities to interact with their own resources. NVIDIA, for instance, has [released DRA drivers](https://github.com/NVIDIA/k8s-dra-driver-gpu) that allow for flexible and dynamic allocation of their GPUs.  
+Vendors can provide driver packages that extend the base DRA capabilities to interact with their own resources. We will take a look at NVIDIA's [DRA drivers](https://github.com/NVIDIA/k8s-dra-driver-gpu), and explore how that allows for flexible and dynamic allocation of their GPUs.  
 
 ## Seeing NVIDIA's DRA driver in action
 
