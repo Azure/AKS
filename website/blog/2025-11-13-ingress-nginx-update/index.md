@@ -21,7 +21,7 @@ We are actively investing in the future of application connectivity in Azure Kub
 
 ### The future of the Application Routing add-on
 
-**Application Routing with Gateway API**, which will be powered by the Istio control plane, is **planned for the first half of 2026**, along with migration guidance documentation. The Kubernetes Gateway API represents the next generation of Kubernetes traffic management, evolving from the Ingress API by offering richer routing capabilities, standardized extensibility, and a more secure, role-oriented design.
+**Application Routing with Gateway API**, which will be powered by the Istio control plane, is **planned for the first half of 2026**, along with migration guidance documentation. The Kubernetes Gateway API represents the next generation of Kubernetes ingress traffic management, evolving from the Ingress API by offering richer routing capabilities, standardized extensibility, and a more secure, role-oriented design.
 
 ### Alternative migration paths
 
