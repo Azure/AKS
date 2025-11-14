@@ -1,3 +1,14 @@
+ahmed-sabbour:
+  name: Ahmed Sabbour
+  title: Principal PM Lead for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/ahmedsabbour
+  image_url: https://avatars.githubusercontent.com/u/103856
+  page: true
+  socials:
+    x: sabbour
+    linkedin: ahmedsabbour
+    github: sabbour
+
 brian-redmond:
   name: Brian Redmond
   title: AKS and Azure Cloud Native Platforms
