@@ -15,7 +15,9 @@ To address the dual challenges of handling frequent small-scale experiments and 
 
 ## Manage Workloads across Clusters
 
-![Anyscale Dashboard](./anyscale-dashboard.png)
+![Anyscale Resources](./anyscale-resources.png)
+
+![Anyscale Workspaces](./anyscale-workspaces.png)
 
 ## Monitor Infra across Clusters
 
