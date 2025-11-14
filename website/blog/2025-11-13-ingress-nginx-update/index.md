@@ -1,7 +1,7 @@
 ---
-title: "Update on the Application Routing add-on and Ingress NGINX"
+title: "Update on the Azure Kubernetes Service (AKS) Application Routing add-on and Ingress-NGINX"
 date: "2025-11-13"
-description: "Azure Kubernetes Service's response to ingress-nginx retirement and recommended migration paths for AKS customers" 
+description: "Microsoft's commitment to Azure Kubernetes Service (AKS) customers using the Application Routing add-on with Ingress-NGINX and guidance on migrating to modern Gateway API solutions" 
 authors: ["ahmed-sabbour"]
 tags:
   - app-routing
