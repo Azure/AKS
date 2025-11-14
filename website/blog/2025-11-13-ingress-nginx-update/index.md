@@ -9,7 +9,7 @@ tags:
   - traffic-management
 ---
 
-The [Kubernetes SIG Network](https://github.com/kubernetes/community/blob/master/sig-network/README.md)and the Security Response Committee have [announced](https://www.kubernetes.dev/blog/2025/11/12/ingress-nginx-retirement/) the upcoming retirement of the [Ingress NGINX project](https://github.com/kubernetes/ingress-nginx/), with maintenance ending in **March 2026**.
+The [Kubernetes SIG Network](https://github.com/kubernetes/community/blob/master/sig-network/README.md) and the Security Response Committee have [announced](https://www.kubernetes.dev/blog/2025/11/12/ingress-nginx-retirement/) the upcoming retirement of the [Ingress NGINX project](https://github.com/kubernetes/ingress-nginx/), with maintenance ending in **March 2026**.
 
 <!--truncate-->
 
