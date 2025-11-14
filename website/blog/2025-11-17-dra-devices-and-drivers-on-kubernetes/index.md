@@ -22,8 +22,9 @@ Since Kubernetes does not have native support for special devices like GPUs, the
 
 However, there are some limitations with this device plugin approach. It only allows GPUs to be statically assigned to a workload, without any ability for fine-grained sharing, partitioning, nor hot-swapping/reconfiguring of the GPUs.
 
+The introduction of DRA provides a path to addressing some of these limitations, by ensuring resources can by dynamically categorized, requested, and used in a cluster. The [Dynamic Resource Allocation API](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) generalizes the Persistent Volumes API for generic resources, like GPUs. It allows for resource adjustment based on real-time demand and proper configuration without manual intervention.
 
-As a result, DRA was introduced to address some of these limitations, by ensuring applications receive an adequate number of resources at the right time. The [Dynamic Resource Allocation API](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) generalizes the Persistent Volumes API for generic resources, like GPUs. It allows for resource adjustment based on real-time demand and proper configuration without manual intervention.
+NVIDIA's DRA driver extends this capability for their GPUs, introducing _GPUs_ and _ComputeDomains_ as two types of resources users can manage through DRA handles.
 
 :::warning
 
