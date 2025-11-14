@@ -151,8 +151,8 @@ The following is an **experimental** demo using an Azure Kubernetes Service clus
    ```azurecli-interactive
    az aks create --name myAKSCluster --resource-group myResourceGroup --location <region>  --kubernetes-version 1.34
    ```
-   
-- Your GPU node pool should be provisioned with an [NVIDIA GPU enabled VM size](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#options-for-using-nvidia-gpus). 
+
+- Your GPU node pool should be provisioned with an [NVIDIA GPU enabled VM size](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#options-for-using-nvidia-gpus).
   - Make sure you also [skip GPU driver installation](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation), as we install the drivers via the NVIDIA GPU operator in this tutorial.
 
    ```azurecli-interactive
