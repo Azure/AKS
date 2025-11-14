@@ -141,15 +141,20 @@ Now, let’s see how NVIDIA's [open-source k8s DRA driver](https://github.com/NV
 
 :::warning
 
-The following is an **experimental** demo of the **first** scenario on a local Kind cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use** on Azure Kubernetes Service.
+The following is an **experimental** demo using an Azure Kubernetes Service cluster; the open-source k8s DRA resource driver is under active development and **not yet supported for production use**.
 
 :::
 
 ### Before you begin
 
-- This article assumes you have an existing AKS cluster. If you don't have a cluster, create one using the [Azure CLI](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli), [Azure PowerShell](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-powershell), [Azure portal](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli), or IaaC tool of your choice.
+- If you don't have a cluster, create one using the [Azure CLI](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli), [Azure PowerShell](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-powershell), [Azure portal](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli), or IaaC tool of your choice. Here's an example of creating one using the Azure CLI. Note that the cluster should be on Kubernetes v.134 or later to have the DRA feature gate enabled.
+   ```
+   az aks create --name myAKSCluster --resource-group myResourceGroup --location <region>  --kubernetes-version 1.34
+   ```
 - Your GPU node pool should be provisioned with an [NVIDIA GPU enabled VM size](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#options-for-using-nvidia-gpus). Make sure you also [skip GPU driver installation](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation), as we install the drivers via the NVIDIA GPU operator in this tutorial.
-- Your cluster should be on Kubernetes v1.34 or later to have the DRA feature gate enabled by default.
+   ```
+   az aks nodepool add --cluster-name myAKSCluster --resource-group myResourceGroup --name gpunodepool  --node-count 1 --gpu-driver none --node-vm-size Standard_NC6s_v3
+   ```
 
 ### Get the credentials for your cluster
 
