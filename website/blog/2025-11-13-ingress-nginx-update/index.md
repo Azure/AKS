@@ -1,7 +1,7 @@
 ---
-title: "Update on the Azure Kubernetes Service (AKS) Application Routing add-on and Ingress-NGINX"
+title: "Update on the Azure Kubernetes Service (AKS) Application Routing add-on, the Ingress API, and Ingress-NGINX"
 date: "2025-11-13"
-description: "Microsoft's commitment to Azure Kubernetes Service (AKS) customers using the Application Routing add-on with Ingress-NGINX and guidance on migrating to modern Gateway API solutions" 
+description: "Microsoft's commitment to Azure Kubernetes Service (AKS) customers using the Application Routing add-on with Ingress-NGINX and guidance on migrating to modern Gateway API solutions." 
 authors: ["ahmed-sabbour"]
 tags:
   - app-routing
@@ -9,19 +9,19 @@ tags:
   - traffic-management
 ---
 
-The [Kubernetes SIG Network](https://github.com/kubernetes/community/blob/master/sig-network/README.md)and the Security Response Committee have [announced](https://www.kubernetes.dev/blog/2025/11/12/ingress-nginx-retirement/) the upcoming retirement of the [Ingress NGINX project](https://github.com/kubernetes/ingress-nginx/), with maintenance ending in **March 2026**.
+The [Kubernetes SIG Network](https://github.com/kubernetes/community/blob/master/sig-network/README.md) and the Security Response Committee have [announced](https://www.kubernetes.dev/blog/2025/11/12/ingress-nginx-retirement/) the upcoming retirement of the [Ingress NGINX project](https://github.com/kubernetes/ingress-nginx/), with maintenance ending in **March 2026**.
 
 <!--truncate-->
 
 ## No immediate action required
 
-Microsoft understands that customers value continuity and clarity around the maintenance and evolution of the components that power their workloads. There is no change or immediate action required today for AKS clusters using the [Application Routing add-on with NGINX](https://learn.microsoft.com/azure/aks/app-routing) to manage Ingress NGINX resources. Microsoft will provide official support for Application Routing add-on Ingress NGINX resources through **November 2026** inclusive of critical security patches during this period.
+Microsoft understands that customers value continuity and clarity around the maintenance and evolution of the components that power their workloads. There is no change or immediate action required today for AKS clusters using the [Application Routing add-on with NGINX](https://learn.microsoft.com/azure/aks/app-routing) to manage Ingress NGINX resources. Microsoft will provide official support for Application Routing add-on Ingress NGINX resources through **November 2026** and only for critical security patches during this period.
 
-We are actively investing in the future of application connectivity in Azure Kubernetes Service (AKS), centered on the Gateway API. This includes support for the Gateway API in the Istio-based service mesh add-on, expanding the Application Routing add-on with a meshless Istio-based ingress gateway, and continuing investment in Application Gateway for Containers.
+We are actively investing in the future of application connectivity in Azure Kubernetes Service (AKS), centered on the Gateway API. This includes support for the Gateway API in the Istio-based service mesh add-on, expanding the Application Routing add-on to support the Gateway API, and continuing investment in Application Gateway for Containers.
 
 ### The future of the Application Routing add-on
 
-Support for a **meshless Istio-based ingress using the Gateway API with the Application Routing add-on is planned for the first half of 2026**, along with migration guidance documentation. The Kubernetes Gateway API represents the next generation of Kubernetes traffic management, evolving from the Ingress API by offering richer routing capabilities, standardized extensibility, and a more secure, role-oriented design.
+**Application Routing with Gateway API**, which will be powered by the Istio control plane for Gateway API-based ingress only, is **planned for the first half of 2026**, along with migration guidance documentation. The Kubernetes Gateway API represents the next generation of Kubernetes ingress traffic management, evolving from the Ingress API by offering richer routing capabilities, standardized extensibility, and a more secure, role-oriented design.
 
 ### Alternative migration paths
 
