@@ -16,14 +16,13 @@ Running GPU workloads on AKS enables scalable, automated data processing and AI 
 
 ### Unique challenges of GPU nodes
 
-Deploying a GPU workload isn’t just about picking the right VM size. There is also significant operational overhead that developers and platform engineers need to manage. 
+Deploying a GPU workload isn’t just about picking the right VM size. There is also significant operational overhead that developers and platform engineers need to manage.
 
 We’ve found that many of our customers struggled to manage GPU device discoverability/scheduling and observability, especially across different OS images. Platform teams spent cycles maintaining custom node images and post-deployment scripts to ensure CUDA compatibility, while developers had to debug “GPU not found” errors or stalled workloads that consumed GPU capacity with limited visibility into utilization.
 
 The inconsistent experience across OS options on AKS was a major challenge that we sought to improve. We wanted to encourage our customers to use the OS that best-fit their needs, not blocking them because of feature parity gaps.
 
 For example, Azure Linux support for GPU-enabled VM sizes on AKS was historically limited to NVIDIA V100 and T4, creating a gap for Azure Linux customers requiring higher-performance options. Platform teams looking to run compute-intensive workloads, such as general-purpose AI/ML workloads or large-scale simulations, were unable to do so with Azure Linux and [NVIDIA NC A100 GPU node pools](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series?tabs=sizebasic) -- until now.
-
 
 ### AKS expanding Azure Linux GPU support
 
@@ -35,10 +34,9 @@ The introduction of Azure Linux 3.0 support for NC A100 GPU node pools in AKS st
 
 Using NVIDIA GPUs with Azure Linux on AKS requires the installation of several components for proper functioning of AKS-GPU enabled nodes, including GPU drivers, the NVIDIA Kubernetes device plugin, and GPU metrics exporter for telemetry. Previously, the installation of these components was either done manually or via the open-source NVIDIA GPU Operator, creating operational overhead for platform engineers. To ease this complexity and overhead, AKS has released support for [fully managed GPU nodes (preview)](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes), which installs the NVIDIA GPU driver, device plugin, and Data Center GPU Manager (DCGM) metrics exporter by default.
 
-
 ### Deploying GPU workloads on AKS with Azure Linux 3.0
 
-Customers choose to run their GPU workloads on Azure Linux for many reasons, such as the security posture, support model, resiliency, and/or performance optimizations that the OS provides. Some of the benefits that Azure Linux provides for your GPU workloads include: 
+Customers choose to run their GPU workloads on Azure Linux for many reasons, such as the security posture, support model, resiliency, and/or performance optimizations that the OS provides. Some of the benefits that Azure Linux provides for your GPU workloads include:
 
 | **Values** | **Azure Linux** | **Other Distributions** |
 | ------------- | ------------- | ------------- |
@@ -55,7 +53,7 @@ Deploying your GPU workloads on AKS with Azure Linux 3.0 is simple. Let’s use 
    * `--os-sku AzureLinux`: provisions a node pool with the Azure Linux container host as the node OS.
    * `--node-vm-size Standard_nc24ads_A100_v4`: provisions a node pool using the `Standard_nc24ads_A100_v4` VM size. Please note, any of the sizes in the Azure [NC_A100_v4](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series?tabs=sizebasic) series are supported.
 
-2. With the DCGM exporter installed by default, you can observe detailed GPU metrics such as utilization, memory consumption, and error states. 
+2. With the DCGM exporter installed by default, you can observe detailed GPU metrics such as utilization, memory consumption, and error states.
 
 If you prefer not to use a preview feature, you can follow [these instructions](https://learn.microsoft.com/azure/aks/use-nvidia-gpu?tabs=add-ubuntu-gpu-node-pool#manually-install-the-nvidia-device-plugin) on AKS to create an NVIDIA NC A100 node pool with Azure Linux by manually installing the NVIDIA device plugin via a DaemonSet. You’ll also need to manually install the DCGM exporter to consume GPU metrics.
 
