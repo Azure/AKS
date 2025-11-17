@@ -12,7 +12,7 @@ tags:
 
 ### Introduction
 
-Running GPU workloads on AKS enables scalable data processing and AI
+GPU workloads on AKS enables scalable data processing and AI
 applications across Windows, Ubuntu, or Azure Linux nodes.
 [Azure Linux](https://learn.microsoft.com/azure/aks/use-azure-linux),
 Microsoft’s minimal and secure OS, simplifies GPU setup with validated
@@ -22,7 +22,8 @@ and highlights the security and performance benefits of Azure Linux.
 
 ### Unique challenges of GPU node pools
 
-Deploying a GPU workload isn’t just about picking the right virtual
+Running GPU workloads includes more considerations than just picking the right virtual
+
 machine (VM) SKU. There is also significant operational overhead that
 developers and platform engineers need to manage.
 
@@ -43,7 +44,8 @@ historically limited to NVIDIA V100 and T4, creating a gap for Azure
 Linux customers requiring higher-performance options. Platform teams
 looking to run compute-intensive workloads, such as general-purpose
 AI/ML workloads or large-scale simulations, were unable to do so with
-Azure Linux and NVIDIA NC A100 GPU node pools -- until now.
+Azure Linux and [NVIDIA NC A100 GPU node pools](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series?tabs=sizebasic) -- until now.
+
 
 ### AKS expanding Azure Linux GPU support
 
@@ -74,7 +76,8 @@ Using NVIDIA GPUs with Azure Linux on AKS requires the installation of
 several components for proper functioning of AKS-GPU enabled nodes,
 including GPU drivers, the NVIDIA Kubernetes device plugin, and GPU
 metrics exporter for telemetry. Previously, the installation of these
-components was either done manually or via the open-source NVIDIA GPU
+components were either done manually or via the open-source NVIDIA GPU
+
 Operator, creating operational overhead for platform engineers.
 
 To ease this complexity and overhead, AKS has released support for
@@ -96,7 +99,10 @@ provides for your GPU workloads include:
 Deploying your GPU workloads on AKS with Azure Linux 3.0 is simple. Let’s
 use the newly supported NVIDIA NC A100 GPU as our example.
 
-1. To add an NVIDIA NC A100 node pool running on Azure Linux to your AKS cluster using the fully managed GPU node experience you can follow these instructions. Please note, the following parameters must be specified in your `az aks nodepool add` command to create an NVIDIA NC A100 node pool running on Azure Linux:
+To add an NVIDIA NC A100 node pool running on Azure Linux to your AKS cluster using the fully managed GPU node experience you can follow these instructions. 
+
+1. Add a nodepool to your AKS cluster. Ensure the following parameters are specified in your `az aks nodepool add` command:
+
    * `--os-sku AzureLinux`: provisions a node pool with the Azure Linux container host as the node OS.
    * `--node-vm-size Standard_nc24ads_A100_v4`: provisions a node pool using the `Standard_nc24ads_A100_v4` VM size.
      * Please note, any of the sizes in the Azure `NC_A100_v4` series are supported: `Standard_NC24ads_A100_v4`, `Standard_NC48ads_A100_v4`, or `Standard_NC96ads_A100_v4`.
