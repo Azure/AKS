@@ -1,6 +1,6 @@
 ---
 title: "Fully Managed GPU workloads with Azure Linux on Azure Kubernetes Service (AKS)"
-description: "Learn about how managed NVIDIA GPU nodes with Azure Linux OS provide efficient performance and streamlined operations for high-performance computing workloads on AKS."
+description: "Learn about how managed NVIDIA GPU nodes with Azure Linux OS deliver efficiency and streamlined operations for high-performance computing workloads on AKS."
 date: 2025-11-17
 authors: [flora-taagen, sachi-desai]
 tags:
@@ -72,4 +72,5 @@ For more information on enabling and consuming GPU metrics in AKS, including int
 ### What's next?
 
 The Azure Linux and AKS teams are actively working on expanding support for additional GPU VM sizes and managed GPU features on AKS. You can expect to see Azure Linux support for the NVIDIA [ND A100](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ndma100v4-series), [NC H100](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ncadsh100v5-series), and [ND H200](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nd-h200-v5-series) families landing in the near future, as well as Azure Linux support for managed AKS GPU features like [multi-instance GPU (MIG)](https://learn.microsoft.com/azure/aks/gpu-multi-instance) and [KAITO](https://learn.microsoft.com/azure/aks/ai-toolchain-operator).
+
 
