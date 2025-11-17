@@ -72,5 +72,3 @@ For more conceptual guidance on GPU metrics in AKS, visit these [docs](https://a
 ### What's next?
 
 The Azure Linux and AKS teams are actively working on expanding support for additional GPU VM sizes and managed GPU features on AKS. You can expect to see Azure Linux support for the NVIDIA [ND A100](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ndma100v4-series), [NC H100](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ncadsh100v5-series), and [ND H200](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nd-h200-v5-series) families landing in the near future, as well as Azure Linux support for managed AKS GPU features like [multi-instance GPU (MIG)](https://learn.microsoft.com/azure/aks/gpu-multi-instance), built-in GPU metrics in Azure Managed Prometheus and Grafana, and [KAITO](https://learn.microsoft.com/azure/aks/ai-toolchain-operator).
-
-
