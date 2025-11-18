@@ -390,3 +390,14 @@ rita-zhang:
     x: ritazzhang
     linkedin: ritazhang
     github: ritazh
+
+johnson-shi:
+  name: Johnson Shi
+  title: Senior Product Manager at Microsoft
+  url: https://johnsonshi.com
+  image_url: https://github.com/johnsonshi.png
+  page: true
+  socials:
+    x: johnsonshi86
+    linkedin: johnsonshi
+    github: johnsonshi
