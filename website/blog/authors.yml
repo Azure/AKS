@@ -1,3 +1,14 @@
+ahmed-sabbour:
+  name: Ahmed Sabbour
+  title: Principal PM Lead for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/ahmedsabbour
+  image_url: https://avatars.githubusercontent.com/u/103856
+  page: true
+  socials:
+    x: sabbour
+    linkedin: ahmedsabbour
+    github: sabbour
+
 brian-redmond:
   name: Brian Redmond
   title: AKS and Azure Cloud Native Platforms
@@ -204,7 +215,6 @@ jack-jiang:
   name: Jack Jiang
   title: Product Manager at Microsoft
   url: https://www.linkedin.com/in/jackjiangj/
-  image_url: https://github.com/jakjang.png
   page: true
   socials:
     linkedin: jackjiangj
@@ -351,6 +361,16 @@ flora-taagen:
     linkedin: florataagen
     github: flora-taagen
 
+diego-casati:
+  name: Diego casati
+  title: Microsoft App Innovation Global Blackbelt team
+  url: https://www.linkedin.com/in/diegocasati
+  image_url: https://github.com/dcasati.png
+  page: true
+  socials:
+    linkedin: diegocasati
+    github: dcasati
+    
 sertac-ozercan:
   name: Sertaç Özercan
   title: Principal Engineering Manager for Azure Upstream
