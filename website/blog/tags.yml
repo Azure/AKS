@@ -122,6 +122,11 @@ faiss:
   permalink: /faiss
   description: Vector indexing with FAISS for similarity search and RAG pipelines on AKS.
 
+flatcar-container-linux:
+  label: Flatcar Container Linux
+  permalink: /flatcar-container-linux
+  description: Flatcar Container Linux distribution available on AKS.
+
 flux:
   label: Flux
   permalink: /flux
