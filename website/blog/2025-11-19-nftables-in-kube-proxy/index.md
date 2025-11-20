@@ -10,13 +10,17 @@ tags:
 
 ## Summary
 
-We're announcing the preview availability of **nftables mode** for kube-proxy in Azure Kubernetes Service (AKS). This feature was requested in [GitHub issue #5061](https://github.com/Azure/AKS/issues/5061) and is now aligned with the upstream Kubernetes GA release of the nftables backend.
+We're announcing the preview availability of **nftables** mode for kube-proxy in Azure Kubernetes Service (AKS). This feature was requested in [GitHub issue #5061](https://github.com/Azure/AKS/issues/5061) and is now aligned with the upstream Kubernetes GA release of the nftables backend.
 
 ## Background
 
-Kubernetes 1.31 introduced **nftables** as a fully supported kube-proxy mode. It serves as the modern replacement for iptables, offering a more efficient rule model and improved performance characteristics on newer Linux kernels.
+Kubernetes 1.33 introduced **nftables** as a fully supported kube-proxy mode. It serves as the modern replacement for iptables, offering a more efficient rule model and improved performance characteristics on newer Linux kernels.
 
-As highlighted by the upstream project, nftables reduces rule churn and avoids the scaling and latency limitations seen in large clusters using iptables. For additional context, see the upstream GA announcement: [Kubernetes blog: NFTables mode for kube-proxy](https://kubernetes.io/blog/2025/02/28/nftables-kube-proxy/).
+As highlighted by the upstream project, nftables reduces rule churn and avoids the scaling and latency limitations seen in large clusters using iptables. In clusters with 5,000 and 10,000 Services, the p50 (average) latency for nftables is approximately the same as the p01 (best-case) latency for iptables. In the 30,000 Service cluster, the p99 (worst-case) latency for nftables manages to beat the p01 latency for iptables by a few microseconds! Here's both sets of data together, though you may have to squint to see the nftables results:
+
+![kube-proxy iptables vs nftables first packet latency at various percentiles in clusters of various sizes](iptables-vs-nftables.svg)
+
+For additional context, see the upstream GA announcement: [Kubernetes blog: NFTables mode for kube-proxy](https://kubernetes.io/blog/2025/02/28/nftables-kube-proxy/).
 
 ## What's available in AKS
 
