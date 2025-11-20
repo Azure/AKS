@@ -1,7 +1,7 @@
 ---
 title: "Recommendations for container and security optimized OS options on Azure Kubernetes Service (AKS)"
 description: "Discover best practices and actionable guidance to help you select a container or security optimized OS for your AKS deployments."
-date: 2025-11-10
+date: 2025-11-20
 authors: [ally-ford, thilo-fromm, sudhanva-huruli]
 tags:
   - azure-linux
