@@ -25,19 +25,6 @@ AKS has just released support for two new Linux OS options:
 
 As contributors to both projects, we understand the distinct customer needs each solution addresses. Customers running containerized workloads across multiple clouds and seeking consistency during critical OS updates typically choose Ubuntu or Flatcar Container Linux. Security-focused enterprises operating primarily on Azure and prioritizing a unified support experience opt for Azure Linux or OS Guard. Both approaches are valid, distinct, and fully supported by Microsoft.
 
-### Recommendations for Linux OS on AKS
-
-When deciding between which Linux OS options to use, we recommend the following:
-
-- Use [**Flatcar Container Linux for AKS (preview)**](https://aka.ms/aks/flatcar) if you're looking for a vendor neutral, community stewarded immutable OS with cross-cloud support.
-- Use [**Azure Linux OS Guard (preview)**](https://aka.ms/aks/azure-linux-os-guard) if you're looking for an immutable OS that is Microsoft-created and optimized for Azure.
-- Use [Ubuntu](https://aka.ms/aks/supported-ubuntu-versions) if you're looking for a portable, general purpose OS with cross-cloud support.
-- Use [Azure Linux](https://aka.ms/aks/use-azure-linux) if you're looking for a general purpose OS that is Microsoft-created and optimized for Azure.
-
-![OS Recommendations on AKS](./os-comparison.png)
-
-_Figure 1: Comparison across OS options supported on AKS, including Flatcar Container Linux for AKS, Azure Linux OS Guard, Ubuntu, and Azure Linux._
-
 ## What's different about optimized Linux OS options?
 
 The main optimization in OS options like [Azure Linux OS Guard](https://aka.ms/aks/azure-linux-os-guard) and [Flatcar Container Linux](https://aka.ms/aks/flatcar) is their immutability.
@@ -60,6 +47,19 @@ While immutability is the core difference, there's typically more security featu
 | Focus on | Trusted code execution backed by IPE (Integrity Policy Enforcement) | Multi-cloud, on-prem, Adaptability and sovereignty  | Extensibility, flexibility, and choice |
 | Mandatory Access Control | SELinux | SELinux | AppArmor|
 | Secure Boot | Supported by default with UKI (Unified Kernel Image) | Not yet supported with AKS | Supported with certain VM sizes |
+
+## Recommendations for Linux OS on AKS
+
+When deciding between which Linux OS options to use, we recommend the following:
+
+- Use [**Flatcar Container Linux for AKS (preview)**](https://aka.ms/aks/flatcar) if you're looking for a vendor neutral, community stewarded immutable OS with cross-cloud support.
+- Use [**Azure Linux OS Guard (preview)**](https://aka.ms/aks/azure-linux-os-guard) if you're looking for an immutable OS that is Microsoft-created and optimized for Azure.
+- Use [Ubuntu](https://aka.ms/aks/supported-ubuntu-versions) if you're looking for a portable, general purpose OS with cross-cloud support.
+- Use [Azure Linux](https://aka.ms/aks/use-azure-linux) if you're looking for a general purpose OS that is Microsoft-created and optimized for Azure.
+
+![OS Recommendations on AKS](./os-comparison.png)
+
+_Figure 1: Comparison across OS options supported on AKS, including Flatcar Container Linux for AKS, Azure Linux OS Guard, Ubuntu, and Azure Linux._
 
 ## Migration to an optimized Linux OS option
 
