@@ -78,22 +78,11 @@ When planning to migrate to an optimized OS option, we recommend the following:
 - If you'd like to migrate existing Linux clusters or node pools to [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard), you can use [in-place OS Sku migration](https://learn.microsoft.com/azure/azure-linux/tutorial-azure-linux-os-guard-migration). There are pre-requisites and limitations to this process, see documentation for details.
 - If you'd like to migrate to [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar), you'll need to create new clusters and/or node pools and migrate existing workloads. [Flatcar](https://aka.ms/aks/flatcar) is available on all AKS supported Kubernetes versions.
 
-## Microsoft contributions to container and security optimized OS options
+## Community Stewardship
 
-Our teams maintain [Azure Linux OS Guard](https://aka.ms/aks/azure-linux-os-guard), contribute significantly to [Flatcar Container Linux](https://aka.ms/aks/flatcar), and actively collaborate with the Immutable Linux community, the UAPI group, and other open source initiatives.
+AKS is built on community stewarded open source projects. Our teams maintain [Azure Linux OS Guard](https://aka.ms/aks/azure-linux-os-guard), contribute significantly to [Flatcar Container Linux](https://aka.ms/aks/flatcar), and actively collaborate with the Immutable Linux community, the UAPI group, and other open source initiatives. Our continued engagement with projects like Flatcar improves the ecosystem for everybody and also empowers our users and customers to actively engage and participate in both development as well as project stewardship – driving the technology as well as determining the course and direction of these projects.
 
-- **OS Guard research and development excellence**: Contributing to kernel, system, containerd, and other upstream projects to advance trusted execution across the ecosystem
-- **Multi-cloud collaboration**: Working with other cloud vendors to integrate [Flatcar](https://aka.ms/aks/flatcar) as a first-choice OS for running Kubernetes
-- **Cross-distribution partnerships**: Collaborating with other image-based distributions like Fedora CoreOS, Red Hat CoreOS, and SUSE MicroOS on foundational software such as provisioning-time configuration agents
-- **Community leadership**: Providing technical leadership and collaboration in the CNCF Special Purpose Operating Systems Working Group
-- **Core OS component contributions**: Adding features and improving robustness for system extensions, the GRUB bootloader, and other key components in image-based immutable Linux distributions
-- **Cloud-native infrastructure enhancements**: Contributing to projects like accelerated container images/overlaybd, the blob CSI driver, and other cloud-native infrastructure projects to add features and improve robustness
-
-### Community Stewardship
-
-AKS is built on community stewarded open source projects. Our continued engagement with projects like Flatcar improves the ecosystem for everybody and also empowers our users and customers to actively engage and participate in both development as well as project stewardship – driving the technology as well as determining the course and direction of these projects.
-
-Flatcar Container Linux is driven by the open source community and governed by the Cloud Native Computing Foundation. To engage with, and participate in the Flatcar Container Linux open source project, check out:
+Join us in the Flatcar Container Linux open source project, which is community-driven and governed by the Cloud Native Computing Foundation. Get involved, contribute, and help shape the future of Flatcar Container Linux:
 
 - [Flatcar's participation how-to](https://github.com/flatcar/Flatcar?tab=readme-ov-file#participate-and-contribute)
 - [Chat with Flatcar contributors over at Matrix](https://app.element.io/?#/room/#flatcar:matrix.org)
