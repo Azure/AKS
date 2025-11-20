@@ -18,9 +18,9 @@ Selecting an operating system for your Kubernetes deployments may appear straigh
 
 ## Selecting a Linux OS option
 
-AKS has just released support for two new Linux OS options: 
+AKS has just released support for two new Linux OS options:
 
-- [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard) is Microsoft-created and optimized for Azure. OS Guard is built on top of Azure Linux with specialized configuration to support containerized workloads with security optimizations. 
+- [Azure Linux OS Guard (preview)](https://aka.ms/aks/azure-linux-os-guard) is Microsoft-created and optimized for Azure. OS Guard is built on top of Azure Linux with specialized configuration to support containerized workloads with security optimizations.
 - [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar) is a CNCF-governed, vendor-neutral, container-optimized immutable OS, best suited for running on multi-cloud and on-prem environments.
 
 As contributors to both projects, we understand the distinct customer needs each solution addresses. Customers running containerized workloads across multiple clouds and seeking consistency during critical OS updates typically choose Ubuntu or Flatcar Container Linux. Security-focused enterprises operating primarily on Azure and prioritizing a unified support experience opt for Azure Linux or OS Guard. Both approaches are valid, distinct, and fully supported by Microsoft.
