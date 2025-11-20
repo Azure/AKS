@@ -26,8 +26,8 @@ For additional context, see the upstream GA announcement: [Kubernetes blog: NFTa
 
 AKS now exposes nftables through the **kube-proxy configuration preview feature**. You can configure kube-proxy in one of three modes:
 
-- `IPTABLES`  
-- `IPVS`  
+- `IPTABLES`
+- `IPVS`
 - `NFTABLES` *(new – preview)*
 
 This configuration is applied through `--kube-proxy-config` during cluster creation or update.
