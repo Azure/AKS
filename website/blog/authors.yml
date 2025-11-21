@@ -230,6 +230,16 @@ ally-ford:
     linkedin: allison-ford-pm
     github: allyford
 
+wilson-darko:
+  name: Wilson Darko
+  title: Product Manager at Microsoft
+  url: https://www.linkedin.com/in/wilsondarko/
+  image_url: https://avatars.githubusercontent.com/u/172273315?v=4
+  page: true
+  socials:
+    linkedin: wilsondarko
+    github: wdarko1
+
 sarah-zhou:
   name: Sarah Zhou
   title: Product Manager at Microsoft
