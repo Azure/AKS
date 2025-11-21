@@ -101,12 +101,10 @@ To get started with NAP, you can visit the [Node Auto Provisioning documentation
 
 We’re continuing to expand the capabilities for NAP for additional feature support and performance. Our upcoming roadmap of feature support for NAP includes:
 
-- Dynamic Resource Allocation with Node Auto Provisioning
+- Dynamic Resource Allocation
 - Spot Placement Score API
-- LocalDNS Support 
-- Making signed execution available to everyone, by means of multiple trust levels and the option for users to use their own signing keys for their workloads
-
-As we build these new features, we will be excited to share all these achievements with the broader Linux and Kubernetes ecosystem by contributing back and by making building blocks available.
+- LocalDNS Support
+- Node Overlay support
 
 To follow along with our backlog and progress, please see our public roadmaps:
 
