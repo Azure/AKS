@@ -21,22 +21,22 @@ Node Auto Provisioning is consistently mentioned as the preferred autoscaling ex
 
 ## The Ops Bottleneck: When Growth Becomes a Liability
 
-In the early days of Kubernetes adoption, managing infrastructure was a badge of honor. Teams took pride in crafting node pools tailored to their workloads—balancing cost, performance, and availability. But as AKS adoption scaled across enterprises, this model began to crack.
+In the early days of Kubernetes adoption, managing infrastructure was a badge of honor. Teams took pride in crafting node pools tailored to their workloads - balancing cost, performance, and availability. But as AKS adoption scaled across enterprises, this model began to crack.
 The core challenge? Manual node pool management doesn’t scale with platform success. 
-Every new application, tenant, or workload profile introduced a new set of infrastructure requirements. Ops teams were forced into a reactive loop—creating and tuning node pools, managing quotas, and firefighting scale issues. The more successful the platform, the more brittle it became.
-This wasn’t just a technical problem—it was an organizational one. Platform teams were spending more time managing infrastructure than enabling innovation. And in a macroeconomic climate where efficiency is king, that’s a problem.
+Every new application, tenant, or workload profile introduced a new set of infrastructure requirements. Ops teams were forced into a reactive loop, creating and tuning node pools, managing quotas, and firefighting scale issues. The more successful the platform, the more brittle it became.
+This wasn’t just a technical problem - It was an organizational one. Platform teams were spending more time managing infrastructure than enabling innovation. And in a macroeconomic climate where efficiency is king, that’s a problem.
 
 **The Hidden Complexity of Node Pools**
 Let’s unpack the operational pain points that led to Node Auto Provisioning (NAP):
 
-SKU Selection Paralysis: Customers had to choose the right virtual machine (VM) size for each node pool. But Azure offers hundreds of VM sizes, or VM SKUs, each with different capabilities, pricing, and regional availability. Picking the wrong one could mean wasted spend or failed deployments.
+- SKU Selection Paralysis: Customers had to choose the right virtual machine (VM) size for each node pool. But Azure offers hundreds of VM sizes, or VM SKUs, each with different capabilities, pricing, and regional availability. Picking the wrong one could mean wasted spend or failed deployments.
 - Capacity Availability: Even if you picked the right SKU, there was always the potential of capacity limits for high-use VM sizes, or quota availability in the region. This often required coordination with Azure support, delaying deployments and frustrating developers.
 - Bin Packing Inefficiency: Without precise resource requests and limits, workloads were often spread inefficiently across nodes. This led to underutilized infrastructure and inflated costs.
-- Scaling Friction: Cluster Autoscaler worked well—until it didn’t. It required pre-defined node pools, which meant Ops had to anticipate every workload shape in advance. When they didn’t, scale-up events failed or delayed.
+- Scaling Friction: Cluster Autoscaler worked well, until it didn’t. It required pre-defined node pools, which meant Ops teams had to anticipate every workload shape in advance. When they didn’t, scale-up events failed or delayed.
 - Operational Drift: Over time, node pools drifted from their intended purpose. Teams reused them for convenience, leading to noisy neighbor issues and unpredictable performance.
 - Maintenance Complexity: Each node pool had to be patched, upgraded, and monitored separately. This fragmented the upgrade process and increased the risk of downtime.
 
-These challenges weren’t theoretical. They were voiced repeatedly by users across industries—from retail to healthcare to fintech. The message was clear: managing complex infrastructure should not be a prerequisite for using Kubernetes.
+These challenges weren’t theoretical. They were voiced repeatedly by users across industries. From retail to healthcare to fintech, the message was clear: managing complex infrastructure should not be a prerequisite for using Kubernetes.
 
 ## Engineering the Invisible: How We Built Node Auto Provisioning
 
@@ -46,14 +46,14 @@ Enter Node Auto Provisioning, built on top of [Karpenter](https://karpenter.sh/)
 
 ### Key Design Principles
 
-SKU-less by Default: Users no longer need to specify exact Virtual Machine(VM) sizes. Instead, they define workload requirements (CPU, memory, GPU, etc.), VM families and the platform selects the best-fit VMs. 
-Mixed VM Size Autoscaling: Traditional cluster autoscalers scale pre-existing node pools with only one VM size per pool. With NAP, users can automatically scale up single-instance VMs of mixed sizes (SKUs) 
-Capacity-Aware Scheduling: NAP is able to react to capacity constraints of certain VM size or regions, by selecting other available VM sizes. 
-Workload Consolidation: Inspired by Karpenter’s deprovisioning controller, NAP supports automatic consolidation. If workloads are spread thin across many nodes, the system can reschedule them onto fewer  nodes or even replace nodes with cheaper options—reducing cost and improving efficiency.
-Customer Preferences, Not Prescriptions: Customers can still express preferences—like Spot vs. On-Demand, preferred VM families—but they don’t have to manage the details.
-Enforced Resource Requests: To make intelligent provisioning decisions, we require workloads to define resource requests and limits. This is enforced via admission webhooks, ensuring consistency and predictability.
-Seamless Upgrades: We designed NAP to work with AKS’s existing upgrade mechanisms, including node image updates and maintenance windows. Customers can opt into auto-consolidation during maintenance windows to minimize disruption.
-*Simplified Compute Management: the self-hosted Karpenter project requires additional efforts around bootstrap token rotation and helm charts, which Node Auto Provisioning takes on the responsibility for. As a managed add-on, NAP brings even more simplicity to the Karpenter experience so you can focus on your workloads and not infrastructure. 
+**SKU-less by Default**: Users no longer need to specify exact Virtual Machine(VM) sizes. Instead, they define workload requirements (CPU, memory, GPU, etc.), VM families and the platform selects the best-fit VMs. 
+**Mixed VM Size Autoscaling**: Traditional cluster autoscalers scale pre-existing node pools with only one VM size per pool. With NAP, users can automatically scale up single-instance VMs of mixed sizes (SKUs) 
+**Capacity-Aware Scheduling**: NAP is able to react to capacity constraints of certain VM size or regions, by selecting other available VM sizes. 
+**Workload Consolidation**: Inspired by Karpenter’s deprovisioning controller, NAP supports automatic consolidation. If workloads are spread thin across many nodes, the system can reschedule them onto fewer  nodes or even replace nodes with cheaper options, reducing cost and improving efficiency.
+**Customer Preferences, Not Prescriptions**: Customers can still express preferences like Spot vs. On-Demand, preferred VM families - but they don’t have to manage the details.
+**Enforced Resource Requests**: To make intelligent provisioning decisions, we require workloads to define resource requests and limits. This is enforced via admission webhooks, ensuring consistency and predictability.
+**Seamless Upgrades**: We designed NAP to work with AKS’s existing upgrade mechanisms, including node image updates and maintenance windows. Customers can opt into auto-consolidation during maintenance windows to minimize disruption.
+**Simplified Compute Management**: the self-hosted Karpenter project requires additional efforts around bootstrap token rotation and helm charts, which Node Auto Provisioning takes on the responsibility for. As a managed add-on, NAP brings even more simplicity to the Karpenter experience so you can focus on your workloads and not infrastructure. 
 
 ## How node auto provisioning works
 
