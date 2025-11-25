@@ -30,6 +30,8 @@ keywords: ["AKS", "Kubernetes", "Automatic", "Managed system node pools"]
 | **Capacity planning** | You estimate headroom for system components like CoreDNS, konnectivity, metrics-server, and any add-ons; scale manually or configure cluster autoscaler with min/max counts | AKS right-sizes capacity for platform components and scales automatically when add-ons need more room |
 | **Cost** | System nodes are billed as standard VMs to your subscription; you pay for system pool capacity | System nodes do not run on your subscription |
 
+![Choose your operating model between AKS Standard and AKS Automatic](aks-standard-automatic.png)
+
 ## Components running on managed system node pools
 
 AKS manages the following platform components on the managed system node pool. You don't need to provision capacity for these services:
