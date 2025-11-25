@@ -6,9 +6,7 @@ authors: [ahmed-sabbour]
 tags:
   - aks-automatic
   - managed-system-node-pools
-  - operations
-  - preview
-keywords: ["AKS", "Kubernetes", "Automatic", "Managed system node pools", "Azure"]
+keywords: ["AKS", "Kubernetes", "Automatic", "Managed system node pools"]
 ---
 
  We built Azure Kubernetes Service (AKS) Automatic so teams can ship applications with production-grade defaults from day one. Today we're taking that vision further with **managed system node pools (preview)**: the system pool is now fully managed by AKS, with core platform components hosted on Microsoft infrastructure.
