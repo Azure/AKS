@@ -69,6 +69,8 @@ For detailed specifications, see the [Deployment Safeguards documentation](https
 
 ## Pod Readiness SLA for AKS Automatic
 
+![API Server Uptime SLA: 99.95% control plane uptime. Pod Readiness SLA: 99.9% operations under 5 minutes](automatic-slas.png)
+
 Uptime means more than a healthy control plane; it means your applications are actually serving users. The [Pod Readiness SLA](https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services) guarantees that pods reach readiness targets, closing the gap between "the cluster is healthy" and "my app is ready."
 
 - **Faster recovery during failures:** Node failures and scale events trigger remediation so pods return to a ready state within defined thresholds.
@@ -100,6 +102,8 @@ az feature register --name AKS-AutomaticHostedSystemProfilePreview --namespace M
 ```
 
 ### Create the cluster
+
+Select a region where managed system node pools are available. See the [regional availability](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools#region-availability) section in the documentation for the current list.
 
 ```bash
 az aks create \
@@ -140,4 +144,3 @@ Your workload runs on user node pools in your subscription while system services
 3. **Track progress:** Watch the [AKS public roadmap](https://aka.ms/aks/roadmap) for GA timelines and upcoming features.
 
 We can't wait to see what you build. Let us know how managed system node pools simplify your operations and where we can keep raising the bar.
-
