@@ -157,11 +157,11 @@ Your workload runs on user node pools in your subscription that Node Auto Provis
 
 ![Screenshot of AKS desktop application showing the nodes in the cluster](aks-desktop-nodes.png)
 
+> **Tip:** Prefer a graphical experience? [AKS Desktop](https://learn.microsoft.com/azure/aks/aks-desktop-overview) lets you manage clusters, view workloads, and troubleshoot issues without leaving your desktop.
+
 The managed system nodes will not run on your Azure subscription.
 
 ![Screenshot of the Azure portal showing that the managed syste nodes are not there](portal-vms.png)
-
-> **Tip:** Prefer a graphical experience? [AKS Desktop](https://learn.microsoft.com/azure/aks/aks-desktop-overview) lets you manage clusters, view workloads, and troubleshoot issues without leaving your desktop.
 
 ## Next steps
 
