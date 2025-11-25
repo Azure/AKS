@@ -18,7 +18,7 @@ keywords: ["AKS", "Kubernetes", "Automatic", "Managed system node pools"]
 ## Why it matters
 
 - **Reduced operational overhead:** AKS handles provisioning, patching, upgrades, and scaling for the system pool, so you spend less time on infrastructure maintenance.
-- **Managed add-on hosting at lower cost:** Core services like Azure Monitor agents, CoreDNS, KEDA, VPA, Konnectivity, Eraser, and Metrics Server run on Microsoft-owned infrastructure at no charge. Some add-ons and `DaemonSets` still run on nodes in your subscription.
+- **Managed add-on hosting at lower cost:** Core services like Azure Monitor agents, CoreDNS, KEDA, VPA, Konnectivity, Eraser, and Metrics Server run on Microsoft-owned infrastructure. Some add-ons and `DaemonSets` still run on nodes in your subscription.
 - **Built-in security policies:** Deployment Safeguards enforce pod security standards, restrict access to platform namespaces, and block risky configurations by default.
 - **Automatic upgrades:** AKS keeps platform components current, reducing the risk of running outdated or vulnerable system software.
 
