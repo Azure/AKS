@@ -40,7 +40,7 @@ AKS manages the following platform components on the managed system node pool. Y
 | [CoreDNS](https://learn.microsoft.com/azure/aks/coredns-custom) | Provides cluster DNS resolution for service discovery |
 | [Eraser](https://learn.microsoft.com/azure/aks/image-cleaner) | Removes unused and vulnerable container images from nodes |
 | [KEDA](https://learn.microsoft.com/azure/aks/keda-about) | Scales workloads based on event-driven metrics such as queue length or HTTP traffic |
-| [Konnectivity](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) | Maintains secure connectivity between the control plane and nodes |
+| Konnectivity | Maintains secure connectivity between the control plane and nodes |
 | [Metrics Server](https://learn.microsoft.com/azure/aks/monitor-aks-reference) | Exposes resource metrics for Horizontal Pod Autoscaler and kubectl top |
 | [VPA](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) | Recommends and applies optimal CPU and memory requests for pods |
 | [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) | Enables pods to authenticate to Azure services using Microsoft Entra ID |
@@ -140,3 +140,4 @@ Your workload runs on user node pools in your subscription while system services
 3. **Track progress:** Watch the [AKS public roadmap](https://aka.ms/aks/roadmap) for GA timelines and upcoming features.
 
 We can't wait to see what you build. Let us know how managed system node pools simplify your operations and where we can keep raising the bar.
+
