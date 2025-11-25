@@ -22,15 +22,7 @@ keywords: ["AKS", "Kubernetes", "Automatic", "Managed system node pools"]
 - **Built-in security policies:** Deployment Safeguards enforce pod security standards, restrict access to platform namespaces, and block risky configurations by default.
 - **Automatic upgrades:** AKS keeps platform components current, reducing the risk of running outdated or vulnerable system software.
 
-## How managed system node pools differ from traditional system node pools
-
-| Aspect | AKS Standard system pool | AKS Automatic managed system pool |
-| --- | --- | --- |
-| **Provisioning** | You create the pool, select VM SKUs, set node count, and configure OS disk size | AKS provisions and sizes the pool for you automatically |
-| **Capacity planning** | You estimate headroom for system components like CoreDNS, konnectivity, metrics-server, and any add-ons; scale manually or configure cluster autoscaler with min/max counts | AKS right-sizes capacity for platform components and scales automatically when add-ons need more room |
-| **Cost** | System nodes are billed as standard VMs to your subscription; you pay for system pool capacity | System nodes do not run on your subscription |
-
-![Choose your operating model between AKS Standard and AKS Automatic](aks-standard-automatic.png)
+![Diagram showing how Automatic managed system node pools work](aks-managed-arch.svg)
 
 ## Components running on managed system node pools
 
@@ -48,6 +40,16 @@ AKS manages the following platform components on the managed system node pool. Y
 | [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) | Enables pods to authenticate to Azure services using Microsoft Entra ID |
 
 Other add-ons and extensions run on `aks-system-surge` nodes, with scaling handled by [Node Auto-Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-auto-provisioning). `DaemonSets` run on both managed system node pools and nodes in your subscription.
+
+## How managed system node pools differ from traditional system node pools
+
+| Aspect | AKS Standard system pool | AKS Automatic managed system pool |
+| --- | --- | --- |
+| **Provisioning** | You create the pool, select VM SKUs, set node count, and configure OS disk size | AKS provisions and sizes the pool for you automatically |
+| **Capacity planning** | You [estimate headroom for system components](https://learn.microsoft.com/azure/aks/use-system-pools?tabs=azure-cli#system-and-user-node-pools) like CoreDNS, konnectivity, metrics-server, and any add-ons; scale manually or configure cluster autoscaler with min/max counts | AKS right-sizes capacity for platform components and scales automatically when add-ons need more room without taking up quota in your subscription |
+| **Cost** | System nodes are billed as standard VMs to your subscription; you pay for system pool capacity | System nodes do not run on your subscription |
+
+![Choose your operating model between AKS Standard and AKS Automatic](aks-standard-automatic.png)
 
 ## Guardrails for security and reliability
 
@@ -159,9 +161,9 @@ Your workload runs on user node pools in your subscription that Node Auto Provis
 
 > **Tip:** Prefer a graphical experience? [AKS Desktop](https://learn.microsoft.com/azure/aks/aks-desktop-overview) lets you manage clusters, view workloads, and troubleshoot issues without leaving your desktop.
 
-The managed system nodes will not run on your Azure subscription.
+The managed system nodes will not be running in your Azure subscription.
 
-![Screenshot of the Azure portal showing that the managed syste nodes are not there](portal-vms.png)
+![Screenshot of the Azure portal showing that the managed system nodes are not there](portal-vms.png)
 
 ## Next steps
 
