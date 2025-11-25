@@ -105,15 +105,31 @@ az feature register --name AKS-AutomaticHostedSystemProfilePreview --namespace M
 
 ### Create the cluster
 
-Select a region where managed system node pools are available. See the [regional availability](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools#region-availability) section in the documentation for the current list.
+Select a region where managed system node pools are available. See the [regional availability](https://aka.ms/aks/automatic/managed-systempool-regions) section in the documentation for the current list.
+
+#### Set your variables
+
+```bash
+RESOURCE_GROUP="myResourceGroup"
+CLUSTER_NAME="myAKSCluster"
+LOCATION="westcentralus"  # Choose a supported region (see: https://aka.ms/aks/automatic/managed-systempool-regions)
+```
+
+#### Create the resource group
+
+```bash
+az group create --name $RESOURCE_GROUP --location $LOCATION
+```
+
+#### Create an Automatic cluster with a managed system node pool
 
 ```bash
 az aks create \
-  --resource-group $RESOURCE_GROUP \
-  --name $CLUSTER_NAME \
-  --sku automatic \
-  --enable-hosted-system \
-  --location $LOCATION
+--resource-group $RESOURCE_GROUP \
+--name $CLUSTER_NAME \
+--location $LOCATION \
+--sku automatic \
+--enable-hosted-system
 ```
 
 The output includes `"hostedSystemProfile": { "enabled": true }` confirming the feature is active.
@@ -126,7 +142,7 @@ Get credentials for your cluster and deploy the [AKS Store demo application](htt
 az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
 
 kubectl create ns aks-store-demo
-kubectl apply -n aks-store-demo -f https://raw.githubusercontent.com/Azure-Samples/aks-store-demo/main/aks-store-ingress-quickstart.yaml
+kubectl apply -n aks-store-demo -f https://aka.ms/aks/quickstarts/store.yaml
 ```
 
 Check the ingress address and open it in your browser once an IP is assigned:
@@ -135,7 +151,15 @@ Check the ingress address and open it in your browser once an IP is assigned:
 kubectl get ingress store-front -n aks-store-demo --watch
 ```
 
-Your workload runs on user node pools in your subscription while system services stay on the managed pool.
+![Screenshot of the deployed application on an AKS Automatic cluster](contoso-pet-store.png)
+
+Your workload runs on user node pools in your subscription that Node Auto Provisioning will create, while system services stay on the managed pool.
+
+![Screenshot of AKS desktop application showing the nodes in the cluster](aks-desktop-nodes.png)
+
+The managed system nodes will not run on your Azure subscription.
+
+![Screenshot of the Azure portal showing that the managed syste nodes are not there](portal-vms.png)
 
 > **Tip:** Prefer a graphical experience? [AKS Desktop](https://learn.microsoft.com/azure/aks/aks-desktop-overview) lets you manage clusters, view workloads, and troubleshoot issues without leaving your desktop.
 
