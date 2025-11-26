@@ -24,7 +24,7 @@ Learn more in the official documentation: [Managed system node pools on AKS Auto
 - **Built-in security policies:** Deployment Safeguards enforce pod security standards, restrict access to platform namespaces, and block risky configurations by default.
 - **Automatic upgrades:** AKS keeps platform components current, reducing the risk of running outdated or vulnerable system software.
 
-![Diagram showing how Automatic managed system node pools work](aks-managed-arch.svg)
+![Architecture diagram showing managed system node pools hosted on Microsoft infrastructure with platform components separated from user workloads](aks-managed-arch.svg)
 
 ## Components running on managed system node pools
 
