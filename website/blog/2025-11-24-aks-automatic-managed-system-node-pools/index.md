@@ -30,7 +30,7 @@ Learn more in the official documentation: [Managed system node pools on AKS Auto
 
 ## Components running on managed system node pools
 
-AKS manages the following platform components on the managed system node pool. You don't need to provision capacity for these services:
+AKS manages the following platform components on the managed system node pool. You don't need to provision capacity for these services.
 
 | Component | Description |
 | --- | --- |
@@ -173,12 +173,18 @@ The managed system nodes will not be running in your Azure subscription.
 
 ![Screenshot of the Azure portal showing that the managed system nodes are not there](portal-vms.png)
 
+## Looking ahead
+
+Upcoming improvements include custom virtual network support, optimized platform components with reduced resource overhead, faster cluster provisioning, and a streamlined path to Deployment Safeguards compliance. Longer term, managed system node pools will extend to all existing AKS Automatic clusters.
+
+Follow the [AKS public roadmap](https://aka.ms/aks/roadmap) for updates on these features.
+
 ## Next steps
 
 We can't wait to see what you build.
 
 1. **Try it now:** Follow the [managed system node pools quickstart](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools).
 2. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
-3. **Track progress:** Watch the [AKS public roadmap](https://aka.ms/aks/roadmap) for GA timelines and upcoming features.
+3. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://twitter.com/theakscommunity) on X.
 
 Let us know how managed system node pools simplify your operations and where we can keep raising the bar.
