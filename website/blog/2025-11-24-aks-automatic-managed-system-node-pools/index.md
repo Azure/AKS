@@ -48,10 +48,10 @@ Other add-ons and extensions run on `aks-system-surge` nodes, with scaling handl
 | Aspect | AKS Standard system pool | AKS Automatic managed system pool |
 | --- | --- | --- |
 | **Provisioning** | You create the pool, select VM SKUs, set node count, and configure OS disk size | AKS provisions and sizes the pool for you automatically |
-| **Capacity planning** | You [estimate headroom for system components](https://learn.microsoft.com/azure/aks/use-system-pools?tabs=azure-cli#system-and-user-node-pools) like CoreDNS, konnectivity, metrics-server, and any add-ons; scale manually or configure cluster autoscaler with min/max counts | AKS right-sizes capacity for platform components and scales automatically when add-ons need more room without taking up quota in your subscription |
+| **Capacity planning** | You [estimate headroom for system components](https://learn.microsoft.com/azure/aks/use-system-pools?tabs=azure-cli#system-and-user-node-pools) like CoreDNS, Konnectivity, metrics-server, and any add-ons; scale manually or configure cluster autoscaler with min/max counts | AKS right-sizes capacity for platform components and scales automatically when add-ons need more room without taking up quota in your subscription |
 | **Cost** | System nodes are billed as standard VMs to your subscription; you pay for system pool capacity | System nodes do not run on your subscription |
 
-![Choose your operating model between AKS Standard and AKS Automatic](aks-standard-automatic.png)
+![Comparison diagram showing AKS Standard requiring manual system pool management versus AKS Automatic with fully managed system pools](aks-standard-automatic.png)
 
 ## Guardrails for security and reliability
 
@@ -75,7 +75,7 @@ For detailed specifications, see the [Deployment Safeguards documentation](https
 
 ## Pod Readiness SLA for AKS Automatic
 
-![API Server Uptime SLA: 99.95% control plane uptime. Pod Readiness SLA: 99.9% operations under 5 minutes](automatic-slas.png)
+![Diagram showing two SLA guarantees for AKS Automatic: 99.95% API server uptime and 99.9% pod readiness within 5 minutes](automatic-slas.png)
 
 Uptime means more than a healthy control plane; it means your applications are actually serving users. The [Pod Readiness SLA](https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services) guarantees that pods reach readiness targets, closing the gap between "the cluster is healthy" and "my app is ready."
 
