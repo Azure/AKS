@@ -1,6 +1,6 @@
 ---
 title: "Azure Container Registry Repository Permissions with Attribute-based Access Control (ABAC)"
-date: "2025-11-26"
+date: "2025-12-05"
 description: Azure Container Registry now supports Entra ABAC conditions in RBAC role assignments. This enables identities from CI/CD pipelines and AKS clusters to have granular image push, pull, or delete permissions for specific repositories and namespaces.
 authors:
     - johnson-shi
