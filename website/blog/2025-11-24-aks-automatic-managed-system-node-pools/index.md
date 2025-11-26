@@ -175,8 +175,10 @@ The managed system nodes will not be running in your Azure subscription.
 
 ## Next steps
 
+We can't wait to see what you build.
+
 1. **Try it now:** Follow the [managed system node pools quickstart](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools).
 2. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
 3. **Track progress:** Watch the [AKS public roadmap](https://aka.ms/aks/roadmap) for GA timelines and upcoming features.
 
-We can't wait to see what you build. Let us know how managed system node pools simplify your operations and where we can keep raising the bar.
+Let us know how managed system node pools simplify your operations and where we can keep raising the bar.
