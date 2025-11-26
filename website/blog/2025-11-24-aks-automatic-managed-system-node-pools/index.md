@@ -9,11 +9,15 @@ tags:
 keywords: ["AKS", "Kubernetes", "Automatic", "Managed system node pools"]
 ---
 
- We built Azure Kubernetes Service (AKS) Automatic so teams can ship applications with production-grade defaults from day one. Today we're taking that vision further with **managed system node pools (preview)**: the system pool is now fully managed by AKS, with core platform components hosted on Microsoft infrastructure.
+We built Azure Kubernetes Service (AKS) Automatic so teams can ship applications with production-grade defaults from day one. Today we're taking that vision further with **managed system node pools (preview)**: the system pool is now fully managed by AKS, with core platform components hosted on Microsoft infrastructure.
 
 <!-- truncate -->
 
-> Learn more in the official documentation: [Managed system node pools on AKS Automatic (preview)](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about)
+:::info
+
+Learn more in the official documentation: [Managed system node pools on AKS Automatic (preview)](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about)
+
+:::
 
 ## Why it matters
 
@@ -159,7 +163,11 @@ Your workload runs on user node pools in your subscription that Node Auto Provis
 
 ![Screenshot of AKS desktop application showing the nodes in the cluster](aks-desktop-nodes.png)
 
-> **Tip:** Prefer a graphical experience? [AKS Desktop](https://learn.microsoft.com/azure/aks/aks-desktop-overview) lets you manage clusters, view workloads, and troubleshoot issues without leaving your desktop.
+:::tip
+
+Prefer a graphical experience? [AKS Desktop](https://learn.microsoft.com/azure/aks/aks-desktop-overview) lets you manage clusters, view workloads, and troubleshoot issues without leaving your desktop.
+
+:::
 
 The managed system nodes will not be running in your Azure subscription.
 
