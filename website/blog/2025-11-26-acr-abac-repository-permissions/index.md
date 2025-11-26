@@ -1,6 +1,6 @@
 ---
 title: "Azure Container Registry Repository Permissions with Attribute-based Access Control (ABAC)"
-date: "2025-11-24"
+date: "2025-11-26"
 description: Azure Container Registry now supports Entra ABAC conditions in RBAC role assignments. This enables identities from CI/CD pipelines and AKS clusters to have granular image push, pull, or delete permissions for specific repositories and namespaces.
 authors:
     - johnson-shi
@@ -17,33 +17,25 @@ hide_table_of_contents: false
 draft: false
 ---
 
-Learn how to secure and configure Azure Container Registry (ACR) repository permissions with Microsoft Entra attribute-based access control (ABAC) — now generally available (GA) for all new and existing ACR registries, across all SKUs, and in all Azure regions.
+Enterprises are converging on centralized container registries that serve multiple business units and application domains. In this model, different teams share a single registry, but traditional Azure role-based access control (RBAC) forces an all-or-nothing choice: either grant broad registry-wide permissions or manage separate registries per team. Neither approach aligns with least-privilege principles or modern zero trust architectures.
 
-In ACR, ABAC augments the familiar Azure RBAC model with namespace and repository-level conditions. This enables platform teams to grant least-privilege access at the granularity of specific repositories or entire logical namespaces. This capability is designed for modern multi-tenant platform engineering patterns, where a central container registry serves many business domains. With ABAC, Entra identities belonging to CI/CD systems and Azure Kubernetes Service (AKS) clusters can have least-privilege access to ACR registries.
+Microsoft Entra attribute-based access control (ABAC) for Azure Container Registry solves this challenge. ABAC augments Azure RBAC with fine-grained conditions, enabling platform teams to scope permissions precisely to specific repositories or namespaces within a shared registry. CI/CD pipelines and AKS clusters can now access only their authorized repositories, eliminating overprivileged access while maintaining operational simplicity.
 
 ![AKS cluster pulling from ACR with ABAC](./aks-cluster-pulling-from-acr-with-abac.png)
 
 <!-- truncate -->
 
-## Why this matters for granular permissions
+## How ABAC works in ACR
 
-Enterprises are converging on a central container registry pattern that hosts artifacts and container images for multiple business units and application domains. In this model:
+ACR registries support a permissions mode called "**RBAC Registry + ABAC Repository Permissions**" that makes them ABAC-enabled. Once configured, registry administrators add ABAC conditions to standard Azure RBAC role assignments, scoping permissions to specific repositories or namespace prefixes. This enables:
 
-* CI/CD pipelines from different parts of the business push container images and artifacts only to approved namespaces and repositories within a central registry.
-* AKS clusters, Azure Container Apps (ACA), Azure Container Instances (ACI), and consumers pull only from authorized repositories within a central registry.
-
-With ABAC, these repository and namespace permission boundaries become explicit and enforceable using standard Microsoft Entra identities and role assignments. This aligns with cloud-native zero trust, supply chain hardening, and least-privilege permissions.
-
-## What ABAC in ACR means
-
-ACR registries now support a registry permissions mode called "**RBAC Registry + ABAC Repository Permissions.**" Configuring a registry to this mode makes it ABAC-enabled.
-
-* When a registry is configured to be ABAC-enabled, registry administrators can optionally add ABAC conditions during standard Azure RBAC role assignments.
-* This optional ABAC conditions scope the role assignment’s effect to specific repositories or namespace prefixes.
+* **CI/CD pipelines** to push images only to their approved namespaces and repositories
+* **AKS clusters, Azure Container Apps, and Azure Container Instances** to pull only from authorized repositories
+* **Microsoft Entra identities** to enforce permission boundaries through standard role assignments
 
 ## Enabling ABAC on ACR
 
-ABAC can be enabled on all new and existing ACR registries across all SKUs, either during registry creation or configured on existing registries.
+ABAC can be enabled on all new and existing ACR registries across all SKUs, either during registry creation or configured on existing registries. You can assign RBAC roles with optional ABAC conditions to users, groups, service principals, and managed identities—including AKS kubelet and workload identities, Azure Container Apps identities, and Azure Container Instances identities.
 
 Here is the Azure Portal experience for enabling ABAC on a new ACR during creation:
 
@@ -54,10 +46,6 @@ Here is the Azure Portal experience for enabling ABAC on an existing ACR:
 ![Enabling ABAC on an existing ACR](./acr-enabling-abac-during-acr-update.png)
 
 ABAC can also be enabled on ACR registries through Azure Resource Manager (ARM), Bicep files, Terraform templates, and Azure CLI.
-
-## Identities you can assign
-
-ACR ABAC uses standard Microsoft Entra role assignments. Assign RBAC roles with optional ABAC conditions to users, groups, service principals, and managed identities, including AKS kubelet and workload identities, ACA and ACI identities, and more.
 
 ## ABAC-enabled built-in roles
 
