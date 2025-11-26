@@ -111,7 +111,7 @@ az feature register --name AKS-AutomaticHostedSystemProfilePreview --namespace M
 
 ### Create the cluster
 
-Select a region where managed system node pools are available. See the [regional availabilityQ](https://aka.ms/aks/automatic/managed-systempool-regions) section in the documentation for the current list.
+Select a region where managed system node pools are available. See the [regional availability](https://aka.ms/aks/automatic/managed-systempool-regions) section in the documentation for the current list.
 
 #### Set your variables
 
