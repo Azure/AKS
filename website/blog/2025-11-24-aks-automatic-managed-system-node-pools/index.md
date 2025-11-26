@@ -71,7 +71,7 @@ Since AKS manages the system node pool on your behalf, additional restrictions p
 
 **Maintaining kernel protections:** Seccomp, AppArmor, and SELinux profiles filter system calls and confine container behavior. Policies ensure these protections stay active.
 
-**Enabling safe cluster operations:** Limiting sysctls to safe parameters and protecting node objects ensures platform components run undisturbed and node drains proceed smoothly.
+**Enabling safe cluster operations:** Limiting `sysctls` to safe parameters and protecting node objects ensures platform components run undisturbed and node drains proceed smoothly.
 
 For detailed specifications, see the [Deployment Safeguards documentation](https://learn.microsoft.com/azure/aks/deployment-safeguards).
 
