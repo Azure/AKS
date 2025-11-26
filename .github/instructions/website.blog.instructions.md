@@ -65,7 +65,7 @@ tags: [...]
 ### Critical Elements
 
 1. **Truncation marker**: `<!-- truncate -->` after 2-3 intro paragraphs (shows on listing page)
-2. **Hero image**: Use `./image.png` for same-directory assets
+2. **Hero image**: Use `./hero-image.png` for same-directory assets
 3. **Heading hierarchy**: H2 (`##`) for major sections, H3 (`###`) for subsections
 4. **Alt text**: All images MUST have descriptive alt text
 
@@ -79,6 +79,7 @@ tags: [...]
 
 ### Tone Guidelines
 
+- ✅ Follows the Microsoft Style Guide
 - ✅ Professional yet approachable
 - ✅ Direct and concise
 - ✅ Technical but accessible
@@ -261,6 +262,7 @@ See our previous post on [AKS networking fundamentals](/2024/01/15/aks-networkin
 
 Before submitting a blog post:
 
+- [ ] Content follows the Microsoft Style Guide
 - [ ] Front matter complete and validated
 - [ ] `<!-- truncate -->` after intro (2-3 paragraphs)
 - [ ] All images have descriptive alt text
