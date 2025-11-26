@@ -1,6 +1,6 @@
 ---
 title: "Announcing AKS Automatic managed system node pools (preview)"
-description: "Discover how AKS Automatic now offers Microsoft-managed system node pools so you can ship apps faster with zero infrastructure overhead, built-in add-on reliability, and optimized costs."
+description: "Learn how AKS Automatic now offers managed system node pools to ship apps faster with zero infrastructure overhead and optimized costs."
 date: 2025-11-24
 authors: ["ahmed-sabbour"]
 tags:
@@ -109,7 +109,7 @@ az feature register --name AKS-AutomaticHostedSystemProfilePreview --namespace M
 
 ### Create the cluster
 
-Select a region where managed system node pools are available. See the [regional availability](https://aka.ms/aks/automatic/managed-systempool-regions) section in the documentation for the current list.
+Select a region where managed system node pools are available. Check the [supported regions for managed system node pools](https://aka.ms/aks/automatic/managed-systempool-regions).
 
 #### Set your variables
 
