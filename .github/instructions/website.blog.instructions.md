@@ -7,6 +7,7 @@ applyTo: website/blog/**/index.md
 > **Scope**: File-specific patterns for blog post Markdown files.  
 > **Module Context**: See `website/AGENTS.md` for architecture and workflows.  
 > **Repo Standards**: See `.github/copilot-instructions.md` for general conventions.
+
 ## Front Matter (Required)
 
 Every blog post MUST include:

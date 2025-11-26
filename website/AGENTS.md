@@ -3,6 +3,7 @@
 > **Scope**: Module-specific guidance for the `website/` directory.
 > **For Blog Posts**: See `.github/instructions/website.blog.instructions.md`
 > **For Repo Standards**: See `.github/copilot-instructions.md`
+
 ## Quick Start
 
 **Prerequisites**: Node.js >= 18.0, npm 9+
@@ -91,52 +92,20 @@ website/
 
 ### Adding a Blog Post
 
-**See** `.github/instructions/website.blog.instructions.md` **for content guidelines.**
+See `.github/instructions/website.blog.instructions.md` for content guidelines and writing style.
 
-```bash
-# 1. Create post directory
-mkdir -p blog/2025-10-04-my-post-slug
-cd blog/2025-10-04-my-post-slug
+**Quick steps**:
 
-# 2. Create index.md
-cat > index.md << 'EOF'
----
-title: "Post Title"
-date: 2025-10-04
-description: "SEO description (150-160 chars)"
-authors: [author-key]
-tags: [tag1, tag2]
----
-Intro paragraph explaining the post...
-<!-- truncate -->
-## Main Content
-Details and examples...
-EOF
+1. Create `blog/YYYY-MM-DD-slug/index.md`
+2. Add front matter: `title`, `date`, `description`, `authors`, `tags`
+3. Add `<!-- truncate -->` after intro paragraphs
+4. Place images in same directory (`./image.png`)
+5. Preview: `npm start`
+6. Validate: `npm run build`
 
-# 3. Add images to same directory
-# 4. Preview: npm start
-# 5. Validate: npm run build
-```
+### Front Matter
 
-### Front Matter Requirements
-
-**Required** (post will not appear if missing):
-
-```yaml
-title: "Post Title"
-date: YYYY-MM-DD                      # UTC timezone, can be future-dated
-description: "SEO summary (150-160 chars)"
-authors: [key-from-authors-yml]      # Must exist in blog/authors.yml
-tags: [keys-from-tags-yml]           # Must exist in blog/tags.yml
-```
-**Optional**:
-```yaml
-image: ./hero.png      # Social card & browser preview
-slug: custom-url       # Override auto-slug (default: folder name)
-draft: true            # Hide from production (useful for WIP)
-keywords: ["AKS", "Kubernetes"]  # Extra SEO keywords
-```
-**Validation**: Both `authors.yml` and `tags.yml` entries are required for `npm run build` to succeed. Missing entries cause build failure with clear error messages.
+See `.github/instructions/website.blog.instructions.md` for required and optional fields.
 
 ### Component Development
 
@@ -568,17 +537,14 @@ npm start        # Restart dev server
 
 ### When Adding Blog Posts
 
-- ✅ Use `blog/YYYY-MM-DD-slug/index.md` structure (slug = lowercase, hyphens)
-- ✅ Complete required front matter: `title`, `date` (YYYY-MM-DD), `description` (150-160 chars), `authors`, `tags`
-- ✅ All author keys exist in `blog/authors.yml` (build fails if missing)
-- ✅ All tag keys exist in `blog/tags.yml` (build fails if missing)
-- ✅ Add `<!-- truncate -->` after 2-3 intro paragraphs (for listing preview)
-- ✅ Images in same directory with `./filename.png` (not absolute paths)
-- ✅ Alt text on all images for accessibility
-- ✅ Follow `.github/instructions/website.blog.instructions.md` for content style
-- ✅ Test locally: `npm start` → preview changes
-- ✅ Validate: `npm run build` (must succeed completely)
-- ✅ No `draft: true` in production posts
+Follow `.github/instructions/website.blog.instructions.md` for content requirements.
+
+**Technical validation**:
+
+- ✅ Use `blog/YYYY-MM-DD-slug/index.md` structure
+- ✅ All author/tag keys exist in `blog/authors.yml` and `blog/tags.yml`
+- ✅ Test locally: `npm start`
+- ✅ Validate: `npm run build` (must succeed)
 
 ### When Modifying Config
 

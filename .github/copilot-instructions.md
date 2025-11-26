@@ -44,23 +44,14 @@ AKS/
 
 ### Website (Docusaurus 3.8.1)
 
-**Structure**: Blog-only site using TypeScript/React components with Docusaurus.
+Blog-only site using TypeScript/React components. See `website/AGENTS.md` for:
+- Directory structure and architecture
+- Build pipeline and deployment
+- Component development patterns
+- Cookie consent and analytics setup
+- Troubleshooting common issues
 
-**Key Patterns**:
-- Posts stored as: `blog/YYYY-MM-DD-slug/index.md` (one directory per post)
-- Post metadata in YAML front matter (`title`, `date`, `description`, `authors`, `tags`)
-- Author/tag definitions in `blog/authors.yml` and `blog/tags.yml`
-- Excerpt control: `<!-- truncate -->` marker splits listing preview from full content
-- Images stored in same directory as post: `./image.png` (not routed through assets)
-- Webinar agenda sourced from markdown files: `static/webinars/agenda/YYYY-MM.md` (parsed at build time)
-
-**Build pipeline**:
-1. TypeScript compilation + React rendering
-2. Generate static HTML + RSS/Atom feeds
-3. Copy feeds to both `rss.xml` and `feed.xml` (alias)
-4. Output: `build/` directory for Azure Static Web Apps
-
-**Client-side concerns**: Use `import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment'` to guard browser APIs in components.
+See `.github/instructions/website.blog.instructions.md` for blog content guidelines.
 
 ### Examples Module
 
@@ -108,24 +99,15 @@ AKS/
 
 ### Website (`website/`)
 
-See `website/AGENTS.md` for detailed instructions.
-
-**Quick commands**:
+See `website/AGENTS.md` for detailed build instructions, troubleshooting, and validation.
 
 ```bash
 cd website
-npm install              # Install dependencies (Docusaurus 3.8.1+, Node 18+)
-npm start                # Dev server (http://localhost:3000) with hot reload
-npm run build            # Production build → build/ directory
-npm run typecheck        # TypeScript validation (must pass in CI)
-npm run build 2>&1 | grep -i error  # Check for build-time errors (links, feeds, etc.)
+npm install     # Install dependencies
+npm start       # Dev server with hot reload
+npm run build   # Production build (must succeed)
+npm run typecheck  # TypeScript validation
 ```
-
-**Critical validation**:
-- `npm run build` must succeed completely
-- No broken internal/external links
-- RSS/Atom feeds must be valid XML
-- All authors/tags referenced in posts must exist in `blog/authors.yml`/`blog/tags.yml`
 
 ### Examples
 
@@ -289,18 +271,7 @@ RESOURCE_GROUP="${RESOURCE_GROUP:-my-resource-group}"
 
 ### Website
 
-```bash
-cd website
-npm run build     # Must succeed, checks for broken links and feed validity
-npm run typecheck # Must pass, TypeScript validation
-npm start         # Preview locally at http://localhost:3000
-```
-
-**Pre-commit validation**:
-- All referenced authors exist in `blog/authors.yml`
-- All referenced tags exist in `blog/tags.yml`
-- Images are optimized (reasonable file size)
-- Code blocks have language identifiers
+See `website/AGENTS.md` for troubleshooting and the full quality checklist.
 
 ### Examples
 
@@ -324,20 +295,7 @@ No automated validation—manual review for:
 
 ### Add Blog Post
 
-1. Create directory: `blog/YYYY-MM-DD-slug/`
-2. Add `index.md` with required front matter (title, date, description, authors, tags)
-3. Place `<!-- truncate -->` after intro paragraphs
-4. Include hero image in same directory: `./hero.png`
-5. Use images with `./filename.png` (not absolute paths)
-6. Run `npm start` to preview locally
-7. Run `npm run build` to validate (must succeed)
-8. Reference `.github/instructions/website.blog.instructions.md` for content standards
-9. See `website/AGENTS.md` for post structure examples
-
-**Key Validation**:
-- Author keys exist in `blog/authors.yml`
-- Tag keys exist in `blog/tags.yml`
-- No broken internal/external links
+See `website/AGENTS.md` for the complete workflow and `.github/instructions/website.blog.instructions.md` for content guidelines.
 
 ### Add Example Configuration
 
@@ -353,24 +311,7 @@ No automated validation—manual review for:
 
 ### Update Webinar Agenda
 
-Agendas are sourced from markdown files at build time:
-
-```bash
-cat > website/static/webinars/agenda/2025-11.md << 'EOF'
----
-month: November 2025
----
-## Feature Highlight
-Presenter: Jane Smith, PM Lead
-Featured: true
-- Topic overview
-- Key benefits
-## Q&A Session
-Description: Open floor for community questions
-EOF
-```
-
-**Maintenance**: Component auto-falls back to previous month's agenda if current month file missing.
+See `website/AGENTS.md` for webinar agenda format and maintenance.
 
 ### Integration Points with External Services
 
