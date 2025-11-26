@@ -3,6 +3,7 @@
 > **Scope**: Repository-wide standards, conventions, and build commands.  
 > **Module-Specific**: See `AGENTS.md` files in subdirectories.  
 > **File-Specific**: See `.github/instructions/*.instructions.md` for targeted patterns.
+
 ## Repository Overview
 
 This repository contains resources, examples, and documentation for the Azure Kubernetes Service (AKS) Engineering team:
@@ -42,7 +43,7 @@ AKS/
 
 ## Key Architectural Patterns & Workflows
 
-### Website (Docusaurus 3.8.1)
+### Website (Docusaurus 3.x)
 
 Blog-only site using TypeScript/React components. See `website/AGENTS.md` for:
 - Directory structure and architecture
@@ -224,6 +225,7 @@ spec:
         memory: "128Mi"
         cpu: "500m"
 ```
+
 **Always include**:
 - Resource requests and limits
 - Labels for organization
@@ -336,5 +338,5 @@ See `website/AGENTS.md` for webinar agenda format and maintenance.
 
 ---
 
-**Last Updated**: 2025-10-04  
+**Last Updated**: 2025-11-26  
 **Maintainer**: AKS Engineering Team

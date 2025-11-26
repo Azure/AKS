@@ -586,6 +586,6 @@ Follow `.github/instructions/website.blog.instructions.md` for content requireme
 
 ---
 
-**Last Updated**: 2025-10-04
+**Last Updated**: 2025-11-26
 **Docusaurus**: 3.8.1
 **Node**: >= 18.0
