@@ -2,7 +2,7 @@
 title: "Announcing AKS Automatic managed system node pools (preview)"
 description: "Discover how AKS Automatic now offers Microsoft-managed system node pools so you can ship apps faster with zero infrastructure overhead, built-in add-on reliability, and optimized costs."
 date: 2025-11-24
-authors: [ahmed-sabbour]
+authors: ["ahmed-sabbour"]
 tags:
   - aks-automatic
   - managed-system-node-pools
