@@ -192,4 +192,3 @@ Ready to get started?
 3. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
 
 Share your experience with how managed system node pools simplify your operations and where the service can continue to improve.
-
