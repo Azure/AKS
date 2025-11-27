@@ -65,7 +65,7 @@ Security misconfigurations are a leading cause of container breaches. AKS Automa
 
 These policies also improve workload reliability. Resource limits prevent runaway containers from starving neighbors. Health probes ensure traffic reaches only healthy pods. Anti-affinity rules spread replicas across failure domains. `PodDisruptionBudget` validation keeps node maintenance on schedule.
 
-Since AKS manages the system node pool on your behalf, additional restrictions protect platform stability. User workloads cannot run on the managed system node pool and all create, update, and delete operations on managed system pool resources are denied since Microsoft hosts the system node pool outside of your subscription, as are pod `exec` and `attach` operations.
+Since AKS manages the system node pool on your behalf, additional restrictions protect platform stability. User workloads cannot run on the managed system node pool and all create, update, and delete operations on managed system pool resources are denied since Microsoft hosts the system node pool outside of your subscription, as are pod `exec`, `attach`, and `kubectl debug` operations.
 
 **Preventing container escapes:** Blocking privileged containers, host namespaces, host ports, and hostPath volumes keeps security incidents contained to a single workload rather than spreading across the cluster.
 
