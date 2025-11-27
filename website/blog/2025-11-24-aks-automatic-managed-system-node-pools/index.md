@@ -1,13 +1,17 @@
 ---
-title: "Announcing AKS Automatic managed system node pools (preview)"
-description: "Learn how AKS Automatic now offers managed system node pools to ship apps faster with zero infrastructure overhead and optimized costs."
-date: 2025-11-24
+title: "Announcing AKS Automatic managed system node pools (preview) and the Pod readiness SLA"
+description: "Learn how AKS Automatic now offers managed system node pools to ship apps faster. The Pod readiness SLA guarantees your apps are serving users, beyond a healthy control plane."
+date: 2025-11-26
 authors: ["ahmed-sabbour"]
 tags:
   - aks-automatic
 ---
 
-Azure Kubernetes Service (AKS) Automatic enables teams to ship applications with production-grade defaults from day one. This vision extends further with **managed system node pools (preview)**: the system pool is now fully managed by AKS, with core platform components hosted on Microsoft infrastructure.
+In Azure Kubernetes Service (AKS), nodes with the same configuration (operating system and VM size) are grouped into *node pools*. AKS clusters use two node pool modes: *system node pools* host critical platform components that keep your cluster running, while *user node pools* run your application workloads. Traditionally, you manage both types yourself. You select VM sizes, set node counts, configure autoscaling, and plan capacity for system components. As your cluster grows or workload requirements change, you must revisit these settings to maintain resiliency.
+
+AKS Automatic simplifies this by enabling teams to ship applications with production-grade defaults from day one. With **managed system node pools (preview)**, AKS takes this further. The system pool is now fully managed by Microsoft. Core cluster components run on Microsoft-owned infrastructure, so you no longer provision, patch, or scale system nodes. You focus on your apps while AKS handles the operational overhead of keeping the cluster healthy.
+
+Automatic clusters with managed system node pools also introduce the **Pod readiness SLA**. Beyond API server uptime, AKS now guarantees your pods reach readiness and serve users.
 
 <!-- truncate -->
 
@@ -20,9 +24,10 @@ Learn more in the official documentation: [Managed system node pools on AKS Auto
 ## Why it matters
 
 - **Reduced operational overhead:** AKS handles provisioning, patching, upgrades, and scaling for the system pool, so you spend less time on infrastructure maintenance.
-- **Managed add-on hosting at lower cost:** Core services like Azure Monitor agents, CoreDNS, KEDA, VPA, Konnectivity, Eraser, and Metrics Server run on Microsoft-owned infrastructure. Some add-ons and `DaemonSets` still run on nodes in your subscription.
+- **Managed add-on hosting at lower cost:** Core services like Azure Monitor collectors, CoreDNS, KEDA, VPA, Konnectivity, Eraser, and Metrics Server run on Microsoft-owned infrastructure. Some add-ons and DaemonSets still run on nodes in your subscription.
 - **Built-in security policies:** Deployment Safeguards enforce pod security standards, restrict access to platform namespaces, and block risky configurations by default.
 - **Automatic upgrades:** AKS keeps platform components current, reducing the risk of running outdated or vulnerable system software.
+- **Pod readiness SLA:** A financially backed guarantee that your pods reach readiness and serve traffic, not just that your cluster is healthy.
 
 ![Architecture diagram showing managed system node pools hosted on Microsoft infrastructure with platform components separated from user workloads](aks-managed-arch.svg)
 
@@ -32,14 +37,14 @@ AKS manages the following platform components on the managed system node pool. Y
 
 | Component | Description |
 | --- | --- |
-| [Azure Monitor](https://learn.microsoft.com/azure/aks/monitor-aks) | Collects logs, metrics, and Kubernetes state for observability dashboards and alerts |
+| [Azure Monitor](https://learn.microsoft.com/azure/aks/monitor-aks) | Collects container logs, scrapes Prometheus metrics, and gathers Kubernetes object state for observability and alerting |
 | [CoreDNS](https://learn.microsoft.com/azure/aks/coredns-custom) | Provides cluster DNS resolution for service discovery |
 | [Eraser](https://learn.microsoft.com/azure/aks/image-cleaner) | Removes unused and vulnerable container images from nodes |
 | [KEDA](https://learn.microsoft.com/azure/aks/keda-about) | Scales workloads based on event-driven metrics such as queue length or HTTP traffic |
 | Konnectivity | Maintains secure connectivity between the control plane and nodes |
 | [Metrics Server](https://learn.microsoft.com/azure/aks/monitor-aks-reference) | Exposes resource metrics for Horizontal Pod Autoscaler and kubectl top |
 | [VPA](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) | Recommends and applies optimal CPU and memory requests for pods |
-| [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) | Enables pods to authenticate to Azure services using Microsoft Entra ID |
+| [Workload Identity webhook](https://learn.microsoft.com/azure/aks/workload-identity-overview) | Injects Azure environment variables and projected service account tokens into pods for Microsoft Entra ID authentication |
 
 Other add-ons and extensions run on `aks-system-surge` nodes, with scaling handled by [Node Auto-Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-auto-provisioning). `DaemonSets` run on both managed system node pools and nodes in your subscription.
 
@@ -50,6 +55,7 @@ Other add-ons and extensions run on `aks-system-surge` nodes, with scaling handl
 | **Provisioning** | You create the pool, select VM SKUs, set node count, and configure OS disk size | AKS provisions and sizes the pool for you automatically |
 | **Capacity planning** | You [estimate headroom for system components](https://learn.microsoft.com/azure/aks/use-system-pools?tabs=azure-cli#system-and-user-node-pools) like CoreDNS, Konnectivity, metrics-server, and any add-ons; scale manually or configure cluster autoscaler with min/max counts | AKS right-sizes capacity for platform components and scales automatically when add-ons need more room without taking up quota in your subscription |
 | **Cost** | System nodes are billed as standard VMs to your subscription; you pay for system pool capacity | System nodes do not run on your subscription |
+| **Service Level Agreements (SLAs)** | API server uptime SLA | API server uptime SLA and pod readiness SLA |
 
 ![Comparison diagram showing AKS Standard requiring manual system pool management versus AKS Automatic with fully managed system pools](aks-standard-automatic.png)
 
@@ -59,7 +65,7 @@ Security misconfigurations are a leading cause of container breaches. AKS Automa
 
 These policies also improve workload reliability. Resource limits prevent runaway containers from starving neighbors. Health probes ensure traffic reaches only healthy pods. Anti-affinity rules spread replicas across failure domains. `PodDisruptionBudget` validation keeps node maintenance on schedule.
 
-Since AKS manages the system node pool on your behalf, additional restrictions protect platform stability. User workloads cannot run on the managed system node pool and all create, update, and delete operations on managed system pool resources are denied, as are pod `exec` and `attach` operations.
+Since AKS manages the system node pool on your behalf, additional restrictions protect platform stability. User workloads cannot run on the managed system node pool and all create, update, and delete operations on managed system pool resources are denied since Microsoft hosts the system node pool outside of your subscription, as are pod `exec` and `attach` operations.
 
 **Preventing container escapes:** Blocking privileged containers, host namespaces, host ports, and hostPath volumes keeps security incidents contained to a single workload rather than spreading across the cluster.
 
