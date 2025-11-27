@@ -46,7 +46,7 @@ AKS manages the following platform components on the managed system node pool. Y
 | [VPA](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) | Recommends and applies optimal CPU and memory requests for pods |
 | [Workload Identity webhook](https://learn.microsoft.com/azure/aks/workload-identity-overview) | Injects Azure environment variables and projected service account tokens into pods for Microsoft Entra ID authentication |
 
-Other add-ons and extensions run on `aks-system-surge` nodes, with scaling handled by [Node Auto-Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-auto-provisioning). `DaemonSets` run on both managed system node pools and nodes in your subscription.
+Other add-ons and extensions, outside of that list, run on `aks-system-surge` nodes, with scaling handled by [Node Auto-Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-auto-provisioning). `DaemonSets` run on both managed system node pools and nodes in your subscription.
 
 ## How managed system node pools differ from traditional system node pools
 
