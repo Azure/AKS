@@ -27,7 +27,7 @@ Learn more in the official documentation: [Managed system node pools on AKS Auto
 - **Managed add-on hosting at lower cost:** Core services like Azure Monitor collectors, CoreDNS, KEDA, VPA, Konnectivity, Eraser, and Metrics Server run on Microsoft-owned infrastructure. Some add-ons and DaemonSets still run on nodes in your subscription.
 - **Built-in security policies:** Deployment Safeguards enforce pod security standards, restrict access to platform namespaces, and block risky configurations by default.
 - **Automatic upgrades:** AKS keeps platform components current, reducing the risk of running outdated or vulnerable system software.
-- **Pod readiness SLA:** A financially backed guarantee that your pods reach readiness and serve traffic, not just that your cluster is healthy.
+- **Pod readiness SLA:** A financially backed guarantee that your pods reach readiness and serve traffic, not just that your cluster is healthy. Refer to the [SLA](https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services) for details.
 
 ![Architecture diagram showing managed system node pools hosted on Microsoft infrastructure with platform components separated from user workloads](aks-managed-arch.svg)
 
@@ -67,7 +67,7 @@ These policies also improve workload reliability. Resource limits prevent runawa
 
 Since AKS manages the system node pool on your behalf, additional restrictions protect platform stability. User workloads cannot run on the managed system node pool and all create, update, and delete operations on managed system pool resources are denied since Microsoft hosts the system node pool outside of your subscription, as are pod `exec`, `attach`, and `kubectl debug` operations.
 
-**Preventing container escapes:** Blocking privileged containers, host namespaces, host ports, and hostPath volumes keeps security incidents contained to a single workload rather than spreading across the cluster.
+**Preventing container escapes:** Blocking privileged containers, host namespaces, host ports, and hostPath volumes for alignment with security best practices.
 
 **Reducing attack surface:** Restricting Linux capabilities to a minimal set means processes run with only the permissions they need. Fewer capabilities translate directly to fewer exploitation opportunities.
 
@@ -192,3 +192,4 @@ Ready to get started?
 3. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
 
 Share your experience with how managed system node pools simplify your operations and where the service can continue to improve.
+
