@@ -11,7 +11,7 @@ In Azure Kubernetes Service (AKS), nodes with the same configuration (operating 
 
 AKS Automatic simplifies this by enabling teams to ship applications with production-grade defaults from day one. With **managed system node pools (preview)**, AKS takes this further. The system pool is now fully managed by Microsoft. Core cluster components run on Microsoft-owned infrastructure, so you no longer provision, patch, or scale system nodes. You focus on your apps while AKS handles the operational overhead of keeping the cluster healthy.
 
-Automatic clusters with managed system node pools also introduce the **Pod readiness SLA**. Beyond API server uptime, AKS now guarantees your pods reach readiness and serve users.
+Automatic clusters with managed system node pools also introduce the **Pod readiness Service Level Agreement (SLA)**. Beyond API server uptime, AKS now guarantees your pods reach readiness and serve users.
 
 <!-- truncate -->
 
@@ -63,7 +63,7 @@ Other add-ons and extensions, outside of that list, run on `aks-system-surge` no
 
 Security misconfigurations are a leading cause of container breaches. AKS Automatic addresses this by enforcing [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) that validate every workload against the [Kubernetes Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/) before it reaches your cluster. Baseline policies block dangerous privilege escalations while restricted policies enforce maximum hardening. Compliance flows into Azure Policy dashboards automatically.
 
-These policies also improve workload reliability. Resource limits prevent runaway containers from starving neighbors. Health probes ensure traffic reaches only healthy pods. Anti-affinity rules spread replicas across failure domains. `PodDisruptionBudget` validation keeps node maintenance on schedule.
+These policies also improve workload reliability. Resource limits prevent runaway containers from starving neighbors. Health probes ensure traffic reaches only healthy pods. Anti-affinity rules spread replicas across failure domains. PodDisruptionBudget validation keeps node maintenance on schedule.
 
 Since AKS manages the system node pool on your behalf, additional restrictions protect platform stability. User workloads cannot run on the managed system node pool and all create, update, and delete operations on managed system pool resources are denied since Microsoft hosts the system node pool outside of your subscription, as are pod `exec`, `attach`, and `kubectl debug` operations.
 
@@ -189,6 +189,6 @@ Ready to get started?
 
 1. **Try it now:** Follow the [managed system node pools quickstart](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools).
 2. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
-3. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://twitter.com/theakscommunity) on X.
+3. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
 
 Share your experience with how managed system node pools simplify your operations and where the service can continue to improve.
