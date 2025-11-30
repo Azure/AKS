@@ -17,7 +17,7 @@ Every release section MUST follow this structure:
 ```markdown
 ## Release Notes YYYY-MM-DD
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
 
@@ -303,48 +303,49 @@ Alternative inline format for fewer versions:
 
 #### VHD/Node image updates
 
-Use relative paths to VHD note files. **Validate that referenced files exist in the repository.**
+Use relative paths to VHD note files. **Validate that referenced files exist in the repository.** VHD image names should be wrapped in backticks, consistent with component version formatting.
 
 ```markdown
-* AKS [Image Type] image has been updated to [VERSION](vhd-notes/path/to/VERSION.txt).
+* AKS [Image Type] image has been updated to [`ImageName-VERSION`](vhd-notes/path/to/VERSION.txt).
 ```
 
 **Examples:**
 
 ```markdown
-* AKS Azure Linux v2 image has been updated to [202510.03.0](vhd-notes/AzureLinux/202510.03.0.txt).
-* AKS Azure Linux v3 image has been updated to [202510.03.0](vhd-notes/AzureLinuxv3/202510.03.0.txt).
-* AKS Ubuntu 22.04 node image has been updated to [202510.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt).
-* AKS Ubuntu 24.04 node image has been updated to [202510.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202510.03.0.txt).
+* AKS Azure Linux v2 image has been updated to [`AzureLinux-202510.03.0`](vhd-notes/AzureLinux/202510.03.0.txt).
+* AKS Azure Linux v3 image has been updated to [`AzureLinux-202510.03.0`](vhd-notes/AzureLinuxv3/202510.03.0.txt).
+* AKS Ubuntu 22.04 node image has been updated to [`AKSUbuntu-2204-202510.03.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt).
+* AKS Ubuntu 24.04 node image has been updated to [`AKSUbuntu-2404-202510.03.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202510.03.0.txt).
+* AKS Mariner image has been updated to [`AKSMariner-202305.15.0`](vhd-notes/AKSMariner/202305.15.0.txt).
 ```
 
 #### Windows node images (grouped format)
 
 ```markdown
 * Windows node images
-  * Server 2019 Gen1 – [VERSION](vhd-notes/AKSWindows/2019/VERSION.txt)
-  * Server 2022 Gen1/Gen2 – [VERSION](vhd-notes/AKSWindows/2022/VERSION.txt)
-  * Server 23H2 Gen1/Gen2 – [VERSION](vhd-notes/AKSWindows/23H2/VERSION.txt)
-  * Server 2025 Gen1/Gen2 – [VERSION](vhd-notes/AKSWindows/2025/VERSION.txt)
+  * Server 2019 Gen1 – [`AKSWindows-2019-VERSION`](vhd-notes/AKSWindows/2019/VERSION.txt)
+  * Server 2022 Gen1/Gen2 – [`AKSWindows-2022-VERSION`](vhd-notes/AKSWindows/2022/VERSION.txt)
+  * Server 23H2 Gen1/Gen2 – [`AKSWindows-23H2-VERSION`](vhd-notes/AKSWindows/23H2/VERSION.txt)
+  * Server 2025 Gen1/Gen2 – [`AKSWindows-2025-VERSION`](vhd-notes/AKSWindows/2025/VERSION.txt)
 ```
 
 **Examples:**
 
 ```markdown
 * Windows node images
-  * Server 2019 Gen1 – [17763.7792.250910](vhd-notes/AKSWindows/2019/17763.7792.250910.txt)
-  * Server 2022 Gen1/Gen2 – [20348.4171.250910](vhd-notes/AKSWindows/2022/20348.4171.250910.txt)
-  * Server 23H2 Gen1/Gen2 – [25398.1849.250910](vhd-notes/AKSWindows/23H2/25398.1849.250910.txt)
-  * Server 2025 Gen1/Gen2 – [26100.6584.250910](vhd-notes/AKSWindows/2025/26100.6584.250910.txt)
+  * Server 2019 Gen1 – [`AKSWindows-2019-17763.7792.250910`](vhd-notes/AKSWindows/2019/17763.7792.250910.txt)
+  * Server 2022 Gen1/Gen2 – [`AKSWindows-2022-20348.4171.250910`](vhd-notes/AKSWindows/2022/20348.4171.250910.txt)
+  * Server 23H2 Gen1/Gen2 – [`AKSWindows-23H2-25398.1849.250910`](vhd-notes/AKSWindows/23H2/25398.1849.250910.txt)
+  * Server 2025 Gen1/Gen2 – [`AKSWindows-2025-26100.6584.250910`](vhd-notes/AKSWindows/2025/26100.6584.250910.txt)
 ```
 
 Alternative inline format:
 
 ```markdown
 * Windows node images
-  * Server 2019 Gen1 – [`17763.7558.250714`](vhd-notes/AKSWindows/2019/17763.7558.250714.txt).
-  * Server 2022 Gen1/Gen2 – [`20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt).
-  * Server 23H2 Gen1/Gen2 – [`25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt).
+  * Server 2019 Gen1 – [`AKSWindows-2019-17763.7558.250714`](vhd-notes/AKSWindows/2019/17763.7558.250714.txt).
+  * Server 2022 Gen1/Gen2 – [`AKSWindows-2022-20348.3932.250714`](vhd-notes/AKSWindows/2022/20348.3932.250714.txt).
+  * Server 23H2 Gen1/Gen2 – [`AKSWindows-23H2-25398.1732.250714`](vhd-notes/AKSWindows/23H2/25398.1732.250714.txt).
 ```
 
 ---
@@ -361,13 +362,14 @@ Features and Behavioral changes should include links to relevant documentation.
 | GitHub Issues | `[#XXXX](https://github.com/Azure/AKS/issues/XXXX)` or `[GitHub issue](URL)` | `[#4988](https://github.com/Azure/AKS/issues/4988)` |
 | GitHub Releases | `[vX.Y.Z](https://github.com/org/repo/releases/tag/vX.Y.Z)` | `[v1.7.4](https://github.com/Azure/azure-container-networking/releases/tag/v1.7.4)` |
 | CVE References | `[CVE-YYYY-XXXXX](https://nvd.nist.gov/vuln/detail/CVE-YYYY-XXXXX)` | `[CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874)` |
-| VHD Notes | `[VERSION](vhd-notes/ImageType/VERSION.txt)` | `[202510.03.0](vhd-notes/AzureLinux/202510.03.0.txt)` |
+| VHD Notes | `` [`ImageName-VERSION`](vhd-notes/ImageType/VERSION.txt) `` | `` [`AKSUbuntu-2204-202510.03.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt) `` |
 
 ### Link rules
 
 - **No locale in URLs**: Use `https://learn.microsoft.com/azure/...` not `https://learn.microsoft.com/en-us/azure/...`
 - **Descriptive link text**: Use meaningful text, never "click here" or bare URLs
 - **Component versions**: Always use backticks and link to release notes: `` [`v1.33.5`](URL) ``
+- **VHD image names**: Always use backticks and link to VHD notes: `` [`AKSUbuntu-2204-202510.03.0`](vhd-notes/...) ``
 - **VHD notes**: Use relative paths starting with `vhd-notes/` and **validate files exist**
 
 ---
@@ -418,6 +420,7 @@ Before committing changes to CHANGELOG.md:
 - [ ] All links use descriptive text (no bare URLs or "click here")
 - [ ] Microsoft Learn links don't include `/en-us/`
 - [ ] Component versions are in backticks with release note links
+- [ ] VHD image names are in backticks (e.g., `` [`AKSUbuntu-2204-202306.26.0`](...) ``)
 - [ ] VHD note files exist at the referenced paths
 - [ ] Features and Behavioral changes include documentation links
 - [ ] Content follows Microsoft Style Guide terminology and voice
@@ -489,6 +492,17 @@ See [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster)
 * AKS Ubuntu image updated to [202510.99.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.99.0.txt).
 ```
 ✅ **Verify file exists before referencing**
+
+---
+
+❌ **VHD image names without backticks**
+```markdown
+* AKS Ubuntu 22.04 image has been updated to [AKSUbuntu-2204-202306.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.26.0.txt).
+```
+✅ **VHD image names in backticks**
+```markdown
+* AKS Ubuntu 22.04 image has been updated to [`AKSUbuntu-2204-202306.26.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.26.0.txt).
+```
 
 ---
 
