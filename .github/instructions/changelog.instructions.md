@@ -613,7 +613,6 @@ npx markdownlint-cli CHANGELOG.md
 - **MD052**: Reference links and images should use a label that is defined - ensure all `[link text][label]` references have corresponding `[label]: URL` definitions. In some cases, this may be a syntax error that should be corrected to [link text](URL).
 - **MD059**: Link text should be meaningful - avoid "click here", "link", "this link", "here", etc. or bare URLs; use descriptive text instead. Also aligned with the Microsoft Style Guide.
 
-```
 
 ---
 
