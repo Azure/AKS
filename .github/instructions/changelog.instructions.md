@@ -48,7 +48,7 @@ Every release section MUST follow this structure:
 #### Component updates
 
 * Component Name has been updated to [`vX.Y.Z`](https://github.com/org/repo/releases/tag/vX.Y.Z).
-* AKS Ubuntu 22.04 node image has been updated to [YYYYMM.DD.V](vhd-notes/aks-ubuntu/AKSUbuntu-2204/YYYYMM.DD.V.txt).
+* AKS Ubuntu 22.04 node image has been updated to [`YYYYMM.DD.V`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/YYYYMM.DD.V.txt).
 
 ---
 ```
