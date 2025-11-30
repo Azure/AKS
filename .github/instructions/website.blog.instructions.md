@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 ---
 applyTo: website/blog/**/index.md
 ---

@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 ---
 applyTo: CHANGELOG.md
 ---
@@ -553,6 +554,51 @@ For more information, see [Feature documentation](https://learn.microsoft.com/az
 ✅ **Correct terminology**
 ```markdown
 * The node pool cluster autoscaler in cloud services will...
+```
+
+---
+
+## Markdown Linting
+
+CHANGELOG.md must pass markdown linting with the following exceptions:
+
+### Required inline disable comment
+
+Add this comment at the **top of CHANGELOG.md** (before the title):
+
+```markdown
+<!-- markdownlint-disable MD024 -->
+```
+
+### Disabled rules for CHANGELOG.md
+
+| Rule | Reason |
+|:-----|:-------|
+| MD024 (no-duplicate-heading) | Changelog sections repeat headings like `### Announcements`, `#### Features` across releases |
+
+### Running markdownlint
+
+To validate the CHANGELOG.md file, run markdownlint from the repository root:
+
+```bash
+# Install markdownlint-cli if not already installed
+npm install -g markdownlint-cli
+
+# Run markdownlint on CHANGELOG.md
+markdownlint CHANGELOG.md
+
+# Or use npx without global installation
+npx markdownlint-cli CHANGELOG.md
+```
+
+**Fix all errors before committing.** Common issues include:
+
+- **MD009**: Trailing spaces - remove whitespace at end of lines
+- **MD012**: Multiple consecutive blank lines - use single blank lines
+- **MD047**: Files should end with a single newline character
+- **MD052**: Reference links and images should use a label that is defined - ensure all `[link text][label]` references have corresponding `[label]: URL` definitions. In some cases, this may be a syntax error that should be corrected to [link text](URL).
+- **MD059**: Link text should be meaningful - avoid "click here", "link", "this link", "here", etc. or bare URLs; use descriptive text instead. Also aligned with the Microsoft Style Guide.
+
 ```
 
 ---
