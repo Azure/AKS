@@ -4,13 +4,12 @@ description: "Learn about how to use the nftables mode of kube-proxy on AKS."
 date: 2025-11-19
 authors: [jack-ma]
 tags:
-  - nftables
-  - kube-proxy
+  - networking
 ---
 
-## Summary
-
 We're announcing the preview availability of **nftables** mode for kube-proxy in Azure Kubernetes Service (AKS). This feature was requested in [GitHub issue #5061](https://github.com/Azure/AKS/issues/5061) and is now aligned with the upstream Kubernetes GA release of the nftables backend.
+
+<!-- truncate -->
 
 ## Background
 

@@ -152,6 +152,11 @@ general:
   permalink: /general
   description: Broad AKS topics, announcements, conceptual overviews, and cross-cutting guidance.
 
+gpu:
+  label: GPU
+  permalink: /gpu
+  description: deploying and managing GPU workloads on AKS clusters.
+
 grafana:
   label: Grafana
   permalink: /grafana
@@ -236,6 +241,11 @@ networking:
   label: Networking
   permalink: /networking
   description: Cluster and application networking, eBPF, traffic management, and connectivity patterns.
+
+nvidia:
+  label: NVIDIA
+  permalink: /nvidia
+  description: NVIDIA GPU integration, drivers, and AI/ML acceleration on AKS.
 
 observability:
   label: Observability
