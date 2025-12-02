@@ -155,7 +155,7 @@ general:
 gpu:
   label: GPU
   permalink: /gpu
-  description: Deploying and managing GPU workloads on AKS clusters.
+  description: deploying and managing GPU workloads on AKS clusters.
 
 grafana:
   label: Grafana
