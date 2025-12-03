@@ -43,7 +43,7 @@ az aks identity-binding create \
 
 The identity binding feature uses Kubernetes RBAC to control which pods can access which managed identities via a cluster role with the verb `use-managed-identity`. In this step, we will create a cluster role and cluster role binding to grant the `default` service account in the `default` namespace permission to access the managed identity created in the previous step.
 
-Before deploying the `cluster-role-and-cluster-role-binding.yaml`, please make sure to replace `<mi-client-id>` placeholder in the file with the actual client id of the managed identity.
+Before deploying the `cluster-role-and-cluster-role-binding.yaml`, please make sure to replace the `<mi-client-id>` placeholder in the file with the actual client ID of the managed identity.
 
 ```bash
 kubectl apply -f cluster-role-and-cluster-role-binding.yaml
