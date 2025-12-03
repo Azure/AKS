@@ -15,7 +15,8 @@ spec:
       image: ghcr.io/bahe-msft/azure-workload-identity/identitybinding-msal-go@sha256:d8a262e2aed015790335650f1d1221cbf9270ee209993337e4c6055b39dd00ae
       env:
         - name: KEYVAULT_URL
-          value: https://<your-keyvault-name>.vault.azure.net/
+          # Replace YOUR_KEYVAULT_NAME with your actual Azure Key Vault name
+          value: https://YOUR_KEYVAULT_NAME.vault.azure.net/
         - name: SECRET_NAME
           # Replace with the name of your Key Vault secret
           value: REPLACE_WITH_SECRET_NAME
