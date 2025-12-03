@@ -54,7 +54,7 @@ clusterrolebinding.rbac.authorization.k8s.io/my-first-ib-crb created
 ### 3. Deploy sample application Pod
 
 Following the same step from the [Azure workload identity documentation](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster#grant-permissions-to-access-azure-key-vault), we will deploy a sample pod that uses the managed identity to access a secret from an Azure Key Vault.
-Please make sure to replace the `<your-keyvault-name>` and `<secret-name>` placeholders in the `pod.yaml` file with your actual Key Vault name and secret name.
+Please make sure to replace the `<your-keyvault-name>` and `REPLACE_WITH_SECRET_NAME` placeholders in the `pod.yaml` file with your actual Key Vault name and secret name.
 
 ```bash
 kubectl apply -f pod.yaml
