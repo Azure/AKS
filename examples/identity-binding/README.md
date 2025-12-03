@@ -6,7 +6,7 @@ This example demonstrates how to use the Identity Binding feature in an AKS clus
 
 - Please ensure you have the latest preview version of Azure CLI installed. You can follow the instructions [here](https://learn.microsoft.com/cli/azure/aks/extension?view=azure-cli-latest).
 - Ensure your subscription has the `Microsoft.ContainerService/IdentityBinding` feature flag enabled.
-- Ensure your cluster is enabled with [AKS Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) feature.
+- Ensure your cluster is enabled with [AKS Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster) feature.
 
 
 > [!NOTE]
