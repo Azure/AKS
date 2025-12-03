@@ -36,7 +36,7 @@ az aks identity-binding create \
     --managed-identity-resource-id /subscriptions/<subscription-id>/resourceGroups/<rg-name>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<mi-name>
 ```
 
-> [!Note]
+> [!NOTE]
 > Successful creation of identity binding resource will result in a federated managed identity credential being created in the managed identity with name `aks-identity-binding`. This federated managed identity credential is required by identity binding feature to work.
 
 ### 2. Configure in-cluster access via cluster role and cluster role binding
