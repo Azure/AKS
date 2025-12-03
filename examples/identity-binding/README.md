@@ -72,7 +72,7 @@ pod/my-first-ib-pod created
 > +   azure.workload.identity/use-identity-binding: "true"
 > ```
 
-### 4. Verify the sample application pod
+### 4. Verify the sample application Pod
 
 ```bash
 kubectl logs my-first-ib-pod
