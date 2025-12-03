@@ -39,7 +39,7 @@ az aks identity-binding create \
 > [!NOTE]
 > Successful creation of identity binding resource will result in a federated managed identity credential being created in the managed identity with name `aks-identity-binding`. This federated managed identity credential is required by identity binding feature to work.
 
-### 2. Configure in-cluster access via cluster role and cluster role binding
+### 2. Configure in-cluster access via ClusterRole and ClusterRoleBinding
 
 The identity binding feature uses Kubernetes RBAC to control which pods can access which managed identities via a cluster role with the verb `use-managed-identity`. In this step, we will create a cluster role and cluster role binding to grant the `default` service account in the `default` namespace permission to access the managed identity created in the previous step.
 
