@@ -61,7 +61,7 @@ kubectl apply -f pod.yaml
 pod/my-first-ib-pod created
 ```
 
-> [!Note]
+> [!NOTE]
 > Comparing with the original workload identity example, the below highlights the differences when using identity binding feature:
 > ```diff
 > kind: Pod
