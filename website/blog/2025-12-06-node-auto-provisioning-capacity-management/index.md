@@ -21,16 +21,16 @@ Learn more in the official documentation: [Node Auto Provisioning](https://learn
 ## When Growth Meets a Wall
 Imagine this: your application is thriving, traffic spikes, and Kubernetes promises elasticity. You hit “scale,” expecting magic—only to be greeted by cryptic errors like:
 
-- **Insufficient regional capacity**: Azure can’t allocate the VM size you requested.
-- **Quota exceeded**: Your subscription has hit its compute limits.
-- **Overconstrained allocation**: The VM SKU you chose isn’t available in the zone.
+- **Insufficient regional capacity**: Azure can’t allocate the VM size you requested in a particular region or zone.
+- **Quota exceeded**: Your subscription has hit its compute limits for a particular location or VM Size.
+- **Zonal allocation failure**: The VM Size (also referred to as VM SKU) you chose isn’t available in the zone.
 
-For customers, these aren’t just error messages - they’re roadblocks. Pods remain pending, deployments stall, and SLAs tremble. Scaling isn’t just about adding nodes; it’s about finding capacity in a dynamic, multi-tenant cloud where demand often outpaces supply.
+For customers, these aren’t just error messages - they’re roadblocks. Pods remain pending, deployments stall, and SLAs tremble. Scaling isn’t just about adding nodes; it’s about finding capacity in a dynamic, multi-tenant cloud where demand often outpaces supply. In the case of quota gaps, usually a user can increase their quota in a particular location - but what about when the VM SKU is simply unavailable? This can cause many challenges for users.
 
 ---
 
 ## The Hidden Complexity Behind Capacity
-Why does this happen? Because scaling in Kubernetes isn’t just horizontal—it’s logistical. Every node pool is tied to a VM SKU, region, and zone. When workloads diversify—GPU jobs, memory-heavy analytics, latency-sensitive microservices—the rigid structure of fixed node pools becomes a bottleneck. You’re left juggling trade-offs: Do you overprovision expensive SKUs “just in case”? Or risk underprovisioning and throttling growth? AKS offers to solutions that aim to address these capacity scaling challenges.
+Why does this happen? Because scaling in Kubernetes isn’t just horizontal—it’s logistical. Every node pool is tied to a VM SKU, region, and zone. When workloads diversify (GPU jobs, memory-heavy analytics, latency-sensitive microservices), the rigid structure of fixed node pools becomes a bottleneck. You’re left juggling trade-offs: Do you overprovision expensive SKUs “just in case”? Or risk underprovisioning and throttling growth? AKS offers to solutions that aim to address these capacity scaling challenges.
 
 ---
 
@@ -57,6 +57,8 @@ When a requested VM SKU isn’t available due to regional or zonal capacity cons
 
 This flexibility is key to avoiding hard failures during scale-out.
 
+FOr more on enabling NAP on your cluster, visit our [NAP documentation]() as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass)
+
 ### Virtual Machine Node Pools: Flexibility at Scale
 Traditional node pools are rigid: one SKU per pool. Virtual Machine node pools break that limitation. With multi-SKU support, you can:
 
@@ -76,7 +78,7 @@ Generally, using NAP or Virtual Machine node pools are mutually exclusive. You c
 * (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical.
 * Choose Virtual Machine node pools when you need control—specific SKUs for compliance, predictable performance, or cost modeling.
 
-Avoid NAP if you require strict SKU governance or have regulatory constraints. Avoid VM node pools if you want full automation without manual profiles.
+Avoid NAP if you require strict SKU governance or have regulatory constraints that cannot allow for dynamic autoscaling. Avoid VM node pools if you want full automation without manual profiles.
 
 ## Best Practice for Resilience
 
@@ -85,7 +87,19 @@ To maximize NAP's ability to handle capacity errors:
 * Avoid overly restrictive affinity rules.
 * Enable multiple NodePools with different priorities for fallback.
 
+To maximize Virtual Machine node pool's ability to adapt to capacity errors:
+* Be clear on a list of VM SKUs that can tolerate your workloads
+* Create mixed SKU node pools to offer resiliency to your workloads
+
 ## What’s Next on the AKS Roadmap
 
 NAP: Expect deeper integration with cost optimization tools and advanced disruption policies for even smarter consolidation.
-Virtual Machine node pools: Auto-scaling profiles are on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
+Virtual Machine node pools: Auto-scaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
+
+## Next steps
+
+Ready to get started?
+
+1. **Try one of these features now:** Follow the [Enable node auto provisioning steps](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning) or [create a Virtual Machine node pool](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
+1. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
+1. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
