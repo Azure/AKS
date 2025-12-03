@@ -9,7 +9,7 @@ This example demonstrates how to use the Identity Binding feature in an AKS clus
 - Ensure your cluster is enabled with [AKS Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) feature.
 
 
-> [!Note]
+> [!NOTE]
 > Identity Binding requires preview version of AKS workload identity webhook. Please confirm the following output from the command:
 >
 > ```bash
