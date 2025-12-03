@@ -17,7 +17,7 @@ Every release section MUST follow this structure:
 ```markdown
 ## Release Notes YYYY-MM-DD
 
-> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `vYYYYMMDD`.
 
 ### Announcements
 
