@@ -62,7 +62,7 @@ pod/my-first-ib-pod created
 ```
 
 > [!NOTE]
-> Comparing with the original workload identity example, the below highlights the differences when using identity binding feature:
+> Compared with the original workload identity example, the following highlights the differences when using the identity binding feature:
 > ```diff
 > kind: Pod
 > metadata:
