@@ -27,6 +27,11 @@ airflow:
   permalink: /airflow
   description: Using Apache Airflow for orchestrating data and machine learning workflows on AKS.
 
+aks-automatic:
+  label: AKS Automatic
+  permalink: /aks-automatic
+  description: AKS Automatic for simplified, fully managed Kubernetes cluster operations.
+
 aks-mcp:
   label: AKS-MCP
   permalink: /aks-mcp
