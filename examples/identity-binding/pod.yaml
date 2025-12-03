@@ -17,5 +17,6 @@ spec:
         - name: KEYVAULT_URL
           value: https://<your-keyvault-name>.vault.azure.net/
         - name: SECRET_NAME
-          value: <secret-name>
+          # Replace with the name of your Key Vault secret
+          value: REPLACE_WITH_SECRET_NAME
   restartPolicy: Never
