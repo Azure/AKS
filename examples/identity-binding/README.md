@@ -1,6 +1,6 @@
 # Identity Binding Example
 
-This example demonstrates how to use Identity Binding feature in an AKS cluster.
+This example demonstrates how to use the Identity Binding feature in an AKS cluster.
 
 ## Prerequisites
 
