@@ -278,7 +278,7 @@ resource "helm_release" "example" {
 }
 ```
 
-Run the `terraform apply` command again and you'll see the Helm provider will use the configured authentication method to connect to the AKS Automatic cluster and deploy the AKS Store Demo application.
+Run the `terraform apply` command again and you'll see the Helm provider uses the configured authentication method to connect to the AKS Automatic cluster and deploy the AKS Store Demo application.
 
 If all goes well, you should see output indicating the release was deployed successfully 🚀
 
