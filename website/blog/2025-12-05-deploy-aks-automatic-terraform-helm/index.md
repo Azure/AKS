@@ -139,7 +139,7 @@ With that context, let's explore the two viable options for configuring the Helm
 
 :::tip
 
-Both options require retrieving the connection details—the host URL and cluster CA certificate—from the AKS cluster. Getting these values isn't straightforward; however, you can use the `azurerm_kubernetes_cluster` data source as a workaround.
+Both options require retrieving the connection details—the host URL and cluster CA certificate—from the AKS cluster. The AzApi provider doesn't expose these values directly; however, you can use the `azurerm_kubernetes_cluster` data source as a workaround.
 
 Add the following to the bottom of your `main.tf` file:
 
