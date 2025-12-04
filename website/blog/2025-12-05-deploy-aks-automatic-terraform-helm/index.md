@@ -125,7 +125,7 @@ terraform init
 terraform apply
 ```
 
-After 7 to 10 minutes, your AKS cluster will be ready.
+After 7 to 10 minutes, your AKS cluster is ready.
 
 ## Helm provider authentication options
 
