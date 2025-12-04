@@ -252,14 +252,17 @@ provider "helm" {
         "--client-id",
         var.service_principal_client_id,    # Replace with your SPN client ID
         "--tenant-id",
-        var.service_principal_tenant_id,    # Replace with your SPN tenant ID
-        "--client-secret",
-        var.service_principal_client_secret # Replace with your SPN client secret
+        var.service_principal_tenant_id     # Replace with your SPN tenant ID
       ]
+      env = {
+        AAD_SERVICE_PRINCIPAL_CLIENT_SECRET = var.service_principal_client_secret
+      }
     }
   }
 }
 ```
+
+Note the client secret is passed via the `AAD_SERVICE_PRINCIPAL_CLIENT_SECRET` environment variable instead of the `--client-secret` command-line argument. This approach avoids exposing the secret in process listings or logs where it could be captured by other users or system tooling.
 
 There are additional options for using managed identities as well. See the [kubelogin documentation](https://azure.github.io/kubelogin/index.html) for more details.
 
