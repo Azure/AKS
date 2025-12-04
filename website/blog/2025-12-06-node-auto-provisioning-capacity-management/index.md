@@ -72,6 +72,8 @@ This isn’t just flexibility - it’s versatility in capacity-constrained regio
 
 You can manually add or update alternative VM SKUs into your new or existing node pools. When a requested VM SKU isn't available due to a regional or zonal capacity constraint, you will receive a capacity error, and can resolve this error by simply adding and updating the VM SKUs in your node pools.
 
+For more on enabling NAP on your cluster, visit our [Virtual Machine node pools documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
+
 ## Quick guidance: When to Use What
 Generally, using NAP or Virtual Machine node pools are mutually exclusive. You can use NAP to create standalone VMs which NAP manages instead of traditional node pools, which allows for **mixed SKU autoscaling**. Virtual Machine node pools uses traditional node pools, but allows for **mixed SKU manual scaling**.
 
@@ -90,6 +92,12 @@ To maximize NAP's ability to handle capacity errors:
 To maximize Virtual Machine node pool's ability to adapt to capacity errors:
 * Be clear on a list of VM SKUs that can tolerate your workloads
 * Create mixed SKU node pools to offer resiliency to your workloads
+
+## Getting started with node auto provisioning
+
+
+## Getting started with virtual machine node pools
+
 
 ## What’s next on the AKS roadmap
 
