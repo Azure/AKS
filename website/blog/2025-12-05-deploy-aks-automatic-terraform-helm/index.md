@@ -236,8 +236,8 @@ For example, to use a service principal with a client secret, the Helm provider 
 ```hcl
 provider "helm" {
   kubernetes = {
-    host                   = data.azurerm_kubernetes_cluster.aks.kube_config.0.host
-    cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.aks.kube_config.0.cluster_ca_certificate)
+    host                   = data.azurerm_kubernetes_cluster.this.kube_config.0.host
+    cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)
     exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "kubelogin"             # Make sure kubelogin is installed and accessible in PATH
