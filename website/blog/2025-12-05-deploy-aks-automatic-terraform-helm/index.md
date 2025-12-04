@@ -192,7 +192,7 @@ provider "helm" {
 }
 ```
 
-This configuration uses the host and cluster CA certificate from the AKS cluster data source gains access to the cluster using the bearer token from the external data source.
+This configuration uses the host and cluster CA certificate from the AKS cluster data source and gains access to the cluster using the bearer token from the external data source.
 
 If you are solely using Azure CLI authentication (e.g., `az login`), this approach works well. However, if you're deploying from a CI/CD pipeline or using service principals or managed identities, the next option is more flexible.
 
