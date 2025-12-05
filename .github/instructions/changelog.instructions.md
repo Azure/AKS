@@ -28,6 +28,8 @@ Every release section MUST follow this structure:
 #### Kubernetes versions
 
 * AKS patch versions X.XX.X, X.XX.X are now available.
+* AKS LTS (Long Term Support) patch versions are now available:
+  * Kubernetes 1.XX.XXX-akslts - [Changelog](link-to-changelog)
 
 #### Features
 
