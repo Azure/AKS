@@ -27,6 +27,11 @@ airflow:
   permalink: /airflow
   description: Using Apache Airflow for orchestrating data and machine learning workflows on AKS.
 
+aks-automatic:
+  label: AKS Automatic
+  permalink: /aks-automatic
+  description: AKS Automatic for simplified, fully managed Kubernetes cluster operations.
+
 aks-mcp:
   label: AKS-MCP
   permalink: /aks-mcp
@@ -121,6 +126,11 @@ faiss:
   label: FAISS
   permalink: /faiss
   description: Vector indexing with FAISS for similarity search and RAG pipelines on AKS.
+
+flatcar-container-linux:
+  label: Flatcar Container Linux
+  permalink: /flatcar-container-linux
+  description: Flatcar Container Linux distribution available on AKS.
 
 flux:
   label: Flux
