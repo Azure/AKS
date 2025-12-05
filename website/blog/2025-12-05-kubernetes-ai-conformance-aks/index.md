@@ -33,7 +33,7 @@ The AI Conformance Program addresses these challenges by establishing a verified
 - **Workload mobility**: Applications built for one conformant platform work on any other, reducing vendor lock-in
 - **Ecosystem compatibility**: Popular ML frameworks, operators, and tools function reliably because they target a known, tested baseline
 
-According to [Linux Foundation Research on Sovereign AI](https://www.linuxfoundation.org/hubfs/Research%20Reports/lfr_sovereign_ai_090525a.pdf), 82% of organizations are already building custom AI solutions, and 58% use Kubernetes to support those workloads. With 90% of enterprises identifying open source software as critical to their AI strategies, the risk of fragmentation and inconsistent performance is rising. The Certified AI Platform Conformance Program responds directly to this need.
+According to [Linux Foundation Research on Sovereign AI](https://www.linuxfoundation.org/hubfs/Research%20Reports/lfr_sovereign_ai_090525a.pdf), 82% of organizations are already building custom AI solutions, and 58% use Kubernetes to support those workloads. With 90% of enterprises identifying open source software as critical to their AI strategies, the risk of fragmentation and inconsistent performance is rising. The Kubernetes AI Conformance Program responds directly to this need.
 
 ## Key requirements for AI Conformance
 
