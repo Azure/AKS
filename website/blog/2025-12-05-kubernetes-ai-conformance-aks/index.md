@@ -26,14 +26,14 @@ The program is developed in the open by the [WG AI Conformance](https://github.c
 
 Running AI workloads on Kubernetes introduces unique challenges. Teams often struggle with GPU driver compatibility, specialized scheduling requirements for distributed training, and the complexity of exposing inference endpoints at scale. Without a common baseline, organizations risk building on fragmented, vendor-specific implementations that limit flexibility.
 
+According to [Linux Foundation Research on Sovereign AI](https://www.linuxfoundation.org/hubfs/Research%20Reports/lfr_sovereign_ai_090525a.pdf), 82% of organizations are already building custom AI solutions, and 58% use Kubernetes to support those workloads. With 90% of enterprises identifying open source software as critical to their AI strategies, the risk of fragmentation and inconsistent performance is rising. The Kubernetes AI Conformance Program responds directly to this need.
+
 The AI Conformance Program addresses these challenges by establishing a verified set of capabilities that every conformant platform must support. When you deploy on AKS, a certified AI-conformant platform, you benefit from:
 
 - **Predictable scaling**: Your training jobs and inference services scale consistently using standardized APIs and autoscaling behaviors
 - **Hardware optimization**: GPU and accelerator resources are managed through proven Kubernetes primitives, maximizing utilization
 - **Workload mobility**: Applications built for one conformant platform work on any other, reducing vendor lock-in
 - **Ecosystem compatibility**: Popular ML frameworks, operators, and tools function reliably because they target a known, tested baseline
-
-According to [Linux Foundation Research on Sovereign AI](https://www.linuxfoundation.org/hubfs/Research%20Reports/lfr_sovereign_ai_090525a.pdf), 82% of organizations are already building custom AI solutions, and 58% use Kubernetes to support those workloads. With 90% of enterprises identifying open source software as critical to their AI strategies, the risk of fragmentation and inconsistent performance is rising. The Kubernetes AI Conformance Program responds directly to this need.
 
 ## Key requirements for AI Conformance
 
@@ -182,4 +182,5 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 - [WG AI Conformance Working Group](https://github.com/kubernetes/community/tree/master/wg-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
+
 
