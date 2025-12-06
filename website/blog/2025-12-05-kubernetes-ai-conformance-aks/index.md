@@ -68,7 +68,7 @@ GPU nodes are expensive. The cluster autoscaler must intelligently provision GPU
 
 #### Pod autoscaling
 
-Inference workloads need to scale pod replicas based on demand. The HPA must work correctly with GPU-enabled pods and support custom metrics relevant to AI workloads. On AKS, you can use [KEDA with NVIDIA DCGM metrics](https://learn.microsoft.com/azure/aks/autoscale-gpu-workloads-with-keda) to scale pods based on GPU metrics like `DCGM_FI_DEV_GPU_UTIL` (GPU utilization percentage). This enables scaling decisions based on actual GPU usage rather than just CPU or memory.
+Inference workloads need to scale pod replicas based on demand. The Horizontal Pod Autoscaler (HPA) must work correctly with GPU-enabled pods and support custom metrics relevant to AI workloads. On AKS, you can use [KEDA with NVIDIA DCGM metrics](https://learn.microsoft.com/azure/aks/autoscale-gpu-workloads-with-keda) to scale pods based on GPU metrics like `DCGM_FI_DEV_GPU_UTIL` (GPU utilization percentage). This enables scaling decisions based on actual GPU usage rather than just CPU or memory.
 
 ### Observability
 
@@ -182,5 +182,6 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 - [WG AI Conformance Working Group](https://github.com/kubernetes/community/tree/master/wg-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
+
 
 
