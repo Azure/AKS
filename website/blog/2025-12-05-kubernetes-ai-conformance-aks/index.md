@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes AI Conformance: What It Is and How AKS Achieves It"
 date: 2025-12-05
-description: "Learn about the Kubernetes AI Conformance Program, why it matters for production AI/ML workloads, and step-by-step guidance to create AI-conformant AKS clusters."
+description: "Learn about the Kubernetes AI Conformance Program, why it matters for AI/ML workloads, and how to create AI-conformant AKS clusters."
 authors: [ahmed-sabbour]
 tags: [ai, best-practices, general]
 ---
@@ -182,3 +182,4 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 - [WG AI Conformance Working Group](https://github.com/kubernetes/community/tree/master/wg-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
+
