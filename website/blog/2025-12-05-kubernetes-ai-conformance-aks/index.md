@@ -58,7 +58,8 @@ Inference services often need sophisticated traffic routing: sending a percentag
 
 #### Gang scheduling
 
-Distributed training jobs often require multiple pods to start simultaneously. If only some pods in a training job get scheduled, the others wait indefinitely, wasting resources. Gang scheduling solves this by treating a group of pods as a single unit: either all pods get scheduled together, or none do. You can run [Kueue on AKS](https://learn.microsoft.com/azure/aks/kueue-overview) to enable gang scheduling, and there's guidance on [deploying batch jobs with Kueue](https://learn.microsoft.com/azure/aks/deploy-batch-jobs-with-kueue).
+Distributed training jobs often require multiple pods to start simultaneously. If only some pods in a training job get scheduled, the others wait indefinitely, wasting resources. Gang scheduling solves this by treating a group of pods as a single unit: either all pods get scheduled together, or none do. You can run [Kueue on AKS](https://learn.microsoft.com/azure/aks/kueue-overview) to enable gang scheduling. To get started, refer to the guidance on [deploying batch jobs with Kueue](https://learn.microsoft.com/azure/aks/deploy-batch-jobs-with-kueue).
+
 
 #### Cluster autoscaling
 
