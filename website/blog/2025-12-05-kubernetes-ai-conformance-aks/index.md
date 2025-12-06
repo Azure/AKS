@@ -45,7 +45,8 @@ Here are the core requirements that AKS meets for v1.34, with links to the evide
 
 #### Dynamic Resource Allocation (DRA)
 
-Traditional resource requests in Kubernetes use simple numeric counts (for example, `nvidia.com/gpu: 1`). DRA introduces a richer model where workloads can specify device characteristics, request specific GPU models, or express preferences about memory and compute capabilities. DRA APIs are enabled by default in Kubernetes 1.34 on AKS. For a deep dive into how DRA works and how to use it with GPU drivers, see our blog post on [DRA: Devices and Drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes).
+Traditional resource requests in Kubernetes use simple numeric counts (for example, `nvidia.com/gpu: 1`). DRA introduces a more flexible model where workloads can specify device characteristics, request specific GPU models, or express preferences about memory and compute capabilities. DRA APIs are enabled by default in Kubernetes 1.34 on AKS. For a deep dive into how DRA works and how to use it with GPU drivers, see our blog post on [DRA: Devices and Drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes).
+
 
 ### Networking
 
