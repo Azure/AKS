@@ -26,7 +26,7 @@ The program is developed in the open by the [WG AI Conformance](https://github.c
 
 Running AI workloads on Kubernetes introduces unique challenges. Teams often struggle with GPU driver compatibility, specialized scheduling requirements for distributed training, and the complexity of exposing inference endpoints at scale. Without a common baseline, organizations risk building on fragmented, vendor-specific implementations that limit flexibility.
 
-According to [Linux Foundation Research on Sovereign AI](https://www.linuxfoundation.org/hubfs/Research%20Reports/lfr_sovereign_ai_090525a.pdf), 82% of organizations are already building custom AI solutions, and 58% use Kubernetes to support those workloads. With 90% of enterprises identifying open source software as critical to their AI strategies, the risk of fragmentation and inconsistent performance is rising. The Kubernetes AI Conformance Program responds directly to this need.
+According to [Linux Foundation Research on Sovereign AI](https://www.linuxfoundation.org/hubfs/Research%20Reports/lfr_sovereign_ai_090525a.pdf), 82% of organizations are already building custom AI solutions, and 58% use Kubernetes to support those workloads. With 90% of enterprises identifying open-source software as critical to their AI strategies, the risk of fragmentation and inconsistent performance is rising. The Kubernetes AI Conformance Program responds directly to this need.
 
 The AI Conformance Program addresses these challenges by establishing a verified set of capabilities that every conformant platform must support. When you deploy on AKS, a certified AI-conformant platform, you benefit from:
 
