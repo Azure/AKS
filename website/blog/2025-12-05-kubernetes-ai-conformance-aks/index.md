@@ -52,7 +52,8 @@ Traditional resource requests in Kubernetes use simple numeric counts (for examp
 
 #### Gateway API for AI inference
 
-Inference services often need sophisticated traffic routing: sending a percentage of requests to a new model version, routing based on request headers (including OpenAI protocol headers), or implementing canary deployments. AKS supports Gateway API through both the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-gateway-api) and [Application Gateway for Containers](https://aka.ms/agc/addon).
+Inference services often need sophisticated traffic routing: sending a percentage of requests to a new model version, routing based on request headers (including OpenAI protocol headers), or implementing canary deployments. The Kubernetes Gateway API introduces improved routing capabilities for a more flexible architecture for traffic management. AKS supports Gateway API through both the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-gateway-api) and [Application Gateway for Containers](https://aka.ms/agc/addon).
+
 
 ### Scheduling and orchestration
 
