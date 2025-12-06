@@ -78,7 +78,8 @@ Observability is critical for AI workloads. Platforms must expose GPU utilizatio
 
 #### AI service metrics
 
-Platforms must provide a monitoring system capable of discovering and collecting metrics from workloads that expose them in standard formats like Prometheus. AKS integrates with [Azure Monitor for containers](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable) and provides [Container Insights GPU monitoring](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-gpu-monitoring). For AI inference workloads, you can [monitor and visualize vLLM inference metrics](https://learn.microsoft.com/azure/aks/ai-toolchain-operator-monitoring) with Azure Managed Prometheus and Azure Managed Grafana when using the AI toolchain operator (KAITO) add-on.
+Platforms must provide a monitoring system capable of discovering and collecting metrics from workloads that expose them in standard formats like Prometheus. AKS integrates with [Azure Monitor for containers](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable) and provides [Container Insights GPU monitoring](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-gpu-monitoring) for observability needs in your environment. For AI inference workloads, you can [monitor and visualize vLLM inference metrics](https://learn.microsoft.com/azure/aks/ai-toolchain-operator-monitoring) with Azure Managed Prometheus and Azure Managed Grafana when using the AI toolchain operator (KAITO) add-on.
+
 
 ### Security
 
