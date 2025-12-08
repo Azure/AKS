@@ -163,7 +163,7 @@ The Kubernetes AI Conformance Program is developed in the open. You can contribu
 
 - Joining the [WG AI Conformance](https://github.com/kubernetes/community/tree/master/wg-ai-conformance) working group
 - Participating in discussions on the [Kubernetes Slack #wg-ai-conformance channel](https://kubernetes.slack.com/messages/wg-ai-conformance)
-- For more information about the program and how to get involved, check out the [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)).
+- For more information about the program and how to get involved, check out the [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)
 
 ## Conclusion
 
