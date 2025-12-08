@@ -35,7 +35,7 @@ The AI Conformance Program addresses these challenges by establishing a verified
 
 ## Key requirements for AI Conformance
 
-The Kubernetes AI Conformance program maintains a versioned specification of requirements for each Kubernetes release starting with v1.33. Each requirement goes through a graduation process, starting as a SHOULD recommendation and may eventually becoming a MUST for certification. 
+The Kubernetes AI Conformance program maintains a versioned specification of requirements for each Kubernetes release starting with v1.33. Each requirement goes through a graduation process, starting as a SHOULD recommendation and may eventually becoming a MUST for certification.
 
 Here are the requirements for Kubernetes v1.34 and how AKS meets each requirement:
 
@@ -163,7 +163,7 @@ The Kubernetes AI Conformance Program is developed in the open. You can contribu
 
 - Joining the [WG AI Conformance](https://github.com/kubernetes/community/tree/master/wg-ai-conformance) working group
 - Participating in discussions on the [Kubernetes Slack #wg-ai-conformance channel](https://kubernetes.slack.com/messages/wg-ai-conformance)
-- For more information about the program and how to get involved, check out the [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)). 
+- For more information about the program and how to get involved, check out the [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)).
 
 ## Conclusion
 
@@ -176,6 +176,3 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 - [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF Kubernetes AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
-
-
-
