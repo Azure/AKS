@@ -9,7 +9,6 @@ tags: [ai, best-practices, general]
 
 As organizations increasingly move AI workloads into production, they need consistent and interoperable infrastructure they can rely on. The Cloud Native Computing Foundation (CNCF) launched the **Kubernetes AI Conformance Program** to address this need by creating open, community-defined standards for running AI workloads on Kubernetes. See [CNCF Kubernetes AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/) at KubeCon North America 2025.
 
-
 Azure Kubernetes Service (AKS) is proud to be among the first platforms certified for Kubernetes AI Conformance, demonstrating our commitment to providing customers with a verified, standardized platform for running AI workloads.
 
 <!-- truncate -->
@@ -20,15 +19,9 @@ The [Kubernetes AI Conformance Program](https://github.com/cncf/k8s-ai-conforman
 
 The program is developed in the open by the Kubernetes community.
 
-
-- Defining a reference architecture for AI workloads on Kubernetes
-- Establishing framework support requirements
-- Creating test criteria for key capabilities such as GPU integration, volume handling, and job-level networking
-
 ## Why AI Conformance matters
 
 Running AI workloads on Kubernetes introduces unique challenges. Teams often struggle with GPU driver compatibility, specialized scheduling requirements for distributed training, and the complexity of exposing inference endpoints at scale. Without a common baseline, organizations risk building on fragmented, vendor-specific implementations that limit flexibility and portability.
-
 
 According to [Linux Foundation Research on Sovereign AI](https://www.linuxfoundation.org/hubfs/Research%20Reports/lfr_sovereign_ai_090525a.pdf), 82% of organizations are already building custom AI solutions, and 58% use Kubernetes to support those workloads. With 90% of enterprises identifying open-source software as critical to their AI strategies, the risk of fragmentation and inconsistent performance is rising. The Kubernetes AI Conformance Program responds directly to this need.
 
@@ -46,13 +39,11 @@ The Kubernetes AI Conformance program maintains a versioned specification of req
 
 Here are the requirements for Kubernetes v1.34 and how AKS meets each requirement:
 
-
 ### Accelerators
 
 #### Dynamic Resource Allocation (DRA)
 
 Traditional resource requests in Kubernetes use simple numeric counts (for example, `nvidia.com/gpu: 1`). DRA introduces a more flexible model where workloads can specify device characteristics, request specific GPU models, or express preferences about memory and compute capabilities. DRA APIs are enabled by default in Kubernetes 1.34 on AKS. For a deep dive into how DRA works and how to use it with GPU drivers, see our blog post on [DRA: Devices and Drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes).
-
 
 ### Networking
 
@@ -60,13 +51,11 @@ Traditional resource requests in Kubernetes use simple numeric counts (for examp
 
 Inference services often need sophisticated traffic routing: sending a percentage of requests to a new model version, routing based on request headers (including OpenAI protocol headers), or implementing canary deployments. The Kubernetes Gateway API introduces improved routing capabilities for a more flexible architecture for traffic management. AKS supports Gateway API through both the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-gateway-api) and [Application Gateway for Containers](https://aka.ms/agc/addon).
 
-
 ### Scheduling and orchestration
 
 #### Gang scheduling
 
 Distributed training jobs often require multiple pods to start simultaneously. If only some pods in a training job get scheduled, the others wait indefinitely, wasting resources. Gang scheduling solves this by treating a group of pods as a single unit: either all pods get scheduled together, or none do. You can run [Kueue on AKS](https://learn.microsoft.com/azure/aks/kueue-overview) to enable gang scheduling. To get started, refer to the guidance on [deploying batch jobs with Kueue](https://learn.microsoft.com/azure/aks/deploy-batch-jobs-with-kueue).
-
 
 #### Cluster autoscaling
 
@@ -86,7 +75,6 @@ Observability is critical for AI workloads. Platforms must expose GPU utilizatio
 
 Platforms must provide a monitoring system capable of discovering and collecting metrics from workloads that expose them in standard formats like Prometheus. AKS integrates with [Azure Monitor for containers](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable) and provides [Container Insights GPU monitoring](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-gpu-monitoring) for observability needs in your environment. For AI inference workloads, you can [monitor and visualize vLLM inference metrics](https://learn.microsoft.com/azure/aks/ai-toolchain-operator-monitoring) with Azure Managed Prometheus and Azure Managed Grafana when using the AI toolchain operator (KAITO) add-on.
 
-
 ### Security
 
 #### Secure accelerator access
@@ -101,9 +89,7 @@ Modern AI platforms rely on Kubernetes operators to manage complex resources lik
 
 ## Creating an AI-conformant AKS cluster
 
-
 To create an AI-conformant AKS cluster, be sure to choose a certified Kubernetes version with the appropriate features enabled.
-
 
 ### Step 1. Create an AKS cluster
 
@@ -145,7 +131,7 @@ az aks update \
 
 ### Step 3. Add a GPU node pool
 
-For GPU-accelerated workloads, add a [fully managed GPU node pool (preview)](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes) with [GPU-enabled VMs](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#gpu-accelerated). AKS automatically installs the GPU driver, device plugin, and DCGM metrics exporter.
+For GPU-accelerated workloads, add a [fully managed GPU node pool (preview)](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes) with [GPU-enabled VMs](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#gpu-accelerated). For a select set of NVIDIA GPU SKUs, AKS automatically installs the GPU driver, device plugin, and DCGM metrics exporter.
 
 First, register the feature flag:
 
@@ -179,7 +165,6 @@ The Kubernetes AI Conformance Program is developed in the open. You can contribu
 - Participating in discussions on the [Kubernetes Slack #wg-ai-conformance channel](https://kubernetes.slack.com/messages/wg-ai-conformance)
 - For more information about the program and how to get involved, check out the [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)). 
 
-
 ## Conclusion
 
 The Kubernetes AI Conformance Program represents an important step forward for the AI ecosystem, aligning the community around shared standards that make deploying AI at scale more consistent and reliable. By using an AI-conformant platform like AKS, you can build AI applications that are production-ready, portable, and efficient without reinventing infrastructure for every deployment.
@@ -189,10 +174,8 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 ## Resources
 
 - [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)
-- [WG AI Conformance Working Group](https://github.com/kubernetes/community/tree/master/wg-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF Kubernetes AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
-
 
 
 
