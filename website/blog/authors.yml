@@ -77,6 +77,16 @@ sachi-desai:
   socials:
     linkedin: sachi-desai
 
+bangqi-zhu:
+  name: Bangqi Zhu
+  title: Senior Software Engineer
+  url: https://www.linkedin.com/in/banchero-bangqi-zhu-60007014a
+  image_url: https://github.com/bangqipropel.png
+  page: true
+  socials:
+    linkedin: banchero-bangqi-zhu-60007014a
+    github: bangqipropel
+
 quentin-petraroia:
   name: Quentin Petraroia
   title: Product Manager for Azure Kubernetes Service
