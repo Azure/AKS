@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes AI Conformance: What It Is and How AKS Achieves It"
+title: "AI Conformant Azure Kubernetes Service (AKS) clusters"
 date: 2025-12-05
 description: "Learn about the Kubernetes AI Conformance Program, why it matters for AI/ML workloads, and how to create AI-conformant AKS clusters."
 authors: [ahmed-sabbour, rita-zhang]
@@ -85,7 +85,7 @@ Access to accelerators from within containers must be properly isolated and medi
 
 #### AI operator support
 
-Modern AI platforms rely on Kubernetes operators to manage complex resources like training jobs, model servers, and distributed training coordinators. AKS supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) and [Ray on AKS](https://learn.microsoft.com/azure/aks/ray-overview), demonstrating that operators with custom resource definitions can be installed and operate correctly.
+Modern AI platforms rely on Kubernetes operators to manage complex resources like training jobs, model servers, and distributed training coordinators. AKS supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) to run inferencing, fine-tuning, and retrieval augmented generation (RAG). You can also run install and run operators with custom resource definitions, such as [Ray on AKS](https://learn.microsoft.com/azure/aks/ray-overview).
 
 ## Creating an AI-conformant AKS cluster
 
@@ -99,6 +99,7 @@ AKS achieved AI Conformance certification starting with Kubernetes 1.34. Create 
 az aks create \
   --resource-group <resource-group> \
   --name <cluster-name> \
+  --enable-azure-monitor-metrics \
   --kubernetes-version 1.34.0
 ```
 
@@ -147,7 +148,7 @@ az aks nodepool add \
   --cluster-name <cluster-name> \
   --name gpunp \
   --node-count 1 \
-  --node-vm-size Standard_NC6s_v3 \
+  --node-vm-size Standard_NC40ads_H100_v5 \
   --node-taints sku=gpu:NoSchedule \
   --enable-cluster-autoscaler \
   --min-count 1 \
@@ -155,7 +156,7 @@ az aks nodepool add \
   --tags EnableManagedGPUExperience=true
 ```
 
-Your cluster now meets the requirements for Kubernetes AI Conformance.
+Your cluster now meets the requirements for Kubernetes AI Conformance. You can now optionally [install and run Kueue](https://learn.microsoft.com/azure/aks/kueue-overview) to enable gang scheduling and [deploy batch jobs](https://learn.microsoft.com/azure/aks/deploy-batch-jobs-with-kueue).
 
 ## Get involved
 
@@ -176,3 +177,4 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 - [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF Kubernetes AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
+
