@@ -30,7 +30,6 @@ According to [Linux Foundation Research on Sovereign AI](https://www.linuxfounda
 The AI Conformance Program addresses these challenges by establishing a verified set of capabilities that every conformant platform must support. When you deploy on AKS, a certified AI-conformant platform, you benefit from:
 
 - **Predictable scaling**: Your AI workloads scale consistently using standardized APIs and autoscaling behaviors
-
 - **Hardware optimization**: GPU and accelerator resources are managed through proven Kubernetes primitives, maximizing utilization
 - **Workload mobility**: Applications built for one conformant platform work on any other, reducing vendor lock-in
 - **Ecosystem compatibility**: Popular ML frameworks, operators, and tools function reliably because they target a known, tested baseline
