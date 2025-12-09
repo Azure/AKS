@@ -86,7 +86,7 @@ Access to accelerators from within containers must be properly isolated and medi
 
 #### AI operator support
 
-Modern AI platforms rely on Kubernetes operators to manage complex resources like training jobs, model servers, and distributed training coordinators. AKS supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) to run inferencing, fine-tuning, and retrieval augmented generation (RAG). You can also run install and run operators with custom resource definitions, such as [Ray on AKS](https://learn.microsoft.com/azure/aks/ray-overview).
+Modern AI platforms rely on Kubernetes operators to manage complex resources like training jobs, model servers, and distributed training coordinators. AKS supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) to run inferencing, fine-tuning, and retrieval augmented generation (RAG). You can also install and run operators with custom resource definitions, such as [Ray on AKS](https://learn.microsoft.com/azure/aks/ray-overview).
 
 ## Creating an AI-conformant AKS cluster
 
