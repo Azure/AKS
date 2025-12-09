@@ -11,7 +11,7 @@ As organizations increasingly move AI workloads into production, they need consi
 
 Azure Kubernetes Service (AKS) is proud to be among the first platforms certified for Kubernetes AI Conformance, demonstrating our commitment to providing customers with a verified, standardized platform for running AI workloads.
 
-<img width="1280" height="500" alt="Picture showing the Azure Kubernetes Service (AKS) logo and the AI Conformance badge" src="aks-ai-conformance-crop.png" />
+![Picture showing the Azure Kubernetes Service (AKS) logo and the AI Conformance badge](aks-ai-conformance-crop.png)
 
 <!-- truncate -->
 
@@ -178,4 +178,5 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 - [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF Kubernetes AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
+
 
