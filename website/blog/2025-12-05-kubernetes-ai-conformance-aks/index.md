@@ -69,7 +69,7 @@ Inference workloads need to scale pod replicas based on demand. The Horizontal P
 
 #### Accelerator performance metrics
 
-Observability is critical for AI workloads. Platforms must expose GPU utilization, memory consumption, temperature, power draw, and other accelerator metrics through standard endpoints. You can deploy the [NVIDIA DCGM exporter](https://learn.microsoft.com/azure/aks/monitor-gpu-metrics) on AKS to expose GPU metrics in Prometheus format, and use [GPU health monitoring](https://learn.microsoft.com/azure/aks/gpu-health-monitoring) for proactive issue detection.
+Observability is critical for AI workloads. Platforms must expose GPU utilization, memory consumption, temperature, power draw, and other accelerator metrics through standard endpoints. You can deploy the [NVIDIA DCGM exporter](https://learn.microsoft.com/azure/aks/monitor-gpu-metrics) on AKS to expose GPU metrics in Prometheus format, and use [GPU health monitoring](https://learn.microsoft.com/azure/aks/gpu-health-monitoring) for proactive issue detection with Node Problem Detector (NPD) in your AI pipelines.
 
 #### AI service metrics
 
