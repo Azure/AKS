@@ -29,7 +29,7 @@ In this blog you will learn how to configure the AKS Configurable Scheduler Prof
 
 ## AKS Configurable Scheduler Profiles
 
-A scheduler profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for the AKS scheduler on your cluster. 
+A scheduler profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for the AKS scheduler on your cluster.
 
 AKS supports 18 in-tree Kubernetes scheduling plugins that allow pods to be placed on user-specified nodes, ensure pods are matched with specific storage resources, and more. The plugins can be generally grouped into the following categories:
 
@@ -45,9 +45,9 @@ Adjust VM SKUs in NodeAffinity, shift utilization curves or weights, and use the
 
 ### Increase GPU Utilization by Bin Packing GPU-backed Nodes
 
-You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration. 
+You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
-For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance. 
+For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance.
 
 **This scheduler configuration maximizes GPU efficiency for larger batch jobs by cobsolidating smaller jobs onto fewer nodes and lowering the operational cost of underutilized resources without sacrificing performance.**
 
@@ -86,7 +86,7 @@ spec:
 
 ### Increase reselieince by distributing pods across topology domains
 
-`PodTopologySpread` is a scheduling strategy that seeks to distribute pods evenly across failure domains (such as availability zones or regions) to ensure high availability and fault tolerance in the event of zone or node failures. 
+`PodTopologySpread` is a scheduling strategy that seeks to distribute pods evenly across failure domains (such as availability zones or regions) to ensure high availability and fault tolerance in the event of zone or node failures.
 
 For example, spreading replicas across distinct zones safeguards availability during an AZ outage, while a softer host‑level rule prevents scheduling deadlocks when cluster capacity is uneven.
 
@@ -197,6 +197,7 @@ spec:
 ```
 
 ## Best Practices and Configuration Considerations
+
 As a reminder, there are many parameters the scheduler considers across the [scheduling cycle][https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces] before a pod is placed on a node that impacts how a pod is assigned. This section is meant to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 1. Ensure the intended deployment is assigned to the _correct_ scheduler profile.
@@ -212,7 +213,7 @@ As a reminder, there are many parameters the scheduler considers across the [sch
 
 ## Next Steps: Try out AKS Configurable Scheduler
 
-With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resielince and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably. 
+With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resielince and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
 
 - For best practices using the kube-scheduler visit [kube-scheduler best practices][https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-advanced-scheduler]
 - Configure your workload specific scheduler using the [AKS Configurable Scheduler][https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration]
