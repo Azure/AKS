@@ -87,7 +87,7 @@ resource "azurerm_resource_group" "this" {
 }
 
 resource "azapi_resource" "this" {
-  type                      = "Microsoft.ContainerService/managedClusters@2025-10-02-preview"
+  type                      = "Microsoft.ContainerService/managedClusters@2025-10-01"
   parent_id                 = azurerm_resource_group.this.id
   location                  = azurerm_resource_group.this.location
   name                      = "aks-${random_pet.this.id}"
@@ -145,6 +145,8 @@ With that context, let's explore the two viable options for configuring the Helm
 
 Both options require retrieving the connection details—the host URL and cluster CA certificate—from the AKS cluster. The AzApi provider doesn't expose these values directly; however, you can use the `azurerm_kubernetes_cluster` data source as a workaround.
 
+:::
+
 Add the following to the bottom of your `main.tf` file:
 
 ```hcl
@@ -154,13 +156,11 @@ data "azurerm_kubernetes_cluster" "this" {
 }
 ```
 
-:::
-
 ### Option 1: Configure the Helm provider with Azure bearer token authentication
 
 The Helm provider's [`kubernetes` block](https://registry.terraform.io/providers/hashicorp/helm/latest/docs#kubernetes-1) supports a [`token` argument](https://registry.terraform.io/providers/hashicorp/helm/latest/docs#token-1) that lets you supply a bearer token directly for authentication.
 
-You can obtain access tokens using the Azure CLI. If you're authenticated with `az login`, you can get a token for the AKS resource like this:
+You can obtain short-lived access tokens using the Azure CLI. If you're authenticated with `az login`, you can get a token for the AKS resource like this:
 
 ```bash
 az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630
@@ -172,7 +172,7 @@ The resource ID `6dae42f8-4368-4678-94ff-3960e28e3630` is the well-known applica
 
 :::
 
-You can use the [`external` provider](https://registry.terraform.io/providers/hashicorp/external/latest/docs) in Terraform to run this command and capture the token as an external data source.
+Combining the above command with the [`external` data source](https://developer.hashicorp.com/terraform/language/data-sources/external) in Terraform allows you to retrieve the token dynamically and use it in the Helm provider configuration.
 
 Add the following to your `main.tf` file:
 
@@ -182,9 +182,7 @@ data "external" "this" {
 }
 ```
 
-This command runs the Azure CLI and extracts the access token in JSON format, which you can then use in the Helm provider configuration.
-
-Now you have everything needed to configure the Helm provider:
+You can now reference the token in the Helm provider configuration like this:
 
 ```hcl
 provider "helm" {
@@ -198,11 +196,23 @@ provider "helm" {
 
 This configuration uses the host and cluster CA certificate from the AKS cluster data source and gains access to the cluster using the bearer token from the external data source.
 
-If you are solely using Azure CLI authentication (e.g., `az login`), this approach works well. However, if you're deploying from a CI/CD pipeline or using service principals or managed identities, the next option is more flexible.
+:::danger
+
+Terraform stores the access token in plain text in the state file. Although the token expires after about one hour, this poses a security risk in shared environments or CI/CD pipelines. For production use, secure your state file appropriately or use Option 2 instead.
+
+:::
+
+For quick local demos, this approach is convenient. For CI/CD pipelines or service principal authentication, the next option is more flexible.
 
 ### Option 2: Configure the Helm provider to use the exec plugin with kubelogin
 
 The Helm provider also supports using the `exec` plugin mechanism to obtain credentials dynamically. This approach is more flexible and works well with various authentication methods supported by [kubelogin](https://azure.github.io/kubelogin/index.html) which is a [Kubernetes client-go credential plugin](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins) for Azure.
+
+:::tip
+
+This is a more ideal approach because it does not require storing tokens in the Terraform state file. Instead, the Helm provider invokes the specified command to obtain fresh credentials each time it needs to authenticate.
+
+:::
 
 To use this approach, add the following to your `main.tf`:
 
@@ -220,7 +230,7 @@ provider "helm" {
         "--login",
         "azurecli",
         "--server-id",
-        "6dae42f8-4368-4678-94ff-3960e28e3630"  # Azure Kubernetes Service AAD Server
+        "6dae42f8-4368-4678-94ff-3960e28e3630"
       ]
     }
   }
