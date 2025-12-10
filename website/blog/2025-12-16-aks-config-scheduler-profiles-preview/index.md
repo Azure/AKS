@@ -40,7 +40,7 @@ Below you will find example configurations for some of the most common workload 
 Adjust VM SKUs in NodeAffinity, shift utilization curves or weights, and use the right zones for your cluster(s) in the configurations below.
 :::
 
-### Increse GPU Utilization by Bin Packing GPU-backed Nodes
+### Increase GPU Utilization by Bin Packing GPU-backed Nodes
 You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration. 
 
 For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance. 
@@ -83,7 +83,7 @@ spec:
 
 For example, spreading replicas across distinct zones safeguards availability during an AZ outage, while a softer host‑level rule prevents scheduling deadlocks when cluster capacity is uneven.
 
-**This configuration is effective for highly‑available stateless services (web/API, gateways) or distributed messaging clusters, like Kafka brokers, that rely on the availability of multipe replicas.**
+**This configuration is effective for highly‑available stateless services (web/API, gateways) or distributed messaging clusters, like Kafka brokers, that rely on the availability of multiple replicas.**
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
 kind: SchedulerConfiguration
