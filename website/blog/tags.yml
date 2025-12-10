@@ -270,8 +270,13 @@ ray:
 scaling:
   label: Scaling
   permalink: /scaling
+  description: Techniques to control pod placement, improve resource efficiency, and tune scheduling for diverse workloads on AKS.
+  
+scheduler:
+  label: Scheduler
+  permalink: /scheduler
   description: Horizontal and vertical scaling strategies, autoscaler tuning, and capacity planning.
-
+  
 security:
   label: Security
   permalink: /security
