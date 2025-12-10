@@ -112,7 +112,7 @@ Document new Kubernetes version availability and LTS updates.
 **Examples:**
 
 ```markdown
-* AKS Kubernetes version `1.34` is being rolling out to multiple regions and is expected to complete by early November. Refer to [1.34 Release Notes](https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
+* AKS Kubernetes version `1.34` is being rolled out to multiple regions and is expected to complete by early November. Refer to [1.34 Release Notes](https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
 * AKS Kubernetes version `1.34` is now available in preview. Refer to [1.34 Release Notes](https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
 * AKS Kubernetes version `1.32` is now generally available. Refer to [1.32 Release Notes](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
 * AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) `1.31.7`, `1.30.11`, and `1.29.15` to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426).
