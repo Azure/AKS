@@ -104,7 +104,33 @@ az aks create \
   --kubernetes-version 1.34.0
 ```
 
-### Step 2. Enable the Istio service mesh with Gateway API (optional for advanced routing)
+### Step 2. Add a GPU node pool
+
+For GPU-accelerated workloads, add a [fully managed GPU node pool (preview)](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes) with [GPU-enabled VMs](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#gpu-accelerated). For a select set of NVIDIA GPU SKUs, AKS automatically installs the GPU driver, device plugin, and DCGM metrics exporter.
+
+First, register the feature flag:
+
+```bash
+az feature register --namespace Microsoft.ContainerService --name ManagedGPUExperiencePreview
+```
+
+Then add the GPU node pool with the `EnableManagedGPUExperience` tag:
+
+```bash
+az aks nodepool add \
+  --resource-group <resource-group> \
+  --cluster-name <cluster-name> \
+  --name gpunp \
+  --node-count 1 \
+  --node-vm-size Standard_NC40ads_H100_v5 \
+  --node-taints sku=gpu:NoSchedule \
+  --enable-cluster-autoscaler \
+  --min-count 1 \
+  --max-count 3 \
+  --tags EnableManagedGPUExperience=true
+```
+
+### Step 3. Enable the Istio service mesh with Gateway API (optional)
 
 If your AI workloads require advanced traffic management capabilities, you can use the [Istio service mesh add-on with the Gateway API (preview)](https://learn.microsoft.com/azure/aks/istio-gateway-api).
 
@@ -131,45 +157,22 @@ az aks update \
   --enable-gateway-api
 ```
 
-### Step 3. Add a GPU node pool
+### Step 4. Enable Prometheus metrics (optional)
 
-For GPU-accelerated workloads, add a [fully managed GPU node pool (preview)](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes) with [GPU-enabled VMs](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#gpu-accelerated). For a select set of NVIDIA GPU SKUs, AKS automatically installs the GPU driver, device plugin, and DCGM metrics exporter.
-
-First, register the feature flag:
+If you need to collect metrics about your applications and infrastructure, you can optionally install the metrics add-on that scrapes Prometheus metrics.
 
 ```bash
-az feature register --namespace Microsoft.ContainerService --name ManagedGPUExperiencePreview
-```
-
-Then add the GPU node pool with the `EnableManagedGPUExperience` tag:
-
-```bash
-az aks nodepool add \
+az aks update \
   --resource-group <resource-group> \
-  --cluster-name <cluster-name> \
-  --name gpunp \
-  --node-count 1 \
-  --node-vm-size Standard_NC40ads_H100_v5 \
-  --node-taints sku=gpu:NoSchedule \
-  --enable-cluster-autoscaler \
-  --min-count 1 \
-  --max-count 3 \
-  --tags EnableManagedGPUExperience=true
+  --name <cluster-name> \
+  --enable-azure-monitor-metrics
 ```
 
 Your cluster now meets the requirements for Kubernetes AI Conformance. You can now optionally [install and run Kueue](https://learn.microsoft.com/azure/aks/kueue-overview) to enable gang scheduling and [deploy batch jobs](https://learn.microsoft.com/azure/aks/deploy-batch-jobs-with-kueue).
 
-## Get involved
-
-The Kubernetes AI Conformance Program is developed in the open. You can contribute by:
-
-- Joining the [WG AI Conformance](https://github.com/kubernetes/community/tree/master/wg-ai-conformance) working group
-- Participating in discussions on the [Kubernetes Slack #wg-ai-conformance channel](https://kubernetes.slack.com/messages/wg-ai-conformance)
-- For more information about the program and how to get involved, check out the [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)
-
 ## Conclusion
 
-The Kubernetes AI Conformance Program represents an important step forward for the AI ecosystem, aligning the community around shared standards that make deploying AI at scale more consistent and reliable. By using an AI-conformant platform like AKS, you can build AI applications that are production-ready, portable, and efficient without reinventing infrastructure for every deployment.
+The Kubernetes AI Conformance Program represents an important step forward for the AI ecosystem, aligning the community around shared standards that make deploying AI at scale more consistent and reliable. By using an AI-conformant platform like AKS, you can build AI applications that are production-ready, portable, and efficient without reinventing infrastructure for every deployment. For more information about the program and how to get involved, check out the [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance).
 
 AKS's certification demonstrates Microsoft's commitment to open standards and ensures that your AI workloads can run reliably on a verified platform. Start building your AI-conformant AKS cluster today and take advantage of the growing ecosystem of compatible tools and frameworks.
 
@@ -178,3 +181,4 @@ AKS's certification demonstrates Microsoft's commitment to open standards and en
 - [CNCF Kubernetes AI Conformance Repository](https://github.com/cncf/k8s-ai-conformance)
 - [AKS AI/ML Documentation](https://learn.microsoft.com/azure/aks/ai-ml-overview)
 - [CNCF Kubernetes AI Conformance Announcement](https://www.cncf.io/announcements/2025/11/11/cncf-launches-certified-kubernetes-ai-conformance-program-to-standardize-ai-workloads-on-kubernetes/)
+
