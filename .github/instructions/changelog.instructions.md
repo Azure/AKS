@@ -421,7 +421,7 @@ Before committing changes to CHANGELOG.md:
 - [ ] All links use descriptive text (no bare URLs or "click here")
 - [ ] Microsoft Learn links don't include `/en-us/`
 - [ ] Component versions are in backticks with release note links
-- [ ] VHD image names are in backticks (e.g., `` [`AKSUbuntu-2204-202306.26.0`](...) ``)
+- [ ] VHD image names are in backticks and use the full Markdown link format (e.g., ``[`AKSUbuntu-2204-202306.26.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202306.26.0.txt)``)
 - [ ] VHD note files exist at the referenced paths
 - [ ] Features and Behavioral changes include documentation links
 - [ ] Content follows Microsoft Style Guide terminology and voice
