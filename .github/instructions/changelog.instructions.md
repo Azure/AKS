@@ -19,9 +19,9 @@ Every release section MUST follow this structure:
 
 > Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `vYYYYMMDD`.
 
-### Announcements
+### Announcements of upcoming changes and retirements
 
-* [Announcement item with link to documentation](https://learn.microsoft.com/...) description of the announcement.
+* [Announcement item with link to documentation if it exists](https://learn.microsoft.com/...) description of the announcement or retirement.
 
 ### Release notes
 
@@ -76,7 +76,6 @@ Announcements cover deprecations, retirements, upcoming changes, and important n
 
 ```markdown
 * Starting on [DATE], [what will happen]. [Action required]. For more information, see [Link Text](URL).
-* [Product/Feature] is now [status]. [Brief description]. Refer to [documentation](URL) for more information.
 * [Feature/Product] (preview) will be retired on [DATE]. [Migration instructions]. For more information, see [Link](URL).
 * AKS Kubernetes version X.XX [standard support will be deprecated/is going out of support] by [DATE]. [Action required]. Refer to [version support policy](URL) and [upgrading a cluster](URL) for more information.
 ```
@@ -85,7 +84,6 @@ Announcements cover deprecations, retirements, upcoming changes, and important n
 
 ```markdown
 * Starting on 30 November 2025, AKS will no longer support Azure Linux 2.0. Migrate to a supported version by [upgrading your node pools](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli). For more information, see [\[Retirement\] Azure Linux 2.0 node pools on AKS](https://github.com/Azure/AKS/issues/4988).
-* AKS Kubernetes version `1.34` is now available in preview. Refer to [1.34 Release Notes](https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
 * AKS Kubernetes version 1.31 standard support will be deprecated by November 1, 2025. Kindly upgrade your clusters to 1.32 community version or enable [Long Term Support](https://learn.microsoft.com/azure/aks/long-term-support) with 1.31 in order to continue in the same version. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) for more information.
 * [Teleport (preview)](https://github.com/Azure/acr/blob/main/docs/teleport/aks-getting-started.md) on AKS will be retired on 15 July 2025, please [migrate to Artifact Streaming (preview) on AKS](https://learn.microsoft.com/azure/aks/artifact-streaming) or update your node pools to set --aks-custom-headers EnableACRTeleport=false. For more information, see [aka.ms/aks/teleport-retirement](https://aka.ms/aks/teleport-retirement).
 * AKS is now blocking creation of new clusters with Basic Load Balancer [retired on 30 September 2025](https://learn.microsoft.com/answers/questions/1033471/retirement-announcement-basic-load-balancer-will-b).
@@ -114,15 +112,16 @@ Document new Kubernetes version availability and LTS updates.
 **Examples:**
 
 ```markdown
-* AKS Version [1.34 Preview](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md#v1340) is being rolled out to multiple regions and is expected to complete by early November.
-* Kubernetes [1.32](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md) is now Generally Available.
-* AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) 1.31.7, 1.30.11, 1.29.15 to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426).
-* AKS patch versions 1.32.5, 1.31.9 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+* AKS Kubernetes version `1.34` is being rolling out to multiple regions and is expected to complete by early November. Refer to [1.34 Release Notes](https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
+* AKS Kubernetes version `1.34` is now available in preview. Refer to [1.34 Release Notes](https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
+* AKS Kubernetes version `1.32` is now generally available. Refer to [1.32 Release Notes](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
+* AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) `1.31.7`, `1.30.11`, and `1.29.15` to resolve [CVE-2025-0426](https://nvd.nist.gov/vuln/detail/CVE-2025-0426).
+* AKS [Kubernetes patch versions](https://kubernetes.io/releases/patch-releases/) `1.32.5`, and `1.31.9` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 * AKS LTS (Long Term Support) patch versions are now available:
   * Kubernetes 1.28.102-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.28-lts/CHANGELOG/CHANGELOG-1.28.md#v128102-akslts)
   * Kubernetes 1.29.100-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.29-lts/CHANGELOG/CHANGELOG-1.29.md#v129100-akslts)
   * Kubernetes 1.30.100-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.30-lts/CHANGELOG/CHANGELOG-1.30.md#v130100-akslts)
-* Kubernetes 1.31 and 1.32 are now designated as [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) versions.
+* Kubernetes `1.31` and `1.32` are now designated as [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) versions.
 ```
 
 ---
@@ -619,3 +618,4 @@ npx markdownlint-cli CHANGELOG.md
 ---
 
 **Questions?** See `.github/copilot-instructions.md` for the complete Microsoft Style Guide and repository standards.
+
