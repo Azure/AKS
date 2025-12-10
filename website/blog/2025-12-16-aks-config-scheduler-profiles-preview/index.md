@@ -13,6 +13,7 @@ tags:
   - Scheduler
 ---
 # Avoid scheduling inefficiencies and improve GPU utilizaiton with AKS Configurable Scheduler Profiles (Preview)
+
 Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling. The scheduler ultimately selects the optimal node for pod(s) based on several criteria, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
@@ -27,6 +28,7 @@ To support these advanced use cases, and to give users more control, use [AKS Co
 In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for [bin packing GPU-backed nodes][#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes], [distributing pods across topologies][#increase-reselieince-by-distributing-pods-across-topology-domains], and [placing jobs on memory-optimized, pvc-ready nodes][#reduce-latency-with-memory‑optimized-pvc‑aware-scheduling]. Lastly, you will find [Best Practices and Configuration Considerations][#best-practice-and-configuration-considerations] to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 ## AKS Configurable Scheduler Profiles
+
 A scheduler profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for the AKS scheduler on your cluster. 
 
 AKS supports 18 in-tree Kubernetes scheduling plugins that allow pods to be placed on user-specified nodes, ensure pods are matched with specific storage resources, and more. The plugins can be generally grouped into the following categories:
@@ -36,16 +38,19 @@ AKS supports 18 in-tree Kubernetes scheduling plugins that allow pods to be plac
 3. Resource and topology optimization scheduling plugins
 
 Below you will find example configurations for some of the most common workload objectives. 
+
 :::note
 Adjust VM SKUs in NodeAffinity, shift utilization curves or weights, and use the right zones for your cluster(s) in the configurations below.
 :::
 
 ### Increase GPU Utilization by Bin Packing GPU-backed Nodes
+
 You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration. 
 
 For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance. 
 
 **This scheduler configuration maximizes GPU efficiency for larger batch jobs by cobsolidating smaller jobs onto fewer nodes and lowering the operational cost of underutilized resources without sacrificing performance.**
+
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
 kind: SchedulerConfiguration
@@ -78,12 +83,15 @@ spec:
         - name: nvidia.com/gpu
           weight: 1
 ```
+
 ### Increase reselieince by distributing pods across topology domains
+
 `PodTopologySpread` is a scheduling strategy that seeks to distribute pods evenly across failure domains (such as availability zones or regions) to ensure high availability and fault tolerance in the event of zone or node failures. 
 
 For example, spreading replicas across distinct zones safeguards availability during an AZ outage, while a softer host‑level rule prevents scheduling deadlocks when cluster capacity is uneven.
 
 **This configuration is effective for highly‑available stateless services (web/API, gateways) or distributed messaging clusters, like Kafka brokers, that rely on the availability of multiple replicas.**
+
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
 kind: SchedulerConfiguration
@@ -107,12 +115,14 @@ spec:
                   topologyKey: kubernetes.io/hostname
                   whenUnsatisfiable: ScheduleAnyway
 ```
+
 ### Reduce latency with memory‑optimized, PVC‑aware scheduling
 Use `VolumeBinding` to ensure pods are placed on nodes where _PersistentVolumeClaim's_ (PVC) can bind to _PersistentVolume's_ (PV). `VolumeZone` validates that nodes and volumes satisfy zonal requirements to avoid cross-zone storage access.
 
 For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized], while ensuring PVC's bind quickly in the target zone to minimize cross‑zone traffic and latency.
 
 **This scheduler configuration ensures workloads needing large memory footprints are placed on nodes that provide sufficient RAM and maintain proximity to their volumes, enabling fast, zone‑aligned PVC binding for optimal data locality.**
+
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
 kind: SchedulerConfiguration
