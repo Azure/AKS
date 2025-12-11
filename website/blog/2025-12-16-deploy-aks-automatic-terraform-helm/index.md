@@ -264,9 +264,9 @@ provider "helm" {
         "--server-id",
         "6dae42f8-4368-4678-94ff-3960e28e3630",
         "--client-id",
-        var.service_principal_client_id,    # Replace with your SPN client ID
+        var.service_principal_client_id,    # Replace with your service principal client ID
         "--tenant-id",
-        var.service_principal_tenant_id     # Replace with your SPN tenant ID
+        var.service_principal_tenant_id     # Replace with your service principal tenant ID
       ]
       env = {
         AAD_SERVICE_PRINCIPAL_CLIENT_SECRET = var.service_principal_client_secret
