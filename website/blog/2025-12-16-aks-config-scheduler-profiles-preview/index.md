@@ -25,11 +25,11 @@ The criteria, and their respective priority in the scheduling cycle, are not sui
 
 To support these advanced use cases, and to give users more control, use [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] to tailor a scheduler to their specific workload requirements using node bin-packing, preemption, and 16 other scheduling plugins that can optimize ROI​, improve gpu utilization, improve data locality, or increase resliency.
 
-In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for three workloads objectives:
+In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for three workload objectives:
 
-1. [Bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
-2. [Distributing pods across topologies](#increase-reselieince-by-distributing-pods-across-topology-domains)
-3. [Placing jobs on memory-optimized, pvc-ready nodes](#optimize-data-locality-with-memory-and-pvc-aware-scheduling)
+1. [Increase GPU utilization by bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
+2. [Increase reselieince by distributing pods across topology domains](#increase-reselieince-by-distributing-pods-across-topology-domains)
+3. [Optimize data locality with memory and PVC-aware scheduling](#optimize-data-locality-with-memory-and-pvc-aware-scheduling)
 
 Lastly, you will find [best practices](#best-practices-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
