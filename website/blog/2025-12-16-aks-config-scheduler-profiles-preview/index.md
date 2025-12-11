@@ -23,9 +23,9 @@ Thoughtful scheduling strategies can resolve pervasive challenges across web-dis
 
 The criteria, and their respective priority in the scheduling cycle, are not suitable for advanced use cases that might require custom scheduling strategies. Nor, does the default scheduler enable user customization for fine-grain pod placement control while avoiding managing a second custom scheduler. For example, users running batch jobs might prefer collocating on a few nodes for better performance or cost-sensitive workloads might benefit from node binpacking to minimize idle node costs.
 
-To support these advanced use cases, and to give users more control, use [AKS Configurable Scheduler Profiles][https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration] to tailor a scheduler to their specific workload requirements using node bin-packing, preemption, and 16 other scheduling plugins that can optimize ROI​, improve gpu utilization, improve data locality, or increase resliency.
+To support these advanced use cases, and to give users more control, use [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] to tailor a scheduler to their specific workload requirements using node bin-packing, preemption, and 16 other scheduling plugins that can optimize ROI​, improve gpu utilization, improve data locality, or increase resliency.
 
-In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for [bin packing GPU-backed nodes][#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes], [distributing pods across topologies][#increase-reselieince-by-distributing-pods-across-topology-domains], and [placing jobs on memory-optimized, pvc-ready nodes][#reduce-latency-with-memory‑optimized-pvc‑aware-scheduling]. Lastly, you will find [Best Practices and Configuration Considerations][#best-practice-and-configuration-considerations] to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
+In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for [bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes), [distributing pods across topologies](#increase-reselieince-by-distributing-pods-across-topology-domains), and [placing jobs on memory-optimized, pvc-ready nodes](#reduce-latency-with-memory‑optimized-pvc‑aware-scheduling). Lastly, you will find [best practices](#best-practice-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 ## AKS Configurable Scheduler Profiles
 
@@ -198,7 +198,7 @@ spec:
 
 ## Best Practices and Configuration Considerations
 
-As a reminder, there are many parameters the scheduler considers across the [scheduling cycle][https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces] before a pod is placed on a node that impacts how a pod is assigned. This section is meant to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
+As a reminder, there are many parameters the scheduler considers across the [scheduling cycle][scheduling-framework/#interfaces] before a pod is placed on a node that impacts how a pod is assigned. This section is meant to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 1. Ensure the intended deployment is assigned to the _correct_ scheduler profile.
 2. Ensure the customer scheduler profile complements the implementation of Deployments, StorageClasses, and PersistentVolumeClaim's. Misalignment can lead to pending pods and degraded workload performance, even when the scheduler is functioning as expected.
@@ -215,6 +215,11 @@ As a reminder, there are many parameters the scheduler considers across the [sch
 
 With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resielince and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
 
-- For best practices using the kube-scheduler visit [kube-scheduler best practices][https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-advanced-scheduler]
-- Configure your workload specific scheduler using the [AKS Configurable Scheduler][https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration]
-- If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][https://learn.microsoft.com/en-us/azure/aks/kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
+- For best practices using the kube-scheduler visit [kube-scheduler best practices][best-practices-advanced-scheduler]
+- Configure your workload specific scheduler using the [AKS Configurable Scheduler][concepts-scheduler-configuration]
+- If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
+
+[concepts-scheduler-configuration]: https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration
+[kueue-overview]: https://learn.microsoft.com/en-us/azure/aks/kueue-overview
+[best-practices-advanced-scheduler]:https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-advanced-scheduler
+[scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
