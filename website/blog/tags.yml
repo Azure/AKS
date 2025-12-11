@@ -276,7 +276,6 @@ scheduler:
   label: Scheduler
   permalink: /scheduler
   description: Techniques and capabilities to control pod placement, improve resource efficiency, and tune scheduling for diverse AKS workloads.
-  
 security:
   label: Security
   permalink: /security
