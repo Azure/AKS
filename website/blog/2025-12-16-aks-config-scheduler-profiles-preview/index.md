@@ -3,14 +3,11 @@ title: "Announcing Azure Configurable Scheduler Profiles: Optimize resource ROI 
 description: "Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles"
 date: 2025-12-16
 authors: 
-   - Colin Mixon
-categories: 
-- operations
-- ai
+   - colin-mixon
 tags:
-  - AI
+  - ai
   - performance
-  - Scheduler
+  - scheduler
 ---
 # Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles (Preview)
 
