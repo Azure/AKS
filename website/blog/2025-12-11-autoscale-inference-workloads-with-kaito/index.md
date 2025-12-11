@@ -3,15 +3,16 @@ title: "Autoscale KAITO inference workloads on AKS using KEDA"
 date: "2025-12-11"
 description: "Autoscale your KAITO inference workloads using KEDA"
 authors: ["andy-zhang"]
-tags: ["ai", "inference", "keda", "kaito"]
+tags: ["ai", "kaito"]
 ---
 
 [Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito/tree/main) (KAITO) is an operator that automates the AI/ML model inference or tuning workload in a Kubernetes cluster. With the [v0.8.0 release](https://github.com/Azure/kaito/releases/tag/v0.8.0), KAITO has introduced intelligent autoscaling for inference workloads as an alpha feature.
 
 ## Overview
 
-This blog outlines the steps to enable intelligent autoscaling based on the service monitoring metrics for KAITO inference workloads by utilizing the following components and features:
+This blog outlines the steps to enable intelligent autoscaling based on the service monitoring metrics for KAITO inference workloads by using the following components and features:
 - [KEDA](https://github.com/kedacore/keda)
+
   - Kubernetes-based Event Driven Autoscaling component
 - [keda-kaito-scaler](https://github.com/kaito-project/keda-kaito-scaler)
   - A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
@@ -23,7 +24,9 @@ This blog outlines the steps to enable intelligent autoscaling based on the serv
  ![keda-kaito-scaler-arch](keda-kaito-scaler-arch.png)
 
 ## Prerequisites
+
 - install KEDA
+
 > The following example demonstrates how to install KEDA using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [here](https://github.com/kedacore/keda#deploying-keda).
 ```bash
 helm repo add kedacore https://kedacore.github.io/charts
@@ -31,6 +34,7 @@ helm install keda kedacore/keda --namespace keda --create-namespace
 ```
 
 - install keda-kaito-scaler
+
 ```bash
 helm repo add keda-kaito-scaler https://kaito-project.github.io/keda-kaito-scaler/charts/kaito-project
 helm upgrade --install keda-kaito-scaler -n kaito-workspace keda-kaito-scaler/keda-kaito-scaler --create-namespace
@@ -55,10 +59,12 @@ helm upgrade --install kaito-workspace kaito/workspace \
 
 ## Quickstart
 
-### Create a Kaito InferenceSet for running inference workloads
-- The following example creates an InferenceSet for the phi-4-mini model, using annotations with the prefix `scaledobject.kaito.sh/` to supply parameter inputs for the KEDA Kaito Scaler:
+### Create a KAITO InferenceSet for running inference workloads
+
+- The following example creates an InferenceSet for the phi-4-mini model, using annotations with the prefix `scaledobject.kaito.sh/` to supply parameter inputs for the KEDA KAITO Scaler:
+
   - `scaledobject.kaito.sh/auto-provision`
-    - required, specifies whether KEDA Kaito Scaler will automatically provision a ScaledObject based on the `InferenceSet` object
+    - required, specifies whether KEDA KAITO Scaler will automatically provision a ScaledObject based on the `InferenceSet` object
   - `scaledobject.kaito.sh/metricName`
     - optional, specifies the metric name collected from the vLLM pod, which is used for monitoring and triggering the scaling operation, default is `vllm:num_requests_waiting`
   - `scaledobject.kaito.sh/threshold`
@@ -90,7 +96,7 @@ spec:
       instanceType: Standard_NC24ads_A100_v4
 EOF
 ```
-- In just a few seconds, the KEDA Kaito Scaler will automatically create the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod is running, the KEDA Kaito Scaler will begin scraping metric values from the inference pod, and the status of the `scaledobject` and `hpa` objects will be marked as ready.
+- In just a few seconds, the KEDA KAITO Scaler will automatically create the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod is running, the KEDA KAITO Scaler will begin scraping metric values from the inference pod, and the status of the `scaledobject` and `hpa` objects will be marked as ready.
 
 ```bash
 # kubectl get scaledobject
