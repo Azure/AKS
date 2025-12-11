@@ -168,7 +168,7 @@ az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630
 
 :::info
 
-The resource ID `6dae42f8-4368-4678-94ff-3960e28e3630` is the well-known application ID for **Azure Kubernetes Service AAD Server**. This ID is the same for all AKS clusters using Microsoft Entra authentication.
+The resource ID `6dae42f8-4368-4678-94ff-3960e28e3630` is the well-known application ID for **Azure Kubernetes Service AAD Server**. This ID is the same for all AKS clusters using Microsoft Entra ID authentication.
 
 :::
 
