@@ -217,7 +217,7 @@ As a reminder, there are many parameters the scheduler considers across the [sch
 
 ## Next Steps: Try out AKS Configurable Scheduler
 
-With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resielince and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
+With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resilience and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
 
 - For best practices using the kube-scheduler visit [kube-scheduler best practices][best-practices-advanced-scheduler]
 - Configure your workload specific scheduler using the [AKS Configurable Scheduler][concepts-scheduler-configuration]
