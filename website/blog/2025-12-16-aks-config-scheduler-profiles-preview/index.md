@@ -1,5 +1,5 @@
 ---
-title: "Announcing Azure Configurable Scheduler Profiles: Optimize resource ROI with fine grained scheduling strategies."
+title: "Announcing Azure Configurable Scheduler Profiles: Optimize resource ROI with fine grained scheduling strategies"
 description: "Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles"
 date: 2025-12-16
 authors: 
