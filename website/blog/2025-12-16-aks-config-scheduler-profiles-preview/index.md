@@ -52,7 +52,7 @@ You can use `NodeResourceFit` to control how pods are assigned to nodes based on
 
 For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance.
 
-**This scheduler configuration maximizes GPU efficiency for larger batch jobs by cobsolidating smaller jobs onto fewer nodes and lowering the operational cost of underutilized resources without sacrificing performance.**
+**This scheduler configuration maximizes GPU efficiency for larger batch jobs by consolidating smaller jobs onto fewer nodes and lowering the operational cost of underutilized resources without sacrificing performance.**
 
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
