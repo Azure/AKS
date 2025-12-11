@@ -46,7 +46,7 @@ AKS supports 18 in-tree Kubernetes scheduling plugins that allow pods to be plac
 Below you will find example configurations for some of the most common workload objectives.
 
 :::note
-Adjust VM SKUs in NodeAffinity, shift utilization curves or weights, and use the right zones for your cluster(s) in the configurations below.
+Adjust VM SKUs in `NodeAffinity`, shift utilization curves or weights, and use the right zones for your cluster(s) in the configurations below.
 :::
 
 ### Increase GPU Utilization by Bin Packing GPU-backed Nodes
