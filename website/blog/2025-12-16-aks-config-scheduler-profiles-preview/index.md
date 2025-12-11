@@ -25,7 +25,12 @@ The criteria, and their respective priority in the scheduling cycle, are not sui
 
 To support these advanced use cases, and to give users more control, use [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] to tailor a scheduler to their specific workload requirements using node bin-packing, preemption, and 16 other scheduling plugins that can optimize ROI​, improve gpu utilization, improve data locality, or increase resliency.
 
-In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for [bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes), [distributing pods across topologies](#increase-reselieince-by-distributing-pods-across-topology-domains), and [placing jobs on memory-optimized, pvc-ready nodes](#reduce-latency-with-memory‑optimized-pvc‑aware-scheduling). Lastly, you will find [best practices](#best-practice-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
+In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for three workloads objectives:
+1. [Bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
+2. [Distributing pods across topologies](#increase-reselieince-by-distributing-pods-across-topology-domains)
+3. [Placing jobs on memory-optimized, pvc-ready nodes](#optimize-data-locality-with-memory-and-pvc-aware-scheduling)
+
+Lastly, you will find [best practices](#best-practices-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 ## AKS Configurable Scheduler Profiles
 
@@ -116,10 +121,11 @@ spec:
                   whenUnsatisfiable: ScheduleAnyway
 ```
 
-### Reduce latency with memory‑optimized, PVC‑aware scheduling
+### Optimize data locality with Memory and PVC-Aware Scheduling
+
 Use `VolumeBinding` to ensure pods are placed on nodes where _PersistentVolumeClaim's_ (PVC) can bind to _PersistentVolume's_ (PV). `VolumeZone` validates that nodes and volumes satisfy zonal requirements to avoid cross-zone storage access.
 
-For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized], while ensuring PVC's bind quickly in the target zone to minimize cross‑zone traffic and latency.
+For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][memory-optimized-vm], while ensuring PVC's bind quickly in the target zone to minimize cross‑zone traffic and latency.
 
 **This scheduler configuration ensures workloads needing large memory footprints are placed on nodes that provide sufficient RAM and maintain proximity to their volumes, enabling fast, zone‑aligned PVC binding for optimal data locality.**
 
@@ -223,3 +229,4 @@ With AKS Configurable Scheduler Profiles, teams gain fine-grained control over p
 [kueue-overview]: https://learn.microsoft.com/en-us/azure/aks/kueue-overview
 [best-practices-advanced-scheduler]:https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-advanced-scheduler
 [scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
+[memory-optimized-vm]: https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
