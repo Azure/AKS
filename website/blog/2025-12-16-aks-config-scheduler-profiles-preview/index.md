@@ -23,7 +23,7 @@ Thoughtful scheduling strategies can resolve pervasive challenges across web-dis
 
 The criteria, and their respective priority in the scheduling cycle, are not suitable for advanced use cases that might require custom scheduling strategies. Nor, does the default scheduler enable user customization for fine-grain pod placement control while avoiding managing a second custom scheduler. For example, users running batch jobs might prefer collocating on a few nodes for better performance or cost-sensitive workloads might benefit from node binpacking to minimize idle node costs.
 
-To support these advanced use cases, and to give users more control, use [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] to tailor a scheduler to their specific workload requirements using node bin-packing, preemption, and 16 other scheduling plugins that can optimize ROI​, improve gpu utilization, improve data locality, or increase resliency.
+To support these advanced use cases, and to give users more control, use [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] to tailor a scheduler to their specific workload requirements using node bin-packing, preemption, and 16 other scheduling plugins that can optimize ROI​, improve gpu utilization, improve data locality, or increase resiliency.
 
 In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for three workload objectives:
 
