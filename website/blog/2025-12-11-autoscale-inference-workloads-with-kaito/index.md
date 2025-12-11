@@ -17,8 +17,8 @@ This blog outlines the steps to enable intelligent autoscaling based on the serv
   - Kubernetes-based Event Driven Autoscaling component
 - [keda-kaito-scaler](https://github.com/kaito-project/keda-kaito-scaler)
   - A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
-- KAITO `InferenceSet` CRD and Controller
-  - This new CRD and Controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`
+- KAITO `InferenceSet` Custom Resource Definition (CRD) and controller
+  - This new CRD and controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`
 
 ### Architecture
 
@@ -26,7 +26,7 @@ This blog outlines the steps to enable intelligent autoscaling based on the serv
 
 ## Prerequisites
 
-- install KEDA
+- Install KEDA
 
 > The following example demonstrates how to install KEDA using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [deploying-keda](https://github.com/kedacore/keda#deploying-keda).
 
@@ -35,7 +35,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm install keda kedacore/keda --namespace keda --create-namespace
 ```
 
-- install keda-kaito-scaler
+- Install keda-kaito-scaler
 
 ```bash
 helm repo add keda-kaito-scaler https://kaito-project.github.io/keda-kaito-scaler/charts/kaito-project
@@ -44,7 +44,7 @@ helm upgrade --install keda-kaito-scaler -n kaito-workspace keda-kaito-scaler/ke
 
 ## Enable this feature on KAITO
 
-This feature is available starting from KAITO `v0.8.0`, and the InferenceSet Controller must be enabled during the KAITO installation.
+This feature is available starting from KAITO `v0.8.0`, and the InferenceSet controller must be enabled during the KAITO installation.
 
 ```bash
 export CLUSTER_NAME=kaito
@@ -99,7 +99,7 @@ spec:
 EOF
 ```
 
-- In just a few seconds, the KEDA KAITO scaler will automatically create the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod is running, the KEDA KAITO scaler will begin scraping metric values from the inference pod, and the status of the `scaledobject` and `hpa` objects will be marked as ready.
+In just a few seconds, the KEDA KAITO scaler will automatically create the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod is running, the KEDA KAITO scaler will begin scraping metric values from the inference pod, and the status of the `scaledobject` and `hpa` objects will be marked as ready.
 
 ```bash
 # kubectl get scaledobject
@@ -113,7 +113,7 @@ keda-hpa-phi-4-mini     InferenceSet/phi-4-mini     0/10 (avg)   1         5    
 
 That's it! Your KAITO workloads will now automatically scale based on the number of waiting inference requests(`vllm:num_requests_waiting`).
 
-- in below example, when `vllm:num_requests_waiting` exceeds the threshold (10s) for more than 60 seconds, KEDA will scale up a new `InferenceSet/phi-4-mini` replica.
+In below example, when `vllm:num_requests_waiting` exceeds the threshold (10s) for more than 60 seconds, KEDA will scale up a new `InferenceSet/phi-4-mini` replica.
 
 ```yaml
 Every 2.0s: kubectl describe hpa
