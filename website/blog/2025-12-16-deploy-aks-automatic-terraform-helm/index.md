@@ -45,7 +45,7 @@ Create a new directory and add a Terraform configuration file (for example, `mai
 
 ```hcl
 terraform {
-  required_version = ">= 1.9, < 2.0"
+  required_version = ">= 1.14, < 2.0"
 
   required_providers {
     azurerm = {
