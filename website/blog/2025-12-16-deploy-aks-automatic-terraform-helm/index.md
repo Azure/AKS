@@ -91,7 +91,7 @@ resource "azapi_resource" "this" {
   parent_id                 = azurerm_resource_group.this.id
   location                  = azurerm_resource_group.this.location
   name                      = "aks-${random_pet.this.id}"
-  schema_validation_enabled = false # use when azapi local schema check isn't aware of the latest api version
+  schema_validation_enabled = false # Use when the azapi provider's local schema validation doesn't yet support this API version
 
   body = {
     identity = {
