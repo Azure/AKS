@@ -1,5 +1,5 @@
 ---
-title: "Announcing Azure Configurable Scheduler Profiles (Preivew): Optimize resource ROI with fine grained scheduling strategies"
+title: "Announcing Azure Configurable Scheduler Profiles (Preview): Optimize resource ROI with fine grained scheduling strategies"
 description: "Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles"
 date: 2025-12-16
 authors: 
@@ -29,6 +29,8 @@ In this blog you will learn how to configure the AKS Configurable Scheduler Prof
 3. [Optimize data locality with memory and PVC-aware scheduling](#optimize-data-locality-with-memory-and-pvc-aware-scheduling)
 
 Lastly, you will find [best practices](#best-practices-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
+
+<!-- truncate -->
 
 ## AKS Configurable Scheduler Profiles
 
