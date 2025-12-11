@@ -11,6 +11,7 @@ tags: ["ai", "kaito"]
 ## Overview
 
 This blog outlines the steps to enable intelligent autoscaling based on the service monitoring metrics for KAITO inference workloads by using the following components and features:
+
 - [KEDA](https://github.com/kedacore/keda)
 
   - Kubernetes-based Event Driven Autoscaling component
@@ -27,7 +28,8 @@ This blog outlines the steps to enable intelligent autoscaling based on the serv
 
 - install KEDA
 
-> The following example demonstrates how to install KEDA using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [here](https://github.com/kedacore/keda#deploying-keda).
+> The following example demonstrates how to install KEDA using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [deploying-keda](https://github.com/kedacore/keda#deploying-keda).
+
 ```bash
 helm repo add kedacore https://kedacore.github.io/charts
 helm install keda kedacore/keda --namespace keda --create-namespace
@@ -61,10 +63,10 @@ helm upgrade --install kaito-workspace kaito/workspace \
 
 ### Create a KAITO InferenceSet for running inference workloads
 
-- The following example creates an InferenceSet for the phi-4-mini model, using annotations with the prefix `scaledobject.kaito.sh/` to supply parameter inputs for the KEDA KAITO Scaler:
+- The following example creates an InferenceSet for the phi-4-mini model, using annotations with the prefix `scaledobject.kaito.sh/` to supply parameter inputs for the KEDA KAITO scaler:
 
   - `scaledobject.kaito.sh/auto-provision`
-    - required, specifies whether KEDA KAITO Scaler will automatically provision a ScaledObject based on the `InferenceSet` object
+    - required, specifies whether KEDA KAITO scaler will automatically provision a ScaledObject based on the `InferenceSet` object
   - `scaledobject.kaito.sh/metricName`
     - optional, specifies the metric name collected from the vLLM pod, which is used for monitoring and triggering the scaling operation, default is `vllm:num_requests_waiting`
   - `scaledobject.kaito.sh/threshold`
@@ -96,7 +98,8 @@ spec:
       instanceType: Standard_NC24ads_A100_v4
 EOF
 ```
-- In just a few seconds, the KEDA KAITO Scaler will automatically create the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod is running, the KEDA KAITO Scaler will begin scraping metric values from the inference pod, and the status of the `scaledobject` and `hpa` objects will be marked as ready.
+
+- In just a few seconds, the KEDA KAITO scaler will automatically create the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod is running, the KEDA KAITO scaler will begin scraping metric values from the inference pod, and the status of the `scaledobject` and `hpa` objects will be marked as ready.
 
 ```bash
 # kubectl get scaledobject
