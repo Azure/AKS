@@ -1,5 +1,5 @@
 ---
-title: "Announcing Azure Configurable Scheduler Profiles: Optimize resource ROI with fine grained scheduling strategies"
+title: "Announcing Azure Configurable Scheduler Profiles (Preivew): Optimize resource ROI with fine grained scheduling strategies"
 description: "Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles"
 date: 2025-12-16
 authors: 
@@ -8,8 +8,8 @@ tags:
   - ai
   - performance
   - scheduler
+  - best-practices
 ---
-# Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles (Preview)
 
 Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling. The scheduler ultimately selects the optimal node for pod(s) based on several criteria, including (but not limited to):
 
