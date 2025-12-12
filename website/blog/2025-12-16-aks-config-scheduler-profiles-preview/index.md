@@ -65,28 +65,29 @@ spec:
   rawConfig: |
     apiVersion: kubescheduler.config.k8s.io/v1
     kind: KubeSchedulerConfiguration
-  - schedulerName: gpu-node-binpacking-scheduler
-    plugins:
-      multiPoint:
-        enabled:
-          - name: ImageLocality
-          - name: NodeResourceFit
+    profiles:
+      - schedulerName: gpu-node-binpacking-scheduler
+        plugins:
+          multiPoint:
+            enabled:
+              - name: ImageLocality
+              - name: NodeResourceFit
+              - name: NodeResourcesBalancedAllocation
+        pluginConfig:
+          - name: NodeResourcesFit
+            args:
+              scoringStrategy:
+                type: MostAllocated
+                resources:
+                  - name: cpu
+                    weight: 1
+                  - name: nvidia.com/gpu
+                    weight: 3
           - name: NodeResourcesBalancedAllocation
-    pluginConfig:
-    - name: NodeResourcesFit
-      args:
-        scoringStrategy:
-          type: MostAllocated
-          resources:
-          - name: cpu
-            weight: 1
-          - name: nvidia.com/gpu
-            weight: 3
-    - name: NodeResourcesBalancedAllocation
-      args:
-        resources:
-        - name: nvidia.com/gpu
-          weight: 1
+            args:
+              resources:
+                - name: nvidia.com/gpu
+                  weight: 1
 ```
 
 ### Increase resilience by distributing pods across topology domains
