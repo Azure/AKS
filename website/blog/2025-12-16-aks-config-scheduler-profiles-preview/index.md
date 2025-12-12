@@ -25,7 +25,7 @@ To support these advanced use cases, and to give users more control, use [AKS Co
 In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for three workload objectives:
 
 1. [Increase GPU utilization by bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
-2. [Increase reselieince by distributing pods across topology domains](#increase-reselieince-by-distributing-pods-across-topology-domains)
+2. [Increase resilience by distributing pods across topology domains](#increase-resilience-by-distributing-pods-across-topology-domains)
 3. [Optimize data locality with memory and PVC-aware scheduling](#optimize-data-locality-with-memory-and-pvc-aware-scheduling)
 
 Lastly, you will find [best practices](#best-practices-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
@@ -89,7 +89,7 @@ spec:
           weight: 1
 ```
 
-### Increase reselieince by distributing pods across topology domains
+### Increase resilience by distributing pods across topology domains
 
 `PodTopologySpread` is a scheduling strategy that seeks to distribute pods evenly across failure domains (such as availability zones or regions) to ensure high availability and fault tolerance in the event of zone or node failures.
 
