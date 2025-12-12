@@ -226,8 +226,8 @@ With AKS Configurable Scheduler Profiles, teams gain fine-grained control over p
 - Configure your workload specific scheduler using the [AKS Configurable Scheduler][concepts-scheduler-configuration]
 - If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
 
-[concepts-scheduler-configuration]: https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration
-[kueue-overview]: https://learn.microsoft.com/en-us/azure/aks/kueue-overview
-[best-practices-advanced-scheduler]: https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-advanced-scheduler
+[concepts-scheduler-configuration]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration
+[kueue-overview]: https://learn.microsoft.com/azure/aks/kueue-overview
+[best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
 [scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
-[memory-optimized-vm]: https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
+[memory-optimized-vm]: https://learn.microsoft.com/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
