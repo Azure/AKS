@@ -228,6 +228,6 @@ With AKS Configurable Scheduler Profiles, teams gain fine-grained control over p
 
 [concepts-scheduler-configuration]: https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration
 [kueue-overview]: https://learn.microsoft.com/en-us/azure/aks/kueue-overview
-[best-practices-advanced-scheduler]:https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-advanced-scheduler
+[best-practices-advanced-scheduler]: https://learn.microsoft.com/en-us/azure/aks/operator-best-practices-advanced-scheduler
 [scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
 [memory-optimized-vm]: https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
