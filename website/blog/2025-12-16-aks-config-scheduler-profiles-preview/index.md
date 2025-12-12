@@ -50,7 +50,7 @@ Adjust VM SKUs in `NodeAffinity`, shift utilization curves or weights, and use t
 
 ### Increase GPU Utilization by Bin Packing GPU-backed Nodes
 
-The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior results in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration. 
+The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior results in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
 For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance.
 
@@ -231,5 +231,4 @@ With AKS Configurable Scheduler Profiles, teams gain fine-grained control over p
 [best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
 [scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
 [memory-optimized-vm]: https://learn.microsoft.com/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
-[#internal-default-constraints]: https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#internal-default-constraints
 [supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
