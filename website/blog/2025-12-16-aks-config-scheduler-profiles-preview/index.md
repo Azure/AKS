@@ -11,18 +11,18 @@ tags:
   - best-practices
 ---
 
-Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling. The scheduler ultimately selects the optimal node for pod(s) based on several criteria, including (but not limited to):
+Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that could be restrictive if you needed more fine-grain control. The scheduler selects the optimal node for newly created pod(s) based on several criteria, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
 3. Pod affinity/anti-affinity
 4. Taints and tolerations
 
-The criteria, and their respective priority in the scheduling cycle, are not suitable for advanced use cases that might require custom scheduling strategies. Nor, does the default scheduler enable user customization for fine-grain pod placement control while avoiding managing a second custom scheduler. For example, users running batch jobs might prefer collocating on a few nodes for better performance or cost-sensitive workloads might benefit from node binpacking to minimize idle node costs.
+Out of the available nodes, the scheduler then filters out nodes that don't meet the requirements to identify the node that is most optimal for the pod(s). Today, the AKS default scheduler lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per workload basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand co-locating pods with their persistent volumes for increased data locality, optimizing GPU utilization for machine learning, or enforcing strict zone-level distribution for microservices.
 
-To support these advanced use cases, and to give users more control, use [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] to tailor a scheduler to their specific workload requirements using node bin-packing, preemption, and 16 other scheduling plugins that can optimize ROI​, improve gpu utilization, improve data locality, or increase resiliency.
+**Why use the AKS Configurable Scheduler Profiles versus the default kube-scheduler?** For extensability and configuration control. Now, customers can use the [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] to define their own scheduling logic by selecting specific policies, altering parameter weight, changing policy priority, adding additional policy paramaters, and changing policy evaluation point (i.e. pre-Filter, Filter, Score) to provide fine-grain control as unique as the workload's themselves. Now the criteria, and their respective priority in the scheduling cycle, are suitable for advanced use cases that would have otherwise required managing a second custom scheduler. The [AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] enables users to optimize ROI​, improve gpu utilization, improve data locality, or increase resiliency.
 
-In this blog you will learn how to configure the AKS Configurable Scheduler Profiles for three workload objectives:
+In this blog you will learn how to configure AKS Configurable Scheduler Profiles for three workload objectives:
 
 1. [Increase GPU utilization by bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
 2. [Increase resilience by distributing pods across topology domains](#increase-resilience-by-distributing-pods-across-topology-domains)
@@ -50,7 +50,7 @@ Adjust VM SKUs in `NodeAffinity`, shift utilization curves or weights, and use t
 
 ### Increase GPU Utilization by Bin Packing GPU-backed Nodes
 
-You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
+The AKS default scheduler scores nodes for workload placement based upon a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior does not result in efficient resource utilization, as nodes with higher allocation are not favored and cannot be used to their optimal capacity. You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration. 
 
 For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance.
 
