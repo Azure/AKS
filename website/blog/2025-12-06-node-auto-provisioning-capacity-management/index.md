@@ -30,7 +30,7 @@ Learn more in the official documentation: [Node Auto Provisioning](https://learn
 ---
 
 ## The Hidden Complexity Behind Capacity
-Why does this happen? Because scaling in Kubernetes isn’t just horizontal—it’s logistical. Every node pool is tied to a VM SKU, region, and zone. When workloads diversify (GPU jobs, memory-heavy analytics, latency-sensitive microservices), the rigid structure of fixed node pools becomes a bottleneck. You’re left juggling trade-offs: Do you overprovision expensive SKUs “just in case”? Or risk underprovisioning and throttling growth? AKS offers to solutions that aim to address these capacity scaling challenges.
+Why does this happen? Because scaling in Kubernetes isn’t just horizontal—it’s logistical. Every node pool is tied to a VM SKU, region, and zone. When workloads diversify (GPU jobs, memory-heavy analytics, latency-sensitive microservices), the rigid structure of fixed node pools becomes a bottleneck. You’re left juggling trade-offs: Do you overprovision expensive SKUs “just in case”? Or risk underprovisioning and throttling growth? AKS offers two solutions that aim to address these capacity scaling challenges.
 
 ---
 
