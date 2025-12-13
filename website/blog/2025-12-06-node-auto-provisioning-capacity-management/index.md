@@ -95,7 +95,7 @@ To maximize Virtual Machine node pool's ability to adapt to capacity errors:
 
 ## Getting started with node auto provisioning
 
-### NAP requirements 
+### NAP requirements + limitations
 
 To use node auto-provisioning in AKS, you need the following prerequisites:
 
