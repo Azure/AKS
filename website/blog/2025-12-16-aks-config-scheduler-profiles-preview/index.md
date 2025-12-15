@@ -71,7 +71,7 @@ spec:
           multiPoint:
             enabled:
               - name: ImageLocality
-              - name: NodeResourceFit
+              - name: NodeResourcesFit
               - name: NodeResourcesBalancedAllocation
         pluginConfig:
           - name: NodeResourcesFit
@@ -231,4 +231,4 @@ With AKS Configurable Scheduler Profiles, teams gain fine-grained control over p
 [best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
 [scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
 [memory-optimized-vm]: https://learn.microsoft.com/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
-[supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/en-us/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
+[supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
