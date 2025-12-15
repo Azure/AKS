@@ -1,23 +1,28 @@
 ---
 title: "Autoscale KAITO inference workloads on AKS using KEDA"
 date: "2025-12-11"
-description: "Autoscale your KAITO inference workloads using KEDA"
+description: "Autoscale KAITO inference workloads dynamically to handle varying numbers of waiting inference service requests."
 authors: ["andy-zhang"]
 tags: ["ai", "kaito"]
 ---
 
-[Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito/tree/main) (KAITO) is an operator that automates the AI/ML model inference or tuning workload in a Kubernetes cluster. With the [v0.8.0 release](https://github.com/Azure/kaito/releases/tag/v0.8.0), KAITO has introduced intelligent autoscaling for inference workloads as an alpha feature.
-
 ## Overview
+
+[Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito/tree/main) (KAITO) is an operator that automates the AI/ML model inference or tuning workload in a Kubernetes cluster. With the [v0.8.0 release](https://github.com/Azure/kaito/releases/tag/v0.8.0), KAITO has introduced intelligent autoscaling for inference workloads as an alpha feature. In this blog, we'll guide you through setting up autoscaling for KAITO vLLM inference workloads.
+
+<!-- truncate -->
+
+## Introduction
+
+LLM inference service is a basic and widely-used feature in KAITO, as the number of waiting inference requests increases, it is necessary to scale more inference instances in order to prevent blocking inference requests. On the other hand, if the number of waiting inference requests declines, we should consider reducing inference instances to improve GPU resource utilization.
 
 This blog outlines the steps to enable intelligent autoscaling based on the service monitoring metrics for KAITO inference workloads by using the following components and features:
 
-- [KEDA](https://github.com/kedacore/keda)
+- [Kubernetes-based Event Driven Autoscaling(KEDA)](https://github.com/kedacore/keda)
 
-  - Kubernetes-based Event Driven Autoscaling component
 - [keda-kaito-scaler](https://github.com/kaito-project/keda-kaito-scaler)
   - A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
-- KAITO `InferenceSet` Custom Resource Definition (CRD) and controller
+- KAITO `InferenceSet` CRD and controller
   - This new CRD and controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`
 
 ### Architecture
@@ -26,7 +31,7 @@ This blog outlines the steps to enable intelligent autoscaling based on the serv
 
 ## Prerequisites
 
-- Install KEDA
+- install KEDA
 
 > The following example demonstrates how to install KEDA using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [deploying-keda](https://github.com/kedacore/keda#deploying-keda).
 
@@ -35,14 +40,14 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm install keda kedacore/keda --namespace keda --create-namespace
 ```
 
-- Install keda-kaito-scaler
+- install keda-kaito-scaler
 
 ```bash
 helm repo add keda-kaito-scaler https://kaito-project.github.io/keda-kaito-scaler/charts/kaito-project
 helm upgrade --install keda-kaito-scaler -n kaito-workspace keda-kaito-scaler/keda-kaito-scaler --create-namespace
 ```
 
-## Enable this feature on KAITO
+## Enable InferenceSet controller in KAITO
 
 This feature is available starting from KAITO `v0.8.0`, and the InferenceSet controller must be enabled during the KAITO installation.
 
@@ -113,7 +118,7 @@ keda-hpa-phi-4-mini     InferenceSet/phi-4-mini     0/10 (avg)   1         5    
 
 That's it! Your KAITO workloads will now automatically scale based on the number of waiting inference requests(`vllm:num_requests_waiting`).
 
-In below example, when `vllm:num_requests_waiting` exceeds the threshold (10s) for more than 60 seconds, KEDA will scale up a new `InferenceSet/phi-4-mini` replica.
+In below example, when `vllm:num_requests_waiting` exceeds the threshold (10) for more than 60 seconds, KEDA will scale up a new `InferenceSet/phi-4-mini` replica.
 
 ```yaml
 Every 2.0s: kubectl describe hpa
@@ -156,3 +161,13 @@ Events:
   Normal  SuccessfulRescale  33s   horizontal-pod-autoscaler  New size: 2; reason: external metric s0-vllm:num_requests_waiting(&LabelSelector{MatchLabels:ma
 p[string]string{scaledobject.keda.sh/name: phi-4-mini,},MatchExpressions:[]LabelSelectorRequirement{},}) above target
 ```
+
+## Summary
+
+The LLM inference service in KAITO needs to scale inference instances dynamically to handle varying numbers of waiting requests: scaling up to prevent blocking when requests increase, and scaling down to optimize GPU usage when requests decrease. With the newly introduced InferenceSet CRD and KEDA KAITO scaler, configuring this setting in KAITO has become much simpler.
+
+We're just getting started and would love your feedback. To learn more about KAITO inference workloads auto scaling, AI model deployment on AKS, check out the following links:
+
+## Resources
+
+- [KAITO InferenceSet](https://github.com/kaito-project/kaito/blob/main/docs/proposals/20250918-introduce_inferenceset_autoscaling.md)
