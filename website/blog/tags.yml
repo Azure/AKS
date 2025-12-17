@@ -182,6 +182,11 @@ kaito:
   permalink: /kaito
   description: KAITO project usage for model fine-tuning, inference, and RAG on AKS.
 
+karpenter:
+  label: Karpenter
+  permalink: /karpenter
+  description: Karpenter project usage for node provisioning and compute management on AKS.
+
 kube-fleet:
   label: Kube-Fleet
   permalink: /kube-fleet
@@ -236,6 +241,11 @@ networking:
   label: Networking
   permalink: /networking
   description: Cluster and application networking, eBPF, traffic management, and connectivity patterns.
+
+node-auto-provisioning:
+  label: Node-Auto-Provisioning
+  permalink: /node-auto-provisioning
+  description: Managed Karpenter project for node provisioning and compute management on AKS.
 
 observability:
   label: Observability
@@ -296,6 +306,11 @@ troubleshooting:
   label: Troubleshooting
   permalink: /troubleshooting
   description: Systematic diagnosis of cluster, networking, performance, and application issues.
+
+virtual-machine-node-pools:
+  label: Virtual-Machine-Node-Pools
+  permalink: /virtual-machine-node-pools
+  description: node pool type for AKS clusters.
 
 workload-identity:
   label: Workload Identity
