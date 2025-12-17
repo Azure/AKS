@@ -1,7 +1,7 @@
 ---
 title: "Azure Container Registry Repository Permissions with Attribute-based Access Control (ABAC)"
 date: "2025-12-05"
-description: Azure Container Registry now supports Entra ABAC conditions in RBAC role assignments. This enables identities from CI/CD pipelines and AKS clusters to have granular image push, pull, or delete permissions for specific repositories and namespaces.
+description: Azure Container Registry now supports Microsoft Entra ABAC for granular repository permissions in CI/CD pipelines and AKS clusters.
 authors:
     - johnson-shi
 tags:
@@ -11,7 +11,6 @@ tags:
     - general
     - operations
     - security
-    - workload-identity
 image: ./hero.png
 hide_table_of_contents: false
 draft: false
@@ -39,7 +38,7 @@ ABAC can be enabled on all new and existing ACR registries across all SKUs, eith
 
 Here is the Azure Portal experience for enabling ABAC on a new ACR during creation:
 
-![Enabling ABAC on a new ACR during Creation](./acr-enabling-abac-during-acr-create.png)
+![Enabling ABAC on a new ACR during creation](./acr-enabling-abac-during-acr-create.png)
 
 Here is the Azure Portal experience for enabling ABAC on an existing ACR:
 
