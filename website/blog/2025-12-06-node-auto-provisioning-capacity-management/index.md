@@ -170,7 +170,7 @@ az aks create --resource-group myResourceGroup --name myAKSCluster --vm-set-type
 
 The following example adds a Virtual Machines node pool named myvmpool to the myAKSCluster cluster. The node pool creates a ManualScaleProfile with --vm-sizes set to Standard_D4s_v3 and a --node-count of 3:
 
-```
+```bash
 az aks nodepool add --resource-group myResourceGroup --cluster-name myAKSCluster --name myvmpool --vm-set-type "VirtualMachines" --vm-sizes "Standard_D4s_v3" --node-count 3
 ```
 
