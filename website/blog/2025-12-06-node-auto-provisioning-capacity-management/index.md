@@ -59,7 +59,7 @@ This flexibility is key to avoiding hard failures during scale-out.
 
 For more on enabling NAP on your cluster, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning) as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass)
 
-### Virtual machine node pools: Flexibility at Scale
+### Virtual machine node pools: Flexibility at scale
 Traditional node pools are rigid: one SKU per pool. Virtual Machine node pools break that limitation. With multi-SKU support, you can:
 
 * Mix VM sizes within a single pool for diverse workloads.
