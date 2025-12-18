@@ -56,14 +56,14 @@ ABAC can also be enabled on ACR registries through Azure Resource Manager (ARM),
 
 Once a registry is ABAC-enabled (configured to "**RBAC Registry + ABAC Repository Permissions**"), registry admins can use these ABAC-enabled built-in roles to grant repository-scoped permissions:
 
-* **[Container Registry Repository Reader](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-reader)**: grants image pull and metadata read permissions, including permissions for `HEAD` requests, `GET` manifest requests, `GET` layer blob requests, tag resolution, and discovering OCI referrers.
-* **[Container Registry Repository Writer](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-writer)**: grants Repository Reader permissions, as well as image and tag push permissions.
-* **[Container Registry Repository Contributor](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-contributor)**: grants Repository Reader and Repository Writer permissions, as well as image and tag delete permissions.
+* **[Container Registry Repository Reader](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-reader)**: grants image pull and metadata read permissions, including permissions for `HEAD` requests, `GET` manifest requests, `GET` layer blob requests, tag resolution, and discovering OCI referrers.
+* **[Container Registry Repository Writer](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-writer)**: grants Repository Reader permissions, as well as image and tag push permissions.
+* **[Container Registry Repository Contributor](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-contributor)**: grants Repository Reader and Repository Writer permissions, as well as image and tag delete permissions.
 
 Note that these roles do not grant repository list permissions.
 
-* The separate **[Container Registry Repository Catalog Lister](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-catalog-lister)** must be assigned to grant repository list permissions.
-* The **[Container Registry Repository Catalog Lister](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-catalog-lister)** role does not support ABAC conditions in role assignments; assigning this role grants permissions to list all repositories in a registry.
+* The separate **[Container Registry Repository Catalog Lister](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-catalog-lister)** must be assigned to grant repository list permissions.
+* The **[Container Registry Repository Catalog Lister](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-catalog-lister)** role does not support ABAC conditions in role assignments; assigning this role grants permissions to list all repositories in a registry.
 
 ## Important role behavior changes in ABAC mode
 
