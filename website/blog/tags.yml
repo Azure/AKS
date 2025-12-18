@@ -243,7 +243,7 @@ networking:
   description: Cluster and application networking, eBPF, traffic management, and connectivity patterns.
 
 node-auto-provisioning:
-  label: Node-Auto-Provisioning
+  label: Node Auto Provisioning
   permalink: /node-auto-provisioning
   description: Managed Karpenter project for node provisioning and compute management on AKS.
 
