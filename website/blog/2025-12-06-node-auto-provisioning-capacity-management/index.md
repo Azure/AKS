@@ -95,7 +95,7 @@ To maximize Virtual Machine node pool's ability to adapt to capacity errors:
 
 ## Getting started with node auto provisioning
 
-Before you begin, vist our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning#limitations-and-unsupported-features) on minimum. 
+Before you begin, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning#limitations-and-unsupported-features) on minimum. 
 
 ### Create a new NAP-managed AKS cluster
 
