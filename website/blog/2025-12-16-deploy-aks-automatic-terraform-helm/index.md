@@ -1,6 +1,6 @@
 ---
 title: "Deploy Apps to AKS Automatic with Terraform and the Helm Provider"
-date: 2025-12-16
+date: 2025-12-22
 description: "Learn how to deploy AKS Automatic with the AzApi provider for Terraform and configure the Helm provider for Azure RBAC token-based authentication."
 authors: [paul-yu]
 tags: [aks-automatic, developer, best-practices]
