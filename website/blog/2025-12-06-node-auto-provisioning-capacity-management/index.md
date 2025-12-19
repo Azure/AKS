@@ -151,7 +151,7 @@ Visit our [Virtual Machine node pools documentation](https://learn.microsoft.com
 ## What’s next on the AKS roadmap
 
 NAP: Expect deeper integration with cost optimization tools and advanced disruption policies for even smarter consolidation.
-Virtual Machine node pools: Auto-scaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
+Virtual Machine node pools: Multi-SKU auto-scaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
 
 ## Next steps
 
