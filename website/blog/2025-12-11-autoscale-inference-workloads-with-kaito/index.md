@@ -33,10 +33,11 @@ This blog outlines the steps to enable intelligent autoscaling based on the serv
 
 ### Install KEDA
 
- - option#1: enable managed KEDA addon
+- option#1: enable managed KEDA addon
 For instructions on enabling KEDA addon on AKS, you could refer to the guide [Install KEDA add-on on AKS](https://learn.microsoft.com/en-us/azure/aks/keda-deploy-add-on-cli)
 
- - option#2: install KEDA using Helm chart
+- option#2: install KEDA using Helm chart
+
 > The following example demonstrates how to install KEDA 2.x using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [deploying-keda](https://github.com/kedacore/keda#deploying-keda).
 
 ```bash
@@ -45,6 +46,7 @@ helm install keda kedacore/keda --namespace kube-system
 ```
 
 ### Install keda-kaito-scaler
+
 > Ensure that keda-kaito-scaler is installed within the same namespace as KEDA.
 
 ```bash
@@ -53,6 +55,7 @@ helm upgrade --install keda-kaito-scaler -n kube-system keda-kaito-scaler/keda-k
 ```
 
 After a few seconds, a new deployment `keda-kaito-scaler` would be started.
+
 ```bash
 # kubectl get deployment keda-kaito-scaler -n kube-system
 NAME                READY   UP-TO-DATE   AVAILABLE   AGE
@@ -185,3 +188,4 @@ We're just getting started and would love your feedback. To learn more about KAI
 - [KEDA Auto-Scaler for inference workloads](https://kaito-project.github.io/kaito/docs/keda-autoscaler-inference)
 - [KAITO InferenceSet](https://github.com/kaito-project/kaito/blob/main/docs/proposals/20250918-introduce_inferenceset_autoscaling.md)
 - [vLLM Production Metrics](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics)
+
