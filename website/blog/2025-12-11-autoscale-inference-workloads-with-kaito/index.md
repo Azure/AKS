@@ -188,4 +188,3 @@ We're just getting started and would love your feedback. To learn more about KAI
 - [KEDA Auto-Scaler for inference workloads](https://kaito-project.github.io/kaito/docs/keda-autoscaler-inference)
 - [KAITO InferenceSet](https://github.com/kaito-project/kaito/blob/main/docs/proposals/20250918-introduce_inferenceset_autoscaling.md)
 - [vLLM Production Metrics](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics)
-
