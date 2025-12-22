@@ -46,7 +46,7 @@ NAP offers a more intelligent scaling experience. Instead of you guessing the ri
 - **Consolidates intelligently**: Removes underutilized nodes, reducing cost.
 - **Adapts in real time**: Responds to pod pressure without manual intervention.
 
-Think of NAP as Kubernetes with foresight: provisioning what you need, when you need it, without the spreadsheet gymnastics. Without NAP, a single unavailable VM SKU can block scaling entirely. With NAP, AKS dynamically adapts to capacity fluctuations, ensuring workloads keep running on available VM sizes, even during regional/zonal shortages. 
+Think of NAP as Kubernetes with foresight: provisioning what you need, when you need it, without the spreadsheet gymnastics. Without NAP, a single unavailable VM SKU can block scaling entirely. With NAP, AKS dynamically adapts to capacity fluctuations, ensuring workloads keep running on available VM sizes, even during regional/zonal shortages.
 
 #### How NAP handles capacity errors
 
@@ -58,9 +58,9 @@ When a requested VM SKU isn’t available due to regional or zonal capacity cons
 - Provision an alternative SKU that meets the workload requirements and policy constraints.
 - In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available".  **Mitigation**: Make sure you reference a broad range of size options in the NAP configuration files (e.g. D-series, multiple SKU families)
 
-This flexibility is key to avoiding hard failures during scale-out. In the scenario where there is no SKUs available based on your configuration requirements, 
+This flexibility is key to avoiding hard failures during scale-out. In the scenario where there is no SKUs available based on your configuration requirements, NAP will return an error stating that there were no available SKUs that matched your requirements. Typically this means the configuration requirements probably can be broader, to allow for more available VM sizes.
 
-For more on enabling NAP on your cluster, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning) as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass)
+For more on enabling NAP on your cluster, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning) as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
 
 ### Virtual machine node pools: Flexibility at scale
 
@@ -90,21 +90,23 @@ Avoid NAP if you require strict SKU governance or have regulatory constraints th
 ## Best practice for resilience
 
 To maximize NAP's ability to handle capacity errors:
+
 - Define broad SKU families (e.g., D, E) in your NodePool requirements.
-- Avoid overly restrictive affinity rules. Visit our [affinity rules documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices. 
-- Enable multiple NodePools with different priorities for fallback. Visit our [NAP Node Pool documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) to learn more. 
+- Avoid overly restrictive affinity rules. Visit our [affinity rules documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices.
+- Enable multiple NodePools with different priorities for fallback. Visit our [NAP Node Pool documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) to learn more.
 
 To maximize Virtual Machine node pool's ability to adapt to capacity errors:
+
 - Be clear on a list of VM SKUs that can tolerate your workloads. Visit our [Azure VM Sizes documentation](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#list-of-vm-size-families-by-type) for more details.
-- Create virtual machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool. 
+- Create virtual machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool.
 
 ## Getting started with node auto provisioning
 
-Before you begin, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning#limitations-and-unsupported-features) on minimum. 
+Before you begin, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning#limitations-and-unsupported-features) on minimum cluster requirements.
 
 ### Create a new NAP-managed AKS cluster
 
-The following command creates a new NAP-managed AKS cluster by setting the `--node-provisioning-mode` field to `Auto`. This command also sets the network configuration to the recommended Azure CNI Overlay with a Cilium dataplane (optional). View our [NAP networking documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-networking#supported-networking-configurations-for-nap) for more on supported CNI options. 
+The following command creates a new NAP-managed AKS cluster by setting the `--node-provisioning-mode` field to `Auto`. This command also sets the network configuration to the recommended Azure CNI Overlay with a Cilium dataplane (optional). View our [NAP networking documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-networking#supported-networking-configurations-for-nap) for more on supported CNI options.
 
 ```azure-cli
 az aks create --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provisioning-mode Auto --network-plugin azure --network-plugin-mode overlay --network-dataplane cilium
@@ -121,10 +123,11 @@ az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provi
 ### Configure NAP custom resource definitions
 
 NAP uses custom resource definition (CRDs) and your application deployment file requirements for its decision-making around which virtual machines to provision and schedule your workloads to. This includes:
-- NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc.  
-- AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions. 
 
-Visit our [NAP NodePool Documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [NAP AKSNodeClass documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) for more on configuring these files. 
+- NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc.
+- AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions.
+
+Visit our [NAP NodePool Documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [NAP AKSNodeClass documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) for more on configuring these files.
 
 ## Getting started with virtual machine node pools
 
@@ -133,7 +136,7 @@ Visit our [NAP NodePool Documentation](https://learn.microsoft.com/azure/aks/nod
 The following example creates a new cluster named myAKSCluster with a Virtual Machines node pool containing two nodes with size "Standard_D4s_v3", and sets the Kubernetes version to 1.31.0:
 
 ```azure-cli
-az aks create --resource-group myResourceGroup --name myAKSCluster --vm-set-type "VirtualMachines" --vm-sizes "Standard_D4s_v3" 
+az aks create --resource-group myResourceGroup --name myAKSCluster --vm-set-type "VirtualMachines" --vm-sizes "Standard_D4s_v3"
     --node-count 2 --kubernetes-version 1.31.0
 ```
 
