@@ -9,6 +9,7 @@ tags:
 ---
 
 ## When Growth Meets a Wall
+
 Imagine this: your application is thriving, traffic spikes, and Kubernetes promises elasticity. You hit “scale,” expecting magic—only to be greeted by cryptic errors like:
 
 - **Insufficient regional capacity**: Azure can’t allocate the VM size you requested in a particular region or zone.
@@ -30,6 +31,7 @@ Learn more in the official documentation: [Node Auto Provisioning](https://learn
 ---
 
 ## The Hidden Complexity Behind Capacity
+
 When using Kubernetes, every node pool is typically tied to a specific VM SKU, region, and zone, which can require some effort to update. In some scaling scenarios, high-demand VM SKUs can become unavailable in certain regions or zones. In this case node pools being limited to one VM size is now a bottleneck that can result in capacity errors and an outage. You’re left juggling trade-offs: Do you overprovision SKUs “just in case” to ensure availability? Or risk underprovisioning and inability to scale? AKS offers two solutions that aim to address these capacity scaling challenges.
 
 ---
@@ -37,6 +39,7 @@ When using Kubernetes, every node pool is typically tied to a specific VM SKU, r
 ## Breaking the Mold: Features That Change the Game
 
 ### Node auto provisioning (NAP): Smarter Scaling
+
 NAP offers a more intelligent scaling experience. Instead of you guessing the right VM size, NAP uses **pending pod resource requests** to dynamically provision nodes that fit your workloads. Built on the open-source **Karpenter** project, NAP:
 
 - **Automates VM selection**: Chooses optimal SKUs based on CPU, memory, and constraints.
@@ -49,22 +52,23 @@ Think of NAP as Kubernetes with foresight: provisioning what you need, when you 
 
 When a requested VM SKU isn’t available due to regional or zonal capacity constraints, NAP doesn’t fail outright. Instead, NAP will automatically:
 
-* Evaluate pending pod resource requirements (CPU, memory, GPU, etc.).
-* Check if pending pods can fit on existing nodes
-* Search across multiple VM SKUs within the allowed families defined in your NAP configuration files (custom resource definitions referred to as the NodePool and AKSNodeClass CRDs).
-* Provision an alternative SKU that meets the workload requirements and policy constraints.
-* In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available".  **Mitigation**: Make sure you reference a broad range of size options in the NAP configuration files (e.g. D-series, multiple SKU families)
+- Evaluate pending pod resource requirements (CPU, memory, GPU, etc.).
+- Check if pending pods can fit on existing nodes
+- Search across multiple VM SKUs within the allowed families defined in your NAP configuration files (custom resource definitions referred to as the NodePool and AKSNodeClass CRDs).
+- Provision an alternative SKU that meets the workload requirements and policy constraints.
+- In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available".  **Mitigation**: Make sure you reference a broad range of size options in the NAP configuration files (e.g. D-series, multiple SKU families)
 
 This flexibility is key to avoiding hard failures during scale-out. In the scenario where there is no SKUs available based on your configuration requirements, 
 
 For more on enabling NAP on your cluster, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning) as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass)
 
 ### Virtual machine node pools: Flexibility at scale
+
 Traditional node pools are rigid: one SKU per pool. Virtual Machine node pools break that limitation. With multi-SKU support, you can:
 
-* Mix VM sizes within a single pool for diverse workloads.
-* Fine-tune capacity without creating dozens of pools.
-* Reduce operational overhead while improving resilience.
+- Mix VM sizes within a single pool for diverse workloads.
+- Fine-tune capacity without creating dozens of pools.
+- Reduce operational overhead while improving resilience.
 
 This isn’t just flexibility - it’s versatility in capacity-constrained regions.
 
@@ -75,23 +79,24 @@ You can manually add or update alternative VM SKUs into your new or existing nod
 For more on enabling Virtual Machine node pools on your cluster, visit our [Virtual Machine node pools documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
 
 ## Quick guidance: When to Use What
+
 Generally, using NAP or Virtual Machine node pools are mutually exclusive. You can use NAP to create standalone VMs which NAP manages instead of traditional node pools, which allows for **mixed SKU autoscaling**. Virtual Machine node pools uses traditional node pools, but allows for **mixed SKU manual scaling**.
 
-* (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical.
-* Choose Virtual Machine node pools when you need fine-tuned control with exact VM SKUs for compliance, predictable performance, or cost modeling.
+- (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical.
+- Choose Virtual Machine node pools when you need fine-tuned control with exact VM SKUs for compliance, predictable performance, or cost modeling.
 
 Avoid NAP if you require strict SKU governance or have regulatory constraints that cannot allow for dynamic autoscaling. Avoid VM node pools if you want full automation without manual profiles.
 
 ## Best practice for resilience
 
 To maximize NAP's ability to handle capacity errors:
-* Define broad SKU families (e.g., D, E) in your NodePool requirements.
-* Avoid overly restrictive affinity rules. Visit our [affinity rules documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices. 
-* Enable multiple NodePools with different priorities for fallback. Visit our [NAP Node Pool documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) to learn more. 
+- Define broad SKU families (e.g., D, E) in your NodePool requirements.
+- Avoid overly restrictive affinity rules. Visit our [affinity rules documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices. 
+- Enable multiple NodePools with different priorities for fallback. Visit our [NAP Node Pool documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) to learn more. 
 
 To maximize Virtual Machine node pool's ability to adapt to capacity errors:
-* Be clear on a list of VM SKUs that can tolerate your workloads. Visit our [Azure VM Sizes documentation](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#list-of-vm-size-families-by-type) for more details.
-* Create virtual machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool. 
+- Be clear on a list of VM SKUs that can tolerate your workloads. Visit our [Azure VM Sizes documentation](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#list-of-vm-size-families-by-type) for more details.
+- Create virtual machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool. 
 
 ## Getting started with node auto provisioning
 
