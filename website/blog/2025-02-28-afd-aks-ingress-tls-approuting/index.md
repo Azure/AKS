@@ -227,7 +227,7 @@ Now we can deploy the ingress definition. Look out for the following:
 
 1. The 'tls-cert-keyvault-uri' annotation maps the inbound TLS request to the appropriate certificate secret
 2. The 'rules' section maps the target host name to the backend service that should be targeted
-3. The 'tls' section will include the target host name and its mapping to the correct certificate, which is the static value 'keyvault-' followed by the ingress name (i.e. keyvault-aks-helloworld in our case), as documented [here](https://learn.microsoft.com/en-us/azure/aks/app-routing-dns-ssl#create-an-ingress-class-that-uses-a-host-name-and-a-certificate-from-azure-key-vault). 
+3. The 'tls' section will include the target host name and its mapping to the correct certificate, which is the static value 'keyvault-' followed by the ingress name (i.e. keyvault-aks-helloworld in our case), as documented in the [App Routing TLS Docs](https://learn.microsoft.com/en-us/azure/aks/app-routing-dns-ssl#create-an-ingress-class-that-uses-a-host-name-and-a-certificate-from-azure-key-vault).
 
 ```bash
 # Get the URI of the certificate
