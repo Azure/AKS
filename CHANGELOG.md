@@ -38,7 +38,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Features
 
 ### Behavioral Changes
-* HTTPProxyConfig now includes an `enabled` boolean field in API version `2026-01-01` to allow enabling or disabling HTTP Proxy on update. Nodes are automatically reimaged when proxy values are updated if `enabled` is true.
 * ProxyRedirectionMechanism field has been added to API version `2026-01-01`.
 * AKS now returns `podCIDR` and `podCIDRs` fields in API version `2026-01-01` when `networkPlugin=none`, allowing customers to update their podCIDR to match their CNI configuration.
 * When using LocalDNS, AKS now rejects forwarding external domains to CoreDNS from vnetDNSOverrides to prevent DNS resolution issues.
