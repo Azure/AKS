@@ -33,7 +33,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) now supports Pod CIDR address space expansion in public preview, allowing you to add more Pod IPs without recreating the cluster.
 * OpenTelemetry support for AKS monitoring is now in limited public preview. Documentation and sign up form can be found at [https://aka.ms/AzureMonitorOTelPreview](https://aka.ms/AzureMonitorOTelPreview)
 * Private IP support for Static Egress Gateway is now available in private preview using Kubernetes 1.34+.
-* External identity provider based authentication is now available in public preview. Documentation can be found at [External Identity Provider doc](https://learn.microsoft.com/en-us/azure/aks/external-identity-provider-authentication-configure?pivots=github)
+* External identity provider based authentication is now available in public preview. Documentation can be found at [External Identity Provider doc](https://learn.microsoft.com/azure/aks/external-identity-provider-authentication-configure?pivots=github)
 ### Features
 * Disable HTTP proxy is now generally available. It is enabled by default for new clusters and can be disabled for existing AKS clusters. Once you disable HTTP proxy on a cluster, the proxy configuration is saved in the database but the proxy variables are removed from the pods and nodes. For more information, see [https://aka.ms/aks/http-proxy](https://aka.ms/aks/http-proxy).
 
@@ -69,12 +69,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * IP Masq Agent has been updated to v0.1.15-7 with an Azure Linux 3.0 OS refresh, addressing glibc and OpenSSL vulnerabilities: [CVE-2025-4802](https://nvd.nist.gov/vuln/detail/CVE-2025-4802), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [CVE-2025-9232](https://nvd.nist.gov/vuln/detail/CVE-2025-9232)
 * Istio-based service mesh add-on revision asm-1-27 has been upgraded to [v1.27.4](https://istio.io/latest/news/releases/1.27.x/announcing-1.27.4/) to address CVEs: [CVE-2025-66220](https://www.cve.org/CVERecord?id=CVE-2025-66220), [CVE-2025-64527](https://www.cve.org/CVERecord?id=CVE-2025-64527), [CVE-2025-64763](https://www.cve.org/CVERecord?id=CVE-2025-64763), [CVE-2025-55162](https://www.cve.org/CVERecord?id=CVE-2025-55162), [CVE-2025-54588](https://www.cve.org/CVERecord?id=CVE-2025-54588)
 * Azure Service Mesh (OSM) add-on has been updated to [v1.2.11](https://github.com/openservicemesh/osm/releases/tag/v1.2.11) to adopt DALEC and address CVEs: [CVE-2024-45337](https://nvd.nist.gov/vuln/detail/CVE-2024-45337), [CVE-2025-22869](https://nvd.nist.gov/vuln/detail/CVE-2025-22869), [CVE-2025-22868](https://nvd.nist.gov/vuln/detail/CVE-2025-22868), [CVE-2024-24790](https://nvd.nist.gov/vuln/detail/CVE-2024-24790), [CVE-2024-34156](https://nvd.nist.gov/vuln/detail/CVE-2024-34156), [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729)
-* Azure Policy add-on has been updated to [v1.15.1](https://learn.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#1151)
+* Azure Policy add-on has been updated to [v1.15.1](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1151)
 * Application Gateway Ingress Controller (AGIC) has been updated to [v1.9.4](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.9.4)
 * Application Monitoring has been upgraded to [v1.0.0-beta.10](https://github.com/microsoft/Docker-Provider/releases/tag/appmonitoring-1.0.0-beta.10)
 * Container Insights has been updated to [3.1.32](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.32) with CVE patches
-* Metrics server has been updated to XXX
-* Cloud controller manager has been updated to [v1.34.2](https://github.com/kubernetes-sigs/cloud-provider-azure/compare/v1.34.1...v1.34.2) to fix a bug where services sharing Azure IPv6 PIP would not get reconciled.
+* Metrics server has been updated
+* Cloud controller manager has been updated to  [v1.34.2](https://github.com/kubernetes-sigs/cloud-provider-azure/compare/v1.34.1...v1.34.2) to fix a bug where services sharing Azure IPv6 PIP would not get reconciled.
 * Cluster autoscaler released [v1.34.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.1)
 * Microsoft Defender for Containers has been updated to 0.8.39
 * Windows GMSA containers have been updated to v0.12.1-2_5
