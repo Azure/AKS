@@ -36,6 +36,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar) is a CNCF-based vendor-neutral container-optimized immutable OS, best suited for running on multi-cloud and on-prem environments. Flatcar Container Linux is now available in preview as an OS option on AKS. You can deploy Flatcar Container Linux node pools in a new AKS cluster or add Flatcar Container Linux node pools to your existing clusters.
 * Windows Server 2025 is now supported in preview. This new version includes the following updates: Containerd 2.0 is now default, Generation 2 VMs are enabled by default, and FIPS is enabled by default. For more information on upgrading your windows OS version, see [AKS documentation](https://aka.ms/aks/upgrade-windows-os-version).
 ### Features
+* Ubuntu 24.04 is now generally available. You can create or update existing node pools to OS Sku 'Ubuntu2404' with CLI version 2.82.0+. You can also use OS Sku `Ubuntu` in kubernetes version 1.35 to use Ubuntu 24.04. For more information, see [Upgrade OS Version](https://aka.ms/aks/upgrade-os-version). 
 
 ### Behavioral Changes
 * ProxyRedirectionMechanism field has been added to API version `2026-01-01`.
