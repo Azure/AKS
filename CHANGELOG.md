@@ -6,7 +6,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Announcements
 
-* Ubuntu 18.04 and Ubuntu 16.04 support has been removed from AKS. All clusters must use Ubuntu 22.04 or later versions.
+* Ubuntu 18.04 support has been removed from AKS. If you are currently using Ubuntu 18.04 on AKS, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster) your Kubernetes version to 1.25+ where Ubuntu 22.04 will be the default Ubuntu version. For more information on this retirement and removal, see [AKS Github Issues](https://github.com/Azure/AKS/issues/4873)
   * If you are currently using Ubuntu 18.04 on AKS, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster) your Kubernetes version to 1.25+ where Ubuntu 22.04 will be the default Ubuntu version.
   * If you are currently using Ubuntu 18.04 with the [GPU image (preview) on AKS](https://github.com/Azure/AKS/issues/4472), please follow instructions to recreate your node pools with an [alternative GPU method](https://learn.microsoft.com/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool).
   * If you are currently using Ubuntu 18.04 with FIPS, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?) your Kubernetes version to 1.27+ where Ubuntu 20.04 will be the default FIPS Ubuntu version.
