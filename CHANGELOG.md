@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Kubernetes Version
 
-* AKS Kubernetes version `1.31` is deprecated. Kindly upgrade your clusters to `1.32` version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+* AKS Kubernetes version `1.31` is deprecated. Please upgrade your clusters to `1.32` version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 
 * AKS Kubernetes version `1.34` is now generally available. Refer to [version support policy](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions) and [upgrading a cluster](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster) for more information.
 
