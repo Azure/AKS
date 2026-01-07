@@ -54,7 +54,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Component Updates
 * AgentBaker has been updated to [v0.20251218.0](https://github.com/Azure/AgentBaker/releases/tag/v0.20251218.0)
 * Azure Disk CSI driver has been updated to [v1.33.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.7) for AKS clusters with Kubernetes versions 1.33+
-* Azure File CSI driver has been updated to XXX
+* Azure File CSI driver has been updated to a newer release for AKS clusters with Kubernetes versions 1.33+
 * Azure Blob CSI driver has been downgraded to v1.26.6 for AKS clusters with Kubernetes versions 1.34+ to address stability issues
 * Secrets Store CSI driver has been updated to [v1.7.2](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.7.2)
 * Cilium has been updated to [v1.18.2](https://github.com/cilium/cilium/releases/tag/v1.18.2) (now distroless) for AKS clusters with Kubernetes versions 1.34+
