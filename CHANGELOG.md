@@ -36,7 +36,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar) is a CNCF-based vendor-neutral container-optimized immutable OS, best suited for running on multi-cloud and on-prem environments. Flatcar Container Linux is now available in preview as an OS option on AKS. You can deploy Flatcar Container Linux node pools in a new AKS cluster or add Flatcar Container Linux node pools to your existing clusters.
 * Windows Server 2025 is now supported in preview. This new version includes the following updates: Containerd 2.0 is now default, Generation 2 VMs are enabled by default, and FIPS is enabled by default. For more information on upgrading your windows OS version, see [AKS documentation](https://aka.ms/aks/upgrade-windows-os-version).
 ### Features
-* Disable HTTP proxy is now generally available. It is enabled by default for new clusters and can be disabled for existing AKS clusters. Once you disable HTTP proxy on a cluster, the proxy configuration is saved in the database but the proxy variables are removed from the pods and nodes. For more information, see [https://aka.ms/aks/http-proxy](https://aka.ms/aks/http-proxy).
 
 ### Behavioral Changes
 * HTTPProxyConfig now includes an `enabled` boolean field in API version `2026-01-01` to allow enabling or disabling HTTP Proxy on update. Nodes are automatically reimaged when proxy values are updated if `enabled` is true.
