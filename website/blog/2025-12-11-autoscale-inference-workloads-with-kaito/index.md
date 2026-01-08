@@ -8,7 +8,7 @@ tags: ["ai", "kaito"]
 
 ## Overview
 
-[Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito/tree/main) (KAITO) is an operator that simplifies and automates AI/ML model inference, tuning, and RAG in a Kubernetes cluster. With the recent [v0.8.0 release](https://github.com/Azure/kaito/releases/tag/v0.8.0), KAITO has introduced intelligent autoscaling for inference workloads as an alpha feature! In this blog, we'll guide you through setting up event-driven autoscaling for vLLM inference workloads.
+[Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito) (KAITO) is an operator that simplifies and automates AI/ML model inference, tuning, and RAG in a Kubernetes cluster. With the recent [v0.8.0 release](https://github.com/Azure/kaito/releases/tag/v0.8.0), KAITO has introduced intelligent autoscaling for inference workloads as an alpha feature! In this blog, we'll guide you through setting up event-driven autoscaling for vLLM inference workloads.
 
 <!-- truncate -->
 
@@ -22,21 +22,21 @@ This blog outlines the steps to enable intelligent autoscaling based on the serv
 
 - [keda-kaito-scaler](https://github.com/kaito-project/keda-kaito-scaler)
   - A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
-- KAITO `InferenceSet` Custom Resource Definition(CRD) and controller
+- KAITO `InferenceSet` CustomResourceDefinition(CRD) and controller
   - This new CRD and controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`
 
 ### Architecture
 
- ![keda-kaito-scaler-arch](keda-kaito-scaler-arch.png)
+ ![Architecture diagram showing keda-kaito-scaler integrating KAITO InferenceSet with KEDA to autoscale inference workloads on AKS](keda-kaito-scaler-arch.png)
 
 ## Prerequisites
 
 ### Install KEDA
 
-- option#1: enable managed KEDA addon
-For instructions on enabling KEDA addon on AKS, you could refer to the guide [Install KEDA add-on on AKS](https://learn.microsoft.com/en-us/azure/aks/keda-deploy-add-on-cli)
+- **Option 1**: Enable managed KEDA add-on
+For instructions on enabling KEDA add-on on AKS, you could refer to the guide [Install KEDA add-on on AKS](https://learn.microsoft.com/azure/aks/keda-deploy-add-on-cli)
 
-- option#2: install KEDA using Helm chart
+- **Option 2**: Install KEDA using Helm chart
 
 > The following example demonstrates how to install KEDA 2.x using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [deploying-keda](https://github.com/kedacore/keda#deploying-keda).
 
@@ -264,7 +264,7 @@ p[string]string{scaledobject.keda.sh/name: phi-4-mini,},MatchExpressions:[]Label
 
 The LLM inference service in KAITO needs to scale inference instances dynamically to handle varying numbers of waiting requests: scaling up to prevent blocking when requests increase, and scaling down to optimize GPU usage when requests decrease. With the newly introduced InferenceSet CRD and KEDA KAITO scaler, configuring this setting in KAITO has become much simpler.
 
-We're just getting started and would love your feedback. To learn more about KAITO inference workloads auto scaling, AI model deployment on AKS, check out the following links:
+We're just getting started and would love your feedback. To learn more about KAITO inference workloads autoscaling and AI model deployment on AKS, check out the following links:
 
 ## Resources
 
