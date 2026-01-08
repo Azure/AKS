@@ -41,7 +41,7 @@ For deprecation and patch timelines by region, please check the [AKS-Release-Tra
 * Starting with API version `2026-01-01`, AKS returns `podCIDR` and `podCIDRs` fields when `networkPlugin=none`, allowing customers to update their podCIDR to match their CNI configuration.
 * When using [LocalDNS](https://learn.microsoft.com/azure/aks/localdns-custom), AKS now rejects forwarding external domains to CoreDNS from vnetDNSOverrides to prevent DNS resolution issues.
 * AKS now enforces required subnet configuration for networking add-ons such as Application Gateway for Containers, which may cause cluster creation or upgrades to fail if add-on subnets are misconfigured or do not meet required constraints. See [Application Gateway for Containers networking requirements](https://learn.microsoft.com/azure/application-gateway/for-containers/quickstart-create-application-gateway-for-containers-managed-by-alb-controller)
-* AKS now returns a client error when vnet encryption is used together with vnet integration (incompatible configuration).
+* **AKS now returns a client error when virtual network encryption is used with API server VNet integration, as this configuration is not supported.** See [API server VNet integration limitations](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limitations)
 
 ### Component Updates
 * Windows node images
