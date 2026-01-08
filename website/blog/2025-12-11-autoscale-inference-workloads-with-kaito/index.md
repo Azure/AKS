@@ -1,7 +1,7 @@
 ---
 title: "Autoscale KAITO inference workloads on AKS using KEDA"
 date: "2026-01-08"
-description: "Autoscale KAITO inference workloads dynamically to handle varying numbers of waiting inference service requests."
+description: "Learn how to autoscale KAITO inference workloads on AKS with KEDA to handle varying inference requests and optimize Kubernetes GPU utilization in AKS clusters."
 authors: ["andy-zhang", "sachi-desai"]
 tags: ["ai", "kaito"]
 ---
@@ -81,7 +81,7 @@ helm upgrade --install kaito-workspace kaito/workspace \
 
 ## Quickstart
 
-### Time-based KEDA scaler
+### Time-Based KEDA Scaler
 
 The KEDA cron scaler enables scaling of workloads according to time-based schedules, making it especially beneficial for workloads with predictable traffic patterns. It is perfect for situations where peak hours are known ahead of time, allowing you to proactively adjust resources before demand rises. For more details about Time-based scaler, you could refer to [Scale applications based on a cron schedule](https://keda.sh/docs/2.18/scalers/cron/).
 
@@ -117,7 +117,7 @@ EOF
 
 Below is an example of creating a `ScaledObject` that scales a Kaito InferenceSet based on business hours:
 
-- **Scale up to 5 replicas** from 6AM to 8PM (peak hours)
+- **Scale up to 5 replicas** from 6:00 AM to 8:00 PM (peak hours)
 
 - **Scale down to 1 replica** otherwise (off-peak hours)
 
@@ -139,24 +139,24 @@ spec:
   maxReplicaCount: 5
   # Cron-based triggers for time-based scaling
   triggers:
-  # Scale up to 5 replicas at 6AM (start of business hours)
+  # Scale up to 5 replicas at 6:00 AM (start of business hours)
   - type: cron
     metadata:
       timezone: "America/New_York"  # Adjust timezone as needed
-      start: "0 6 * * 1-5"          # 6AM Monday to Friday
-      end: "0 20 * * 1-5"           # 8PM Monday to Friday
+      start: "0 6 * * 1-5"          # 6:00 AM Monday to Friday
+      end: "0 20 * * 1-5"           # 8:00 PM Monday to Friday
       desiredReplicas: "5"          # Scale to 5 replicas during business hours
-  # Scale down to 1 replica at 8PM (end of business hours)
+  # Scale down to 1 replica at 8:00 PM (end of business hours)
   - type: cron
     metadata:
       timezone: "America/New_York"  # Adjust timezone as needed
-      start: "0 20 * * 1-5"         # 8PM Monday to Friday
-      end: "0 6 * * 1-5"            # 6AM Monday to Friday (next day)
+      start: "0 20 * * 1-5"         # 8:00 PM Monday to Friday
+      end: "0 6 * * 1-5"            # 6:00 AM Monday to Friday (next day)
       desiredReplicas: "1"          # Scale to 1 replica during off-hours
 EOF
 ```
 
-### Metric-based KEDA scaler
+### Metric-Based KEDA Scaler
 
 > Make sure `keda-kaito-scaler` is installed before proceeding.
 
@@ -202,7 +202,7 @@ spec:
 EOF
 ```
 
-In just a few seconds, the KEDA KAITO scaler will automatically create the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod is running, the KEDA KAITO scaler will begin scraping [metric values](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics) from the inference pod, and the status of the `scaledobject` and `hpa` objects will be marked as ready.
+In just a few seconds, the KEDA KAITO scaler automatically creates the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod runs, the KEDA KAITO scaler begins scraping [metric values](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics) from the inference pod, and the system marks the status of the `scaledobject` and `hpa` objects as ready.
 
 ```bash
 # kubectl get scaledobject
