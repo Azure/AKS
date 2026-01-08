@@ -47,6 +47,7 @@ helm install keda kedacore/keda --namespace kube-system
 
 ### Install keda-kaito-scaler
 
+> This component is required only when using metric-based KEDA scaler.
 > Ensure that keda-kaito-scaler is installed within the same namespace as KEDA.
 
 ```bash
@@ -81,12 +82,95 @@ helm upgrade --install kaito-workspace kaito/workspace \
 
 ## Quickstart
 
-### Create a KAITO InferenceSet for running inference workloads
+### Time-based KEDA scaler
 
-- The following example creates an InferenceSet for the phi-4-mini model, using annotations with the prefix `scaledobject.kaito.sh/` to supply parameter inputs for the KEDA KAITO scaler:
+reference link: https://keda.sh/docs/2.18/scalers/cron/
+
+The KEDA cron scaler enables scaling of workloads according to time-based schedules, making it especially beneficial for workloads with predictable traffic patterns. It is perfect for situations where peak hours are known ahead of time, allowing you to proactively adjust resources before demand rises.
+
+#### Example: Business Hours Scaling
+
+- Create a KAITO InferenceSet for running inference workloads
+
+The following example creates an InferenceSet for the phi-4-mini model:
+
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: kaito.sh/v1alpha1
+kind: InferenceSet
+metadata:
+  name: phi-4-mini
+  namespace: default
+spec:
+  labelSelector:
+    matchLabels:
+      apps: phi-4-mini
+  replicas: 1
+  template:
+    inference:
+      preset:
+        accessMode: public
+        name: phi-4-mini-instruct
+    resource:
+      instanceType: Standard_NC24ads_A100_v4
+EOF
+```
+
+- Create a KEDA ScaledObject
+
+Below is an example of creating a `ScaledObject` that scales a Kaito InferenceSet based on business hours:
+- **Scale up to 5 replicas** from 6AM to 8PM (peak hours)
+- **Scale down to 1 replica** otherwise (off-peak hours)
+
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kaito-business-hours-scaler
+  namespace: default
+spec:
+  # Target Kaito InferenceSet to scale
+  scaleTargetRef:
+    apiVersion: kaito.sh/v1alpha1
+    kind: InferenceSet
+    name: phi-4-mini
+  # Scaling boundaries
+  minReplicaCount: 1
+  maxReplicaCount: 5
+  # Cron-based triggers for time-based scaling
+  triggers:
+  # Scale up to 5 replicas at 6AM (start of business hours)
+  - type: cron
+    metadata:
+      timezone: "America/New_York"  # Adjust timezone as needed
+      start: "0 6 * * 1-5"          # 6AM Monday to Friday
+      end: "0 20 * * 1-5"           # 8PM Monday to Friday
+      desiredReplicas: "5"          # Scale to 5 replicas during business hours
+  # Scale down to 1 replica at 8PM (end of business hours)
+  - type: cron
+    metadata:
+      timezone: "America/New_York"  # Adjust timezone as needed
+      start: "0 20 * * 1-5"         # 8PM Monday to Friday
+      end: "0 6 * * 1-5"            # 6AM Monday to Friday (next day)
+      desiredReplicas: "1"          # Scale to 1 replica during off-hours
+EOF
+```
+
+### Metric-based KEDA scaler 
+
+> Make sure `keda-kaito-scaler` is installed before proceeding.
+
+The `keda-kaito-scaler` provides a simplified configuration interface for scaling vLLM inference workloads, it directly scrapes metrics from inference pods, eliminating the need for a separate monitoring stack.
+
+#### Example: Create a KAITO InferenceSet with annotations for running inference workloads
+
+- The following example creates an InferenceSet for the phi-4-mini model, using annotations with the prefix `scaledobject.kaito.sh/` to supply parameter inputs for the KEDA KAITO scaler.
 
   - `scaledobject.kaito.sh/auto-provision`
-    - required, specifies whether KEDA KAITO scaler will automatically provision a ScaledObject based on the `InferenceSet` object
+    - required, if it's `true`, KEDA KAITO scaler will automatically provision a ScaledObject based on the `InferenceSet` object
+  - `scaledobject.kaito.sh/max-replicas`
+    - required, maximum replica number of target InferenceSet
   - `scaledobject.kaito.sh/metricName`
     - optional, specifies the metric name collected from the vLLM pod, which is used for monitoring and triggering the scaling operation, default is `vllm:num_requests_waiting`, you could find all vllm metrics in [vLLM Production Metrics](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics)
   - `scaledobject.kaito.sh/threshold`
@@ -99,6 +183,7 @@ kind: InferenceSet
 metadata:
   annotations:
     scaledobject.kaito.sh/auto-provision: "true"
+    scaledobject.kaito.sh/max-replicas: "5"
     scaledobject.kaito.sh/metricName: "vllm:num_requests_waiting"
     scaledobject.kaito.sh/threshold: "10"
   name: phi-4-mini
@@ -108,7 +193,6 @@ spec:
     matchLabels:
       apps: phi-4-mini
   replicas: 1
-  nodeCountLimit: 5
   template:
     inference:
       preset:
