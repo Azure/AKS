@@ -47,8 +47,7 @@ helm install keda kedacore/keda --namespace kube-system
 
 ### Install keda-kaito-scaler
 
-> This component is required only when using metric-based KEDA scaler.
-> Ensure that keda-kaito-scaler is installed within the same namespace as KEDA.
+> This component is required only when using metric-based KEDA scaler, ensure that keda-kaito-scaler is installed within the same namespace as KEDA.
 
 ```bash
 helm repo add keda-kaito-scaler https://kaito-project.github.io/keda-kaito-scaler/charts/kaito-project
@@ -84,9 +83,7 @@ helm upgrade --install kaito-workspace kaito/workspace \
 
 ### Time-based KEDA scaler
 
-reference link: https://keda.sh/docs/2.18/scalers/cron/
-
-The KEDA cron scaler enables scaling of workloads according to time-based schedules, making it especially beneficial for workloads with predictable traffic patterns. It is perfect for situations where peak hours are known ahead of time, allowing you to proactively adjust resources before demand rises.
+The KEDA cron scaler enables scaling of workloads according to time-based schedules, making it especially beneficial for workloads with predictable traffic patterns. It is perfect for situations where peak hours are known ahead of time, allowing you to proactively adjust resources before demand rises. For more details about Time-based scaler, you could refer to [Scale applications based on a cron schedule](https://keda.sh/docs/2.18/scalers/cron/).
 
 #### Example: Business Hours Scaling
 
@@ -119,7 +116,9 @@ EOF
 - Create a KEDA ScaledObject
 
 Below is an example of creating a `ScaledObject` that scales a Kaito InferenceSet based on business hours:
+
 - **Scale up to 5 replicas** from 6AM to 8PM (peak hours)
+
 - **Scale down to 1 replica** otherwise (off-peak hours)
 
 ```bash
@@ -157,7 +156,7 @@ spec:
 EOF
 ```
 
-### Metric-based KEDA scaler 
+### Metric-based KEDA scaler
 
 > Make sure `keda-kaito-scaler` is installed before proceeding.
 
