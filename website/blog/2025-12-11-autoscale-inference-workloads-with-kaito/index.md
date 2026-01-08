@@ -38,7 +38,7 @@ For instructions on enabling KEDA add-on on AKS, you could refer to the guide [I
 
 - **Option 2**: Install KEDA using Helm chart
 
-> The following example demonstrates how to install KEDA 2.x using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [deploying-keda](https://github.com/kedacore/keda#deploying-keda).
+> The following example demonstrates how to install KEDA 2.x using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [KEDA deployment documentation](https://github.com/kedacore/keda#deploying-keda).
 
 ```bash
 helm repo add kedacore https://kedacore.github.io/charts
@@ -83,7 +83,7 @@ helm upgrade --install kaito-workspace kaito/workspace \
 
 ### Time-Based KEDA Scaler
 
-The KEDA cron scaler enables scaling of workloads according to time-based schedules, making it especially beneficial for workloads with predictable traffic patterns. It is perfect for situations where peak hours are known ahead of time, allowing you to proactively adjust resources before demand rises. For more details about Time-based scaler, you could refer to [Scale applications based on a cron schedule](https://keda.sh/docs/2.18/scalers/cron/).
+The KEDA cron scaler enables scaling of workloads according to time-based schedules, making it especially beneficial for workloads with predictable traffic patterns. It is perfect for situations where peak hours are known ahead of time, allowing you to proactively adjust resources before demand rises. For more details about time-based scalers, refer to [Scale applications based on a cron schedule](https://keda.sh/docs/2.18/scalers/cron/).
 
 #### Example: Business Hours Scaling
 
@@ -171,7 +171,7 @@ The `keda-kaito-scaler` provides a simplified configuration interface for scalin
   - `scaledobject.kaito.sh/max-replicas`
     - required, maximum replica number of target InferenceSet
   - `scaledobject.kaito.sh/metricName`
-    - optional, specifies the metric name collected from the vLLM pod, which is used for monitoring and triggering the scaling operation, default is `vllm:num_requests_waiting`, you could find all vllm metrics in [vLLM Production Metrics](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics)
+    - optional, specifies the metric name collected from the vLLM pod, which is used for monitoring and triggering the scaling operation, default is `vllm:num_requests_waiting`, find all vllm metrics in [vLLM Production Metrics](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics)
   - `scaledobject.kaito.sh/threshold`
     - required, specifies the threshold for the monitored metric that triggers the scaling operation
 
