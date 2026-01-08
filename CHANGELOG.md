@@ -84,7 +84,7 @@ For deprecation and patch timelines by region, please check the [AKS-Release-Tra
 * Container Insights has been updated to [3.1.32](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.32) with CVE patches
 * Metrics server has been updated
 * Cloud controller manager has been updated to  [v1.34.2](https://github.com/kubernetes-sigs/cloud-provider-azure/compare/v1.34.1...v1.34.2) to fix a bug where services sharing Azure IPv6 PIP would not get reconciled.
-* Cluster autoscaler released [v1.34.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.1)
+* Cluster autoscaler has been updated to [v1.34.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.1)
 * Microsoft Defender for Containers has been updated to 0.8.39
 * Windows GMSA containers have been updated to v0.12.1-2_5
 * Windows VHD Release [v20251212](https://github.com/Azure/AgentBaker/tree/master/vhdbuilder/release-notes/AKSWindows) with patches for:
