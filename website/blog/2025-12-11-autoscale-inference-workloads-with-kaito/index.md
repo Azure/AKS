@@ -1,6 +1,6 @@
 ---
 title: "Autoscale KAITO inference workloads on AKS using KEDA"
-date: "2025-12-11"
+date: "2026-01-08"
 description: "Autoscale KAITO inference workloads dynamically to handle varying numbers of waiting inference service requests."
 authors: ["andy-zhang", "sachi-desai"]
 tags: ["ai", "kaito"]
