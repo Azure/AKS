@@ -1,6 +1,13 @@
 # AKS CODEOWNERS
+
+# Changelog owners
+/CHANGELOG.md @Azure/aks-pm
+
+# Blog and Website owners
+/website/ @Azure/aks-pm
+
 # Global Owners
-*  @palma21 @Azure/aks-pm @Azure/aks-leads
+*  @palma21 @Azure/aks-leads
 
 # CODEOWNERS file
 /.github/CODEOWNERS @palma21
