@@ -47,39 +47,39 @@ For deprecation and patch timelines by region, please check the [AKS-Release-Tra
 * AKS now returns a client error when virtual network encryption is used with API server VNet integration, as this configuration is not supported. See [API server VNet integration limitations](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limitations)
 
 ### Component Updates
-* AKS Azure Linux v2 image has been updated to [202512.06.0](vhd-notes/AzureLinux/202512.06.0.txt)
+* AKS Azure Linux v2 image has been updated to [202512.06.0](vhd-notes/AzureLinux/202512.06.0.txt).
 * AKS Azure Linux v3 image has been updated to [202512.06.0](vhd-notes/AzureLinuxv3/202512.06.0.txt).
 * AKS Ubuntu 22.04 node image has been updated to [202512.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202512.06.0.txt).
 * AKS Ubuntu 24.04 node image has been updated to [202512.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202512.06.0.txt).
-* Windows node images
-  * Server 2019 Gen1 – [17763.8146.251212](vhd-notes/AKSWindows/2019/17763.8146.251212.txt) 
-  * Server 2022 Gen1/Gen2 – [20348.4529.251212](vhd-notes/AKSWindows/2022/20348.4529.251212.txt) 
-  * Server 23H2 Gen1/Gen2 – [25398.2025.251212](vhd-notes/AKSWindows/23H2/25398.2025.251212.txt)   
-  * Server 2025 Gen1/Gen2 – [26100.7462.251212](vhd-notes/AKSWindows/2025/26100.7462.251212.txt) 
+* Windows node images.
+  * Server 2019 Gen1 – [17763.8146.251212](vhd-notes/AKSWindows/2019/17763.8146.251212.txt).
+  * Server 2022 Gen1/Gen2 – [20348.4529.251212](vhd-notes/AKSWindows/2022/20348.4529.251212.txt).
+  * Server 23H2 Gen1/Gen2 – [25398.2025.251212](vhd-notes/AKSWindows/23H2/25398.2025.251212.txt).  
+  * Server 2025 Gen1/Gen2 – [26100.7462.251212](vhd-notes/AKSWindows/2025/26100.7462.251212.txt).
 * Windows GMSA container has been updated to 0.12.1-2_5 in the latest Windows node images.
 * Azure Disk CSI driver has been updated to [v1.33.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.7) for AKS clusters of version >= 1.33.
 * Azure Blob CSI driver has been downgraded to [v1.26.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.6) for AKS clusters of version >= 1.34 to address stability issues.
-* Secrets Store CSI driver has been updated to [v1.7.2](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.7.2) on AKS clusters of version >= 1.26.
+* Secrets Store CSI driver has been updated to [v1.7.2](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.7.2) for AKS clusters of version >= 1.26.
 * Cilium has been updated to [v1.18.2](https://github.com/cilium/cilium/releases/tag/v1.18.2) (now distroless) for AKS clusters of version >= 1.34.
-* Calico images have been updated to address multiple security vulnerabilities, including: [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725) ,[CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724) , [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723) , [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189) , [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188) , [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187) , [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186) , [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185) , [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183) , and [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912).
+* Calico images have been updated to address multiple security vulnerabilities, including: [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), and [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912).
 * `azure-cns` and `azure-cni` versions have been updated to [1.7.9](https://github.com/Azure/azure-container-networking/releases/tag/v1.7.9) for AKS clusters of version >= 1.33.
-* CoreDNS images have been updated to address multiple CVEs
+* CoreDNS images have been updated to address multiple CVEs:
   * CoreDNS image on AKS clusters with version >= 1.34.0 updated to [v1.13.1-1](https://github.com/coredns/coredns/releases/tag/v1.13.1)
   * CoreDNS image on AKS clusters with version >= 1.33.0 and < 1.34.0 updated to [v1.12.1-6](https://github.com/coredns/coredns/releases/tag/v1.12.1)
   * CoreDNS image on AKS clusters with version >= 1.32.0 and < 1.33.0 updated to [v1.11.3-13](https://github.com/coredns/coredns/releases/tag/v1.11.3)
   * CoreDNS image on AKS clusters with version >= 1.24.0 and < 1.32.0 updated to [v1.9.4-7](https://github.com/coredns/coredns/releases/tag/v1.9.4)
-* Network Policy Manager (NPM) has been updated to [v1.6.34](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.34) for all supported Kubernetes versions to resolve CVEs: [CVE-2025-6297](https://nvd.nist.gov/vuln/detail/CVE-2025-6297), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2024-10963](https://nvd.nist.gov/vuln/detail/CVE-2024-10963), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [GHSA-2464-8j7c-4cjm](https://github.com/advisories/GHSA-2464-8j7c-4cjm)
-* IP Masq Agent has been updated to [v0.1.15-7](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.15) with an Azure Linux 3.0 OS refresh, addressing glibc and OpenSSL vulnerabilities: [CVE-2025-4802](https://nvd.nist.gov/vuln/detail/CVE-2025-4802), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [CVE-2025-9232](https://nvd.nist.gov/vuln/detail/CVE-2025-9232)
+* Network Policy Manager (NPM) has been updated to [v1.6.34](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.34) for all supported Kubernetes versions to resolve CVEs: [CVE-2025-6297](https://nvd.nist.gov/vuln/detail/CVE-2025-6297), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2024-10963](https://nvd.nist.gov/vuln/detail/CVE-2024-10963), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [GHSA-2464-8j7c-4cjm](https://github.com/advisories/GHSA-2464-8j7c-4cjm).
+* IP Masq Agent has been updated to [v0.1.15-7](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.15) with an Azure Linux 3.0 OS refresh, addressing glibc and OpenSSL vulnerabilities: [CVE-2025-4802](https://nvd.nist.gov/vuln/detail/CVE-2025-4802), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [CVE-2025-9232](https://nvd.nist.gov/vuln/detail/CVE-2025-9232).
 * Istio-based service mesh add-on has been upgraded to [v1.27.4](https://istio.io/latest/news/releases/1.27.x/announcing-1.27.4/) to address CVEs: [CVE-2025-66220](https://www.cve.org/CVERecord?id=CVE-2025-66220), [CVE-2025-64527](https://www.cve.org/CVERecord?id=CVE-2025-64527), [CVE-2025-64763](https://www.cve.org/CVERecord?id=CVE-2025-64763), [CVE-2025-55162](https://www.cve.org/CVERecord?id=CVE-2025-55162), [CVE-2025-54588](https://www.cve.org/CVERecord?id=CVE-2025-54588). Users can restart workload pods to trigger re-injection of the updated istio-proxy version. More details on patch upgrades are available [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
 * [Open Service Mesh add-on](https://learn.microsoft.com/azure/aks/open-service-mesh-about) add-on has been updated to [v1.2.11](https://github.com/openservicemesh/osm/releases/tag/v1.2.11) to address CVEs: [CVE-2024-45337](https://nvd.nist.gov/vuln/detail/CVE-2024-45337), [CVE-2025-22869](https://nvd.nist.gov/vuln/detail/CVE-2025-22869), [CVE-2025-22868](https://nvd.nist.gov/vuln/detail/CVE-2025-22868), [CVE-2024-24790](https://nvd.nist.gov/vuln/detail/CVE-2024-24790), [CVE-2024-34156](https://nvd.nist.gov/vuln/detail/CVE-2024-34156), [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729).
-* Azure Policy add-on has been updated to [v1.15.1](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1151)
-* Application Gateway Ingress Controller (AGIC) has been updated to [v1.9.4](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.9.4)
-* Application Monitoring has been upgraded to [v1.0.0-beta.10](https://github.com/microsoft/Docker-Provider/releases/tag/appmonitoring-1.0.0-beta.10)
+* Azure Policy add-on has been updated to [v1.15.1](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1151).
+* Application Gateway Ingress Controller (AGIC) has been updated to [v1.9.4](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.9.4).
+* Application Monitoring has been upgraded to [v1.0.0-beta.10](https://github.com/microsoft/Docker-Provider/releases/tag/appmonitoring-1.0.0-beta.10).
 * Container Insights has been updated to [3.1.32](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.32) with CVE patches
-* Azure Monitor Metrics (ama-metrics) has been updated to the [release-11-13-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-11-13-2025)
+* Azure Monitor Metrics (ama-metrics) has been updated to the [release-11-13-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-11-13-2025).
 * Cloud controller manager has been updated to [v1.34.2](https://github.com/kubernetes-sigs/cloud-provider-azure/compare/v1.34.1...v1.34.2) to fix a bug where services sharing Azure IPv6 PIP would not get reconciled.
 * Cluster autoscaler has been upgraded to [v1.34.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.1)
-* Microsoft Defender for Containers Sensor has been updated to [v0.8.39](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-versions-available-per-release)
+* Microsoft Defender for Containers Sensor has been updated to [v0.8.39](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-versions-available-per-release).
 
 ---
 
