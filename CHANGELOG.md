@@ -51,7 +51,7 @@ For deprecation and patch timelines by region, please check the [AKS-Release-Tra
 * AKS Azure Linux v3 image has been updated to [202512.06.0](vhd-notes/AzureLinuxv3/202512.06.0.txt).
 * AKS Ubuntu 22.04 node image has been updated to [202512.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202512.06.0.txt).
 * AKS Ubuntu 24.04 node image has been updated to [202512.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202512.06.0.txt).
-* Windows node images.
+* Windows node images:
   * Server 2019 Gen1 – [17763.8146.251212](vhd-notes/AKSWindows/2019/17763.8146.251212.txt).
   * Server 2022 Gen1/Gen2 – [20348.4529.251212](vhd-notes/AKSWindows/2022/20348.4529.251212.txt).
   * Server 23H2 Gen1/Gen2 – [25398.2025.251212](vhd-notes/AKSWindows/23H2/25398.2025.251212.txt).  
