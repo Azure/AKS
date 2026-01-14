@@ -1,12 +1,10 @@
 ---
 title: "Autoscale KAITO inference workloads on AKS using KEDA"
-date: "2026-01-08"
+date: "2026-01-15"
 description: "Learn how to autoscale KAITO inference workloads on AKS with KEDA to handle varying inference requests and optimize Kubernetes GPU utilization in AKS clusters."
 authors: ["andy-zhang", "sachi-desai"]
 tags: ["ai", "kaito"]
 ---
-
-## Overview
 
 [Kubernetes AI Toolchain Operator](https://github.com/Azure/kaito) (KAITO) is an operator that simplifies and automates AI/ML model inference, tuning, and RAG in a Kubernetes cluster. With the recent [v0.8.0 release](https://github.com/Azure/kaito/releases/tag/v0.8.0), KAITO has introduced intelligent autoscaling for inference workloads as an alpha feature! In this blog, we'll guide you through setting up event-driven autoscaling for vLLM inference workloads.
 
@@ -16,51 +14,25 @@ tags: ["ai", "kaito"]
 
 LLM inference service is a basic and widely-used feature in KAITO, as the number of waiting inference requests increases, it is necessary to scale more inference instances in order to prevent blocking inference requests. On the other hand, if the number of waiting inference requests declines, we should consider reducing inference instances to improve GPU resource utilization. Kubernetes Event-driven Autoscaling (KEDA) is a good fit for inference pod autoscaling since it enables event-driven, fine-grained scaling based on external metrics and triggers, it supports a wide range of event sources (like custom metrics), allowing pods to scale precisely in response to workload demand. This flexibility and extensibility make KEDA ideal for dynamic, cloud-native applications that require responsive and efficient autoscaling.
 
-This blog outlines the steps to enable intelligent autoscaling based on the service monitoring metrics for KAITO inference workloads by using the following components and features:
+To enable intelligent autoscaling for KAITO inference workloads using service.monitoring metrics, use the following components and features:
 
-- [Kubernetes-based Event Driven Autoscaling(KEDA)](https://github.com/kedacore/keda)
+- [Kubernetes Event Driven Autoscaling (KEDA)](https://github.com/kedacore/keda)
 
-- [keda-kaito-scaler](https://github.com/kaito-project/keda-kaito-scaler)
-  - A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
-- KAITO `InferenceSet` CustomResourceDefinition(CRD) and controller
-  - This new CRD and controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`
+- **[keda.kaito.scaler](https://github.com/kaito-project/keda-kaito-scaler)**  A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
+
+- **KAITO `InferenceSet` CustomResourceDefinition (CRD) and controller**  A new CRD and controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`.
 
 ### Architecture
 
+Following diagram shows how keda-kaito-scaler integrates KAITO InferenceSet with KEDA to autoscale inference workloads on AKS:
+
  ![Architecture diagram showing keda-kaito-scaler integrating KAITO InferenceSet with KEDA to autoscale inference workloads on AKS](keda-kaito-scaler-arch.png)
 
-## Prerequisites
+## Getting started
 
-### Install KEDA
+### Create an AKS cluster with GPU auto-provisioning capabilities for KAITO
 
-- **Option 1**: Enable managed KEDA add-on
-For instructions on enabling KEDA add-on on AKS, you could refer to the guide [Install KEDA add-on on AKS](https://learn.microsoft.com/azure/aks/keda-deploy-add-on-cli)
-
-- **Option 2**: Install KEDA using Helm chart
-
-> The following example demonstrates how to install KEDA 2.x using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [KEDA deployment documentation](https://github.com/kedacore/keda#deploying-keda).
-
-```bash
-helm repo add kedacore https://kedacore.github.io/charts
-helm install keda kedacore/keda --namespace kube-system
-```
-
-### Install keda-kaito-scaler
-
-> This component is required only when using metric-based KEDA scaler, ensure that keda-kaito-scaler is installed within the same namespace as KEDA.
-
-```bash
-helm repo add keda-kaito-scaler https://kaito-project.github.io/keda-kaito-scaler/charts/kaito-project
-helm upgrade --install keda-kaito-scaler -n kube-system keda-kaito-scaler/keda-kaito-scaler
-```
-
-After a few seconds, a new deployment `keda-kaito-scaler` would be started.
-
-```bash
-# kubectl get deployment keda-kaito-scaler -n kube-system
-NAME                READY   UP-TO-DATE   AVAILABLE   AGE
-keda-kaito-scaler   1/1     1            1           28h
-```
+You could refer to the instructions on [how to create an AKS cluster with GPU auto-provisioning capabilities for KAITO](https://kaito-project.github.io/kaito/docs/azure).
 
 ### Enable InferenceSet controller in KAITO
 
@@ -79,7 +51,21 @@ helm upgrade --install kaito-workspace kaito/workspace \
   --wait
 ```
 
-## Quickstart
+### Install KEDA
+
+- **Option 1**: Enable managed KEDA add-on
+For instructions on enabling KEDA add-on on AKS, you could refer to the guide [Install KEDA add-on on AKS](https://learn.microsoft.com/azure/aks/keda-deploy-add-on-cli)
+
+- **Option 2**: Install KEDA using Helm chart
+
+> The following example demonstrates how to install KEDA 2.x using Helm chart. For instructions on installing KEDA through other methods, please refer to the guide [KEDA deployment documentation](https://github.com/kedacore/keda#deploying-keda).
+
+```bash
+helm repo add kedacore https://kedacore.github.io/charts
+helm install keda kedacore/keda --namespace kube-system
+```
+
+## Example Scenarios
 
 ### Time-Based KEDA Scaler
 
@@ -158,7 +144,22 @@ EOF
 
 ### Metric-Based KEDA Scaler
 
-> Make sure `keda-kaito-scaler` is installed before proceeding.
+#### Install keda-kaito-scaler
+
+> This component is required only when using metric-based KEDA scaler, ensure that keda-kaito-scaler is installed within the same namespace as KEDA.
+
+```bash
+helm repo add keda-kaito-scaler https://kaito-project.github.io/keda-kaito-scaler/charts/kaito-project
+helm upgrade --install keda-kaito-scaler -n kube-system keda-kaito-scaler/keda-kaito-scaler
+```
+
+After a few seconds, a new deployment `keda-kaito-scaler` would be started.
+
+```bash
+# kubectl get deployment keda-kaito-scaler -n kube-system
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+keda-kaito-scaler   1/1     1            1           28h
+```
 
 The `keda-kaito-scaler` provides a simplified configuration interface for scaling vLLM inference workloads, it directly scrapes metrics from inference pods, eliminating the need for a separate monitoring stack.
 
