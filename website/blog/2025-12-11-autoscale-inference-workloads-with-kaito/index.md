@@ -12,7 +12,7 @@ tags: ["ai", "kaito"]
 
 ## Introduction
 
-LLM inference service is a basic and widely-used feature in KAITO, as the number of waiting inference requests increases, it is necessary to scale more inference instances in order to prevent blocking inference requests. On the other hand, if the number of waiting inference requests declines, we should consider reducing inference instances to improve GPU resource utilization. Kubernetes Event-driven Autoscaling (KEDA) is a good fit for inference pod autoscaling since it enables event-driven, fine-grained scaling based on external metrics and triggers, it supports a wide range of event sources (like custom metrics), allowing pods to scale precisely in response to workload demand. This flexibility and extensibility make KEDA ideal for dynamic, cloud-native applications that require responsive and efficient autoscaling.
+LLM inference service is a basic and widely used feature in KAITO. As the number of waiting inference requests increases, it's necessary to scale more inference instances to prevent blocking inference requests. Conversely, if the number of waiting inference requests declines, consider reducing inference instances to improve GPU resource utilization. Kubernetes Event-driven Autoscaling (KEDA) is well-suited for inference pod autoscaling. It enables event-driven, fine-grained scaling based on external metrics and triggers. KEDA supports a wide range of event sources (like custom metrics), allowing pods to scale precisely in response to workload demand. This flexibility and extensibility make KEDA ideal for dynamic, cloud-native applications that require responsive and efficient autoscaling.
 
 To enable intelligent autoscaling for KAITO inference workloads using service.monitoring metrics, use the following components and features:
 
@@ -24,7 +24,7 @@ To enable intelligent autoscaling for KAITO inference workloads using service.mo
 
 ### Architecture
 
-Following diagram shows how keda-kaito-scaler integrates KAITO InferenceSet with KEDA to autoscale inference workloads on AKS:
+The following diagram shows how keda-kaito-scaler integrates KAITO InferenceSet with KEDA to autoscale inference workloads on AKS:
 
  ![Architecture diagram showing keda-kaito-scaler integrating KAITO InferenceSet with KEDA to autoscale inference workloads on AKS](keda-kaito-scaler-arch.png)
 
@@ -101,7 +101,7 @@ EOF
 
 - Create a KEDA ScaledObject
 
-Below is an example of creating a `ScaledObject` that scales a Kaito InferenceSet based on business hours:
+Below is an example of creating a `ScaledObject` that scales a KAITO InferenceSet based on business hours:
 
 - **Scale up to 5 replicas** from 6:00 AM to 8:00 PM (peak hours)
 
@@ -115,7 +115,7 @@ metadata:
   name: kaito-business-hours-scaler
   namespace: default
 spec:
-  # Target Kaito InferenceSet to scale
+  # Target KAITO InferenceSet to scale
   scaleTargetRef:
     apiVersion: kaito.sh/v1alpha1
     kind: InferenceSet
@@ -170,7 +170,7 @@ The `keda-kaito-scaler` provides a simplified configuration interface for scalin
   - `scaledobject.kaito.sh/auto-provision`
     - required, if it's `true`, KEDA KAITO scaler will automatically provision a ScaledObject based on the `InferenceSet` object
   - `scaledobject.kaito.sh/max-replicas`
-    - required, maximum replica number of target InferenceSet
+    - required, maximum number of replicas for the target InferenceSet
   - `scaledobject.kaito.sh/metricName`
     - optional, specifies the metric name collected from the vLLM pod, which is used for monitoring and triggering the scaling operation, default is `vllm:num_requests_waiting`, find all vllm metrics in [vLLM Production Metrics](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics)
   - `scaledobject.kaito.sh/threshold`
@@ -203,7 +203,7 @@ spec:
 EOF
 ```
 
-In just a few seconds, the KEDA KAITO scaler automatically creates the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod runs, the KEDA KAITO scaler begins scraping [metric values](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics) from the inference pod, and the system marks the status of the `scaledobject` and `hpa` objects as ready.
+In just a few seconds, the KEDA KAITO scaler automatically creates the `scaledobject` and `hpa` objects. After a few minutes, once the inference pod runs, the KEDA KAITO scaler begins scraping [metric values](https://docs.vllm.ai/en/stable/usage/metrics/#general-metrics) from the inference pod. The system then marks the status of the `scaledobject` and `hpa` objects as ready.
 
 ```bash
 # kubectl get scaledobject
