@@ -16,7 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Since 19 October 2025, AKS Automatic clusters have transitioned to a new billing model in alignment with the service moving from preview to General Availability. To learn more about Azure Kubernetes Service pricing, please visit the [pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/) page. As part of this transition, the following pricing updates have taken effect in supported regions:
   * Compute charges based on the duration and type of virtual machines used by AKS Automatic clusters.
   * A $0.16 cluster / hour hosted control plane fee. 
-* Starting in kubernetes v1.35, if a cluster upgrade fails due to capacity when using maxSurge>1, AKS will by default retry scaling to a surge of 1 to attempt the upgrade again.  
+* Starting in Kubernetes v1.35, if a cluster upgrade fails due to capacity when using maxSurge>1, AKS will by default retry scaling to a surge of 1 to attempt the upgrade again.  
 
 ### Kubernetes Version
 * AKS Kubernetes version `1.31` is deprecated. Please upgrade your clusters to `1.32` version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
