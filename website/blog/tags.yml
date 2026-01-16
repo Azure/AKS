@@ -187,10 +187,15 @@ kube-fleet:
   permalink: /kube-fleet
   description: Using Kube-Fleet for multi-cluster application deployment and management with AKS.
 
+kubevirt:
+  label: KubeVirt
+  permalink: /kubevirt
+  description: Using KubeVirt to run VMs via K8s and AKS.
+
 kueue:
   label: Kueue
   permalink: /kueue
-  description: Kueue workload queueing and scheduling for batch AI/ML jobs on AK
+  description: Kueue workload queueing and scheduling for batch AI/ML jobs on AKS.
 
 kro:
   label: KRO
