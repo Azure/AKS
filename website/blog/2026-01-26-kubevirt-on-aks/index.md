@@ -202,5 +202,5 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
 
 ## Resources
 
-- [What is KubeVirt?](https://www.redhat.com/en/topics/virtualization/what-is-kubevirt)
+- [What is KubeVirt?](https://www.redhat.com/topics/virtualization/what-is-kubevirt)
 - [KubeVirt user guides](https://kubevirt.io/user-guide/)
