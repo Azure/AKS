@@ -18,7 +18,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * A $0.16 cluster / hour hosted control plane fee. 
 * Starting in Kubernetes v1.35, if a cluster upgrade fails due to capacity when using maxSurge>1, AKS will by default retry scaling to a surge of 1 to attempt the upgrade again.
 * Customer-managed keys and Disk Encryption Sets are now supported on clusters using [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning). For instructions, BYOK limitations, and requirements visit our [Bring your own keys on AKS documentation](https://learn.microsoft.com/azure/aks/azure-disk-customer-managed-keys).
-* LocalDNS is now supported with [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning) enabled clusters. To learn about how to enable LocalDNS on NAP-enabled clusters, visit our [AKSNodeClass CRD documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
+* LocalDNS is now supported with [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning) enabled clusters. To learn how to enable LocalDNS on NAP-enabled clusters, visit our [AKSNodeClass CRD documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
 
 ### Kubernetes Version
 * AKS Kubernetes version `1.31` is deprecated. Please upgrade your clusters to `1.32` version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
