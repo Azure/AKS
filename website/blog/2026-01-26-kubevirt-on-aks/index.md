@@ -54,7 +54,7 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
    https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-operator.yaml
    ```
 
-1. Next, we want to install the KubeVirt custom resource. Save the yaml below as `kubevirt-cr.yaml`.
+1. Next, we want to install the KubeVirt custom resource. Save the YAML below as `kubevirt-cr.yaml`.
 
    ```yaml
    apiVersion: kubevirt.io/v1
@@ -76,7 +76,7 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 
    Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control plane components to control plane nodes. On AKS, control plane nodes are fully managed by Azure and not accessible to KubeVirt. This update to `nodePlacement` avoids issues that this may cause.
 
-   Once the yaml is saved, apply it to your cluster.
+   Once the YAML is saved, apply it to your cluster.
    
    ```bash
    kubectl apply -f kubevirt-cr.yaml
@@ -100,7 +100,7 @@ virt-operator-7c8bdfb574-wzdxt     1/1     Running   0          9m38s   10.244.0
 
 With KubeVirt successfully installed on your cluster, you can now go ahead and create your VMIs. 
 
-1. Create your VMI. Save the following yaml, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
+1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
 
   ```yaml
   apiVersion: kubevirt.io/v1
