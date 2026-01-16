@@ -1,3 +1,12 @@
+andy-zhang:
+  name: Andy Zhang
+  title: Principal Software Engineer for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/andy-zhang-a7bb9676/
+  image_url: https://avatars.githubusercontent.com/andyzhangx
+  socials:
+    linkedin: andy-zhang-a7bb9676
+    github: andyzhangx
+
 ahmed-sabbour:
   name: Ahmed Sabbour
   title: Principal PM Lead for the Azure Kubernetes Service
