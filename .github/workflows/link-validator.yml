@@ -1,0 +1,186 @@
+# GitHub Action to validate documentation links in markdown files
+# Ensures links follow repository standards:
+# - No locale paths (en-us, etc.)
+# - No review.learn.microsoft.com links
+# - All learn.microsoft.com links are public
+# - Validates aka.ms shortlinks redirect correctly
+# Only checks newly added or modified lines (not existing content)
+name: link-validator
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  validate-links:
+    name: Validate documentation links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch full history for accurate diff
+      
+      - name: Validate links in changed lines only
+        run: |
+          #!/bin/bash
+          set -e
+          
+          ERRORS=0
+          WARNINGS=0
+          TESTED_LINKS=0
+          
+          echo "🔍 Checking links in changed lines only..."
+          echo ""
+          
+          # Determine base branch for diff
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BASE_REF="${{ github.event.pull_request.base.sha }}"
+          else
+            # For push events, compare with previous commit
+            BASE_REF="HEAD^"
+          fi
+          
+          echo "📝 Comparing against: $BASE_REF"
+          echo ""
+          
+          # Get list of changed markdown files
+          CHANGED_FILES=$(git diff --name-only --diff-filter=AM $BASE_REF HEAD | grep '\.md$' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "✅ No markdown files changed"
+            exit 0
+          fi
+          
+          echo "📄 Changed markdown files:"
+          echo "$CHANGED_FILES" | sed 's/^/   /'
+          echo ""
+          
+          # Function to test a URL and get final redirect location
+          test_url() {
+            local url="$1"
+            local file="$2"
+            local line="$3"
+            
+            # Get final URL after redirects and HTTP status
+            response=$(curl -s -L -o /dev/null -w "%{http_code}|%{url_effective}" "$url" 2>&1 || echo "000|")
+            http_code=$(echo "$response" | cut -d'|' -f1)
+            final_url=$(echo "$response" | cut -d'|' -f2)
+            
+            # Check HTTP status
+            if [[ "$http_code" == "000" ]] || [[ "$http_code" == "4"* ]] || [[ "$http_code" == "5"* ]]; then
+              echo "❌ ERROR in $file (new line $line)"
+              echo "   URL is not accessible: $url (HTTP $http_code)"
+              echo ""
+              return 1
+            fi
+            
+            # Check if final URL contains review.learn.microsoft.com
+            if echo "$final_url" | grep -q "review\.learn\.microsoft\.com"; then
+              echo "❌ ERROR in $file (new line $line)"
+              echo "   Shortlink redirects to internal review site: $url"
+              echo "   → $final_url"
+              echo ""
+              return 1
+            fi
+            
+            # Check if final URL contains locale path
+            if echo "$final_url" | grep -qE "learn\.microsoft\.com/[a-z]{2}-[a-z]{2}/"; then
+              echo "❌ ERROR in $file (new line $line)"
+              echo "   URL contains locale path: $url"
+              echo "   → $final_url"
+              echo ""
+              return 1
+            fi
+            
+            # Check for login/signin pages (indicates not publicly accessible)
+            if echo "$final_url" | grep -qE "(login|signin|authentication)"; then
+              echo "❌ ERROR in $file (new line $line)"
+              echo "   URL requires authentication: $url"
+              echo "   → $final_url"
+              echo ""
+              return 1
+            fi
+            
+            return 0
+          }
+          
+          # Create temporary file to store unique URLs from new lines
+          TEMP_URLS=$(mktemp)
+          trap "rm -f $TEMP_URLS" EXIT
+          
+          # Check only added/modified lines in each changed file
+          for file in $CHANGED_FILES; do
+            echo "🔎 Checking: $file"
+            
+            # Get diff for this file (only added lines start with +)
+            git diff -U0 $BASE_REF HEAD "$file" | grep "^+" | grep -v "^+++" | while read -r line; do
+              # Remove leading + from diff output
+              content="${line:1}"
+              
+              # Check for direct learn.microsoft.com links with locale paths
+              if echo "$content" | grep -qE "https?://learn\.microsoft\.com/[a-z]{2}-[a-z]{2}/"; then
+                echo "❌ ERROR in $file (new line):"
+                echo "   Found learn.microsoft.com link with locale path"
+                echo "   $content" | head -c 200
+                echo ""
+                ERRORS=$((ERRORS + 1))
+              fi
+              
+              # Check for review.learn.microsoft.com links
+              if echo "$content" | grep -qE "https?://review\.learn\.microsoft\.com"; then
+                echo "❌ ERROR in $file (new line):"
+                echo "   Found review.learn.microsoft.com link (internal only)"
+                echo "   $content" | head -c 200
+                echo ""
+                ERRORS=$((ERRORS + 1))
+              fi
+              
+              # Extract aka.ms and other Microsoft shortlinks for testing
+              echo "$content" | grep -oE "https?://(aka\.ms|go\.microsoft\.com)/[^)\s]+" | while read -r url; do
+                echo "$file|new|$url" >> "$TEMP_URLS"
+              done
+              
+              # Check for docs.microsoft.com links (deprecated)
+              if echo "$content" | grep -qE "https?://docs\.microsoft\.com"; then
+                echo "⚠️  WARNING in $file (new line):"
+                echo "   Found docs.microsoft.com link (consider using learn.microsoft.com)"
+                echo "   $content" | head -c 200
+                echo ""
+                WARNINGS=$((WARNINGS + 1))
+              fi
+            done
+          done
+          
+          # Test unique shortlinks from new lines only
+          if [ -s "$TEMP_URLS" ]; then
+            echo ""
+            echo "🔗 Testing shortlinks from new lines..."
+            echo ""
+            
+            sort -u "$TEMP_URLS" | while IFS='|' read -r file line url; do
+              TESTED_LINKS=$((TESTED_LINKS + 1))
+              if ! test_url "$url" "$file" "$line"; then
+                ERRORS=$((ERRORS + 1))
+              fi
+            done
+          fi
+          
+          echo ""
+          echo "📊 Summary:"
+          echo "   Tested $TESTED_LINKS shortlink(s)"
+          echo "   Found $ERRORS error(s)"
+          echo "   Found $WARNINGS warning(s)"
+          echo ""
+          
+          if [ $ERRORS -gt 0 ]; then
+            echo "❌ Validation failed!"
+            echo ""
+            echo "📝 Link Standards:"
+            echo "   ✅ Use: https://learn.microsoft.com/azure/aks/..."
+            echo "   ✅ Use: https://aka.ms/aks/some-feature (if publicly accessible)"
+            echo "   ❌ Not: https://learn.microsoft.com/en-us/azure/aks/..."
+            echo "   ❌ Not: https://review.learn.microsoft.com/..."
+            echo "   ❌ Not: aka.ms links requiring authentication"
+            exit 1
+          else
+            echo "✅ All new links follow repository standards!"
+          fi
