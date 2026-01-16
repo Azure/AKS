@@ -6,7 +6,7 @@ authors: ["jack-jiang", "harshit-gupta"]
 tags: ["kubevirt", "general", "operations"]
 ---
 
-As the adoption of Kubernetes and cloud-native infrastructure continues to grow, it is also clear that not every setup can simply be re-archituctured immediately to be deployed in a Kubernetes-esque manner. For the myraid of reasons that folks might want or have to remain in virtual-machine based deployments, there are many approaches to addressing that need. This post will walk through KubeVirt, an OSS project that enables uesrs to run, deploy, and manage VMs while leaning on Kubernetes as the orchestrator. 
+As the adoption of Kubernetes and cloud-native infrastructure continues to grow, it is also clear that not every setup can simply be re-archituctured immediately to be deployed in a Kubernetes-esque manner. For the myriad of reasons that folks might want or have to remain in virtual-machine based deployments, there are many approaches to addressing that need. This post will walk through KubeVirt, an OSS project that enables users to run, deploy, and manage VMs while leaning on Kubernetes as the orchestrator. 
 
 ## What is KubeVirt?
 
@@ -143,7 +143,7 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
    kubectl apply -f vmi-fedora.yaml
    ```
 
-   If successful, you shuold see a one-liner akin to `virtualmachineinstance.kubevirt.io/vmi-fedora created`.
+   If successful, you should see a one-liner akin to `virtualmachineinstance.kubevirt.io/vmi-fedora created`.
 
 ### Check out the created VMI
 
