@@ -95,7 +95,7 @@ virt-operator-7c8bdfb574-54cs6     1/1     Running   0          9m38s   10.244.0
 virt-operator-7c8bdfb574-wzdxt     1/1     Running   0          9m38s   10.244.0.153   aks-nodepool1-26901818-vmss000000   <none>           <none>
 ```
 
-### Creating Virtual Machine Instances (VMIs) in KubeVirt
+### Creating VirtualMachineInstance (VMI) resources in KubeVirt
 
 With KubeVirt successfully installed on your cluster, you can now go ahead and create your VMIs. 
 
