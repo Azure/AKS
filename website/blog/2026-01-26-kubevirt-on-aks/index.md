@@ -175,27 +175,27 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
 
    ```bash
    [fedora@vmi-fedora ~]$ cat /etc/os-release
-    NAME=Fedora
-    VERSION="32 (Cloud Edition)"
-    ID=fedora
-    VERSION_ID=32
-    VERSION_CODENAME=""
-    PLATFORM_ID="platform:f32"
-    PRETTY_NAME="Fedora 32 (Cloud Edition)"
-    ANSI_COLOR="0;34"
-    LOGO=fedora-logo-icon
-    CPE_NAME="cpe:/o:fedoraproject:fedora:32"
-    HOME_URL="https://fedoraproject.org/"
-    DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora/f32/system-administrators-guide/"
-    SUPPORT_URL="https://fedoraproject.org/wiki/Communicating_and_getting_help"
-    BUG_REPORT_URL="https://bugzilla.redhat.com/"
-    REDHAT_BUGZILLA_PRODUCT="Fedora"
-    REDHAT_BUGZILLA_PRODUCT_VERSION=32
-    REDHAT_SUPPORT_PRODUCT="Fedora"
-    REDHAT_SUPPORT_PRODUCT_VERSION=32
-    PRIVACY_POLICY_URL="https://fedoraproject.org/wiki/Legal:PrivacyPolicy"
-    VARIANT="Cloud Edition"
-    VARIANT_ID=cloud
+   NAME=Fedora
+   VERSION="32 (Cloud Edition)"
+   ID=fedora
+   VERSION_ID=32
+   VERSION_CODENAME=""
+   PLATFORM_ID="platform:f32"
+   PRETTY_NAME="Fedora 32 (Cloud Edition)"
+   ANSI_COLOR="0;34"
+   LOGO=fedora-logo-icon
+   CPE_NAME="cpe:/o:fedoraproject:fedora:32"
+   HOME_URL="https://fedoraproject.org/"
+   DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora/f32/system-administrators-guide/"
+   SUPPORT_URL="https://fedoraproject.org/wiki/Communicating_and_getting_help"
+   BUG_REPORT_URL="https://bugzilla.redhat.com/"
+   REDHAT_BUGZILLA_PRODUCT="Fedora"
+   REDHAT_BUGZILLA_PRODUCT_VERSION=32
+   REDHAT_SUPPORT_PRODUCT="Fedora"
+   REDHAT_SUPPORT_PRODUCT_VERSION=32
+   PRIVACY_POLICY_URL="https://fedoraproject.org/wiki/Legal:PrivacyPolicy"
+   VARIANT="Cloud Edition"
+   VARIANT_ID=cloud
    ```
 
 ## Resources
