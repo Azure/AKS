@@ -36,7 +36,8 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 1. Start with creating your AKS cluster.
 
    ```azurecli-interactive
-   az aks create --resource-group <resource-group> --name <cluster-name> --node-vm-size Standard_D4s_v5 
+   az aks create --resource-group <resource-group> --name <cluster-name> --node-vm-size Standard_D4s_v5
+   ```
 
 2. After your cluster is up and running, make sure you grab the access credentials for the cluster.
 
