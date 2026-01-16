@@ -7,7 +7,7 @@ authors:
 - sachi-desai
 - sertac-ozercan
 - rita-zhang
-tags: ["ai", "gpu", "oss", "GB200"]
+tags: ["ai", "gpu", "open-source", "nvidia"]
 ---
 
 *This blog post is co-authored with
@@ -18,6 +18,8 @@ tags: ["ai", "gpu", "oss", "GB200"]
 to showcase solutions
 that help customers run AI inference at scale using Azure Kubernetes Service
 (AKS) and NVIDIA’s advanced hardware and distributed inference frameworks.*
+
+<!-- truncate -->
 
 Modern language models now routinely exceed the compute and memory capacity of
 a single GPU or even a whole node with multiple GPUs on Kubernetes.

@@ -77,7 +77,7 @@ tags: [...]
 
 ### Critical Elements
 
-1. **Truncation marker**: `<!-- truncate -->` after 2-3 intro paragraphs (shows on listing page)
+1. **Truncation marker**: `<!-- truncate -->` after opening paragraph (shows on listing page)
 2. **Hero image**: Use `./hero-image.png` for same-directory assets
 3. **Heading hierarchy**: H2 (`##`) for major sections, H3 (`###`) for subsections
 4. **Alt text**: All images MUST have descriptive alt text
@@ -278,7 +278,7 @@ Before submitting a blog post:
 
 - [ ] Content follows the Microsoft Style Guide
 - [ ] Front matter complete and validated
-- [ ] `<!-- truncate -->` after intro (2-3 paragraphs)
+- [ ] `<!-- truncate -->` after intro paragraph
 - [ ] All images have descriptive alt text
 - [ ] All code blocks have language specified
 - [ ] All links use descriptive text (no "click here")
