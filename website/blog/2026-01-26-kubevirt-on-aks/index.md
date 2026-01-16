@@ -3,7 +3,7 @@ title: "Deploying KubeVirt on AKS"
 date: "2026-01-26"
 description: "Learn how to set up KubeVirt on an AKS cluster."
 authors: ["jack-jiang", "harshit-gupta"]
-tags: ["general", "operations"]
+tags: ["kubevirt", "general", "operations"]
 ---
 
 As the adoption of Kubernetes and cloud-native infrastructure continues to grow, it is also clear that not every setup can simply be re-archituctured immediately to be deployed in a Kubernetes-esque manner. For the myraid of reasons that folks might want or have to remain in virtual-machine based deployments, there are many approaches to addressing that need. This post will walk through KubeVirt, an OSS project that enables uesrs to run, deploy, and manage VMs while leaning on Kubernetes as the orchestrator. 
