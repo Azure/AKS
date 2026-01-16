@@ -190,7 +190,7 @@ kube-fleet:
 kubevirt:
   label: KubeVirt
   permalink: /kubevirt
-  description: Using KubeVirt to run VMs via K8s and AKS.
+  description: Using KubeVirt to run VMs with Kubernetes and AKS.
 
 kueue:
   label: Kueue
