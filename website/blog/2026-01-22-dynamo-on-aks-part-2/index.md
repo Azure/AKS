@@ -1,11 +1,11 @@
 ---
 title: "Scaling multi-node LLM inference with NVIDIA Dynamo and NVIDIA GPUs on AKS (Part 2)"
 date: 2026-01-22
-description: ""
+description: "Learn how to scale multi-node LLM inference on Kubernetes using NVIDIA Dynamo, H100 GPUs, and Dynamo Planner tools to optimize throughput and latency."
 authors:
 - sachi-desai
 - sertac-ozercan
-tags: ["Dynamo series", "ai", "gpu", "oss", "H100"]
+tags: ["dynamo-series", "ai", "performance", "open-source"]
 ---
 
 *This blog post is co-authored with
@@ -33,13 +33,13 @@ optimized with custom GPU counts and model parallelism configurations.
 
 ![Disaggregated serving with Dynamo](./disag-serving-with-dynamo.png)
 
-One of the main challenges in disaggregated serving is **rate matching**,
+One of the main challenges in disaggregated serving is **rate matching**:
 determining the right GPU allocation between prefill and decode stages to
 meet a specific Service Level Objective (SLO). If you miscalculate the GPU
 ratio between these stages, you face two "silent killers" of performance:
 
 * **Over-provisioned Prefill**: Your prompt processing is fast, but
-requests bottle-neck at the generation stage. This spikes *Inter-Token
+requests bottleneck at the generation stage. This spikes *Inter-Token
 Latency (ITL)* and leaves expensive compute nodes idle.
 * **Under-provisioned Prefill**: Your decode GPUs sit starved for data.
 This drives up *Time-To-First-Token (TTFT)* and inflates your
@@ -87,7 +87,7 @@ lies in two distinct but deeply integrated components: the Dynamo
 Planner profiler and the Dynamo Planner.
 
 The first step in building your system is determining the "Golden Ratio"
-of GPUs, how many should handle prefill versus decode, and what tensor
+of GPUs: how many should handle prefill versus decode, and what tensor
 parallelism (TP) levels each should use.
 
 ### The Architect: Dynamo Planner Profiler

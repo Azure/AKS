@@ -7,7 +7,7 @@ authors:
 - sachi-desai
 - sertac-ozercan
 - rita-zhang
-tags: ["Dynamo series", "ai", "gpu", "oss", "GB200"]
+tags: ["dynamo-series", "ai", "gpu", "oss", "GB200"]
 ---
 
 *This blog post is co-authored with
