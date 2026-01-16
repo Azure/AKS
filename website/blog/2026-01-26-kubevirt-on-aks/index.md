@@ -34,7 +34,7 @@ Users today are able to deploy KubeVirt on AKS.
    az aks create --resource-group <resource-group> --name <cluster-name> --node-vm-size Standard_D4s_v5 
    ```
    
-   - Note, when selecting a `--node-vm-size`, you need to ensure you select a SKU that supports nested virtualization. You can confirm whether or not your chosen SKU supports nested virtualization in the SKU's corresponding learn page, such as this page for [Standard_D4s_v5](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support).
+   - Note, when selecting a `--node-vm-size`, you need to ensure you select a SKU that supports nested virtualization. You can confirm whether or not your chosen SKU supports nested virtualization in the SKU's corresponding learn page, such as this page for [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support).
 
 2. After your cluster is up and running, make sure you grab the access credentials for the cluster.
 
