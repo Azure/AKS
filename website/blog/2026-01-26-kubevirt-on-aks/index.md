@@ -13,7 +13,7 @@ In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs o
 
 ## What is KubeVirt?
 
-[KubeVirt](https://github.com/kubevirt/kubevirt) is an OSS project, sponsored by the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/projects/kubevirt/), that allows users to run, deploy, and manage VMs in their Kubernetes clusters. 
+[KubeVirt](https://github.com/kubevirt/kubevirt) is an open-source project, sponsored by the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/projects/kubevirt/), that allows users to run, deploy, and manage VMs in their Kubernetes clusters. 
 
 VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would, but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities, like scheduling, that users know and love on Kubernetes can also be applied to these VMs. Management of these otherwise disparate deployments can be simplified and unified. 
 
