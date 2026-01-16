@@ -17,7 +17,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Compute charges based on the duration and type of virtual machines used by AKS Automatic clusters.
   * A $0.16 cluster / hour hosted control plane fee. 
 * Starting in Kubernetes v1.35, if a cluster upgrade fails due to capacity when using maxSurge>1, AKS will by default retry scaling to a surge of 1 to attempt the upgrade again.
-* Customer-managed keys and Disk Encryption Sets are now supported on clusters using [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning). For instructions, BYOK limitations, and requirements visit our [Bring Your own Key on AKS documentation](https://learn.microsoft.com/azure/aks/azure-disk-customer-managed-keys).
+* Customer-managed keys and Disk Encryption Sets are now supported on clusters using [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning). For instructions, BYOK limitations, and requirements visit our [Bring your own keys on AKS documentation](https://learn.microsoft.com/azure/aks/azure-disk-customer-managed-keys).
 * LocalDNS is now supported with [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning) enabled clusters. To learn about how to enable LocalDNS on NAP-enabled clusters, visit our [AKSNodeClass CRD documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
 
 ### Kubernetes Version
