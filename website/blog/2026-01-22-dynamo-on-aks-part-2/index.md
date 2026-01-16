@@ -47,9 +47,9 @@ This drives up *Time-To-First-Token (TTFT)* and inflates your
 
 Beyond rate matching, developers must also optimize model parallelism
 parameters (data, tensor, and expert parallelism) to maintain high
-["Goodput"](https://arxiv.org/abs/2401.09670), a.k.a. the fraction of time
+["Goodput"](https://arxiv.org/abs/2401.09670) (the fraction of time
 and resources where the model is learning or producing correct results,
-instead of waiting or doing extra work.
+instead of waiting or doing extra work).
 
 Exploring these configurations manually is technically challenging,
 time-consuming and often results in suboptimal resource utilization.
