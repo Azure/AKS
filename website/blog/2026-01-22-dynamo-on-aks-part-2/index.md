@@ -52,7 +52,7 @@ and resources where the model is learning or producing correct results,
 instead of waiting or doing extra work.
 
 Exploring these configurations manually is technically challenging,
-time-consuming and often results in suboptimal resource utilization. 
+time-consuming and often results in suboptimal resource utilization.
 
 ## Dynamic Traffic: The Move to SLO-Driven Scaling
 
@@ -70,7 +70,7 @@ the **Planner Profiler** and the **SLO-based Planner**.
 
 ---
 
-### Let’s see it through an example AKS app scenario:
+### Let’s see it through an example application scenario
 
 Consider a major airline’s mobile app that uses AI to offer personalized
 rerouting during flight delays. This use case is a 'stress test' for
@@ -140,7 +140,7 @@ handle sudden traffic spikes without latency spikes.
 
 Get hands on with the
 [Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main)
-model: [INSERT DOC GUIDANCE]()
+model: [aka.ms/aks-dynamo-part-2](https://aka.ms/aks-dynamo-part-2)
 
 ## Conclusion: Inference Without the Infrastructure Burden
 
