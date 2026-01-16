@@ -16,6 +16,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Since 19 October 2025, AKS Automatic clusters have transitioned to a new billing model in alignment with the service moving from preview to General Availability. To learn more about Azure Kubernetes Service pricing, please visit the [pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/) page. As part of this transition, the following pricing updates have taken effect in supported regions:
   * Compute charges based on the duration and type of virtual machines used by AKS Automatic clusters.
   * A $0.16 cluster / hour hosted control plane fee. 
+* Starting in Kubernetes v1.35, if a cluster upgrade fails due to capacity when using maxSurge>1, AKS will by default retry scaling to a surge of 1 to attempt the upgrade again.  
 
 ### Kubernetes Version
 * AKS Kubernetes version `1.31` is deprecated. Please upgrade your clusters to `1.32` version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
@@ -38,7 +39,7 @@ For deprecation and patch timelines by region, please check the [AKS-Release-Tra
 * [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar) is a CNCF-based vendor-neutral container-optimized immutable OS, best suited for running on multi-cloud and on-prem environments. Flatcar Container Linux is now available in preview as an OS option on AKS. You can deploy Flatcar Container Linux node pools in a new AKS cluster or add Flatcar Container Linux node pools to your existing clusters.
 * Windows Server 2025 is now supported in preview. This new version includes the following updates: Containerd 2.0 is now default, Generation 2 VMs are enabled by default, and FIPS is enabled by default. For more information on upgrading your windows OS version, see [AKS documentation](https://aka.ms/aks/upgrade-windows-os-version).
 * [Azure Linux with OS Guard](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux-os-guard), a hardened and immutable variant of Azure Linux, is now in public preview.
-* [Istio CNI](https://learn.microsoft.com/azure/aks/istio-cni) is now in public preview. Istio CNI improves security by eliminating the need for `NET_ADMIN` and `NET_RAW` capabilities in application workloads within the service mesh
+* [Istio CNI](https://learn.microsoft.com/azure/aks/istio-cni) is now in public preview. Istio CNI improves security by eliminating the need for `NET_ADMIN` and `NET_RAW` capabilities in application workloads within the service mesh.
 
 ### Behavioral Changes
 * Starting with API version `2026-01-01`, AKS returns `podCIDR` and `podCIDRs` fields when `networkPlugin=none`, allowing customers to update their podCIDR to match their CNI configuration.
