@@ -160,7 +160,10 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
 
 1. You can also connect to the newly created VMI, and inspect it.
 
+   Before you use the `virtctl` command-line tool, install it on your workstation. If you use `kubectl krew`, run:
+
    ```bash
+   kubectl krew install virt
    virtctl console vmi-fedora
    ```
 
