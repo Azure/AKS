@@ -6,8 +6,9 @@ authors: ["jack-jiang", "harshit-gupta"]
 tags: ["kubevirt", "general", "operations"]
 ---
 
-As the adoption of Kubernetes and cloud-native infrastructure continues to grow, it is also clear that not every setup can simply be re-architected immediately to be deployed in a Kubernetes-esque manner. For the myriad of reasons that folks might want or have to remain in virtual-machine based deployments, there are many approaches to addressing that need. This post will walk through KubeVirt, an OSS project that enables users to run, deploy, and manage VMs while leaning on Kubernetes as the orchestrator. 
+Kubernetes adoption continues to grow, but not every workload can be re-architected for containers right away. Many organizations still depend on virtual machine (VM)–based deployments for technical, regulatory, or operational reasons.
 
+In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs on Kubernetes, alongside your containerized applications, using Kubernetes as the orchestrator.
 <!-- truncate -->
 
 ## What is KubeVirt?
