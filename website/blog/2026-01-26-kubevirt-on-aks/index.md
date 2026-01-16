@@ -139,6 +139,7 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
           password: fedora
           chpasswd: { expire: False }
       name: cloudinitdisk
+```
 
 1. Deploy the VMI in your cluster.
 
