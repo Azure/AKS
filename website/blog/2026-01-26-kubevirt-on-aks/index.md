@@ -102,43 +102,43 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
 1. Create your VMI. Save the following yaml, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
 
    ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          interfaces:
-          - masquerade: {}
-            name: default
-          rng: {}
-        memory:
-          guest: 1024M
-        resources: {}
-      networks:
-      - name: default
-        pod: {}
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - containerDisk:
-          image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:devel
-        name: containerdisk
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-        name: cloudinitdisk
+   apiVersion: kubevirt.io/v1
+   kind: VirtualMachineInstance
+   metadata:
+     labels:
+       special: vmi-fedora
+     name: vmi-fedora
+   spec:
+     domain:
+       devices:
+         disks:
+         - disk:
+             bus: virtio
+           name: containerdisk
+         - disk:
+             bus: virtio
+           name: cloudinitdisk
+         interfaces:
+         - masquerade: {}
+           name: default
+         rng: {}
+       memory:
+         guest: 1024M
+       resources: {}
+     networks:
+     - name: default
+       pod: {}
+     terminationGracePeriodSeconds: 0
+     volumes:
+     - containerDisk:
+         image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:devel
+       name: containerdisk
+     - cloudInitNoCloud:
+         userData: |-
+           #cloud-config
+           password: fedora
+           chpasswd: { expire: False }
+       name: cloudinitdisk
    ```
 
 1. Deploy the VMI in your cluster.
