@@ -201,6 +201,10 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
    VARIANT_ID=cloud
    ```
 
+## Please share your feedback!
+
+If you are already using KubeVirt on AKS, plan to after reading this blog, or this blog piqued your interest, we'd love to hear from you! Your feedback/interest will be invaluable as we in AKS look to the future of how we can best support these type of workloads on our platform. Please share your thoughts in our [GitHub Issue](https://github.com/Azure/AKS/issues/5445).
+
 ## Resources
 
 - [What is KubeVirt?](https://www.redhat.com/topics/virtualization/what-is-kubevirt)
