@@ -20,7 +20,7 @@ staggering **1.2M tokens per second** across 10 nodes using NVIDIA Dynamo.
 Today, we’re shifting focus from raw throughput to **developer velocity** and
 **operational efficiency**.
 
-We will explore how the **Dynamo Planner** and **Dynamo Planner Profiler**
+We will explore how the [**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner.md) and [**Dynamo Planner Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/benchmarks/profiler)
 remove the guesswork from performance tuning.
 
 <!-- truncate -->
@@ -58,10 +58,10 @@ time-consuming and often results in suboptimal resource utilization.
 
 Static configurations are brittle. In production, traffic is rarely uniform:
 
-* **Volatile Request Volume**: Traditional HPA (Horizontal Pod Autoscalers)
+* **Volatile Request Volume**: Traditional Horizontal Pod Autoscalers (HPA)
 are too slow for LLM jitters.
 * **Shifting Sequence Patterns**: If your workload shifts from short chat
-queries (low ISL) to long-context document analysis (high ISL), a static
+queries (low input sequence length, or ISL) to long-context document analysis (high ISL), a static
 disaggregated split becomes suboptimal instantly (resulting in overworked
 prefill GPUs and idle decode GPUs).
 
@@ -139,7 +139,7 @@ and let the planner orchestrate your disaggregated inference system to
 handle sudden traffic spikes without latency spikes.
 
 Get hands on with the
-[Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main)
+[Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main).
 model: [aka.ms/aks-dynamo-part-2](https://aka.ms/aks-dynamo-part-2)
 
 ## Conclusion: Inference Without the Infrastructure Burden
