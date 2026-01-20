@@ -61,7 +61,7 @@ Static configurations are brittle. In production, traffic is rarely uniform:
 * **Volatile Request Volume**: Traditional Horizontal Pod Autoscalers (HPA)
 are too slow for LLM jitters.
 * **Shifting Sequence Patterns**: If your workload shifts from short chat
-queries (low input sequence length, or ISL) to long-context document analysis (high ISL), a static
+queries (low input sequence length (ISL)) to long-context document analysis (high ISL), a static
 disaggregated split becomes suboptimal instantly (resulting in overworked
 prefill GPUs and idle decode GPUs).
 
