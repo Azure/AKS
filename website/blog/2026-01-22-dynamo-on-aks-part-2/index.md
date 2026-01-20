@@ -138,7 +138,8 @@ cluster. Setting it up in this order - profile under stress, define SLOs,
 and let the planner orchestrate your disaggregated inference system to
 handle sudden traffic spikes without latency spikes.
 
-Get hands on with the
+After deploying Dynamo by following [these instructions](https://aka.ms/aks-dynamo),
+get hands on with the
 [Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main)
 model using the example in [AKS Dynamo Part 2 sample](https://aka.ms/aks-dynamo-part-2).
 
