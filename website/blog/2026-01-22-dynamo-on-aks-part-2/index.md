@@ -139,8 +139,8 @@ and let the planner orchestrate your disaggregated inference system to
 handle sudden traffic spikes without latency spikes.
 
 Get hands on with the
-[Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main).
-model: [aka.ms/aks-dynamo-part-2](https://aka.ms/aks-dynamo-part-2)
+[Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main)
+model using the example in [AKS Dynamo Part 2 sample](https://aka.ms/aks-dynamo-part-2).
 
 ## Conclusion: Inference Without the Infrastructure Burden
 
