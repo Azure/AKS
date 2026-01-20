@@ -16,11 +16,11 @@ hide_table_of_contents: false
 draft: false
 ---
 
-Enterprises are converging on centralized container registries that serve multiple business units and application domains. Azure role-based access control (RBAC) uses role assignments to control access to Azure resources. Each Azure RBAC role assignment specifies an identity (who will gain permissions), an Azure role with Entra actions and data actions (what permissions are granted), and an assignment scope (which resources). For ACR, traditional Azure RBAC scopes are limited to the subscription, resource group, or registry level—meaning permissions apply to all repositories within a registry.
+Enterprises are converging on centralized container registries that serve multiple business units and application domains. [Azure role-based access control (RBAC)](https://learn.microsoft.com/azure/role-based-access-control/overview) uses [role assignments](https://learn.microsoft.com/azure/role-based-access-control/role-assignments) to control access to Azure resources. Each Azure RBAC role assignment specifies an identity (who will gain permissions), an Azure role with Entra [actions and data actions](https://learn.microsoft.com/azure/role-based-access-control/permissions/containers#microsoftcontainerregistry) (what permissions are granted), and an assignment [scope](https://learn.microsoft.com/azure/role-based-access-control/scope-overview) (which resources). For Azure Container Registry (ACR), traditional Azure RBAC scopes are limited to the subscription, resource group, or registry level—meaning permissions apply to all repositories within a registry.
 
 In this shared registry model, traditional Azure role-based access control (RBAC) forces an all-or-nothing choice: either grant broad registry-wide permissions or manage separate registries per team. Neither approach aligns with least-privilege principles or modern zero trust architectures.
 
-Microsoft Entra attribute-based access control (ABAC) for Azure Container Registry solves this challenge. ABAC augments Azure RBAC with fine-grained conditions, enabling platform teams to scope permissions precisely to specific repositories or namespaces within a shared registry. CI/CD pipelines and AKS clusters can now access only their authorized repositories, eliminating overprivileged access while maintaining operational simplicity.
+Microsoft Entra [attribute-based access control (ABAC)](https://learn.microsoft.com/azure/role-based-access-control/conditions-format) for Azure Container Registry solves this challenge. ABAC augments Azure RBAC with fine-grained conditions, enabling platform teams to scope permissions precisely to specific repositories or namespaces within a shared registry. CI/CD pipelines and Azure Kubernetes Service (AKS) clusters can now access only their authorized repositories, eliminating overprivileged authorization while maintaining operational simplicity.
 
 ![AKS cluster pulling from ACR with ABAC](./aks-cluster-pulling-from-acr-with-abac.png)
 
@@ -28,7 +28,7 @@ Microsoft Entra attribute-based access control (ABAC) for Azure Container Regist
 
 ## How ABAC works in ACR
 
-Attribute-based access control (ABAC) extends the traditional RBAC model by adding conditions to role assignments. While RBAC defines **who** (identity) can perform **what permissions** (Entra actions and data actions in a role definition) on **which resource scope** (subscription, resource group, or registry), ABAC adds a fourth dimension: **under what conditions will the permission be granted** (attributes). Conditions use attributes—such as repository name patterns—to further restrict when a role assignment grants access.
+Attribute-based access control (ABAC) extends the traditional RBAC model by introducing **attributes** on top of actions and data actions. While RBAC defines **who** (identity) can perform **what permissions** (Entra actions and data actions in a [role definition](https://learn.microsoft.com/azure/role-based-access-control/role-definitions)) on **which resource scope** (subscription, resource group, or registry), ABAC adds a fourth dimension: **attributes**. Attributes—such as repository name patterns—are properties of the resource being accessed. ABAC uses **conditions** in role assignments to evaluate these attributes and determine whether access should be granted.
 
 For ACR, this means that while the *scope* of a role assignment can be at the subscription, resource group, or registry level, ABAC *conditions* evaluate repository-level attributes like `repositories:name` to determine whether a specific permission (such as `repositories/content/read`) is permitted. This allows administrators to scope permissions to specific repositories or namespace prefixes within a single registry, without needing separate registries or overprivileged access.
 
@@ -64,6 +64,25 @@ Note that these roles do not grant repository list permissions.
 
 * The separate **[Container Registry Repository Catalog Lister](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-catalog-lister)** must be assigned to grant repository list permissions.
 * The **[Container Registry Repository Catalog Lister](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/containers#container-registry-repository-catalog-lister)** role does not support ABAC conditions in role assignments; assigning this role grants permissions to list all repositories in a registry.
+
+## Assigning roles with ABAC conditions
+
+After enabling ABAC on your registry, you can create role assignments with conditions that scope permissions to specific repositories. Here's an example using Azure CLI to grant a managed identity read access to repositories matching the `myapp/*` namespace:
+
+```bash
+az role assignment create \
+  --assignee "<managed-identity-principal-id>" \
+  --role "Container Registry Repository Reader" \
+  --scope "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.ContainerRegistry/registries/<registry-name>" \
+  --condition "((!(ActionMatches{'Microsoft.ContainerRegistry/registries/repositories/content/read'})) OR (@Resource[Microsoft.ContainerRegistry/registries/repositories:name] StringStartsWith 'myapp/'))" \
+  --condition-version "2.0"
+```
+
+In the Azure Portal, navigate to your registry's **Access control (IAM)** blade, select **Add role assignment**, choose an ABAC-enabled role, and configure conditions in the **Conditions** tab to specify repository name patterns.
+
+:::note
+ABAC conditions in Azure are **fail-closed** by default. If a condition cannot be evaluated (for example, due to a missing attribute), access is denied. This ensures that misconfigured conditions do not inadvertently grant broader access than intended.
+:::
 
 ## Important role behavior changes in ABAC mode
 
