@@ -85,7 +85,9 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 
 Once all the components are installed, you can quickly check if all the KubeVirt components are up and running properly in your cluster:
 
-`kubectl get pods -n kubevirt -o wide`. 
+```bash
+kubectl get pods -n kubevirt -o wide
+``` 
 
 You should see something like this:
 
