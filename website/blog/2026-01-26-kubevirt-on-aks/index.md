@@ -15,13 +15,13 @@ In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs o
 
 [KubeVirt](https://github.com/kubevirt/kubevirt) is an open-source project, sponsored by the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/projects/kubevirt/), that allows users to run, deploy, and manage VMs in their Kubernetes clusters. 
 
-VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would, but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities, like scheduling, that users know and love on Kubernetes can also be applied to these VMs. Management of these otherwise disparate deployments can be simplified and unified. 
+VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities like scheduling that users know and love on Kubernetes can also be applied to these VMs. Management of these otherwise disparate deployments can be simplified and unified. 
 
 ## Why KubeVirt matters
 
 KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. It allows customers to manage legacy VM workloads alongside containerized applications using the same Kubernetes API. This unified management can help teams avoid the sprawl that would otherwise come with managing multiple platforms.
 
-The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers, or simply allow these mission critical legacy applications remain as they are. 
+The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers or allow these mission-critical legacy applications remain as they are. 
 
 ## Deploying KubeVirt
 
@@ -105,45 +105,44 @@ With KubeVirt successfully installed on your cluster, you can now create your VM
 
 1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
 
-  ```yaml
-  apiVersion: kubevirt.io/v1
-  kind: VirtualMachineInstance
-  metadata:
-    labels:
-      special: vmi-fedora
-    name: vmi-fedora
-  spec:
-    domain:
-      devices:
-        disks:
-        - disk:
-            bus: virtio
-          name: containerdisk
-        - disk:
-            bus: virtio
-          name: cloudinitdisk
-        interfaces:
-        - masquerade: {}
-          name: default
-        rng: {}
-      memory:
-        guest: 1024M
-      resources: {}
-    networks:
-    - name: default
-      pod: {}
-    terminationGracePeriodSeconds: 0
-    volumes:
-    - containerDisk:
-        image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:devel
-      name: containerdisk
-    - cloudInitNoCloud:
-        userData: |-
-          #cloud-config
-          password: fedora
-          chpasswd: { expire: False }
-      name: cloudinitdisk
-```
+   ```yaml
+   apiVersion: kubevirt.io/v1
+   kind: VirtualMachineInstance
+   metadata:
+     labels:
+       special: vmi-fedora
+     name: vmi-fedora
+   spec:
+     domain:
+       devices:
+         disks:
+         - disk:
+             bus: virtio
+           name: containerdisk
+         - disk:
+             bus: virtio
+           name: cloudinitdisk
+         interfaces:
+         - masquerade: {}
+           name: default
+         rng: {}
+       memory:
+         guest: 1024M
+       resources: {}
+     networks:
+     - name: default
+       pod: {}
+     terminationGracePeriodSeconds: 0
+     volumes:
+     - containerDisk:
+         image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:devel
+       name: containerdisk
+     - cloudInitNoCloud:
+         userData: |-
+           #cloud-config
+           password: fedora
+           chpasswd: { expire: False }
+       name: cloudinitdisk
 
 1. Deploy the VMI in your cluster.
 
