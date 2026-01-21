@@ -83,7 +83,11 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 
 ### Confirm the KubeVirt pods are up and running on the cluster
 
-Once all the components are installed, you can quickly check if all the KubeVirt components are up and running properly in your cluster. You can do so via `kubectl get pods -n kubevirt -o wide`. You should see something like this:
+Once all the components are installed, you can quickly check if all the KubeVirt components are up and running properly in your cluster:
+
+`kubectl get pods -n kubevirt -o wide`. 
+
+You should see something like this:
 
 ```bash
 NAME                               READY   STATUS    RESTARTS   AGE     IP             NODE                                NOMINATED NODE   READINESS GATES
