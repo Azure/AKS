@@ -101,7 +101,7 @@ virt-operator-7c8bdfb574-wzdxt     1/1     Running   0          9m38s   10.244.0
 
 ### Creating VirtualMachineInstance (VMI) resources in KubeVirt
 
-With KubeVirt successfully installed on your cluster, you can now go ahead and create your VMIs. 
+With KubeVirt successfully installed on your cluster, you can now create your VMIs. 
 
 1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
 
@@ -151,7 +151,7 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
    kubectl apply -f vmi-fedora.yaml
    ```
 
-   If successful, you should see a one-liner akin to `virtualmachineinstance.kubevirt.io/vmi-fedora created`.
+   If successful, you should see an output similar to `virtualmachineinstance.kubevirt.io/vmi-fedora created`.
 
 ### Check out the created VMI
 
@@ -205,9 +205,9 @@ With KubeVirt successfully installed on your cluster, you can now go ahead and c
    VARIANT_ID=cloud
    ```
 
-## Please share your feedback!
+## Share your feedback!
 
-If you are already using KubeVirt on AKS, plan to after reading this blog, or this blog piqued your interest, we'd love to hear from you! Your feedback/interest will be invaluable as we in AKS look to the future of how we can best support these type of workloads on our platform. Please share your thoughts in our [GitHub Issue](https://github.com/Azure/AKS/issues/5445).
+If you are already using KubeVirt on AKS, plan to after reading this blog, or this blog piqued your interest, we'd love to hear from you! Your feedback/interest will be invaluable as we in AKS look to the future of how we can best support these type of workloads on our platform. Share your thoughts in our [GitHub Issue](https://github.com/Azure/AKS/issues/5445).
 
 ## Resources
 
