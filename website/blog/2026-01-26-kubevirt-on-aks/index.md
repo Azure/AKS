@@ -19,7 +19,7 @@ VMs deployed on KubeVirt act much the same way as VMs deployed in more tradition
 
 ## Why KubeVirt matters
 
-KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. Being able to manage your Kubernetes and traditional VM estate through one method can help avoid the sprawl that would otherwise come with managing multiple platforms. 
+KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. It allows customers to manage legacy VM workloads alongside containerized applications using the same Kubernetes API. This unified management can help teams avoid the sprawl that would otherwise come with managing multiple platforms.
 
 The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers, or simply allow these mission critical legacy applications remain as they are. 
 
