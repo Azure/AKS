@@ -20,14 +20,16 @@ staggering **1.2M tokens per second** across 10 nodes using NVIDIA Dynamo.
 Today, we’re shifting focus from raw throughput to **developer velocity** and
 **operational efficiency**.
 
-We will explore how the [**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner.md) and [**Dynamo Planner Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/benchmarks/profiler)
+We will explore how the [**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner.md) and [**Dynamo Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/benchmarks/profiler)
 remove the guesswork from performance tuning.
 
 <!-- truncate -->
 
 ## The Challenge: Balancing the "Rate Matching" Equation
 
-Disaggregated serving separates the prefill and decode phases of inference
+Disaggregated serving separates the prefill phase (when the model first
+processes the entire input sequence at once) and decode phase (when the
+model starts sequentially generating output tokens) of inference
 across distinct GPU nodes. This allows each phase to be independently
 optimized with custom GPU counts and model parallelism configurations.
 
@@ -76,11 +78,23 @@ Consider a major airline’s mobile app that uses AI to offer personalized
 rerouting during flight delays. This use case is a 'stress test' for
 inference: it is subject to massive, sudden bursts in traffic and highly
 variable request patterns, such as a mix of short status queries and
-long-context itinerary processing. To prevent latency spikes during
-these peaks, the underlying system requires the precise orchestration
-offered by a disaggregated architecture.
+long-context itinerary processing. To prevent latency spikes during these
+peaks, the underlying system requires the precise orchestration offered
+by a disaggregated architecture.
 
-To build a truly efficient disaggregated AI inference system you
+Using the
+[Qwen3-32B-FP8]((https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main))
+model, we can deploy an Airline Assistant with
+strict SLA targets: TTFT ≤ 500ms and ITL (Inter-Token Latency) ≤ 30ms.
+
+During normal operations, passengers ask short queries like
+"What's my flight status?" But when a major weather system causes
+flight cancellations, passengers flood the app with complex rerouting
+requests—long-context queries (~4,000 tokens) requiring detailed itinerary
+responses (~500 tokens). This sudden surge of 200 concurrent users is
+exactly the kind of real-world spike that breaks static configurations.
+
+To build a truly efficient disaggregated AI inference system, you
 need to transition from manual "guess-and-check" configurations
 to an automated, SLO-driven approach. The core of this automation
 lies in two distinct but deeply integrated components: the Dynamo
@@ -90,24 +104,27 @@ The first step in building your system is determining the "Golden Ratio"
 of GPUs: how many should handle prefill versus decode, and what tensor
 parallelism (TP) levels each should use.
 
-### The Architect: Dynamo Planner Profiler
+### The Architect: Dynamo Profiler
 
 The Dynamo Planner profiler is your pre-deployment simulation engine.
 Instead of burning GPU hours testing every possible configuration, you
 define your requirements in a **DynamoGraphDeploymentRequest (DGDR)**
-manifest. The profiler then executes an automated "sweep" of the search space:
+manifest. The profiler then executes an automated
+["sweep"](https://github.com/ai-dynamo/dynamo/blob/main/docs/benchmarks/sla_driven_profiling.md#profiling-method)
+of the search space:
 
 * **Parallelization Mapping**: It tests different TP sizes for both prefill
-and decode stages to find the lowest TTFT and ITL (Inter-Token Latency).
+and decode stages to find the lowest TTFT and ITL.
 * **Hardware Simulation**: Using the **AI Configurator (AIC)** mode, the
 profiler can simulate performance in just 20–30 seconds
 based on pre-measured performance data, allowing for rapid
 iteration before you ever touch a physical GPU.
 * **Resulting Recommendation**: The output is a highly tuned
-configuration that maximizes "Goodput", the maximum throughput
+configuration that maximizes ["Goodput"](https://arxiv.org/abs/2401.09670),
+the maximum throughput
 achievable while staying strictly within your latency bounds.
 
-Ultimately the app developers and AI engineers reduce their time
+Ultimately, the app developers and AI engineers reduce their time
 spent on testing different system setups, and can focus on their airline
 passengers’ needs.
 
@@ -125,11 +142,40 @@ looking at:
 * **Prefill Queue Depth**: It tracks how many prompts are waiting to be
 processed.
 
-Using the performance bounds identified earlier by the profiler, the Planner
+Using the performance bounds identified earlier by the profiler
+(i.e. TTFT ≤ 500ms and ITL ≤ 30ms) the Planner
 proactively scales the number of prefill and decode workers up or down. For
 example, if a *sudden burst of long-context itinerary queries* floods the
 system, the Planner detects the spike in the prefill queue and shifts available
 GPU resources to the prefill pool *before* your TTFT violates its SLO.
+
+## Seeing it in Action
+
+In our airline scenario, the system starts with 1 prefill worker and
+1 decode worker. When the passenger surge hits, the Planner's 60-second
+adjustment interval detects the SLA violations:
+
+```
+Prefill calculation: 138.55 (p_thpt) / 4838.61 (p_engine_cap) = 1 (num_p)
+Decode calculation: 27.27 (d_thpt) / 19381.08 (d_engine_cap) = 1 (num_d)
+```
+
+As traffic spikes to 200 concurrent passengers, the Planner recalculates:
+
+```
+Prefill calculation: 16177.75 (p_thpt) / 8578.39 (p_engine_cap) = 2 (num_p)
+Decode calculation: 400.00 (d_thpt) / 3354.30 (d_engine_cap) = 1 (num_d)
+Predicted number of engine replicas: prefill=2, decode=1
+Updating prefill component VllmPrefillWorker to desired replica count 2
+```
+
+[See the Dynamo SLA Planner](https://asciinema.org/a/67XW4yXJIBmIe7bv)
+in action as it automatically scales the Airline Assistant during a
+traffic surge. The Planner automatically scales to 2 prefill workers
+while keeping 1 decode worker (the optimal configuration to handle the
+surge while maintaining SLA targets). Within minutes, the new worker is
+online and passengers are getting their rerouting options without
+frustrating delays.
 
 Now, you can try this yourself by running the NVIDIA Dynamo Planner Profiler
 to capture burst and request behavior, then using the SLO-based Planner to
