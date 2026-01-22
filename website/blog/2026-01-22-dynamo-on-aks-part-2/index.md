@@ -83,7 +83,7 @@ peaks, the underlying system requires the precise orchestration offered
 by a disaggregated architecture.
 
 Using the
-[Qwen3-32B-FP8]((https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main))
+[Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8)
 model, we can deploy an Airline Assistant with
 strict SLA targets: TTFT ≤ 500ms and ITL (Inter-Token Latency) ≤ 30ms.
 
@@ -186,7 +186,7 @@ handle sudden traffic spikes without latency spikes.
 
 After deploying Dynamo by following [these instructions](https://aka.ms/aks-dynamo),
 get hands on with the
-[Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8/tree/main)
+[Qwen3-32B-FP8](https://huggingface.co/Qwen/Qwen3-32B-FP8)
 model using the example in [AKS Dynamo Part 2 sample](https://aka.ms/aks-dynamo-part-2).
 
 ## Conclusion: Inference Without the Infrastructure Burden
