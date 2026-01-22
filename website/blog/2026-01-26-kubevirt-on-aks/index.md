@@ -129,6 +129,7 @@ With KubeVirt successfully installed on your cluster, you can now create your Vi
            password: fedora
            chpasswd: { expire: False }
        name: cloudinitdisk
+   ```
 
 1. Deploy the VMI in your cluster.
 
