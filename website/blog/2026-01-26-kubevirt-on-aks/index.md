@@ -85,9 +85,9 @@ virt-operator-7c8bdfb574-54cs6     1/1     Running   0          9m38s   10.244.0
 virt-operator-7c8bdfb574-wzdxt     1/1     Running   0          9m38s   10.244.0.153   aks-nodepool1-26901818-vmss000000   <none>           <none>
 ```
 
-### Creating VirtualMachineInstance (VMI) resources in KubeVirt
+### Creating VirtualMachineInstance resources in KubeVirt
 
-With KubeVirt successfully installed on your cluster, you can now create your VMIs. 
+With KubeVirt successfully installed on your cluster, you can now create your VirtualMachineInstance (VMI) resources. 
 
 1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
 
