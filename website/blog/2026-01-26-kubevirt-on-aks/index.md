@@ -6,7 +6,7 @@ authors: ["jack-jiang", "harshit-gupta"]
 tags: ["kubevirt", "general", "operations"]
 ---
 
-Kubernetes adoption continues to grow, but not every workload can be re-architected for containers right away. Many organizations still depend on virtual machine (VM)–based deployments for technical, regulatory, or operational reasons.
+Kubernetes adoption continues to grow, but not every workload can be re-architected for containers right away. Many organizations still depend on virtual machine (VM) based deployments for technical, regulatory, or operational reasons.
 
 In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs on Kubernetes, alongside your containerized applications, using Kubernetes as the orchestrator.
 <!-- truncate -->
