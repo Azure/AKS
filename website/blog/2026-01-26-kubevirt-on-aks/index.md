@@ -53,33 +53,17 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
    https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-operator.yaml
    ```
 
-1. Next, we want to install the KubeVirt custom resource. Save the YAML below as `kubevirt-cr.yaml`.
+1. Next, we want to install the KubeVirt custom resource.
 
-   ```yaml
-   apiVersion: kubevirt.io/v1
-   kind: KubeVirt
-   metadata:
-     name: kubevirt
-     namespace: kubevirt
-   spec:
-     certificateRotateStrategy: {}
-     configuration:
-       developerConfiguration:
-         featureGates: []
-     customizeComponents: {}
-     imagePullPolicy: IfNotPresent
-     workloadUpdateStrategy: {}
-     infra:
-       nodePlacement: {}
+   ```bash
+   https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-cr.yaml \
+   | yq '.spec.infra.nodePlacement={}' \
+   | kubectl apply -f -
    ```
 
    Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control plane components to control plane nodes. On AKS, control plane nodes are fully managed by Azure and not accessible to KubeVirt. This update to `nodePlacement` avoids issues that this may cause.
 
-   Once the YAML is saved, apply it to your cluster.
-   
-   ```bash
-   kubectl apply -f kubevirt-cr.yaml
-   ```
+   `v1.6.3` is specified in this example, but another [supported version](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) can be chosen instead. 
 
 ### Confirm the KubeVirt pods are up and running on the cluster
 
