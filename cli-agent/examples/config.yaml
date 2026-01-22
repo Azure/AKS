@@ -1,0 +1,41 @@
+# Example configuration for AKS CLI Agent
+
+# AI Provider Configuration
+# Choose from: azure_openai, openai, anthropic, none
+ai_provider:
+  type: "azure_openai"
+  endpoint: "https://your-azure-openai-endpoint.openai.azure.com/"
+  api_key: "your-api-key-here"
+  model: "gpt-4"
+
+# Default cluster settings
+clusters:
+  default_resource_group: "my-aks-rg"
+  default_cluster: "my-aks-cluster"
+
+# Logging configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "~/.aks-agent/logs/agent.log"
+
+# Feature flags
+features:
+  # Auto-approve read-only operations (get, list, describe)
+  auto_approve_read_operations: true
+  
+  # Auto-approve diagnostic commands (non-destructive)
+  auto_approve_diagnostics: true
+  
+  # Enable telemetry collection (anonymized usage data)
+  enable_telemetry: false
+
+# Advanced settings
+advanced:
+  # Timeout for kubectl commands (seconds)
+  kubectl_timeout: 30
+  
+  # Timeout for Azure API calls (seconds)
+  azure_timeout: 60
+  
+  # Maximum number of retry attempts
+  max_retries: 3
