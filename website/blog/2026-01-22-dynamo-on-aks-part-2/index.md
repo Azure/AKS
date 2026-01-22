@@ -155,14 +155,14 @@ In our airline scenario, the system starts with 1 prefill worker and
 1 decode worker. When the passenger surge hits, the Planner's 60-second
 adjustment interval detects the SLA violations:
 
-```
+```bash
 Prefill calculation: 138.55 (p_thpt) / 4838.61 (p_engine_cap) = 1 (num_p)
 Decode calculation: 27.27 (d_thpt) / 19381.08 (d_engine_cap) = 1 (num_d)
 ```
 
 As traffic spikes to 200 concurrent passengers, the Planner recalculates:
 
-```
+```bash
 Prefill calculation: 16177.75 (p_thpt) / 8578.39 (p_engine_cap) = 2 (num_p)
 Decode calculation: 400.00 (d_thpt) / 3354.30 (d_engine_cap) = 1 (num_d)
 Predicted number of engine replicas: prefill=2, decode=1
