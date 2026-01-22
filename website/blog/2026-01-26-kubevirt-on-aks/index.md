@@ -13,19 +13,19 @@ In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs o
 
 ## What is KubeVirt?
 
-[KubeVirt](https://github.com/kubevirt/kubevirt) is an open-source project, sponsored by the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/projects/kubevirt/), that allows users to run, deploy, and manage VMs in their Kubernetes clusters. 
+[KubeVirt](https://github.com/kubevirt/kubevirt) is an open-source project, sponsored by the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/projects/kubevirt/), that allows users to run, deploy, and manage VMs in their Kubernetes clusters.
 
-VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities like scheduling that users know and love on Kubernetes can also be applied to these VMs. Management of these otherwise disparate deployments can be simplified and unified. 
+VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities like scheduling that users know and love on Kubernetes can also be applied to these VMs. Management of these otherwise disparate deployments can be simplified and unified.
 
 ## Why KubeVirt matters
 
 KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. It allows customers to manage legacy VM workloads alongside containerized applications using the same Kubernetes API. This unified management can help teams avoid the sprawl that would otherwise come with managing multiple platforms.
 
-The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers or allow these mission-critical legacy applications remain as they are. 
+The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers or allow these mission-critical legacy applications remain as they are.
 
 ## Deploying KubeVirt
 
-Users today are able to self-deploy KubeVirt on AKS their AKS clusters using SKUs that support nested virtualization. 
+Users today are able to self-deploy KubeVirt on AKS their AKS clusters using SKUs that support nested virtualization.
 
 ### Creating an AKS cluster
 
@@ -38,6 +38,7 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
    ```azurecli-interactive
    az aks create --resource-group <resource-group> --name <cluster-name> --node-vm-size Standard_D4s_v5
    ```
+
 2. After your cluster is up and running, get the access credentials for the cluster.
 
    ```azurecli-interactive
@@ -47,7 +48,7 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 ### Installing KubeVirt
 
 1. Install the KubeVirt operator.
-   
+
    ```bash
    kubectl apply -f \
    https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-operator.yaml
@@ -63,7 +64,7 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 
    Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control plane components to control plane nodes. On AKS, control plane nodes are fully managed by Azure and not accessible to KubeVirt. This update to `nodePlacement` avoids issues that this may cause.
 
-   `v1.6.3` is specified in this example, but another [supported version](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) can be chosen instead. 
+   `v1.6.3` is specified in this example, but another [supported version](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) can be chosen instead.
 
 ### Confirm the KubeVirt pods are up and running on the cluster
 
@@ -71,7 +72,7 @@ Once all the components are installed, you can quickly check if all the KubeVirt
 
 ```bash
 kubectl get pods -n kubevirt -o wide
-``` 
+```
 
 You should see something like this:
 
@@ -87,7 +88,7 @@ virt-operator-7c8bdfb574-wzdxt     1/1     Running   0          9m38s   10.244.0
 
 ### Creating VirtualMachineInstance resources in KubeVirt
 
-With KubeVirt successfully installed on your cluster, you can now create your VirtualMachineInstance (VMI) resources. 
+With KubeVirt successfully installed on your cluster, you can now create your VirtualMachineInstance (VMI) resources.
 
 1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
 
@@ -191,7 +192,7 @@ With KubeVirt successfully installed on your cluster, you can now create your Vi
    VARIANT_ID=cloud
    ```
 
-## Share your feedback!
+## Share your feedback
 
 If you are already using KubeVirt on AKS, plan to after reading this blog, or this blog piqued your interest, we'd love to hear from you! Your feedback/interest will be invaluable as we in AKS look to the future of how we can best support these type of workloads on our platform. Share your thoughts in our [GitHub Issue](https://github.com/Azure/AKS/issues/5445).
 
