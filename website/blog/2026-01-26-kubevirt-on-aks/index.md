@@ -56,7 +56,7 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 1. Next, we want to install the KubeVirt custom resource.
 
    ```bash
-   https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-cr.yaml \
+   curl -L https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-cr.yaml \
    | yq '.spec.infra.nodePlacement={}' \
    | kubectl apply -f -
    ```
