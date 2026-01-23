@@ -15,9 +15,9 @@ In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs o
 
 ## Why KubeVirt matters
 
-KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. It allows customers to manage legacy VM workloads alongside containerized applications using the same Kubernetes API. 
+KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. It allows customers to manage legacy VM workloads alongside containerized applications using the same Kubernetes API.
 
-VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities like scheduling that users know and love on Kubernetes can also be applied to these VMs. 
+VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities like scheduling that users know and love on Kubernetes can also be applied to these VMs.
 
 Management of these otherwise disparate deployments can be simplified and unified. This unified management can help teams avoid the sprawl that would otherwise come with managing multiple platforms.
 
@@ -34,7 +34,8 @@ When you select a `--node-vm-size`, use a VM SKU that supports nested virtualiza
 Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support) SKU as an example, on the SKU page, you can see whether or not nested virtualization is supported in the "Feature support" section.
 
 ![Screenshot of Azure VM SKU page showing nested virtualization support in the Feature support section](nested-virt-example.png)
-::: 
+:::
+
 1. Create your AKS cluster.
 
    ```bash
@@ -196,9 +197,9 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
 
 ## Converting your VMs
 
-At this point, you should have KubeVirt up and running in your AKS cluster and a VMI deployed. KubeVirt can help with a [plethora of scenarios](https://kubevirt.io/) that operational teams may run into. Migrating legacy VMs to KubeVirt can be an involved process, however. [Doing it manually](https://www.spectrocloud.com/blog/how-to-migrate-your-vms-to-kubevirt-with-forklift) involves steps like conevrting VM's disk, persisting a VM disk, to creating a VM template. 
+At this point, you should have KubeVirt up and running in your AKS cluster and a VMI deployed. KubeVirt can help with a [plethora of scenarios](https://kubevirt.io/) that operational teams may run into. Migrating legacy VMs to KubeVirt can be an involved process, however. [Doing it manually](https://www.spectrocloud.com/blog/how-to-migrate-your-vms-to-kubevirt-with-forklift) involves steps like conevrting VM's disk, persisting a VM disk, to creating a VM template.
 
-Tools like [Forklift](https://github.com/kubev2v/forklift) can automates some of the complexity involved with the migration. Forklift allows VMs to be migrated at scale to KubeVirt. The migration can be done by installing Forklift custom resources and setting up their respective configs in the target cluster. Some great walkthroughs of VM migration can be found [here](https://www.youtube.com/watch?v=S7hVcv2Fu6I) and [here](https://www.youtube.com/watch?v=-w4Afj5-0_g).
+Tools like [Forklift](https://github.com/kubev2v/forklift) can automates some of the complexity involved with the migration. Forklift allows VMs to be migrated at scale to KubeVirt. The migration can be done by installing Forklift custom resources and setting up their respective configs in the target cluster. Some great walkthroughs of VM migration can be found in this videos [detailing how Forklift helps deliver a better UX when importing VMs to KubeVirt](https://www.youtube.com/watch?v=S7hVcv2Fu6I) and this one [breaking down everything from the architecture to a demo of Forklift 2.0](https://www.youtube.com/watch?v=-w4Afj5-0_g).
 
 ## Share your feedback
 
