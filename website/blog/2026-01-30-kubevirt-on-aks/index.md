@@ -70,7 +70,6 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
 
    Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control-plane components to control-plane nodes. Because AKS control-plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to nodePlacement avoids potential failures.
 
-
 ### Confirm the KubeVirt pods are up and running on the cluster
 
 Once all the components are installed, you can quickly check if all the KubeVirt components are up and running properly in your cluster:
