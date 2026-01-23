@@ -194,6 +194,12 @@ With KubeVirt successfully installed on your cluster, you can now create your Vi
    VARIANT_ID=cloud
    ```
 
+## Converting your VMs
+
+At this point, you should have KubeVirt up and running in your AKS cluster and a VMI deployed. KubeVirt can help with a [plethora of scenarios](https://kubevirt.io/) that operational teams may run into. Migrating legacy VMs to KubeVirt can be an involved process, however. [Doing it manually](https://www.spectrocloud.com/blog/how-to-migrate-your-vms-to-kubevirt-with-forklift) involves steps like conevrting VM's disk, persisting a VM disk, to creating a VM template. 
+
+Tools like [Forklift](https://github.com/kubev2v/forklift) can automates some of the complexity involved with the migration. Forklift allows VMs to be migrated at scale to KubeVirt. The migration can be done by installing Forklift custom resources and setting up their respective configs in the target cluster. Some great walkthroughs of VM migration can be found [here](https://www.youtube.com/watch?v=S7hVcv2Fu6I) and [here](https://www.youtube.com/watch?v=-w4Afj5-0_g).
+
 ## Share your feedback
 
 If you're using KubeVirt on AKS or are interested in trying it, we'd love to hear from you! Your feedback will help the AKS team plan how to best support these types of workloads on our platform. Share your thoughts in our [GitHub Issue](https://github.com/Azure/AKS/issues/5445).
