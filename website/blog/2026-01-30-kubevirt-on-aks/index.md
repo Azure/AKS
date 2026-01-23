@@ -1,6 +1,6 @@
 ---
 title: "Deploying KubeVirt on AKS"
-date: "2026-01-26"
+date: "2026-01-30"
 description: "Learn how to deploy KubeVirt on Azure Kubernetes Service (AKS) to run and manage virtual machines alongside containerized applications using Kubernetes orchestration."
 authors: ["jack-jiang", "harshit-gupta"]
 tags: ["kubevirt", "general", "operations"]
@@ -62,7 +62,7 @@ Users today are able to self-deploy KubeVirt on AKS clusters using SKUs that sup
    | kubectl apply -f -
    ```
 
-   Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control plane components to control plane nodes. On AKS, control plane nodes are fully managed by Azure and not accessible to KubeVirt. This update to `nodePlacement` avoids issues that this may cause.
+   Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control plane components to control plane nodes. Because AKS control plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to nodePlacement avoids potential failures.
 
    `v1.6.3` is specified in this example, but another [supported version](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) can be chosen instead.
 
@@ -142,7 +142,7 @@ With KubeVirt successfully installed on your cluster, you can now create your Vi
 
 ### Check out the created VMI
 
-1. You can first test and make sure the VMI is created and running via `kubectl get vmi`. You should see a result similar to:
+1. Test and make sure the VMI is created and running via `kubectl get vmi`. You should see a result similar to:
 
    ```bash
    NAME         AGE   PHASE     IP             NODENAME                            READY
@@ -194,7 +194,7 @@ With KubeVirt successfully installed on your cluster, you can now create your Vi
 
 ## Share your feedback
 
-If you are already using KubeVirt on AKS, plan to after reading this blog, or this blog piqued your interest, we'd love to hear from you! Your feedback/interest will be invaluable as we in AKS look to the future of how we can best support these type of workloads on our platform. Share your thoughts in our [GitHub Issue](https://github.com/Azure/AKS/issues/5445).
+If you're using KubeVirt on AKS or are interested in trying it, we'd love to hear from you! Your feedback will help the AKS team plan how to best support these types of workloads on our platform. Share your thoughts in our [GitHub Issue](https://github.com/Azure/AKS/issues/5445).
 
 ## Resources
 
