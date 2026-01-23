@@ -35,13 +35,13 @@ Users today are able to self-deploy KubeVirt on AKS clusters using SKUs that sup
 
 1. Start with creating your AKS cluster.
 
-   ```azurecli-interactive
+   ```bash
    az aks create --resource-group <resource-group> --name <cluster-name> --node-vm-size Standard_D4s_v5
    ```
 
 2. After your cluster is up and running, get the access credentials for the cluster.
 
-   ```azurecli-interactive
+   ```bash
    az aks get-credentials --resource-group <resource-group> --name <cluster-name>
    ```
 
