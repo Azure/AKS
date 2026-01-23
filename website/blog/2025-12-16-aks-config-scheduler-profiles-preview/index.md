@@ -124,7 +124,7 @@ spec:
 
 ### Optimize data locality with Memory and PVC-Aware Scheduling
 
-Use `VolumeBinding` to ensure pods are placed on nodes where _PersistentVolumeClaim's_ (PVC) can bind to _PersistentVolume's_ (PV). `VolumeZone` validates that nodes and volumes satisfy zonal requirements to avoid cross-zone storage access.
+Use `VolumeBinding` to ensure pods are placed on nodes where _PersistentVolumeClaims_ (PVC) can bind to _PersistentVolumes_ (PV). `VolumeZone` validates that nodes and volumes satisfy zonal requirements to avoid cross-zone storage access.
 
 For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][memory-optimized-vm], while ensuring PVC's bind quickly in the target zone to minimize cross‑zone traffic and latency.
 
