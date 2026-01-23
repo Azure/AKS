@@ -6,7 +6,7 @@ authors: ["jack-jiang", "harshit-gupta"]
 tags: ["kubevirt", "general", "operations"]
 ---
 
-Kubernetes adoption continues to grow, but not every workload can be re-architected for containers right away. Many organizations still depend on virtual machine (VM) based deployments for technical, regulatory, or operational reasons.
+Kubernetes adoption continues to grow, but not every workload can be redesigned for containers right away. Many organizations still depend on virtual machine (VM) based deployments for technical, regulatory, or operational reasons.
 
 [KubeVirt](https://github.com/kubevirt/kubevirt) is a [Cloud Native Computing Foundation (CNCF) incubating](https://www.cncf.io/projects/kubevirt/) open-source project that allows users to run, deploy, and manage VMs in their Kubernetes clusters.
 
@@ -53,21 +53,23 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
 1. Install the KubeVirt operator.
 
    ```bash
-   kubectl apply -f \
-   https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-operator.yaml
+# Get the latest release
+export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
+
+# Deploy the KubeVirt operator
+kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
    ```
 
 1. Install the KubeVirt custom resource.
 
    ```bash
-   curl -L https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-cr.yaml \
+   curl -L https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml \
    | yq '.spec.infra.nodePlacement={}' \
    | kubectl apply -f -
    ```
 
    Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control plane components to control plane nodes. Because AKS control plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to nodePlacement avoids potential failures.
 
-   `v1.6.3` is specified in this example, but another [supported version](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) can be chosen instead.
 
 ### Confirm the KubeVirt pods are up and running on the cluster
 
@@ -154,11 +156,11 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
 
 1. Connect to the newly created VMI and inspect it.
 
-   Before you use the `virtctl` command-line tool, install it on your workstation. If you use `kubectl krew`, run:
+   Before you use the `virtctl` command-line tool, install it on your workstation. Install the [`krew` plugin manager](https://krew.sigs.k8s.io/docs/user-guide/setup/install/) if you don't have it, then run:
 
    ```bash
    kubectl krew install virt
-   virtctl console vmi-fedora
+   kubectl virt console vmi-fedora
    ```
 
    When prompted with credentials, the default username/password should be `fedora`/`fedora`.
