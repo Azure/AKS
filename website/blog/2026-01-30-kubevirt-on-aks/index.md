@@ -25,7 +25,7 @@ The capability to mix and match your workloads in a "hybrid" setting can also al
 
 ## Deploying KubeVirt
 
-Users today are able to self-deploy KubeVirt on AKS their AKS clusters using SKUs that support nested virtualization.
+Users today are able to self-deploy KubeVirt on AKS clusters using SKUs that support nested virtualization.
 
 ### Creating an AKS cluster
 
