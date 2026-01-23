@@ -25,9 +25,9 @@ Users today are able to self-deploy KubeVirt on AKS their AKS clusters using SKU
 
 ### Creating an AKS cluster
 
-:::important
-When you select a `--node-vm-size`, use a VM SKU that supports nested virtualization. You can confirm support on the VM size's Microsoft Learn page, such as [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support).
-:::
+> [IMPORTANT]
+> When you select a `--node-vm-size`, use a VM SKU that supports nested virtualization. You can confirm support on the VM size's Microsoft Learn page, such as [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support).
+> Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support) SKU as an example, on the SKU page, you can see whether or not nested virtualization is supported in the "Feature support" section. ![Picture showing how a SKU with nested virtualization supported looks like on the SKU page](nested-virt-example.png)
 
 1. Start with creating your AKS cluster.
 
