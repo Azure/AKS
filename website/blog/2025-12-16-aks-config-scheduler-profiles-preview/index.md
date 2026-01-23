@@ -216,7 +216,7 @@ As a reminder, there are many parameters the scheduler considers across the [sch
 7. If your cluster is large, a low `PercentageOfNodesToScore` speeds scheduling by reducing the number of nodes scored, _but_ it may reduce optimal placement.
 8. If you enable a plugin in the `plugins:multipoint` section but do not define it in `pluginConfig`, AKS uses the default configuration for that plugin.
 9. For `NodeResourcesFit`, the ratio matters more than absolute values. So CPU:Memory:Storage = 3:1:2, which means CPU is 3× more influential than memory, and storage is 2x more influential than memory in the scoring phase.
-10. Pair `PodTopologySpread` with Pod Disruption Budget's (PDB) and multi‑replica strategies for HA during upgrades.
+10. Pair `PodTopologySpread` with Pod Disruption Budgets (PDBs) and multi‑replica strategies for HA during upgrades.
 
 ## Next Steps: Try out AKS Configurable Scheduler
 
