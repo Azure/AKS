@@ -53,11 +53,11 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
 1. Install the KubeVirt operator.
 
    ```bash
-# Get the latest release
-export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
+   # Get the latest release
+   export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
 
-# Deploy the KubeVirt operator
-kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+   # Deploy the KubeVirt operator
+   kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
    ```
 
 1. Install the KubeVirt custom resource.
