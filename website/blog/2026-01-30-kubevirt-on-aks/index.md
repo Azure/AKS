@@ -35,7 +35,7 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
 
 ![Screenshot of Azure VM SKU page showing nested virtualization support in the Feature support section](nested-virt-example.png)
 ::: 
-1. Start with creating your AKS cluster.
+1. Create your AKS cluster.
 
    ```bash
    az aks create --resource-group <resource-group> --name <cluster-name> --node-vm-size Standard_D4s_v5
