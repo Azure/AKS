@@ -56,7 +56,7 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
    https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-operator.yaml
    ```
 
-1. Next, install the KubeVirt custom resource.
+1. Install the KubeVirt custom resource.
 
    ```bash
    curl -L https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-cr.yaml \
@@ -90,7 +90,7 @@ virt-operator-7c8bdfb574-wzdxt     1/1     Running   0          9m38s   10.244.0
 
 ### Creating VirtualMachineInstance resources in KubeVirt
 
-With KubeVirt successfully installed on your cluster, you can now create your VirtualMachineInstance (VMI) resources.
+With KubeVirt installed on your cluster, you can now create your VirtualMachineInstance (VMI) resources.
 
 1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
 
@@ -151,7 +151,7 @@ With KubeVirt successfully installed on your cluster, you can now create your Vi
    vmi-fedora   85s   Running   10.244.0.213   aks-nodepool1-26901818-vmss000000   True
    ```
 
-1. You can also connect to the newly created VMI, and inspect it.
+1. Connect to the newly created VMI and inspect it.
 
    Before you use the `virtctl` command-line tool, install it on your workstation. If you use `kubectl krew`, run:
 
