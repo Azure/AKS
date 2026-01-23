@@ -54,7 +54,7 @@ Users today are able to self-deploy KubeVirt on AKS clusters using SKUs that sup
    https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-operator.yaml
    ```
 
-1. Next, we want to install the KubeVirt custom resource.
+1. Next, install the KubeVirt custom resource.
 
    ```bash
    curl -L https://github.com/kubevirt/kubevirt/releases/download/v1.6.3/kubevirt-cr.yaml \
