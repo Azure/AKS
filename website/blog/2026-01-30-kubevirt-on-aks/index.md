@@ -167,7 +167,7 @@ With KubeVirt successfully installed on your cluster, you can now create your Vi
    Password: 
    ```
 
-   Once logged in, running `cat /etc/os-release` should allow you to see the OS details.
+   Once logged in, run `cat /etc/os-release` to display the OS details.
 
    ```bash
    [fedora@vmi-fedora ~]$ cat /etc/os-release
