@@ -208,7 +208,7 @@ spec:
 As a reminder, there are many parameters the scheduler considers across the [scheduling cycle][scheduling-framework/#interfaces] before a pod is placed on a node that impacts how a pod is assigned. This section is meant to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 1. Ensure the intended deployment is assigned to the _correct_ scheduler profile.
-2. Ensure the custom scheduler profile complements the implementation of Deployments, StorageClasses, and PersistentVolumeClaim's. Misalignment can lead to pending pods and degraded workload performance, even when the scheduler is functioning as expected.
+2. Ensure the custom scheduler profile complements the implementation of Deployments, StorageClasses, and PersistentVolumeClaims. Misalignment can lead to pending pods and degraded workload performance, even when the scheduler is functioning as expected.
 3. Ensure there are enough nodes in each zone to accommodate your deployment replicas and ensure your AKS node pool spans the right availability zones. If not, pods may remain in a pending state.
 4. Use namespaces to separate workloads which improves your ability to validate or troubleshoot.
 5. Assign `priorityClassName` for workloads that should preempt others, this is critical if you use the DefaultPreemption plugin.
