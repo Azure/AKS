@@ -47,6 +47,11 @@ app-routing:
   permalink: /app-routing
   description: AKS Application Routing add-on usage, ingress, certificates, and traffic management.
 
+azure-container-registry:
+  label: Azure Container Registry
+  permalink: /azure-container-registry
+  description: Building, distributing, and deploying container images with ACR and AKS.
+
 azure-front-door:
   label: Azure Front Door
   permalink: /azure-front-door
@@ -121,6 +126,11 @@ dynamo-series:
   label: Dynamo on AKS series
   permalink: /dynamo-series
   description: Series highlighting LLM inference in production using OSS Dynamo project on an AKS cluster.
+
+entra:
+  label: Entra
+  permalink: /entra
+  description: Microsoft Entra identity and access management for AKS clusters and workloads.
 
 extensions:
   label: Extensions
