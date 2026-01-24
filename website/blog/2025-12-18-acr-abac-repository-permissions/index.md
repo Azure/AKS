@@ -91,7 +91,7 @@ When a registry is ABAC-enabled by configuring its permissions mode to "**RBAC R
 :::
 
 * Legacy data-plane roles such as **AcrPull**, **AcrPush**, and **AcrDelete** are ***not honored in ABAC-enabled registries and should not be used***. For ABAC-enabled registries, use the ABAC-enabled built-in roles listed above.
-* Broad roles like **Owner**, **Contributor**, and **Reader** previously granted full control plane and data plane permissions. This is typically an overprivileged role assignment. In ABAC-enabled registries, these broad roles will only grant control plane permissions to the registry. **Owner**, **Contributor**, and **Reader** will ***no longer grant data plane permissions***, such as image push, pull, delete or repository list permissions.
+* Broad roles like **Owner**, **Contributor**, and **Reader** previously granted full control plane and data plane permissions. This is typically an overprivileged role assignment. In ABAC-enabled registries, these broad roles will only grant control plane permissions to the registry. **Owner**, **Contributor**, and **Reader** will ***no longer grant data plane permissions***, such as image push, pull, delete, or repository list permissions.
 * In ABAC-enabled registries, ACR Tasks, Quick Tasks, Quick Builds, and Quick Runs no longer have default data plane access to source registries. This prevents inadvertent security leaks and broad permissions grants to ACR Tasks. To grant an ACR Task permissions to a source ACR registry, assign the ABAC-enabled roles above to the calling identity of the Task or Task Run as needed.
 
 ## Next steps
