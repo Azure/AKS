@@ -1,6 +1,6 @@
 ---
 title: "Azure Container Registry Repository Permissions with Attribute-based Access Control (ABAC)"
-date: "2025-12-18"
+date: "2026-01-23"
 description: "Azure Container Registry now supports Microsoft Entra ABAC for granular repository permissions in CI/CD pipelines and AKS clusters for least-privilege access."
 authors:
     - johnson-shi
