@@ -13,8 +13,8 @@ tags:
 Imagine this: your application is thriving, traffic spikes, and Kubernetes promises elasticity. You hit “scale,” expecting magic—only to be greeted by cryptic errors like:
 
 - **Insufficient regional capacity**: Azure can’t allocate the VM size you requested in a particular region or zone.
-- **Quota exceeded**: Your subscription has hit its compute limits for a particular location or VM Size.
-- **Zonal allocation failure**: The VM Size (also referred to as VM SKU) you chose isn’t available in the zone.
+- **Quota exceeded**: Your subscription has hit its compute limits for a particular location or VM size.
+- **Zonal allocation failure**: The VM size (also referred to as VM SKU) you chose isn’t available in the zone.
 
 For customers, these aren’t just error messages - they’re roadblocks. Pods remain pending, deployments stall, and SLAs tremble. Scaling isn’t just about adding nodes; it’s about finding capacity in a dynamic, multi-tenant cloud where demand often outpaces supply. In the case of quota gaps, usually a user can increase their quota in a particular location - but what about when a specific virtual machine size (also known as "VM SKU") is simply unavailable? This can cause many challenges for users.
 
@@ -52,10 +52,10 @@ Think of NAP as Kubernetes with foresight: provisioning what you need, when you 
 
 When a requested VM SKU isn’t available due to regional or zonal capacity constraints, NAP doesn’t fail outright. Instead, NAP will automatically:
 
-- Evaluate pending pod resource requirements (CPU, memory, GPU, etc.).
+- Evaluate pending pod resource requirements (CPU, memory, GPU, etc.)
 - Check if pending pods can fit on existing nodes
-- Search across multiple VM SKUs within the allowed families defined in your NAP configuration files (custom resource definitions referred to as the NodePool and AKSNodeClass CRDs).
-- Provision an alternative SKU that meets the workload requirements and policy constraints.
+- Search across multiple VM SKUs within the allowed families defined in your NAP configuration files (custom resource definitions referred to as the NodePool and AKSNodeClass CRDs)
+- Provision an alternative SKU that meets the workload requirements and policy constraints
 - In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available".  **Mitigation**: Make sure you reference a broad range of size options in the NAP configuration files (e.g. D-series, multiple SKU families)
 
 This flexibility is key to avoiding hard failures during scale-out. In the scenario where there is no SKUs available based on your configuration requirements, NAP will return an error stating that there were no available SKUs that matched your requirements. Typically this means the configuration requirements probably can be broader, to allow for more available VM sizes.
@@ -66,9 +66,9 @@ For more on enabling NAP on your cluster, visit our [NAP documentation](https://
 
 Traditional node pools are rigid: one SKU per pool. Virtual Machine node pools break that limitation. With multi-SKU support, you can:
 
-- Mix VM sizes within a single pool for diverse workloads.
-- Fine-tune capacity without creating dozens of pools.
-- Reduce operational overhead while improving resilience.
+- Mix VM sizes within a single pool for diverse workloads
+- Fine-tune capacity without creating dozens of pools
+- Reduce operational overhead while improving resilience
 
 This isn’t just flexibility - it’s versatility in capacity-constrained regions.
 
@@ -82,8 +82,8 @@ For more on enabling Virtual Machine node pools on your cluster, visit our [Virt
 
 Generally, using NAP or Virtual Machine node pools are mutually exclusive. You can use NAP to create standalone VMs which NAP manages instead of traditional node pools, which allows for **mixed SKU autoscaling**. Virtual Machine node pools uses traditional node pools, but allows for **mixed SKU manual scaling**.
 
-- (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical.
-- Choose Virtual Machine node pools when you need fine-tuned control with exact VM SKUs for compliance, predictable performance, or cost modeling.
+- (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical
+- Choose Virtual Machine node pools when you need fine-tuned control with exact VM SKUs for compliance, predictable performance, or cost modeling
 
 Avoid NAP if you require strict SKU governance or have regulatory constraints that cannot allow for dynamic autoscaling. Avoid VM node pools if you want full automation without manual profiles.
 
@@ -91,14 +91,14 @@ Avoid NAP if you require strict SKU governance or have regulatory constraints th
 
 To maximize NAP's ability to handle capacity errors:
 
-- Define broad SKU families (e.g., D, E) in your NodePool requirements.
-- Avoid overly restrictive affinity rules. Visit our [affinity rules documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices.
-- Enable multiple NodePools with different priorities for fallback. Visit our [NAP Node Pool documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) to learn more.
+- Define broad SKU families (e.g., D, E) in your NodePool requirements
+- Avoid overly restrictive affinity rules. Visit our [affinity rules documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices
+- Enable multiple NodePools with different priorities for fallback. Visit our [NAP Node Pool documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) to learn more
 
 To maximize Virtual Machine node pool's ability to adapt to capacity errors:
 
-- Be clear on a list of VM SKUs that can tolerate your workloads. Visit our [Azure VM Sizes documentation](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#list-of-vm-size-families-by-type) for more details.
-- Create virtual machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool.
+- Be clear on a list of VM SKUs that can tolerate your workloads. Visit our [Azure VM Sizes documentation](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#list-of-vm-size-families-by-type) for more details
+- Create virtual machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool
 
 ## Getting started with node auto provisioning
 
@@ -124,8 +124,8 @@ az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provi
 
 NAP uses custom resource definition (CRDs) and your application deployment file requirements for its decision-making around which virtual machines to provision and schedule your workloads to. This includes:
 
-- NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc.
-- AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions.
+- NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc
+- AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions
 
 Visit our [NAP NodePool Documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [NAP AKSNodeClass documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) for more on configuring these files.
 
