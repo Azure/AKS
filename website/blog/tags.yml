@@ -305,7 +305,7 @@ troubleshooting:
 virtual-machine-node-pools:
   label: Virtual Machine Node Pools
   permalink: /virtual-machine-node-pools
-  description: Node pool type for AKS clusters.
+  description: Node pools that support multiple VM SKUs in a single pool for flexible capacity management and improved resilience in AKS clusters.
 
 workload-identity:
   label: Workload Identity
