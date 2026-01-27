@@ -54,7 +54,7 @@ More information on supported versions and version support policy is available i
 #### Component updates
 
 * Component name has been updated to [`X.Y.Z`](https://github.com/org/repo/releases/tag/X.Y.Z).
-* AKS Ubuntu 22.04 node image has been updated to [`YYYYMM.DD.V`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/YYYYMM.DD.V.txt).
+* AKS Ubuntu 22.04 node image has been updated to [`AKSUbuntu-2204-YYYYMM.DD.V`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/YYYYMM.DD.V.txt).
 
 ---
 ```
