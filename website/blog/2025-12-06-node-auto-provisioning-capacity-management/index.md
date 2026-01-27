@@ -42,9 +42,9 @@ When using Kubernetes, every node pool is typically tied to a specific VM SKU, r
 
 NAP offers a more intelligent scaling experience. Instead of you guessing the right VM size, NAP uses **pending pod resource requests** to dynamically provision nodes that fit your workloads. Built on the open-source **Karpenter** project, NAP:
 
-- **Automates VM selection**: Chooses optimal SKUs based on CPU, memory, and constraints.
-- **Consolidates intelligently**: Removes underutilized nodes, reducing cost.
-- **Adapts in real time**: Responds to pod pressure without manual intervention.
+- **Automates VM selection**: Chooses optimal SKUs based on CPU, memory, and constraints
+- **Consolidates intelligently**: Removes underutilized nodes, reducing cost
+- **Adapts in real time**: Responds to pod pressure without manual intervention
 
 Think of NAP as Kubernetes with foresight: provisioning what you need, when you need it, without the spreadsheet gymnastics. Without NAP, a single unavailable VM SKU can block scaling entirely. With NAP, AKS dynamically adapts to capacity fluctuations, ensuring workloads keep running on available VM sizes, even during regional/zonal shortages.
 
