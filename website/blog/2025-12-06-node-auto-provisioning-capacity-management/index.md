@@ -10,7 +10,7 @@ tags:
 
 ## When Growth Meets a Wall
 
-Imagine this: your application is thriving, traffic spikes, and Kubernetes promises elasticity. You hit “scale,” expecting magic—only to be greeted by cryptic errors like:
+Imagine this: your application is thriving, traffic spikes, and Kubernetes promises elasticity. You hit “scale,” expecting seamless provisioning - only to be greeted by errors like:
 
 - **Insufficient regional capacity**: Azure can’t allocate the VM size you requested in a particular region or zone.
 - **Quota exceeded**: Your subscription has hit its compute limits for a particular location or VM size.
@@ -38,7 +38,7 @@ When using Kubernetes, every node pool is typically tied to a specific VM SKU, r
 
 ## Breaking the Mold: Features That Change the Game
 
-### Node auto provisioning (NAP): Smarter Scaling
+### Node Auto Provisioning (NAP): Smarter Scaling
 
 NAP offers a more intelligent scaling experience. Instead of you guessing the right VM size, NAP uses **pending pod resource requests** to dynamically provision nodes that fit your workloads. Built on the open-source **Karpenter** project, NAP:
 
@@ -64,13 +64,13 @@ For more on enabling NAP on your cluster, visit our [NAP documentation](https://
 
 ### Virtual machine node pools: Flexibility at scale
 
-Traditional node pools are rigid: one SKU per pool. Virtual Machine node pools break that limitation. With multi-SKU support, you can:
+Traditional node pools are rigid: one VM size per node pool. Virtual Machine node pools break that limitation. With multi-SKU support, you can:
 
-- Mix VM sizes within a single pool for diverse workloads
-- Fine-tune capacity without creating dozens of pools
+- Mix VM sizes within a single node pool for diverse workloads
+- Fine-tune capacity without creating dozens of node pools
 - Reduce operational overhead while improving resilience
 
-This isn’t just flexibility - it’s versatility in capacity-constrained regions.
+Virtual Machine node pools provide flexibility and versatility in capacity-constrained regions.
 
 #### How virtual machine node pools handle capacity errors
 
@@ -108,7 +108,7 @@ Before you begin, visit our [NAP documentation](https://learn.microsoft.com/azur
 
 The following command creates a new NAP-managed AKS cluster by setting the `--node-provisioning-mode` field to `Auto`. This command also sets the network configuration to the recommended Azure CNI Overlay with a Cilium dataplane (optional). View our [NAP networking documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-networking#supported-networking-configurations-for-nap) for more on supported CNI options.
 
-```azure-cli
+```bash
 az aks create --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provisioning-mode Auto --network-plugin azure --network-plugin-mode overlay --network-dataplane cilium
 ```
 
@@ -116,13 +116,13 @@ az aks create --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provi
 
 The following command updates an existing cluster to enable NAP:
 
-```azure-cli
+```bash
 az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provisioning-mode Auto
 ```
 
 ### Configure NAP custom resource definitions
 
-NAP uses custom resource definition (CRDs) and your application deployment file requirements for its decision-making around which virtual machines to provision and schedule your workloads to. This includes:
+NAP uses custom resource definition (CRDs) and your application deployment file requirements for its decision-making. The Karpenter controller takes this information and determines which virtual machines to provision and schedule your workloads to. Karpenter CRD types include:
 
 - NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc
 - AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions
@@ -135,7 +135,7 @@ Visit our [NAP NodePool Documentation](https://learn.microsoft.com/azure/aks/nod
 
 The following example creates a new cluster named myAKSCluster with a Virtual Machines node pool containing two nodes with size "Standard_D4s_v3", and sets the Kubernetes version to 1.31.0:
 
-```azure-cli
+```bash
 az aks create --resource-group myResourceGroup --name myAKSCluster --vm-set-type "VirtualMachines" --vm-sizes "Standard_D4s_v3"
     --node-count 2 --kubernetes-version 1.31.0
 ```
@@ -144,7 +144,7 @@ az aks create --resource-group myResourceGroup --name myAKSCluster --vm-set-type
 
 The following example adds a Virtual Machines node pool named myvmpool to the myAKSCluster cluster. The node pool creates a ManualScaleProfile with --vm-sizes set to Standard_D4s_v3 and a --node-count of 3:
 
-```azure-cli
+```bash
 az aks nodepool add --resource-group myResourceGroup --cluster-name myAKSCluster --name myvmpool --vm-set-type "VirtualMachines" --vm-sizes "Standard_D4s_v3" --node-count 3
 ```
 
@@ -157,7 +157,7 @@ With Virtual Machine node pools you can also perform some of the following comma
 
 Visit our [Virtual Machine node pools documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) for more info.
 
-## What’s next on the AKS roadmap
+## Upcoming experiences on the AKS roadmap
 
 NAP: Expect deeper integration with cost optimization tools and advanced disruption policies for even smarter consolidation.
 Virtual Machine node pools: Multi-SKU auto-scaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
