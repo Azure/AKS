@@ -107,7 +107,7 @@ Document new Kubernetes version availability and LTS updates. Also call out Kube
 #### Versions introduced or graduating to GA
 * Kubernetes Version [X.XX Preview](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.md) is being rolled out.
 * Kubernetes Version [X.XX](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.md) is now generally available.
-* Kubernetes patch versions [X.XX.X](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.X.md),[X.XX.X](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.X.md), [X.XX.X](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.X.md) are now available.
+* Kubernetes patch versions [X.XX.X](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.X.md), [X.XX.X](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.X.md), [X.XX.X](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.X.md) are now available.
 * Kubernetes LTS (Long Term Support) patch versions are now available:
   * Kubernetes X.XX.XXX-akslts - [Changelog](URL)
 * Kubernetes version [X.XX](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-X.XX.md) is now designated as [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#long-term-support-lts) version.
