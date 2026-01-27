@@ -15,13 +15,17 @@ tags: ["dynamo-series", "ai", "performance", "open-source"]
 [Rohan Varma](https://www.linkedin.com/in/rohan-s-varma/) from NVIDIA.*
 
 In our [previous post](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks),
-we demonstrated the power of the ND GB200 NVL72 platform, achieving a
+we demonstrated the power of the Azure ND GB200-v6 VMs accelerated by
+NVIDIA GB200 NVL72, achieving a
 staggering **1.2M tokens per second** across 10 nodes using NVIDIA Dynamo.
-Today, we’re shifting focus from raw throughput to **developer velocity** and
+Today, we shift focus from raw throughput to **developer velocity** and
 **operational efficiency**.
 
-We will explore how the [**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner.md) and [**Dynamo Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/benchmarks/profiler)
-remove the guesswork from performance tuning.
+We will explore how the
+[**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner.md)
+and
+[**Dynamo Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/benchmarks/profiler)
+remove the guesswork from performance tuning on Azure Kubernetes Service (AKS).
 
 <!-- truncate -->
 
@@ -33,7 +37,7 @@ model starts sequentially generating output tokens) of inference
 across distinct GPU nodes. This allows each phase to be independently
 optimized with custom GPU counts and model parallelism configurations.
 
-![Disaggregated serving with Dynamo](./disag-serving-with-dynamo.png)
+![Disaggregated serving with Dynamo](./dynamo_inference_diagram.jpg)
 
 One of the main challenges in disaggregated serving is **rate matching**:
 determining the right GPU allocation between prefill and decode stages to
@@ -74,8 +78,9 @@ the **Planner Profiler** and the **SLO-based Planner**.
 
 ### Let’s see it through an example application scenario
 
-Consider a major airline’s mobile app that uses AI to offer personalized
-rerouting during flight delays. This use case is a 'stress test' for
+Consider a mission-critical AI workload running on AKS: an airline’s
+automated rerouting system during a widespread delay This use case is a
+'stress test' for
 inference: it is subject to massive, sudden bursts in traffic and highly
 variable request patterns, such as a mix of short status queries and
 long-context itinerary processing. To prevent latency spikes during these
