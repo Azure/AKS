@@ -149,6 +149,7 @@ az aks nodepool add --resource-group myResourceGroup --cluster-name myAKSCluster
 ```
 
 With Virtual Machine node pools you can also perform some of the following commands:
+
 - Add multiple VM sizes in an existing or new node pool
 - Update VM sizes in an existing node pool
 - Single-SKU autoscaling (public preview)
