@@ -21,7 +21,7 @@ Every release section MUST follow this structure:
 
 ### Announcements of upcoming changes and retirements
 
-* [Announcement item with link to documentation if it exists](https://learn.microsoft.com/...) description of the announcement or retirement. 
+* [Announcement item with link to documentation if it exists](https://learn.microsoft.com/...) description of the announcement or retirement.
 
 ### Release notes
 
@@ -42,6 +42,7 @@ More information on supported versions and version support policy is available i
 #### Preview features
 
 * [Preview Feature Name](https://learn.microsoft.com/azure/aks/preview-feature-doc) is now available in preview. Brief 1 line description of the value proposition of the feature here.
+
 #### Behavioral changes
 
 * [Feature Name](https://learn.microsoft.com/azure/aks/feature-doc) now behaves differently. Description of impact.
@@ -145,8 +146,8 @@ Document generally available (GA) features.
 **Template:**
 
 ```markdown
-* [Feature Name](URL) is now generally available. [Description]. Brief 1 line description of the feature and its value proposition here.
-* [Feature Name](URL) is now generally available in specific regions/contexts. [Description]. Brief 1 line description of the feature and its value proposition here.
+* [Feature Name](URL) is now generally available. Brief 1 line description of the feature and its value proposition here.
+* [Feature Name](URL) is now generally available in specific regions/contexts. Brief 1 line description of the feature and its value proposition here.
 ```
 
 **Examples:**
@@ -172,8 +173,8 @@ Document features available in preview.
 **Template:**
 
 ```markdown
-* [Feature Name](URL) is now available as preview. [Description]. Brief 1 line description of the feature and its value proposition here.
-* [Feature Name](URL) is now available as preview in specific regions/contexts. [Description]. Brief 1 line description of the feature and its value proposition here.
+* [Feature Name](URL) is now available as preview. Brief 1 line description of the feature and its value proposition here.
+* [Feature Name](URL) is now available as preview in specific regions/contexts. Brief 1 line description of the feature and its value proposition here.
 ```
 
 **Examples:**
@@ -248,7 +249,7 @@ Document resolved issues.
 
 * Document version updates for AKS components.
 * Only include components that are external user facing and don't include components that are internal to AKS service design.
-* Only accept links to release notes of components that are publicly accesible and not from private repositories.
+* Only accept links to release notes of components that are publicly accessible and not from private repositories.
 * For VHD notes, only accept links to vhd notes that have been added under vhd-notes folder in this repository. Do not accept links external to this repository for the release notes. Follow this same format for other node images like Ubuntu 24.04, Azure Linux v2, Azure Linux v3, Mariner, Windows etc.
 * When CVEs are being mentioned, reference the NVD or GitHub security advisory links.
 * For Istio-based service mesh add-on updates, include a link to the Istio release notes for the corresponding version. Also mention how users can restart workload pods to trigger re-injection of the updated istio-proxy version. Provide a link to Istio canary upgrade documentation.
@@ -354,18 +355,18 @@ Features and Behavioral changes should include links to relevant documentation.
 
 | Link Type | Format | Example |
 |:----------|:-------|:--------|
-| Microsoft Learn | `[Text](https://learn.microsoft.com/...)` | `[upgrade your node pools](https://learn.microsoft.com/azure/aks/upgrade-cluster)` |
-| GitHub Issues | `[#XXXX](https://github.com/Azure/AKS/issues/XXXX)` or `[GitHub issue](URL)` | `[#4988](https://github.com/Azure/AKS/issues/4988)` |
-| GitHub Releases | `[vX.Y.Z](https://github.com/org/repo/releases/tag/vX.Y.Z)` | `[v1.7.4](https://github.com/Azure/azure-container-networking/releases/tag/v1.7.4)` |
-| CVE References | `[CVE-YYYY-XXXXX](https://nvd.nist.gov/vuln/detail/CVE-YYYY-XXXXX)` | `[CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874)` |
-| VHD Notes | `` [`ImageName-VERSION`](vhd-notes/ImageType/VERSION.txt) `` | `` [`AKSUbuntu-2204-202510.03.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt) `` |
+| Microsoft Learn | [Text](https://learn.microsoft.com/...) | [upgrade your node pools](https://learn.microsoft.com/azure/aks/upgrade-cluster) |
+| GitHub Issues | [#XXXX](https://github.com/Azure/AKS/issues/XXXX) or [GitHub issue](URL) | [#4988](https://github.com/Azure/AKS/issues/4988) |
+| GitHub Releases | [`X.Y.Z`](https://github.com/org/repo/releases/tag/vX.Y.Z) | [`1.7.4`](https://github.com/Azure/azure-container-networking/releases/tag/v1.7.4) |
+| CVE References | [CVE-YYYY-XXXXX](https://nvd.nist.gov/vuln/detail/CVE-YYYY-XXXXX) | [CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874) |
+| VHD Notes | [`ImageName-VERSION`](vhd-notes/ImageType/VERSION.txt) | [`AKSUbuntu-2204-202510.03.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt) |
 
 ### Link rules
 
 - **No locale in URLs**: Use `https://learn.microsoft.com/azure/...` not `https://learn.microsoft.com/en-us/azure/...`
 - **Descriptive link text**: Use meaningful text, never "click here" or bare URLs
-- **Component versions**: Always require link to release notes: `` [v1.33.5](URL) ``
-- **VHD image names**: Always require link to VHD notes: `` [AKSUbuntu-2204-202510.03.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt) ``
+- **Component versions**: Always require link to release notes:  [`v1.33.5`](URL)
+- **VHD image names**: Always require link to VHD notes: [`AKSUbuntu-2204-202510.03.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202510.03.0.txt)
 - **VHD notes**: Use relative paths starting with `vhd-notes/` and **validate files exist**
 
 ---
@@ -421,6 +422,9 @@ Before committing changes to CHANGELOG.md:
 - [ ] Features and Behavioral changes include documentation links
 - [ ] Content follows Microsoft Style Guide terminology and voice
 - [ ] No trailing whitespace
+- [ ] Bug fixes all have a corresponding GitHub link
+- [ ] Component updates especially for upstream OSS projects should link to the corresponding upstream release note
+- [ ] Anything that is a Feature or Kubernetes version shouldn't be in Announcements.
 
 ---
 
@@ -609,8 +613,6 @@ npx markdownlint-cli CHANGELOG.md
 - **MD052**: Reference links and images should use a label that is defined - ensure all `[link text][label]` references have corresponding `[label]: URL` definitions. In some cases, this may be a syntax error that should be corrected to [link text](URL).
 - **MD059**: Link text should be meaningful - avoid "click here", "link", "this link", "here", etc. or bare URLs; use descriptive text instead. Also aligned with the Microsoft Style Guide.
 
-
 ---
 
 **Questions?** See `.github/copilot-instructions.md` for the complete Microsoft Style Guide and repository standards.
-
