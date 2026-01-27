@@ -2,7 +2,7 @@
 title: "Navigating Capacity Challenges on AKS with Node Auto Provisioning or Virtual Machine Node Pools"
 description: "Learn how Node auto provisioning and Virtual Machine node pools can address capacity constraints when scaling an AKS cluster"
 date: 2025-12-22
-authors: ["wilson darko"]
+authors: ["Wilson Darko"]
 tags:
   - node-auto-provisioning
   - vm-node-pools
