@@ -24,7 +24,7 @@ For customers, these aren’t just error messages - they’re roadblocks. Pods r
 
 :::info
 
-Learn more in the official documentation: [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning) or [Virtual Machine Node Pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
+Learn more in the official documentation: [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning) or [Virtual Machine node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
 
 :::
 
@@ -60,9 +60,15 @@ When a requested VM SKU isn’t available due to regional or zonal capacity cons
 
 This flexibility is key to avoiding hard failures during scale-out. In the scenario where there are no SKUs available based on your configuration requirements, NAP will return an error stating that there were no available SKUs that matched your requirements. Typically this means the configuration requirements probably can be broader, to allow for more available VM sizes.
 
+#### NAP vs cluster autoscaler
+
+In traditional Kubernetes, cluster autoscaler is the standard autoscaling experience that scales pre-existing same VM size node pools. The requirement for same size autoscaling is subject to availability limits of the selected VM sizes, and cluster autoscaler does not allow for changing the node pool's VM SKU. Should the specific SKU be unavailable, a capacity error occurs and your workloads are now stuck. 
+
+NAP offers a new model based on individual virtual machines rather than node pools or Virtual Machine Scale Sets. NAP also offers versatility that can offer more capacity resilience and more cost optimization than traditional node pools using cluster autoscaler.
+
 For more on enabling NAP on your cluster, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning) as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
 
-### Virtual machine node pools: Flexibility at scale
+### Virtual Machine node pools: Flexibility at scale
 
 Traditional node pools are rigid: one VM size per node pool. Virtual Machine node pools break that limitation. With multi-SKU support, you can:
 
@@ -98,9 +104,9 @@ To maximize NAP's ability to handle capacity errors:
 To maximize Virtual Machine node pool's ability to adapt to capacity errors:
 
 - Be clear on a list of VM SKUs that can tolerate your workloads. Visit our [Azure VM Sizes documentation](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#list-of-vm-size-families-by-type) for more details
-- Create virtual machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool
+- Create virtual Machine node pools to offer resiliency to your workloads. Visit our [Virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool
 
-## Getting started with node auto provisioning
+## Getting started with Node Auto Provisioning
 
 Before you begin, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning#limitations-and-unsupported-features) on minimum cluster requirements.
 
@@ -122,7 +128,7 @@ az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provi
 
 ### Configure NAP custom resource definitions
 
-NAP uses custom resource definition (CRDs) and your application deployment file requirements for its decision-making. The Karpenter controller takes this information and determines which virtual machines to provision and schedule your workloads to. Karpenter CRD types include:
+NAP uses custom resource definitions (CRDs) and your application deployment file requirements for its decision-making. The Karpenter controller takes this information and determines which virtual machines to provision and schedule your workloads to. Karpenter CRD types include:
 
 - NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc
 - AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions
@@ -133,7 +139,7 @@ Visit our [NAP NodePool Documentation](https://learn.microsoft.com/azure/aks/nod
 
 ### Create a new AKS cluster with virtual machine node pools
 
-The following example creates a new cluster named myAKSCluster with a Virtual Machines node pool containing two nodes with size "Standard_D4s_v3", and sets the Kubernetes version to 1.31.0:
+The following example creates a new cluster named myAKSCluster with a Virtual Machine node pool containing two nodes with size "Standard_D4s_v3", and sets the Kubernetes version to 1.31.0:
 
 ```bash
 az aks create --resource-group myResourceGroup --name myAKSCluster \
@@ -160,8 +166,8 @@ Visit our [Virtual Machine node pools documentation](https://learn.microsoft.com
 
 ## Upcoming experiences on the AKS roadmap
 
-**NAP:** Expect deeper integration with cost optimization tools and advanced disruption policies for even smarter consolidation.
-**Virtual Machine node pools:** Multi-SKU auto-scaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
+- **NAP:** Expect deeper integration with cost optimization tools and advanced disruption policies for even smarter consolidation.
+- **Virtual Machine node pools:** Multi-SKU auto-scaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
 
 ## Next steps
 
