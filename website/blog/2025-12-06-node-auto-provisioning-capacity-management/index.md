@@ -62,7 +62,7 @@ This flexibility is key to avoiding hard failures during scale-out. In the scena
 
 #### NAP vs cluster autoscaler
 
-In traditional Kubernetes, cluster autoscaler is the standard autoscaling experience that scales pre-existing same VM size node pools. The requirement for same size autoscaling is subject to availability limits of the selected VM sizes, and cluster autoscaler does not allow for changing the node pool's VM SKU. Should the specific SKU be unavailable, a capacity error occurs and your workloads are now stuck. 
+In traditional Kubernetes, cluster autoscaler is the standard autoscaling experience that scales pre-existing same VM size node pools. The requirement for same size autoscaling is subject to availability limits of the selected VM sizes, and cluster autoscaler does not allow for changing the node pool's VM SKU. Should the specific SKU be unavailable, a capacity error occurs and your workloads are now stuck.
 
 NAP offers a new model based on individual virtual machines rather than node pools or Virtual Machine Scale Sets. NAP also offers versatility that can offer more capacity resilience and more cost optimization than traditional node pools using cluster autoscaler.
 
