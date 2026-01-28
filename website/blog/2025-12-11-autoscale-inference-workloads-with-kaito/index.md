@@ -1,6 +1,6 @@
 ---
 title: "Autoscale KAITO inference workloads on AKS using KEDA"
-date: "2026-01-15"
+date: "2026-01-29"
 description: "Learn how to autoscale KAITO inference workloads on AKS with KEDA to handle varying inference requests and optimize Kubernetes GPU utilization in AKS clusters."
 authors: ["andy-zhang", "sachi-desai"]
 tags: ["ai", "kaito"]
@@ -14,19 +14,19 @@ tags: ["ai", "kaito"]
 
 LLM inference service is a basic and widely used feature in KAITO. As the number of waiting inference requests increases, it's necessary to scale more inference instances to prevent blocking inference requests. Conversely, if the number of waiting inference requests declines, consider reducing inference instances to improve GPU resource utilization. Kubernetes Event-driven Autoscaling (KEDA) is well-suited for inference pod autoscaling. It enables event-driven, fine-grained scaling based on external metrics and triggers. KEDA supports a wide range of event sources (like custom metrics), allowing pods to scale precisely in response to workload demand. This flexibility and extensibility make KEDA ideal for dynamic, cloud-native applications that require responsive and efficient autoscaling.
 
-To enable intelligent autoscaling for KAITO inference workloads using service.monitoring metrics, use the following components and features:
+To enable intelligent autoscaling for KAITO inference workloads using service monitoring metrics, utilize the following components and features:
 
 - [Kubernetes Event Driven Autoscaling (KEDA)](https://github.com/kedacore/keda)
 
-- **[keda.kaito.scaler](https://github.com/kaito-project/keda-kaito-scaler)**  A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
+- **[KEDA KAITO Scaler](https://github.com/kaito-project/keda-kaito-scaler)**: A dedicated KEDA external scaler, eliminating the need for external dependencies such as Prometheus.
 
-- **KAITO `InferenceSet` CustomResourceDefinition (CRD) and controller**  A new CRD and controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`.
+- **KAITO `InferenceSet` CustomResourceDefinition (CRD) and controller**: A new CRD and controller were built on top of the KAITO workspace for intelligent autoscaling, introduced as an alpha feature in KAITO version `v0.8.0`.
 
 ### Architecture
 
-The following diagram shows how keda-kaito-scaler integrates KAITO InferenceSet with KEDA to autoscale inference workloads on AKS:
+The following diagram shows how KEDA KAITO Scaler integrates KAITO InferenceSet with KEDA to autoscale inference workloads on AKS:
 
- ![Architecture diagram showing keda-kaito-scaler integrating KAITO InferenceSet with KEDA to autoscale inference workloads on AKS](keda-kaito-scaler-arch.png)
+![Architecture diagram showing KEDA KAITO Scaler integrating KAITO InferenceSet with KEDA to autoscale inference workloads on AKS](keda-kaito-scaler-arch.png)
 
 ## Getting started
 
@@ -144,9 +144,9 @@ EOF
 
 ### Metric-Based KEDA Scaler
 
-#### Install keda-kaito-scaler
+#### Install KEDA KAITO Scaler
 
-> This component is required only when using metric-based KEDA scaler, ensure that keda-kaito-scaler is installed within the same namespace as KEDA.
+> This component is required only when using metric-based KEDA scaler, ensure that KEDA KAITO Scaler is installed within the same namespace as KEDA.
 
 ```bash
 helm repo add keda-kaito-scaler https://kaito-project.github.io/keda-kaito-scaler/charts/kaito-project
