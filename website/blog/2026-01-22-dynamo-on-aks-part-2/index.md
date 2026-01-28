@@ -79,7 +79,7 @@ the **Planner Profiler** and the **SLO-based Planner**.
 ### Let’s see it through an example application scenario
 
 Consider a mission-critical AI workload running on AKS: an airline’s
-automated rerouting system during a widespread delay This use case is a
+automated rerouting system during a widespread delay. This use case is a
 'stress test' for
 inference: it is subject to massive, sudden bursts in traffic and highly
 variable request patterns, such as a mix of short status queries and
