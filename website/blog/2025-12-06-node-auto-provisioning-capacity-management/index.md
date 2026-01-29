@@ -1,6 +1,6 @@
 ---
 title: "Navigating Capacity Challenges on AKS with Node Auto Provisioning or Virtual Machine Node Pools"
-description: "Learn how Node auto provisioning and virtual machine node pools can address capacity constraints when scaling an AKS cluster"
+description: "Learn how Node auto provisioning and virtual machine node pools can address common capacity constraints when scaling an AKS cluster. Also learn best practices for compute scaling in AKS."
 date: 2026-01-30
 authors: ["wilson-darko"]
 tags:
@@ -91,7 +91,7 @@ For more on enabling Virtual machine node pools on your cluster, visit our [Virt
 
 Generally, NAP and virtual machine node pools are mutually exclusive options. You can use NAP to create standalone VMs that NAP manages instead of traditional node pools, allowing for **mixed SKU autoscaling**. Virtual machine node pools use traditional node pools and allow for **mixed SKU manual scaling**.
 
-- (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical
+- (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical. 
 - Choose virtual machine node pools when you need fine-tuned control with exact VM SKUs for compliance, predictable performance, or cost modeling
 
 Avoid NAP if you require strict SKU governance or have regulatory constraints that cannot allow for dynamic autoscaling. Avoid VM node pools if you want full automation without manual profiles.
@@ -129,9 +129,9 @@ The following command updates an existing cluster to enable NAP:
 az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provisioning-mode Auto
 ```
 
-### Configure NAP custom resource definitions
+### Configure NAP CustomResourceDefinitions
 
-NAP uses custom resource definitions (CRDs) and your application deployment file requirements for its decision-making. The Karpenter controller takes this information and determines which virtual machines to provision and schedule your workloads to. Karpenter CRD types include:
+NAP uses CustomResourceDefinitions (CRDs) and your application deployment file requirements for its decision-making. The Karpenter controller takes this information and determines which virtual machines to provision and schedule your workloads to. Karpenter CRD types include:
 
 - NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc
 - AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions
