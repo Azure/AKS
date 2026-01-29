@@ -151,6 +151,13 @@ func (c *Config) Validate() error {
 	if c.Timeout <= 0 {
 		return errors.New("EXPORT_TIMEOUT must be positive")
 	}
+	// Ensure prefix paths end with a slash for consistent path joining
+	if c.AzureStorageAKSDataPrefix != "" && !strings.HasSuffix(c.AzureStorageAKSDataPrefix, "/") {
+		c.AzureStorageAKSDataPrefix += "/"
+	}
+	if c.AzureStorageCostExportPrefix != "" && !strings.HasSuffix(c.AzureStorageCostExportPrefix, "/") {
+		c.AzureStorageCostExportPrefix += "/"
+	}
 	return nil
 }
 
@@ -320,6 +327,7 @@ func (a *App) importAKSData(ctx context.Context) error {
 		Prefix: &a.Config.AzureStorageAKSDataPrefix,
 	})
 
+	filesProcessed := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -341,7 +349,14 @@ func (a *App) importAKSData(ctx context.Context) error {
 				slog.Error("failed to process AKS blob", "name", *blob.Name, "error", err)
 				continue
 			}
+			filesProcessed++
 		}
+	}
+
+	if filesProcessed == 0 {
+		slog.Error("no AKS export files found", "prefix", a.Config.AzureStorageAKSDataPrefix, "expected_pattern", a.Config.AzureStorageAKSDataPrefix+"export-*.csv")
+	} else {
+		slog.Info("processed AKS export files", "count", filesProcessed)
 	}
 
 	return nil
