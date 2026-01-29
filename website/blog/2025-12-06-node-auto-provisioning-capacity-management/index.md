@@ -74,7 +74,7 @@ NAP offers a new model based on individual virtual machines rather than node poo
 
 For more on enabling NAP on your cluster, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning) as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
 
-### Virtual machine node pools: Flexibility at scale
+### Virtual Machine Node Pools: Flexibility at Scale
 
 Traditional node pools are rigid: one VM size per node pool. Virtual machine node pools break that limitation. With multi-SKU support, you can:
 
@@ -90,7 +90,7 @@ You can manually add or update alternative VM SKUs into your new or existing nod
 
 For more on enabling Virtual machine node pools on your cluster, visit our [Virtual machine node pools documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
 
-## Quick guidance: When to Use What
+## Quick Guidance: When to Use What
 
 Generally, NAP and virtual machine node pools are mutually exclusive options. You can use NAP to create standalone VMs that NAP manages instead of traditional node pools, allowing for **mixed SKU autoscaling**. Virtual machine node pools use traditional node pools and allow for **mixed SKU manual scaling**.
 
@@ -99,7 +99,7 @@ Generally, NAP and virtual machine node pools are mutually exclusive options. Yo
 
 Avoid NAP if you require strict SKU governance or have regulatory constraints that cannot allow for dynamic autoscaling. Avoid VM node pools if you want full automation without manual profiles.
 
-## Best practices for resilience
+## Best Practices for Resilience
 
 To maximize NAP's ability to handle capacity errors:
 
@@ -112,7 +112,7 @@ To maximize virtual machine node pool's ability to adapt to capacity errors:
 - Be clear on a list of VM SKUs that can tolerate your workloads. Visit our [Azure VM Sizes documentation](https://learn.microsoft.com/azure/virtual-machines/sizes/overview#list-of-vm-size-families-by-type) for more details
 - Create virtual machine node pools to offer resiliency to your workloads. Visit our [virtual machine node pool documentation](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) on how to add a mixed SKU node pool
 
-## Getting started with Node Auto Provisioning
+## Getting Started with Node Auto Provisioning
 
 Before you begin, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning#limitations-and-unsupported-features) on minimum cluster requirements.
 
