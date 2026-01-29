@@ -19,7 +19,7 @@ Imagine this: your application is thriving, traffic spikes, and Kubernetes promi
 - **OverconstrainedAllocationRequest**: Azure can’t allocate the specific VM size with the constraints you requested in a particular region.
 - **OverconstrainedZonalAllocationRequest**: Azure can’t allocate the VM size with the constraints you requested in a particular zone.
 
-For customers, these aren’t just error messages - they’re roadblocks. Pods remain pending, deployments stall, and SLAs tremble. Scaling isn’t just about adding nodes; it’s about finding capacity in a dynamic, multi-tenant cloud where demand often outpaces supply. In the case of quota gaps, usually users can increase their quotas in a particular location - but what about when a specific virtual machine size (also known as "VM SKU") is simply unavailable? This can cause many challenges for users.
+For customers, these aren’t just error messages - they’re roadblocks. Pods remain pending, deployments stall, and SLAs tremble. Scaling isn’t just about adding nodes; it’s about finding capacity in a dynamic, multi-tenant cloud where demand often outpaces supply. In the case of quota gaps, usually users can increase their quotas in a particular location - but what about when a specific virtual machine size (also known as a "VM SKU") is simply unavailable? This can cause many challenges for users.
 
 ---
 
@@ -45,7 +45,7 @@ When using Kubernetes, every node pool is typically tied to a specific VM SKU, r
 
 ### Node Auto Provisioning (NAP): Smarter Scaling
 
-NAP offers a more intelligent scaling experience. Instead of you guessing the right VM size, NAP uses **pending pod resource requests** to dynamically provision nodes that fit your workloads. Built on the open-source **Karpenter** project, NAP:
+NAP offers a more intelligent scaling experience. Instead of you guessing the right VM size and precreating node pools, NAP uses **pending pod resource requests** to dynamically provision nodes that fit your workloads. Built on the open-source **Karpenter** project, NAP:
 
 - **Automates VM selection**: Chooses optimal SKUs based on CPU, memory, and constraints
 - **Consolidates intelligently**: Removes underutilized nodes, reducing cost
@@ -61,15 +61,16 @@ When a requested VM SKU isn’t available due to regional or zonal capacity cons
 - Check if pending pods can fit on existing nodes
 - Search across multiple VM SKUs within the allowed families defined in your NAP configuration files, which are custom resource definitions (CRDs) named NodePool and AKSNodeClass
 - Provision an alternative SKU that meets the workload requirements and policy constraints
-- In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available". **Mitigation**: Make sure you reference a broad range of size options in the NAP configuration files (e.g. D-series, multiple SKU families)
+
+In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available." To mitigate this, make sure you reference a broad range of size options in the NAP configuration files (for example D-series, or multiple SKU families).
 
 This flexibility is key to avoiding hard failures during scale-out. In the scenario where there are no SKUs available based on your configuration requirements, NAP will return an error stating that there were no available SKUs that matched your requirements. Typically this means the configuration requirements probably can be broader, to allow for more available VM sizes.
 
 #### NAP vs Cluster Autoscaler
 
-In traditional Kubernetes, Cluster Autoscaler is the standard autoscaling experience that scales pre-existing same VM size node pools. The requirement for same size autoscaling is subject to availability limits of the selected VM sizes, and Cluster Autoscaler does not allow for changing the node pool's VM SKU. Should the specific SKU be unavailable, a capacity error occurs and your workloads are now stuck.
+In traditional Kubernetes, Cluster Autoscaler is the standard autoscaling experience that scales pre-existing same VM size node pools. The requirement for same size autoscaling is subject to availability limits of the selected VM sizes, and Cluster Autoscaler does not allow for changing the node pool's VM SKU. Should the specific SKU be unavailable, a capacity error occurs and your workloads are now stuck. To overcome this limitation, you may have to pre‑create multiple node pools with different VM SKUs to avoid capacity exhaustion which introduces operational complexities. When zonal allocation constraints are also factored in, the complexity of traditional node pools increase further. In such scenarios, cluster autoscaler configurations may require one node pool per zone for each VM SKU to reliably scale.
 
-NAP offers a new model based on individual virtual machines rather than node pools or Virtual Machine Scale Sets. NAP also offers versatility that can offer more capacity resilience and more cost optimization than traditional node pools using Cluster Autoscaler.
+NAP offers a new model based on individual virtual machines rather than node pools or Virtual Machine Scale Sets. NAP also provides versatility that can offer more capacity resilience and more cost optimization than traditional node pools using Cluster Autoscaler. Many of the capacity limitations and work-arounds are addressed with NAP.
 
 For more on enabling NAP on your cluster, visit our [NAP documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning) as well as our docs on configuring the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
 
@@ -103,7 +104,7 @@ Avoid NAP if you require strict SKU governance or have regulatory constraints th
 To maximize NAP's ability to handle capacity errors:
 
 - Define broad SKU families (e.g., D, E) in your NodePool requirements
-- Avoid overly restrictive affinity rules. Visit our [affinity rules documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices
+- Avoid overly restrictive affinity rules. Visit our [node selector and affinity best practices documentation](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) for more details
 - Enable multiple NodePools with different priorities for fallback. Visit our [NAP Node Pool documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) to learn more
 
 To maximize virtual machine node pool's ability to adapt to capacity errors:
