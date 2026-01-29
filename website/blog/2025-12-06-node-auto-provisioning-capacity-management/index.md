@@ -25,7 +25,7 @@ For customers, these aren’t just error messages - they’re roadblocks. Pods r
 
 <!-- truncate -->
 
-![visual demo of node auto provisioning and virtual machine node pools features. The image shows a karpenter scheduler reacting to unscheduled pods and provisioning multiple sizes of nodes to schedule them. The image also shows a virtual machine node pool that can be scaled up or down with different sizes of nodes.](./nap-vms-hero-image.png)
+![visual demo of node auto provisioning and virtual machine node pools features. The image shows a karpenter scheduler reacting to unscheduled pods and provisioning multiple sizes of nodes to schedule them. The image also shows a virtual machine node pool that can be scaled up or down with different sizes of nodes](./nap-vms-hero-image.png)
 
 :::info
 
@@ -37,7 +37,7 @@ Learn more in the official documentation: [Node Auto Provisioning](https://learn
 
 ## The Hidden Complexity Behind Capacity
 
-When using Kubernetes, every node pool is typically tied to a specific VM SKU, region, and zone, which can require some effort to update. In some scaling scenarios, high-demand VM SKUs can become unavailable in certain regions or zones. In this case node pools being limited to one VM size is now a bottleneck that can result in capacity errors and an outage. You’re left juggling trade-offs: Do you overprovision SKUs “just in case” to ensure availability? Or risk underprovisioning and inability to scale? AKS offers two solutions that aim to address these capacity scaling challenges.
+When using Kubernetes, every node pool is typically tied to a specific VM SKU, region, and zone, which can require some effort to update. In some scaling scenarios, high-demand VM SKUs can become unavailable in certain regions or zones. In this case, limiting node pools to a single VM size becomes a bottleneck that can result in capacity errors and an outage. You’re left juggling trade-offs: Do you overprovision SKUs “just in case” to ensure availability? Or risk underprovisioning and inability to scale? AKS offers two solutions that aim to address these capacity scaling challenges.
 
 ---
 
@@ -57,11 +57,11 @@ Think of NAP as Kubernetes with foresight: provisioning what you need, when you 
 
 When a requested VM SKU isn’t available due to regional or zonal capacity constraints, NAP doesn’t fail outright. Instead, NAP will automatically:
 
-- Evaluate pending pod resource requirements (CPU, memory, GPU, etc.)
+- Evaluate pending pod resource requirements (for example CPU, memory, GPU)
 - Check if pending pods can fit on existing nodes
 - Search across multiple VM SKUs within the allowed families defined in your NAP configuration files, which are custom resource definitions (CRDs) named NodePool and AKSNodeClass
 - Provision an alternative SKU that meets the workload requirements and policy constraints
-- In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available".  **Mitigation**: Make sure you reference a broad range of size options in the NAP configuration files (e.g. D-series, multiple SKU families)
+- In the event that no VM sizes that match your requirements are available, NAP will only then send an error detailing that "No available SKU that meets your configuration definition is available". **Mitigation**: Make sure you reference a broad range of size options in the NAP configuration files (e.g. D-series, multiple SKU families)
 
 This flexibility is key to avoiding hard failures during scale-out. In the scenario where there are no SKUs available based on your configuration requirements, NAP will return an error stating that there were no available SKUs that matched your requirements. Typically this means the configuration requirements probably can be broader, to allow for more available VM sizes.
 
@@ -135,7 +135,7 @@ az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --node-provi
 
 NAP uses CustomResourceDefinitions (CRDs) and your application deployment file requirements for its decision-making. The Karpenter controller takes this information and determines which virtual machines to provision and schedule your workloads to. Karpenter CRD types include:
 
-- NodePool - for setting rules around the range of VM sizes,  capacity type (spot vs. on-demand), compute architecture, availability zones, etc
+- NodePool - for setting rules around the range of VM sizes, capacity type (spot vs. on-demand), compute architecture, availability zones, etc
 - AKSNodeClass - for setting rules around certain Azure specific settings such as more detailed networking (virtual networks) setup, node image family type, operating system configurations, and other resource-related definitions
 
 Visit our [NAP NodePool Documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) and [NAP AKSNodeClass documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) for more on configuring these files.
@@ -172,7 +172,7 @@ Visit our [virtual machine node pools documentation](https://learn.microsoft.com
 ## Upcoming experiences on the AKS roadmap
 
 - **NAP:** Expect deeper integration with cost optimization tools and advanced disruption policies for even smarter consolidation.
-- **Virtual machine node pools:** Multi-SKU auto-scaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
+- **Virtual machine node pools:** Multi-SKU autoscaling (general availability) is on the horizon, reducing manual configuration and enabling adaptive scaling across mixed SKUs.
 
 ## Next steps
 
