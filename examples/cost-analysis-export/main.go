@@ -619,60 +619,120 @@ func stripBOMReader(r io.Reader) io.Reader {
 	return br
 }
 
-const joinQuery = `
-WITH aks_rg as (
-SELECT DISTINCT
-    LOWER(SUBSTR(ID, 1, 
-        (INSTR(ID, '/resourceGroups/') + LENGTH('/resourceGroups/')) + 
-        INSTR(SUBSTR(ID, INSTR(ID, '/resourceGroups/') + LENGTH('/resourceGroups/')), '/') - 2
-    )) AS rg_path,
-    Date
-FROM aks_splits
-WHERE ID LIKE '/subscriptions/%'
+// columnsToMultiply lists cost/quantity columns that should be multiplied by the split fraction.
+// Supported schemas:
+// - Legacy EA/PAYG: https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-ea
+// - MCA: https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-mca
+// - FOCUS: https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-focus
+var columnsToMultiply = map[string]bool{
+	"PreTaxCost":              true,
+	"CostInBillingCurrency":   true,
+	"costInBillingCurrency":   true,
+	"BilledCost":              true,
+	"EffectiveCost":           true,
+	"ListCost":                true,
+	"ContractedCost":          true,
+	"costInUsd":               true,
+	"paygCostInBillingCurrency": true,
+	"paygCostInUsd":           true,
+	"UsageQuantity":           true,
+	"Quantity":                true,
+	"quantity":                true,
+	"ConsumedQuantity":        true,
+	"PricingQuantity":         true,
+}
+
+// resourceIDColumns lists possible column names for resource ID.
+var resourceIDColumns = []string{"InstanceId", "InstanceID", "ResourceId", "resourceId"}
+
+// dateColumns lists possible column names for date.
+var dateColumns = []string{"UsageDateTime", "Date", "date", "ChargePeriodStart"}
+
+func (a *App) getTableColumns(ctx context.Context, tableName string) ([]string, error) {
+	rows, err := a.DB.QueryContext(ctx, fmt.Sprintf("PRAGMA table_info(%s)", quoteIdentifier(tableName)))
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var columns []string
+	for rows.Next() {
+		var cid, notNull, pk int
+		var name, colType string
+		var dfltValue sql.NullString
+		if err := rows.Scan(&cid, &name, &colType, &notNull, &dfltValue, &pk); err != nil {
+			return nil, err
+		}
+		columns = append(columns, name)
+	}
+	return columns, rows.Err()
+}
+
+func findColumn(columns []string, alternatives []string) string {
+	colSet := make(map[string]bool)
+	for _, c := range columns {
+		colSet[c] = true
+	}
+	for _, alt := range alternatives {
+		if colSet[alt] {
+			return alt
+		}
+	}
+	return ""
+}
+
+func (a *App) buildJoinQuery(ctx context.Context) (string, error) {
+	columns, err := a.getTableColumns(ctx, "cost_management")
+	if err != nil {
+		return "", err
+	}
+
+	resourceID := findColumn(columns, resourceIDColumns)
+	if resourceID == "" {
+		return "", fmt.Errorf("no resource ID column found (tried: %v)", resourceIDColumns)
+	}
+	dateCol := findColumn(columns, dateColumns)
+	if dateCol == "" {
+		return "", fmt.Errorf("no date column found (tried: %v)", dateColumns)
+	}
+
+	// Build column expressions
+	var colExprs []string
+	for _, col := range columns {
+		q := quoteIdentifier(col)
+		if columnsToMultiply[col] {
+			colExprs = append(colExprs, fmt.Sprintf("CAST(c.%s AS DECIMAL) * CAST(COALESCE(s.Fraction, 1) AS DECIMAL) AS %s", q, q))
+		} else {
+			colExprs = append(colExprs, "c."+q)
+		}
+	}
+
+	qResID := quoteIdentifier(resourceID)
+	qDate := quoteIdentifier(dateCol)
+
+	return fmt.Sprintf(`
+WITH aks_rg AS (
+    SELECT DISTINCT
+        LOWER(SUBSTR(ID, 1,
+            (INSTR(ID, '/resourceGroups/') + LENGTH('/resourceGroups/')) +
+            INSTR(SUBSTR(ID, INSTR(ID, '/resourceGroups/') + LENGTH('/resourceGroups/')), '/') - 2
+        )) AS rg_path,
+        Date
+    FROM aks_splits
+    WHERE ID LIKE '/subscriptions/%%'
 )
 SELECT
-    CASE 
-        WHEN s.Fraction IS NULL THEN '__unallocated__'
-        ELSE s.Name
-    END AS Name,
-    CASE 
-        WHEN s.Fraction IS NULL THEN '__unallocated__'
-        ELSE s.Kind
-    END AS Kind,
-    CASE 
-        WHEN s.Fraction IS NULL THEN '__unallocated__'
-        ELSE s.SplitBucket
-    END AS SplitBucket,
+    CASE WHEN s.Fraction IS NULL THEN '__unallocated__' ELSE s.Name END AS Name,
+    CASE WHEN s.Fraction IS NULL THEN '__unallocated__' ELSE s.Kind END AS Kind,
+    CASE WHEN s.Fraction IS NULL THEN '__unallocated__' ELSE s.SplitBucket END AS SplitBucket,
     COALESCE(s.Fraction, 1) AS Fraction,
     COALESCE(s.SplitKey, '{}') AS SplitKey,
-    CAST(c.UsageQuantity AS DECIMAL) * CAST(COALESCE(s.Fraction, 1) AS DECIMAL) AS UsageQuantity,
-    CAST(c.ResourceRate AS DECIMAL) * CAST(COALESCE(s.Fraction, 1) AS DECIMAL) AS ResourceRate,
-    CAST(c.PreTaxCost AS DECIMAL) * CAST(COALESCE(s.Fraction, 1) AS DECIMAL) AS PreTaxCost,
-	c.UsageDateTime as Date,
-    c.SubscriptionGuid,
-    c.ResourceGroup,
-    c.ResourceLocation,
-    c.MeterCategory,
-    c.MeterSubCategory,
-    c.MeterId,
-    c.MeterName,
-    c.MeterRegion,
-    c.ConsumedService,
-    c.ResourceType,
-    c.InstanceID,
-    c.Tags,
-    c.OfferId,
-    c.AdditionalInfo,
-    c.ServiceInfo1,
-    c.ServiceInfo2,
-    c.ServiceName,
-    c.ServiceTier,
-    c.Currency,
-    c.UnitOfMeasure
+    %s
 FROM cost_management c
-INNER JOIN aks_rg r ON LOWER(c.InstanceID) LIKE r.rg_path || '%' AND c.UsageDateTime = r.Date -- Exclude non-AKS resources
-LEFT JOIN aks_splits s ON LOWER(s.ID) = LOWER(c.InstanceID) AND c.UsageDateTime = s.Date
-`
+INNER JOIN aks_rg r ON LOWER(c.%s) LIKE r.rg_path || '%%' AND c.%s = r.Date
+LEFT JOIN aks_splits s ON LOWER(s.ID) = LOWER(c.%s) AND c.%s = s.Date
+`, strings.Join(colExprs, ",\n    "), qResID, qDate, qResID, qDate), nil
+}
 
 func (a *App) JoinData(ctx context.Context) (*os.File, error) {
 	tmpFile, err := os.CreateTemp("", "joined_data_*.csv")
@@ -703,7 +763,14 @@ func (a *App) JoinData(ctx context.Context) (*os.File, error) {
 }
 
 func (a *App) writeJoinedData(ctx context.Context, w io.Writer) error {
-	rows, err := a.DB.QueryContext(ctx, joinQuery)
+	query, err := a.buildJoinQuery(ctx)
+	if err != nil {
+		return fmt.Errorf("building join query: %w", err)
+	}
+
+	slog.Info("executing join query", "query", query)
+
+	rows, err := a.DB.QueryContext(ctx, query)
 	if err != nil {
 		return fmt.Errorf("executing join query: %w", err)
 	}
