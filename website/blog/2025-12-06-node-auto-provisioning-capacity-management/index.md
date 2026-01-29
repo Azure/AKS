@@ -94,7 +94,7 @@ For more on enabling Virtual machine node pools on your cluster, visit our [Virt
 
 Generally, NAP and virtual machine node pools are mutually exclusive options. You can use NAP to create standalone VMs that NAP manages instead of traditional node pools, allowing for **mixed SKU autoscaling**. Virtual machine node pools use traditional node pools and allow for **mixed SKU manual scaling**.
 
-- (Recommended) Choose NAP for dynamic environments where manual SKU planning is impractical.
+- (Recommended) Choose NAP for dynamic environments or specific SKU selection where manual SKU planning is impractical. 
 - Choose virtual machine node pools when you need fine-tuned control with exact VM SKUs for compliance, predictable performance, or cost modeling
 
 Avoid NAP if you require strict SKU governance or have regulatory constraints that cannot allow for dynamic autoscaling. Avoid VM node pools if you want full automation without manual profiles.
