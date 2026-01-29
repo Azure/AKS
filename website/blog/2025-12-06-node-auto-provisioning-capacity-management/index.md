@@ -25,6 +25,8 @@ For customers, these aren’t just error messages - they’re roadblocks. Pods r
 
 <!-- truncate -->
 
+![visual demo of node auto provisioning and virtual machine node pools features. The image shows a karpenter scheduler reacting to unscheduled pods and provisioning multiple sizes of nodes to schedule them. The image also shows a virtual machine node pool that can be scaled up or down with different sizes of nodes.](./nap-vms-hero-image.png)
+
 :::info
 
 Learn more in the official documentation: [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning) or [virtual machine node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools)
