@@ -179,6 +179,6 @@ Visit our [virtual machine node pools documentation](https://learn.microsoft.com
 
 Ready to get started?
 
-1. **Try one of these features now:** Follow the [Enable node auto provisioning steps](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning) or [create a virtual machine node pool](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
+1. **Try one of these features now:** Follow the [Enable Node Auto Provisioning steps](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning) or [create a virtual machine node pool](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools).
 1. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
 1. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
