@@ -157,11 +157,10 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
 
 1. Connect to the newly created VMI and inspect it.
 
-   Before you use the `virtctl` command-line tool, install it on your workstation. Install the [`krew` plugin manager](https://krew.sigs.k8s.io/docs/user-guide/setup/install/) if you don't have it, then run:
+   Before you use the `virtctl` command-line tool, install it on your workstation. You can follow instructions [here](https://kubevirt.io/user-guide/user_workloads/virtctl_client_tool/) to install `virtctl`.
 
    ```bash
-   kubectl krew install virt
-   kubectl virt console vmi-fedora
+   virtctl console vmi-fedora
    ```
 
    When prompted with credentials, the default username/password should be `fedora`/`fedora`.
