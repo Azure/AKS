@@ -157,7 +157,7 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
 
 1. Connect to the newly created VMI and inspect it.
 
-   Before you use the `virtctl` command-line tool, install it on your workstation. You can follow instructions [here](https://kubevirt.io/user-guide/user_workloads/virtctl_client_tool/) to install `virtctl`.
+   Before you use the `virtctl` command-line tool, install it on your workstation. You can follow instructions [on the KubeVirt page](https://kubevirt.io/user-guide/user_workloads/virtctl_client_tool/) to install `virtctl`.
 
    ```bash
    virtctl console vmi-fedora
