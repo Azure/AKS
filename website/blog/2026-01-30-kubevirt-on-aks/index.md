@@ -200,7 +200,7 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
 
 ## Converting your VMs
 
-At this point, you should have KubeVirt up and running in your AKS cluster and a VMI deployed. KubeVirt can help with a [plethora of scenarios](https://kubevirt.io/) that operational teams may run into. Migrating legacy VMs to KubeVirt can be an involved process, however. [Doing it manually](https://www.spectrocloud.com/blog/how-to-migrate-your-vms-to-kubevirt-with-forklift) involves steps like converting VM's disk, persisting a VM disk, to creating a VM template.
+At this point, you should have KubeVirt up and running in your AKS cluster and a VMI deployed. KubeVirt can help with a [plethora of scenarios](https://kubevirt.io/) that operational teams may run into. Migrating legacy VMs to KubeVirt can be an involved process, however. [Doing it manually](https://www.spectrocloud.com/blog/how-to-migrate-your-vms-to-kubevirt-with-forklift) involves steps like converting VM's disk and persisting a VM disk to creating a VM template.
 
 Tools like [Forklift](https://github.com/kubev2v/forklift) can automate some of the complexity involved with the migration. Forklift allows VMs to be migrated at scale to KubeVirt. The migration can be done by installing Forklift custom resources and setting up their respective configs in the target cluster. Some great walkthroughs of VM migration can be found in these videos [detailing how Forklift helps deliver a better UX when importing VMs to KubeVirt](https://www.youtube.com/watch?v=S7hVcv2Fu6I) and [breaking down everything from the architecture to a demo of Forklift 2.0](https://www.youtube.com/watch?v=-w4Afj5-0_g).
 
