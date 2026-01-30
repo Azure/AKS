@@ -1,6 +1,6 @@
 ---
 title: "Deploying KubeVirt on AKS"
-date: "2026-01-30"
+date: "2026-02-06"
 description: "Learn how to deploy KubeVirt on Azure Kubernetes Service (AKS) to run and manage virtual machines alongside containerized applications using Kubernetes orchestration"
 authors: ["jack-jiang", "harshit-gupta"]
 tags: ["kubevirt", "general", "operations"]
