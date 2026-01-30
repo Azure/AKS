@@ -55,9 +55,11 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
    ```bash
    # Get the latest release
    export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
-
+   
    # Deploy the KubeVirt operator
-   kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+   curl -L https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml | \
+   sed '8249,8254c\            nodeSelectorTerms:\n            - matchExpressions:\n              - key: node-role.kubernetes.io/worker\n                operator: DoesNotExist' | \
+   kubectl apply -f -
    ```
 
 1. Install the KubeVirt custom resource.
@@ -68,7 +70,7 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
    | kubectl apply -f -
    ```
 
-   Notice the empty `nodePlacement: {}` line. By default, KubeVirt sets the node-affinity of control-plane components to control-plane nodes. Because AKS control-plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to nodePlacement avoids potential failures.
+   Notice the empty `nodePlacement: {}` and the update for the node selector. By default, KubeVirt sets the node-affinity of control-plane components to control-plane nodes. Because AKS control-plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to utilize worker nodes avoids potential failures.
 
 ### Confirm the KubeVirt pods are up and running on the cluster
 
