@@ -206,9 +206,9 @@ Tools like [Forklift](https://github.com/kubev2v/forklift) can automate some of 
 
 ## Running in prod
 
-When running large scale, production grade workloads, stability of both the KubeVirt components and the individual VMs can also be a point of consideration. As we hinted at earlier, KubeVirt typically sets the node-affinity of operator/custom resource components to control-plane nodes. In our deployment, we have the KubeVirt components running on worker nodes. 
+When running large scale, production grade workloads, stability of both the KubeVirt components and the individual VMs can also be a point of consideration. As we hinted at earlier, KubeVirt typically sets the node-affinity of operator/custom resource components to control-plane nodes. In our deployment, we have the KubeVirt components running on worker nodes.
 
-In order to maintain a control-plane/worker node split, it can be advisable to aim to deploy KubeVirt components in an agentpool that can be designated as the "control-plane" node, while VMs spun up can be ran in designated "worker node" agentpools. 
+In order to maintain a control-plane/worker node split, it can be advisable to aim to deploy KubeVirt components in an agentpool that can be designated as the "control-plane" node, while VMs spun up can be ran in designated "worker node" agentpools.
 
 ## Share your feedback
 
