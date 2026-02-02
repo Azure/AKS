@@ -1,6 +1,6 @@
 ---
 title: "Autoscale KAITO inference workloads on AKS using KEDA"
-date: "2026-01-29"
+date: "2026-02-03"
 description: "Learn how to autoscale KAITO inference workloads on AKS with KEDA to handle varying inference requests and optimize Kubernetes GPU utilization in AKS clusters."
 authors: ["andy-zhang", "sachi-desai"]
 tags: ["ai", "kaito"]
