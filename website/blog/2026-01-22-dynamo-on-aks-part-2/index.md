@@ -25,7 +25,7 @@ We will explore how the
 [**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner.md)
 and
 [**Dynamo Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/benchmarks/profiler)
-remove the guesswork from performance tuning on Azure Kubernetes Service (AKS).
+remove the guesswork from performance tuning on AKS.
 
 <!-- truncate -->
 
