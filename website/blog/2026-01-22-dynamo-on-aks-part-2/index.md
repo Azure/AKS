@@ -18,7 +18,7 @@ In our [previous post](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks),
 we demonstrated the power of the Azure ND GB200-v6 VMs accelerated by
 NVIDIA GB200 NVL72, achieving a
 staggering **1.2M tokens per second** across 10 nodes using NVIDIA Dynamo.
-Today, we shift focus from raw throughput to **developer velocity** and
+Today, we're shifting focus from raw throughput to **developer velocity** and
 **operational efficiency**.
 
 We will explore how the
