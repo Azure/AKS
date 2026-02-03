@@ -321,6 +321,29 @@ test-guid,rg,westus,2025-06-18,Virtual Machines,Standard,meter-id,VM,westus,2,5,
 			expectedFields: []string{"vmss", "compute", "usage", "0.600000", "test-guid", "westus"},
 		},
 		{
+			// MCA schema with MM/DD/YYYY date format (actual production format)
+			// The Azure Cost Management MCA exports use MM/DD/YYYY format in production
+			name: "MCA schema with MM/DD/YYYY date format",
+			costAgentData: []byte(`{
+				"Resources": [{
+					"ID": "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss",
+					"Name": "vmss",
+					"Kind": "compute",
+					"Splits": [{
+						"Fraction": 0.5,
+						"SplitKey": {"namespace": "default"},
+						"SplitBucket": "usage"
+					}]
+				}]
+			}`),
+			costMgmtData: map[string][]byte{
+				"cost-management/file1.csv": []byte(`SubscriptionId,resourceGroupName,resourceLocation,date,meterCategory,meterSubCategory,meterId,meterName,meterRegion,quantity,effectivePrice,costInBillingCurrency,consumedService,ResourceId,tags,additionalInfo,serviceInfo1,serviceInfo2,billingCurrency,unitOfMeasure
+test-guid,rg,westus,06/18/2025,Virtual Machines,Standard,meter-id,VM,westus,2,5,10,Microsoft.Compute,/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss,{},info,,,USD,Hour`),
+			},
+			expectedRows:   2,
+			expectedFields: []string{"vmss", "compute", "usage", "0.500000"},
+		},
+		{
 			// FOCUS schema (FinOps Open Cost and Usage Specification)
 			// https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-focus
 			name: "FOCUS schema",

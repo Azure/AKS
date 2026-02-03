@@ -520,8 +520,12 @@ func (a *App) ImportCSV(ctx context.Context, data io.Reader, tableName string) e
 	}
 
 	quotedColumns := make([]string, len(header))
+	dateColumnIndices := make(map[int]bool)
 	for i, col := range header {
 		quotedColumns[i] = quoteIdentifier(col)
+		if dateColumnsSet[col] {
+			dateColumnIndices[i] = true
+		}
 	}
 	query := fmt.Sprintf(
 		`INSERT INTO %s (%s) VALUES (%s)`,
@@ -550,10 +554,14 @@ func (a *App) ImportCSV(ctx context.Context, data io.Reader, tableName string) e
 		}
 		lineNum++
 
-		// Convert []string to []interface{}
+		// Convert []string to []interface{} and normalize dates
 		values := make([]interface{}, len(record))
 		for i, v := range record {
-			values[i] = v
+			if dateColumnIndices[i] {
+				values[i] = normalizeDate(v)
+			} else {
+				values[i] = v
+			}
 		}
 
 		batch = append(batch, values)
@@ -662,6 +670,30 @@ var resourceIDColumns = []string{"InstanceId", "InstanceID", "ResourceId", "reso
 
 // dateColumns lists possible column names for date.
 var dateColumns = []string{"UsageDateTime", "Date", "date", "ChargePeriodStart"}
+
+// dateColumnsSet is a set for fast lookup of date columns.
+var dateColumnsSet = map[string]bool{
+	"UsageDateTime":     true,
+	"Date":              true,
+	"date":              true,
+	"ChargePeriodStart": true,
+}
+
+// normalizeDate converts a date string to YYYY-MM-DD format.
+// Detects format by checking for "/" (MM/DD/YYYY) or "-" (YYYY-MM-DD).
+func normalizeDate(value string) string {
+	if value == "" {
+		return value
+	}
+	if strings.Contains(value, "/") {
+		// Parse as MM/DD/YYYY
+		if t, err := time.Parse("01/02/2006", value); err == nil {
+			return t.Format("2006-01-02")
+		}
+	}
+	// Already YYYY-MM-DD or unknown format, return as-is
+	return value
+}
 
 func (a *App) getTableColumns(ctx context.Context, tableName string) ([]string, error) {
 	rows, err := a.DB.QueryContext(ctx, fmt.Sprintf("PRAGMA table_info(%s)", quoteIdentifier(tableName)))
