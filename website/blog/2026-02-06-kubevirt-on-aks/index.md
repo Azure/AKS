@@ -21,7 +21,7 @@ VMs deployed on KubeVirt act much the same way as VMs deployed in more tradition
 
 Management of these otherwise disparate deployments can be simplified and unified. This unified management can help teams avoid the sprawl that would otherwise come with managing multiple platforms.
 
-The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers while ensuring their applications remain operational throughout the trainsition.
+The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers while ensuring their applications remain operational throughout the transition.
 
 ## Deploying KubeVirt on AKS
 
