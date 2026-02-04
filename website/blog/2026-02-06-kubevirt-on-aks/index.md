@@ -13,6 +13,10 @@ Many organizations still depend on virtual machines (VMs) to run applications to
 In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs in AKS.
 <!-- truncate -->
 
+:::note
+If you're using KubeVirt on AKS or are interested in trying it, [we'd love to hear from you]((https://github.com/Azure/AKS/issues/5445))! Your feedback will help the AKS team plan how to best support this feature on our platform. 
+:::
+
 ## Why KubeVirt matters
 
 KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. It allows customers to manage legacy VM workloads alongside containerized applications using the same Kubernetes API.
@@ -207,6 +211,8 @@ Tools like [Forklift](https://github.com/kubev2v/forklift) can automate some of 
 When running production grade workloads, stability of both the KubeVirt components and the individual VMs can also be a point of consideration. As we hinted at earlier, KubeVirt typically sets the node-affinity of operator/custom resource components to control-plane nodes. In our deployment, we have the KubeVirt components running on worker nodes.
 
 In order to maintain a control-plane/worker node split, it can be advisable to aim to deploy KubeVirt components in an agentpool that can be designated as the "control-plane" node, while VMs spun up can be ran in designated "worker node" agentpools.
+
+KubeVirt is currently not an officially supported AKS addon/extension, so there is no Microsoft backed SLA/SLO in place for KubeVirt deployments in AKS. If customers need an officially supported offering, [Azure Redhat Openshift](https://learn.microsoft.com/en-us/azure/openshift/howto-create-openshift-virtualization) is a generally available platform to manage virtualized and containerized applications together.
 
 ## Share your feedback
 
