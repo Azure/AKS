@@ -856,6 +856,7 @@ func (a *App) writeRows(rows *sql.Rows, writer *csv.Writer, columnCount int) err
 	}
 
 	record := make([]string, columnCount)
+	rowCount := 0
 
 	for rows.Next() {
 		if err := rows.Scan(scanArgs...); err != nil {
@@ -874,7 +875,10 @@ func (a *App) writeRows(rows *sql.Rows, writer *csv.Writer, columnCount int) err
 		if err := writer.Write(record); err != nil {
 			return fmt.Errorf("writing row: %w", err)
 		}
+		rowCount++
 	}
+
+	slog.Info("wrote result rows", "count", rowCount)
 
 	if err := rows.Err(); err != nil {
 		return fmt.Errorf("iterating rows: %w", err)
