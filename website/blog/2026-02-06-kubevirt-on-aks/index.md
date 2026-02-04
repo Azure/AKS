@@ -1,31 +1,31 @@
 ---
 title: "Deploying KubeVirt on AKS"
 date: "2026-02-06"
-description: "Learn how to deploy KubeVirt on Azure Kubernetes Service (AKS) to run and manage virtual machines alongside containerized applications using Kubernetes orchestration"
+description: "Learn how to use KubeVirt to host virtual machines on Azure Kubernetes Service (AKS)"
 authors: ["jack-jiang", "harshit-gupta"]
 tags: ["kubevirt", "general", "operations"]
 ---
 
-Kubernetes adoption continues to grow, but not every workload can be redesigned for containers right away. Many organizations still depend on virtual machine (VM) based deployments for technical, regulatory, or operational reasons.
+Many organizations still depend on virtual machines (VMs) to run applications to meet technical, regulatory, or operational requirements. While Kubernetes adoption continues to grow, not every workload can or should be redesigned for containers.
 
 [KubeVirt](https://github.com/kubevirt/kubevirt) is a [Cloud Native Computing Foundation (CNCF) incubating](https://www.cncf.io/projects/kubevirt/) open-source project that allows users to run, deploy, and manage VMs in their Kubernetes clusters.
 
-In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs on Kubernetes, alongside your containerized applications, using Kubernetes as the orchestrator.
+In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs in AKS.
 <!-- truncate -->
 
 ## Why KubeVirt matters
 
 KubeVirt can help organizations that are in various stages of their Kubernetes journey manage their infrastructure more effectively. It allows customers to manage legacy VM workloads alongside containerized applications using the same Kubernetes API.
 
-VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities like scheduling that users know and love on Kubernetes can also be applied to these VMs.
+VMs deployed on KubeVirt act much the same way as VMs deployed in more traditional manners would but can run and be managed alongside other containerized applications through traditional Kubernetes tools. Capabilities like scheduling that users are familiar with on Kubernetes can also be applied to these VMs.
 
 Management of these otherwise disparate deployments can be simplified and unified. This unified management can help teams avoid the sprawl that would otherwise come with managing multiple platforms.
 
-The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers or allow these mission-critical legacy applications to remain as they are.
+The capability to mix and match your workloads in a "hybrid" setting can also allow organizations that might have more complex, legacy VM-based applications to incrementally transition to containers while ensuring their applications remain operational throughout the trainsition.
 
-## Deploying KubeVirt
+## Deploying KubeVirt on AKS
 
-Users today are able to self-deploy KubeVirt on AKS clusters using SKUs that support nested virtualization.
+You can deploy KubeVirt on any AKS cluster that has nodes running VM SKUs that support nested virtualization.
 
 ### Pre-requisites
 
@@ -71,11 +71,11 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
    | kubectl apply -f -
    ```
 
-   Notice the empty `nodePlacement: {}` and the update for the node selector. By default, KubeVirt sets the node-affinity of operator/custom resource components to control-plane nodes. Because AKS control-plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to utilize worker nodes avoids potential failures.
+   Notice the empty `nodePlacement: {}` and the update for the node selector. By default, KubeVirt sets the node-affinity of operator/custom resource components to control plane nodes. Because AKS control plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to utilize worker nodes avoids potential failures.
 
 ### Confirm the KubeVirt pods are up and running on the cluster
 
-Once all the components are installed, you can quickly check if all the KubeVirt components are up and running properly in your cluster:
+Once all the components are installed, you can confirm that all KubeVirt components are up and running properly in your cluster:
 
 ```bash
 kubectl get pods -n kubevirt -o wide
@@ -204,7 +204,7 @@ Tools like [Forklift](https://github.com/kubev2v/forklift) can automate some of 
 
 ## Running in prod
 
-When running large scale, production grade workloads, stability of both the KubeVirt components and the individual VMs can also be a point of consideration. As we hinted at earlier, KubeVirt typically sets the node-affinity of operator/custom resource components to control-plane nodes. In our deployment, we have the KubeVirt components running on worker nodes.
+When running production grade workloads, stability of both the KubeVirt components and the individual VMs can also be a point of consideration. As we hinted at earlier, KubeVirt typically sets the node-affinity of operator/custom resource components to control-plane nodes. In our deployment, we have the KubeVirt components running on worker nodes.
 
 In order to maintain a control-plane/worker node split, it can be advisable to aim to deploy KubeVirt components in an agentpool that can be designated as the "control-plane" node, while VMs spun up can be ran in designated "worker node" agentpools.
 
@@ -216,3 +216,4 @@ If you're using KubeVirt on AKS or are interested in trying it, we'd love to hea
 
 - [What is KubeVirt?](https://www.redhat.com/topics/virtualization/what-is-kubevirt)
 - [KubeVirt user guides](https://kubevirt.io/user-guide/)
+- [Roadmap item for KubeVirt on AKS](https://github.com/Azure/AKS/issues/5445)
