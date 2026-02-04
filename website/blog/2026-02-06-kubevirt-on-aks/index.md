@@ -77,7 +77,7 @@ Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/s
 
    Notice the empty `nodePlacement: {}` and the update for the node selector. By default, KubeVirt sets the node-affinity of operator/custom resource components to control plane nodes. Because AKS control plane nodes are fully managed by Azure and inaccessible to KubeVirt, this update to utilize worker nodes avoids potential failures.
 
-### Confirm the KubeVirt pods are up and running on the cluster
+### Verify KubeVirt installation
 
 Once all the components are installed, you can confirm that all KubeVirt components are up and running properly in your cluster:
 
