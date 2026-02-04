@@ -97,7 +97,7 @@ virt-operator-7c8bdfb574-wzdxt     1/1     Running   0          9m38s   10.244.0
 
 With KubeVirt installed on your cluster, you can now create your VirtualMachineInstance (VMI) resources.
 
-1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`.
+1. Create your VMI. Save the following YAML, which will create a VMI based on Fedora OS, as `vmi-fedora.yaml`. The username for this deployment will default to `fedora`, while you can specify a password of your choosing in `password: <my_password>`.
 
    ```yaml
    apiVersion: kubevirt.io/v1
@@ -134,7 +134,7 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
      - cloudInitNoCloud:
          userData: |-
            #cloud-config
-           password: fedora
+           password: <my_password>
            chpasswd: { expire: False }
        name: cloudinitdisk
    ```
@@ -162,7 +162,7 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
    virtctl console vmi-fedora
    ```
 
-   When prompted with credentials, the default username/password should be `fedora`/`fedora`.
+   When prompted with credentials, the default username is `fedora`, while the password was configured in `vmi-fedora.yaml`.
 
    ```bash
    vmi-fedora login: fedora
