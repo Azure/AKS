@@ -27,7 +27,7 @@ The capability to mix and match your workloads in a "hybrid" setting can also al
 
 You can deploy KubeVirt on any AKS cluster that has nodes running VM SKUs that support nested virtualization.
 
-### Pre-requisites
+### Prerequisites
 
 - KubeVirt on AKS requires a chosen VM SKU to support nested virtualization. You can confirm support on the VM size's Microsoft Learn page, such as [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support).
 Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support) SKU as an example, on the SKU page, you can see whether or not nested virtualization is supported in the "Feature support" section.
