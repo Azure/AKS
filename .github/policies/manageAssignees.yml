@@ -185,7 +185,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - chasewilson
-              - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Cilium
@@ -213,7 +212,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - chasewilson
-              - danbosscher
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Pod Identity
@@ -394,7 +392,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - wangyira
-              - pavneeta
               - chandraneel
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -497,7 +494,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - AllenWen-at-Azure
-              - pavneeta
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Upgrades
@@ -512,7 +508,7 @@ configuration:
               - kaarthis
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Flux
+        # Flux extension
         - if:
           - hasLabel:
               label: extension/flux
@@ -523,6 +519,19 @@ configuration:
               mentionees:
               - dipti-pai
               - bavneetsingh16
+              - ponatara
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # ArgoCD extension
+        - if:
+          - hasLabel:
+              label: extension/argocd
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - ponatara
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # GPU
