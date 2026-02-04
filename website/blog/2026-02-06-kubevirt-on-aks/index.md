@@ -27,14 +27,15 @@ The capability to mix and match your workloads in a "hybrid" setting can also al
 
 Users today are able to self-deploy KubeVirt on AKS clusters using SKUs that support nested virtualization.
 
-### Creating an AKS cluster
+### Pre-requisites
 
-:::note
-When you select a `--node-vm-size`, use a VM SKU that supports nested virtualization. You can confirm support on the VM size's Microsoft Learn page, such as [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support).
+- KubeVirt on AKS requires a chosen VM SKU to support nested virtualization. You can confirm support on the VM size's Microsoft Learn page, such as [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support).
 Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support) SKU as an example, on the SKU page, you can see whether or not nested virtualization is supported in the "Feature support" section.
+- Install the `virtctl` binary utility to better access and control your VirtualMachineInstances. You can follow instructions [on the KubeVirt page](https://kubevirt.io/user-guide/user_workloads/virtctl_client_tool/) to install `virtctl`.
 
 ![Screenshot of Azure VM SKU page showing nested virtualization support in the Feature support section](nested-virt-example.png)
-:::
+
+### Creating an AKS cluster
 
 1. Create your AKS cluster.
 
@@ -156,8 +157,6 @@ With KubeVirt installed on your cluster, you can now create your VirtualMachineI
    ```
 
 1. Connect to the newly created VMI and inspect it.
-
-   Before you use the `virtctl` command-line tool, install it on your workstation. You can follow instructions [on the KubeVirt page](https://kubevirt.io/user-guide/user_workloads/virtctl_client_tool/) to install `virtctl`.
 
    ```bash
    virtctl console vmi-fedora
