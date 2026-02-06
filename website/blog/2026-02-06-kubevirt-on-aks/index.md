@@ -14,7 +14,7 @@ In this post, you will learn how KubeVirt lets you run, deploy, and manage VMs i
 <!-- truncate -->
 
 :::note
-If you're using KubeVirt on AKS or are interested in trying it, [we'd love to hear from you]((https://github.com/Azure/AKS/issues/5445))! Your feedback will help the AKS team plan how to best support this feature on our platform.
+If you're using KubeVirt on AKS or are interested in trying it, [we'd love to hear from you](https://github.com/Azure/AKS/issues/5445)! Your feedback will help the AKS team plan how to best support this feature on our platform.
 :::
 
 ## Why KubeVirt matters
