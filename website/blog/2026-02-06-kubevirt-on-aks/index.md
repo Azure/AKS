@@ -212,7 +212,7 @@ When running production grade workloads, stability of both the KubeVirt componen
 
 In order to maintain a control-plane/worker node split, it can be advisable to aim to deploy KubeVirt components in an agentpool that can be designated as the "control-plane" node, while VMs spun up can be ran in designated "worker node" agentpools.
 
-KubeVirt is currently not an officially supported AKS addon/extension, so there is no Microsoft backed SLA/SLO in place for KubeVirt deployments in AKS. If customers need an officially supported offering, [Azure Redhat Openshift](https://learn.microsoft.com/en-us/azure/openshift/howto-create-openshift-virtualization) is a generally available platform to manage virtualized and containerized applications together.
+KubeVirt is currently not an officially supported AKS addon/extension, so there is no Microsoft backed SLA/SLO in place for KubeVirt deployments in AKS. If customers need an officially supported offering, [Azure Red Hat OpenShift](https://learn.microsoft.com/en-us/azure/openshift/howto-create-openshift-virtualization) is a generally available platform to manage virtualized and containerized applications together.
 
 ## Share your feedback
 
