@@ -37,7 +37,7 @@ You can deploy KubeVirt on any AKS cluster that has nodes running VM SKUs that s
 Using the [Standard_D4s_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/general-purpose/dv5-series?tabs=sizebasic#feature-support) SKU as an example, on the SKU page, you can see whether or not nested virtualization is supported in the "Feature support" section.
 - Install the `virtctl` binary utility to better access and control your VirtualMachineInstances. You can follow instructions [on the KubeVirt page](https://kubevirt.io/user-guide/user_workloads/virtctl_client_tool/) to install `virtctl`.
 
-![Screenshot of Azure VM SKU page showing nested virtualization support in the Feature support section](nested-virt-example.png)
+![Azure VM SKU documentation page showing nested virtualization feature marked as supported in the feature support table](nested-virt-example.png)
 
 ### Creating an AKS cluster
 
