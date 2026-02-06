@@ -206,7 +206,7 @@ At this point, you should have KubeVirt up and running in your AKS cluster and a
 
 Tools like [Forklift](https://github.com/kubev2v/forklift) can automate some of the complexity involved with the migration. Forklift allows VMs to be migrated at scale to KubeVirt. The migration can be done by installing Forklift custom resources and setting up their respective configs in the target cluster. Some great walkthroughs of VM migration can be found in these videos [detailing how Forklift helps deliver a better UX when importing VMs to KubeVirt](https://www.youtube.com/watch?v=S7hVcv2Fu6I) and [breaking down everything from the architecture to a demo of Forklift 2.0](https://www.youtube.com/watch?v=-w4Afj5-0_g).
 
-## Running in prod
+## Running in production
 
 When running production grade workloads, stability of both the KubeVirt components and the individual VMs can also be a point of consideration. As we hinted at earlier, KubeVirt typically sets the node-affinity of operator/custom resource components to control-plane nodes. In our deployment, we have the KubeVirt components running on worker nodes.
 
