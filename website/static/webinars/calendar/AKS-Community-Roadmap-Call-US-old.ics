@@ -20,7 +20,7 @@ END:DAYLIGHT
 END:VTIMEZONE
 BEGIN:VEVENT
 CLASS:PUBLIC
-CREATED:20260205T183126Z
+CREATED:20241216T170337Z
 DESCRIPTION:Join our monthly public community calls for Azure Kubernetes Se
 	rvice to discuss product roadmap\, see demos of new features\, provide fee
 	dback\, and learn from others’ experience with AKS. \n\n\nGet join link 
@@ -29,12 +29,12 @@ DESCRIPTION:Join our monthly public community calls for Azure Kubernetes Se
 DTEND;TZID="Pacific Standard Time":20250115T090000
 DTSTAMP:20241216T170337Z
 DTSTART;TZID="Pacific Standard Time":20250115T080000
-LAST-MODIFIED:20260205T183126Z
+LAST-MODIFIED:20241216T170337Z
 LOCATION:https://aka.ms/AKS/CommunityCalls
 PRIORITY:5
-RRULE:FREQ=MONTHLY;BYDAY=WE;BYSETPOS=3
+RRULE:FREQ=MONTHLY;COUNT=12;BYDAY=WE;BYSETPOS=3
 SEQUENCE:0
-SUMMARY;LANGUAGE=en-us:AKS Community Roadmap Call
+SUMMARY:AKS Community Roadmap Call
 TRANSP:OPAQUE
 UID:Fd6To/04xEG8GbtfILp+AQ==
 X-ALT-DESC;FMTTYPE=text/html:<html xmlns:v="urn:schemas-microsoft-com:vml" 
@@ -68,5 +68,10 @@ X-ALT-DESC;FMTTYPE=text/html:<html xmlns:v="urn:schemas-microsoft-com:vml"
 X-MICROSOFT-CDO-BUSYSTATUS:BUSY
 X-MICROSOFT-CDO-IMPORTANCE:1
 X-MICROSOFT-DISALLOW-COUNTER:FALSE
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
 END:VEVENT
 END:VCALENDAR
