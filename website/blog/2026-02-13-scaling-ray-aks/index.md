@@ -5,11 +5,12 @@ date: 2026-02-13
 authors:
   - anson-qian
   - bob-mital
+  - kenneth-kilty
 categories:
 tags: ["ai", "ray", "anyscale"]
 ---
 
-Following our [initial announcement of Ray on AKS](../blog/2025-01-13-ray-on-aks), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service. As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-native computing on Azure](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure), we've focused on three critical areas:
+Following our [initial announcement of Ray on AKS](https://blog.aks.azure.com/2025/01/13/ray-on-aks), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service. As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-native computing on Azure](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure), we've focused on three critical areas:
 
 - **Elastic scalability** through multi-region capacity aggregation
 - **Data persistence** with unified storage across the ML lifecycle
@@ -65,7 +66,10 @@ Anyscale Workspaces provides a managed environment for running interactive Ray w
 
 ## Cluster storage support
 
+
 Managing training data, model checkpoints, and artifacts across the ML lifecycle—from pre-training to fine-tuning to inference—requires reliable storage. [Azure BlobFuse2](https://github.com/Azure/azure-storage-fuse) provides a solid storage backend for Ray workloads across AKS nodes.
+
+![Cluster Storage Architecture](./cluster-storage.svg)
 
 To use BlobFuse2 with Ray on AKS:
 
@@ -82,7 +86,7 @@ To use BlobFuse2 with Ray on AKS:
      ...
    ```
 
-3. Create a StorageClass that uses workload identity authentication and optimized caching parameters for large files:
+3. Create a [StorageClass](https://github.com/Azure-Samples/aks-anyscale/blob/main/config/storageclass.yaml) that uses workload identity authentication and optimized caching parameters for large files:
 
    ```yaml
    apiVersion: storage.k8s.io/v1
@@ -114,7 +118,7 @@ To use BlobFuse2 with Ray on AKS:
    volumeBindingMode: Immediate
    ```
 
-4. Create a PersistentVolumeClaim in the `anyscale-operator` namespace with `ReadWriteMany` access mode. This allows multiple Ray workers across different nodes and clusters to access the same storage:
+4. Create a [PersistentVolumeClaim](https://github.com/Azure-Samples/aks-anyscale/blob/main/config/pvc.yaml) in the `anyscale-operator` namespace with `ReadWriteMany` access mode. This allows multiple Ray workers across different nodes and clusters to access the same storage:
 
    ```yaml
    apiVersion: v1
@@ -150,9 +154,9 @@ Benefits of service principal-based authentication:
 
 The following diagram illustrates how Azure Workload Identity enables the Anyscale Kubernetes Operator to authenticate without storing credentials:
 
-![Workload Identity Authentication Flow](./workload-identity-flow.svg)
+![Workload Identity Authentication Flow](./auth-flow.svg)
 
-In this flow:
+In this authentication flow:
 
 1. The `Anyscale Operator` pod authenticates using a user-assigned managed identity.
 2. The managed identity requests an access token with scope `api://086bc.../.default`.

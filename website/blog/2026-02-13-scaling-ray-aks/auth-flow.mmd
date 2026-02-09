@@ -1,6 +1,6 @@
 graph LR
     subgraph Customer["User Tenant"]
-        AKS["AKS workload<br/>(Anyscale Operator Pod)"]
+        AO["Anyscale Operator<br/>(AKS Pod)"]
         WID["Workload ID<br/>(user-assigned managed identity)"]
     end
 
@@ -12,7 +12,7 @@ graph LR
         APP["Application<br/>Anyscale Kubernetes<br/>Operator Auth<br/>appId: 086bc...<br/>identifierUris: api://086bc..."]
     end
 
-    AKS -->|"authenticate as"| WID
+    AO -->|"authenticate as"| WID
     WID -->|"requests token for<br/>scope=api://086bc.../.default"| SP1
     SP1 -.->|"instance of"| APP
 
