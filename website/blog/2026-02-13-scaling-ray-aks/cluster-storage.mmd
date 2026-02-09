@@ -18,17 +18,17 @@ graph TB
     end
 
     subgraph Azure["Azure Blob Storage"]
-        TrainingData["Training Data<br/>Container"]
+        Datasets["Datasets<br/>Container"]
         Checkpoints["Checkpoints<br/>Container"]
         Models["Models<br/>Container"]
     end
 
     PV -->|BlobFuse2 CSI Driver| Azure
 
-    PreTrain -.->|read| TrainingData
+    PreTrain -.->|read| Datasets
     PreTrain -.->|write| Checkpoints
 
-    FineTune -.->|read| TrainingData
+    FineTune -.->|read| Datasets
     FineTune -.->|read/write| Checkpoints
     FineTune -.->|write| Models
 
