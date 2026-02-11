@@ -1,0 +1,234 @@
+---
+title: "Announcing Azure Configurable Scheduler Profiles (Preview): Optimize resource ROI with fine grained scheduling strategies"
+description: "Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles"
+date: 2025-12-16
+authors: 
+   - colin-mixon
+tags:
+  - ai
+  - performance
+  - scheduler
+  - best-practices
+---
+
+Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that could be restrictive if you needed more fine-grain control since it applies a set of criteria in a fixed priority order. The scheduler selects the optimal node for newly created pod(s) based on several criteria, including (but not limited to):
+
+1. Resource requirements (CPU, memory)
+2. Node affinity/anti-affinity
+3. Pod affinity/anti-affinity
+4. Taints and tolerations
+
+Out of the available nodes, the scheduler then filters out nodes that don't meet the requirements to identify the node that is most optimal for the pod(s). Today, the AKS default scheduler lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per workload basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand co-locating pods with their persistent volumes for increased data locality, optimizing GPU utilization for machine learning, or enforcing strict zone-level distribution for microservices. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity.
+
+**[AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by selecting specific policies, altering parameter weight, changing policy priority, adding additional policy parameters, and changing policy evaluation point (i.e. pre-Filter, Filter, Score) without deploying a second scheduler. On AKS, customers have mentioned that AKS Configurable Scheduler Profiles allows them to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler. Additionally, our AI and HPC customers have batch workloads that have benefitted from improved bin-packing and increased GPU utilization.
+
+In this blog you will learn how to configure AKS Configurable Scheduler Profiles for three workload objectives:
+
+1. [Increase GPU utilization by bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
+2. [Increase resilience by distributing pods across topology domains](#increase-resilience-by-distributing-pods-across-topology-domains)
+3. [Optimize data locality with memory and PVC-aware scheduling](#optimize-data-locality-with-memory-and-pvc-aware-scheduling)
+
+Lastly, you will find [best practices](#best-practices-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
+
+<!-- truncate -->
+
+## AKS Configurable Scheduler Profiles
+
+AKS Configurable Scheduler Profiles uses a Custom Resource Definition (CRD) that lets users define custom scheduler profiles. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability.
+
+A scheduler profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for the AKS scheduler on your cluster. AKS supports 18 in-tree Kubernetes [scheduling plugins][supported-in-tree-scheduling-plugins]. The plugins can be generally grouped into three categories:
+
+1. Scheduling constraints and order-based plugins
+2. Node selection constraints scheduling plugins
+3. Resource and topology optimization scheduling plugins
+
+Below you will find example configurations for common workload objectives.
+
+:::note
+Adjust VM SKUs in `NodeAffinity`, shift utilization curves or weights, and use the right zones for your cluster(s) in the configurations below.
+:::
+
+### Increase GPU Utilization by Bin Packing GPU-backed Nodes
+
+The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
+
+For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance.
+
+**This scheduler configuration maximizes GPU efficiency for larger batch jobs by consolidating smaller jobs onto fewer nodes and lowering the operational cost of underutilized resources without sacrificing performance.**
+
+```yaml
+apiVersion: aks.azure.com/v1alpha1
+kind: SchedulerConfiguration
+metadata:
+  name: upstream
+spec:
+  rawConfig: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    profiles:
+      - schedulerName: gpu-node-binpacking-scheduler
+        plugins:
+          multiPoint:
+            enabled:
+              - name: ImageLocality
+              - name: NodeResourcesFit
+              - name: NodeResourcesBalancedAllocation
+        pluginConfig:
+          - name: NodeResourcesFit
+            args:
+              scoringStrategy:
+                type: MostAllocated
+                resources:
+                  - name: cpu
+                    weight: 1
+                  - name: nvidia.com/gpu
+                    weight: 3
+          - name: NodeResourcesBalancedAllocation
+            args:
+              resources:
+                - name: nvidia.com/gpu
+                  weight: 1
+```
+
+### Increase resilience by distributing pods across topology domains
+
+If you don't configure any cluster-level default constraints for pod topology spreading, then the default kube-scheduler can unevenly spread pods across zones and hosts unless specified in each deployments, every time. Use `PodTopologySpread` to control how pods are distributed across failure domains to ensure high availability and fault tolerance in the event of zone or node failures, without overprovisioning.
+
+For example, spreading replicas across distinct zones safeguards availability during an AZ outage, while a softer host‑level rule prevents scheduling deadlocks when cluster capacity is uneven.
+
+**This configuration is effective for highly‑available stateless services (web/API, gateways) or distributed messaging clusters, like Kafka brokers, that rely on the availability of multiple replicas.**
+
+```yaml
+apiVersion: aks.azure.com/v1alpha1
+kind: SchedulerConfiguration
+metadata:
+  name: upstream
+spec:
+  rawConfig: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    profiles:
+    - schedulerName: pod-distribution-scheduler
+      pluginConfig:
+          - name: PodTopologySpread
+            args:
+              defaultingType: List
+              defaultConstraints:
+                - maxSkew: 2
+                  topologyKey: topology.kubernetes.io/zone
+                  whenUnsatisfiable: DoNotSchedule
+                - maxSkew: 1
+                  topologyKey: kubernetes.io/hostname
+                  whenUnsatisfiable: ScheduleAnyway
+```
+
+### Optimize data locality with Memory and PVC-Aware Scheduling
+
+Use `VolumeBinding` to ensure pods are placed on nodes where _PersistentVolumeClaims_ (PVC) can bind to _PersistentVolumes_ (PV). `VolumeZone` validates that nodes and volumes satisfy zonal requirements to avoid cross-zone storage access.
+
+For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][memory-optimized-vm], while ensuring PVC's bind quickly in the target zone to minimize cross‑zone traffic and latency.
+
+**This scheduler configuration ensures workloads needing large memory footprints are placed on nodes that provide sufficient RAM and maintain proximity to their volumes, enabling fast, zone‑aligned PVC binding for optimal data locality.**
+
+```yaml
+apiVersion: aks.azure.com/v1alpha1
+kind: SchedulerConfiguration
+metadata:
+  name: upstream
+spec:
+  rawConfig: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    profiles:
+      - schedulerName: mem-optimized-node-scheduler
+        plugins:
+          multiPoint:
+            enabled:
+              - name: NodeAffinity
+              - name: NodeResourcesFit
+              - name: VolumeBinding
+              - name: VolumeZone
+        pluginConfig:
+          - name: NodeAffinity
+            args:
+              apiVersion: kubescheduler.config.k8s.io/v1
+              kind: NodeAffinityArgs
+              addedAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 100
+                    preference:
+                      matchExpressions:
+                        - key: topology.kubernetes.io/zone
+                          operator: In
+                          values: [westus3-1, westus3-2, westus3-3]
+                  - weight: 80
+                    preference:
+                      matchExpressions:
+                        - key: node.kubernetes.io/instance-type
+                          operator: In
+                          values:
+                            - Standard_E16s_v5
+                            - Standard_E32s_v5
+          - name: VolumeBinding
+            args:
+              apiVersion: kubescheduler.config.k8s.io/v1
+              kind: VolumeBindingArgs
+              bindTimeoutSeconds: 300
+          - name: NodeResourcesFit
+            args:
+              apiVersion: kubescheduler.config.k8s.io/v1
+              kind: NodeResourcesFitArgs
+              scoringStrategy:
+                type: RequestedToCapacityRatio
+                resources:
+                  - name: memory
+                    weight: 5
+                  - name: cpu
+                    weight: 1
+                  - name: ephemeral-storage
+                    weight: 1
+                requestedToCapacityRatio:
+                  shape:
+                    - utilization: 0
+                      score: 0
+                    - utilization: 30
+                      score: 4
+                    - utilization: 60
+                      score: 8
+                    - utilization: 80
+                      score: 10
+                    - utilization: 90
+                      score: 6
+                    - utilization: 100
+                      score: 0
+```
+
+## Best Practices and Configuration Considerations
+
+As a reminder, there are many parameters the scheduler considers across the [scheduling cycle][scheduling-framework/#interfaces] before a pod is placed on a node that impacts how a pod is assigned. This section is meant to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
+
+1. Ensure the intended deployment is assigned to the _correct_ scheduler profile.
+2. Ensure the custom scheduler profile complements the implementation of Deployments, StorageClasses, and PersistentVolumeClaims. Misalignment can lead to pending pods and degraded workload performance, even when the scheduler is functioning as expected.
+3. Ensure there are enough nodes in each zone to accommodate your deployment replicas and ensure your AKS node pool spans the right availability zones. If not, pods may remain in a pending state.
+4. Use namespaces to separate workloads which improves your ability to validate or troubleshoot.
+5. Assign `priorityClassName` for workloads that should preempt others, this is critical if you use the DefaultPreemption plugin.
+6. If you use the `ImageLocality` plugin, use DaemonSets or node pre-pulling for latency-sensitive images, otherwise the benefit may be minimal.
+7. If your cluster is large, a low `PercentageOfNodesToScore` speeds scheduling by reducing the number of nodes scored, _but_ it may reduce optimal placement.
+8. If you enable a plugin in the `plugins:multipoint` section but do not define it in `pluginConfig`, AKS uses the default configuration for that plugin.
+9. For `NodeResourcesFit`, the ratio matters more than absolute values. So CPU:Memory:Storage = 3:1:2, which means CPU is 3× more influential than memory, and storage is 2x more influential than memory in the scoring phase.
+10. Pair `PodTopologySpread` with Pod Disruption Budgets (PDBs) and multi‑replica strategies for HA during upgrades.
+
+## Next Steps: Try out AKS Configurable Scheduler
+
+With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resilience and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
+
+- For best practices using the kube-scheduler visit [kube-scheduler best practices][best-practices-advanced-scheduler]
+- Configure your workload specific scheduler using the [AKS Configurable Scheduler][concepts-scheduler-configuration]
+- If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
+
+[concepts-scheduler-configuration]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration
+[kueue-overview]: https://learn.microsoft.com/azure/aks/kueue-overview
+[best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
+[scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
+[memory-optimized-vm]: https://learn.microsoft.com/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
+[supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
