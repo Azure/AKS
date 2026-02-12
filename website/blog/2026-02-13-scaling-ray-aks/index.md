@@ -59,7 +59,7 @@ anyscale cloud resource create \
   -f "$CLOUD_RESOURCE_YAML"
 ```
 
-With infrastructure deployed across multiple regions, you can manage and monitor Ray workloads from the Anyscale console. The single-pane-of-glass view shows all registered clusters and their available resources:
+With infrastructure deployed across multiple regions, you can manage and monitor Ray workloads from the Anyscale console. The single pane of glass view shows all registered clusters and their available resources:
 
 ![Anyscale Resources](./anyscale-resources.png)
 
