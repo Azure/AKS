@@ -1,6 +1,6 @@
 ---
-title: "Scaling Ray on AKS"
-description: "Learn how to run production-grade Ray workloads on Azure Kubernetes Service with multi-region support, unified storage, and secure authentication."
+title: "Scaling Anyscale Ray Workloads on AKS"
+description: "Learn how to run production-grade Ray workloads on Azure Kubernetes Service with multi-region support, unified storage, and secure authentication for AI"
 date: 2026-02-13
 authors:
   - anson-qian
@@ -10,7 +10,11 @@ categories:
 tags: ["ai", "ray", "anyscale"]
 ---
 
-Following our [initial announcement of Ray on AKS](https://blog.aks.azure.com/2025/01/13/ray-on-aks), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service (AKS). As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-native computing on Azure](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure), we've focused on three critical areas:
+This post focuses on running Anyscale's managed Ray service on AKS, using the Anyscale Runtime (formerly RayTurbo) for an optimized Ray experience. For open-source Ray on AKS, see our [Ray on AKS overview](https://blog.aks.azure.com/2025/01/13/ray-on-aks).
+
+Ray is an open-source distributed compute framework for scaling Python and AI workloads from a laptop to clusters with thousands of nodes. Anyscale provides a managed Ray platform and an optimized runtime (Anyscale Runtime) with better performance, observability, and resilience than running open-source Ray alone—including fault-tolerant training, enhanced dashboards, and intelligent autoscaling tuning.
+
+As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-native computing on Azure](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service (AKS) in three critical areas:
 
 - **Elastic scalability** through multi-region capacity aggregation
 - **Data persistence** with unified storage across Machine Learning (ML) lifecycle
@@ -64,7 +68,9 @@ Anyscale Workspaces provides a managed environment for running interactive Ray w
 
 ## Cluster Storage Support
 
-Another major challenge is sharing training data, model checkpoints, and artifacts across the ML lifecycle—from pre-training to fine-tuning. [Azure BlobFuse2](https://github.com/Azure/azure-storage-fuse) provides a persistent storage layer with caching for Ray workloads across AKS nodes.
+Another major challenge is sharing training data, model checkpoints, and artifacts across the ML lifecycle—from pre-training to fine-tuning to inference. [Azure BlobFuse2](https://github.com/Azure/azure-storage-fuse) mounts Azure Blob Storage into Ray worker pods as a shared POSIX filesystem, providing unified, cloud-scale storage across the full ML lifecycle.
+
+From Ray's perspective, BlobFuse2 is just a mounted filesystem. Ray tasks and actors read datasets and write checkpoints via normal file I/O, while BlobFuse2 ensures data is persisted to Azure Blob Storage and shared across pods. This keeps Ray code portable while benefiting from Azure-native storage. By decoupling data from compute, you can scale Ray clusters up and down across node pools without data loss, while BlobFuse2's caching prevents GPU stalls during large multi-worker jobs.
 
 ![Cluster Storage Architecture](./cluster-storage.svg)
 
@@ -132,9 +138,9 @@ To use BlobFuse2 with Ray on AKS:
          storage: 100Gi
    ```
 
-5. Configure Ray workloads read from and write to mounted blob path (`/mnt/cluster_storage`).
+5. Configure Ray workloads to read from and write to the mounted blob path (`/mnt/cluster_storage`).
 
-This setup enables Ray workers to read and write data using standard POSIX file operations while benefiting from the durability of object storage. Data scientists and ML engineers can seamlessly transition from pre-training to fine-tuning to inferencing without manual data migration.
+With this setup, Ray workers read and write data using standard POSIX file operations while benefiting from the durability and scalability of Azure Blob Storage. Data scientists and ML engineers can seamlessly transition from pre-training to fine-tuning to inference without manual data migration.
 
 ## Service Principal Authentication
 
