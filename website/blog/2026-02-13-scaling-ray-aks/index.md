@@ -33,7 +33,7 @@ By deploying Ray clusters across multiple AKS clusters in different Azure region
 - **Improve fault tolerance**: If one region experiences an outage or capacity shortage, workloads can be automatically rerouted to healthy clusters
 - **Scale beyond single-cluster limits**: Azure imposes quota limits on GPU instances per region, but multi-region deployments let you aggregate capacity
 
-To add a cluster or another region to your existing Anyscale cloud, define a cloud resource ([cloud_resource.yaml](./aks-anyscale/cloud_resource.yaml)):
+To add a cluster or another region to your existing Anyscale cloud, define a cloud resource ([cloud_resource.yaml](https://github.com/Azure-Samples/aks-anyscale/blob/main/config/cloud_resource.yaml)):
 
 ```yaml
 name: k8s-azure-$REGION
