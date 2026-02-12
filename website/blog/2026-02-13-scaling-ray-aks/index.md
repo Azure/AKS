@@ -56,7 +56,7 @@ Then create the cloud resource using the Anyscale CLI:
 ```bash
 anyscale cloud resource create \
   --cloud "$ANYSCALE_CLOUD_NAME" \
-  -f "$CLOUD_RESOURCE_YAML"
+  -f ./aks-anyscale/cloud_resource.yaml
 ```
 
 With infrastructure deployed across multiple regions, you can manage and monitor Ray workloads from the Anyscale console. The single pane of glass view shows all registered clusters and their available resources:
