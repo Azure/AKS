@@ -22,6 +22,7 @@ As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-nativ
 
 Whether you're [fine-tuning models with DeepSpeed or LLaMA-Factory](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/finetuning) or [deploying inference endpoints for LLMs ranging from small to large-scale reasoning models](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/inferencing), this architecture delivers a production-grade ML platform that scales with your needs.
 
+<!-- truncate -->
 ## Multi-cluster Multi-region Support
 
 GPU scarcity remains one of the most significant challenges in large-scale ML operations. High-demand accelerators like NVIDIA GPUs often face capacity constraints in specific Azure regions, leading to delays in provisioning clusters or launching training jobs.
