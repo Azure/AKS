@@ -67,7 +67,7 @@ Anyscale Workspaces provides a managed environment for running interactive Ray w
 
 ## Unified Storage
 
-Another major challenge is sharing training data, model checkpoints, and artifacts across the ML/AI workflow—from pre-training to fine-tuning to inference. [Azure BlobFuse2](https://github.com/Azure/azure-storage-fuse) mounts Azure Blob Storage into Ray worker pods as a shared POSIX filesystem, providing unified, cloud-scale storage beyond workload lifecyle.
+Another major challenge is sharing training data, model checkpoints, and artifacts across the ML/AI workflow—from pre-training to fine-tuning to inference. [Azure BlobFuse2](https://github.com/Azure/azure-storage-fuse) mounts Azure Blob Storage into Ray worker pods as a shared POSIX filesystem, providing unified, cloud-scale storage beyond workload lifecycle.
 
 From Ray's perspective, BlobFuse2 is just a mounted filesystem. Ray tasks and actors read datasets and write checkpoints via normal file I/O, while BlobFuse2 ensures data is persisted to Azure Blob Storage and shared across pods. This keeps Ray code portable while benefiting from Azure-native storage. By decoupling data from compute, you can scale Ray clusters up and down across node pools without data loss, while local caching prevents GPU stalls during large training job run.
 
