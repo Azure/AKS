@@ -144,10 +144,10 @@ With this setup, Ray workers read and write data using standard POSIX file opera
 
 Maintaining secure and reliable authentication between Ray clusters and Azure resources can be challenging. Previous integration relied on CLI tokens or API keys that expire every 30 days, requiring manual rotation or causing potential service disruptions.
 
-By using Azure service principals with managed identities, you can eliminate this operational burden. Service principals provide long-lived, automatically managed credentials that integrate seamlessly with Azure's identity and access management (IAM) system:
+By combining Microsoft Entra service principals with managed identities (workload identity), you eliminate this operational burden without storing long-lived secrets in the cluster. Pods use the managed identity to obtain short-lived access tokens for the service principal from Microsoft Entra ID, and Entra automatically refreshes these tokens as needed:
 
-- No credentials are stored in Kubernetes clusters
-- Automatic token refresh without manual intervention
+- No long-lived credentials (client secrets or certificates) are stored in Kubernetes clusters
+- Automatic short-lived token issuance and refresh without manual intervention
 - Fine-grained RBAC for Azure resource access
 - Full audit trails through Azure Activity Logs
 
