@@ -47,7 +47,7 @@ Updated Cilium to [v1.17.9](https://github.com/cilium/cilium/releases/tag/v1.17.
 * Application Monitoring has been updated to [v1.1.0](https://github.com/microsoft/appmonitoring-k8s/releases/tag/1.1.0).
 * Container Insights has been updated to [3.1.34](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.34).
 * [Application routing](https://learn.microsoft.com/azure/aks/app-routing) operator has been updated to [v0.2.17](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.17) to address security vulnerabilities in ingress-nginx, including: [CVE-2026-1580](https://nvd.nist.gov/vuln/detail/CVE-2026-1580), [CVE-2026-24512](https://nvd.nist.gov/vuln/detail/CVE-2026-24512), [CVE-2026-24513](https://nvd.nist.gov/vuln/detail/CVE-2026-24513), [CVE-2026-24514](https://nvd.nist.gov/vuln/detail/CVE-2026-24514).
-* Cilium operator has been updated to [v1.16.16](https://github.com/cilium/cilium/releases/tag/v1.16.16) and agent has been updated to[v1.17.9](https://github.com/cilium/cilium/releases/tag/v1.17.9).
+* Cilium operator has been updated to [v1.16.16](https://github.com/cilium/cilium/releases/tag/v1.16.16) and agent has been updated to [v1.17.9](https://github.com/cilium/cilium/releases/tag/v1.17.9).
 * Azure Disk CSI driver has been updated to [v1.32.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.12) and [v1.33.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.8) for AKS 1.33 and 1.34.
 
 ---
