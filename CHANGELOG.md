@@ -26,7 +26,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * AKS no longer creates or updates Network Security Groups on subnets it delegates for Application Gateway and Virtual Kubelet, improving reliability in policy-managed environments.
 * AKS Automatic clusters now block creation or updates of ClusterRoles and Roles that grant `nodes/proxy` permissions via a ValidatingAdmissionPolicy. This prevents a potential [remote code execution vector](https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/#kubelet-authorization:~:text=Warning%3A,executing%20commands%20in%20any%20container%20running%20on%20the%20node.) through the kubelet API. Approved system users and groups are exempt.
 * [Fleet Manager](https://learn.microsoft.com/azure/kubernetes-fleet/) now creates `ClusterResourcePlacementStatus` resources within managed namespaces on hub clusters. This allows application team members who don't have cluster-level permissions to view placement status.
-* AKS Deployment Safeguards no longer **Deny** missing startup, liveness and readiness probe requirements on AKS Automatic clusters. The policy has been changed to **warn only**. [Learn more](https://learn.microsoft.com/azure/aks/deployment-safeguards).
+* AKS Deployment Safeguards no longer **Deny** missing startup, liveness, and readiness probe requirements on AKS Automatic clusters. The policy has been changed to **warn only**. [Learn more](https://learn.microsoft.com/azure/aks/deployment-safeguards).
 * Managed Gateway API no longer requires any AKS add-ons to be installed as a prerequisite. You can now enable Managed Gateway API on an AKS cluster without enabling additional add-ons.
 
 ### Component Updates
