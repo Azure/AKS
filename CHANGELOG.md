@@ -5,8 +5,11 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ## Announcements
-* Starting with Kubernetes version 1.26, in-tree persistent volume types [kubernetes.io/azure-disk](http://kubernetes.io/azure-disk) and [kubernetes.io/azure-file](http://kubernetes.io/azure-file) are deprecated and will no longer be supported ([see more](https://learn.microsoft.com/en-us/azure/aks/csi-storage-drivers#migrate-custom-in-tree-storage-classes-to-csi)). A new Validating Admission Policy has been added to block in-tree drivers' creation for 1.35+ clusters.
-* Istio-based service mesh add-on revision **asm-1-25** has been deprecated. **asm-1-28** is now supported. See the [Istio add-on upgrade documentation](https://learn.microsoft.com/azure/aks/istio-upgrade).
+* Starting with Kubernetes version 1.26, in-tree persistent volume types `kubernetes.io/azure-disk` and `kubernetes.io/azure-file` are deprecated and will no longer be supported ([see more](https://learn.microsoft.com/azure/aks/csi-storage-drivers#migrate-custom-in-tree-storage-classes-to-csi)). A new `ValidatingAdmissionPolicy` has been added to block in-tree drivers' creation for 1.35+ clusters.
+* Istio-based service mesh add-on revision **asm-1-25** has been deprecated. **asm-1-28** is now supported. See the [Istio add-on upgrade documentation](https://learn.microsoft.com/azure/aks/istio-upgrade).  
+* [Windows Server 2019 retires on March 1, 2026,](https://aka.ms/aks/ws2019-retirement-github) please [transition to Windows Server 2022+](https://aka.ms/aks/upgrade-windows-os-version) by that date. After that date, AKS will no longer produce new node images or provide security patches. After that date, you will not be able to create new node pools with Windows Server 2019 on any Kubernetes version. All existing node pools with Windows Server 2019 will be unsupported. Windows Server 2019 is not supported in Kubernetes version 1.33 and above. Starting on April 1, 2027, AKS will remove all existing node images for Windows Server 2019, meaning that scaling and remediation (reimage and redeploy) operations to fail.  
+* [Windows Server Annual Channel (Preview) on AKS will be retired on May 15, 2026](https://aka.ms/aks/windows-annual-channel-retirement), please [transition to the Long Term Servicing Channel (LTSC)](https://aka.ms/aks/upgrade-windows-os-version) by that date. From now to May 15, 2026 you can continue to use Windows Server Annual Channel (Preview) without disruption. On May 15, 2026, AKS will no longer produce new Windows Server Annual Channel node images or provide security patches. You will not be able to create new node pools with Windows Server Annual Channel. On May 15, 2027, AKS will remove all existing Windows Server Annual Channel node images, which will cause scaling and remediation (reimage and redeploy) operations to fail.  
+
 
 ## Kubernetes Version
 * AKS Kubernetes patch versions `1.34.2`, `1.33.6`, and `1.32.10` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
@@ -15,11 +18,11 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Managed GPU profiles](https://learn.microsoft.com/azure/aks/gpu-cluster) are now available in public preview via API version `2026-01-02-preview`. 
 
 ## Features
-* [API Server VNET Integration](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
-* HTTP Proxy and custom certificate authority (CA) now supported in node auto provisioning (NAP) enabled clusters. Visit [HTTP Proxy documentation](https://learn.microsoft.com/azure/aks/http-proxy) and [Custom CA documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) to enable these features.
+* [API Server VNET Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
+* HTTP Proxy and Custom Certificate Authority (CA) are now supported in Node Auto-provisioning (NAP) enabled clusters. Visit [HTTP Proxy documentation](https://learn.microsoft.com/azure/aks/http-proxy) and [Custom CA documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) to enable these features.
 
 ## Bug Fixes
-* Revised error message for creating an AKS managed namespace to instruct users to create a Fleet Managed Namespace on the Fleet instead of directly on a member cluster.
+* Revised error message for creating an AKS managed namespace to instruct users to create a [Fleet Managed Namespace](https://learn.microsoft.com/azure/kubernetes-fleet/howto-managed-namespaces) on the Fleet instead of directly on a member cluster.
 
 ## Behavioral Changes
 * [LocalDNS](https://learn.microsoft.com/azure/aks/cluster-container-registry-integration) is now enabled by default for clusters running Kubernetes 1.35+.
@@ -36,7 +39,9 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Azure Blob CSI driver has been updated to [v1.26.9](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.9) (k8s >= 1.32) and [v1.27.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.2) (k8s >= 1.34).
 * Windows node images:
   * Server 2019 Gen1 – [17763.8276.260120](vhd-notes/AKSWindows/2019/17763.8276.260120.txt).
+  * Server 2019 Gen1 – [17763.8389.260210](vhd-notes/AKSWindows/2019/17763.8389.260210.txt).
   * Server 2022 Gen1/Gen2 – [20348.4648.260120](vhd-notes/AKSWindows/2022/20348.4648.260120.txt).
+  * Server 2022 Gen1/Gen2 – [20348.4773.260210](vhd-notes/AKSWindows/2022/20348.4773.260210.txt).
 * Manged Prometheus add-on has been updated to [v6.24.2](https://github.com/Azure/prometheus-collector/blob/rashmi/update-image-jan-2026/RELEASENOTES.md#release-01-22-2026).
 * Control plane components (kube-apiserver, kube-scheduler, kube-controller-manager, kubectl, etcd, customer-net-probe) have received tag version bumps to address CVEs.
 * ACNS security agent (FQDN policy) images have been updated to v1.16.16 (k8s <= 1.31) and v1.17.9 (k8s >= 1.32) to address security vulnerabilities.
@@ -48,6 +53,7 @@ Updated Cilium to [v1.17.9](https://github.com/cilium/cilium/releases/tag/v1.17.
 * [Application routing](https://learn.microsoft.com/azure/aks/app-routing) operator has been updated to [v0.2.17](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.17) to address security vulnerabilities in ingress-nginx, including: [CVE-2026-1580](https://nvd.nist.gov/vuln/detail/CVE-2026-1580), [CVE-2026-24512](https://nvd.nist.gov/vuln/detail/CVE-2026-24512), [CVE-2026-24513](https://nvd.nist.gov/vuln/detail/CVE-2026-24513), [CVE-2026-24514](https://nvd.nist.gov/vuln/detail/CVE-2026-24514).
 * Cilium operator has been updated to [v1.16.16](https://github.com/cilium/cilium/releases/tag/v1.16.16) and agent has been updated to[v1.17.9](https://github.com/cilium/cilium/releases/tag/v1.17.9).
 * Azure Disk CSI driver has been updated to [v1.32.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.12) and [v1.33.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.8) for AKS 1.33 and 1.34.
+* Agentbaker has been updated to v0.20260127.0. See [Agentbaker release notes](https://github.com/Azure/AgentBaker/releases) for details. 
 
 ---
 
