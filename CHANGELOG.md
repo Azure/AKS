@@ -5,7 +5,7 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ## Announcements
-* Starting with Kubernetes version 1.26, in-tree persistent volume types [kubernetes.io/azure-disk](http://kubernetes.io/azure-disk) and [kubernetes.io/azure-file](http://kubernetes.io/azure-file) are deprecated and will no longer be supported ([see more](https://learn.microsoft.com/en-us/azure/aks/csi-storage-drivers#migrate-custom-in-tree-storage-classes-to-csi)). A new Validating Admission Policy has been added to block in-tree drivers' creation for 1.35+ clusters.
+* Starting with Kubernetes version 1.26, in-tree persistent volume types [kubernetes.io/azure-disk](https://kubernetes.io/azure-disk) and [kubernetes.io/azure-file](https://kubernetes.io/azure-file) are deprecated and will no longer be supported ([see more](https://learn.microsoft.com/en-us/azure/aks/csi-storage-drivers#migrate-custom-in-tree-storage-classes-to-csi)). A new `ValidatingAdmissionPolicy` has been added to block in-tree drivers' creation for 1.35+ clusters.
 * Istio-based service mesh add-on revision **asm-1-25** has been deprecated. **asm-1-28** is now supported. See the [Istio add-on upgrade documentation](https://learn.microsoft.com/azure/aks/istio-upgrade).
 
 ## Kubernetes Version
