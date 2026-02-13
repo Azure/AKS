@@ -1,26 +1,25 @@
 ---
 title: "Scaling Anyscale Ray Workloads on AKS"
-description: "Learn how to run production-grade Ray workloads on Azure Kubernetes Service with multi-region support, unified storage, and secure authentication for AI"
+description: "Learn how to run production-grade Ray workloads on Azure Kubernetes Service with multi-cluster multi-region, unified storage, and automated credential management for AI"
 date: 2026-02-13
 authors:
   - anson-qian
   - bob-mital
   - kenneth-kilty
-categories:
 tags: ["ai", "ray", "anyscale"]
 ---
 
 This post focuses on running Anyscale's managed Ray service on AKS, using the Anyscale Runtime (formerly RayTurbo) for an optimized Ray experience. For open-source Ray on AKS, see our [Ray on AKS overview](https://blog.aks.azure.com/2025/01/13/ray-on-aks).
 
-Ray is an open-source distributed compute framework for scaling Python and AI workloads from a laptop to clusters with thousands of nodes. Anyscale provides a managed Ray platform and an optimized runtime (Anyscale Runtime) with better performance, observability, and resilience than running open-source Ray alone—including fault-tolerant training, enhanced dashboards, and intelligent autoscaling tuning.
+Ray is an open-source distributed compute framework for scaling Python and AI workloads from a laptop to clusters with thousands of nodes. Anyscale provides a managed ML/AI platform and an optimized Ray runtime with better scalability, observability, and operability than running open-source [KubeRay](https://github.com/ray-project/kuberay)—including intelligent autoscaling enhanced monitoring and fault-tolerant training.
 
 As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-native computing on Azure](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service (AKS) in three critical areas:
 
-- **Elastic scalability** through multi-region capacity aggregation
-- **Data persistence** with unified storage across Machine Learning (ML) lifecycle
+- **Elastic scalability** through multi-cluster multi-region capacity aggregation
+- **Data persistence** with unified storage across ML/AI development and operation lifecycle
 - **Operational simplicity** through automated credential management with service principal
 
-Whether you're [fine-tuning models with DeepSpeed or LLaMA-Factory](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/finetuning) or [deploying inference endpoints for LLMs ranging from small to large-scale reasoning models](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/inferencing), this architecture delivers a production-grade ML platform that scales with your needs.
+Whether you're [fine-tuning models with DeepSpeed or LLaMA-Factory](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/finetuning) or [deploying inference endpoints for LLMs ranging from small to large-scale reasoning models](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/inferencing), Anyscale on AKS delivers a production-grade ML/AI platform that scales with your needs.
 
 <!-- truncate -->
 ## Multi-cluster Multi-region Support
