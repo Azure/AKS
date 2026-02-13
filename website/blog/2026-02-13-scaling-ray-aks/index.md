@@ -22,18 +22,17 @@ As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-nativ
 Whether you're [fine-tuning models with DeepSpeed or LLaMA-Factory](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/finetuning) or [deploying inference endpoints for LLMs ranging from small to large-scale reasoning models](https://github.com/Azure-Samples/aks-anyscale/tree/main/examples/inferencing), Anyscale on AKS delivers a production-grade ML/AI platform that scales with your needs.
 
 <!-- truncate -->
-## Multi-cluster Multi-region Support
+## Multi-cluster Multi-region
 
 GPU scarcity remains one of the most significant challenges in large-scale ML operations. High-demand accelerators like NVIDIA GPUs often face capacity constraints in specific Azure regions, leading to delays in provisioning clusters or launching training jobs.
 
 By deploying Ray clusters across multiple AKS clusters in different Azure regions, you can:
 
 - **Increase GPU availability**: Distribute workloads across regions with available capacity, reducing wait times for cluster provisioning
-- **Use regional pricing differences**: Take advantage of lower spot instance prices or reserved capacity in specific regions
-- **Improve fault tolerance**: If one region experiences an outage or capacity shortage, workloads can be automatically rerouted to healthy clusters
 - **Scale beyond single-cluster limits**: Azure imposes quota limits on GPU instances per region, but multi-region deployments let you aggregate capacity
+- **Improve fault tolerance**: If one region experiences an outage or capacity shortage, workloads can be automatically rerouted to healthy clusters
 
-To add a cluster or another region to your existing Anyscale cloud, define a cloud resource ([cloud_resource.yaml](https://github.com/Azure-Samples/aks-anyscale/blob/main/config/cloud_resource.yaml)):
+To add a cluster or another region to your existing Anyscale cloud, define a cloud resource as below [cloud_resource.yaml](https://github.com/Azure-Samples/aks-anyscale/blob/main/config/cloud_resource.yaml):
 
 ```yaml
 name: k8s-azure-$REGION
@@ -55,7 +54,7 @@ Then create the cloud resource using the Anyscale CLI:
 ```bash
 anyscale cloud resource create \
   --cloud "$ANYSCALE_CLOUD_NAME" \
-  -f ./aks-anyscale/cloud_resource.yaml
+  -f cloud_resource.yaml
 ```
 
 With infrastructure deployed across multiple regions, you can manage and monitor Ray workloads from the Anyscale console. The single pane of glass view shows all registered clusters and their available resources:
@@ -66,11 +65,11 @@ Anyscale Workspaces provides a managed environment for running interactive Ray w
 
 ![Anyscale Workspaces](./anyscale-workspaces.png)
 
-## Cluster Storage Support
+## Unified Storage
 
-Another major challenge is sharing training data, model checkpoints, and artifacts across the ML lifecycle—from pre-training to fine-tuning to inference. [Azure BlobFuse2](https://github.com/Azure/azure-storage-fuse) mounts Azure Blob Storage into Ray worker pods as a shared POSIX filesystem, providing unified, cloud-scale storage across the full ML lifecycle.
+Another major challenge is sharing training data, model checkpoints, and artifacts across the ML/AI workflow—from pre-training to fine-tuning to inference. [Azure BlobFuse2](https://github.com/Azure/azure-storage-fuse) mounts Azure Blob Storage into Ray worker pods as a shared POSIX filesystem, providing unified, cloud-scale storage beyond workload lifecyle.
 
-From Ray's perspective, BlobFuse2 is just a mounted filesystem. Ray tasks and actors read datasets and write checkpoints via normal file I/O, while BlobFuse2 ensures data is persisted to Azure Blob Storage and shared across pods. This keeps Ray code portable while benefiting from Azure-native storage. By decoupling data from compute, you can scale Ray clusters up and down across node pools without data loss, while BlobFuse2's caching prevents GPU stalls during large multi-worker jobs.
+From Ray's perspective, BlobFuse2 is just a mounted filesystem. Ray tasks and actors read datasets and write checkpoints via normal file I/O, while BlobFuse2 ensures data is persisted to Azure Blob Storage and shared across pods. This keeps Ray code portable while benefiting from Azure-native storage. By decoupling data from compute, you can scale Ray clusters up and down across node pools without data loss, while local caching prevents GPU stalls during large training job run.
 
 ![Cluster Storage Architecture](./cluster-storage.svg)
 
@@ -82,9 +81,7 @@ To use BlobFuse2 with Ray on AKS:
 
    ```bash
    az aks create \
-     --resource-group "$RESOURCE_GROUP" \
-     --name "$AKS_CLUSTER_NAME" \
-     --location "$REGION" \
+     ...
      --enable-blob-driver
      ...
    ```
@@ -138,17 +135,17 @@ To use BlobFuse2 with Ray on AKS:
          storage: 100Gi
    ```
 
-5. Configure Ray workloads to read from and write to the mounted blob path (`/mnt/cluster_storage`).
+5. Configure Ray workloads to read from and write to mounted path `/mnt/cluster_storage`.
 
-With this setup, Ray workers read and write data using standard POSIX file operations while benefiting from the durability and scalability of Azure Blob Storage. Data scientists and ML engineers can seamlessly transition from pre-training to fine-tuning to inference without manual data migration.
+With this setup, Ray workers read and write data using standard POSIX file operations while benefiting from the durability and scalability of Azure Blob Storage. ML/AI engineers can seamlessly transition from pre-training to fine-tuning to inference without manual data migration.
 
 ## Service Principal Authentication
 
-Maintaining secure and reliable authentication between Ray clusters and Azure resources can be challenging. Previous approaches often relied on CLI tokens or API keys that expire every 30 days, requiring manual rotation or causing potential service disruptions.
+Maintaining secure and reliable authentication between Ray clusters and Azure resources can be challenging. Previous integration relied on CLI tokens or API keys that expire every 30 days, requiring manual rotation or causing potential service disruptions.
 
 By using Azure service principals with managed identities, you can eliminate this operational burden. Service principals provide long-lived, automatically managed credentials that integrate seamlessly with Azure's identity and access management (IAM) system:
 
-- Zero credential storage in Kubernetes clusters
+- Zero credential stored in Kubernetes clusters
 - Automatic token refresh without manual intervention
 - Fine-grained RBAC for Azure resource access
 - Full audit trails through Azure Activity Logs
@@ -165,8 +162,10 @@ In this authentication flow:
 4. The service principal's `appId` becomes the `AZURE_CLIENT_ID` environment variable.
 5. The managed identity's `appId` appears as the `oid` claim in the resulting access token.
 
+This approach removes the need for manual credential rotation by letting Azure automatically manage token lifecycle, reducing operational overhead and minimizing the risk of authentication failures due to expired secrets. In a multi-cluster environment, this becomes even more critical—automated credential management across clusters simplifies operations and ensures consistent, secure authentication at scale.
+
 ## Conclusion
 
-Running Ray at scale on Azure Kubernetes Service requires careful consideration of compute, storage, and security strategies. Whether you’re running hundreds of small experiments or large, multi-day training jobs, Anyscale on AKS delivers the flexibility and reliability required for modern ML operations.
+Running Ray at scale on Azure Kubernetes Service requires careful consideration of compute, storage, and security strategies. Whether you're running hundreds of small experiments or large, multi-day training jobs, Anyscale on AKS gives you the elastic scale, unified storage, and operational simplicity to take ML/AI workloads from development to production.
 
 Interested? Reach out for private preview access—more to come.
