@@ -11,7 +11,7 @@ tags: ["ai", "ray", "anyscale"]
 
 This post focuses on running Anyscale's managed Ray service on AKS, using the Anyscale Runtime (formerly RayTurbo) for an optimized Ray experience. For open-source Ray on AKS, see our [Ray on AKS overview](https://blog.aks.azure.com/2025/01/13/ray-on-aks).
 
-Ray is an open-source distributed compute framework for scaling Python and AI workloads from a laptop to clusters with thousands of nodes. Anyscale provides a managed ML/AI platform and an optimized Ray runtime with better scalability, observability, and operability than running open-source [KubeRay](https://github.com/ray-project/kuberay)—including intelligent autoscaling enhanced monitoring and fault-tolerant training.
+Ray is an open-source distributed compute framework for scaling Python and AI workloads from a laptop to clusters with thousands of nodes. Anyscale provides a managed ML/AI platform and an optimized Ray runtime with better scalability, observability, and operability than running open-source [KubeRay](https://github.com/ray-project/kuberay)—including intelligent autoscaling, enhanced monitoring, and fault-tolerant training.
 
 As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-native computing on Azure](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service (AKS) in three critical areas:
 
