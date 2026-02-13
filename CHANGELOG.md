@@ -20,7 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [API Server VNET Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
 * HTTP Proxy and Custom Certificate Authority (CA) are now supported in Node Auto-provisioning (NAP) enabled clusters. Visit [HTTP Proxy documentation](https://learn.microsoft.com/azure/aks/http-proxy) and [Custom CA documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) to enable these features.
 
-## Bug Fixes
+### Bug Fixes
 * Revised error message for creating an AKS managed namespace to instruct users to create a [Fleet Managed Namespace](https://learn.microsoft.com/azure/kubernetes-fleet/howto-managed-namespaces) on the Fleet instead of directly on a member cluster.
 
 ### Behavioral Changes
