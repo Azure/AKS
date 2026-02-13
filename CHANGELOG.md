@@ -23,7 +23,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Behavioral Changes
 * [LocalDNS](https://learn.microsoft.com/azure/aks/localdns-custom) is now enabled by default for clusters running Kubernetes 1.35+.
-* For clusters using the Istio service mesh add-on, **native sidecar injection** is now enabled by default when upgrading to asm-1-29. 
+* For clusters using the Istio service mesh add-on, **native sidecar injection** is now enabled by default when upgrading to asm-1-29.
 * Nodes are now annotated with a `kubernetes.azure.com/security-patch-timestamp` annotation during a security VHD reboot upgrade. This gives you a unified way to verify when the last security patch was applied to each node.
 * AKS no longer creates or updates Network Security Groups on subnets it delegates for Application Gateway and Virtual Kubelet, improving reliability in policy-managed environments.
 * AKS Automatic clusters now block creation or updates of ClusterRoles and Roles that grant `nodes/proxy` permissions via a ValidatingAdmissionPolicy. This prevents a potential [remote code execution vector](https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/#kubelet-authorization:~:text=Warning%3A,executing%20commands%20in%20any%20container%20running%20on%20the%20node.) through the kubelet API. Approved system users and groups are exempt.
