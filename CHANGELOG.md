@@ -15,7 +15,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Managed GPU profiles](https://learn.microsoft.com/azure/aks/gpu-cluster) are now available in public preview via API version `2026-01-02-preview`.
 
 ### Features
-* [API Server VNet Integration](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
+* [API Server VNet Integration](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral.
 * HTTP Proxy and custom certificate authority (CA) are now supported in node auto provisioning (NAP) enabled clusters. Visit [HTTP Proxy documentation](https://learn.microsoft.com/azure/aks/http-proxy) and [Custom CA documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) to enable these features.
 
 ### Bug Fixes
