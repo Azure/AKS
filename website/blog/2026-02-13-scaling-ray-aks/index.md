@@ -145,12 +145,12 @@ Maintaining secure and reliable authentication between Ray clusters and Azure re
 
 By using Azure service principals with managed identities, you can eliminate this operational burden. Service principals provide long-lived, automatically managed credentials that integrate seamlessly with Azure's identity and access management (IAM) system:
 
-- Zero credential stored in Kubernetes clusters
+- No credentials are stored in Kubernetes clusters
 - Automatic token refresh without manual intervention
 - Fine-grained RBAC for Azure resource access
 - Full audit trails through Azure Activity Logs
 
-The following diagram illustrates how service principal enables the Anyscale Kubernetes Operator to authenticate without storing credentials:
+The following diagram illustrates how the service principal enables the Anyscale Kubernetes Operator to authenticate without storing credentials:
 
 ![Authentication Flow](./auth-flow.svg)
 
