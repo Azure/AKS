@@ -20,7 +20,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Revised error message for creating an AKS managed namespace to instruct users to create a Fleet Managed Namespace on the Fleet instead of directly on a member cluster.
 
 ### Behavioral Changes
-* [LocalDNS](https://learn.microsoft.com/azure/aks/cluster-container-registry-integration) is now enabled by default for clusters running Kubernetes 1.35+.
+* [LocalDNS](https://learn.microsoft.com/azure/aks/localdns-custom) is now enabled by default for clusters running Kubernetes 1.35+.
 * For clusters using the Istio service mesh add-on, **native sidecar injection** is now enabled by default when upgrading to asm-1-29. 
 * Nodes are now annotated with a `kubernetes.azure.com/security-patch-timestamp` annotation during a security VHD reboot upgrade. This gives you a unified way to verify when the last security patch was applied to each node.
 * AKS no longer creates or updates Network Security Groups on subnets it delegates for Application Gateway and Virtual Kubelet, improving reliability in policy-managed environments.
