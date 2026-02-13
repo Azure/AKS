@@ -168,4 +168,4 @@ This approach removes the need for manual credential rotation by letting Azure a
 
 Running Ray at scale on Azure Kubernetes Service requires careful consideration of compute, storage, and security strategies. Whether you're running hundreds of small experiments or large, multi-day training jobs, Anyscale on AKS gives you the elastic scale, unified storage, and operational simplicity to take ML/AI workloads from development to production.
 
-Interested? Reach out for private preview access—more to come.
+To explore private preview access for Anyscale on AKS, contact your Microsoft account team or open a request on the [AKS GitHub repository](https://github.com/Azure/AKS/issues/new/choose) with details about your Ray workloads and target regions.
