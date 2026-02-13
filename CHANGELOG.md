@@ -37,11 +37,27 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Konnectivity has been updated to v0.31.4-6 to resolve CVEs: [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729), [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
 * Karpenter has been updated to [v1.6.8](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.6.8) to enforce stricter DNS forwarding rules.
 * Azure Blob CSI driver has been updated to [v1.26.9](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.9) (k8s >= 1.32) and [v1.27.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.2) (k8s >= 1.34).
-* Windows node images:
-  * Server 2019 Gen1 – [17763.8276.260120](vhd-notes/AKSWindows/2019/17763.8276.260120.txt).
-  * Server 2019 Gen1 – [17763.8389.260210](vhd-notes/AKSWindows/2019/17763.8389.260210.txt).
-  * Server 2022 Gen1/Gen2 – [20348.4648.260120](vhd-notes/AKSWindows/2022/20348.4648.260120.txt).
-  * Server 2022 Gen1/Gen2 – [20348.4773.260210](vhd-notes/AKSWindows/2022/20348.4773.260210.txt).
+* AKS Windows images:
+  * Server 2019 – [17763.8276.260120](vhd-notes/AKSWindows/2019/17763.8276.260120.txt).
+  * Server 2019 – [17763.8389.260210](vhd-notes/AKSWindows/2019/17763.8389.260210.txt).
+  * Server 2022 – [20348.4648.260120](vhd-notes/AKSWindows/2022/20348.4648.260120.txt).
+  * Server 2022 – [20348.4773.260210](vhd-notes/AKSWindows/2022/20348.4773.260210.txt).
+  * Server 2025 – [26100.32230.260120](vhd-notes/AKSWindows/2025/26100.32230.260120.txt).
+  * Server 2025 – [26100.32370.260210](vhd-notes/AKSWindows/2025/26100.32370.260210.txt).
+* AKS Azure Linux images:
+  * v3.0 - [202512.18.0](vhd-notes/AzureLinuxv3/202512.18.0.txt).
+  * v3.0 - [202601.07.0](vhd-notes/AzureLinuxv3/202601.07.0.txt).
+  * v3.0 - [202601.13.0](vhd-notes/AzureLinuxv3/202601.13.0.txt).
+  * v3.0 - [202601.27.0](vhd-notes/AzureLinuxv3/202601.27.0.txt).
+* AKS Ubuntu images:
+  * Ubuntu 22.04 - [202512.18.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202512.18.0.txt).
+  * Ubuntu 22.04 - [202601.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202601.07.0.txt).
+  * Ubuntu 22.04 - [202601.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202601.13.0.txt).
+  * Ubuntu 22.04 - [202601.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202601.27.0.txt).
+  * Ubuntu 24.04 - [202512.18.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202512.18.0.txt).
+  * Ubuntu 24.04 - [202601.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202601.07.0.txt).
+  * Ubuntu 24.04 - [202601.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202601.13.0.txt).
+  * Ubuntu 24.04 - [202601.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202601.27.0.txt).
 * Managed Prometheus add-on has been updated to [v6.24.2](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-01-22-2026).
 * Control plane components (kube-apiserver, kube-scheduler, kube-controller-manager, kubectl, etcd, customer-net-probe) have received tag version bumps to address CVEs.
 * ACNS has been updated to [v1.16.16](https://github.com/cilium/cilium/releases/tag/v1.16.16) for Kubernetes v1.31 to resolve CVEs: [CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874) , [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907) , [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183) , [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185) , [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186) , [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187) , [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188) , [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189) , [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723) , [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724) , [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725) , [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913) , [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673) , [CVE-2025-47906](https://nvd.nist.gov/vuln/detail/CVE-2025-47906) , [CVE-2025-6297](https://nvd.nist.gov/vuln/detail/CVE-2025-6297) , [CVE-2023-4039](https://nvd.nist.gov/vuln/detail/CVE-2023-4039) , [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058) , [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230) 
