@@ -1,27 +1,25 @@
-# Azure Kubernetes Service Changelog
-
-# Release Notes 2026-02-08
+## Release Notes 2026-02-08
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
-## Announcements
+### Announcements
 * Starting with Kubernetes version 1.26, in-tree persistent volume types [kubernetes.io/azure-disk](https://kubernetes.io/azure-disk) and [kubernetes.io/azure-file](https://kubernetes.io/azure-file) are deprecated and will no longer be supported ([see more](https://learn.microsoft.com/en-us/azure/aks/csi-storage-drivers#migrate-custom-in-tree-storage-classes-to-csi)). A new `ValidatingAdmissionPolicy` has been added to block in-tree drivers' creation for 1.35+ clusters.
 * Istio-based service mesh add-on revision **asm-1-25** has been deprecated. **asm-1-28** is now supported. See the [Istio add-on upgrade documentation](https://learn.microsoft.com/azure/aks/istio-upgrade).
 
-## Kubernetes Version
+### Kubernetes Version
 * AKS Kubernetes patch versions `1.34.2`, `1.33.6`, and `1.32.10` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
 
-## Preview Features
+### Preview Features
 * [Managed GPU profiles](https://learn.microsoft.com/azure/aks/gpu-cluster) are now available in public preview via API version `2026-01-02-preview`. 
 
-## Features
+### Features
 * [API Server VNET Integration](https://learn.microsoft.com/en-us/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
 * HTTP Proxy and custom certificate authority (CA) are now supported in node auto provisioning (NAP) enabled clusters. Visit [HTTP Proxy documentation](https://learn.microsoft.com/azure/aks/http-proxy) and [Custom CA documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) to enable these features.
 
-## Bug Fixes
+### Bug Fixes
 * Revised error message for creating an AKS managed namespace to instruct users to create a Fleet Managed Namespace on the Fleet instead of directly on a member cluster.
 
-## Behavioral Changes
+### Behavioral Changes
 * [LocalDNS](https://learn.microsoft.com/azure/aks/cluster-container-registry-integration) is now enabled by default for clusters running Kubernetes 1.35+.
 * For clusters using the Istio service mesh add-on, **native sidecar injection** is now enabled by default when upgrading to asm-1-29. 
 * Nodes are now annotated with a `kubernetes.azure.com/security-patch-timestamp` annotation during a security VHD reboot upgrade. This gives you a unified way to verify when the last security patch was applied to each node.
@@ -31,7 +29,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * AKS Deployment Safeguards no longer **Deny** missing startup, liveness and readiness probe requirements on AKS Automatic clusters. The policy has been changed to **warn only**. [Learn more](https://learn.microsoft.com/azure/aks/deployment-safeguards).
 * Managed Gateway API no longer requires any AKS add-ons to be installed as a prerequisite. You can now enable Managed Gateway API on an AKS cluster without enabling additional add-ons.
 
-## Component Updates
+### Component Updates
 * Konnectivity has been updated to v0.31.4-6 to resolve CVEs: [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729), [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
 * Karpenter has been updated to [v1.6.8](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.6.8) to enforce stricter DNS forwarding rules.
 * Azure Blob CSI driver has been updated to [v1.26.9](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.9) (k8s >= 1.32) and [v1.27.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.2) (k8s >= 1.34).
