@@ -29,9 +29,17 @@ GPU scarcity remains one of the most significant challenges in large-scale ML op
 
 By deploying Ray clusters across multiple AKS clusters in different Azure regions, you can:
 
-- **Increase GPU availability**: Distribute workloads across regions with available capacity, reducing wait times for cluster provisioning
+- **Increase GPU availability**: Distribute workloads across clusters and regions with available capacity, reducing wait times for cluster provisioning
 - **Scale beyond single-cluster limits**: Azure imposes quota limits on GPU instances per region, but multi-region deployments let you aggregate capacity
 - **Improve fault tolerance**: If one region experiences an outage or capacity shortage, workloads can be automatically rerouted to healthy clusters
+
+With infrastructure deployed across multiple regions—and optionally on-premises environments, you can manage and monitor registered clusters from the Anyscale console. Extend your compute pool beyond Azure by connecting on-premises GPU clusters through [AKS enabled by Azure Arc](https://learn.microsoft.com/en-us/azure/aks/aksarc/), letting you aggregate existing on-premises resources with cloud-based resources:
+
+![Anyscale Resources](./anyscale-resources.png)
+
+Anyscale Workspaces provides a managed environment for running interactive Ray workloads, with manual or automatic scheduling across available clusters based on resource requirements:
+
+![Anyscale Workspaces](./anyscale-workspaces.png)
 
 To add a cluster or another region to your existing Anyscale cloud, define a cloud resource as below [cloud_resource.yaml](https://github.com/Azure-Samples/aks-anyscale/blob/main/config/cloud_resource.yaml):
 
@@ -57,14 +65,6 @@ anyscale cloud resource create \
   --cloud "$ANYSCALE_CLOUD_NAME" \
   -f cloud_resource.yaml
 ```
-
-With infrastructure deployed across multiple regions, you can manage and monitor Ray workloads from the Anyscale console. The single pane of glass view shows all registered clusters and their available resources:
-
-![Anyscale Resources](./anyscale-resources.png)
-
-Anyscale Workspaces provides a managed environment for running interactive Ray workloads, with manual or automatic scheduling across available clusters based on resource requirements:
-
-![Anyscale Workspaces](./anyscale-workspaces.png)
 
 ## Unified Storage
 
