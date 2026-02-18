@@ -107,6 +107,10 @@ const config: Config = {
               href: 'https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/welcome-azure-kubernetes',
             },
             {
+              label: 'AKS Community Call',
+              href: '/webinars',
+            },
+            {
               label: 'FAQ',
               href: 'https://learn.microsoft.com/azure/aks/faq',
             },
