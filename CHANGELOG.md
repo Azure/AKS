@@ -1001,7 +1001,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
 
 * Features:
   * AKS patch versions 1.28.14, 1.29.9, 1.30.5 are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
-  * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) is now generally available. Please check the release tracker for when your region will receive the GA update. Some regions may not receive this update until later in November.
+  * AKS version [`1.31`](https://kubernetes.io/blog/2024/08/13/kubernetes-v1-31-release/) will be generally available by the end of November. Version availability for each region can be determined by following the steps [here](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions).
   * The first official patch version of AKS LTS 1.27, 1.27.100, is being released.
   * [GitHub Copilot](https://azure.microsoft.com/products/github/Copilot) for Azure now supports [AKS commands](https://learn.microsoft.com/azure/aks/aks-extension-ghcopilot-plugins).
   * You can now skip one release [while upgrading Azure Service Mesh](https://learn.microsoft.com/azure/aks/istio-upgrade) as long as the destination release is a supported revision - for example, asm-1-21 can upgrade directly to asm-1-23.
