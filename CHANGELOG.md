@@ -1019,6 +1019,7 @@ https://azure.microsoft.com/updates/azure-basic-load-balancer-will-be-retired-on
   * AKS CoreDNS configuration will now block all queries ending in `reddog.microsoft.com` and some queries ending in `internal.cloudapp.net` from being forwarded to upstream DNS when they are the result of improper search domain completion. See [the documentation for more details.](https://learn.microsoft.com/azure/aks/coredns-custom#invalid-search-domain-completions-for-internalcloudappnet-and-reddogmicrosoftcom)
   * Azure NPM's CPU request has been lowered from 250m to 50m.
   * Azure CNI Overlay now checks that the pod CIDR does not conflict with any subnet in the virtual network, rather than checking if it conflicts with the virtual network address space as a whole.
+  * AKS Ubuntu images version 24.10 (and above), 20.04, 22.04, and 24.04, will have the default UDP buffer capacity set to 1048576 bytes or 1 MB.
 
 * Component updates:
   * gMSA support is updated to version [v0.10.0](https://github.com/kubernetes-sigs/windows-gmsa/releases/tag/v0.10.0), adding support for random hostnames and fixing [an issue with multiple containers invalidating domain trusts.](https://github.com/microsoft/Windows-Containers/issues/405)
