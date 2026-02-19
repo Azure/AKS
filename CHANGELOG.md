@@ -1154,6 +1154,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * Features:
   * Existing Linux node pools can now be updated to enable or disable Federal Information Process Standard (FIPS). See [documentation](https://learn.microsoft.com/azure/aks/enable-fips-nodes#update-an-existing-node-pool-to-enable-or-disable-fips) for more information.
+  * AKS LTS version 1.30 is now generally available.
 
 * Bug fixes:
   * Fix an Azure NPM issue that user could meet unexpected connectivity for Pods on the Node when editing a NetworkPolicy with a CIDR "except" field.
