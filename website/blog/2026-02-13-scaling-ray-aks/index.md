@@ -13,7 +13,7 @@ This post focuses on running Anyscale's managed Ray service on AKS, using the An
 
 Ray is an open-source distributed compute framework for scaling Python and AI workloads from a laptop to clusters with thousands of nodes. Anyscale provides a managed ML/AI platform and an optimized Ray runtime with better scalability, observability, and operability than running open-source [KubeRay](https://github.com/ray-project/kuberay)—including intelligent autoscaling, enhanced monitoring, and fault-tolerant training.
 
-As part of Microsoft and Anyscale's [strategic collaboration to deliver AI-native computing on Azure](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service (AKS) in three critical areas:
+As part of [Microsoft and Anyscale's strategic collaboration](https://www.anyscale.com/press/anyscale-collaborates-with-microsoft-to-deliver-ai-native-computing-on-azure) to deliver [distributed AI/ML Azure-native computing at scale](https://devblogs.microsoft.com/all-things-azure/powering-distributed-aiml-at-scale-with-azure-and-anyscale/), we've been working closely with Anyscale to enhance the production-readiness of Ray workloads on Azure Kubernetes Service (AKS) in three critical areas:
 
 - **Elastic scalability** through multi-cluster multi-region capacity aggregation
 - **Data persistence** with unified storage across ML/AI development and operation lifecycle
@@ -33,7 +33,7 @@ By deploying Ray clusters across multiple AKS clusters in different Azure region
 - **Scale beyond single-cluster limits**: Azure imposes quota limits on GPU instances per region, but multi-region deployments let you aggregate capacity
 - **Improve fault tolerance**: If one region experiences an outage or capacity shortage, workloads can be automatically rerouted to healthy clusters
 
-With infrastructure deployed across multiple regions—and optionally on-premises environments, you can manage and monitor registered clusters from the Anyscale console. Extend your compute pool beyond Azure by connecting on-premises GPU clusters through [AKS enabled by Azure Arc](https://learn.microsoft.com/en-us/azure/aks/aksarc/), letting you aggregate existing on-premises resources with cloud-based resources:
+With infrastructure deployed across multiple regions—and optionally on-premises or other cloud environments—you can manage and monitor Anyscale workloads on registered clusters from the Anyscale console. This multi-cloud and hybrid cloud approach lets you access GPU capacity wherever it exists, whether in Azure regions, on-premises data centers, or other cloud providers. Extend your compute pool beyond Azure by connecting on-premises GPU clusters through [AKS enabled by Azure Arc](https://learn.microsoft.com/en-us/azure/aks/aksarc/), aggregating existing infrastructure investments with cloud-based resources:
 
 ![Anyscale Resources](./anyscale-resources.png)
 
