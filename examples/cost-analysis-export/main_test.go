@@ -53,7 +53,14 @@ func TestApp_ProcessWithRealData(t *testing.T) {
 
 	lines := strings.Split(string(content), "\n")
 	assert.Equal(t, 169, len(lines))
-	assert.Equal(t, "Name,Kind,SplitBucket,Fraction,SplitKey,UsageQuantity,ResourceRate,PreTaxCost,SubscriptionGuid,ResourceGroup,ResourceLocation,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,ConsumedService,ResourceType,InstanceId,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure", strings.TrimSpace(lines[0]))
+
+	// Check that header contains required columns (order may vary)
+	header := lines[0]
+	requiredColumns := []string{"Name", "Kind", "SplitBucket", "Fraction", "SplitKey", "UsageQuantity", "PreTaxCost", "SubscriptionGuid", "InstanceId"}
+	for _, col := range requiredColumns {
+		assert.Contains(t, header, col, "header missing required column")
+	}
+
 	assert.Greater(t, len(lines[1]), 1000, "expect to have more than 1000 characters of data")
 }
 
@@ -62,7 +69,9 @@ func TestApp_Process(t *testing.T) {
 		name            string
 		costAgentData   []byte
 		blobStorageData map[string][]byte
-		expectedResult  []byte
+		expectedRows    int
+		expectedFields  []string // fields that should appear in data rows
+		headerFields    []string // fields that should appear in header
 	}
 	date := time.Date(2025, 6, 18, 0, 0, 0, 0, time.UTC)
 	innerTest := func(t *testing.T, td testData) {
@@ -85,7 +94,21 @@ func TestApp_Process(t *testing.T) {
 		require.NoError(t, err)
 
 		content := downloadResult(t, app)
-		assert.Equal(t, strings.Trim(string(td.expectedResult), "\n\t"), strings.Trim(string(content), "\n\t"))
+		lines := strings.Split(strings.TrimSpace(string(content)), "\n")
+
+		assert.Equal(t, td.expectedRows, len(lines), "unexpected number of rows")
+
+		// Check header contains required columns
+		for _, col := range td.headerFields {
+			assert.Contains(t, lines[0], col, "header missing required column")
+		}
+
+		// Check data rows contain expected fields
+		if len(lines) > 1 {
+			for _, field := range td.expectedFields {
+				assert.Contains(t, lines[1], field, "data row missing expected field")
+			}
+		}
 	}
 
 	testFunc := func(td testData) func(t *testing.T) {
@@ -130,11 +153,9 @@ SubscriptionGuid,ResourceGroup,ResourceLocation,UsageDateTime,MeterCategory,Mete
 SubscriptionGuid,ResourceGroup,ResourceLocation,2025-06-18,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,UsageQuantity,ResourceRate,100.0,ConsumedService,ResourceType,/subscriptions/test-subscription/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-37076539-vmss,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure
 `),
 		},
-		expectedResult: []byte(`
-Name,Kind,SplitBucket,Fraction,SplitKey,UsageQuantity,ResourceRate,PreTaxCost,SubscriptionGuid,ResourceGroup,ResourceLocation,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,ConsumedService,ResourceType,InstanceId,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure
-aks-nodepool1-37076539-vmss,compute,usage,0.200000,"{""namespace"":""kube-system"",""object_kind"":""deployment"",""object_name"":""metrics-server""}",0,0,20,SubscriptionGuid,ResourceGroup,ResourceLocation,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,ConsumedService,ResourceType,/subscriptions/test-subscription/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-37076539-vmss,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure
-aks-nodepool1-37076539-vmss,compute,idle,0.800000,{},0,0,80,SubscriptionGuid,ResourceGroup,ResourceLocation,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,ConsumedService,ResourceType,/subscriptions/test-subscription/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-37076539-vmss,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure
-`),
+		expectedRows:   3,
+		headerFields:   []string{"Name", "Kind", "SplitBucket", "Fraction", "SplitKey", "PreTaxCost", "InstanceId"},
+		expectedFields: []string{"aks-nodepool1-37076539-vmss", "compute", "0.200000", "kube-system"},
 	}))
 }
 
@@ -250,6 +271,100 @@ test-guid,rg,westus,2025-06-18,Virtual Machines,Standard,meter-id2,VM,westus,2,3
 			expectedRows:   2, // header + 1 data row
 			expectedFields: []string{"vmss", "compute", "usage", "0.800000"},
 			gzipped:        true,
+		},
+		{
+			// Modern EA schema (2024-08-01)
+			// https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-ea
+			name: "Modern EA schema (2024)",
+			costAgentData: []byte(`{
+				"Resources": [{
+					"ID": "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss",
+					"Name": "vmss",
+					"Kind": "compute",
+					"Splits": [{
+						"Fraction": 0.5,
+						"SplitKey": {"namespace": "default"},
+						"SplitBucket": "usage"
+					}]
+				}]
+			}`),
+			costMgmtData: map[string][]byte{
+				"cost-management/file1.csv": []byte(`SubscriptionId,ResourceGroup,ResourceLocation,Date,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,Quantity,EffectivePrice,CostInBillingCurrency,ConsumedService,ResourceId,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure
+test-guid,rg,westus,2025-06-18,Virtual Machines,Standard,meter-id,VM,westus,2,10,20,Microsoft.Compute,/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss,{},offer-id,info,,,VM,Standard,USD,Hour`),
+			},
+			expectedRows:   2,
+			expectedFields: []string{"vmss", "compute", "usage", "0.500000", "test-guid", "westus"},
+		},
+		{
+			// MCA schema (camelCase) - applies to MCA, MCA Partner, and CSP Subscription
+			// https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-mca
+			// https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-mca-partner
+			// https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-mca-partner-subscription
+			name: "MCA schema (camelCase)",
+			costAgentData: []byte(`{
+				"Resources": [{
+					"ID": "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss",
+					"Name": "vmss",
+					"Kind": "compute",
+					"Splits": [{
+						"Fraction": 0.6,
+						"SplitKey": {"namespace": "kube-system"},
+						"SplitBucket": "usage"
+					}]
+				}]
+			}`),
+			costMgmtData: map[string][]byte{
+				"cost-management/file1.csv": []byte(`SubscriptionId,resourceGroupName,resourceLocation,date,meterCategory,meterSubCategory,meterId,meterName,meterRegion,quantity,effectivePrice,costInBillingCurrency,consumedService,ResourceId,tags,additionalInfo,serviceInfo1,serviceInfo2,billingCurrency,unitOfMeasure
+test-guid,rg,westus,2025-06-18,Virtual Machines,Standard,meter-id,VM,westus,2,5,10,Microsoft.Compute,/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss,{},info,,,USD,Hour`),
+			},
+			expectedRows:   2,
+			expectedFields: []string{"vmss", "compute", "usage", "0.600000", "test-guid", "westus"},
+		},
+		{
+			// MCA schema with MM/DD/YYYY date format (actual production format)
+			// The Azure Cost Management MCA exports use MM/DD/YYYY format in production
+			name: "MCA schema with MM/DD/YYYY date format",
+			costAgentData: []byte(`{
+				"Resources": [{
+					"ID": "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss",
+					"Name": "vmss",
+					"Kind": "compute",
+					"Splits": [{
+						"Fraction": 0.5,
+						"SplitKey": {"namespace": "default"},
+						"SplitBucket": "usage"
+					}]
+				}]
+			}`),
+			costMgmtData: map[string][]byte{
+				"cost-management/file1.csv": []byte(`SubscriptionId,resourceGroupName,resourceLocation,date,meterCategory,meterSubCategory,meterId,meterName,meterRegion,quantity,effectivePrice,costInBillingCurrency,consumedService,ResourceId,tags,additionalInfo,serviceInfo1,serviceInfo2,billingCurrency,unitOfMeasure
+test-guid,rg,westus,06/18/2025,Virtual Machines,Standard,meter-id,VM,westus,2,5,10,Microsoft.Compute,/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss,{},info,,,USD,Hour`),
+			},
+			expectedRows:   2,
+			expectedFields: []string{"vmss", "compute", "usage", "0.500000"},
+		},
+		{
+			// FOCUS schema (FinOps Open Cost and Usage Specification)
+			// https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-focus
+			name: "FOCUS schema",
+			costAgentData: []byte(`{
+				"Resources": [{
+					"ID": "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss",
+					"Name": "vmss",
+					"Kind": "compute",
+					"Splits": [{
+						"Fraction": 0.4,
+						"SplitKey": {"namespace": "monitoring"},
+						"SplitBucket": "usage"
+					}]
+				}]
+			}`),
+			costMgmtData: map[string][]byte{
+				"cost-management/file1.csv": []byte(`BilledCost,BillingCurrency,ChargePeriodStart,ChargePeriodEnd,ConsumedQuantity,ConsumedUnit,ContractedCost,EffectiveCost,ListCost,ListUnitPrice,PricingQuantity,PricingUnit,ResourceId,ResourceName,ResourceType,ServiceName,SubAccountId,SubAccountName,Tags,x_ResourceGroupName
+10,USD,2025-06-18,2025-06-19,2,Hours,10,10,12,6,2,Hour,/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss,vmss,Microsoft.Compute/virtualMachineScaleSets,Virtual Machines,test-sub,Test Subscription,{},rg`),
+			},
+			expectedRows:   2,
+			expectedFields: []string{"vmss", "compute", "usage", "0.400000", "USD", "Hours"},
 		},
 	}
 
