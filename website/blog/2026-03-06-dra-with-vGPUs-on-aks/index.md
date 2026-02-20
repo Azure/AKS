@@ -1,7 +1,7 @@
 ---
-title: "Virtualized Accelerators on AKS: Dynamic Resource Allocation (DRA) with NVIDIA vGPU"
+title: "Dynamic GPU resource allocation with NVIDIA vGPU on AKS"
 date: "2026-03-06"
-description: "Learn how to set up dynamic resource allocation with vGPUs on Azure Kubernetes Service (AKS)"
+description: "Configure dynamic resource allocation (DRA) for NVIDIA vGPU workloads and learn the prerequisites with setup steps on Azure Kubernetes Service (AKS)."
 authors: ["sachi-desai", "suraj-deshmukh"]
 tags: ["gpu", "dra", "operations"]
 ---
