@@ -126,7 +126,7 @@ This feature gate is enabled by default and requires NVIDIA GRID GPU driver vers
 After deployment, confirm that the `gpu.nvidia.com` DeviceClass exists:
 
 ```bash
-kubectl get deviceclass
+kubectl get deviceclasses
 ```
 
 Expected output:
