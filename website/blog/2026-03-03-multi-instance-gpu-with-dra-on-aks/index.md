@@ -10,7 +10,7 @@ GPUs power a wide range of production Kubernetes workloads across industries. Fo
 
 By default, Kubernetes schedules GPUs as entire units; when a workload requires only a fraction of a GPU, the remaining capacity can remain unused. Over time, this leads to lower hardware utilization and higher infrastructure costs within a cluster.
 
-Multi-instance GPU (MIG) combined with dynamic resource allocation (DRA) helps address this challenge. MIG partitions a physical GPU into isolated instances with dedicated compute and memory resources, while DRA enables those instances to be provisioned and bound dynamically through Kubernetes resource claims. Rather than treating a GPU as an indivisible resource, the cluster can allocate right-sized GPU paritions to multiple workloads at the same time!
+Multi-instance GPU (MIG) combined with dynamic resource allocation (DRA) helps address this challenge. MIG partitions a physical GPU into isolated instances with dedicated compute and memory resources, while DRA enables those instances to be provisioned and bound dynamically through Kubernetes resource claims. Rather than treating a GPU as an indivisible resource, the cluster can allocate right-sized GPU partitions to multiple workloads at the same time!
 
 <!-- truncate -->
 
