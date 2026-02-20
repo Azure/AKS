@@ -28,10 +28,10 @@ At this point, the results for both commands should look similar to:
 No resources found
 ```
 
-If DRA isn't enabled on your cluster (e.g. if it is operating an earlier Kubernetes version than `1.34`), you may instead get a response similar to error: 
+If DRA isn't enabled on your cluster (for example, if it is running an earlier Kubernetes version than `1.34`), you may instead see an error like:
 
 ```output
-the server doesn't have a resource type "deviceclasses"/"resourceslices".
+error: the server doesn't have a resource type "deviceclasses"/"resourceslices"
 ```
 
 ### Add a vGPU node pool and label your nodes
