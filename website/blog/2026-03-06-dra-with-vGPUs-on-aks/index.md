@@ -92,6 +92,7 @@ helm --install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
 ```
 
 Confirm that the following pods are running:
+
 ```bash
 kubectl get pods -n nvidia-dra-driver-gpu
 ```
@@ -110,16 +111,15 @@ Let's walk through some of the DRA Helm chart settings set earlier for vGPU:
 
 1. `resources.gpus.enabled=true`
 
-Standard DRA workloads request devices via the `gpu.nvidia.com` device class, so `resources.gpus.enabled=true` is needed for GPU-accelerated workloads to schedule on these A10 nodes.
+    Standard DRA workloads request devices via the `gpu.nvidia.com` device class, so `resources.gpus.enabled=true` is needed for GPU-accelerated workloads to schedule on these A10 nodes.
 
 2. `gpuResourcesEnabledOverride=true`
 
-The Helm chart includes a validation guard to prevent collisions between the NVIDIA DRA driver (`gpu.nvidia.com`) and legacy NVIDIA device plugin (`nvidia.com/gpu` extended resource). Since we are running DRA exclusively (with no legacy device plugin), we bypass the validation: `gpuResourcesEnabledOverride=true` to ensure the chart installs successfully.
+    The Helm chart includes a validation guard to prevent collisions between the NVIDIA DRA driver (`gpu.nvidia.com`) and legacy NVIDIA device plugin (`nvidia.com/gpu` extended resource). Since we are running DRA exclusively (with no legacy device plugin), we bypass the validation: `gpuResourcesEnabledOverride=true` to ensure the chart installs successfully.
 
 3. `featureGates.IMEXDaemonsWithDNSNames=false`
 
-This feature gate is enabled by default and requires NVIDIA GRID GPU driver version >= `570.158.01`. For Azure VM sizes, like the A10 series, that require the distinct GRID driver `550` branch today, we explicitly set:
-`featureGates.IMEXDaemonsWithDNSNames=false` to disable IMEX for this GPU size.
+    This feature gate is enabled by default and requires NVIDIA GRID GPU driver version >= `570.158.01`. For Azure VM sizes, like the A10 series, that require the distinct GRID driver `550` branch today, we explicitly set `featureGates.IMEXDaemonsWithDNSNames=false` to disable IMEX for this GPU size.
 
 ### Verify DeviceClass and ResourceSlices
 
