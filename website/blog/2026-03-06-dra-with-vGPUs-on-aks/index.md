@@ -55,7 +55,7 @@ Today, AKS GPU nodes already include `accelerator=nvidia`, so we'll use this sel
 
 ```bash
 kubectl get nodes -l accelerator=nvidia -o name | \
-  xargs -I{} kubectl label {} nvidia.com/gpu.present=true
+  xargs -I{} kubectl label --overwrite {} nvidia.com/gpu.present=true
 ```
 
 You can expect a similar output to the following:
