@@ -15,7 +15,7 @@ Multi-instance GPU (MIG) combined with dynamic resource allocation (DRA) helps a
 <!-- truncate -->
 
 :::note
-To learn more about dynamic resource allocation on AKS, visit our previous blog on getting started with NVIDIA GPU Operator: https://blog.aks.azure.com/2025/11/17/dra-devices-and-drivers-on-kubernetes)
+To learn more about dynamic resource allocation on AKS, visit our [previous blog](https://blog.aks.azure.com/2025/11/17/dra-devices-and-drivers-on-kubernetes) on getting started with DRA and NVIDIA GPU Operator!
 :::
 
 In this post, we walk through how to configure MIG with the NVIDIA GPU Operator on AKS, enable the NVIDIA DRA driver, define the necessary Kubernetes resource abstractions, and deploy a workload that consumes a MIG-backed GPU instance.
@@ -121,7 +121,6 @@ Name:               aks-gpunp-12340814-vmss000000
                     nvidia.com/gpu.count=1 # GPUs are recognized
 ```
 
-
 ```bash
 $ kubectl describe node aks-gpunp-12340814-vmss000000 | grep "mig"
                     nvidia.com/gpu.deploy.mig-manager=true
@@ -149,7 +148,6 @@ spec:
 ```
 
 This definition tells AKS that any request referencing `nvidia-mig` should resolve to devices managed by the NVIDIA GPU driver.
-
 
 ```bash
 kubectl get deviceclass
@@ -188,7 +186,6 @@ This abstraction decouples workloads from physical device details. A job does no
 ### Deploy a sample MIG workload
 
 To validate the setup, we can deploy a GPU-accelerated workload requesting a MIG partition. Our example below uses a TensorFlow sample and generally mirrors how a data processing or video transcoding job can consume a resource partition in production environments:
-
 
 ```bash
 apiVersion: batch/v1
