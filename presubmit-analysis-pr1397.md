@@ -50,11 +50,19 @@ This is the only line in the diff with trailing whitespace (verified by scanning
 
 ## How to Apply the Fix
 
-In the karpenter-provider-azure PR branch, edit the file:
+A patch file `fix-trailing-whitespace-pr1397.patch` is included alongside this document.
+
+To apply it on the karpenter-provider-azure PR branch:
+```bash
+cd karpenter-provider-azure
+git apply fix-trailing-whitespace-pr1397.patch
+```
+
+Or manually edit the file:
 ```
 pkg/providers/imagefamily/customscriptsbootstrap/provisionclientbootstrap_test.go
 ```
 
-In the `TestArtifactStreamingWithDifferentOSSKUs` function, find the line inside the `for _, tt := range tests` loop body that contains only tab characters and remove the trailing tabs, leaving it as an empty blank line.
+In the `TestArtifactStreamingWithDifferentOSSKUs` function (around line 1150), find the line inside the `for _, tt := range tests` loop body that contains only tab characters and remove the trailing tabs, leaving it as an empty blank line.
 
 After the fix, run `make presubmit` to verify.

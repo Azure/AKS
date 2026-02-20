@@ -1,0 +1,11 @@
+--- a/pkg/providers/imagefamily/customscriptsbootstrap/provisionclientbootstrap_test.go
++++ b/pkg/providers/imagefamily/customscriptsbootstrap/provisionclientbootstrap_test.go
+@@ -1147,7 +1147,7 @@
+ 	for _, tt := range tests {
+ 		t.Run(tt.name, func(t *testing.T) {
+ 			g := NewWithT(t)
+-			
++
+ 			bootstrapper := &customscriptsbootstrap.ProvisionClientBootstrap{
+ 				ClusterName:              "test-cluster",
+ 				KubeletConfig:            &bootstrap.KubeletConfiguration{MaxPods: int32(110)},
