@@ -3,7 +3,7 @@ title: "Dynamic GPU resource allocation with NVIDIA vGPU on AKS"
 date: "2026-03-06"
 description: "Configure dynamic resource allocation (DRA) for NVIDIA vGPU workloads and learn the prerequisites with setup steps on Azure Kubernetes Service (AKS)."
 authors: ["sachi-desai", "suraj-deshmukh"]
-tags: ["gpu", "dra", "operations"]
+tags: ["gpu", "performance", "operations"]
 ---
 
 In recent months, dynamic resource allocation (DRA) has emerged as the standard mechanism to consume GPU resources in Kubernetes. With DRA, accelerators like GPUs are no longer exposed as static extended resources (e.g. `nvidia.com/gpu`) but are dynamically allocated through `DeviceClasses` and `ResourceClaims`. This unlocks richer scheduling semantics and better integration with virtualization technologies like NVIDIA vGPU.
