@@ -78,7 +78,7 @@ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia && helm repo update
 Now, install the NVIDIA DRA driver version `25.8.1`:
 
 ```bash
-helm install -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
+helm --install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
   --version="25.8.1" \
   --create-namespace \
   --namespace nvidia-dra-driver-gpu \
