@@ -106,7 +106,7 @@ nvidia-dra-kubelet-plugin-aks-gpunodepool1-xxxxx     1/1     Running   0
 
 ### Why do these Helm settings matter?
 
-Let's walk through some of the DRA helm chart settings set earlier for vGPU:
+Let's walk through some of the DRA Helm chart settings set earlier for vGPU:
 
 1. `resources.gpus.enabled=true`
 
