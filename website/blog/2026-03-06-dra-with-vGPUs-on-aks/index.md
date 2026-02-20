@@ -18,7 +18,7 @@ In this post, we’ll walk through enabling the NVIDIA DRA Driver on a node pool
 
 ### Verify DRA is enabled
 
-Starting with your AKS cluster running *Kubernetes version `1.34` or above*, you can confirm whether is enabled on your cluster by looking for `deviceclasses` and `resourceslices`.
+Starting with your AKS cluster running *Kubernetes version `1.34` or above*, you can confirm whether DRA is enabled on your cluster by looking for `deviceclasses` and `resourceslices`.
 
 Check `deviceclasses` via `kubectl get deviceclasses` or check `resourceslices` via `kubectl get resourceslices`.
 
