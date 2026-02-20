@@ -6,7 +6,7 @@ authors: ["sachi-desai", "suraj-deshmukh"]
 tags: ["gpu", "performance", "operations"]
 ---
 
-In recent months, dynamic resource allocation (DRA) has emerged as the standard mechanism to consume GPU resources in Kubernetes. With DRA, accelerators like GPUs are no longer exposed as static extended resources (e.g. `nvidia.com/gpu`) but are dynamically allocated through `DeviceClasses` and `ResourceClaims`. This unlocks richer scheduling semantics and better integration with virtualization technologies like NVIDIA vGPU.
+In recent months, dynamic resource allocation (DRA) has emerged as the standard mechanism to consume GPU resources in Kubernetes. With DRA, accelerators like GPUs are no longer exposed as static extended resources (for example, `nvidia.com/gpu`) but are dynamically allocated through `DeviceClasses` and `ResourceClaims`. This unlocks richer scheduling semantics and better integration with virtualization technologies like NVIDIA vGPU.
 
 Virtual accelerators such as NVIDIA vGPU are commonly used for smaller workloads because they allow a single physical GPU to be securely partitioned across multiple tenants or apps. This is especially valuable for enterprise AI/ML development environments, fine-tuning, and audio/visual processing. vGPU enables predictable performance profiles while still exposing CUDA capabilities to containerized workloads.
 
@@ -36,7 +36,7 @@ error: the server doesn't have a resource type "deviceclasses"/"resourceslices"
 
 ### Add a vGPU node pool and label your nodes
 
-Add a GPU node pool and specify an Azure virtual machine (VM) size which supports virtualized accelerator workloads (e.g. [NVadsA10_v5 sizes series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series)).
+Add a GPU node pool and specify an Azure virtual machine (VM) size which supports virtualized accelerator workloads (such as [NVadsA10_v5 sizes series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series)).
 
 ```bash
 az aks nodepool add \
