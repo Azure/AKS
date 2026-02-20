@@ -153,6 +153,6 @@ Now, we’ve confirmed that the DRA driver discovered and published our vGPU-bac
 
 ## Looking ahead
 
-As GPUs become first-class resources in Kubernetes, combining NVIDIA vGPU with DRA provides a practical way to run shared, production-grade workloads on AKS. vGPU supported Azure VM series offer partial GPUs for scenarios such as media rendering and transcoding, AI research, and simulations, while DRA ensures those resources are allocated explicitly and scheduled with awareness of real cluster state. 
+As GPUs become first-class resources in Kubernetes, combining NVIDIA vGPU with DRA provides a practical way to run shared, production-grade workloads on AKS. vGPU supported Azure VM series offer partial GPUs for scenarios such as media rendering and transcoding, AI research, and simulations, while DRA ensures those resources are allocated explicitly and scheduled with awareness of real cluster state.
 
 For large AKS deployments, especially in regulated or cost-sensitive industries, getting GPU placement and utilization right directly affects job throughput and infrastructure efficiency. Using DRA with vGPU will enable organizations to move beyond coarse node-level allocation toward controlled, workload-driven GPU consumption at scale.
