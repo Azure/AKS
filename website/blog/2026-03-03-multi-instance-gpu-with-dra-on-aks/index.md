@@ -1,7 +1,7 @@
 ---
 title: "Running more with less: Multi-instance GPU (MIG) with Dynamic Resource Allocation (DRA) on AKS"
 date: "2026-03-03"
-description: "Learn how to use DRA to allocate right-sized GPU node partitions for your GPU-accelerated workloads on Azure Kubernetes Service (AKS)"
+description: "Learn how to use dynamic resource allocation (DRA) to allocate right-sized multi-instance GPU (MIG) node partitions for your GPU-accelerated workloads on Azure Kubernetes Service (AKS)."
 authors: ["sachi-desai", "jack-jiang"]
 tags: ["gpu", "performance", "operations"]
 ---
@@ -44,7 +44,7 @@ We’ll leverage the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cl
 
 Next, install the NVIDIA GPU Operator with MIG enabled and the legacy Kubernetes device plugin disabled. We consolidate these configuration settings in a YAML file named `operator-install.yaml` as follows:
 
-```bash
+```yaml
 mig:
   strategy: single
 devicePlugin:
@@ -65,7 +65,8 @@ The single strategy partitions each GPU into uniform partitions. After preparing
 ```bash
 $ helm install --wait \
 --generate-name -n gpu-operator \
---create-namespace nvidia/gpu-operator \
+--create-namespace \
+nvidia/gpu-operator \
 --version=v25.10.0 \
 -f operator-install.yaml
 ```
@@ -78,7 +79,7 @@ DRA introduces a more flexible device management model in Kubernetes; instead of
 
 The NVIDIA DRA driver installation enables GPU resources and points to the driver root managed by the operator, as shown in the following configuration file named `dra-install.yaml`:
 
-```bash
+```yaml
 gpuResourcesEnabledOverride: true
  resources-computeDomains:
    enabled: false # We'll be using GPUs, not compute domains.
@@ -91,7 +92,7 @@ gpuResourcesEnabledOverride: true
            - key: kubernetes.azure.com/mode
              operator: In
              values:
-             - system   # Makes sure system nodes are utilized 
+             - system   # Makes sure the system nodes are utilized 
  nvidiaDriverRoot: "/run/nvidia/driver"
 ```
 
@@ -100,9 +101,9 @@ Using the above settings, install the NVIDIA DRA driver in a dedicated namespace
 ```bash
 helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
 --version="25.8.1" \
---create-namespace \ 
+--create-namespace \
 --namespace nvidia-dra-driver-gpu \
--f dra-install.yaml 
+-f dra-install.yaml
 ```
 
 ### Verify MIG configuration
@@ -136,7 +137,7 @@ Your AKS cluster should now be ready to expose MIG-enabled GPU partitions as dyn
 
 DRA introduces a `DeviceClass` abstraction that allows Kubernetes to select devices based on accelerator and characteristics. In this case, we define a class that selects NVIDIA GPUs:
 
-```bash
+```yaml
 apiVersion: resource.k8s.io/v1
 kind: DeviceClass
 metadata:
@@ -166,7 +167,7 @@ nvidia-mig                                  1m31s
 
 Instead of requesting `nvidia.com/gpu: 1` in a pod spec, workloads will now reference a `ResourceClaimTemplate`, which describes the device requirement declaratively. We'll apply a MIG `ResourceClaimTemplate` to the AKS cluster as follows:
 
-```bash
+```yaml
 apiVersion: resource.k8s.io/v1
 kind: ResourceClaimTemplate
 metadata:
@@ -187,7 +188,7 @@ This abstraction decouples workloads from physical device details. A job does no
 
 To validate the setup, we can deploy a GPU-accelerated workload requesting a MIG partition. Our example below uses a TensorFlow sample and generally mirrors how a data processing or video transcoding job can consume a resource partition in production environments:
 
-```bash
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
