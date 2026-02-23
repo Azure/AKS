@@ -48,14 +48,14 @@ Next, install the NVIDIA GPU Operator with MIG enabled and the legacy Kubernetes
 mig:
   strategy: single
 devicePlugin:
- enabled: false
+  enabled: false
 driver:
-   enabled: true
+  enabled: true
 toolkit:
-   env:
-     # Limits containers running in unprivileged mode from requesting access to arbitrary GPU devices 
-     - name: ACCEPT_NVIDIA_VISIBLE_DEVICES_ENVVAR_WHEN_UNPRIVILEGED
-       value: "false"
+  env:
+    # Limits containers running in unprivileged mode from requesting access to arbitrary GPU devices 
+    - name: ACCEPT_NVIDIA_VISIBLE_DEVICES_ENVVAR_WHEN_UNPRIVILEGED
+      value: "false"
 ```
 
 Note: In this setup, the traditional NVIDIA device plugin is purposely disabled so that GPU resources are not managed through the static model. Instead, the NVIDIA DRA driver serves as the authority for device discovery, enabling dynamic, claim-based management of MIG-backed GPU resources.
