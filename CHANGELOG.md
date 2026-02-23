@@ -10,7 +10,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Kubernetes Version
 * AKS Kubernetes patch versions `1.34.2`, `1.33.6`, and `1.32.10` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
-* AKS Kubernetes version `1.35` [preview rollout](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) is being rolled out to multiple regions and is expected to complete by early March.
+* AKS Kubernetes version [`1.35` preview](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) is rolling out to multiple regions and is expected to complete by early March.
 
 ### Preview Features
 * [Managed GPU profiles](https://learn.microsoft.com/azure/aks/gpu-cluster) are now available in public preview via API version `2026-01-02-preview`.
