@@ -112,6 +112,11 @@ Before scheduling workloads, confirm that the AKS node recognizes the GPU and th
 
 ```bash
 kubectl describe node aks-gpunp-12340814-vmss000000 | grep "gpu"
+```
+
+Output:
+
+```output
 Name:               aks-gpunp-12340814-vmss000000
                     agentpool=gpunp
                     kubernetes.azure.com/agentpool=gpunp
@@ -124,6 +129,14 @@ Name:               aks-gpunp-12340814-vmss000000
 
 ```bash
 $ kubectl describe node aks-gpunp-12340814-vmss000000 | grep "mig"
+```
+
+Example result:
+
+```output
+Name:               aks-gpunp-12340814-vmss000000
+...
+...
                     nvidia.com/gpu.deploy.mig-manager=true
                     nvidia.com/mig.capable=true
                     nvidia.com/mig.config=all-disabled
