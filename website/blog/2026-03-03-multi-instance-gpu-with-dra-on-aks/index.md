@@ -63,7 +63,7 @@ Note: In this setup, the traditional NVIDIA device plugin is purposely disabled 
 The single strategy partitions each GPU into uniform partitions. After preparing and saving the configuration file, install the operator with Helm:
 
 ```bash
-$ helm install --wait \
+helm install --wait \
 --generate-name -n gpu-operator \
 --create-namespace \
 nvidia/gpu-operator \
@@ -128,7 +128,7 @@ Name:               aks-gpunp-12340814-vmss000000
 ```
 
 ```bash
-$ kubectl describe node aks-gpunp-12340814-vmss000000 | grep "mig"
+kubectl describe node aks-gpunp-12340814-vmss000000 | grep "mig"
 ```
 
 Example result:
@@ -253,7 +253,7 @@ NAME         AGE
 mig-gpu-1g   11s
 ```
 
-The key difference from traditional GPU scheduling is the use of `resources.claims` and `resourceClaimTemplateName`: Kubernetes coordinates with the DRA driver to provision and bind a MIG partition dynamically. Now when multiple jobs are submitted, each can receive its own isolated piece, allowing parallel execution on the same physical GPU.
+The key difference from traditional GPU scheduling is the use of `resources.claims` and `resourceClaimTemplateName`: Kubernetes coordinates with the DRA driver to provision and bind a MIG partition dynamically. Now when multiple jobs are submitted, each can receive its own isolated instance, allowing parallel execution on the same physical GPU.
 
 ## A more elastic GPU future on AKS
 
