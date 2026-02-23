@@ -36,7 +36,7 @@ error: the server doesn't have a resource type "deviceclasses"/"resourceslices"
 
 ### Add a vGPU node pool and label your nodes
 
-Add a GPU node pool and specify an Azure virtual machine (VM) size which supports virtualized accelerator workloads (such as [NVadsA10_v5 sizes series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series)).
+Add a GPU node pool and specify an Azure virtual machine (VM) size which supports virtualized accelerator workloads (such as [NVadsA10_v5 series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series)).
 
 ```bash
 az aks nodepool add \
