@@ -44,7 +44,7 @@ az aks nodepool add \
   --cluster-name <aks-cluster-name> \
   --name gpunodepool1 \
   --node-count 2 \
-  --node-vm-size Standard_NV6ads_A10_v5 \
+  --node-vm-size Standard_NV6ads_A10_v5
 ```
 
 :::note
