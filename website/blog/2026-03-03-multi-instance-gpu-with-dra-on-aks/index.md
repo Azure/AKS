@@ -40,7 +40,7 @@ error: the server doesn't have a resource type "deviceclasses"/"resourceslices"
 
 ### Set up NVIDIA GPU Operator
 
-We’ll leverage the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) manage the driver lifecycle. When creating the GPU node pool, specify `--gpu-driver none` to prevent preinstalled drivers from conflicting with the operator-managed stack and ensure consistent configuration across nodes.
+We’ll leverage the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) to manage the GPU driver lifecycle. When creating the GPU-enabled node pool, specify `--gpu-driver none` to prevent preinstalled drivers from conflicting with the operator-managed stack and ensure consistent configuration across nodes.
 
 Next, install the NVIDIA GPU Operator with MIG enabled and the legacy Kubernetes device plugin disabled. We consolidate these configuration settings in a YAML file named `operator-install.yaml` as follows:
 
