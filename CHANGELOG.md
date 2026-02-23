@@ -14,8 +14,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Preview Features
 * [Managed GPU profiles](https://learn.microsoft.com/azure/aks/gpu-cluster) are now available in public preview via API version `2026-01-02-preview`.
-* [Blue Green Nodepool Upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) is now available in public preview via API version `2025-08-02-preview` and Azure CLI version 2.64.0 or higher.
-* [Nodepool version Rollback](https://learn.microsoft.com/azure/aks/roll-back-node-pool-version) is now available in public preview via API version `2025-08-02-preview` and Azure CLI version 2.64.0 or higher.
+* [Blue-green node pool upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) is now available in public preview via API version `2025-08-02-preview` and Azure CLI version `2.64.0` or higher.
+* [Node pool version rollback](https://learn.microsoft.com/azure/aks/roll-back-node-pool-version) is now available in public preview via API version `2025-08-02-preview` and Azure CLI version `2.64.0` or higher.
 
 ### Features
 * [API Server VNET Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
