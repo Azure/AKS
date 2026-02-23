@@ -81,19 +81,19 @@ The NVIDIA DRA driver installation enables GPU resources and points to the drive
 
 ```yaml
 gpuResourcesEnabledOverride: true
- resources-computeDomains:
-   enabled: false # We'll be using GPUs, not compute domains.
- controller:
-   affinity:
-     nodeAffinity:
-       requiredDuringSchedulingIgnoredDuringExecution:
-         nodeSelectorTerms:
-         - matchExpressions:
-           - key: kubernetes.azure.com/mode
-             operator: In
-             values:
-             - system   # Makes sure the system nodes are utilized 
- nvidiaDriverRoot: "/run/nvidia/driver"
+resources-computeDomains:
+  enabled: false # We'll be using GPUs, not compute domains.
+controller:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.azure.com/mode
+            operator: In
+            values:
+            - system   # Makes sure the system nodes are utilized 
+nvidiaDriverRoot: "/run/nvidia/driver"
 ```
 
 Using the above settings, install the NVIDIA DRA driver in a dedicated namespace:
@@ -135,7 +135,7 @@ Your AKS cluster should now be ready to expose MIG-enabled GPU partitions as dyn
 
 ## Define a DeviceClass
 
-DRA introduces a `DeviceClass` abstraction that allows Kubernetes to select devices based on accelerator and characteristics. In this case, we define a class that selects NVIDIA GPUs:
+DRA introduces a `DeviceClass` abstraction that allows Kubernetes to select devices based on accelerator type and characteristics. In this case, we define a class that selects NVIDIA GPUs:
 
 ```yaml
 apiVersion: resource.k8s.io/v1
