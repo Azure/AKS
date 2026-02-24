@@ -95,7 +95,6 @@ From these results, we see that the Dynamo KV Router eliminates the hidden cost 
 
 * To replicate these findings or perform a comparison within your specific environment, please refer to the [Dynamo KV Router Benchmarking Guide](https://github.com/ai-dynamo/dynamo/blob/release/0.6.1/docs/benchmarks/kv-router-ab-testing.md).
 
-
 ## Looking Ahead: Orchestration & Data Mover (NIXL)
 
 In this blog series, we’ve used NVIDIA Dynamo to establish the foundations for high-performance LLM serving—introducing disaggregated architectures in [Part 1](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks), SLO-driven planning in [Part 2](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2), and now intelligent routing. Turning these systems into production deployments requires two additional pieces: efficient data movement between components and purpose-built orchestration.
