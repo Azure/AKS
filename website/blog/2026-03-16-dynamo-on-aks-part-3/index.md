@@ -8,15 +8,14 @@ authors:
 tags: ["dynamo-series", "ai", "performance", "open-source"]
 ---
 
-*This blog post is co-authored with
-[Saurabh Aggarwal](https://www.linkedin.com/in/sa126/),
+*This blog post is co-authored with [Nikhar Maheshwari](https://www.linkedin.com/in/nikharmaheshwari/),
 [Anish Maddipoti](https://www.linkedin.com/in/anish-maddipoti/),
 [Amr Elmeleegy](https://www.linkedin.com/in/meleegy/), and
 [Rohan Varma](https://www.linkedin.com/in/rohan-s-varma/) from NVIDIA.*
 
 We kicked things off in [Part 1](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks) by introducing NVIDIA Dynamo on AKS and demonstrating 1.2 million tokens per second across 10 GPU nodes of GB200 NVL72. In [Part 2](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2), we explored the Dynamo Planner and Profiler for SLO-driven scaling.
 
-In this blog, we explore how **Dynamo’s KV Router** makes multi-worker LLM deployments significantly more efficient—demonstrating up to **~25% lower** p99 latency and **~18% faster** p99 Time To First Token (TTFT) on real-world conversation traces.
+In this blog, we explore how **Dynamo’s KV Router** makes multi-worker LLM deployments significantly more efficient—demonstrating up to **~25% lower** P99 latency and **~18% faster** P99 Time To First Token (TTFT) on real-world conversation traces.
 
 <!-- truncate -->
 
@@ -48,7 +47,11 @@ A routing strategy that optimizes only one of these signals leaves performance o
 
 To see this in practice, let’s take a look at how the router makes a decision in real-time:
 
+<<<<<<< HEAD
+![Figure 1: Worker selection in Dynamo's KV Aware Router.](dynamo_kv_aware_router_diagram.png)
+=======
 ![Dynamo KV Aware Routing decision among 3 workers](./dynamo_kv_aware_router_diagram.png)
+>>>>>>> a9898d94d252c65f72bf15f82fa8c63cd39dab9c
 
 The router scores each worker using the following cost function:
 
@@ -76,10 +79,10 @@ The following table summarizes key performance metrics across the two deployment
 |--|--|--|--|
 | TTFT avg | 1,756 ms | 1,405 ms | +20.0% |
 | TTFT median | 369 ms | 307 ms | +16.8% |
-| TTFT p99 | 11,131 ms | 9,167 ms | +17.6% |
+| TTFT P99 | 11,131 ms | 9,167 ms | +17.6% |
 | E2E Latency avg | 7,859 ms | 6,820 ms | +13.2% |
 | E2E Latency median | 1,683 ms | 1,341 ms | +20.3% |
-| E2E Latency p99 | 38,834 ms | 28,965 ms | +25.4% |
+| E2E Latency P99 | 38,834 ms | 28,965 ms | +25.4% |
 
 As shown in the results above, we see that smarter routing directs requests to the worker that is “experienced” with the relevant data:
 
@@ -89,17 +92,17 @@ As shown in the results above, we see that smarter routing directs requests to t
 
 From these results, we see that the Dynamo KV Router eliminates the hidden cost of redundant compute, ensuring efficient use of cluster resources.
 
-* To enable it in your own environment, follow the [AKS Dynamo deployment guide](https://aka.ms/aks-dynamo).
+* Follow the [AKS Dynamo deployment guide](https://aka.ms/aks-dynamo) to enable it in your environment.
 
-* For teams looking to fine-tune performance further, the [Dynamo Router Guide](https://docs.nvidia.com/dynamo/v-0-9-0/user-guides/kv-cache-aware-routing) covers advanced configuration options, including customizing the routing cost function.
+* Check out the [Dynamo Router Guide](https://docs.nvidia.com/dynamo/v-0-9-0/user-guides/kv-cache-aware-routing) to learn about advanced configuration options and fine-tune performance.
 
-* To replicate these findings or perform a comparison within your specific environment, please refer to the [Dynamo KV Router Benchmarking Guide](https://github.com/ai-dynamo/dynamo/blob/release/0.6.1/docs/benchmarks/kv-router-ab-testing.md).
+* Refer to the [Benchmarking Guide](https://github.com/ai-dynamo/dynamo/blob/release/0.6.1/docs/benchmarks/kv-router-ab-testing.md) to reproduce these results and compare in your setup.
 
 ## Looking Ahead: Orchestration & Data Mover (NIXL)
 
 In this blog series, we’ve used NVIDIA Dynamo to establish the foundations for high-performance LLM serving—introducing disaggregated architectures in [Part 1](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks), SLO-driven planning in [Part 2](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2), and now intelligent routing. Turning these systems into production deployments requires two additional pieces: efficient data movement between components and purpose-built orchestration.
 
-In disaggregated inference deployments, the KV cache must be transferred between prefill and decode workers—passing the computed context from the GPUs that process the prompt to the GPUs that generate the response. [NVIDIA Inference Xfer Library](https://github.com/ai-dynamo/nixl) (NIXL) is a high-bandwidth, low-latency library purpose-built for this task, and now, with the NIXL plugin for Azure Blob Storage, Dynamo’s disaggregated data plane can also leverage Azure Blob Storage–native integration for data movement.
+In disaggregated inference deployments, the KV cache must be transferred between prefill and decode workers, passing the computed context from the GPUs that process the prompt to the GPUs that generate the response. [NVIDIA Inference Xfer Library](https://github.com/ai-dynamo/nixl) (NIXL) is a high-bandwidth, low-latency library purpose-built for this task, and now, with the [NIXL plugin for Azure Blob Storage](https://github.com/ai-dynamo/nixl/blob/release/0.10.0/src/plugins/azure_blob/README.md), Dynamo’s disaggregated data plane can also leverage Azure Blob Storage–native integration for data movement.
 
 To fully capitalize on NIXL’s speed and minimize transfer time, placement needs to reflect the underlying physical topology (e.g., host/GPU affinity and network proximity). As the Kubernetes-native orchestrator for Dynamo, **NVIDIA Grove** coordinates role-aware startup and component readiness. By leveraging Azure topology signals exposed to AKS (reflecting the physical network layout), Grove can schedule tightly communicating pods in closer physical proximity. This helps prevent operational “pileups,” providing a robust foundation for scaling advanced inference setups.
 
