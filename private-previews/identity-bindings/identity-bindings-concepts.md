@@ -1,0 +1,54 @@
+# Identity Bindings Concepts
+
+## Context
+
+[Workload identity feature exists for AKS today](https://learn.microsoft.com/azure/aks/workload-identity-overview) but has scale limitations in not being able to go beyond 20 Federated Identity Credentials (FICs) per identity. For customers having large scale K8s platform spanning across more than 20 clusters (thus more than 20 issuers => more than 20 FICs required) or having a lot of `<namespace, service-account>` combinations to create FIC mappings for the same identity, this a blocker today.
+
+Identity Binding is an evolution of workload identity on AKS to provide a more scalable and secure experience. For users requiring Entra authentication from workloads running on AKS, identity binding is recommended as it presents a scalable solution as users scale their application across multiple Kubernetes clusters.
+
+## Conceptual Introduction
+
+An Identity binding is a mapping resource that allows customers to create mapping between one user-assigned managed identity (UAMI) and one AKS cluster where there are workloads that require authentication to Entra using this user assigned managed identity. So let's say you have a UAMI MI-1 which needs to be used in AKS cluster AKS-1, AKS-2, AKS-3,.... you'll create the following identity binding mappings:
+
+- IB-A mapping MI-1 to AKS-1
+- IB-B mapping MI-1 to AKS-2
+- IB-C mapping MI-1 to AKS-3
+
+Even if the same user-assigned managed identity is needed by workloads running across multiple clusters, only one Federated Identity Credential is created for the user-assigned managed identity, thus addressing the 20 FIC limitation. When the cluster operator creates an identity binding, this single federated identity credential is automatically created by AKS for this user assigned managed identity.
+
+![Identity Binding Concepts](media/identity-bindings-concepts.png)
+
+While the above step allows for usage of a particular user-assigned managed identity within the cluster, the cluster operator is then expected to create ClusterRole/ClusterRoleBinding identifying the namespace and the service accounts (either granularly or collectively across namespace or cluster) that are allowed to use this user-assigned managed identity for Entra authentication.
+
+## FAQ
+
+### Is identity sameness (namespace and service account sameness) required across clusters when the same user-assigned managed identity is used across clusters?
+
+No. Identity binding doesn't have any pre-requisite for identity sameness and it's completely up to the cluster operator to explicitly authorize the namespaces/service-accounts inside the cluster that are allowed to use a managed identity.
+
+### Can multiple identity bindings be created for the same user-assigned managed identity?
+
+Yes. The OIDC issuer URL maintained by AKS will be the same for this user-assigned managed identity across all of these identity bindings.
+
+### What permissions are required for creation of the identity bindings?
+
+**ARM permissions required:**
+- `Microsoft.ContainerService/managedClusters/identityBindings/*`
+- `Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/*` (when identityBindings resource is created, federatedIdentityCredentials is automatically created on-behalf-of the cluster operator. if cluster operator who is creating identityBindings doesn't have permissions to create federatedIdentityCredentials, the identityBindings creation will fail)
+
+**K8s permissions required:**
+- permissions to create ClusterRole and ClusterRoleBinding (which would be possible for cluster admin)
+
+### With federated identity credentials auto generated at the time of identity binding creation, when all identity bindings mapping to a MI are deleted, what happens to the FIC that was created for that specific MI?
+
+There's currently no garbage collection for the FIC when the last identity binding mapped to a MI is deleted. Cluster operator should clean up the FIC only after verifying that all identity-bindings mapped to a MI are deleted, failing which any identity-binding and cluster still dependent on the same would be impacted.
+
+### What are networking pre-requisites for usage of identity bindings feature?
+
+Before identity bindings, workload identity feature required egress to be allowed for `login.microsoftonline.com` so that workloads could send requests to eSTS to exchange service account tokens for Entra access tokens.
+
+With the identity binding feature, there's no need for `login.microsoftonline.com` as token exchange requests are routed via a cluster-specific identity binding specific proxy deployed on AKS service.
+
+## Next Steps
+
+[Set up identity bindings](./identity-bindings-how-to-guide.md) based on the how-to guide.
