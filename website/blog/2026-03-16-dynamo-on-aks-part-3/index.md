@@ -14,7 +14,7 @@ tags: ["dynamo-series", "ai", "performance", "open-source"]
 [Amr Elmeleegy](https://www.linkedin.com/in/meleegy/), and
 [Rohan Varma](https://www.linkedin.com/in/rohan-s-varma/) from NVIDIA.*
 
-We kicked things off in [Part 1](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks) by introducing NVIDIA Dynamo on AKS and demonstrating 1.2 million tokens per second across 10 GPU nodes of GB200 NVL72. In [Part 2](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2), we explored the Dynamo Planner and Profiler for SLO-driven scaling. 
+We kicked things off in [Part 1](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks) by introducing NVIDIA Dynamo on AKS and demonstrating 1.2 million tokens per second across 10 GPU nodes of GB200 NVL72. In [Part 2](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2), we explored the Dynamo Planner and Profiler for SLO-driven scaling.
 
 In this blog, we explore how **Dynamo’s KV Router** makes multi-worker LLM deployments significantly more efficient—demonstrating up to **~25% lower** p99 latency and **~18% faster** p99 Time To First Token (TTFT) on real-world conversation traces.
 
@@ -26,7 +26,7 @@ During inference, a router distributes incoming requests across a fleet of worke
 
 In production, many requests share common **prefixes**: a system prompt defining an agent’s persona, a standard compliance disclaimer, or a shared document in a retrieval-augmented generation (RAG) workflow. If a worker already holds the KV cache for a prefix, it can reuse it for the next matching request—reducing prefill and reaching the first output token faster.
 
-Standard routing strategies such as round-robin, or policies optimized purely for load balancing, spread requests across workers without considering KV-cache locality. For globally-shared prefixes (e.g., a system prompt), this is usually fine: every worker quickly builds and retains the KV cache for that prefix. But many prefixes are shared only within a subset of traffic—forming “prefix families”—requests in the same prefix family may be tied to the same document, agent configuration, or conversation history. Load balancers scatter these related requests across the worker pool, forcing repeated prefill on workers that don’t have the relevant cached blocks, resulting in lost opportunity and ultimately, higher latencies.
+Standard routing strategies such as round-robin, or policies optimized purely for load balancing, spread requests across workers without considering KV-cache locality. For globally-shared prefixes (e.g., a system prompt), this is usually fine: every worker quickly builds and retains the KV cache for that prefix. But many prefixes are shared only within a subset of traffic - forming “prefix families” - requests in the same prefix family may be tied to the same document, agent configuration, or conversation history. Load balancers scatter these related requests across the worker pool, forcing repeated prefill on workers that don’t have the relevant cached blocks, resulting in lost opportunity and ultimately, higher latencies.
 
 Simply routing to the worker with the best cache hit is not ideal either. Doing so can overload cache-rich workers while others sit idle, creating queue buildup that hurts tail latency just as much as the redundant prefill.
 
@@ -77,19 +77,22 @@ The following table summarizes key performance metrics across the two deployment
 | TTFT avg | 1,756 ms | 1,405 ms | +20.0% |
 | TTFT median | 369 ms | 307 ms | +16.8% |
 | TTFT p99 | 11,131 ms | 9,167 ms | +17.6% |
-| E2E Latency avg | 7,859 ms | 6,820 ms | +13.2% | 
+| E2E Latency avg | 7,859 ms | 6,820 ms | +13.2% |
 | E2E Latency median | 1,683 ms | 1,341 ms | +20.3% |
 | E2E Latency p99 | 38,834 ms | 28,965 ms | +25.4% |
 
 As shown in the results above, we see that smarter routing directs requests to the worker that is “experienced” with the relevant data:
 
 * **Users received faster responses**: TTFT improved by ~18% at the tail (P99).
+
 * Congestion dropped sharply: P99 end-to-end latency **decreased by ~25%**. With less time spent re-computing prefixes, workers completed requests sooner, avoiding the queue pileups that typically hurt performance during traffic spikes.
 
-From these results, we see that the Dynamo KV Router eliminates the hidden cost of redundant compute, ensuring efficient use of cluster resources. 
+From these results, we see that the Dynamo KV Router eliminates the hidden cost of redundant compute, ensuring efficient use of cluster resources.
 
-* To enable it in your own environment, follow the [AKS Dynamo deployment guide](https://aka.ms/aks-dynamo). 
-* For teams looking to fine-tune performance further, the [Dynamo Router Guide](https://docs.nvidia.com/dynamo/v-0-9-0/user-guides/kv-cache-aware-routing) covers advanced configuration options, including customizing the routing cost function. 
+* To enable it in your own environment, follow the [AKS Dynamo deployment guide](https://aka.ms/aks-dynamo).
+
+* For teams looking to fine-tune performance further, the [Dynamo Router Guide](https://docs.nvidia.com/dynamo/v-0-9-0/user-guides/kv-cache-aware-routing) covers advanced configuration options, including customizing the routing cost function.
+
 * To replicate these findings or perform a comparison within your specific environment, please refer to the [Dynamo KV Router Benchmarking Guide](https://github.com/ai-dynamo/dynamo/blob/release/0.6.1/docs/benchmarks/kv-router-ab-testing.md).
 
 
