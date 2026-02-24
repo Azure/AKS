@@ -47,11 +47,7 @@ A routing strategy that optimizes only one of these signals leaves performance o
 
 To see this in practice, let’s take a look at how the router makes a decision in real-time:
 
-<<<<<<< HEAD
-![Figure 1: Worker selection in Dynamo's KV Aware Router.](dynamo_kv_aware_router_diagram.png)
-=======
 ![Dynamo KV Aware Routing decision among 3 workers](./dynamo_kv_aware_router_diagram.png)
->>>>>>> a9898d94d252c65f72bf15f82fa8c63cd39dab9c
 
 The router scores each worker using the following cost function:
 
