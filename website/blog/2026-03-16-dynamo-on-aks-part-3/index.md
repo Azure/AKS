@@ -1,7 +1,7 @@
 ---
 title: "Scaling multi-node LLM inference with NVIDIA Dynamo and NVIDIA GPUs on AKS (Part 3)"
 date: 2026-03-16
-description: "Learn how to scale LLM inference on Kubernetes using NVIDIA Dynamo, H100 GPUs, and Dynamo’s KV Router to make multi-worker LLM deployments more efficient."
+description: "Learn how NVIDIA Dynamo's KV Router optimizes multi-worker LLM inference on AKS with H100 GPUs, achieving 25% lower p99 latency through intelligent routing."
 authors:
 - sachi-desai
 - devi-vasudevan
@@ -40,7 +40,7 @@ A routing strategy that optimizes only one of these signals leaves performance o
 
 ## The Solution: Dynamo KV Router
 
-[Dynamo's KV Router](https://docs.nvidia.com/dynamo/latest/design-docs/router-design#kv-router-architecture) solves this by making the routing layer "state-aware”. This intelligence is designed to drop into your existing inference stack with minimal friction.
+[Dynamo's KV Router](https://docs.nvidia.com/dynamo/latest/design-docs/router-design#kv-router-architecture) solves this by making the routing layer "state-aware". This intelligence is designed to drop into your existing inference stack with minimal friction.
 
 * **Engine-Agnostic Design**: The router works out-of-the-box with major engines like [vLLM](https://docs.vllm.ai/), [TensorRT-LLM](https://docs.nvidia.com/tensorrt-llm/index.html), and [SGLang](https://docs.sglang.io/). Workers automatically broadcast their cache state (KV events) to the router, requiring no complex API instrumentation or engine-specific configuration changes.
 
@@ -48,13 +48,13 @@ A routing strategy that optimizes only one of these signals leaves performance o
 
 To see this in practice, let’s take a look at how the router makes a decision in real-time:
 
-![Dynamo KV Aware Routing decision among 3 workers](dynamo_kv_aware_router_diagram.png)
+![Dynamo KV Aware Routing decision among 3 workers](./dynamo_kv_aware_router_diagram.png)
 
 The router scores each worker using the following cost function:
 
 `Cost = overlap_weight × Prefill_Blocks + Decode_Blocks`,
 
-and routes to the worker with the lowest cost. *Prefill blocks* are the blocks corresponding to input tokens not yet cached on the worker. The *overlap_weight* (default: 1.0) controls the tradeoff: higher overlap weight values penalize cache misses more heavily, favouring cache locality; lower values let decode load dominate, spreading requests more evenly.
+and routes to the worker with the lowest cost. *Prefill blocks* are the blocks corresponding to input tokens not yet cached on the worker. The *overlap_weight* (default: 1.0) controls the tradeoff: higher overlap weight values penalize cache misses more heavily, favoring cache locality; lower values let decode load dominate, spreading requests more evenly.
 
 In the above scenario, Worker 3 has the best cache hit rate (8 of 10 blocks cached), but its high decode load pushes its cost above Worker 2:
 
