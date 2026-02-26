@@ -112,6 +112,7 @@ For deprecation and patch timelines by region, please check the [AKS-Release-Tra
 * Windows Server 2025 is now supported in preview. This new version includes the following updates: Containerd 2.0 is now default, Generation 2 VMs are enabled by default, and FIPS is enabled by default. For more information on upgrading your windows OS version, see [AKS documentation](https://aka.ms/aks/upgrade-windows-os-version).
 * [Azure Linux with OS Guard](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux-os-guard), a hardened and immutable variant of Azure Linux, is now in public preview.
 * [Istio CNI](https://learn.microsoft.com/azure/aks/istio-cni) is now in public preview. Istio CNI improves security by eliminating the need for `NET_ADMIN` and `NET_RAW` capabilities in application workloads within the service mesh.
+* Advanced Container Networking Services (ACNS) [performance acceleration mode](https://aka.ms/acnsperformance) is now in Public Preview. Choose the BpfVeth datapath acceleration mode for Azure CNI Powered by Cilium to improve pod networking performance and reduce node CPU usage.
 
 ### Behavioral Changes
 * Starting with API version `2026-01-01`, AKS returns `podCIDR` and `podCIDRs` fields when `networkPlugin=none`, allowing customers to update their podCIDR to match their CNI configuration.
