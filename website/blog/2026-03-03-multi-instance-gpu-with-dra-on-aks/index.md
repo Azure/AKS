@@ -207,7 +207,7 @@ spec:
           count: 1
 ```
 
-This abstraction decouples workloads from physical device details. A job does not need to know which GPU or which partition it receives - it just declares its need for a device from the `nvidia-mig` class.
+This abstraction decouples workloads from physical device details. A job does not need to know which GPU or partition it receives—it just declares its need for a device from the `nvidia-mig` class.
 
 ### Deploy a sample MIG workload
 
