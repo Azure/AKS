@@ -18,7 +18,7 @@ Multi-instance GPU (MIG) combined with dynamic resource allocation (DRA) helps a
 To learn more about dynamic resource allocation on AKS, visit our [previous blog](https://blog.aks.azure.com/2025/11/17/dra-devices-and-drivers-on-kubernetes) on getting started with DRA and NVIDIA GPU Operator!
 :::
 
-In this post, we walk through how to configure MIG with the NVIDIA GPU Operator on AKS, enable the NVIDIA DRA driver, define the necessary Kubernetes resource abstractions, and deploy a workload that consumes a MIG-backed GPU instance.
+In this post, we walk through how to configure MIG with the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) on AKS, enable the [NVIDIA DRA driver](https://github.com/NVIDIA/k8s-dra-driver-gpu), define the necessary Kubernetes resource abstractions, and deploy a workload that consumes a MIG-backed GPU instance (NVIDIA GPUs - such as the A100, H100, H200 and more - that support partitioning can be found in the [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-gpus.html)).
 
 ## Prepare your AKS cluster
 
@@ -40,7 +40,17 @@ error: the server doesn't have a resource type "deviceclasses"/"resourceslices"
 
 ### Set up NVIDIA GPU Operator
 
-We’ll leverage the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) to manage the GPU driver lifecycle. When creating the GPU-enabled node pool, specify `--gpu-driver none` to prevent preinstalled drivers from conflicting with the operator-managed stack and ensure consistent configuration across nodes.
+We’ll leverage the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) to manage the GPU driver lifecycle. When creating the GPU-enabled node pool, specify `--gpu-driver none` to prevent preinstalled drivers from conflicting with the operator-managed stack and ensure consistent configuration across nodes. In this example, we provision an AKS node pool with an [Azure NDm_A100_v4 VM size](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ndma100v4-series) supporting MIG:
+
+```bash
+az aks nodepool add \
+    --resource-group myResourceGroup \
+    --cluster-name myAKSCluster \
+    --name gpunp \
+    --node-count 1 \
+    --gpu-driver none \
+    --node-vm-size Standard_ND96amsr_A100_v4 
+```
 
 Next, install the NVIDIA GPU Operator with MIG enabled and the legacy Kubernetes device plugin disabled. We consolidate these configuration settings in a YAML file named `operator-install.yaml` as follows:
 
@@ -58,9 +68,11 @@ toolkit:
       value: "false"
 ```
 
-Note: In this setup, the traditional Kubernetes device plugin in the NVIDIA GPU Operator is purposely disabled so that GPU resources are not managed through the static model. Instead, the NVIDIA DRA driver serves as the authority for device discovery, enabling dynamic, claim-based management of MIG-backed GPU resources.
+:::note
+In this setup, the traditional Kubernetes device plugin in the NVIDIA GPU Operator is purposely disabled so that GPU resources are not managed through the static model. Instead, the NVIDIA DRA driver serves as the authority for device discovery, enabling dynamic, claim-based management of MIG-backed GPU resources.
+:::
 
-The single strategy partitions each GPU into uniform partitions. After preparing and saving the configuration file, install the operator with Helm:
+The single strategy partitions each GPU into uniform partitions; alternatively, you can configure [mixed strategy](https://docs.nvidia.com/datacenter/cloud-native/kubernetes/latest/index.html#the-mixed-strategy) to partition each GPU into distinct resource types. After preparing and saving the configuration file, install the operator with Helm:
 
 ```bash
 helm install --wait \
@@ -260,3 +272,11 @@ The key difference from traditional GPU scheduling is the use of `resources.clai
 GPUs in Kubernetes have traditionally been scheduled as indivisible units. By enabling MIG and DRA on AKS, you move toward a model where accelerators are elastic, shareable, and first-class resources in the control plane. For organizations running parallel workloads that only partially utilize GPU capacity, this shift unlocks immediate cost efficiency and operational benefits.
 
 If you are already operating GPU-enabled node pools on AKS and notice underutilization, implementing MIG with Dynamic Resource Allocation is a highly impactful architectural improvement you can make. It allows you to run more workloads on the same hardware while maintaining predictability and cloud-native operational simplicity.
+
+## Additional Resources
+
+To learn more about NVIDIA MIG and DRA, check out the following resources:
+
+* [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-gpus.html)
+* [Additional MIG profiles per NVIDIA GPU series](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-mig-profiles.html)
+* [Types of DRA users on Kubernetes](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/)
