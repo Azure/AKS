@@ -99,7 +99,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Security Center
@@ -135,7 +135,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - jakjang
+              - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Azure Portal
@@ -161,6 +161,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - Azure/aks-portal
+              - chandraneel
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Azure Government
@@ -184,7 +185,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Cilium
@@ -196,7 +197,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               - paulgmiller
               - quantumn-a5
               - tamilmani1989
@@ -211,7 +212,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Pod Identity
@@ -301,7 +302,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -315,7 +316,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - JackStromberg
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # App Gateway
@@ -327,7 +328,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               - jackstromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -367,7 +368,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - azure/aks-traffic
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Mesh networking
@@ -379,7 +380,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Copilot
@@ -404,7 +405,6 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - jakjang
               - toddysm
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -430,7 +430,6 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
               - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
