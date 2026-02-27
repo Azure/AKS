@@ -273,7 +273,7 @@ GPUs in Kubernetes have traditionally been scheduled as indivisible units. By en
 
 If you are already operating GPU-enabled node pools on AKS and notice underutilization, implementing MIG with Dynamic Resource Allocation is a highly impactful architectural improvement you can make. It allows you to run more workloads on the same hardware while maintaining predictability and cloud-native operational simplicity.
 
-## Additional Resources
+## Additional resources
 
 To learn more about NVIDIA MIG and DRA, check out the following resources:
 
