@@ -22,9 +22,9 @@ Today, we're shifting focus from raw throughput to **developer velocity** and
 **operational efficiency**.
 
 We will explore how the
-[**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner.md)
+[**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/tree/main/docs/pages/components/planner)
 and
-[**Dynamo Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/benchmarks/profiler)
+[**Dynamo Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/docs/pages/components/profiler)
 remove the guesswork from performance tuning on AKS.
 
 <!-- truncate -->
