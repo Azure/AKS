@@ -58,7 +58,7 @@ toolkit:
       value: "false"
 ```
 
-Note: In this setup, the traditional NVIDIA device plugin is purposely disabled so that GPU resources are not managed through the static model. Instead, the NVIDIA DRA driver serves as the authority for device discovery, enabling dynamic, claim-based management of MIG-backed GPU resources.
+Note: In this setup, the traditional Kubernetes device plugin in the NVIDIA GPU Operator is purposely disabled so that GPU resources are not managed through the static model. Instead, the NVIDIA DRA driver serves as the authority for device discovery, enabling dynamic, claim-based management of MIG-backed GPU resources.
 
 The single strategy partitions each GPU into uniform partitions. After preparing and saving the configuration file, install the operator with Helm:
 
