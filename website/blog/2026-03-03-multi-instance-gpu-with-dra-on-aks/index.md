@@ -76,11 +76,11 @@ The single strategy partitions each GPU into uniform partitions; alternatively, 
 
 ```bash
 helm install --wait \
---generate-name -n gpu-operator \
---create-namespace \
-nvidia/gpu-operator \
---version=v25.10.0 \
--f operator-install.yaml
+  --generate-name -n gpu-operator \
+  --create-namespace \
+  nvidia/gpu-operator \
+  --version=v25.10.0 \
+  -f operator-install.yaml
 ```
 
 Now, the operator has installed the GPU driver, configured single-strategy MIG, and prepared the node pool for GPU partitioning.
