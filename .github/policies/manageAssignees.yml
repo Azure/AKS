@@ -198,7 +198,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - therealmitchconnors
-              - paulgmiller
               - quantumn-a5
               - tamilmani1989
               replyTemplate: ${mentionees} would you be able to assist?
