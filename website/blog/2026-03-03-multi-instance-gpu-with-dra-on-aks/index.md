@@ -49,7 +49,7 @@ az aks nodepool add \
     --name gpunp \
     --node-count 1 \
     --gpu-driver none \
-    --node-vm-size Standard_ND96amsr_A100_v4 
+    --node-vm-size Standard_ND96amsr_A100_v4
 ```
 
 Next, install the NVIDIA GPU Operator with MIG enabled and the legacy Kubernetes device plugin disabled. We consolidate these configuration settings in a YAML file named `operator-install.yaml` as follows:
