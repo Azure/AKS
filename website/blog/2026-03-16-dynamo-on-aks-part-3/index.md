@@ -58,7 +58,7 @@ and routes to the worker with the lowest cost. *Prefill blocks* are the blocks c
 In the above scenario, Worker 3 has the best cache hit rate (8 of 10 blocks cached), but its high decode load pushes its cost above Worker 2:
 
 * Worker 1: 1.0 × 8 + 10 = **18**
-* Worker 2: 1.0 × 5 + 5 = **10** * (selected — lowest cost)
+* Worker 2: 1.0 × 5 + 5 = **10** *(selected — lowest cost)*
 * Worker 3: 1.0 × 2 + 9 = **11**
 
 The router takes the partial cache hit on Worker 2 to speed up prefill, while avoiding the contention on Worker 3. This prevents cache-rich but overloaded nodes from becoming hotspots. In the next section, we put this to the test on a real-world workload.
@@ -67,7 +67,7 @@ The router takes the partial cache hit on Worker 2 to speed up prefill, while av
 
 To quantify the real-world value of inference with the KV-aware router, we ran an apples-to-apples comparison on an AKS cluster with [Dynamo](https://github.com/ai-dynamo/dynamo) and [Grove](https://github.com/ai-dynamo/grove), keeping the hardware, model, and traffic identical while changing only the routing strategy from Round-Robin to KV-Aware.
 
-For the test environment, we deployed the [Llama-3.3-70B-Instruct-FP8](https://huggingface.co/nvidia/Llama-3.3-70B-Instruct-FP8) LLM on an AKS cluster with 8x NVIDIA H100 GPUs (4 nodes x Azure `Standard_NC80adis_H100_v5`). To simulate a production workload, we replayed 1,000 requests from the [Mooncake traces dataset](https://github.com/kvcache-ai/Mooncake) at a rate of 1 request per second. Mooncake traces are derived from real conversation logs and exhibits substantial prefix sharing (e.g., repeated system prompts and multi-turn dialogue history), making it ideal for evaluating cache-aware routing efficiency.
+For the test environment, we deployed the [Llama-3.3-70B-Instruct-FP8](https://huggingface.co/nvidia/Llama-3.3-70B-Instruct-FP8) LLM on an AKS cluster with 8x NVIDIA H100 GPUs (4 nodes x Azure `Standard_NC80adis_H100_v5`). To simulate a production workload, we replayed 1,000 requests from the [Mooncake traces dataset](https://github.com/kvcache-ai/Mooncake) at a rate of 1 request per second. Mooncake traces are derived from real conversation logs and exhibit substantial prefix sharing (e.g., repeated system prompts and multi-turn dialogue history), making it ideal for evaluating cache-aware routing efficiency.
 
 The following table summarizes key performance metrics across the two deployments:
 
@@ -94,7 +94,7 @@ From these results, we see that the Dynamo KV Router eliminates the hidden cost 
 
 * Refer to the [Benchmarking Guide](https://github.com/ai-dynamo/dynamo/blob/release/0.6.1/docs/benchmarks/kv-router-ab-testing.md) to reproduce these results and compare in your setup.
 
-## Looking Ahead: Orchestration & Data Mover (NIXL)
+## Looking Ahead: Orchestration and Data Mover (NIXL)
 
 In this blog series, we’ve used NVIDIA Dynamo to establish the foundations for high-performance LLM serving—introducing disaggregated architectures in [Part 1](https://blog.aks.azure.com/2025/10/24/dynamo-on-aks), SLO-driven planning in [Part 2](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2), and now intelligent routing. Turning these systems into production deployments requires two additional pieces: efficient data movement between components and purpose-built orchestration.
 
