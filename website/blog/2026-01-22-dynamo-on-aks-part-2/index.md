@@ -74,8 +74,6 @@ prefill GPUs and idle decode GPUs).
 NVIDIA Dynamo addresses these gaps through two integrated components:
 the **Planner Profiler** and the **SLO-based Planner**.
 
----
-
 ### Let’s see it through an example application scenario
 
 Consider a mission-critical AI workload running on AKS: an airline’s
@@ -115,7 +113,7 @@ The Dynamo Planner profiler is your pre-deployment simulation engine.
 Instead of burning GPU hours testing every possible configuration, you
 define your requirements in a **DynamoGraphDeploymentRequest (DGDR)**
 manifest. The profiler then executes an automated
-["sweep"](https://github.com/ai-dynamo/dynamo/blob/main/docs/benchmarks/sla_driven_profiling.md#profiling-method)
+["sweep"](https://github.com/ai-dynamo/dynamo/blob/release/0.8.1/docs/benchmarks/sla_driven_profiling.md)
 of the search space:
 
 * **Parallelization Mapping**: It tests different TP sizes for both prefill

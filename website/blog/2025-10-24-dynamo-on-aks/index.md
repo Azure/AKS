@@ -92,7 +92,7 @@ time-series models, dynamically adjusting PD worker counts based on predicted
 demand and real-time metrics.
 
 The Dynamo
-[LLM-aware Router](https://github.com/ai-dynamo/dynamo/tree/main/components/src/dynamo/router)
+[LLM-aware Router](https://github.com/ai-dynamo/dynamo/blob/main/docs/components/router/router-guide.md)
 manages the key-value (KV) cache across large GPU clusters by hashing requests
 and tracking cache locations. It calculates overlap scores between incoming
 requests and cached KV blocks, routing requests to GPUs that maximize cache
