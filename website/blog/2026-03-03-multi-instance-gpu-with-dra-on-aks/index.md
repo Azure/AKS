@@ -248,7 +248,7 @@ spec:
 After deploying this job, we can check its status and the usage of the `mig-gpu-1g` resource claim template we previously created:
 
 ```bash
-kubectl get Job 
+kubectl get job
 ```
 
 ```output
