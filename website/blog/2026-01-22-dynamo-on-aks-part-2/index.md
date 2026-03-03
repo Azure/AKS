@@ -22,9 +22,9 @@ Today, we're shifting focus from raw throughput to **developer velocity** and
 **operational efficiency**.
 
 We will explore how the
-[**Dynamo Planner**](https://github.com/ai-dynamo/dynamo/tree/main/docs/pages/components/planner)
+[**Dynamo Planner**](https://docs.nvidia.com/dynamo/v-0-9-0/components/planner)
 and
-[**Dynamo Profiler**](https://github.com/ai-dynamo/dynamo/tree/main/docs/pages/components/profiler)
+[**Dynamo Profiler**](https://docs.nvidia.com/dynamo/v-0-9-0/components/profiler)
 remove the guesswork from performance tuning on AKS.
 
 <!-- truncate -->
