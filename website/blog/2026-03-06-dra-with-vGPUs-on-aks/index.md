@@ -1,16 +1,20 @@
 ---
-title: "DRA with NVIDIA virtualized GPU on AKS"
+title: "Dynamic Resource Allocation (DRA) with NVIDIA virtualized GPU (vGPU) on AKS"
 date: "2026-03-06"
 description: "Configure dynamic resource allocation (DRA) for NVIDIA vGPU workloads and learn the prerequisites with setup steps on Azure Kubernetes Service (AKS)."
 authors: ["sachi-desai", "suraj-deshmukh"]
 tags: ["gpu", "performance", "operations"]
 ---
 
-In recent months, dynamic resource allocation (DRA) has emerged as the standard mechanism to consume GPU resources in Kubernetes. With DRA, accelerators like GPUs are no longer exposed as static extended resources (for example, `nvidia.com/gpu`) but are dynamically allocated through `DeviceClasses` and `ResourceClaims`. This unlocks richer scheduling semantics and better integration with virtualization technologies like NVIDIA vGPU.
+Recently, dynamic resource allocation (DRA) has emerged as the standard mechanism to consume GPU resources in Kubernetes. With DRA, accelerators like GPUs are no longer exposed as static extended resources (for example, `nvidia.com/gpu`) but are dynamically allocated through `DeviceClasses` and `ResourceClaims`. This unlocks richer scheduling semantics and better integration with virtualization technologies like NVIDIA vGPU.
 
 Virtual accelerators such as NVIDIA vGPU are commonly used for smaller workloads because they allow a single physical GPU to be securely partitioned across multiple tenants or apps. This is especially valuable for enterprise AI/ML development environments, fine-tuning, and audio/visual processing. vGPU enables predictable performance profiles while still exposing CUDA capabilities to containerized workloads.
 
-In this post, we’ll walk through enabling the NVIDIA DRA Driver on a node pool backed by an [NVadsA10_v5 series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series) vGPU on Azure Kubernetes Service (AKS).
+On Azure, the [NVadsA10_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series) virtual machine (VM) series is backed by the physical NVIDIA A10 GPU in the host and offers this resource model. Instead of assigning the entire GPU to a single VM, the vGPU technology is used to partition the GPU into multiple fixed-size slices at the hypervisor layer.
+
+In this post, we’ll walk through enabling the NVIDIA DRA driver on a node pool backed by an [NVadsA10_v5 series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series) vGPU on Azure Kubernetes Service (AKS).
+
+![](DRA_A10_vGPU_AKS_diagram.png)
 
 <!-- truncate -->
 
@@ -36,7 +40,7 @@ error: the server doesn't have a resource type "deviceclasses"/"resourceslices"
 
 ### Add a vGPU node pool and label your nodes
 
-Add a GPU node pool and specify an Azure virtual machine (VM) size which supports virtualized accelerator workloads (such as [NVadsA10_v5 series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series)).
+Add a GPU node pool and specify an Azure virtual machine (VM) size which supports virtualized accelerator workloads, such as [NVadsA10_v5 series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series). These VM sizes are specifically designed for virtualized GPU scenarios, where each node receives a slice of a physical NVIDIA A10 rather than the entire card.
 
 ```bash
 az aks nodepool add \
@@ -105,6 +109,8 @@ nvidia-dra-controller-xxxxx                          1/1     Running   0
 nvidia-dra-kubelet-plugin-aks-gpunodepool1-xxxxx     1/1     Running   0
 ```
 
+At this stage, the NVIDIA DRA driver scans the node, detects the single vGPU device exposed by the Azure VM, and publishes it to the Kubernetes control plane as a DRA-managed device. Even though the underlying hardware is a shared A10, the driver registers one allocatable device on each node because that is what the VM presents.
+
 ### Why do these Helm settings matter?
 
 Let's walk through some of the DRA Helm chart settings set earlier for vGPU:
@@ -151,8 +157,17 @@ gpu-aks-gpunodepool1-xxxxx-0          aks-gpunodepool1-xxxxx-vmss000000
 
 Now, we’ve confirmed that the DRA driver discovered and published our vGPU-backed resources, and the nodes are ready to accept workloads! You can follow [these steps](https://blog.aks.azure.com/2025/11/17/dra-devices-and-drivers-on-kubernetes#run-a-gpu-workload-using-dra-drivers) to run a sample workload using the DRA specifications.
 
+### vGPU options in Azure
+
+Beyond `Standard_NV6ads_A10_v5` (one-sixth of an A10 GPU), this VM series offers larger fractional profiles:
+
+* `Standard_NV12ads_A10_v5`: one-third of a physical A10, with 8 GB of accelerator memory
+* `Standard_NV18ads_A10_v5`: one-half of a physical A10, with 12 GB of accelerator memory
+
+These sizes (and more) in the [NVadsA10_v5 VM series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series) map to a fixed NVIDIA vGPU profile and the fraction determines how much GPU memory and compute capacity (serial multiprocessors) the VM receives. The limits are enforced at the hypervisor layer, so AKS ultimately sees a single GPU device with predictable, guaranteed capacity.
+
 ## Looking ahead
 
-As GPUs become first-class resources in Kubernetes, combining virtualized GPU with DRA provides a practical way to run shared, production-grade workloads on AKS. vGPU supported Azure VM series offer partial GPUs for scenarios such as media rendering and transcoding, AI research, and simulations, while DRA ensures those resources are allocated explicitly and scheduled with awareness of real cluster state.
+As GPUs become first-class resources in Kubernetes, combining virtualized GPU with DRA provides a practical way to run shared, production-grade workloads on AKS. vGPU supported Azure VM series offer partial GPUs for scenarios such as media rendering and transcoding and fine-tuning small to medium language models, while DRA ensures those resources are allocated explicitly and scheduled with awareness of real cluster state.
 
 For large AKS deployments, especially in regulated or cost-sensitive industries, getting GPU placement and utilization right directly affects job throughput and infrastructure efficiency. Using DRA with vGPU will enable organizations to move beyond coarse node-level allocation toward controlled, workload-driven GPU consumption at scale.
