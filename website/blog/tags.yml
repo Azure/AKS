@@ -167,6 +167,11 @@ general:
   permalink: /general
   description: Broad AKS topics, announcements, conceptual overviews, and cross-cutting guidance.
 
+gpu:
+  label: GPU
+  permalink: /gpu
+  description: Configuration and optimization of GPU-accelerated workloads on AKS.
+
 grafana:
   label: Grafana
   permalink: /grafana
