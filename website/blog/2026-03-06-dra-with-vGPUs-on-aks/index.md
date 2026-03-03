@@ -14,7 +14,7 @@ On Azure, the [NVadsA10_v5](https://learn.microsoft.com/azure/virtual-machines/s
 
 In this post, we’ll walk through enabling the NVIDIA DRA driver on a node pool backed by an [NVadsA10_v5 series](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/nvadsa10v5-series) vGPU on Azure Kubernetes Service (AKS).
 
-![](DRA_A10_vGPU_AKS_diagram.png)
+![DRA with fractional A10 vGPU node on AKS](DRA_A10_vGPU_AKS_diagram.png)
 
 <!-- truncate -->
 
