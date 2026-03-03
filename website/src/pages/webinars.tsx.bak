@@ -9,7 +9,7 @@
 //   - bullet point text (repeatable for bullets)
 // If the current month file is missing, the code steps backwards (up to a
 // configurable number of prior months) and uses the most recent available file.
-// This ensures an agenda is always displayed, even before a new month's file is added.
+// This ensures an agenda is always displayed, even before a new month’s file is added.
 // Timezone call card data is defined in the constant `timezoneCalls` below.
 
 import type { ReactNode } from "react";
@@ -61,6 +61,14 @@ const timezoneCalls: TimezoneCall[] = [
 ];
 
 // --- Markdown Parsing Logic -----------------------------------------------
+// The markdown file structure (static/webinars/agenda/YYYY-MM.md) is expected to have:
+// Frontmatter: ---\nmonth: Month YYYY\n--- then sections introduced by `## Heading`.
+// Within each section optional lines:
+//   Presenter: Name
+//   Description: Text
+//   Featured: true
+//   - bullet point
+// Blank lines are ignored.
 
 function parseAgendaMarkdown(raw: string): {
   month?: string;
@@ -68,6 +76,7 @@ function parseAgendaMarkdown(raw: string): {
 } {
   let month: string | undefined;
   let content = raw.trim();
+  // Extract frontmatter
   if (content.startsWith("---")) {
     const end = content.indexOf("\n---", 3);
     if (end !== -1) {
@@ -91,11 +100,12 @@ function parseAgendaMarkdown(raw: string): {
     if (!line) continue;
     const headingMatch = line.match(/^##\s+(.+)$/);
     if (headingMatch) {
+      // push previous
       if (current) items.push(current);
       current = { title: headingMatch[1].trim(), _lines: [] };
       continue;
     }
-    if (!current) continue;
+    if (!current) continue; // ignore content before first heading
     current._lines.push(line);
   }
   if (current) items.push(current);
@@ -137,9 +147,9 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
     }
     const now = new Date();
     let attempts = 0;
-    const maxLookback = 6;
+    const maxLookback = 6; // months
     let year = now.getFullYear();
-    let monthIndex = now.getMonth();
+    let monthIndex = now.getMonth(); // 0-based
     let cancelled = false;
 
     const tryFetch = () => {
@@ -164,9 +174,11 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
           if (cancelled) return;
           attempts++;
           if (attempts > maxLookback) {
+            // Give up: show empty state.
             setState({ items: [], loading: false });
             return;
           }
+          // Move back one month
           monthIndex -= 1;
           if (monthIndex < 0) {
             monthIndex = 11;
@@ -183,8 +195,6 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
   return state;
 }
 
-// --- Components ------------------------------------------------------------
-
 function Hero(): ReactNode {
   const bannerUrl = "/webinars/AKS-CommunityCalls-Banner.png";
   return (
@@ -195,22 +205,13 @@ function Hero(): ReactNode {
       aria-label="AKS Community Calls Banner"
     >
       <div className={styles.heroOverlayInner}>
-        <Heading as="h1">AKS Community Calls</Heading>
-        <p className={styles.heroSubtitle}>
-          Monthly public sessions to connect with the AKS product team, learn roadmap updates, and share feature deep dives.
-        </p>
+        <Heading as="h1">AKS - Community Calls</Heading>
         <div className={styles.heroButtons}>
           <Link
-            className="button button--primary button--sm"
+            className="button button--primary button--lg"
             to="https://www.youtube.com/playlist?list=PLc3Ep462vVYu0eMSiORonzj3utqYu285z"
           >
-            Past Recordings
-          </Link>
-          <Link
-            className="button button--outline button--sm"
-            to="https://github.com/orgs/Azure/projects/685/views/1"
-          >
-            Feature Roadmap
+            Past Call Recordings
           </Link>
         </div>
       </div>
@@ -218,112 +219,110 @@ function Hero(): ReactNode {
   );
 }
 
-// Returns the upcoming 3rd Wednesday (or today if today is the 3rd Wednesday).
-function getNextThirdWednesday(): Date {
-  const now = new Date();
-  const thirdWed = (year: number, month: number): Date => {
-    // First day of the month
-    const first = new Date(year, month, 1);
-    // Day-of-week for the 1st (0 = Sun … 6 = Sat); Wednesday = 3
-    const offset = (3 - first.getDay() + 7) % 7; // days until first Wednesday
-    // 3rd Wednesday = first Wednesday + 14 days
-    return new Date(year, month, 1 + offset + 14);
-  };
-
-  let candidate = thirdWed(now.getFullYear(), now.getMonth());
-  // If the 3rd Wednesday this month is still today or in the future, use it
-  if (candidate >= new Date(now.getFullYear(), now.getMonth(), now.getDate())) {
-    return candidate;
-  }
-  // Otherwise, move to next month
-  const nextMonth = now.getMonth() + 1;
-  return thirdWed(
-    nextMonth > 11 ? now.getFullYear() + 1 : now.getFullYear(),
-    nextMonth % 12,
+function Intro(): ReactNode {
+  return (
+    <div className={styles.introBox}>
+      <p className="margin--none">
+        AKS Community Calls are monthly, public sessions designed to connect the AKS product teams directly with the community. 
+        These calls are a forum to hear the latest AKS updates, explore upcoming capabilities, and engage in open discussion with 
+        the engineers and PMs building the platform.<br/>
+        Join us to review roadmap highlights, share feedback, ask questions, and learn from real‑world experiences across the 
+        AKS community. You can also track what’s coming next by reviewing the 
+        Check out the{" "}
+        <Link to="https://github.com/orgs/Azure/projects/685/views/1">
+          public AKS feature roadmap
+        </Link>{" "}
+        , which outlines features in development, public preview, and general availability.
+      </p>
+    </div>
   );
 }
 
-function formatDate(d: Date): string {
-  const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December",
-  ];
-  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-}
-
-function AgendaSection(): ReactNode {
+function AgendaPanel(): ReactNode {
   const { month, items, loading } = useMonthlyAgenda();
   const label = month || "Latest";
   const empty = !loading && items.length === 0;
-  const tz = timezoneCalls[0];
-  const nextDate = getNextThirdWednesday();
   return (
-    <section className={styles.agendaSection}>
-      <div className={styles.sectionHeader}>
-        <Heading as="h2">
-          Agenda &mdash; {label}
-        </Heading>
+    <div className={styles.panel}>
+      <div className={`${styles.panelHeader} ${styles.calendar}`}>
+        Agenda ({label}){" "}
         {loading && (
-          <span className={styles.loadingBadge}>loading&hellip;</span>
+          <span style={{ fontSize: "0.65rem", fontWeight: 400 }}>loading…</span>
         )}
       </div>
-      {tz && (
-        <div className={styles.callStrip}>
-          <div className={styles.callStripInfo}>
-            <span className={styles.callStripLabel}>Next call</span>
-            <span className={styles.callStripSchedule}>
-              {formatDate(nextDate)}
-              <br />
-              Every 3rd Wednesday &middot; 8 AM PST / 11 AM EST / 4 PM GMT / 9:30 PM IST
-            </span>
+      <div className={styles.panelBody}>
+        {empty && (
+          <div style={{ fontSize: "0.85rem", opacity: 0.8 }}>
+            No agenda has been published yet. Once an agenda markdown file is
+            added it will appear here automatically.
           </div>
-          <div className={styles.callStripActions}>
-            <a href={tz.icsHref} className={styles.calendarLink}>
-              Add to calendar
-            </a>
-            <Link
-              className={`button button--primary button--sm ${styles.joinBtn}`}
-              to={tz.joinHref}
-            >
-              Join Now
-            </Link>
-          </div>
-        </div>
-      )}
-      {empty && (
-        <p className={styles.emptyState}>
-          No agenda has been published yet. Once an agenda file is added it
-          appears here automatically.
-        </p>
-      )}
-      {!empty && (
-        <div className={styles.agendaGrid}>
-          {items.map((item, idx) => (
-            <div
-              key={idx}
-              className={`${styles.agendaCard} ${
-                item.featured ? styles.featured : ""
-              }`.trim()}
-            >
-              <h3 className={styles.agendaCardTitle}>{item.title}</h3>
-              {item.presenter && (
-                <p className={styles.agendaPresenter}>{item.presenter}</p>
-              )}
-              {item.description && (
-                <p className={styles.agendaDescription}>{item.description}</p>
-              )}
-              {item.bullets && (
-                <ul className={styles.agendaBullets}>
-                  {item.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              )}
+        )}
+        {!empty && (
+          <ul className={styles.agendaList}>
+            {items.map((item, idx) => (
+              <li
+                key={idx}
+                className={`${styles.agendaItem} ${
+                  item.featured ? styles.featured : ""
+                }`.trim()}
+              >
+                <h4>{item.title}</h4>
+                {item.presenter && (
+                  <p><i>
+                    {item.presenter}</i>
+                  </p>
+                )}
+                {item.description && (
+                  <p className={styles.agendaDescription}>{item.description}</p>
+                )}
+                {item.bullets && (
+                  <ul>
+                    {item.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TimezonePanel(): ReactNode {
+  return (
+    <div className={styles.panel}>
+      <div className={styles.panelHeader}>Join An Upcoming Call</div>
+      <div className={styles.panelBody}>
+        <div className={styles.timezoneCards}>
+          {timezoneCalls.map((tz) => (
+            <div key={tz.region} className={styles.timezoneCard}>
+              <div className={styles.timezoneCardHeader}>
+                <h4>{tz.region}</h4>
+              </div>
+              <div className={styles.timezoneCardBody}>
+                <p dangerouslySetInnerHTML={{ __html: tz.schedule }} />
+                <div>
+                  <a href={tz.icsHref} className={styles.calendarLink}>
+                    Add to my calendar
+                  </a>
+                </div>
+                <div className={styles.timezoneButtons}>
+                  <Link
+                    className="button button--primary button--sm"
+                    to={tz.joinHref}
+                  >
+                    Join
+                  </Link>
+                </div>
+              </div>
             </div>
           ))}
         </div>
-      )}
-    </section>
+      </div>
+    </div>
   );
 }
 
@@ -335,7 +334,15 @@ export default function Webinars(): ReactNode {
     >
       <Hero />
       <main>
-        <AgendaSection />
+        <Intro />
+        <div className={styles.gridColumns}>
+          <div className={styles.agendaColumn}>
+            <AgendaPanel />
+          </div>
+          <div className={styles.timezoneColumn}>
+            <TimezonePanel />
+          </div>
+        </div>
       </main>
     </Layout>
   );
