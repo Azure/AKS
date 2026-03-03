@@ -155,8 +155,10 @@
   margin-bottom: 0.75rem;
 }
 .sectionHeader h2 {
+  font-family: var(--ifm-heading-font-family);
   font-size: 1.15rem;
   font-weight: 700;
+  color: var(--ifm-color-primary);
   margin: 0;
 }
 .loadingBadge {

@@ -259,14 +259,6 @@ function AgendaSection(): ReactNode {
   const nextDate = getNextThirdWednesday();
   return (
     <section className={styles.agendaSection}>
-      <div className={styles.sectionHeader}>
-        <Heading as="h2">
-          Agenda &mdash; {label}
-        </Heading>
-        {loading && (
-          <span className={styles.loadingBadge}>loading&hellip;</span>
-        )}
-      </div>
       {tz && (
         <div className={styles.callStrip}>
           <div className={styles.callStripInfo}>
@@ -290,6 +282,14 @@ function AgendaSection(): ReactNode {
           </div>
         </div>
       )}
+      <div className={styles.sectionHeader}>
+        <Heading as="h2">
+          Agenda- {label}
+        </Heading>
+        {loading && (
+          <span className={styles.loadingBadge}>loading&hellip;</span>
+        )}
+      </div>
       {empty && (
         <p className={styles.emptyState}>
           No agenda has been published yet. Once an agenda file is added it
