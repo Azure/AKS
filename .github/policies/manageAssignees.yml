@@ -111,7 +111,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - mayaherskovic
+              - kaarthis
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Security
@@ -124,6 +124,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - Azure/aks-security
+              - shashankbarsin
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Confidential Computing
@@ -135,7 +136,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - sjwaight
+              - shashankbarsin
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Azure Portal
@@ -224,6 +225,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - Azure/aks-security
+              - shashankbarsin
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Windows Containers
