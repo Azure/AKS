@@ -277,7 +277,7 @@ function AgendaSection(): ReactNode {
       )}
       <div className={styles.sectionHeader}>
         <Heading as="h2">
-          Agenda- {label}
+          Agenda - {label}
         </Heading>
         {loading && (
           <span className={styles.loadingBadge}>loading&hellip;</span>
