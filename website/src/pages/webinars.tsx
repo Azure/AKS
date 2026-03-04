@@ -47,7 +47,7 @@ const timezoneCalls: TimezoneCall[] = [
   {
     region: "Americas, Europe",
     schedule:
-      "3rd Wednesday<br/>every month<br/><br/>8 AM PST<br/>11 AM EST<br/>3 PM GMT",
+      "Every 3rd Wednesday. 8 AM Pacific Time / 11 AM Eastern Time / 4 PM GMT / 9:30 PM IST",
     icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
     joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
   },
@@ -213,27 +213,39 @@ function Hero(): ReactNode {
 
 // Returns the upcoming 3rd Wednesday (or today if today is the 3rd Wednesday).
 function getNextThirdWednesday(): Date {
-  const now = new Date();
-  const thirdWed = (year: number, month: number): Date => {
-    // First day of the month
-    const first = new Date(year, month, 1);
+  // Compute everything relative to PST (UTC-8) so the result is
+  // consistent regardless of the server's or visitor's local timezone.
+  const PST_OFFSET_MS = 8 * 60 * 60 * 1000; // UTC-8
+  const nowUTC = Date.now();
+  // Current date/time expressed as if the clock were in PST
+  const nowPST = new Date(nowUTC - PST_OFFSET_MS);
+
+  const year = nowPST.getUTCFullYear();
+  const month = nowPST.getUTCMonth();
+  const today = nowPST.getUTCDate();
+
+  const thirdWed = (y: number, m: number): Date => {
+    // First day of the month in PST (represented as UTC for arithmetic)
+    const first = new Date(Date.UTC(y, m, 1));
     // Day-of-week for the 1st (0 = Sun … 6 = Sat); Wednesday = 3
-    const offset = (3 - first.getDay() + 7) % 7; // days until first Wednesday
+    const offset = (3 - first.getUTCDay() + 7) % 7; // days until first Wednesday
     // 3rd Wednesday = first Wednesday + 14 days
-    return new Date(year, month, 1 + offset + 14);
+    return new Date(Date.UTC(y, m, 1 + offset + 14));
   };
 
-  let candidate = thirdWed(now.getFullYear(), now.getMonth());
-  // If the 3rd Wednesday this month is still today or in the future, use it
-  if (candidate >= new Date(now.getFullYear(), now.getMonth(), now.getDate())) {
-    return candidate;
+  const candidate = thirdWed(year, month);
+  // If the 3rd Wednesday this month is still today or in the future (in PST), use it
+  if (candidate.getUTCDate() >= today && candidate.getUTCMonth() === month) {
+    // Return as a plain local-midnight Date so formatDate() keeps working
+    return new Date(candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate());
   }
   // Otherwise, move to next month
-  const nextMonth = now.getMonth() + 1;
-  return thirdWed(
-    nextMonth > 11 ? now.getFullYear() + 1 : now.getFullYear(),
+  const nextMonth = month + 1;
+  const result = thirdWed(
+    nextMonth > 11 ? year + 1 : year,
     nextMonth % 12,
   );
+  return new Date(result.getUTCFullYear(), result.getUTCMonth(), result.getUTCDate());
 }
 
 function formatDate(d: Date): string {
@@ -259,7 +271,7 @@ function AgendaSection(): ReactNode {
             <span className={styles.callStripSchedule}>
               {formatDate(nextDate)}
               <br />
-              Every 3rd Wednesday &middot; 8 AM PST / 11 AM EST / 4 PM GMT / 9:30 PM IST
+              {tz.schedule}
             </span>
           </div>
           <div className={styles.callStripActions}>
