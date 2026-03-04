@@ -108,7 +108,7 @@ const config: Config = {
             },
             {
               label: 'AKS Community Calls',
-              href: '/webinars',
+              to: '/webinars',
             },
             {
               label: 'FAQ',
