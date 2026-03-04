@@ -1,73 +1,9 @@
-// Maintenance overview:
-// Agenda content and its month label are sourced exclusively from markdown files:
-//   /website/static/webinars/agenda/YYYY-MM.md
-// Frontmatter must include: month: Month YYYY
-// Each agenda section uses a second-level heading (##) followed by optional lines:
-//   Presenter: Name and title
-//   Description: Text
-//   Featured: true
-//   - bullet point text (repeatable for bullets)
-// If the current month file is missing, the code steps backwards (up to a
-// configurable number of prior months) and uses the most recent available file.
-// This ensures an agenda is always displayed, even before a new month’s file is added.
-// Timezone call card data is defined in the constant `timezoneCalls` below.
+  // NOTE: This file was a backup of the webinars page (`webinars.tsx`) and is
+  // intentionally left empty to avoid being treated as a real page by tooling.
+  // It should be removed from the repository; kept only as a no-op module here
+  // to satisfy static analysis in this exercise.
 
-import type { ReactNode } from "react";
-import React, { useEffect, useState } from "react";
-import Link from "@docusaurus/Link";
-import Layout from "@theme/Layout";
-import Heading from "@theme/Heading";
-import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
-import styles from "./webinars.module.css";
-
-// --- Data Types ------------------------------------------------------------
-interface AgendaItem {
-  title: string;
-  presenter?: string;
-  bullets?: string[];
-  description?: string;
-  featured?: boolean;
-}
-
-interface MonthlyAgendaResult {
-  month?: string;
-  items: AgendaItem[];
-  loading: boolean;
-}
-
-interface TimezoneCall {
-  region: string;
-  schedule: string; // contains <br/>
-  icsHref: string;
-  joinHref: string;
-}
-
-// Static timezone call info (edit here if schedules/links change)
-const timezoneCalls: TimezoneCall[] = [
-  {
-    region: "Americas, Europe",
-    schedule:
-      "3rd Wednesday<br/>every month<br/><br/>8 AM PST<br/>11 AM EST<br/>3 PM GMT",
-    icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
-    joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
-  },
-  // {
-  //   region: "India, APAC, ANZ",
-  //   schedule:
-  //     "4th Wednesday<br/>every month<br/><br/>10:30 AM IST<br/>1 PM SST<br/>4 PM AEDT",
-  //   icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-APAC.ics",
-  //   joinHref: "https://aka.ms/aks/communitycalls-apac/roadmap/joinnow",
-  // },
-];
-
-// --- Markdown Parsing Logic -----------------------------------------------
-// The markdown file structure (static/webinars/agenda/YYYY-MM.md) is expected to have:
-// Frontmatter: ---\nmonth: Month YYYY\n--- then sections introduced by `## Heading`.
-// Within each section optional lines:
-//   Presenter: Name
-//   Description: Text
-//   Featured: true
-//   - bullet point
+  export {};
 // Blank lines are ignored.
 
 function parseAgendaMarkdown(raw: string): {
