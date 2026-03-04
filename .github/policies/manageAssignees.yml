@@ -330,7 +330,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - therealmitchconnors
-              - jackstromberg
+              - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Upstream - Helm
