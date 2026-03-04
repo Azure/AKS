@@ -51,13 +51,6 @@ const timezoneCalls: TimezoneCall[] = [
     icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
     joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
   },
-  // {
-  //   region: "India, APAC, ANZ",
-  //   schedule:
-  //     "4th Wednesday<br/>every month<br/><br/>10:30 AM IST<br/>1 PM SST<br/>4 PM AEDT",
-  //   icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-APAC.ics",
-  //   joinHref: "https://aka.ms/aks/communitycalls-apac/roadmap/joinnow",
-  // },
 ];
 
 // --- Markdown Parsing Logic -----------------------------------------------
