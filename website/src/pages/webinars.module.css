@@ -135,6 +135,12 @@
   50%      { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .joinBtn {
+    animation: none;
+    transition: none;
+  }
+}
 @media screen and (max-width: 640px) {
   .callStrip { flex-direction: column; text-align: center; padding: 0.6rem 0.75rem; }
   .callStripInfo { justify-content: center; }
