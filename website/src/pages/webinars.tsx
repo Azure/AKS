@@ -9,7 +9,7 @@
 //   - bullet point text (repeatable for bullets)
 // If the current month file is missing, the code steps backwards (up to a
 // configurable number of prior months) and uses the most recent available file.
-// This ensures an agenda is always displayed, even before a new month’s file is added.
+// This ensures an agenda is always displayed, even before a new month's file is added.
 // Timezone call card data is defined in the constant `timezoneCalls` below.
 
 import type { ReactNode } from "react";
@@ -47,28 +47,13 @@ const timezoneCalls: TimezoneCall[] = [
   {
     region: "Americas, Europe",
     schedule:
-      "3rd Wednesday<br/>every month<br/><br/>8 AM PST<br/>11 AM EST<br/>3 PM GMT",
+      "Every 3rd Wednesday. 8 AM Pacific Time / 11 AM Eastern Time / 4 PM GMT / 9:30 PM IST",
     icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
     joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
-  },
-  {
-    region: "India, APAC, ANZ",
-    schedule:
-      "4th Wednesday<br/>every month<br/><br/>10:30 AM IST<br/>1 PM SST<br/>4 PM AEDT",
-    icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-APAC.ics",
-    joinHref: "https://aka.ms/aks/communitycalls-apac/roadmap/joinnow",
   },
 ];
 
 // --- Markdown Parsing Logic -----------------------------------------------
-// The markdown file structure (static/webinars/agenda/YYYY-MM.md) is expected to have:
-// Frontmatter: ---\nmonth: Month YYYY\n--- then sections introduced by `## Heading`.
-// Within each section optional lines:
-//   Presenter: Name
-//   Description: Text
-//   Featured: true
-//   - bullet point
-// Blank lines are ignored.
 
 function parseAgendaMarkdown(raw: string): {
   month?: string;
@@ -76,7 +61,6 @@ function parseAgendaMarkdown(raw: string): {
 } {
   let month: string | undefined;
   let content = raw.trim();
-  // Extract frontmatter
   if (content.startsWith("---")) {
     const end = content.indexOf("\n---", 3);
     if (end !== -1) {
@@ -100,12 +84,11 @@ function parseAgendaMarkdown(raw: string): {
     if (!line) continue;
     const headingMatch = line.match(/^##\s+(.+)$/);
     if (headingMatch) {
-      // push previous
       if (current) items.push(current);
       current = { title: headingMatch[1].trim(), _lines: [] };
       continue;
     }
-    if (!current) continue; // ignore content before first heading
+    if (!current) continue;
     current._lines.push(line);
   }
   if (current) items.push(current);
@@ -147,9 +130,9 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
     }
     const now = new Date();
     let attempts = 0;
-    const maxLookback = 6; // months
+    const maxLookback = 6;
     let year = now.getFullYear();
-    let monthIndex = now.getMonth(); // 0-based
+    let monthIndex = now.getMonth();
     let cancelled = false;
 
     const tryFetch = () => {
@@ -174,11 +157,9 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
           if (cancelled) return;
           attempts++;
           if (attempts > maxLookback) {
-            // Give up: show empty state.
             setState({ items: [], loading: false });
             return;
           }
-          // Move back one month
           monthIndex -= 1;
           if (monthIndex < 0) {
             monthIndex = 11;
@@ -195,6 +176,8 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
   return state;
 }
 
+// --- Components ------------------------------------------------------------
+
 function Hero(): ReactNode {
   const bannerUrl = "/webinars/AKS-CommunityCalls-Banner.png";
   return (
@@ -205,13 +188,22 @@ function Hero(): ReactNode {
       aria-label="AKS Community Calls Banner"
     >
       <div className={styles.heroOverlayInner}>
-        <Heading as="h1">AKS - Community Calls</Heading>
+        <Heading as="h1">AKS Community Calls</Heading>
+        <p className={styles.heroSubtitle}>
+          Monthly public sessions to connect with the AKS product team, learn roadmap updates, and share feature deep dives.
+        </p>
         <div className={styles.heroButtons}>
           <Link
-            className="button button--primary button--lg"
+            className="button button--primary button--sm"
             to="https://www.youtube.com/playlist?list=PLc3Ep462vVYu0eMSiORonzj3utqYu285z"
           >
-            Past Call Recordings
+            Past Recordings
+          </Link>
+          <Link
+            className="button button--outline button--sm"
+            to="https://github.com/orgs/Azure/projects/685/views/1"
+          >
+            Feature Roadmap
           </Link>
         </div>
       </div>
@@ -219,111 +211,124 @@ function Hero(): ReactNode {
   );
 }
 
-function Intro(): ReactNode {
-  return (
-    <div className={styles.introBox}>
-      <p className="margin--none">
-        Welcome to the AKS Community Calls! These sessions foster direct
-        interaction between our product teams and the AKS community. Engage with
-        our teams, hear the latest updates, and gain insights into the product’s
-        development. Join our monthly public calls to discuss the product
-        roadmap, provide feedback, and learn from others’ experiences with AKS.
-        Check out the{" "}
-        <Link to="https://github.com/orgs/Azure/projects/685/views/1">
-          public feature roadmap
-        </Link>{" "}
-        for details on features in development, public preview, and general
-        availability.
-      </p>
-    </div>
+// Returns the upcoming 3rd Wednesday (or today if today is the 3rd Wednesday).
+function getNextThirdWednesday(): Date {
+  // Compute everything relative to PST (UTC-8) so the result is
+  // consistent regardless of the server's or visitor's local timezone.
+  const PST_OFFSET_MS = 8 * 60 * 60 * 1000; // UTC-8
+  const nowUTC = Date.now();
+  // Current date/time expressed as if the clock were in PST
+  const nowPST = new Date(nowUTC - PST_OFFSET_MS);
+
+  const year = nowPST.getUTCFullYear();
+  const month = nowPST.getUTCMonth();
+  const today = nowPST.getUTCDate();
+
+  const thirdWed = (y: number, m: number): Date => {
+    // First day of the month in PST (represented as UTC for arithmetic)
+    const first = new Date(Date.UTC(y, m, 1));
+    // Day-of-week for the 1st (0 = Sun … 6 = Sat); Wednesday = 3
+    const offset = (3 - first.getUTCDay() + 7) % 7; // days until first Wednesday
+    // 3rd Wednesday = first Wednesday + 14 days
+    return new Date(Date.UTC(y, m, 1 + offset + 14));
+  };
+
+  const candidate = thirdWed(year, month);
+  // If the 3rd Wednesday this month is still today or in the future (in PST), use it
+  if (candidate.getUTCDate() >= today && candidate.getUTCMonth() === month) {
+    // Return as a plain local-midnight Date so formatDate() keeps working
+    return new Date(candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate());
+  }
+  // Otherwise, move to next month
+  const nextMonth = month + 1;
+  const result = thirdWed(
+    nextMonth > 11 ? year + 1 : year,
+    nextMonth % 12,
   );
+  return new Date(result.getUTCFullYear(), result.getUTCMonth(), result.getUTCDate());
 }
 
-function AgendaPanel(): ReactNode {
+function formatDate(d: Date): string {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+function AgendaSection(): ReactNode {
   const { month, items, loading } = useMonthlyAgenda();
   const label = month || "Latest";
   const empty = !loading && items.length === 0;
+  const tz = timezoneCalls[0];
+  const nextDate = getNextThirdWednesday();
   return (
-    <div className={styles.panel}>
-      <div className={`${styles.panelHeader} ${styles.calendar}`}>
-        Agenda ({label}){" "}
-        {loading && (
-          <span style={{ fontSize: "0.65rem", fontWeight: 400 }}>loading…</span>
-        )}
-      </div>
-      <div className={styles.panelBody}>
-        {empty && (
-          <div style={{ fontSize: "0.85rem", opacity: 0.8 }}>
-            No agenda has been published yet. Once an agenda markdown file is
-            added it will appear here automatically.
+    <section className={styles.agendaSection}>
+      {tz && (
+        <div className={styles.callStrip}>
+          <div className={styles.callStripInfo}>
+            <span className={styles.callStripLabel}>Next call</span>
+            <span className={styles.callStripSchedule}>
+              {formatDate(nextDate)}
+              <br />
+              {tz.schedule}
+            </span>
           </div>
-        )}
-        {!empty && (
-          <ul className={styles.agendaList}>
-            {items.map((item, idx) => (
-              <li
-                key={idx}
-                className={`${styles.agendaItem} ${
-                  item.featured ? styles.featured : ""
-                }`.trim()}
-              >
-                <h4>{item.title}</h4>
-                {item.presenter && (
-                  <p><i>
-                    {item.presenter}</i>
-                  </p>
-                )}
-                {item.description && (
-                  <p className={styles.agendaDescription}>{item.description}</p>
-                )}
-                {item.bullets && (
-                  <ul>
-                    {item.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
+          <div className={styles.callStripActions}>
+            <a href={tz.icsHref} className={styles.calendarLink}>
+              Add to calendar
+            </a>
+            <Link
+              className={`button button--primary button--sm ${styles.joinBtn}`}
+              to={tz.joinHref}
+            >
+              Join Now
+            </Link>
+          </div>
+        </div>
+      )}
+      <div className={styles.sectionHeader}>
+        <Heading as="h2">
+          Agenda - {label}
+        </Heading>
+        {loading && (
+          <span className={styles.loadingBadge}>loading&hellip;</span>
         )}
       </div>
-    </div>
-  );
-}
-
-function TimezonePanel(): ReactNode {
-  return (
-    <div className={styles.panel}>
-      <div className={styles.panelHeader}>Join An Upcoming Call</div>
-      <div className={styles.panelBody}>
-        <div className={styles.timezoneCards}>
-          {timezoneCalls.map((tz) => (
-            <div key={tz.region} className={styles.timezoneCard}>
-              <div className={styles.timezoneCardHeader}>
-                <h4>{tz.region}</h4>
-              </div>
-              <div className={styles.timezoneCardBody}>
-                <p dangerouslySetInnerHTML={{ __html: tz.schedule }} />
-                <div>
-                  <a href={tz.icsHref} className={styles.calendarLink}>
-                    Add to my calendar
-                  </a>
-                </div>
-                <div className={styles.timezoneButtons}>
-                  <Link
-                    className="button button--primary button--sm"
-                    to={tz.joinHref}
-                  >
-                    Join
-                  </Link>
-                </div>
-              </div>
+      {empty && (
+        <p className={styles.emptyState}>
+          No agenda has been published yet. Once an agenda file is added it
+          appears here automatically.
+        </p>
+      )}
+      {!empty && (
+        <div className={styles.agendaGrid}>
+          {items.map((item, idx) => (
+            <div
+              key={idx}
+              className={`${styles.agendaCard} ${
+                item.featured ? styles.featured : ""
+              }`.trim()}
+            >
+              <h3 className={styles.agendaCardTitle}>{item.title}</h3>
+              {item.presenter && (
+                <p className={styles.agendaPresenter}>{item.presenter}</p>
+              )}
+              {item.description && (
+                <p className={styles.agendaDescription}>{item.description}</p>
+              )}
+              {item.bullets && (
+                <ul className={styles.agendaBullets}>
+                  {item.bullets.map((b, i) => (
+                    <li key={i}>{b}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      )}
+    </section>
   );
 }
 
@@ -335,15 +340,7 @@ export default function Webinars(): ReactNode {
     >
       <Hero />
       <main>
-        <Intro />
-        <div className={styles.gridColumns}>
-          <div className={styles.agendaColumn}>
-            <AgendaPanel />
-          </div>
-          <div className={styles.timezoneColumn}>
-            <TimezonePanel />
-          </div>
-        </div>
+        <AgendaSection />
       </main>
     </Layout>
   );
