@@ -1,7 +1,7 @@
 ---
 title: "AKS configurable scheduler profiles (preview)"
 description: "Optimize AKS scheduling with configurable scheduler profiles that improve GPU utilization and align pod placement to your critical workloads at scale."
-date: 2026-01-23
+date: 2026-04-23
 authors: 
    - colin-mixon
 tags:
@@ -90,43 +90,9 @@ spec:
                   weight: 1
 ```
 
-### Increase resilience by distributing pods across topology domains
 
-If you don't configure any cluster-level default constraints for pod topology spreading, then the default kube-scheduler can unevenly spread pods across zones and hosts unless specified in each deployment, every time. Use `PodTopologySpread` to control how pods are distributed across failure domains to ensure high availability and fault tolerance in the event of zone or node failures, without overprovisioning.
+### ResourceToCapacity
 
-For example, spreading replicas across distinct zones safeguards availability during an AZ outage, while a softer host‑level rule prevents scheduling deadlocks when cluster capacity is uneven.
-
-**This configuration is effective for highly‑available stateless services (web/API, gateways) or distributed messaging clusters, like Kafka brokers, that rely on the availability of multiple replicas.**
-
-```yaml
-apiVersion: aks.azure.com/v1alpha1
-kind: SchedulerConfiguration
-metadata:
-  name: upstream
-spec:
-  rawConfig: |
-    apiVersion: kubescheduler.config.k8s.io/v1
-    kind: KubeSchedulerConfiguration
-    profiles:
-    - schedulerName: pod-distribution-scheduler
-      pluginConfig:
-          - name: PodTopologySpread
-            args:
-              defaultingType: List
-              defaultConstraints:
-                - maxSkew: 2
-                  topologyKey: topology.kubernetes.io/zone
-                  whenUnsatisfiable: DoNotSchedule
-                - maxSkew: 1
-                  topologyKey: kubernetes.io/hostname
-                  whenUnsatisfiable: ScheduleAnyway
-```
-
-### Optimize data locality with Memory and PVC-Aware Scheduling
-
-Use `VolumeBinding` to ensure pods are placed on nodes where _PersistentVolumeClaims_ (PVC) can bind to _PersistentVolumes_ (PV). `VolumeZone` validates that nodes and volumes satisfy zonal requirements to avoid cross-zone storage access.
-
-For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][memory-optimized-vm], while ensuring PVCs bind quickly in the target zone to minimize cross‑zone traffic and latency.
 
 **This scheduler configuration ensures workloads needing large memory footprints are placed on nodes that provide sufficient RAM and maintain proximity to their volumes, enabling fast, zone‑aligned PVC binding for optimal data locality.**
 
@@ -140,40 +106,12 @@ spec:
     apiVersion: kubescheduler.config.k8s.io/v1
     kind: KubeSchedulerConfiguration
     profiles:
-      - schedulerName: mem-optimized-node-scheduler
+      - schedulerName: cpu-binpacking-scheduler
         plugins:
           multiPoint:
             enabled:
-              - name: NodeAffinity
               - name: NodeResourcesFit
-              - name: VolumeBinding
-              - name: VolumeZone
         pluginConfig:
-          - name: NodeAffinity
-            args:
-              apiVersion: kubescheduler.config.k8s.io/v1
-              kind: NodeAffinityArgs
-              addedAffinity:
-                preferredDuringSchedulingIgnoredDuringExecution:
-                  - weight: 100
-                    preference:
-                      matchExpressions:
-                        - key: topology.kubernetes.io/zone
-                          operator: In
-                          values: [westus3-1, westus3-2, westus3-3]
-                  - weight: 80
-                    preference:
-                      matchExpressions:
-                        - key: node.kubernetes.io/instance-type
-                          operator: In
-                          values:
-                            - Standard_E16s_v5
-                            - Standard_E32s_v5
-          - name: VolumeBinding
-            args:
-              apiVersion: kubescheduler.config.k8s.io/v1
-              kind: VolumeBindingArgs
-              bindTimeoutSeconds: 300
           - name: NodeResourcesFit
             args:
               apiVersion: kubescheduler.config.k8s.io/v1
@@ -192,13 +130,13 @@ spec:
                     - utilization: 0
                       score: 0
                     - utilization: 30
-                      score: 4
-                    - utilization: 60
                       score: 8
-                    - utilization: 80
+                    - utilization: 50
+                      score: 10
+                    - utilization: 85
                       score: 10
                     - utilization: 90
-                      score: 6
+                      score: 3
                     - utilization: 100
                       score: 0
 ```
@@ -208,10 +146,9 @@ spec:
 As a reminder, there are many parameters the scheduler considers across the [scheduling cycle][scheduling-framework/#interfaces] before a pod is placed on a node that impacts how a pod is assigned. This section is meant to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 1. Ensure the intended deployment is assigned to the _correct_ scheduler profile.
-2. Ensure the custom scheduler profile complements the implementation of Deployments, StorageClasses, and PersistentVolumeClaims. Misalignment can lead to pending pods and degraded workload performance, even when the scheduler is functioning as expected.
+2. Ensure the custom scheduler profile compliments the implementation of Deployments, StorageClasses, and PersistentVolumeClaims. Misalignment can lead to pending pods and degraded workload performance, even when the scheduler is functioning as expected.
 3. Ensure there are enough nodes in each zone to accommodate your deployment replicas and ensure your AKS node pool spans the right availability zones. If not, pods may remain in a pending state.
 4. Use namespaces to separate workloads which improves your ability to validate or troubleshoot.
-5. Assign `priorityClassName` for workloads that should preempt others, this is critical if you use the DefaultPreemption plugin.
 6. If you use the `ImageLocality` plugin, use DaemonSets or node pre-pulling for latency-sensitive images, otherwise the benefit may be minimal.
 7. If your cluster is large, a low `PercentageOfNodesToScore` speeds scheduling by reducing the number of nodes scored, _but_ it may reduce optimal placement.
 8. If you enable a plugin in the `plugins:multipoint` section but do not define it in `pluginConfig`, AKS uses the default configuration for that plugin.
