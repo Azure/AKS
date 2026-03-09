@@ -1,7 +1,7 @@
 ---
-title: "Announcing Azure Configurable Scheduler Profiles (Preview): Optimize resource ROI with fine grained scheduling strategies"
-description: "Avoid scheduling inefficiencies and improve GPU utilization with AKS Configurable Scheduler Profiles"
-date: 2025-12-16
+title: "AKS configurable scheduler profiles (preview)"
+description: "Optimize AKS scheduling with configurable scheduler profiles that improve GPU utilization and align pod placement to your critical workloads at scale."
+date: 2026-01-23
 authors: 
    - colin-mixon
 tags:
@@ -11,7 +11,7 @@ tags:
   - best-practices
 ---
 
-Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that could be restrictive if you needed more fine-grain control since it applies a set of criteria in a fixed priority order. The scheduler selects the optimal node for newly created pod(s) based on several criteria, including (but not limited to):
+Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that could be restrictive if you needed more fine-grained control since it applies a set of criteria in a fixed priority order. The scheduler selects the optimal node for newly created pod(s) based on several criteria, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
@@ -20,7 +20,7 @@ Thoughtful scheduling strategies can resolve pervasive challenges across web-dis
 
 Out of the available nodes, the scheduler then filters out nodes that don't meet the requirements to identify the node that is most optimal for the pod(s). Today, the AKS default scheduler lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per workload basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand co-locating pods with their persistent volumes for increased data locality, optimizing GPU utilization for machine learning, or enforcing strict zone-level distribution for microservices. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity.
 
-**[AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by selecting specific policies, altering parameter weight, changing policy priority, adding additional policy parameters, and changing policy evaluation point (i.e. pre-Filter, Filter, Score) without deploying a second scheduler. On AKS, customers have mentioned that AKS Configurable Scheduler Profiles allows them to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler. Additionally, our AI and HPC customers have batch workloads that have benefitted from improved bin-packing and increased GPU utilization.
+**[AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by selecting specific policies, altering parameter weight, changing policy priority, adding additional policy parameters, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, customers have mentioned that AKS Configurable Scheduler Profiles allows them to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler. Additionally, our AI and HPC customers have batch workloads that have benefitted from improved bin-packing and increased GPU utilization.
 
 In this blog you will learn how to configure AKS Configurable Scheduler Profiles for three workload objectives:
 
@@ -50,7 +50,7 @@ Adjust VM SKUs in `NodeAffinity`, shift utilization curves or weights, and use t
 
 ### Increase GPU Utilization by Bin Packing GPU-backed Nodes
 
-The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourceFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
+The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
 For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance.
 
@@ -92,7 +92,7 @@ spec:
 
 ### Increase resilience by distributing pods across topology domains
 
-If you don't configure any cluster-level default constraints for pod topology spreading, then the default kube-scheduler can unevenly spread pods across zones and hosts unless specified in each deployments, every time. Use `PodTopologySpread` to control how pods are distributed across failure domains to ensure high availability and fault tolerance in the event of zone or node failures, without overprovisioning.
+If you don't configure any cluster-level default constraints for pod topology spreading, then the default kube-scheduler can unevenly spread pods across zones and hosts unless specified in each deployment, every time. Use `PodTopologySpread` to control how pods are distributed across failure domains to ensure high availability and fault tolerance in the event of zone or node failures, without overprovisioning.
 
 For example, spreading replicas across distinct zones safeguards availability during an AZ outage, while a softer host‑level rule prevents scheduling deadlocks when cluster capacity is uneven.
 
@@ -126,7 +126,7 @@ spec:
 
 Use `VolumeBinding` to ensure pods are placed on nodes where _PersistentVolumeClaims_ (PVC) can bind to _PersistentVolumes_ (PV). `VolumeZone` validates that nodes and volumes satisfy zonal requirements to avoid cross-zone storage access.
 
-For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][memory-optimized-vm], while ensuring PVC's bind quickly in the target zone to minimize cross‑zone traffic and latency.
+For example, combine `VolumeBinding` and `VolumeZone` plugins, with `NodeAffinity` and `NodeResourcesFit` with `RequestedToCapacityRatio`, to influence pod placement on [Azure memory-optimized SKUs][memory-optimized-vm], while ensuring PVCs bind quickly in the target zone to minimize cross‑zone traffic and latency.
 
 **This scheduler configuration ensures workloads needing large memory footprints are placed on nodes that provide sufficient RAM and maintain proximity to their volumes, enabling fast, zone‑aligned PVC binding for optimal data locality.**
 
