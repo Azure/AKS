@@ -2,8 +2,8 @@
 title: "AKS configurable scheduler profiles (preview)"
 description: "Optimize AKS scheduling with configurable scheduler profiles that improve GPU utilization and align pod placement to your critical workloads at scale."
 date: 2026-04-23
-authors: 
-   - colin-mixon
+authors:
+  - colin-mixon
 tags:
   - ai
   - performance
