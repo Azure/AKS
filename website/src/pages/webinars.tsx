@@ -47,7 +47,7 @@ const timezoneCalls: TimezoneCall[] = [
   {
     region: "Americas, Europe",
     schedule:
-      "Every 3rd Wednesday. 8 AM Pacific Time / 11 AM Eastern Time / 3 PM GMT / 9:30 PM IST",
+      "Every 3rd Wednesday. 8 AM Pacific Time / 11 AM Eastern Time / 3 PM GMT / 8:30 PM IST",
     icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
     joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
   },
