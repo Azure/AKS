@@ -5,14 +5,14 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ## Announcements
-* [AKS Release Tracker](https://releases.aks.azure.com/) has been updated with an enhanced design.
+* [AKS Release Tracker](https://releases.aks.azure.com/) has been updated with an enhanced look and feel design, for more information refer [here](https://learn.microsoft.com/azure/aks/release-tracker).
+* Azure Kubernetes Service support for Flatcar Container Linux for AKS (preview) will be retired on 8 June 2026, transition to a supported alternative by that date. From now to 7 June 2026, you can continue to use Flatcar Container Linux for AKS (preview) on Azure Kubernetes Service without disruption. Starting on 8 June 2026, Azure Kubernetes Service will no longer support Flatcar Container Linux for AKS (preview). You will no longer be able to create new node pools. AKS will not produce new node images and will no longer provide security patches for existing node pools. AKS will remove Flatcar Container Linux for AKS (preview) node images and existing code on 8 September 2026, meaning that scaling and remediation operations will fail.
 
 ## Kubernetes Version
-* AKS Kubernetes Long term support version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
 * AKS Kubernetes version `1.35` General Availability version is now commencing roll out, it is expected to be in all regions on or before April first week.
 * New Kubernetes patch versions are now available: `1.32.11`, `1.33.7`, `1.34.3`.
-* AKS LTS (Long Term Support) patch versions are now available:
-  * [1.27.6 changelog](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v1276)
+* AKS Kubernetes Long term support version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
+* AKS LTS (Long Term Support) patch [1.27.6](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v1276) is now available.
 
 For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
@@ -26,7 +26,6 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * [Managed Gateway API](https://learn.microsoft.com/azure/aks/gateway-api) enablement is now exposed via the GA API version `2026-02-01`.
 
 ## Bug Fixes
-* Fixed an issue with Retina to address [CVE-2013-3900](https://nvd.nist.gov/vuln/detail/CVE-2013-3900). Retina has been updated to [v1.0.3](https://github.com/microsoft/retina/releases/tag/v1.0.3).
 * Fixed Konnectivity connectivity issues by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
 
 ## Behavioral Changes
@@ -42,12 +41,11 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Konnectivity has been updated to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes and dependency updates.
 * Microsoft Defender for Containers sensor has been upgraded to v0.9.51 on AKS >= 1.35 and to v0.8.48 on AKS < 1.35. See [release notes](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode) for details.
 * Inspektor Gadget upgraded from v0.41.1 to v0.41.2
-* Fluent Bit updated from 4.1.1 to 4.2.2
+* Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/)
 * Multiple CVEs remediated including: [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121), [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621), [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156), [CVE-2025-52881](https://nvd.nist.gov/vuln/detail/CVE-2025-52881), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726), [CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728), [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729), [CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730), [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329), [CVE-2026-24137](https://nvd.nist.gov/vuln/detail/CVE-2026-24137), [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914), [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181), [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727).
 * [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:
   - v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4
-* Azure Blob CSI driver version has been updated.
-* Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
+* Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
 * Node Auto Provisioning (Karpenter) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2).
 * AKS Azure Linux images:
    * v3.0 - [202603.04.0](vhd-notes/AzureLinuxv3/202603.04.0.txt).
