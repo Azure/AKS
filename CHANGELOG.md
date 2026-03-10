@@ -9,7 +9,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Azure Kubernetes Service support for Flatcar Container Linux for AKS (preview) will be retired on 8 June 2026, transition to a supported alternative by that date. From now to 7 June 2026, you can continue to use Flatcar Container Linux for AKS (preview) on Azure Kubernetes Service without disruption. Starting on 8 June 2026, Azure Kubernetes Service will no longer support Flatcar Container Linux for AKS (preview). You will no longer be able to create new node pools. AKS will not produce new node images and will no longer provide security patches for existing node pools. AKS will remove Flatcar Container Linux for AKS (preview) node images and existing code on 8 September 2026, meaning that scaling and remediation operations will fail.
 
 ## Kubernetes Version
-* AKS Kubernetes version `1.35` General Availability version is now commencing roll out, it is expected to be in all regions on or before April first week.
+* AKS Kubernetes version `1.35` General Availability is now rolling out. It is expected to be available in all regions by the first week of April.
 * New Kubernetes patch versions are now available: `1.32.11`, `1.33.7`, `1.34.3`.
 * AKS Kubernetes Long term support version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
 * AKS LTS (Long Term Support) patch [1.27.6](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v1276) is now available.
