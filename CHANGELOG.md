@@ -5,7 +5,6 @@
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements
-* [AKS Release Tracker](https://releases.aks.azure.com/) has been updated with an enhanced look and feel design, for more information refer [here](https://learn.microsoft.com/azure/aks/release-tracker).
 * Azure Kubernetes Service support for [Flatcar Container Linux for AKS (preview)](https://github.com/Azure/AKS/issues/5648) will be retired on 8 June 2026, transition to a supported alternative by that date. From now to 7 June 2026, you can continue to use Flatcar Container Linux for AKS (preview) on Azure Kubernetes Service without disruption. Starting on 8 June 2026, Azure Kubernetes Service will no longer support Flatcar Container Linux for AKS (preview). You will no longer be able to create new node pools. AKS will not produce new node images and will no longer provide security patches for existing node pools. AKS will remove Flatcar Container Linux for AKS (preview) node images and existing code on 8 September 2026, meaning that scaling and remediation operations will fail.
 * Azure Linux has expanded GPU support to include NVIDIA A100, H100, and H200 VMs. Find the full list of supported GPUs with Azure Linux on AKS [here](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux#azure-linux-container-host-supported-gpu-virtual-machine-sizes).
 
@@ -32,10 +31,10 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * [AKS Automatic clusters](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about#restrictions-that-prevent-running-workloads-on-the-managed-system-node-pool) now enforce multiple layers of defense against remote code execution via `nodes/proxy` permissions:
   - A ValidatingAdmissionPolicy (VAP) restricts creation or updates of ClusterRole and Role objects granting `nodes/proxy`, except for approved system users and groups.
   - An authorization policy denies `nodes/proxy` by default. Approved system users, groups, and kube-system service accounts are exempt.
-* On clusters where ACNS performance is used to enable [eBPF host routing](https://learn.microsoft.com/azure/aks/how-to-enable-ebpf-host-routing), nodes will be labeled with `kubernetes.azure.com/ebpf-host-routing=true` . This is done by a node image upgrade.
+* On clusters where ACNS performance is used to enable [eBPF host routing](https://learn.microsoft.com/azure/aks/how-to-enable-ebpf-host-routing), nodes will be labeled with `kubernetes.azure.com/ebpf-host-routing=true`. This is done by a node image upgrade.
 
 ### Component Updates
-* Cilium has been updated from v1.18.2 to [v1.18.6](https://github.com/cilium/cilium/releases/tag/v1.18.6) to address CVEs: [CVE-2025-64715](NVD - CVE-2025-64715) and [CVE-2026-26963](NVD - CVE-2026-26963).
+* Cilium has been updated from v1.18.2 to [v1.18.6](https://github.com/cilium/cilium/releases/tag/v1.18.6) to address CVEs: [CVE-2025-64715](https://nvd.nist.gov/vuln/detail/CVE-2025-64715) and [CVE-2026-26963](https://nvd.nist.gov/vuln/detail/CVE-2026-26963).
 * Retina has been updated to [v1.0.3](https://github.com/microsoft/retina/releases/tag/v1.0.3) to address [CVE-2013-3900](https://nvd.nist.gov/vuln/detail/CVE-2013-3900).
 * Retina Enterprise has been updated to [v0.1.16](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.16).
 * Konnectivity has been updated to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes and dependency updates.
@@ -71,13 +70,11 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
 * Node Auto Provisioning (Karpenter) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2).
 * AKS Azure Linux images:
-   * v3.0 - [202603.04.0](vhd-notes/AzureLinuxv3/202603.04.0.txt).
+  * v3.0 - [202603.04.0](vhd-notes/AzureLinuxv3/202603.04.0.txt).
 * AKS Ubuntu images:
   * Ubuntu 22.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202603.04.0.txt).
   * Ubuntu 24.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202603.04.0.txt).
  
----
-
 ## Release Notes 2026-02-08
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
