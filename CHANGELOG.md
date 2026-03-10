@@ -1,49 +1,47 @@
 # Azure Kubernetes Service Changelog
 
-# Release Notes - 2026-03-05
+## Release Notes - 2026-03-05
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
-## Announcements
+### Announcements
 * [AKS Release Tracker](https://releases.aks.azure.com/) has been updated with an enhanced look and feel design, for more information refer [here](https://learn.microsoft.com/azure/aks/release-tracker).
 * Azure Kubernetes Service support for [Flatcar Container Linux for AKS (preview)](https://github.com/Azure/AKS/issues/5648) will be retired on 8 June 2026, transition to a supported alternative by that date. From now to 7 June 2026, you can continue to use Flatcar Container Linux for AKS (preview) on Azure Kubernetes Service without disruption. Starting on 8 June 2026, Azure Kubernetes Service will no longer support Flatcar Container Linux for AKS (preview). You will no longer be able to create new node pools. AKS will not produce new node images and will no longer provide security patches for existing node pools. AKS will remove Flatcar Container Linux for AKS (preview) node images and existing code on 8 September 2026, meaning that scaling and remediation operations will fail.
 * Azure Linux has expanded GPU support to include NVIDIA A100, H100, and H200 VMs. Find the full list of supported GPUs with Azure Linux on AKS [here](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux#azure-linux-container-host-supported-gpu-virtual-machine-sizes).
 
-## Kubernetes Version
-* AKS Kubernetes version `1.35` General Availability is now rolling out. It is expected to be available in all regions by the first week of April.
+### Kubernetes Version
 * New Kubernetes patch versions are now available: `1.32.11`, `1.33.7`, `1.34.3`.
-* AKS Kubernetes Long term support version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
+* AKS Kubernetes Long Term Support (LTS) version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
 * AKS LTS (Long Term Support) patch [1.27.6](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v1276) is now available.
 
 For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
-## Preview Features
+### Preview Features
 * [Azure Monitor Profile OTLP gRPC support](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) is now available in public preview, enabling OpenTelemetry Protocol gRPC endpoints for Azure Monitor metrics collection.
-* [ACNS Performance](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) preview feature is now supported on dualstack clusters.
+* [ACNS Performance](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) preview feature is now supported on dual-stack clusters.
 * [Node Auto Provisioning (Karpenter)](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2). This release adds a new alpha resource `NodeOverlay` for controlling node priorities and supports two new scheduling labels: `kubernetes.azure.com/scalesetpriority` and `kubernetes.azure.com/os-sku`. See [Azure Karpenter Provider v1.7.2 release notes](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2) for full details.
 
-## Features
+### Features
 * [Application Monitoring auto-instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now generally available. OpenTelemetry support remains in public preview.
-* [Managed Gateway API](https://learn.microsoft.com/azure/aks/gateway-api) enablement is now exposed via the GA API version `2026-02-01`.
 * Azure Linux now supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for running AI and ML workloads on AKS.
 
-## Bug Fixes
-* Fixed Konnectivity connectivity issues by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
+### Bug Fixes
+* Fixed connectivity issues in Konnectivity by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
 
-## Behavioral Changes
+### Behavioral Changes
 * [AKS Automatic clusters](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about#restrictions-that-prevent-running-workloads-on-the-managed-system-node-pool) now enforce multiple layers of defense against remote code execution via `nodes/proxy` permissions:
   - A ValidatingAdmissionPolicy (VAP) restricts creation or updates of ClusterRole and Role objects granting `nodes/proxy`, except for approved system users and groups.
   - An authorization policy denies `nodes/proxy` by default. Approved system users, groups, and kube-system service accounts are exempt.
 * On clusters where ACNS performance is used to enable [eBPF host routing](https://learn.microsoft.com/azure/aks/how-to-enable-ebpf-host-routing), nodes will be labeled with `kubernetes.azure.com/ebpf-host-routing=true` . This is done by a node image upgrade.
 
-## Component Updates
+### Component Updates
 * Cilium has been updated from v1.18.2 to [v1.18.6](https://github.com/cilium/cilium/releases/tag/v1.18.6) to address CVEs: [CVE-2025-64715](NVD - CVE-2025-64715) and [CVE-2026-26963](NVD - CVE-2026-26963).
 * Retina has been updated to [v1.0.3](https://github.com/microsoft/retina/releases/tag/v1.0.3) to address [CVE-2013-3900](https://nvd.nist.gov/vuln/detail/CVE-2013-3900).
 * Retina Enterprise has been updated to [v0.1.16](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.16).
 * Konnectivity has been updated to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes and dependency updates.
 * Microsoft Defender for Containers sensor has been upgraded to v0.9.51 on AKS >= 1.35 and to v0.8.48 on AKS < 1.35. See [release notes](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode) for details.
 * Inspektor Gadget upgraded from v0.41.1 to [v0.41.2](https://github.com/inspektor-gadget/inspektor-gadget/tree/v0.41.2).
-* Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/)
+* Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/).
 * Multiple CVEs remediated:
   * [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121)
   * [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621)
@@ -69,7 +67,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
   * [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725)
   * [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
 * [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:
-  - v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4
+  - v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4.
 * Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
 * Node Auto Provisioning (Karpenter) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2).
 * AKS Azure Linux images:
