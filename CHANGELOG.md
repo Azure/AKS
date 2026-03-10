@@ -1,5 +1,70 @@
 # Azure Kubernetes Service Changelog
 
+# Release Notes - 2026-03-05
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+## Announcements
+
+* [AKS Release Tracker](https://releases.aks.azure.com/) has been updated with an enhanced design.
+
+## Kubernetes Version
+
+* AKS Kubernetes Long term support version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
+* AKS Kubernetes version `1.35` General Availability version is now commencing roll out, it is expected to be in all regions on or before April first week.
+* New Kubernetes patch versions are now available: `1.32.11`, `1.33.7`, `1.34.3`.
+* AKS LTS (Long Term Support) patch versions are now available:
+  * [1.27.6 changelog](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v1276)
+
+For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+## Preview Features
+
+* [Azure Monitor Profile OTLP gRPC support](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) is now available in public preview, enabling OpenTelemetry Protocol gRPC endpoints for Azure Monitor metrics collection.
+* [ACNS Performance](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) preview feature is now supported on dualstack clusters.
+* [Node Auto Provisioning (Karpenter)](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2). This release adds a new alpha resource `NodeOverlay` for controlling node priorities and supports two new scheduling labels: `kubernetes.azure.com/scalesetpriority` and `kubernetes.azure.com/os-sku`. See [Azure Karpenter Provider v1.7.2 release notes](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2) for full details.
+
+## Features
+
+* [Application Monitoring auto-instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now generally available. OpenTelemetry support remains in public preview.
+* [Managed Gateway API](https://learn.microsoft.com/azure/aks/gateway-api) enablement is now exposed via the GA API version `2026-02-01`.
+
+## Bug Fixes
+
+* Fixed an issue with Retina to address [CVE-2013-3900](https://nvd.nist.gov/vuln/detail/CVE-2013-3900). Retina has been updated to [v1.0.3](https://github.com/microsoft/retina/releases/tag/v1.0.3).
+* Fixed Konnectivity connectivity issues by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
+
+## Behavioral Changes
+
+* AKS Automatic clusters now enforce multiple layers of defense against remote code execution via `nodes/proxy` permissions:
+  - A ValidatingAdmissionPolicy (VAP) restricts creation or updates of ClusterRole and Role objects granting `nodes/proxy`, except for approved system users and groups.
+  - An authorization policy denies `nodes/proxy` by default. Approved system users, groups, and kube-system service accounts are exempt.
+* When enabling or disabling eBPF host routing, AKS now rotates nodes and manages the label `kubernetes.azure.com/ebpf-host-routing=true` accordingly.
+
+## Component Updates
+
+* Cilium has been updated from v1.18.2 to [v1.18.6](https://github.com/cilium/cilium/releases/tag/v1.18.6) to address CVEs.
+* Retina has been updated to [v1.0.3](https://github.com/microsoft/retina/releases/tag/v1.0.3) to address [CVE-2013-3900](https://nvd.nist.gov/vuln/detail/CVE-2013-3900).
+* Retina Enterprise has been updated to [v0.1.16](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.16).
+* Konnectivity has been updated to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes and dependency updates.
+* Microsoft Defender for Containers sensor has been upgraded to v0.9.51 on AKS >= 1.35 and to v0.8.48 on AKS < 1.35. See [release notes](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode) for details.
+* Inspektor Gadget upgraded from v0.41.1 to v0.41.2
+* Fluent Bit updated from 4.1.1 to 4.2.2
+* Multiple CVEs remediated including: [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121), [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621), [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156), [CVE-2025-52881](https://nvd.nist.gov/vuln/detail/CVE-2025-52881), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726), [CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728), [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729), [CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730), [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329), [CVE-2026-24137](https://nvd.nist.gov/vuln/detail/CVE-2026-24137), [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914), [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181), [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727).
+* [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:
+  - v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4
+* Azure Blob CSI driver version has been updated.
+* Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/blob/ci_prod/ReleaseNotes.md).
+* Node Auto Provisioning (Karpenter) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2).
+
+* AKS Azure Linux images:
+   * v3.0 - [202603.04.0](vhd-notes/AzureLinuxv3/202603.04.0.txt).
+* AKS Ubuntu images:
+  * Ubuntu 22.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202603.04.0.txt).
+  * Ubuntu 24.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202603.04.0.txt).
+ 
+---
+
 ## Release Notes 2026-02-08
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
