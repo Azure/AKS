@@ -155,7 +155,7 @@ As a reminder, there are many parameters the scheduler considers across the [sch
 9. For `NodeResourcesFit`, the ratio matters more than absolute values. So CPU:Memory:Storage = 3:1:2, which means CPU is 3× more influential than memory, and storage is 2x more influential than memory in the scoring phase.
 10. Pair `PodTopologySpread` with Pod Disruption Budgets (PDBs) and multi‑replica strategies for HA during upgrades.
 
-## Next Steps: Try out AKS Configurable Scheduler
+## Next Steps: Optimize and test with AKS Configurable Scheduler Profiles
 
 With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resilience and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
 
