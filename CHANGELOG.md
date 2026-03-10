@@ -6,9 +6,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ## Announcements
 * [AKS Release Tracker](https://releases.aks.azure.com/) has been updated with an enhanced look and feel design, for more information refer [here](https://learn.microsoft.com/azure/aks/release-tracker).
-* Azure Kubernetes Service support for [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar-preview-retirement) will be retired on 8 June 2026, transition to a supported alternative by that date. From now to 7 June 2026, you can continue to use Flatcar Container Linux for AKS (preview) on Azure Kubernetes Service without disruption. Starting on 8 June 2026, Azure Kubernetes Service will no longer support Flatcar Container Linux for AKS (preview). You will no longer be able to create new node pools. AKS will not produce new node images and will no longer provide security patches for existing node pools. AKS will remove Flatcar Container Linux for AKS (preview) node images and existing code on 8 September 2026, meaning that scaling and remediation operations will fail.
+* Azure Kubernetes Service support for [Flatcar Container Linux for AKS (preview)](https://github.com/Azure/AKS/issues/5648) will be retired on 8 June 2026, transition to a supported alternative by that date. From now to 7 June 2026, you can continue to use Flatcar Container Linux for AKS (preview) on Azure Kubernetes Service without disruption. Starting on 8 June 2026, Azure Kubernetes Service will no longer support Flatcar Container Linux for AKS (preview). You will no longer be able to create new node pools. AKS will not produce new node images and will no longer provide security patches for existing node pools. AKS will remove Flatcar Container Linux for AKS (preview) node images and existing code on 8 September 2026, meaning that scaling and remediation operations will fail.
 * Azure Linux has expanded GPU support to include NVIDIA A100, H100, and H200 VMs. Find the full list of supported GPUs with Azure Linux on AKS [here](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux#azure-linux-container-host-supported-gpu-virtual-machine-sizes).
-* Azure Linux also now supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for running AI and ML workloads on AKS.
 
 ## Kubernetes Version
 * AKS Kubernetes version `1.35` General Availability is now rolling out. It is expected to be available in all regions by the first week of April.
@@ -26,6 +25,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 ## Features
 * [Application Monitoring auto-instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now generally available. OpenTelemetry support remains in public preview.
 * [Managed Gateway API](https://learn.microsoft.com/azure/aks/gateway-api) enablement is now exposed via the GA API version `2026-02-01`.
+* Azure Linux now supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for running AI and ML workloads on AKS.
 
 ## Bug Fixes
 * Fixed Konnectivity connectivity issues by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
@@ -42,9 +42,32 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Retina Enterprise has been updated to [v0.1.16](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.16).
 * Konnectivity has been updated to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes and dependency updates.
 * Microsoft Defender for Containers sensor has been upgraded to v0.9.51 on AKS >= 1.35 and to v0.8.48 on AKS < 1.35. See [release notes](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode) for details.
-* Inspektor Gadget upgraded from v0.41.1 to v0.41.2
+* Inspektor Gadget upgraded from v0.41.1 to [v0.41.2](https://github.com/inspektor-gadget/inspektor-gadget/tree/v0.41.2).
 * Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/)
-* Multiple CVEs remediated including: [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121), [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621), [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156), [CVE-2025-52881](https://nvd.nist.gov/vuln/detail/CVE-2025-52881), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726), [CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728), [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729), [CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730), [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329), [CVE-2026-24137](https://nvd.nist.gov/vuln/detail/CVE-2026-24137), [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914), [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181), [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727).
+* Multiple CVEs remediated:
+  * [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121)
+  * [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621)
+  * [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156)
+  * [CVE-2025-52881](https://nvd.nist.gov/vuln/detail/CVE-2025-52881)
+  * [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183)
+  * [CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726)
+  * [CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728)
+  * [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729)
+  * [CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730)
+  * [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329)
+  * [CVE-2026-24137](https://nvd.nist.gov/vuln/detail/CVE-2026-24137)
+  * [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914)
+  * [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181)
+  * [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912)
+  * [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185)
+  * [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186)
+  * [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187)
+  * [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188)
+  * [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189)
+  * [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723)
+  * [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724)
+  * [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725)
+  * [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
 * [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:
   - v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4
 * Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
