@@ -17,11 +17,10 @@ Out of the available nodes, the scheduler then filters out nodes that don't meet
 
 **[AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by selecting specific policies, altering parameter weight, changing policy priority, adding additional policy parameters, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, customers have mentioned that AKS Configurable Scheduler Profiles allows them to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler. Additionally, our AI and HPC customers have batch workloads that have benefitted from improved bin-packing and increased GPU utilization.
 
-In this blog you will learn how to configure AKS Configurable Scheduler Profiles for three workload objectives:
+In this blog you will learn how to configure AKS Configurable Scheduler Profiles for three increased node utilization:
 
-1. [Increase GPU utilization by bin packing GPU-backed nodes](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
-2. [Increase resilience by distributing pods across topology domains](#increase-resilience-by-distributing-pods-across-topology-domains)
-3. [Optimize data locality with memory and PVC-aware scheduling](#optimize-data-locality-with-memory-and-pvc-aware-scheduling)
+1. [How to increase CPU utilization](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
+2. [How to increase GPU utilization](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
 
 Lastly, you will find [best practices](#best-practices-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
