@@ -29,7 +29,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Fixed Konnectivity connectivity issues by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
 
 ## Behavioral Changes
-* AKS Automatic clusters now enforce multiple layers of defense against remote code execution via `nodes/proxy` permissions:
+* [AKS Automatic clusters](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about#restrictions-that-prevent-running-workloads-on-the-managed-system-node-pool) now enforce multiple layers of defense against remote code execution via `nodes/proxy` permissions:
   - A ValidatingAdmissionPolicy (VAP) restricts creation or updates of ClusterRole and Role objects granting `nodes/proxy`, except for approved system users and groups.
   - An authorization policy denies `nodes/proxy` by default. Approved system users, groups, and kube-system service accounts are exempt.
 * When enabling or disabling eBPF host routing, AKS now rotates nodes and manages the label `kubernetes.azure.com/ebpf-host-routing=true` accordingly.
