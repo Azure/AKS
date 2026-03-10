@@ -141,20 +141,6 @@ spec:
                       score: 0
 ```
 
-## Best Practices and Configuration Considerations
-
-As a reminder, there are many parameters the scheduler considers across the [scheduling cycle][scheduling-framework/#interfaces] before a pod is placed on a node that impacts how a pod is assigned. This section is meant to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
-
-1. Ensure the intended deployment is assigned to the _correct_ scheduler profile.
-2. Ensure the custom scheduler profile compliments the implementation of Deployments, StorageClasses, and PersistentVolumeClaims. Misalignment can lead to pending pods and degraded workload performance, even when the scheduler is functioning as expected.
-3. Ensure there are enough nodes in each zone to accommodate your deployment replicas and ensure your AKS node pool spans the right availability zones. If not, pods may remain in a pending state.
-4. Use namespaces to separate workloads which improves your ability to validate or troubleshoot.
-6. If you use the `ImageLocality` plugin, use DaemonSets or node pre-pulling for latency-sensitive images, otherwise the benefit may be minimal.
-7. If your cluster is large, a low `PercentageOfNodesToScore` speeds scheduling by reducing the number of nodes scored, _but_ it may reduce optimal placement.
-8. If you enable a plugin in the `plugins:multipoint` section but do not define it in `pluginConfig`, AKS uses the default configuration for that plugin.
-9. For `NodeResourcesFit`, the ratio matters more than absolute values. So CPU:Memory:Storage = 3:1:2, which means CPU is 3× more influential than memory, and storage is 2x more influential than memory in the scoring phase.
-10. Pair `PodTopologySpread` with Pod Disruption Budgets (PDBs) and multi‑replica strategies for HA during upgrades.
-
 ## Next Steps: Optimize and test with AKS Configurable Scheduler Profiles
 
 With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resilience and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
