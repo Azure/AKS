@@ -38,10 +38,10 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Retina has been updated to [v1.0.3](https://github.com/microsoft/retina/releases/tag/v1.0.3) to address [CVE-2013-3900](https://nvd.nist.gov/vuln/detail/CVE-2013-3900).
 * Retina Enterprise has been updated to [v0.1.16](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.16).
 * Konnectivity has been updated to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes and dependency updates.
-* Microsoft Defender for Containers sensor has been upgraded to v0.9.51 on AKS >= 1.35 and to v0.8.48 on AKS < 1.35. See [release notes](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode) for details.
-* Inspektor Gadget upgraded from v0.41.1 to [v0.41.2](https://github.com/inspektor-gadget/inspektor-gadget/tree/v0.41.2).
-* Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/).
-* Multiple CVEs remediated:
+* Microsoft Defender for Containers sensor has been upgraded to v0.9.51 on AKS >= 1.35 and to v0.8.48 on AKS < 1.35. See [release notes](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode). The following defender for containers components were updated:
+  * Inspektor Gadget upgraded from v0.41.1 to [v0.41.2](https://github.com/inspektor-gadget/inspektor-gadget/tree/v0.41.2).
+  * Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/).
+  * Multiple CVEs remediated as part of this change, listed below:
   * [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121)
   * [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621)
   * [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156)
