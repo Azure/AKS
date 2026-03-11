@@ -17,7 +17,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 ### Preview Features
 * [Azure Monitor Profile OTLP gRPC support](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) is now available in public preview, enabling OpenTelemetry Protocol gRPC endpoints for Azure Monitor metrics collection.
 * [ACNS Performance](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) preview feature is now supported on dual-stack clusters.
-* [Node Auto Provisioning (Karpenter)](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2). This release adds a new alpha resource `NodeOverlay` for controlling node priorities and supports two new scheduling labels: `kubernetes.azure.com/scalesetpriority` and `kubernetes.azure.com/os-sku`.
+* [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to Karpenter Azure provider [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2). This release adds a new alpha resource `NodeOverlay` for controlling node priorities and supports two new scheduling labels: `kubernetes.azure.com/scalesetpriority` and `kubernetes.azure.com/os-sku`.
 
 ### Features
 * [Application Monitoring auto-instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now generally available. OpenTelemetry support remains in public preview.
@@ -61,7 +61,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
     * [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724)
     * [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725)
     * [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
-* [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4.
+* [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions: v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4.
 * Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
 * AKS Azure Linux images:
   * v3.0 - [202603.04.0](vhd-notes/AzureLinuxv3/202603.04.0.txt).
