@@ -22,7 +22,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 
 ### Features
 * [Application Monitoring auto-instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now generally available. OpenTelemetry support remains in public preview.
-* Azure Linux now supports the [AI Toolchain Operator (KAITO)](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for running AI and ML workloads on AKS.
+* Azure Linux now supports the [AI Toolchain Operator (KAITO) add-on](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for running AI and ML workloads on AKS.
 
 ### Bug Fixes
 * Fixed connectivity issues in Konnectivity by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
@@ -42,31 +42,30 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
   * Inspektor Gadget upgraded from v0.41.1 to [v0.41.2](https://github.com/inspektor-gadget/inspektor-gadget/tree/v0.41.2).
   * Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/).
   * Multiple CVEs remediated as part of this change, listed below:
-  * [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121)
-  * [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621)
-  * [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156)
-  * [CVE-2025-52881](https://nvd.nist.gov/vuln/detail/CVE-2025-52881)
-  * [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183)
-  * [CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726)
-  * [CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728)
-  * [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729)
-  * [CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730)
-  * [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329)
-  * [CVE-2026-24137](https://nvd.nist.gov/vuln/detail/CVE-2026-24137)
-  * [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914)
-  * [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181)
-  * [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912)
-  * [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185)
-  * [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186)
-  * [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187)
-  * [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188)
-  * [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189)
-  * [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723)
-  * [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724)
-  * [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725)
-  * [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
-* [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:
-  - v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4.
+    * [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121)
+    * [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621)
+    * [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156)
+    * [CVE-2025-52881](https://nvd.nist.gov/vuln/detail/CVE-2025-52881)
+    * [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183)
+    * [CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726)
+    * [CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728)
+    * [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729)
+    * [CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730)
+    * [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329)
+    * [CVE-2026-24137](https://nvd.nist.gov/vuln/detail/CVE-2026-24137)
+    * [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914)
+    * [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181)
+    * [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912)
+    * [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185)
+    * [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186)
+    * [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187)
+    * [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188)
+    * [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189)
+    * [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723)
+    * [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724)
+    * [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725)
+    * [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
+* [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4.
 * Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
 * Node Auto Provisioning (Karpenter) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2).
 * AKS Azure Linux images:
