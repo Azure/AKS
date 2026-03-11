@@ -11,21 +11,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Kubernetes Version
 * New Kubernetes patch versions are now available: `1.32.11`, `1.33.7`, `1.34.3`.
 * AKS Kubernetes Long Term Support (LTS) version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
-* AKS LTS (Long Term Support) patch [1.27.6](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#v1276) is now available.
 
 For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Preview Features
 * [Azure Monitor Profile OTLP gRPC support](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) is now available in public preview, enabling OpenTelemetry Protocol gRPC endpoints for Azure Monitor metrics collection.
 * [ACNS Performance](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) preview feature is now supported on dual-stack clusters.
-* [Node Auto Provisioning (Karpenter)](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2). This release adds a new alpha resource `NodeOverlay` for controlling node priorities and supports two new scheduling labels: `kubernetes.azure.com/scalesetpriority` and `kubernetes.azure.com/os-sku`. See [Azure Karpenter Provider v1.7.2 release notes](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2) for full details.
+* [Node Auto Provisioning (Karpenter)](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2). This release adds a new alpha resource `NodeOverlay` for controlling node priorities and supports two new scheduling labels: `kubernetes.azure.com/scalesetpriority` and `kubernetes.azure.com/os-sku`.
 
 ### Features
 * [Application Monitoring auto-instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now generally available. OpenTelemetry support remains in public preview.
 * Azure Linux now supports the [AI Toolchain Operator (KAITO) add-on](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for running AI and ML workloads on AKS.
-
-### Bug Fixes
-* Fixed connectivity issues in Konnectivity by updating apiserver-network-proxy to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes, Go version, and dependency updates.
 
 ### Behavioral Changes
 * [AKS Automatic clusters](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about#restrictions-that-prevent-running-workloads-on-the-managed-system-node-pool) now enforce multiple layers of defense against remote code execution via `nodes/proxy` permissions:
@@ -67,12 +63,13 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
     * [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
 * [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions:v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4.
 * Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
-* Node Auto Provisioning (Karpenter) has been updated to [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2).
 * AKS Azure Linux images:
   * v3.0 - [202603.04.0](vhd-notes/AzureLinuxv3/202603.04.0.txt).
 * AKS Ubuntu images:
   * Ubuntu 22.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202603.04.0.txt).
   * Ubuntu 24.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202603.04.0.txt).
+  
+  ---
  
 ## Release Notes 2026-02-08
 
