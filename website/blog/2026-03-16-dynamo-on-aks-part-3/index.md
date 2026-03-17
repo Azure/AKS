@@ -43,13 +43,13 @@ A routing strategy that optimizes only one of these signals leaves performance o
 
 ## The Solution: Dynamo KV Router
 
-[Dynamo's KV Router](https://docs.nvidia.com/dynamo/latest/design-docs/router-design#kv-router-architecture) solves this by making the routing layer "state-aware". This intelligence is designed to drop into your existing inference stack with minimal friction.
+[Dynamo's KV Router](https://docs.nvidia.com/dynamo/components/router) solves this by making the routing layer "state-aware". This intelligence is designed to drop into your existing inference stack with minimal friction.
 
 * **Engine-Agnostic Design**: The router works out-of-the-box with major engines like [vLLM](https://docs.vllm.ai/), [TensorRT-LLM](https://docs.nvidia.com/tensorrt-llm/index.html), and [SGLang](https://docs.sglang.io/). Workers automatically broadcast their cache state (KV events) to the router, requiring no complex API instrumentation or engine-specific configuration changes.
 
 * **Intelligent, Tunable Routing**: The router doesn't just look for cache hits; it uses a cost function that balances **cache locality** against **worker load**. This is fully configurable, allowing you to tune the router's behavior to favor cache reuse (ideal for prefill-heavy workloads) or load distribution (ideal for decode-heavy workloads) depending on your inference traffic patterns.
 
-To see this in practice, let’s take a look at how the router makes a decision in real-time:
+To see this in practice, let’s take a look at how the router makes a decision in real-time.
 
 ![Dynamo KV Aware Routing decision among 3 workers](./dynamo_kv_aware_router_diagram.png)
 
@@ -65,9 +65,11 @@ In the above scenario, Worker 3 has the best cache hit rate (8 of 10 blocks cach
 * Worker 2: 1.0 × 5 + 5 = **10** *(selected — lowest cost)*
 * Worker 3: 1.0 × 2 + 9 = **11**
 
-To quantify the value of inference with the KV-aware router, we ran an apples-to-apples comparison on an AKS cluster with [Dynamo](https://github.com/ai-dynamo/dynamo) and [Grove](https://github.com/ai-dynamo/grove), keeping the hardware, model, and traffic identical while changing *only* the routing strategy from Round-Robin to KV-Aware.
+The router takes the partial cache hit on Worker 2 to speed up prefill, while avoiding the contention on Worker 3. This prevents cache-rich but overloaded nodes from becoming hotspots. In the next section, we put this to the test on a real-world workload.
 
 ## Validating the Approach: Benchmarks on AKS
+
+To quantify the value of inference with the KV-aware router, we ran an apples-to-apples comparison on an AKS cluster using [Dynamo](https://github.com/ai-dynamo/dynamo) and [Grove](https://github.com/ai-dynamo/grove), keeping the hardware, model, and traffic identical while changing *only* the routing strategy from Round-Robin to KV-Aware.
 
 In the test environment, we deployed the [Qwen3-32B](https://huggingface.co/Qwen/Qwen3-32B) LLM on an AKS cluster with 8x NVIDIA H100 GPUs (4 nodes of Azure `Standard_NC80adis_H100_v5`). To simulate a production workload, we replayed ~23,000 requests from the [Mooncake Tool Agent Traces](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/toolagent_trace.jsonl) dataset with a fixed schedule, preserving the original request arrival pattern.
 
@@ -79,9 +81,9 @@ The following table summarizes key performance metrics across the two deployment
 
 | Metric | Round-Robin | Dynamo KV Router | Speedup |
 |--|--|--|--|
-| TTFT avg | 53,877 ms | 2,658 ms | **~20.4x** |
+| TTFT avg. | 53,877 ms | 2,658 ms | **~20.4x** |
 | TTFT P99 | 280,221 ms | 17,585 ms | **~15.9x** |
-| E2E Latency avg | 84,517 ms | 19,761 ms | **~4.3x** |
+| E2E Latency avg. | 84,517 ms | 19,761 ms | **~4.3x** |
 | E2E Latency P99 | 340,006 ms | 90,299 ms | **~3.8x** |
 
 As shown in the results above, we see the advantage of routing requests to workers that already hold the matching prefix KV cache. By eliminating the hidden cost of redundant compute, the Dynamo KV Router demonstrated two key benefits in our tests:
