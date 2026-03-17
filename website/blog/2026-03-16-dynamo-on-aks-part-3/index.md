@@ -1,7 +1,7 @@
 ---
 title: "Scaling multi-node LLM inference with NVIDIA Dynamo and NVIDIA GPUs on AKS (Part 3)"
 date: 2026-03-16
-description: "Learn how NVIDIA Dynamo's KV Router optimizes multi-worker LLM inference on AKS with H100 GPUs, achieving significantly lower latency through intelligent routing."
+description: "Learn how NVIDIA Dynamo's KV Router optimizes multi-worker LLM inference on AKS with H100 GPUs, achieving lower latency through intelligent routing."
 authors:
 - sachi-desai
 - devi-vasudevan
