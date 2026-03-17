@@ -25,7 +25,7 @@ In this blog, we explore how **Dynamo’s KV Router** makes multi-worker LLM dep
 
 As enterprise Generative AI evolves into complex multi-agent workflows, system prompts and shared context windows have significantly increased in size. The compute-intensive process of reading this context and building the **Key-Value (KV) cache**, known as the **prefill** phase, introduces a bottleneck.
 
-In production, many requests share an initial segment of tokens (i.e. the **prefix**), such as a system prompt defining an agent’s persona, a standard compliance disclaimer, a shared document in a retrieval-augmented generation (RAG) workflow, or conversation history. If a worker already holds the KV cache for that prefix, it can reuse the cache for the next matching request—reducing prefill and reaching the first output token faster.
+In production, many requests share an initial segment of tokens (that is, the **prefix**), such as a system prompt defining an agent’s persona, a standard compliance disclaimer, a shared document in a retrieval-augmented generation (RAG) workflow, or conversation history. If a worker already holds the KV cache for that prefix, it can reuse the cache for the next matching request—reducing prefill and reaching the first output token faster.
 
 Standard routing strategies such as round-robin, or policies optimized purely for load balancing, spread requests across workers without considering KV-cache locality. As a result, requests with the same prefix may land on different workers over time, forcing KV cache rebuilds on workers that don’t currently have the relevant cached blocks.
 
