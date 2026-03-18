@@ -73,11 +73,11 @@ The two cannot run simultaneously — enabling one requires the other to be disa
     az extension update --name aks-preview
     ```
 
-2. **Managed Gateway API CRDs** enabled on your cluster. This installs and lifecycle-manages the Gateway API CRDs, keeping them in sync with your Kubernetes version automatically. Register the feature flag and enable it:
+2. **Preview feature flags** registered on your subscription:
 
     ```bash
     az feature register --namespace "Microsoft.ContainerService" --name "ManagedGatewayAPIPreview"
-    az aks update --resource-group ${RESOURCE_GROUP} --name ${CLUSTER} --enable-gateway-api
+    az feature register --namespace "Microsoft.ContainerService" --name "AppRoutingIstioGatewayAPIPreview"
     ```
 
 ### Enable the app routing Gateway API implementation
@@ -88,16 +88,17 @@ The two cannot run simultaneously — enabling one requires the other to be disa
 az aks create \
   --resource-group ${RESOURCE_GROUP} \
   --name ${CLUSTER} \
-  --enable-app-routing-istio \
-  --enable-gateway-api
+  --enable-gateway-api \
+  --enable-app-routing-istio
 ```
 
-**On an existing cluster** (assuming the Managed Gateway API CRDs prerequisite above is already complete):
+**On an existing cluster:**
 
 ```bash
 az aks update \
   --resource-group ${RESOURCE_GROUP} \
   --name ${CLUSTER} \
+  --enable-gateway-api \
   --enable-app-routing-istio
 ```
 
