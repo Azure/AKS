@@ -40,11 +40,11 @@ On AKS, you can express intent using:
 - topologySpreadConstraints
 - Pod Disruption Budgets (which don’t pick nodes, but do constrain eviction/drain behavior)
 
-AKS also publishes best-practices guidance for these scheduler features, including taints/tolerations and affinity. [learn.microsoft.com]
+AKS also publishes best-practices guidance for these scheduler features, including taints/tolerations and affinity.
 
 ## Part 2 — Topology Spread Constraints: the #1 tool for zone-aware replicas
 
-**Topology Spread Constraints** let you tell the scheduler: “Keep these replicas balanced across domains like zones or nodes.” The Kubernetes docs describe it as a way to spread pods across failure domains such as regions, zones, nodes, and custom topology keys. [kubernetes.io]
+**Topology Spread Constraints** let you tell the scheduler: “Keep these replicas balanced across domains like zones or nodes.” The Kubernetes docs describe it as a way to spread pods across failure domains such as regions, zones, nodes, and custom topology keys.
 
 ### A good default: spread across Availability Zones
 
@@ -70,17 +70,17 @@ spec:
 
 What these fields mean (in plain language):
 
-- topologyKey: topology.kubernetes.io/zone → spread across zones (not just nodes). [kubernetes.io]
-- maxSkew: 1 → keep zone counts close (difference between most/least loaded domains can’t exceed 1 when DoNotSchedule). [kubernetes.io]
-- minDomains: 3 (only valid with DoNotSchedule) → treat it as a requirement that at least 3 eligible domains participate; if fewer than minDomains are eligible, Kubernetes treats the “global minimum” as 0, affecting skew calculation. [kubernetes.io]
-- whenUnsatisfiable: DoNotSchedule → enforce the rule strictly; if it can’t be met, pods stay Pending. [kubernetes.io]
+- topologyKey: topology.kubernetes.io/zone → spread across zones (not just nodes).
+- maxSkew: 1 → keep zone counts close (difference between most/least loaded domains can’t exceed 1 when DoNotSchedule). 
+- minDomains: 3 (only valid with DoNotSchedule) → treat it as a requirement that at least 3 eligible domains participate; if fewer than minDomains are eligible, Kubernetes treats the “global minimum” as 0, affecting skew calculation.
+- whenUnsatisfiable: DoNotSchedule → enforce the rule strictly; if it can’t be met, pods stay Pending.
 
 ### “Hard” vs “soft” topology spreading
 
 Kubernetes gives you two behaviors:
 
-- _DoNotSchedule_: strict; better for HA-critical workloads, but can stall rollouts if capacity is constrained. [kubernetes.io]
-- _ScheduleAnyway_: best-effort; scheduler still places pods but prioritizes choices that reduce skew. [kubernetes.io]
+- _DoNotSchedule_: strict; better for HA-critical workloads, but can stall rollouts if capacity is constrained.
+- _ScheduleAnyway_: best-effort; scheduler still places pods but prioritizes choices that reduce skew.
 
 **Practical guidance:**
 
@@ -91,7 +91,7 @@ Use `ScheduleAnyway` if you’d rather progress than block during partial zone p
 
 Node affinity is the evolution of nodeSelector: it’s more expressive and lets you define hard requirements vs soft preferences.
 
-AKS best-practices guidance calls out node selectors and affinity as core tools to “give preference to pods to run on certain nodes.” [learn.microsoft.com]
+AKS best-practices guidance calls out node selectors and affinity as core tools to “give preference to pods to run on certain nodes.”
 
 Common use cases:
 1) “Only run on GPU nodes”
@@ -157,7 +157,7 @@ spec:
       app: web
 ```
 
-Kubernetes describes minAvailable / maxUnavailable as the two key availability knobs, and notes you can only specify one per PDB. [kubernetes.io]
+Kubernetes describes minAvailable / maxUnavailable as the two key availability knobs, and notes you can only specify one per PDB.
 
 ### The most common PDB pitfall
 If you effectively set zero voluntary evictions (maxUnavailable: 0 or minAvailable: 100%), Kubernetes warns this can block node drains indefinitely for a node running one of those pods.
@@ -201,12 +201,25 @@ NAP senses pending pod pressure, chooses/provisions nodes that satisfy workload 
 
 ### NAP Disruption with PDBs
 
+#### Common Pitfalls for NAP Disruption
+
+Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once
+Cause: User has not set any guardrails on node disruption behavior.
+  - Fix: Add PDBs that regulate disruption pace
+  - Fix: Consider adding `ConsolidationPolicies`
+  - Fix: Node Disruption Budgets and/or a Maintennance Window for NAP disruption should be enabled
+
+Behavior: NAP node upgrades fail and/or NAP nodes will not scale down voluntarily
+Cause: PDBs are set too strictly (ex. MaxUnavailable = 0)
+  - Fix: Ensure PDBs are not too strict; set MaxUnavailable to a low (but not 0) number like 1.
+
+_**Note:** _ This section is describing voluntary disruption, not to be confused with node involuntary eviction (ex. spot VM evictions)
+
 ### How NAP handles Topology Spread
 
-NAP honors workload [topologyspreadconstraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field)
+NAP honors workload [topologyspreadconstraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field). While you can list the allowed zones in the NodePool CRD, `topologyspreadconstraints` are the means to ensure topology spread.
 
-- NAP (without pod-level `topologyspreadconstraints` defined) will provision wherever there is availability for the preferred VM SKU. This can look like NAP provisioning all preferred nodes in zone 1 and none in zone 2 and zone 3.
-- NAP (with pod-level `topologyspreadconstraints` defined) to ensure topology spread, NAP will honor any pod-level constraints  (# of replicas, topology spread
+- NAP (**without** pod-level `topologyspreadconstraints` defined) will provision wherever there is availability for the preferred VM SKU. This can look like NAP provisioning all preferred nodes in zone 1 and none in zone 2 and zone 3.
+- NAP (**with** pod-level `topologyspreadconstraints` defined) to ensure topology spread, NAP will honor any pod-level constraints  (# of replicas, topology spread
 behavior) in the workload deployment file. See the Kubernetes docs on topology spread for other examples also.
 
-While you can list the allowed zones in the NodePool CRD, NAP will provision 
