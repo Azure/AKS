@@ -60,7 +60,7 @@ If you're already using or considering the [Istio service mesh add-on](https://l
 | **Istio CRDs** | Not installed | Installed |
 | **Upgrades** | In-place (minor and patch) | Canary upgrades for minor versions |
 
-The two cannot run simultaneously — enabling one requires the other to be disabled first. If you want a full service mesh (mTLS between services, traffic policies, telemetry), use the Istio service mesh add-on. If you want a managed Gateway API ingress implementation without the operational overhead of a mesh, this is the right choice.
+The two cannot run simultaneously — enabling one requires the other to be disabled first. If you want Gateway API based ingress on a full service mesh (mTLS between services, traffic policies, telemetry), use the Istio service mesh add-on. If you just wish to have ingress via the Gateway API without Istio-specific features, this is the right choice.
 
 ## Getting started
 
