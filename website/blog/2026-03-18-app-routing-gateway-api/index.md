@@ -169,7 +169,7 @@ export INGRESS_HOST=$(kubectl get gateways.gateway.networking.k8s.io httpbin-gat
 Send a request to verify traffic is flowing:
 
 ```bash
-curl -s -I -HHost:httpbin.example.com "http://$INGRESS_HOST/get"
+curl -s -I -H "Host: httpbin.example.com" "http://$INGRESS_HOST/get"
 ```
 
 You should see an `HTTP 200` response.
