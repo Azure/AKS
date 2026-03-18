@@ -1,7 +1,7 @@
 ---
 title: "Announcing Gateway API support for App Routing (preview)"
 date: "2026-03-18"
-description: "The AKS application routing add-on now supports the Kubernetes Gateway API via a lightweight, meshless Istio control plane — the recommended migration path ahead of the Ingress-NGINX retirement in November 2026."
+description: "The AKS app routing add-on now supports the Kubernetes Gateway API via a lightweight, meshless Istio control plane — the recommended migration path ahead of the Ingress-NGINX retirement in November 2026."
 authors: ["jaiveer-katariya"]
 tags:
   - app-routing
@@ -13,8 +13,6 @@ keywords: ["AKS", "Gateway API", "app routing", "Istio", "ingress", "NGINX", "Ku
 ---
 
 We're announcing preview support for the **Kubernetes Gateway API** in the AKS application routing add-on. This brings a modern, role-oriented traffic management model to AKS — and establishes a clear migration path ahead of the [upcoming Ingress-NGINX retirement](#why-now-the-ingress-nginx-retirement).
-
-<!-- truncate -->
 
 ## Background: the Kubernetes networking stack is evolving
 
@@ -90,10 +88,11 @@ The two cannot run simultaneously — enabling one requires the other to be disa
 az aks create \
   --resource-group ${RESOURCE_GROUP} \
   --name ${CLUSTER} \
-  --enable-app-routing-istio
+  --enable-app-routing-istio \
+  --enable-gateway-api
 ```
 
-**On an existing cluster:**
+**On an existing cluster** (assuming the Managed Gateway API CRDs prerequisite above is already complete):
 
 ```bash
 az aks update \
@@ -119,7 +118,7 @@ istiod-54b4ff45cf-wlvgd   1/1     Running   0          3m
 First, deploy the `httpbin` sample application:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/master/samples/httpbin/httpbin.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.27/samples/httpbin/httpbin.yaml
 ```
 
 Then create a `Gateway` using the `approuting-istio` GatewayClass and attach an `HTTPRoute` to it:
