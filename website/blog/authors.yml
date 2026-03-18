@@ -465,3 +465,12 @@ devi-vasudevan:
   socials:
     linkedin: devi-Vasudevan
     github: devivasudevan
+
+jaiveer-katariya:
+  name: Jaiveer Katariya
+  title: Software Engineer for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/jaiveer-k-900865166/
+  image_url: https://github.com/jaiveerk.png
+  page: true
+  socials:
+    github: jaiveerk
