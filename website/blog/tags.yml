@@ -82,15 +82,15 @@ certbot:
   permalink: /certbot
   description: Using Certbot and Let’s Encrypt to obtain and manage TLS certificates for AKS ingress.
 
-cost:
-  label: Cost
-  permalink: /cost
-  description: Recommended patterns, anti-patterns, and guidance for managing and optimizing cost of AKS clusters.
-
 cilium:
   label: Cilium
   permalink: /cilium
   description: Cilium CNI, eBPF networking, observability, and security features on AKS.
+
+cost:
+  label: Cost
+  permalink: /cost
+  description: Recommended patterns, anti-patterns, and guidance for managing and optimizing cost of AKS clusters.
 
 databases:
   label: Databases
