@@ -176,7 +176,7 @@ You should see an `HTTP 200` response.
 
 ### Upgrades
 
-The Istio control plane version is tied to your AKS cluster's Kubernetes version. Patch version upgrades happen automatically as part of AKS releases. Minor version upgrades happen in-place when you upgrade your cluster's Kubernetes version, or automatically when a new Istio minor version is released for your AKS version. Follow the [AKS release notes](https://github.com/azure/aks/releases) to stay current.
+The Istio control plane version is tied to your AKS cluster's Kubernetes version — AKS automatically reconciles the latest supported Istio revision that is compatible with your cluster's Kubernetes version. Patch version upgrades happen automatically as part of AKS releases. Minor version upgrades happen in-place when you upgrade your cluster's Kubernetes version, or automatically when a new Istio minor version is released for your AKS version. To see which Istio revision your cluster will receive, consult the [service mesh add-on release calendar](https://learn.microsoft.com/azure/aks/istio-support-policy#service-mesh-add-on-release-calendar). You can also follow the [AKS release notes](https://github.com/azure/aks/releases) to stay current.
 
 :::caution
 
