@@ -3,7 +3,7 @@ title: "AKS configurable scheduler profiles (preview)"
 description: "Optimize AKS scheduling with configurable scheduler profiles that improve GPU utilization and align pod placement to your critical workloads at scale."
 date: 2026-04-23
 authors: [colin-mixon]
-tags: [ai, performance, scheduler, best-practices]
+tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
 Thoughtful scheduling strategies can resolve pervasive challenges across web-distributed workloads and AI workloads like resiliency and resource utilization. But the default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that could be restrictive if you needed more fine-grained control since it applies a set of criteria in a fixed priority order. The scheduler selects the optimal node for newly created pod(s) based on several criteria, including (but not limited to):
