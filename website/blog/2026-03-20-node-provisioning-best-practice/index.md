@@ -7,9 +7,9 @@ tags:
   - node-auto-provisioning
 ---
 
-##
+## Background
 
-When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes(or VMs)?” — they’re:
+When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes (or VMs)?” — they’re:
 
 - Where will my workload replicas land (zones / nodes)?
 - How do I keep critical workloads stable during disruption (drain, consolidation, upgrades)?
@@ -63,7 +63,7 @@ AKS also publishes [operator best-practices guidance](https://learn.microsoft.co
 
 Here’s a typical “3-zone spread” pattern for a Deployment:
 
-```YAML
+```yaml
 spec:
   replicas: 6
   template:
@@ -93,7 +93,7 @@ What these fields mean (in plain language):
 Kubernetes gives you two behaviors:
 
 - _DoNotSchedule_: strict; better for HA-critical workloads, but can stall rollouts (pods stay pending) if capacity is constrained.
-- _ScheduleAnyway_: best-effort; scheduler still places pods whereever there is capacity but prioritizes choices that reduce skew.
+- _ScheduleAnyway_: best-effort; scheduler still places pods wherever there is capacity but prioritizes choices that reduce skew.
 
 **Practical guidance:**
 
@@ -119,7 +119,19 @@ spec:
         accelerator: gpu
 ```
 
-Standard Example (with Affinity
+Standard Example (with nodeAffinity):
+
+```yaml
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: accelerator
+          operator: In
+          values:
+          - gpu
+```
 
 2) “Prefer this node type, but don’t block if it’s unavailable”
 Use preferredDuringSchedulingIgnoredDuringExecution (soft preference).
@@ -156,7 +168,7 @@ Pod disruption budgets (PDBs) are how you tell Kubernetes:
 
 “During voluntary disruptions, keep at least N replicas available (or limit max unavailable).”
 
-[!Note] Pod disruption budgets protect against **voluntary evictions**, not involuntary failures, forced migrations, or node eviction.
+> [!NOTE] Pod disruption budgets protect against **voluntary evictions**, not involuntary failures, forced migrations, or node eviction.
 
 Here's an example of a PDB that regulates disruption without blocking scale downs, upgrades, and consolidation:
 
@@ -185,7 +197,7 @@ This common misconfiguration can cause scenarios such as:
 
 **Practical guidance:**
 
-- For critical workloads that you do not want to be disrupt at all, strictness of "zero eviction" may be intentional — but be deliberate. When you're ready to allow disruption to these workloads, you may have to change the PDBs in the workload deployment file. 
+- For critical workloads that you do not want to be disrupted at all, strictness of "zero eviction" may be intentional — but be deliberate. When you're ready to allow disruption to these workloads, you may have to change the PDBs in the workload deployment file. 
 - For general workloads that can tolerate minor disruption, prefer a small maxUnavailable (like 1) rather than “zero evictions.”
 - Be clear on the tradeoff between zero tolerance (blocks upgrades, NAP consolidation, and scale down). 
 
@@ -201,8 +213,8 @@ NAP uses the following levers to control workload scheduling:
 
 - NodePool CRD (policies / constraints) - Node settings like (SKU selection, capacity type, zones, labels, node-level resource limits)
 - AKSNodeClass CRD (policies / constraints) - Azure-specific node settings like subnet behavior, image/OS disk/kubelet configuration, etc
-- NodeClaims - details state of provisioned/provisioning nodes
-- Workload spec / deployment file - Your workload file  used to define your resource requirements (
+- NodeClaims - details the state of provisioned and provisioning nodes
+- Workload spec / deployment file - The Kubernetes manifest that defines your workload's resource requirements and scheduling constraints
 
 Simply put, Workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
 
@@ -223,20 +235,19 @@ Cause: User has not set any guardrails on node disruption behavior.
 
   - Fix: Add PDBs that regulate disruption pace
   - Fix: Consider adding [Consolidation Policies](https://learn.microsoft.com/en-us/azure/aks/node-auto-provisioning-disruption)
-  - Fix: Configure [Node Disruption Budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets) and/or enable a Maintennance Window using the [AKS Node OS Maintenance Schedule](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image#node-os-upgrade-maintenance-windows-for-nap)
+  - Fix: Configure [Node Disruption Budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets) and/or enable a Maintenance Window using the [AKS Node OS Maintenance Schedule](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image#node-os-upgrade-maintenance-windows-for-nap)
 
 Behavior: NAP node upgrades fail and/or NAP nodes will not scale down voluntarily
-Cause: PDBs are set too strictly (ex. MaxUnavailable = 0)
+Cause: PDBs are set too strictly (ex. maxUnavailable = 0)
 
-  - Fix: Ensure PDBs are not too strict; set MaxUnavailable to a low (but not 0) number like 1.
+  - Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
 
-_**Note:** _ This section is describing voluntary disruption, not to be confused with involuntary eviction (ex. spot VM evictions, node termination events, node stopping events)
+_**Note:**_ This section is describing voluntary disruption, not to be confused with involuntary eviction (ex. spot VM evictions, node termination events, node stopping events)
 
 ### How NAP handles Topology Spread
 
 NAP honors workload [topologyspreadconstraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field). While you can list the allowed zones in the NodePool CRD, `topologyspreadconstraints` are the means to ensure topology spread.
 
 - NAP (**without** pod-level `topologyspreadconstraints` defined) will provision wherever there is availability for the preferred VM SKU. This can look like NAP provisioning all preferred nodes in zone 1 and none in zone 2 and zone 3.
-- NAP (**with** pod-level `topologyspreadconstraints` defined) to ensure topology spread, NAP will honor any pod-level constraints  (# of replicas, topology spread
-behavior) in the workload deployment file. See the Kubernetes docs on topology spread for other examples also.
+- NAP (**with** pod-level `topologyspreadconstraints` defined) ensures topology spread. NAP honors pod-level constraints (number of replicas, topology spread behavior) in the workload deployment file. See the Kubernetes docs on topology spread for other examples also.
 
