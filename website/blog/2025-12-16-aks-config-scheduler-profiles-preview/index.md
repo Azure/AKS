@@ -48,7 +48,7 @@ The AKS default scheduler scores nodes for workload placement based on a _LeastA
 
 Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization, can reduce costs while maintaining performance.
 
-**This scheduler configuration maximizes provisioined GPU resource by consolidating smaller jobs onto fewer nodes, lowering the operational cost of underutilized resources without sacrificing performance.**
+**This scheduler configuration maximizes provisioned GPU resource by consolidating smaller jobs onto fewer nodes, lowering the operational cost of underutilized resources without sacrificing performance.**
 
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
@@ -110,7 +110,7 @@ spec:
                 resources:
                   - name: cpu
                     weight: 8
-                  - name: mempory
+                  - name: memory
                     weight: 1
                 requestedToCapacityRatio:
                   shape:
@@ -130,10 +130,10 @@ spec:
 
 ## Next Steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
-With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to applicaiton resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
+With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to application resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
 
 - For best practices using the kube-scheduler visit [kube-scheduler best practices][best-practices-advanced-scheduler]
-- Increase node utilziaton using [Configurable Scheduler Profiles][node-bin-packing-configurations]
+- Increase node utilization using [Configurable Scheduler Profiles][node-bin-packing-configurations]
 - If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
 
 [concepts-scheduler-configuration]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration
