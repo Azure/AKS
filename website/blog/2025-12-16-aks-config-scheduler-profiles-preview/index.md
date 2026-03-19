@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-Thoughtful scheduling strategies can resolve pervasive challenges like resource utilization. The default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheudling pods with nodes of higher utilization. The scheduler selects the optimal node for queued pod(s) based on several constraints, including (but not limited to):
+Thoughtful scheduling strategies can resolve pervasive challenges like resource utilization. The kube-scheduler is one of the core components of the Kubernetes Control Plane, alongside kube-apiserver, etcd, and the controller manager. The default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheudling pods with nodes of higher utilization. The scheduler selects the optimal node for queued pod(s) based on several constraints, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
