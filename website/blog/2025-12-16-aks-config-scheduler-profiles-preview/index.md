@@ -15,14 +15,14 @@ Thoughtful scheduling strategies can resolve pervasive challenges like resource 
 
 Out of the available nodes, the scheduler then filters out nodes that don't meet the requirements to identify the node that is most optimal for the pod(s). Today, the AKS default scheduler lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per workload basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand co-locating pods with their persistent volumes for increased data locality, optimizing GPU utilization for machine learning, or enforcing strict zone-level distribution for microservices. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity.
 
-![Kube Scheduler Cycles Diagram](./kube-scheduler-scheduling-cycles-diagram.png)
+![kube-scheduler Phases Diagram](./kube-scheduler-scheduling-cycles-diagram.png)
 
 **[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, Configurable Scheduler Profiles allows customers to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler.
 
-In this blog you will learn how to configure AKS Configurable Scheduler Profiles for three increased node utilization:
+This blog you will provide examples of three different scheduler profiles, and detail the benefits of each, to increase the node utilization for AKS Clusters:
 
-1. [How to increase CPU utilization](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
-2. [How to increase GPU utilization](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
+1.  [How to increase AKS Cluster GPU utilization](#increase-aks-cluster-gpu-utilization)
+2.  [How to increase AKS Cluster CPU utilization](#increase-aks-cluster-cpu-utilization)
 
 <!-- truncate -->
 
@@ -42,7 +42,7 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 Treat these examples as starting points. Adjust resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
 :::
 
-### Increase GPU Utilization of AKS Clusters
+### Increase AKS Cluster GPU Utilization
 
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
@@ -80,7 +80,7 @@ spec:
 ```
 
 
-### Increase CPU Utilizaiton of AKS Cluster 
+### Increase AKS Cluster CPU Utilization
 
 Scoring Strategy - ResourceToCapacity
 **This scheduler configuration ensures nodes are not oversaturated.**
@@ -128,7 +128,7 @@ spec:
                       score: 0
 ```
 
-## Next Steps: Optimize resources and test Configurable Scheduler Profiles on AKS
+## Next Steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
 With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to applicaiton resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
 
