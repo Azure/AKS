@@ -17,14 +17,12 @@ Out of the available nodes, the scheduler then filters out nodes that don't meet
 
 ![Kube Scheduler Cycles Diagram](./kube-scheduler-scheduling-cycles-diagram.png)
 
-**[AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by selecting specific policies, altering parameter weight, changing policy priority, adding additional policy parameters, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, customers have mentioned that AKS Configurable Scheduler Profiles allows them to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler. Additionally, our AI and HPC customers have batch workloads that have benefitted from improved bin-packing and increased GPU utilization.
+**[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, Configurable Scheduler Profiles allows customers to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler.
 
 In this blog you will learn how to configure AKS Configurable Scheduler Profiles for three increased node utilization:
 
 1. [How to increase CPU utilization](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
 2. [How to increase GPU utilization](#increase-gpu-utilization-by-bin-packing-gpu-backed-nodes)
-
-Lastly, you will find [best practices](#best-practices-and-configuration-considerations) to help guide how you consider both individual plugin configurations, your custom scheduler configuration, and your Deployment design holistically.
 
 <!-- truncate -->
 
@@ -34,25 +32,23 @@ AKS Configurable Scheduler Profiles uses a Custom Resource Definition (CRD) that
 
 ![Configurable Scheduler Profiles Diagram](./config-scheduler-profiles.png)
 
-A scheduler profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for the AKS scheduler on your cluster. AKS supports 18 in-tree Kubernetes [scheduling plugins][supported-in-tree-scheduling-plugins]. The plugins can be generally grouped into three categories:
+A profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for your AKS cluster. AKS supports 18 in-tree Kubernetes [scheduling plugins][supported-in-tree-scheduling-plugins], which can be generally grouped into three categories:
 
 1. Scheduling constraints and order-based plugins
 2. Node selection constraints scheduling plugins
 3. Resource and topology optimization scheduling plugins
 
-Below you will find example configurations for common workload objectives.
-
 :::note
 Treat these examples as starting points. Adjust resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
 :::
 
-### Increase GPU Utilization by Bin Packing GPU-backed Nodes
+### Increase GPU Utilization of AKS Clusters
 
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
-For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU utilization while maintaining performance.
+Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization, can reduce costs while maintaining performance.
 
-**This scheduler configuration maximizes GPU efficiency for larger batch jobs by consolidating smaller jobs onto fewer nodes and lowering the operational cost of underutilized resources without sacrificing performance.**
+**This scheduler configuration maximizes provisioined GPU resource by consolidating smaller jobs onto fewer nodes, lowering the operational cost of underutilized resources without sacrificing performance.**
 
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
@@ -80,19 +76,14 @@ spec:
                   - name: cpu
                     weight: 1
                   - name: nvidia.com/gpu
-                    weight: 3
-          - name: NodeResourcesBalancedAllocation
-            args:
-              resources:
-                - name: nvidia.com/gpu
-                  weight: 1
+                    weight: 5
 ```
 
 
-### ResourceToCapacity
+### Increase CPU Utilizaiton of AKS Cluster 
 
-
-**This scheduler configuration ensures workloads needing large memory footprints are placed on nodes that provide sufficient RAM and maintain proximity to their volumes, enabling fast, zone‑aligned PVC binding for optimal data locality.**
+Scoring Strategy - ResourceToCapacity
+**This scheduler configuration ensures nodes are not oversaturated.**
 
 ```yaml
 apiVersion: aks.azure.com/v1alpha1
@@ -117,11 +108,9 @@ spec:
               scoringStrategy:
                 type: RequestedToCapacityRatio
                 resources:
-                  - name: memory
-                    weight: 5
                   - name: cpu
-                    weight: 1
-                  - name: ephemeral-storage
+                    weight: 8
+                  - name: mempory
                     weight: 1
                 requestedToCapacityRatio:
                   shape:
@@ -139,12 +128,12 @@ spec:
                       score: 0
 ```
 
-## Next Steps: Optimize and test with AKS Configurable Scheduler Profiles
+## Next Steps: Optimize resources and test Configurable Scheduler Profiles on AKS
 
-With AKS Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly address the challenges of resilience and resource utilization for web-distributed workloads and AI workloads. By leveraging these advanced scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle time, and avoid costly overprovisioning. This not only improves ROI but also accelerates innovation by allowing more jobs to run concurrently and reliably.
+With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to applicaiton resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
 
 - For best practices using the kube-scheduler visit [kube-scheduler best practices][best-practices-advanced-scheduler]
-- Configure your workload specific scheduler using the [AKS Configurable Scheduler][concepts-scheduler-configuration]
+- Increase node utilziaton using [Configurable Scheduler Profiles][node-bin-packing-configurations]
 - If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
 
 [concepts-scheduler-configuration]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration
@@ -153,3 +142,4 @@ With AKS Configurable Scheduler Profiles, teams gain fine-grained control over p
 [scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
 [memory-optimized-vm]: https://learn.microsoft.com/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
 [supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
+[node-bin-packing-configurations]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster
