@@ -30,6 +30,8 @@ Lastly, you will find [best practices](#best-practices-and-configuration-conside
 
 AKS Configurable Scheduler Profiles uses a Custom Resource Definition (CRD) that lets users define custom scheduler profiles. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability.
 
+![Configurable Scheduler Profiles Diagram](CONFIG_SCHEDULER_PROFILES.png)
+
 A scheduler profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for the AKS scheduler on your cluster. AKS supports 18 in-tree Kubernetes [scheduling plugins][supported-in-tree-scheduling-plugins]. The plugins can be generally grouped into three categories:
 
 1. Scheduling constraints and order-based plugins
