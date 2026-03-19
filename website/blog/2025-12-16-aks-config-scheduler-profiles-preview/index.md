@@ -15,7 +15,7 @@ Thoughtful scheduling strategies can resolve pervasive challenges like resource 
 
 Out of the available nodes, the scheduler then filters out nodes that don't meet the requirements to identify the node that is most optimal for the pod(s). Today, the AKS default scheduler lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per workload basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand co-locating pods with their persistent volumes for increased data locality, optimizing GPU utilization for machine learning, or enforcing strict zone-level distribution for microservices. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity.
 
-![Kube Scheduler Cycles Diagram](KUBE_SCHEDULER_SCHEDULING_CYCLES_DIAGRAM.png)
+![Kube Scheduler Cycles Diagram](./kube-scheduler-scheduling-cycles-diagram.png)
 
 **[AKS Configurable Scheduler Profiles][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by selecting specific policies, altering parameter weight, changing policy priority, adding additional policy parameters, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, customers have mentioned that AKS Configurable Scheduler Profiles allows them to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler. Additionally, our AI and HPC customers have batch workloads that have benefitted from improved bin-packing and increased GPU utilization.
 
@@ -32,7 +32,7 @@ Lastly, you will find [best practices](#best-practices-and-configuration-conside
 
 AKS Configurable Scheduler Profiles uses a Custom Resource Definition (CRD) that lets users define custom scheduler profiles. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability.
 
-![Configurable Scheduler Profiles Diagram](CONFIG_SCHEDULER_PROFILES.png)
+![Configurable Scheduler Profiles Diagram](./config-scheduler-profiles.png)
 
 A scheduler profile is a set of one or more in-tree scheduling plugins and configurations that dictate how to schedule a pod. Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for the AKS scheduler on your cluster. AKS supports 18 in-tree Kubernetes [scheduling plugins][supported-in-tree-scheduling-plugins]. The plugins can be generally grouped into three categories:
 
@@ -43,14 +43,14 @@ A scheduler profile is a set of one or more in-tree scheduling plugins and confi
 Below you will find example configurations for common workload objectives.
 
 :::note
-Adjust VM SKUs in `NodeAffinity`, shift utilization curves or weights, and use the right zones for your cluster(s) in the configurations below.
+Treat these examples as starting points. Adjust resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
 :::
 
 ### Increase GPU Utilization by Bin Packing GPU-backed Nodes
 
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
-For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU Utilization while maintaining performance.
+For example, scheduling pending jobs on nodes with a higher relative GPU utilization, users can reduce costs and increase GPU utilization while maintaining performance.
 
 **This scheduler configuration maximizes GPU efficiency for larger batch jobs by consolidating smaller jobs onto fewer nodes and lowering the operational cost of underutilized resources without sacrificing performance.**
 
