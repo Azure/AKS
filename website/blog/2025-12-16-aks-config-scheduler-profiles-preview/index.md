@@ -1,6 +1,6 @@
 ---
-title: "AKS configurable scheduler profiles (preview)"
-description: "Optimize AKS scheduling with configurable scheduler profiles that improve GPU utilization and align pod placement to your critical workloads at scale."
+title: "AKS Configurable Scheduler Profiles (preview)"
+description: "Optimize GPU and CPU utilization and align pod placement to your critical workloads at scale with Configurable Scheduler Profiles on AKS."
 date: 2026-04-23
 authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
@@ -13,6 +13,7 @@ Data shows most Kubernetes clusters only use an average of 10% cpu utilization. 
 ![Diagram showing increased node utilization with the node bin packing scheduler profile](./configurable-scheduler-binpack-profile.png)
 
 ## How does the default Kubernetes scheduler place pods?
+
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
 Thoughtful scheduling strategies can resolve pervasive challenges like resource utilization. The kube-scheduler is one of the core components of the Kubernetes Control Plane, alongside kube-apiserver, etcd, and the controller manager. The default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheduling pods with nodes of higher utilization. The scheduler selects the optimal node for queued pod(s) based on several constraints, including (but not limited to):
@@ -83,7 +84,9 @@ spec:
                   - name: nvidia.com/gpu
                     weight: 5
 ```
-### ResourceToCapacity
+
+### Increase AKS Cluster CPU Utilization
+
 Scoring Strategy - ResourceToCapacity
 **This scheduler configuration ensures nodes are not oversaturated.**
 
@@ -142,6 +145,5 @@ With Configurable Scheduler Profiles, teams gain fine-grained control over pod p
 [kueue-overview]: https://learn.microsoft.com/azure/aks/kueue-overview
 [best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
 [scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
-[memory-optimized-vm]: https://learn.microsoft.com/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#memory-optimized
 [supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
 [node-bin-packing-configurations]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster
