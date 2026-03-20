@@ -29,10 +29,10 @@ Out of the available nodes, the scheduler then filters out nodes that don't meet
 
 **[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to benefit from the extensibility of the [scheduling framework][scheduling-framework/#interfaces] while reducing the operational overhead of adopting a second scheduler or defininng a customer scheduler.** Now, customers can define their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score).
 
-This blog provides examples of three different scheduler profiles and details the benefits of each to increase node utilization for AKS clusters:
+This blog provides examples of two different scheduler profiles and details the benefits of each to increase node utilization for AKS clusters:
 
-1. [How to increase AKS cluster GPU utilization](#increase-aks-cluster-gpu-utilization)
-2. [How to increase AKS cluster CPU utilization](#increase-aks-cluster-cpu-utilization)
+1. [How to increase AKS cluster GPU and CPU utilization with MostAllocated](#increase-aks-cluster-gpu-utilization)
+2. [How to increase AKS cluster CPU utilization with MostAllocated](#increase-aks-cluster-cpu-utilization)
 
 ## Configurable Scheduler Profiles on AKS
 
@@ -132,6 +132,10 @@ spec:
                     - utilization: 100
                       score: 0
 ```
+### FAQ
+1. How does this interact with the autoscalers: NAP, CAS, and VPA? 
+2. What if I don't use a resource in the scoringStrategy? Then that resource will not be considered in the filter or scoring cucles of the defined Configurable Scheduler Profile.
+3. Which scoringStrategy does AKS recommend to increase node utilization? AKS recommends using the RequestedToCapacityRatio strategy because it provides a more granual scoring approach allowing users to define an ideal utilization curve for their respeciive nodes.
 
 ## Next Steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
