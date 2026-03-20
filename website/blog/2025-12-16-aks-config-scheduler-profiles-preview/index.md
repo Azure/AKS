@@ -12,7 +12,7 @@ Data shows most Kubernetes clusters only use an average of 10% cpu utilization. 
 
 ![Increase Node Utilization with Node Bin Pack ](./configurable-scheduler-binpack-profile.png)
 
-## How does the kube-scheduler Place Pods?
+## How does the default Kubernetes scheduler place pods?
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
 Thoughtful scheduling strategies can resolve pervasive challenges like resource utilization. The kube-scheduler is one of the core components of the Kubernetes Control Plane, alongside kube-apiserver, etcd, and the controller manager. The default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheduling pods with nodes of higher utilization. The scheduler selects the optimal node for queued pod(s) based on several constraints, including (but not limited to):
@@ -33,7 +33,7 @@ This blog provides examples of three different scheduler profiles and details th
 1.  [How to increase AKS cluster GPU utilization](#increase-aks-cluster-gpu-utilization)
 2.  [How to increase AKS cluster CPU utilization](#increase-aks-cluster-cpu-utilization)
 
-## AKS Configurable Scheduler Profiles
+## Configurable Scheduler Profiles on AKS
 
 Configurable Scheduler Profiles uses a Custom Resource Definition (CRD) that lets users define custom scheduler profiles. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability.
 
