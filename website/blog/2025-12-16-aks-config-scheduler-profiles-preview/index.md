@@ -10,7 +10,7 @@ Data shows most Kubernetes clusters only use an average of 10% cpu utilization. 
 
 <!-- truncate -->
 
-![Diagram showing increased node utilization with the node bin packing scheduler profile](./configurable-scheduler-binpack-profile.png)
+![Diagram showing increased node utilization with the node bin packing scheduler profile](./hero-image.png)
 
 ## How does the default Kubernetes scheduler place pods?
 
