@@ -51,6 +51,11 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 Adjust resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
 :::
 
+## Increase Node Utilization and Operator Control
+
+Configurable Scheduler Profiles using the `NodeResourcesFit` plugin shows a visible consolidation pattern that differs from the default scheduler's logic. As result, platform engineers gain more control and resources are used more efficiently when using AKS.
+![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
+
 ### Increase AKS Cluster GPU Utilization
 
 Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization, can reduce costs while maintaining performance.
