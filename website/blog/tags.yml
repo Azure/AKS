@@ -90,7 +90,7 @@ cilium:
 cost:
   label: Cost
   permalink: /cost
-  description: Recommended patterns, anti-patterns, and guidance for managing and optimizing cost of AKS clusters.
+  description: Recommended patterns, anti-patterns, and guidance for managing and optimizing AKS cluster costs.
 
 databases:
   label: Databases
