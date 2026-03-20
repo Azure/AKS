@@ -9,6 +9,9 @@ tags: [ai, performance, scheduler, best-practices, cost]
 Data shows most Kuberentes clusters only use an average of 10% cpu utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs.
 
 <!-- truncate -->
+
+![Increase Node Utilization with Node Bin Pack ](./configurable-scheduler-binpack-profile.png)
+
 ## How does the kube-scheduler Place Pods?
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
@@ -21,7 +24,7 @@ Thoughtful scheduling strategies can resolve pervasive challenges like resource 
 
 Out of the available nodes, the scheduler then filters out nodes that don't meet the requirements to identify the node that is most optimal for the pod(s). Today, the AKS default scheduler lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per workload basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand co-locating pods with their persistent volumes for increased data locality, optimizing GPU utilization for machine learning, or enforcing strict zone-level distribution for microservices. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity.
 
-![kube-scheduler Phases Diagram](./kube-scheduler-scheduling-cycles-diagram.png)
+![kube-scheduler Phases Diagram](./kube-scheduler-scheduling-phases-diagram.png)
 
 **[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, Configurable Scheduler Profiles allows customers to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler.
 
