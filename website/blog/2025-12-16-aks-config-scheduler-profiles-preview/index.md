@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-Data shows most Kubernetes clusters only use an average of 10% cpu utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs. 
+Data shows most Kubernetes clusters only use an average of 10% cpu utilization. While there are many factors that impact node utilization, as a core componenet of the Kuberentes control plane, the kube-scheduler has a big influence on the utilizatoin of nodes. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grain pod scheduling strategies.
 
 [Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to increase node utilization by defining their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score).
 
@@ -21,24 +21,23 @@ This blog provides examples of two different scheduler profiles and details the 
 
 ## How does the default Kubernetes scheduler place pods?
 
-The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
-
-Thoughtful scheduling strategies can resolve pervasive challenges like resource utilization. The kube-scheduler is one of the core components of the Kubernetes control plane, alongside kube-apiserver, etcd, and the controller manager. The default scheduler was primarily designed for general-purpose workloads and out-of-the-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheduling pods with nodes of higher utilization. The scheduler selects the optimal node for queued pod(s) based on several constraints, including (but not limited to):
+The Kubernetes scheduler operates across two cycles, a scheduling cycle and the binding cycle. The scheduling cycle has two sub-phases: filtering and scoring. The filter phase removes unsuitable nodes based on hard constratins and the scoring attributes a score to nodes that is most suitable for the incoming pod. The scheduler filters and scores the optimal node for a pending pod based on several hard and soft constraints, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
 3. Pod affinity/anti-affinity
 4. Taints and tolerations
+5. TopologySpreadConstraints
 
-Out of the available nodes, the scheduler then filters out nodes that don't meet the requirements to identify the node that is most optimal for the pod(s). Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per workload basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand optimizing GPU utilization for batch jobs or enforcing strict zone-level distribution for microservices. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. 
+The default scheduler was primarily designed for general-purpose workloads and out-of-the-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheduling pods with nodes of higher utilization. The Kubernetes default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
 ![Diagram of the kube-scheduler workflow showing pods entering the scheduling cycle and binding cycle to assign a pod on a node](./kube-scheduler-scheduling-phases-diagram.png)
 
-Previously, the scheduler configuration wasn't accessible to users. Starting from Kubernetes version 1.33, you can now configure and set a scheduler profile for your AKS cluster using Configurable Scheduler Profiles.
+Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, and ignored, in the scheduling cycle on a per cluster basis. This means the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand optimizing GPU utilization for batch jobs. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. Starting from Kubernetes version 1.33, you can now configure and optimize a scheduler profile for your AKS cluster using Configurable Scheduler Profiles.
 
 ## Configurable Scheduler Profiles on AKS
 
-customers to benefit from the extensibility of the [scheduling framework][scheduling-framework/#interfaces] while reducing the operational overhead of adopting a second scheduler or defininng a customer scheduler.** Configurable Scheduler Profiles uses a Custom Resource Definition (CRD) that lets users define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability. This means incorrect plugins or values will not be applied.
+[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to customers to benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defininng a customer scheduler. Configurable Scheduler Profiles uses a Custom Resource Definition (CRD) that lets users define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability. This means incorrect plugins or values will not be applied.
 
 ![Architecture diagram showing how Configurable Scheduler Profiles use a CRD and controller to reconcile user-defined profiles with the kube-scheduler deployment](./config-scheduler-profiles.png)
 
@@ -150,6 +149,6 @@ With Configurable Scheduler Profiles, teams gain fine-grained control over pod p
 [concepts-scheduler-configuration]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration
 [kueue-overview]: https://learn.microsoft.com/azure/aks/kueue-overview
 [best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
-[scheduling-framework/#interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
+[scheduling-framework-interfaces]: https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/#interfaces
 [supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
 [node-bin-packing-configurations]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster
