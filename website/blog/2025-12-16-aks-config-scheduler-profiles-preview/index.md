@@ -8,7 +8,7 @@ tags: [ai, performance, scheduler, best-practices, cost]
 
 Data shows most Kubernetes clusters only use an average of 10% cpu utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs. 
 
-**[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to increase node utilization by defining their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score).
+[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to increase node utilization by defining their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score).
 
 This blog provides examples of two different scheduler profiles and details the benefits of each to increase node utilization for AKS clusters:
 
