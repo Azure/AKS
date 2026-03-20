@@ -10,7 +10,7 @@ Data shows most Kubernetes clusters only use an average of 10% cpu utilization. 
 
 <!-- truncate -->
 
-![Increase Node Utilization with Node Bin Pack ](./configurable-scheduler-binpack-profile.png)
+![Diagram showing increased node utilization with the node bin packing scheduler profile](./configurable-scheduler-binpack-profile.png)
 
 ## How does the default Kubernetes scheduler place pods?
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
