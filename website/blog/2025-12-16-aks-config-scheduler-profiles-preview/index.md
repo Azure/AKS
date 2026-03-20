@@ -47,7 +47,7 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 3. Resource and topology optimization scheduling plugins
 
 :::note
-Treat these examples as starting points. Adjust resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
+Adjust resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
 :::
 
 ### Increase AKS Cluster GPU Utilization
