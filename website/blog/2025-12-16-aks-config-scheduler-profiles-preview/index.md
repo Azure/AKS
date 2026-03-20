@@ -31,8 +31,8 @@ Out of the available nodes, the scheduler then filters out nodes that don't meet
 
 This blog provides examples of three different scheduler profiles and details the benefits of each to increase node utilization for AKS clusters:
 
-1.  [How to increase AKS cluster GPU utilization](#increase-aks-cluster-gpu-utilization)
-2.  [How to increase AKS cluster CPU utilization](#increase-aks-cluster-cpu-utilization)
+1. [How to increase AKS cluster GPU utilization](#increase-aks-cluster-gpu-utilization)
+2. [How to increase AKS cluster CPU utilization](#increase-aks-cluster-cpu-utilization)
 
 ## Configurable Scheduler Profiles on AKS
 
@@ -87,7 +87,7 @@ spec:
 
 ### Increase AKS Cluster CPU Utilization
 
-Scoring Strategy - ResourceToCapacity
+Scoring Strategy - RequestedToCapacityRatio
 **This scheduler configuration ensures nodes are not oversaturated.**
 
 ```yaml
