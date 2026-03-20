@@ -83,10 +83,7 @@ spec:
                   - name: nvidia.com/gpu
                     weight: 5
 ```
-
-
-### Increase AKS Cluster CPU Utilization
-
+### ResourceToCapacity
 Scoring Strategy - ResourceToCapacity
 **This scheduler configuration ensures nodes are not oversaturated.**
 
