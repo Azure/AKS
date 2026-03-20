@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-Data shows most Kuberentes clusters only use an average of 10% cpu utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs.
+Data shows most Kubernetes clusters only use an average of 10% cpu utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs.
 
 <!-- truncate -->
 
@@ -15,7 +15,7 @@ Data shows most Kuberentes clusters only use an average of 10% cpu utilization. 
 ## How does the kube-scheduler Place Pods?
 The AKS default scheduler scores nodes for workload placement based on a _LeastAllocated_ strategy, to spread across the nodes in a cluster. However, this behavior can result in inefficient resource utilization, as nodes with higher allocation are not favored. You can use `NodeResourcesFit` to control how pods are assigned to nodes based on available resources (CPU, GPU, memory, etc.), including favoring nodes with high resource utilization, within the set configuration.
 
-Thoughtful scheduling strategies can resolve pervasive challenges like resource utilization. The kube-scheduler is one of the core components of the Kubernetes Control Plane, alongside kube-apiserver, etcd, and the controller manager. The default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheudling pods with nodes of higher utilization. The scheduler selects the optimal node for queued pod(s) based on several constraints, including (but not limited to):
+Thoughtful scheduling strategies can resolve pervasive challenges like resource utilization. The kube-scheduler is one of the core components of the Kubernetes Control Plane, alongside kube-apiserver, etcd, and the controller manager. The default scheduler was primarily designed for general-purpose workloads and out-of-box pod scheduling that can be restrictive if you want to bin pack nodes since the hard and soft constraints for pod scheduling do not align with scheduling pods with nodes of higher utilization. The scheduler selects the optimal node for queued pod(s) based on several constraints, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
@@ -28,10 +28,10 @@ Out of the available nodes, the scheduler then filters out nodes that don't meet
 
 **[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] reduces operational complexity by providing extensibility and control.** Now, customers can define their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score) without deploying a second scheduler. On AKS, Configurable Scheduler Profiles allows customers to increase resiliency without operational overhead of YAML wrangling or reduce cluster costs without adopting a secondary scheduler.
 
-This blog you will provide examples of three different scheduler profiles, and detail the benefits of each, to increase the node utilization for AKS Clusters:
+This blog provides examples of three different scheduler profiles and details the benefits of each to increase node utilization for AKS clusters:
 
-1.  [How to increase AKS Cluster GPU utilization](#increase-aks-cluster-gpu-utilization)
-2.  [How to increase AKS Cluster CPU utilization](#increase-aks-cluster-cpu-utilization)
+1.  [How to increase AKS cluster GPU utilization](#increase-aks-cluster-gpu-utilization)
+2.  [How to increase AKS cluster CPU utilization](#increase-aks-cluster-cpu-utilization)
 
 ## AKS Configurable Scheduler Profiles
 
