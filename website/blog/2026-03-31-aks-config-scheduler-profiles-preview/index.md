@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-As reported by CastAI, the average Kubernetes clusters only reaches [10% CPU utilization][cast-ai-k8s-cost-report] and Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers]. This data signals that underutilized resources are materially contributing to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grained pod scheduling strategies.
+As reported by CastAI, on average Kubernetes clusters only reach [10% CPU utilization][cast-ai-k8s-cost-report] and Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers]. This data signals that underutilized resources are materially contributing to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grained pod scheduling strategies.
 
 [Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to increase node utilization by configuring their own scheduling logic: enabling specific policies, adjusting policy priorities, tuning parameter weights, and choosing when each policy runs (for example, during PreFilter, Filter, or Score).
 
@@ -61,12 +61,12 @@ Configurable Scheduler Profiles using the `NodeResourcesFit` plugin shows a visi
 
 `RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes.
 
-By shaping the scoring curve to target a range of 50-85% CPU utilization, operators can increase pod density on privisioned nodes while preserving headroom for bursts, background processes, and system components in CPU-based workloads. [Configure node bin-packing][configure-requested-to-capacity] using the RequestedtoCapacity strategy to improve utilization and reduce infrastructure costs.
+By shaping the scoring curve to target a range of 50-85% CPU utilization, operators can increase pod density on provisioned nodes while preserving headroom for bursts, background processes, and system components in CPU-based workloads. [Configure node bin-packing][configure-requested-to-capacity] using the `RequestedToCapacityRatio` strategy to improve utilization and reduce infrastructure costs.
 
-**This bin packing profile is configured to favor nodes within a utilization band of 50-85%, avoiding empty nodes, and severely deprioritizing nearly full nodes at 90% utilization or more, to limit versaturated nodes. Given this level of configuration detail, `RequestedtoCapacityRatio` is the recommended scoring strategy for node bin‑packing on AKS for production clusters.**
+**This bin packing profile is configured to favor nodes within a utilization band of 50-85%, avoiding empty nodes, and severely deprioritizing nearly full nodes at 90% utilization or more, to limit oversaturated nodes. Given this level of configuration detail, `RequestedToCapacityRatio` is the recommended scoring strategy for node bin‑packing on AKS for production clusters.**
 
 :::note
-Scoring strategy can be used for GPU alos. Adjust resources, resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
+Scoring strategy can be used for GPU also. Adjust resources, resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
 :::
 
 ```yaml
@@ -94,7 +94,7 @@ spec:
               scoringStrategy:
                 type: RequestedToCapacityRatio
                 resources:
-                  - name: cpu //
+                  - name: cpu
                     weight: 8
                   - name: memory
                     weight: 1
@@ -116,7 +116,7 @@ spec:
 
 ### Increase AKS Cluster GPU Utilization
 
-Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization can reduce costs while maintaining performance. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization reduce infrastructure costs.
+Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization can reduce costs while maintaining performance. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
 
 **This scheduler configuration maximizes provisioned GPU resource by consolidating smaller jobs onto fewer nodes, lowering the operational cost of underutilized resources without sacrificing performance.**
 
