@@ -12,7 +12,7 @@ On average, Kubernetes clusters reach [10% CPU utilization][cast-ai-k8s-cost-rep
 
 This blog details how the default Kubernetes scheduler places pods, limitations, and provides best-practice recommendations to increase node utilization for your workloads using Configurable Scheduler Profiles on AKS.
 
-1. [How does kube-scheduler work?](how-does-the-default-kubernetes-scheduler-place-pods)
+1. [How does kube-scheduler work?](#how-does-the-default-kubernetes-scheduler-place-pods)
 2. [How to increase AKS cluster CPU utilization with RequestedToCapacityRatio](#increase-aks-cluster-cpu-utilization)
 3. [How to increase AKS cluster GPU and CPU utilization with MostAllocated](#increase-aks-cluster-gpu-utilization)
 
