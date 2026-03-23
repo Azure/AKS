@@ -53,12 +53,12 @@ Adjust resource weights, utilization thresholds, and plugin parameters to match 
 
 ## Increase Node Utilization and Operator Control
 
-Configurable Scheduler Profiles using the `NodeResourcesFit` plugin shows a visible consolidation pattern that differs from the default scheduler's logic. As result, platform engineers gain more control and resources are used more efficiently when using AKS.
+Configurable Scheduler Profiles using the `NodeResourcesFit` plugin shows a visible consolidation pattern that differs from the default scheduler's logic. As a result, platform engineers gain more control and resources are used more efficiently when using AKS.
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
 ### Increase AKS Cluster GPU Utilization
 
-Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization, can reduce costs while maintaining performance.
+Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization can reduce costs while maintaining performance.
 
 **This scheduler configuration maximizes provisioned GPU resource by consolidating smaller jobs onto fewer nodes, lowering the operational cost of underutilized resources without sacrificing performance.**
 
@@ -143,7 +143,7 @@ spec:
 
 ### FAQ
 
-1. How does this interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CAS), and Vertical Pod Autoscaler (VPA)?
+1. How does this interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CAS), and Vertical Pod Autoscaler (VPA)? Configurable Scheduler Profiles change how pods are placed on nodes, while autoscalers still make scaling decisions based on their existing metrics and pending pods, so they work together without disabling one another.
 2. What if I don't use a resource in the scoringStrategy? Then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile.
 3. Which scoringStrategy does AKS recommend to increase node utilization? AKS recommends using the RequestedToCapacityRatio strategy because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes.
 
