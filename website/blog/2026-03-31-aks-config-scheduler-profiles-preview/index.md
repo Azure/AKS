@@ -26,17 +26,15 @@ The Kubernetes scheduler operates in two cycles: a synchronous scheduling cycle 
 1. **Filtering** phase removes unsuitable nodes based on hard and soft constraints.
 2. **Scoring** phase calculates a score for the remaining nodes; ultimately, the most suitable node has the highest score.
 
-Once a node is selected, the binding cycle can process multiple pods in parallel. During this phase, the scheduler attempts to bind the pod to the chosen node. If binding a pod to a node fails, the scheduler tries the node with the next highest score. 
-
-![Diagram of the kube-scheduler workflow showing pods entering the scheduling cycle and binding cycle to assign a pod on a node](./kube-scheduler-scheduling-phases-diagram.png)
-
-When filtering and scoring nodes, for the pending pod, the default scheduler considers several hard and soft constraints with predefined weights, including (but not limited to):
+Once a node is selected, the binding cycle can process multiple pods in parallel. During this phase, the scheduler attempts to bind the pod to the chosen node. If binding a pod to a node fails, the scheduler tries the node with the next highest score. When filtering and scoring nodes, the default scheduler considers several hard and soft constraints with predefined weights, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
 3. Pod affinity/anti-affinity
 4. Taints and tolerations
 5. TopologySpreadConstraints
+
+![Diagram of the kube-scheduler workflow showing pods entering the scheduling cycle and binding cycle to assign a pod on a node](./kube-scheduler-scheduling-phases-diagram.png)
 
 ### Limitations of the default Kubernetes scheduler
 
@@ -55,16 +53,15 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 ## Increase Node Utilization and Operator Control
 
 Configurable Scheduler Profiles using the `NodeResourcesFit` plugin shows a visible consolidation pattern that differs from the default scheduler's logic. As a result, platform engineers gain more control and resources are used more efficiently when using AKS.
+
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
 ### Increase AKS Cluster CPU Utilization
+`RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is hypothetically placed. The `RequestedToCapacityRatio` scoring strategy enables more fine-grained CPU bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes. Instead of aggressively packing pods onto the fullest node, this approach scores nodes based on how closely their post‑placement utilization aligns with a target range ensuring high efficiency without oversaturation.
 
-Scoring Strategy - RequestedToCapacityRatio
+For CPU‑based workloads, this results in denser placement on active nodes while preserving headroom for bursts, background processes, and system components. By shaping the scoring curve to target a range of 50-85% CPU utilization, operators can explicitly maximize privisioned nodes while preserving headroom. Visit official bin packing [documentation][bin-packing-scoring] for more details on how a nodes score is calculated for a given set of values using `RequestedToCapacityRatio`.
 
-For example, this bin packing strategy allows users to configure a target utilization of 85%.
-
-AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes. 
-**This scheduler configuration ensures nodes are not oversaturated.**
+**This bin packing profile favor nodes within a utilization band of 50-85%, avoids empty nodes, and severely deprioritize nearly full nodes at 90% utilization or more, ensuring nodes are not oversaturated. Given this level of configuration detail, `RequestedtoCapacityRatio` is the recommended scoring strategy for node bin‑packing on AKS for production clusters.**
 
 :::note
 Adjust resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
@@ -184,3 +181,4 @@ With Configurable Scheduler Profiles, teams gain fine-grained control over pod p
 [node-bin-packing-configurations]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster
 [datadog-state-of-containers]: https://www.datadoghq.com/state-of-containers-and-serverless/
 [cast-ai-k8s-cost-report]: https://cast.ai/reports/kubernetes-cost-benchmark/
+[bin-packing-scoring]: https://kubernetes.io/docs/concepts/scheduling-eviction/resource-bin-packing/
