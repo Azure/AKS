@@ -138,8 +138,10 @@ spec:
                     - utilization: 100
                       score: 0
 ```
+
 ### FAQ
-1. How does this interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CAS), and Vertical Pod Autoscaler (VPA)? 
+
+1. How does this interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CAS), and Vertical Pod Autoscaler (VPA)?
 2. What if I don't use a resource in the scoringStrategy? Then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile.
 3. Which scoringStrategy does AKS recommend to increase node utilization? AKS recommends using the RequestedToCapacityRatio strategy because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes.
 
