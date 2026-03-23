@@ -21,7 +21,7 @@ This blog provides examples of two different scheduler profiles and details the 
 
 ## How does the default Kubernetes scheduler place pods?
 
-The Kubernetes scheduler operates across two cycles, a synchronous scheduling cycle and an asynchronous binding cycle. The scheduling cycle has two sub-phases: filtering and scoring, and only manages one pod at a time. The filter phase removes unsuitable nodes based on hard constraints and the scoring phase calculates a score to the remaining nodes based on the soft constraints, ultimately the most suitable node has the highest score. The binding cycle can manage multiple pods in parallel. If a pod binding to a node fails, the node with the next highest score is tried. The scheduler filters and scores the optimal node for a pending pod based on several hard and soft constraints, including (but not limited to):
+The Kubernetes scheduler operates in two cycles: a synchronous scheduling cycle and an asynchronous binding cycle. The scheduling cycle has two sub-phases, filtering and scoring, and only manages one pod at a time. During the filter phase, the scheduler removes unsuitable nodes based on hard constraints. During the scoring phase, it calculates a score for the remaining nodes based on soft constraints; ultimately, the most suitable node has the highest score. The binding cycle can manage multiple pods in parallel. If binding a pod to a node fails, the scheduler tries the node with the next highest score. The scheduler filters and scores the optimal node for a pending pod based on several hard and soft constraints, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
