@@ -97,6 +97,36 @@ sachi-desai:
   socials:
     linkedin: sachi-desai
 
+quang-nguyen:
+  name: Quang Nguyen
+  title: Software Engineer II for Azure Container Networking
+  url: https://www.linkedin.com/in/nddq/
+  image_url: https://github.com/nddq.png
+  page: true
+  socials:
+    linkedin: nddq
+    github: nddq
+
+apurup-chevuru:
+  name: Apurup Chevuru
+  title: Principal Software Engineering Manager for Azure Container Networking
+  url: https://www.linkedin.com/in/apurup-chevuru-a30a423/
+  image_url: https://github.com/achevuru.png
+  page: true
+  socials:
+    linkedin: apurup-chevuru-a30a423
+    github: achevuru
+
+michael-zappa:
+  name: Michael Zappa
+  title: Senior Software Engineer for Azure Container Networking
+  url: https://www.linkedin.com/in/michaelzappa/
+  image_url: https://github.com/MikeZappa87.png
+  page: true
+  socials:
+    linkedin: michaelzappa
+    github: MikeZappa87
+
 quentin-petraroia:
   name: Quentin Petraroia
   title: Product Manager for Azure Kubernetes Service
@@ -389,7 +419,7 @@ diego-casati:
   socials:
     linkedin: diegocasati
     github: dcasati
-    
+
 sertac-ozercan:
   name: Sertaç Özercan
   title: Principal Engineering Manager for Azure Upstream
