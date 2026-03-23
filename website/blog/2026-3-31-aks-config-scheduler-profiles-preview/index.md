@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-Data shows most Kubernetes clusters only use an average of 10% cpu utilization. While there are many factors that impact node utilization, as a core componenet of the Kuberentes control plane, the kube-scheduler has a big influence on the utilizatoin of nodes. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grain pod scheduling strategies.
+Data shows most Kubernetes clusters only use an average of 10% cpu utilization. While there are many factors that impact node utilization, as a core componenet of the Kuberenetes control plane, the kube-scheduler has a big influence on the utilization of nodes. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grain pod scheduling strategies.
 
 [Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to increase node utilization by defining their own scheduling logic by enabling specific policies, changing policy priority, altering parameter weight, and changing policy evaluation point (i.e. PreFilter, Filter, Score).
 
@@ -21,7 +21,7 @@ This blog provides examples of two different scheduler profiles and details the 
 
 ## How does the default Kubernetes scheduler place pods?
 
-The Kubernetes scheduler operates across two cycles, a scheduling cycle and the binding cycle. The scheduling cycle has two sub-phases: filtering and scoring. The filter phase removes unsuitable nodes based on hard constratins and the scoring attributes a score to nodes that is most suitable for the incoming pod. The scheduler filters and scores the optimal node for a pending pod based on several hard and soft constraints, including (but not limited to):
+The Kubernetes scheduler operates across two cycles, a synchronous scheduling cycle and an asynchronous binding cycle. The scheduling cycle has two sub-phases: filtering and scoring, and only manages one pod at a time. The filter phase removes unsuitable nodes based on hard constratins and the scoring phase calculates a score to the remianing nodes based on the soft contstraints, utlimaely scoring the the node most suitable for the incoming pod the highest. The binding cycle can manage multiple pods in parallel. If a pod binding to a node fails, the node with the next highest score is tried. The scheduler filters and scores the optimal node for a pending pod based on several hard and soft constraints, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
