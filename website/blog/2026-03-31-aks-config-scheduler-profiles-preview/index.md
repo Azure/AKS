@@ -82,6 +82,8 @@ spec:
         pluginConfig:
           - name: NodeResourcesFit
             args:
+              apiVersion: kubescheduler.config.k8s.io/v1
+              kind: NodeResourcesFitArgs
               scoringStrategy:
                 type: MostAllocated
                 resources:
