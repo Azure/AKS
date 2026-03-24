@@ -1,7 +1,7 @@
 ---
 title: "Announcing Gateway API support for App Routing (preview)"
 date: "2026-03-18"
-description: "The AKS app routing add-on now supports the Kubernetes Gateway API via a lightweight, meshless Istio control plane — the recommended migration path ahead of the Ingress-NGINX retirement in November 2026."
+description: "The AKS app routing add-on now supports the Kubernetes Gateway API via a meshless Istio control plane — the recommended path to migrate from Ingress-NGINX."
 authors: ["jaiveer-katariya"]
 tags:
   - app-routing
@@ -57,7 +57,7 @@ All of this is managed for you. You write a `Gateway` and an `HTTPRoute`, and AK
 
 If you're already using or considering the [Istio service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about), it's worth understanding how this differs:
 
-| | App routing Gateway API | Istio service mesh add-on |
+| Feature | App routing Gateway API | Istio service mesh add-on |
 |---|---|---|
 | **GatewayClass** | `approuting-istio` | `istio` |
 | **Sidecar injection** | Not enabled | Enabled cluster-wide |
