@@ -61,7 +61,7 @@ While this experiment uses intentionally simple, CPU-bound containers to isolate
 
 The key takeaway is not that each profile expresses a distinct scheduling intent. The next two sections detail how MostAllocated and RequestedToCapacityRatio achieve these outcomes.
 
-### Increase AKS CPU Utilization 
+### Increase AKS CPU Utilization
 
 `RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes.
 
@@ -120,7 +120,7 @@ spec:
 
 ### Increase AKS GPU Utilization
 
-`MostAllocated` scores nodes based on their current resource utilization, favoring nodes that are already more heavily utilized. Unlike `RequestedToCapacityRatio`, it does not consider node capacity in node scoring, making it more suitable for an agressive cost-optimization scheduling strategy. When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behoavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure. 
+`MostAllocated` scores nodes based on their current resource utilization, favoring nodes that are already more heavily utilized. Unlike `RequestedToCapacityRatio`, it does not consider node capacity in node scoring, making it more suitable for an agressive cost-optimization scheduling strategy. When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behoavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure.
 
 When combined, these plugins favor GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This results in more efficient GPU placement and fewer partially utilized nodes.[Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
 
