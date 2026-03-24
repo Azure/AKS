@@ -6,15 +6,15 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-As reported by CastAI, on average Kubernetes clusters only reach [10% CPU utilization][cast-ai-k8s-cost-report] and Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers]. This data signals that underutilized resources are materially contributing to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization. With the introduction of Configurable Scheduler Profiles on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grained pod scheduling strategies.
+As reported by CastAI, on average Kubernetes clusters only reach [10% CPU utilization][cast-ai-k8s-cost-report] and Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers]. This data signals that underutilized resources are materially contributing to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization.
 
-[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to increase node utilization by configuring their own scheduling logic: enabling specific policies, adjusting policy priorities, tuning parameter weights, and choosing when each policy runs (for example, during PreFilter, Filter, or Score).
+With the introduction of[Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grained pod scheduling strategies by configuring their own scheduling logic: enabling specific policies, adjusting policy priorities, tuning parameter weights, and choosing when each policy runs (for example, during PreFilter, Filter, or Score).
 
 This blog details how the default Kubernetes scheduler places pods, limitations, and provides best-practice recommendations to increase node utilization for your workloads using Configurable Scheduler Profiles on AKS.
 
 1. [How does kube-scheduler work?](#how-does-the-default-kubernetes-scheduler-place-pods)
-2. [How to increase AKS cluster CPU utilization with RequestedToCapacityRatio](#increase-aks-cluster-cpu-utilization)
-3. [How to increase AKS cluster GPU and CPU utilization with MostAllocated](#increase-aks-cluster-gpu-utilization)
+2. [How to increase AKS cluster CPU utilization with Configurable Scheduler](#increase-aks-cpu-utilization)
+3. [How to increase AKS cluster GPU and CPU utilization with Configurable Scheduler](#increase-aks-gpu-utilization)
 
 <!-- truncate -->
 
@@ -53,11 +53,15 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 
 ## Increase Node Utilization and Operator Control
 
-Configurable Scheduler Profiles using the `NodeResourcesFit` plugin shows a visible consolidation pattern that differs from the default scheduler's logic. As a result, platform engineers gain more control and resources are used more efficiently when using AKS.
+In this simple scale-out scenario, manually increasing replicas from 8 to 30 with identical pod specs, the default scheduler distributes pods evenly across nodes. The Configurable Scheduler Profiles using the `NodeResourcesFit` plugin are introduced shows a visible consolidation pattern that differs from the default scheduler's logic. Instead of spreading pods evenly, the scheduler begins to intentionally concentrate workloads onto fewer nodes. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
+
+While this experiment uses intentionally simple, CPU-bound containers to isolate scheduling behavior, the placement patterns observed here generalize to more complex workloads where consolidation and utilization efficiency matter. This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread.
 
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
-### Increase AKS Cluster CPU Utilization
+The key takeaway is not that each profile expresses a distinct scheduling intent. The next two sections detail how MostAllocated and RequestedToCapacityRatio achieve these outcomes.
+
+### Increase AKS CPU Utilization 
 
 `RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes.
 
@@ -114,11 +118,13 @@ spec:
                       score: 0
 ```
 
-### Increase AKS Cluster GPU Utilization
+### Increase AKS GPU Utilization
 
-Additionally, customers running GPU-dependent applications like batch jobs will benefit from improved bin-packing and increased GPU utilization. For example, scheduling jobs on nodes with a higher relative GPU utilization can reduce costs while maintaining performance. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
+`MostAllocated` scores nodes based on their current resource utilization, favoring nodes that are already more heavily utilized. Unlike `RequestedToCapacityRatio`, it does not consider node capacity in node scoring, making it more suitable for an agressive cost-optimization scheduling strategy. When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behoavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure. 
 
-**This scheduler configuration maximizes provisioned GPU resource by consolidating smaller jobs onto fewer nodes, lowering the operational cost of underutilized resources without sacrificing performance.**
+When combined, these plugins favor GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This results in more efficient GPU placement and fewer partially utilized nodes.[Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
+
+**This scheduler configuration maximizes GPU utilization by consolidating smaller jobs onto fewer nodes, reducing idle accelerator capacity while maintaining reasonable CPU and memory balance.**
 
 :::note
 Adjust resources, resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
@@ -138,7 +144,6 @@ spec:
         plugins:
           multiPoint:
             enabled:
-              - name: ImageLocality
               - name: NodeResourcesFit
               - name: NodeResourcesBalancedAllocation
             disabled:
@@ -151,10 +156,19 @@ spec:
               scoringStrategy:
                 type: MostAllocated
                 resources:
+                  - name: nvidia.com/gpu
+                    weight: 8
                   - name: cpu
                     weight: 1
-                  - name: nvidia.com/gpu
-                    weight: 5
+          - name: NodeResourcesBalancedAllocation
+            args:
+              apiVersion: kubescheduler.config.k8s.io/v1
+              kind: NodeResourcesBalancedAllocationArgs
+              resources:
+                - name: cpu
+                  weight: 1
+                - name: memory
+                  weight: 1
 ```
 
 ### FAQ
