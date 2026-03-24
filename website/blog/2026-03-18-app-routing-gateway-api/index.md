@@ -12,7 +12,11 @@ tags:
 keywords: ["AKS", "Gateway API", "app routing", "Istio", "ingress", "NGINX", "Kubernetes"]
 ---
 
+![Gateway API logo](https://gateway-api.sigs.k8s.io/images/logo/logo-text-horizontal.png)
+
 We're announcing preview support for the **Kubernetes Gateway API** in the AKS application routing add-on. This brings a modern, role-oriented traffic management model to AKS — and establishes a clear migration path ahead of the [upcoming Ingress-NGINX retirement](#why-now-the-ingress-nginx-retirement).
+
+<!-- truncate -->
 
 ## Background: the Kubernetes networking stack is evolving
 
@@ -162,7 +166,7 @@ EOF
 AKS will provision the underlying Deployment, Service, HPA, and PDB automatically. Wait for the Gateway to be programmed and retrieve its external IP:
 
 ```bash
-kubectl wait --for=condition=programmed gateways.gateway.networking.k8s.io httpbin-gateway
+kubectl wait --for=condition=programmed gateways.gateway.networking.k8s.io httpbin-gateway --timeout=120s
 export INGRESS_HOST=$(kubectl get gateways.gateway.networking.k8s.io httpbin-gateway -ojsonpath='{.status.addresses[0].value}')
 ```
 
