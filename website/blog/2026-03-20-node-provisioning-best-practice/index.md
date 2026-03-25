@@ -81,10 +81,10 @@ AKS also publishes [operator best-practices guidance](https://learn.microsoft.co
 
 ### How NAP handles Topology Spread
 
-NAP honors workload [topologyspreadconstraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field). While you can list the allowed zones in the NodePool CRD, `topologyspreadconstraints` are the means to ensure topology spread.
+NAP honors workload [topologySpreadConstraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field). While you can list the allowed zones in the NodePool CRD, `topologySpreadConstraints` are the means to ensure topology spread.
 
-- NAP (**without** pod-level `topologyspreadconstraints` defined) will provision wherever there is availability for the preferred VM SKU. This can look like NAP provisioning all preferred nodes in zone 1 and none in zone 2 and zone 3.
-- NAP (**with** pod-level `topologyspreadconstraints` defined) ensures topology spread. NAP honors pod-level constraints (number of replicas, topology spread behavior) in the workload deployment file. See the Kubernetes docs on topology spread for other examples also.
+- NAP (**without** pod-level `topologySpreadConstraints` defined) will provision wherever there is availability for the preferred VM SKU. This can look like NAP provisioning all preferred nodes in zone 1 and none in zone 2 and zone 3.
+- NAP (**with** pod-level `topologySpreadConstraints` defined) ensures topology spread. NAP honors pod-level constraints (number of replicas, topology spread behavior) in the workload deployment file. See the Kubernetes docs on topology spread for other examples also.
 
 ### A good default: spread across Availability Zones
 
@@ -135,7 +135,7 @@ Node affinity is the evolution of [nodeSelector](https://kubernetes.io/docs/conc
 
 Common use cases:
 
-1) “Only run on GPU nodes” - You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
+1. “Only run on GPU nodes” - You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
 
 Basic Example (with NodeSelector):
 
@@ -154,11 +154,11 @@ affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
-      - matchExpressions:
-        - key: accelerator
-          operator: In
-          values:
-          - gpu
+        - matchExpressions:
+            - key: accelerator
+              operator: In
+              values:
+                - gpu
 ```
 
 1) “Prefer this node type, but don’t block if it’s unavailable” - Use `preferredDuringSchedulingIgnoredDuringExecution` (soft preference).
