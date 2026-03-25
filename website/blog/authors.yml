@@ -465,3 +465,12 @@ devi-vasudevan:
   socials:
     linkedin: devi-Vasudevan
     github: devivasudevan
+datta-rajpure:
+  name: Datta Rajpure
+  title: Principal Group Eng Manager at Microsoft Azure Core
+  url: https://www.linkedin.com/in/dattarajpure/
+  image_url: https://github.com/drajpure.png
+  page: true
+  socials:
+    linkedin: datta-rajpure
+    github: drajpure
