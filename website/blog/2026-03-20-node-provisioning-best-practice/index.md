@@ -241,11 +241,11 @@ Cause: User has not set any guardrails on node disruption behavior.
 - Fix: Configure [Node Disruption Budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets) and/or enable a Maintenance Window using the [AKS Node OS Maintenance Schedule](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image#node-os-upgrade-maintenance-windows-for-nap)
 
 Behavior: NAP node upgrades fail and/or NAP nodes will not scale down voluntarily
-Cause: PDBs are set too strictly (ex. `maxUnavailable = 0` or `minAvailable: 100%`)
+Cause: PDBs are set too strictly (for example, `maxUnavailable = 0` or `minAvailable: 100%`)
 
-- Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
+  - Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
 
-_**Note:**_ This section is describing voluntary disruption, not to be confused with involuntary eviction (ex. spot VM evictions, node termination events, node stopping events)
+_**Note:**_ This section is describing voluntary disruption, not to be confused with involuntary eviction (for example, spot VM evictions, node termination events, node stopping events)
 
 **Practical guidance:**
 
