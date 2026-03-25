@@ -71,7 +71,7 @@ Install or validate the required accelerator enablement based on the scenario.
   - Release cluster resources (compute, storage, accelerator allocations)
 
 ## Series Outline: 
-This blog series explores multiple AI inferencing approaches on AKS Arc, starting with a set of representative solutions and evolving over time as new labs are added. The initial labs cover the following scenrios, and this section, along with the prerequisites and table of contents, will be updated as additional inferencing engines, hardware targets, and scenarios are introduced.
+This blog series explores multiple AI inferencing approaches on AKS Arc, starting with a set of representative solutions and evolving over time as new labs are added. The initial labs cover the following scenarios, and this section, along with the prerequisites and table of contents, will be updated as additional inferencing engines, hardware targets, and scenarios are introduced.
 
 ### Part 1 - Generative AI
   1. AI Inference with Ollama on Azure Arc – Deploying an open-source LLM server (Ollama) on an Arc-enabled cluster.
