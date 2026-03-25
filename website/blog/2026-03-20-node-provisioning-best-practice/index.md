@@ -134,6 +134,7 @@ For more info, visit the [upstream Kubernetes docs on topology spread constraint
 Node affinity is the evolution of [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector): it’s more expressive and lets you define hard requirements vs soft preferences.
 
 Common use cases:
+
 1) “Only run on GPU nodes” - You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
 
 Basic Example (with NodeSelector):
@@ -160,7 +161,7 @@ affinity:
           - gpu
 ```
 
-2) “Prefer this node type, but don’t block if it’s unavailable” - Use `preferredDuringSchedulingIgnoredDuringExecution` (soft preference).
+1) “Prefer this node type, but don’t block if it’s unavailable” - Use `preferredDuringSchedulingIgnoredDuringExecution` (soft preference).
 
 ```yaml
 affinity:
@@ -174,7 +175,7 @@ affinity:
           values: ["Standard_D16ds_v5"]
 ```
 
-3) “Never co-locate replicas on the same node”
+1) “Never co-locate replicas on the same node”
 That’s usually podAntiAffinity or topology spread across hostname.
 A simple (but strict) approach is to spread on kubernetes.io/hostname:
 
@@ -221,6 +222,7 @@ NAP honors Kubernetes-native concepts such as Pod Disruption Budgets when making
 NAP also has Karpenter-based concepts such as Consolidation, Drift, and Node Disruption Budgets.
 
 ### The most common PDB pitfall
+
 If you effectively set zero voluntary evictions (maxUnavailable: 0 or minAvailable: 100%), Kubernetes warns this can block node drains indefinitely for a node running one of those pods.
 
 This common misconfiguration can cause scenarios such as:
@@ -234,14 +236,14 @@ This common misconfiguration can cause scenarios such as:
 Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once
 Cause: User has not set any guardrails on node disruption behavior.
 
-  - Fix: Add PDBs that regulate disruption pace
-  - Fix: Consider adding [Consolidation Policies](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption)
-  - Fix: Configure [Node Disruption Budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets) and/or enable a Maintenance Window using the [AKS Node OS Maintenance Schedule](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image#node-os-upgrade-maintenance-windows-for-nap)
+- Fix: Add PDBs that regulate disruption pace
+- Fix: Consider adding [Consolidation Policies](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption)
+- Fix: Configure [Node Disruption Budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets) and/or enable a Maintenance Window using the [AKS Node OS Maintenance Schedule](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image#node-os-upgrade-maintenance-windows-for-nap)
 
 Behavior: NAP node upgrades fail and/or NAP nodes will not scale down voluntarily
 Cause: PDBs are set too strictly (ex. `maxUnavailable = 0` or `minAvailable: 100%`)
 
-  - Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
+- Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
 
 _**Note:**_ This section is describing voluntary disruption, not to be confused with involuntary eviction (ex. spot VM evictions, node termination events, node stopping events)
 
