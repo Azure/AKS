@@ -57,7 +57,7 @@ Simply put, Workload spec expresses “where and how this pod should run”, Nod
 
 You can think of the NodePool/AKSNodeClass as your “node policy envelope,” which your workload intent has to fit inside it.
 
-_**Note:**_ NAP is a node-level (or infrastructure) autoscaler that schedules pods to nodes (VMs). For application level autoscaling, you can use [KEDA](https://learn.microsoft.com/azure/aks/keda-about) with NAP. We also suggest using [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) (in recommend mode) for resource sizing recommendations.
+_**Note:**_ NAP is a node-level (or infrastructure) autoscaler that schedules pods to nodes (VMs). For application level autoscaling, you can use [KEDA](https://learn.microsoft.com/azure/aks/keda-about) with NAP. We also suggest using [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) in recommendation-only mode (for example, with `updateMode: Off` in the VPA custom resource) for resource sizing recommendations.
 
 ## Part 1 — The mental model: scheduling constraints are “workload intent”
 
