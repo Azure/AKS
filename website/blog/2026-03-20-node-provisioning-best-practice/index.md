@@ -243,7 +243,7 @@ Cause: User has not set any guardrails on node disruption behavior.
 Behavior: NAP node upgrades fail and/or NAP nodes will not scale down voluntarily
 Cause: PDBs are set too strictly (for example, `maxUnavailable = 0` or `minAvailable: 100%`)
 
-  - Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
+- Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
 
 _**Note:**_ This section is describing voluntary disruption, not to be confused with involuntary eviction (for example, spot VM evictions, node termination events, node stopping events)
 
