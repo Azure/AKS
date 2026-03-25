@@ -70,7 +70,7 @@ By shaping the scoring curve to target a range of 50-85% CPU utilization, operat
 **This bin packing profile is configured to favor nodes within a utilization band of 50-85%, avoiding empty nodes, and severely deprioritizing nearly full nodes at 90% utilization or more, to limit oversaturated nodes. Given this level of configuration detail, `RequestedToCapacityRatio` is the recommended scoring strategy for node bin‑packing on AKS for production clusters.**
 
 :::note
-Scoring strategy can be used for GPU also. Adjust resources, resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
+Scoring strategy can also be used for GPU. Adjust resources, resource weights, utilization thresholds, and plugin parameters to match your VM SKUs, workload patterns, and cluster topology.
 :::
 
 ```yaml
@@ -120,7 +120,7 @@ spec:
 
 ### Increase AKS GPU Utilization
 
-`MostAllocated` scores nodes based on their current resource utilization, favoring nodes that are already more heavily utilized. Unlike `RequestedToCapacityRatio`, it does not consider node capacity in node scoring, making it more suitable for an agressive cost-optimization scheduling strategy. When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behoavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure.
+`MostAllocated` scores nodes based on their current resource utilization, favoring nodes that are already more heavily utilized. Unlike `RequestedToCapacityRatio`, it does not consider node capacity in node scoring, making it more suitable for an aggressive cost-optimization scheduling strategy. When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure.
 
 When combined, these plugins favor GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This results in more efficient GPU placement and fewer partially utilized nodes.[Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
 
