@@ -1,6 +1,6 @@
 ---
 title: "Controlling Node Provisioning Outcomes on AKS: PDBs, Affinity, and Topology Spread"
-description: "Learn best practices for using Node auto provisioning and to set predictable scheduling when scaling an AKS cluster."
+description: "Learn AKS best practices for Node Auto-Provisioning, using PDBs, affinity, and topology spread constraints to achieve predictable, resilient pod scheduling."
 date: 2026-03-30
 authors: ["wilson-darko"]
 tags:
@@ -99,13 +99,13 @@ spec:
         app: web
     spec:
       topologySpreadConstraints:
-      - maxSkew: 1
-        minDomains: 3
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app: web
+        - maxSkew: 1
+          minDomains: 3
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: web
 ```
 
 What these fields mean (in plain language):
@@ -197,7 +197,9 @@ Pod disruption budgets (PDBs) are how you tell Kubernetes:
 
 “During voluntary disruptions, keep at least N replicas available (or limit max unavailable).”
 
-> [!NOTE] Pod disruption budgets protect against **voluntary evictions**, not involuntary failures, forced migrations, or node eviction.
+:::note
+Pod disruption budgets protect against **voluntary evictions**, not involuntary failures, forced migrations, or node eviction.
+:::
 
 Here's an example of a PDB that regulates disruption without blocking scale downs, upgrades, and consolidation:
 
@@ -226,9 +228,9 @@ If you effectively set zero voluntary evictions (maxUnavailable: 0 or minAvailab
 
 This common misconfiguration can cause scenarios such as:
 
--  Node / Cluster upgrades fail as nodes won't voluntarily scale down
--  Migration fails
--  NAP Consolidation never happens
+- Node / Cluster upgrades fail as nodes won't voluntarily scale down
+- Migration fails
+- NAP Consolidation never happens
 
 #### Common pitfalls for NAP disruption
 
