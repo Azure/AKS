@@ -33,7 +33,7 @@ If you’re new to these Kubernetes features, this post will give you “good de
 
 <!-- truncate -->
 
-![Diagram showing NAP topology spread behavior](./nap-topology-spread-image.png)
+![Diagram showing NAP topology spread behavior](./nap-topology-spread-image-1.png)
 
 :::info
 
