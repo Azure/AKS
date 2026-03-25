@@ -167,12 +167,12 @@ affinity:
 affinity:
   nodeAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
-    - weight: 100
-      preference:
-        matchExpressions:
-        - key: node.kubernetes.io/instance-type
-          operator: In
-          values: ["Standard_D16ds_v5"]
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: node.kubernetes.io/instance-type
+              operator: In
+              values: ["Standard_D16ds_v5"]
 ```
 
 1) “Never co-locate replicas on the same node”
