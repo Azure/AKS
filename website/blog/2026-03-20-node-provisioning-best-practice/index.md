@@ -10,7 +10,7 @@ tags:
 
 ## Background
 
-AKS users want to ensure their workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and its easy to be unclear what settings to use to accomplish this. Node Auto-Provisioning allows amazing benefits for compute efficiency, but to best utilize it - users need to make sure certain best practices are followed for predictable behavior. 
+AKS users want to ensure their workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and its easy to be unclear what settings to use to accomplish this. Node Auto-Provisioning allows amazing benefits for compute efficiency, but to best utilize it - users need to make sure certain best practices are followed for predictable behavior.
 
 When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes (or VMs)?” — they’re:
 
@@ -33,7 +33,7 @@ If you’re new to these Kubernetes features, this post will give you “good de
 
 <!-- truncate -->
 
-![Diagram showing NAP topology spread behavior](./nap-topology-spread-image-1.png)
+![Diagram showing NAP topology spread behavior](./hero-image.png)
 
 :::info
 
@@ -63,7 +63,7 @@ _**Note:**_ NAP is a node-level (or infrastructure) autoscaler that schedules po
 
 Kubernetes scheduling is a negotiation between:
 
-- Workload intent (what your pod spec asks for), and
+- Workload intent (what your pod spec asks for)
 - Available capacity (what nodes exist, and what the platform can create)
 
 On AKS, you can express workload intent in your workload deployment file using Kubernetes concepts including:
@@ -111,7 +111,7 @@ spec:
 What these fields mean (in plain language):
 
 - topologyKey: topology.kubernetes.io/zone → spread across zones (not just nodes).
-- maxSkew: 1 → keep zone counts close (difference between most/least loaded domains can’t exceed 1 when DoNotSchedule). 
+- maxSkew: 1 → keep zone counts close (difference between most/least loaded domains can’t exceed 1 when DoNotSchedule).
 - minDomains: 3 (only valid with DoNotSchedule) → treat it as a requirement that at least 3 eligible domains participate; if fewer than minDomains are eligible, Kubernetes treats the “global minimum” as 0, affecting skew calculation.
 - whenUnsatisfiable: DoNotSchedule → enforce the rule strictly; if it can’t be met, pods stay Pending.
 
@@ -134,8 +134,8 @@ For more info, visit the [upstream Kubernetes docs on topology spread constraint
 Node affinity is the evolution of [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector): it’s more expressive and lets you define hard requirements vs soft preferences.
 
 Common use cases:
-1) “Only run on GPU nodes”
-You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
+1) “Only run on GPU nodes” - You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
+
 Basic Example (with NodeSelector):
 
 ```yaml
@@ -160,8 +160,7 @@ affinity:
           - gpu
 ```
 
-2) “Prefer this node type, but don’t block if it’s unavailable”
-Use preferredDuringSchedulingIgnoredDuringExecution (soft preference).
+2) “Prefer this node type, but don’t block if it’s unavailable” - Use `preferredDuringSchedulingIgnoredDuringExecution` (soft preference).
 
 ```yaml
 affinity:
@@ -188,8 +187,6 @@ topologySpreadConstraints:
     matchLabels:
       app: web
 ```
-
-
 
 ## Part 4 — Pod Disruption Budgets (PDBs): controlling voluntary disruption
 
@@ -221,7 +218,7 @@ Kubernetes describes minAvailable / maxUnavailable as the two key availability k
 
 NAP honors Kubernetes-native concepts such as Pod Disruption Budgets when making disruption decisions.
 
-NAP also has Karpenter-based concepts such as Consolidation, Drift, and Node Disruption Budgets. 
+NAP also has Karpenter-based concepts such as Consolidation, Drift, and Node Disruption Budgets.
 
 ### The most common PDB pitfall
 If you effectively set zero voluntary evictions (maxUnavailable: 0 or minAvailable: 100%), Kubernetes warns this can block node drains indefinitely for a node running one of those pods.
@@ -259,6 +256,6 @@ _**Note:**_ This section is describing voluntary disruption, not to be confused 
 Ready to get started?
 
 1. **Try NAP today:** Follow the [Enable Node Auto Provisioning steps](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning).
-1. **Learn more:** Visit our AKS [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler)
+1. **Learn more:** Visit our AKS [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler).
 1. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
 1. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
