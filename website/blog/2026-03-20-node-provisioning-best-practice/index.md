@@ -10,7 +10,8 @@ tags:
 
 ## Background
 
-AKS users want to ensure their workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and its easy to be unclear what settings to use to accomplish this. 
+AKS users want to ensure their workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and its easy to be unclear what settings to use to accomplish this. Node Auto-Provisioning allows amazing benefits for compute efficiency, but to best utilize it - users need to make sure certain best practices are followed for predictable behavior. 
+
 When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes (or VMs)?” — they’re:
 
 - Where will my workload replicas land (zones / nodes)?
@@ -250,3 +251,12 @@ _**Note:**_ This section is describing voluntary disruption, not to be confused 
 - For critical workloads that you do not want to be disrupted at all, strictness of "zero eviction" may be intentional — but be deliberate. When you're ready to allow disruption to these workloads, you may have to change the PDBs in the workload deployment file.
 - For general workloads that can tolerate minor disruption, prefer a small maxUnavailable (like 1) rather than “zero evictions.”
 - Be clear on the tradeoff between zero tolerance (blocks upgrades, NAP consolidation, and scale down).
+
+## Next steps
+
+Ready to get started?
+
+1. **Try NAP today:** Follow the [Enable Node Auto Provisioning steps](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning).
+1. **Learn more:** Visit our AKS [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler)
+1. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
+1. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
