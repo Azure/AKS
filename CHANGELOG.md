@@ -30,6 +30,7 @@
 * Added [node disruption profile](https://learn.microsoft.com/azure/aks/node-disruption-profile) validation to the upgrade node image operation, enabling customers to block or restrict node image upgrades via maintenance windows. [PR#15124820](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15124820) (AI-flagged: validation-change)
 * Updated [KMS](https://learn.microsoft.com/azure/aks/use-kms-etcd-encryption) frontend check to block certificate rotation for clusters using KMS with private key vault and private cluster v1 configuration. [PR#15150856](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15150856) (AI-flagged: validation-change)
 * Updated egress lockdown required FQDNs for Azure China Cloud (Mooncake) to remove global `mcr.microsoft.com` endpoints, as Mooncake uses `mcr.azure.cn` instead. [PR#15137304](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15137304) (AI-flagged: behavioral-change)
+* Enabled [dual-stack networking](https://learn.microsoft.com/azure/aks/configure-dual-stack) IPv6 support for Windows agent pools in VNet Scale (Prefix on NIC) scenarios. Previously dual-stack IPv6 for Windows was limited to overlay networking. [PR#15017078](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15017078) (AI-flagged: new-feature)
 
 #### Bug fixes
 
@@ -79,11 +80,11 @@
 |--------|-------|
 | Total PRs reviewed | 939 |
 | PRs with PM-marked external impact | 15 |
-| PRs AI-flagged for inclusion | 32 |
-| PRs filtered out | 892 |
-| Categories | 3 features, 9 behavioral changes, 19 bug fixes, 15 component updates, 1 announcement |
+| PRs AI-flagged for inclusion | 33 |
+| PRs filtered out | 891 |
+| Categories | 3 features, 10 behavioral changes, 19 bug fixes, 15 component updates, 1 announcement |
 
-### Entries removed by v2 rubric (23 entries)
+### Entries removed by v2 rubric (22 entries)
 
 The following entries from the previous run were removed after applying the updated classification rubric:
 
@@ -99,7 +100,6 @@ The following entries from the previous run were removed after applying the upda
 | PR#15163448 | AzureContainerLinux ARM64 distro constants | Internal constants |
 | PR#15059914 | API Release 2026-03-02-preview | Auto-generated API model scaffolding |
 | PR#14992493 | Capacity Based Surge preview API check | Internal preview gating |
-| PR#15017078 | POND IPv6 dualstack Windows | Internal preview feature |
 | PR#15118410 | AzureContainerLinux OSSKU swagger | Swagger constant addition |
 | PR#15018990 | COSMIC eBPF host routing | Toggle-gated, COSMIC-specific |
 | PR#15105018 | ListVMSkus filter restricted SKUs | API not yet published |
