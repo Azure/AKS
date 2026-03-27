@@ -18,10 +18,12 @@
 * Added `AppMonitoring.AutoInstrumentation` support to the stable v20260301 API version of `AzureMonitorProfile`, enabling auto-instrumentation for application monitoring. [PR#15074048](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15074048) (PM: @alkaplan)
 * Added `AppMonitoring.AutoInstrumentation` support to the stable v20260201 API version of `AzureMonitorProfile`. [PR#15048104](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15048104) (PM: @ALKAPLAN)
 * Updated [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) to v1.6.0 for clusters running Kubernetes 1.36 and above. [PR#15102845](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15102845) (PM: @wangamanda)
+* Introduced `AzureContainerLinux` as a new OS SKU option in AKS, a Flatcar-derived variant using Azure Linux RPMs. The new OSSKU is toggle-gated for Microsoft/AME initially, with GA planned at //Build. Trusted Launch is implicitly enabled for AzureContainerLinux node pools. [PR#15120907](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15120907) (PM: @allyford)
 
 #### Behavioral changes
 
 * Reverted VM architecture validation for non-public clouds to restore cluster creation in sovereign regions. ARM64 images will be released to all clouds instead. [PR#15079531](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15079531) (PM: @allyford)
+* Enabled publishing ARM64 node images to sovereign clouds (Fairfax and Mooncake) as part of the weekly VHD release. [PR#15085598](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15085598) (PM: @allyford)
 * Changed the Kubernetes version for enabling [LocalDNS](https://learn.microsoft.com/azure/aks/local-dns) by default from 1.35 to 1.36. [PR#14990947](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/14990947) (AI-flagged: behavioral-change)
 * Network isolated clusters now block BYO ACR with Domain Name Label (DNL) enabled, as DNL-enabled ACR URLs are incompatible with the expected format. [PR#15089634](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15089634) (AI-flagged: validation-change)
 * Blocked `RotateClusterCertificates` operation for clusters running deprecated OS distros, preventing certificate rotation failures on unsupported configurations. [PR#15127500](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15127500) (AI-flagged: validation-change)
@@ -55,6 +57,7 @@
 #### Component updates
 
 * Updated AgentBaker to [v0.20260312.0](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15035974), bringing new node image improvements and fixes. [PR#15035974](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15035974) (PM: @allyford)
+* Updated AgentBaker to [v0.20260318.0](https://github.com/Azure/AgentBaker/compare/v0.20260312.0...v0.20260318.0) for weekly SIG release. [PR#15113112](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15113112) (PM: @allyford)
 * Upgraded [Microsoft Defender for Containers](https://learn.microsoft.com/azure/defender-for-cloud/defender-for-containers-introduction) sensor to v0.9.52 (AKS >= 1.35) and v0.8.49 (AKS < 1.35), with updated capabilities and fixes. [PR#15067121](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15067121) (PM: @shasb)
 * Updated DNC (Delegated Network Controller), DNC-RC, and DNC Cleanup Service images to the latest versions. [PR#15065343](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15065343) (PM: @samfoo)
 * Released updated Windows VHD images: 2022-containerd [20348.4893.260311] and 2022-containerd-gen2 [20348.4893.260311]. [PR#15024269](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15024269) (PM: @allyford)
@@ -77,10 +80,10 @@
 | Metric | Count |
 |--------|-------|
 | Total PRs reviewed | 939 |
-| PRs with PM-marked external impact | 15 |
+| PRs with PM-marked external impact | 18 |
 | PRs AI-flagged for inclusion | 31 |
-| PRs filtered out | 893 |
-| Categories | 3 features, 8 behavioral changes, 19 bug fixes, 15 component updates, 1 announcement |
+| PRs filtered out | 890 |
+| Categories | 4 features, 8 behavioral changes, 19 bug fixes, 17 component updates, 1 announcement |
 
 ### Entries removed by v2 rubric (24 entries)
 
