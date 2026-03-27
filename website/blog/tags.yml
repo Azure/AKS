@@ -307,6 +307,11 @@ security:
   permalink: /security
   description: Securing clusters, workloads, supply chain, identities, and network boundaries in AKS.
 
+skills:
+  label: Skills
+  permalink: /skills
+  description: Reusable agent skills, guided workflows, and domain-specific expertise for AKS tasks.
+
 spot:
   label: Spot
   permalink: /spot
