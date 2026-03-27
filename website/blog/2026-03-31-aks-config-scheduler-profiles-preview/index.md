@@ -14,8 +14,8 @@ This blog explains how the default Kubernetes scheduler places pods, where the d
 
 1. [How does kube-scheduler work?](#how-does-the-default-kubernetes-scheduler-place-pods)
 2. [Use Configurable Scheduler Profiles to ncrease node utilization and operator control](#configurable-scheduler-profiles-on-aks)
-3. [How to increase AKS cluster CPU utilization with Configurable Scheduler](#increase-aks-cpu-utilization)
-4. [How to increase AKS cluster GPU and CPU utilization with Configurable Scheduler](#increase-aks-gpu-utilization)
+3. [Increase AKS cluster CPU utilization up to 85% with Configurable Scheduler](#increase-aks-cpu-utilization)
+4. [Increase AKS cluster GPU or CPU utilization while balancing memory with Configurable Scheduler](#increase-aks-gpu-utilization)
 5. [How do Configurable Scheduler Profiles interact with autoscalers?](#faq)
 
 <!-- truncate -->
