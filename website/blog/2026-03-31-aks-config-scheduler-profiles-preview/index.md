@@ -8,13 +8,15 @@ tags: [ai, performance, scheduler, best-practices, cost]
 
 As reported by CastAI, on average Kubernetes clusters only reach [10% CPU utilization][cast-ai-k8s-cost-report] and Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers]. This data signals that underutilized resources are materially contributing to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization.
 
-With the introduction of [Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS, customers now have the opportunity to increase their node utilization across CPU and GPU resources and optimize their costs with access to fine-grained pod scheduling strategies by configuring their own scheduling logic: enabling specific policies, adjusting policy priorities, tuning parameter weights, and choosing when each policy runs (for example, during PreFilter, Filter, or Score).
+[Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS lets customers configure their own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. The result: higher node density, better GPU utilization, and lower infrastructure costs.
 
-This blog details how the default Kubernetes scheduler places pods, limitations, and provides best-practice recommendations to increase node utilization for your workloads using Configurable Scheduler Profiles on AKS.
+This blog explains how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization using Configurable Scheduler Profiles on AKS.
 
 1. [How does kube-scheduler work?](#how-does-the-default-kubernetes-scheduler-place-pods)
-2. [How to increase AKS cluster CPU utilization with Configurable Scheduler](#increase-aks-cpu-utilization)
-3. [How to increase AKS cluster GPU and CPU utilization with Configurable Scheduler](#increase-aks-gpu-utilization)
+2. [How Increase node utilization and operator control](#configurable-scheduler-profiles-on-aks)
+4. [How to increase AKS cluster CPU utilization with Configurable Scheduler](#increase-aks-cpu-utilization)
+5. [How to increase AKS cluster GPU and CPU utilization with Configurable Scheduler](#increase-aks-gpu-utilization)
+6. [How does Configurable Scheduler Profiles interact with autoscalers?](#faq)
 
 <!-- truncate -->
 
@@ -41,11 +43,11 @@ Once a node is selected, the binding cycle can process multiple pods in parallel
 
 The default scheduler is primarily designed for general-purpose workloads that prioritizes nodes with the most available resources using the _LeastAllocated_ scoring strategy. This spreads pods across nodes, even when they could safely be packed more densely. While this works well for many services, the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand optimizing GPU and CPU utilization. In these scenarios, spreading pods across nodes can lead to fragmented resources, underutilized GPUs, and increased infrastructure cost.
 
-Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, or ignored, in the scheduling cycle on a per cluster basis. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. Starting with Kubernetes v1.33, AKS introduces Configurable Scheduler Profiles, enabling customized scheduler behavior without maintaining a separate scheduler. Now, users can adjust the `NodeResourcesFit` plugin from the default configuration to favor nodes with higher utilization to achieve more efficient bin‑packing and reduce infrastructure cost.
+Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, or ignored, in the scheduling cycle on a per cluster basis. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. Starting with Kubernetes v1.33, AKS introduces Configurable Scheduler Profiles - an AKS-managed CRD - that exposes the upstream scheduling framework without maintaining a separate scheduler. Now, users can adjust the `NodeResourcesFit` plugin from the default configuration to favor nodes with higher utilization to achieve more efficient bin‑packing and reduce infrastructure cost.
 
 ## Configurable Scheduler Profiles on AKS
 
-[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defining a custom scheduler. Configurable Scheduler Profiles use a Custom Resource Definition (CRD) that lets users define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability. This means incorrect plugins or values will not be applied.
+[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defining a custom scheduler. Configurable Scheduler Profiles use a Custom Resource Definition (CRD) that lets users define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a configuration causes the scheduler to become unhealthy, the controller automatically rolls back to the last known good state to ensure cluster stability. If the new configuration causes the scheduler to fail health checks, the controller reverts to the last known good configuration."
 
 ![Architecture diagram showing how Configurable Scheduler Profiles use a CRD and controller to reconcile user-defined profiles with the kube-scheduler deployment](./config-scheduler-profiles.png)
 
@@ -175,10 +177,17 @@ spec:
 
 1. Which Bin packing strategy does AKS recommend to increase node utilization? AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes. For example, this bin packing strategy allows users to configure a target utilization of 85%.
 2. How does Configurable Scheduler Profiles interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CAS), and Vertical Pod Autoscaler (VPA)? These components are complementary to each other. Configurable Scheduler Profiles influence how pods are placed on nodes, while autoscalers make scaling decisions based on resource utilization and pending pods.
-    - **Node Auto Provisioning (NAP)** is triggered when pods are unschedulable. If a suitable node already exists, that pod will be scheduled with the defined Configurable Scheduler Profile. If no suitable node exists, NAP provisions new capacity, after which the pod is scheduled according to the selected profile.
+    - **Node Auto Provisioning (NAP)** is triggered when pods are unschedulable. If a suitable node already exists, that pod will be scheduled with the defined Configurable Scheduler Profile. If no suitable node exists, NAP provisions new capacity and schedules pod.
     - **Cluster Autoscaler (CA)** manages node scale-up and scale-down. On scale-up, CA is triggered when there aren't any suitable nodes available for the pending pod. Using Configurable Scheduler Profiles ensures nodes are only scaled when provisioned resources are no longer suitable. On scale-down, CA is triggered when nodes fall below utilization thresholds, the default is 50%. As active nodes are packed more efficiently, underutilized nodes become easier candidates for removal.
     - **VPA** optimizes resource utilization patterns in pods. As pods are recreated with updated CPU and memory requests, they are scheduled using the configured scheduler profile, allowing placement decisions to reflect the new resource requirements.
-3. What if a resource is omitted in the `scoringStrategy` like `memory`? If a resource is omitted in the `scoringStrategy`, then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile. If that resource should be considered, but with a reduced influence on the final score, it can be included with reduced weight.
+3. What if a resource, like `memory`, is omitted in the `scoringStrategy`? If a resource is omitted in the `scoringStrategy`, then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile. If that resource should be considered, but with a reduced influence on the final score, it can be included with reduced weight.
+4. Can multiple Configurable Scheduler Profiles be used for different workloads on the same cluster? Yes, mulitple scheduling profiles can coexist in a single cluster. This allows different placement strategies (for example, cost‑optimized vs. latency‑sensitive workloads) to run side‑by‑side. Visit the documentation for a [multiple scheduler profiles example][configure-multi-config]
+    - Multiple profiles can be  defined centrally in a single scheduler configuration.
+    - Individual workloads select a profile via `schedulerName` in the pod spec. 
+6. How do I monitor whether my scheduler profile is improving utilization? These help confirm the scheduler is behaving correctly. Ultimately, you should see higher average node utilization, reduced variance between nodes, fewer lightly‑utilized nodes over time
+ - Node‑level utilization metrics: CPU and memory utilization per node and Distribution of pods across nodes using Azure Monitor Container Insights and `kubectl top nodes` for quick validation
+ - Autoscaler outcomes: fewer scale‑ups during normal load and more decisive scale‑downs after demand drops
+ - Cost Metrics: reduced idle costs when using [Cost-Analysis add-on][#aks-cost-analysis-add-on]
 
 ## Next Steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
@@ -198,3 +207,5 @@ With Configurable Scheduler Profiles, teams gain fine-grained control over pod p
 [cast-ai-k8s-cost-report]: https://cast.ai/reports/kubernetes-cost-benchmark/
 [configure-requested-to-capacity]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster#configure-node-bin-packing-with-requestedtocapacity-plugin
 [configure-most-allocated]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster#configure-node-bin-packing-with-mostallocated-plugin
+[configure-multi-config]: https://learn.microsoft.com/azure/aks/configure-aks-scheduler?tabs=new-cluster#configure-multiple-scheduler-profiles
+[#aks-cost-analysis-add-on]: https://learn.microsoft.com/azure/aks/cost-analysis
