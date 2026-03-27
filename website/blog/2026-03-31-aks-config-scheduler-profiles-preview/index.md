@@ -185,9 +185,9 @@ spec:
     - Multiple profiles can be  defined centrally in a single scheduler configuration.
     - Individual workloads select a profile via `schedulerName` in the pod spec. 
 6. How do I monitor whether my scheduler profile is improving utilization? These help confirm the scheduler is behaving correctly. Ultimately, you should see higher average node utilization, reduced variance between nodes, fewer lightly‑utilized nodes over time
- - Node‑level utilization metrics: CPU and memory utilization per node and Distribution of pods across nodes using Azure Monitor Container Insights and `kubectl top nodes` for quick validation
- - Autoscaler outcomes: fewer scale‑ups during normal load and more decisive scale‑downs after demand drops
- - Cost Metrics: reduced idle costs when using [Cost-Analysis add-on][#aks-cost-analysis-add-on]
+   - Node‑level utilization metrics: CPU and memory utilization per node and Distribution of pods across nodes using Azure Monitor Container Insights and `kubectl top nodes` for quick validation
+   - Autoscaler outcomes: fewer scale‑ups during normal load and more decisive scale‑downs after demand drops
+   - Cost Metrics: reduced idle costs when using [Cost-Analysis add-on][#aks-cost-analysis-add-on]
 
 ## Next Steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
