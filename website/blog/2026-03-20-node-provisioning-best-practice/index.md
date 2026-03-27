@@ -1,6 +1,6 @@
 ---
 title: "Controlling Node Provisioning Outcomes on AKS: PDBs, Affinity, and Topology Spread"
-description: "Learn AKS best practices for Node Auto-Provisioning, using PDBs, affinity, and topology spread constraints to achieve predictable, resilient pod scheduling."
+description: "Learn AKS best practices for Node Auto-Provisioning, using taints and tolerations, affinity, and topology spread constraints to achieve predictable, resilient pod scheduling."
 date: 2026-03-30
 authors: ["wilson-darko"]
 tags:
@@ -15,13 +15,12 @@ AKS users want to ensure their workloads schedule, scale, and are disrupted only
 When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes (or VMs)?” — they’re:
 
 - Where will my workload replicas land (zones / nodes)?
-- How do I keep critical workloads stable during disruption (drain, consolidation, upgrades)?
 - How do I express node preferences without accidentally blocking scheduling?
 - If I’m using Node Auto-Provisioning (NAP), how does it interpret the rules I set?
 
-This post will connect NAP with the three most important workload-level tools for shaping predictable node provisioning outcomes on AKS:
+This post will connect NAP with three most important workload-level tools for shaping predictable node provisioning outcomes on AKS:
 
-1. **Pod Disruption Budgets (PDBs)** – control voluntary disruption
+1. **Taints and Tolerations** – control which pods can go to which nodes
 2. **Affinity/Anti-Affinity** – control where workloads can (or should not) run
 3. **Topology Spread Constraints** – control replica distribution across failure domains
 
@@ -71,7 +70,6 @@ On AKS, you can express workload intent in your workload deployment file using K
 - nodeSelector / nodeAffinity / podAffinity / podAntiAffinity
 - taints & tolerations
 - topologySpreadConstraints
-- Pod Disruption Budgets (which don’t pick nodes, but do constrain eviction/drain behavior)
 
 AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler features, including taints/tolerations and affinity.
 
@@ -189,69 +187,70 @@ topologySpreadConstraints:
       app: web
 ```
 
-## Part 4 — Pod Disruption Budgets (PDBs): controlling voluntary disruption
+## Part 4 — Taints and Tolerations  
 
-Pod disruption budgets (PDBs) are how you tell Kubernetes:
+Taints and tolerations are mechanisms used in Kubernetes to control which pods can be scheduled onto which nodes. They allow you to ensure that certain pods do not run on particular nodes, enabling more fine-grained control over your clusters.
 
-“During voluntary disruptions, keep at least N replicas available (or limit max unavailable).”
+### A Practical AKS/NAP Mental Model  
 
-:::note
-Pod disruption budgets protect against **voluntary evictions**, not involuntary failures, forced migrations, or node eviction.
-:::
+Think of taints as a ‘Do Not Enter’ sign on a node. If a node has a specific taint, pods must tolerate it to be scheduled on that node. This helps families of workloads maintain their operational boundaries while ensuring they run on appropriate resources.  
 
-Here's an example of a PDB that regulates disruption without blocking scale downs, upgrades, and consolidation:
+### Taint your NAP-managed nodes
+
+In NAP, you can provide taints in your NodePool CRD, and every node created based on this NodePool CRD will have this taint. If you only want specific nodes to have this taint, make sure you have a specific NodePool CRD file created for this purpose (since you can have multiple NodePool CRDs). 
+
+In the following example shows a taint called `test.com/custom-taint` that is added in the `spec.template.spec.taints` field in a NodePool CRD:
 
 ```yaml
-apiVersion: policy/v1
-kind: PodDisruptionBudget
+apiVersion: karpenter.sh/v1
+kind: NodePool
 metadata:
-  name: web-pdb
+  name: default
 spec:
-  maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: web
+  template:
+      taints:
+        - key: test.com/custom-taint
+          effect: NoSchedule
 ```
 
-Kubernetes describes minAvailable / maxUnavailable as the two key availability knobs, and notes you can only specify one per PDB.
+> ![NOTE] Taints can prevent pods from being scheduled to these nodes if they are not tolerated by the pods. A proper toleration must be added to your specific pods to allow them to be scheduled to nodes that are based on this NodePool CRD.
 
-### How NAP handles disruption
 
-NAP honors Kubernetes-native concepts such as Pod Disruption Budgets when making disruption decisions.
 
-NAP also has Karpenter-based concepts such as Consolidation, Drift, and Node Disruption Budgets.
+### Tolerations for your workloads
 
-### The most common PDB pitfall
+Tolerations are a field you place in your workload deployment file to flag what types of tainted nodes these pods can be scheduled to. There are two general behaviors for tolerations:
 
-If you effectively set zero voluntary evictions (maxUnavailable: 0 or minAvailable: 100%), Kubernetes warns this can block node drains indefinitely for a node running one of those pods.
+- `NoSchedule` - strict toleration. Only pods with the proper toleration can be scheduled to the node with a specific taint.
+- `PreferNoSchedule` - less strict toleration. AKS will _try_ to avoid placing pods that don't tolerate this node's taint, but it's not gauranteed.
 
-This common misconfiguration can cause scenarios such as:
+1. **NoSchedule Toleration** example
 
-- Node / Cluster upgrades fail as nodes won't voluntarily scale down
-- Migration fails
-- NAP Consolidation never happens
+```yaml  
+   tolerations:  
+   - key: "key1"  
+     operator: "Equal"  
+     value: "value1"  
+     effect: "NoSchedule"  
+```
 
-#### Common pitfalls for NAP disruption
+2. **PreferNoSchedule Toleration** example
 
-Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once
-Cause: User has not set any guardrails on node disruption behavior.
+```yaml
+tolerations:  
+- key: "key2"  
+  operator: "Equal"  
+  value: "value2"  
+  effect: "PreferNoSchedule"  
+```
 
-- Fix: Add PDBs that regulate disruption pace
-- Fix: Consider adding [Consolidation Policies](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption)
-- Fix: Configure [Node Disruption Budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets) and/or enable a Maintenance Window using the [AKS Node OS Maintenance Schedule](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image#node-os-upgrade-maintenance-windows-for-nap)
+## Common Taint + Toleration Pitfalls
 
-Behavior: NAP node upgrades fail and/or NAP nodes will not scale down voluntarily
-Cause: PDBs are set too strictly (for example, `maxUnavailable = 0` or `minAvailable: 100%`)
+- Over-tainting Nodes: Be cautious not to overuse taints as they can create scheduling issues.
+- Complexity in Management: Managing multiple taints and tolerations can become complex, making debugging and management harder.
 
-- Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
+For more on Taints and Tolerations, visit our [operator best practices docs](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#provide-dedicated-nodes-using-taints-and-tolerations) or the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
 
-_**Note:**_ This section is describing voluntary disruption, not to be confused with involuntary eviction (for example, spot VM evictions, node termination events, node stopping events)
-
-**Practical guidance:**
-
-- For critical workloads that you do not want to be disrupted at all, strictness of "zero eviction" may be intentional — but be deliberate. When you're ready to allow disruption to these workloads, you may have to change the PDBs in the workload deployment file.
-- For general workloads that can tolerate minor disruption, prefer a small maxUnavailable (like 1) rather than “zero evictions.”
-- Be clear on the tradeoff between zero tolerance (blocks upgrades, NAP consolidation, and scale down).
 
 ## Next steps
 
