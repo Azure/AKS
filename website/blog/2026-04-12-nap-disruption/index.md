@@ -45,7 +45,6 @@ PDBs are Kubernetes-native guardrails that limit **voluntary evictions** of pods
 
 “During voluntary disruptions, keep at least N replicas available (or limit max unavailable).”
 
-
 :::note
 Pod disruption budgets protect against **voluntary evictions**, not involuntary failures, forced migrations, or spot node eviction.
 :::
@@ -98,8 +97,8 @@ PDBs and Karpenter disruption budgets mainly help with **voluntary** disruptions
 
 The most common NAP disruption problems come from PDBs that are either:
 
-- **Too strict**, blocking drains indefinitely, or
-- **Missing**, allowing too much disruption at once.
+- **Too strict**, too strong of a guardrail blocks node drains indefinitely
+- **Missing**, No gaurdrail allows too much disruption at once
 
 ### A good default PDB
 
@@ -120,6 +119,7 @@ spec:
 ```
 
 Why it works well in practice:
+
 - Consolidation/drift/expiration can still proceed.
 - You avoid large brownouts caused by draining too many replicas at once.
 - You reduce the chance of NAP “thrashing” a service by repeatedly moving too many pods.
@@ -142,7 +142,6 @@ This can be intentional for extremely sensitive workloads, but it has a cost: if
 - For general workloads that can tolerate minor disruption, prefer a small maxUnavailable (like 1) rather than “zero evictions.”
 - Be clear on the tradeoff between zero tolerance (blocks upgrades, NAP consolidation, and scale down).
 
-
 ## Part 4 — Controlling consolidation - “when” vs “how fast”
 
 There are two different operator intents that often get conflated:
@@ -156,6 +155,13 @@ Use the NodePool’s consolidation policy to express your comfort level with cos
 
 Consolidation Settings
 
+- `ConsolidationPolicy: WhenEmptyOrUnderutilized` - Triggered when NAP identifies that the existing nodes are underutilized (or empty). This is determined by NAP running cost simulations of combination of VM sizes will best match the currently configuration. Once one combination is found, this triggers consolidation. 
+- `ConsolidateAfter: 1d` - time-based setting that ontrols the delay before NAP consolidates nodes that are underutilized, working in conjunction with the `consolidationPolicy` setting
+- `expireAfter: 24hr` - time-based setting that determines how long nodes defined in this NodePool CRD are allowed to exist. Any olders nodes will be deleted, regardless of Consolidation Policies.
+
+_NOTE:_ - How NAP defines "Underutilized" is not currently a value that can be set by users, is is determined by the cost simulation runs by NAP.
+
+The following example showed these disruption tools in action:
 
 ```yaml
 apiVersion: karpenter.sh/v1
@@ -171,7 +177,6 @@ spec:
         name: default
       expireAfter: Never
 ```
-
 
 ### Node Disruption budgets (how fast)
 
