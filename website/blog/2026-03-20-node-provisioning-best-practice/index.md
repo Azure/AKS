@@ -71,7 +71,7 @@ On AKS, you can express workload intent in your workload deployment file using K
 - taints & tolerations
 - topologySpreadConstraints
 
-AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler features, including taints/tolerations and affinity.
+AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler features.
 
 ## Part 2 — Topology Spread Constraints: tool for zone-aware replicas
 
@@ -281,13 +281,24 @@ tolerations:
   effect: "PreferNoSchedule"  
 ```
 
-## Common Taint + Toleration Pitfalls
+### Common Taint + Toleration Pitfalls
 
 - Over-tainting Nodes: Be cautious not to overuse taints as they can create scheduling issues.
 - Complexity in Management: Managing multiple taints and tolerations can become complex, making debugging and management harder.
 
 For more on Taints and Tolerations, visit our [operator best practices docs](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#provide-dedicated-nodes-using-taints-and-tolerations) or the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
 
+## FAQ
+
+- How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
+
+When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic. 
+
+- How can I reduce latency when trying to schedule nodes?
+
+You can consider enabling features such as [Artifact Stream](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) which can decrease pod readiness time. 
+
+For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/en-us/azure/aks/best-practices-performance-scale).
 
 ## Next steps
 
