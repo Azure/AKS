@@ -1,6 +1,6 @@
 ---
-title: "Managing Disruption with AKS Node Auto-Provisioning (NAP): PDBs, Consolidation, and Disruption Budgets"
-description: "Learn AKS best practices to control voluntary disruption from Node Auto-Provisioning (NAP): how Pod Disruption Budgets interact with Karpenter consolidation/drift/expiration, and how to use NodePool disruption budgets and maintenance windows to keep workloads stable."
+title: "Managing Disruption with AKS Node Auto-Provisioning"
+description: "Learn AKS best practices to control NAP disruption with Pod Disruption Budgets (PDBs), node pool disruption budgets, consolidation, and maintenance windows."
 date: 2026-04-12
 authors: ["wilson-darko"]
 tags:
@@ -8,8 +8,8 @@ tags:
 ---
 
 ## Background
-AKS users want to ensure that their workloads scaling when needed, and are disrupted only when (or where) desired. 
-AKS Node Auto-Provisioning (NAP) is designed to keep clusters efficient: it provisions nodes for pending pods, and it also continuously *removes* nodes when it’s safe to do so (for example, when nodes are empty or underutilized). That second half **disruption** is where many production surprises happen.
+AKS users want to ensure that their workloads scale when needed and are disrupted only when (and where) desired. 
+AKS Node Auto-Provisioning (NAP) is designed to keep clusters efficient: it provisions nodes for pending pods, and it also continuously *removes* nodes when it’s safe to do so (for example, when nodes are empty or underutilized). That node-removal **disruption** is where many production surprises happen.
 
 When managing Kubernetes, operational questions that users might have are:
 
@@ -19,7 +19,7 @@ When managing Kubernetes, operational questions that users might have are:
 - Why do upgrades get “stuck” on certain nodes?
 
 
-This post focuses on **NAP disruption best practices**, and not workload scheduling (tools like topology spread constraints, node affinity, taints, etc.). For more on scheduling best practices, check out our [blog post](<will edit once part 1 blog is published>).
+This post focuses on **NAP disruption best practices**, and not workload scheduling (tools like topology spread constraints, node affinity, taints, etc.). For more on scheduling best practices, check out our earlier blog post on NAP scheduling fundamentals.
 
 If you’re new to these NAP features, this post will give you “good defaults” as a starting point. If you’re already deep into NAP disruption settings, treat it as a checklist for the behaviors AKS users most commonly ask about.
 
@@ -58,7 +58,7 @@ NAP is built on Karpenter concepts and exposes disruption controls on the **Node
 - **Consolidation policy** (when NAP is allowed to consolidate)
 - **Disruption budgets** (how many nodes can be disrupted at once, and when)
 - **Expire-after** (node lifetime)
-- **Drift**(replace nodes that are out o)
+- **Drift** (replace nodes that are out of date with the desired NodePool configuration)
 
 A good operational posture is: **use PDBs to protect *applications*** and **use NAP disruption tools to control *the cluster’s disruption rate***.
 
@@ -66,7 +66,7 @@ A good operational posture is: **use PDBs to protect *applications*** and **use 
 
 ## Part 2 - NAP Overview
 
-Node auto-provisioning (NAP) provisions, scales, and manages nodes. NAP bases it's scheduling and disruption logic on settings from 3 sources:
+Node auto-provisioning (NAP) provisions, scales, and manages nodes. NAP bases its scheduling and disruption logic on settings from 3 sources:
 
 - Workload deployment file - For disruption NAP honors the pod disruption budgets defined by the user here
 - [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) - Used to list the range of allowed virtual machine options (size, zones, architecture) and also disruption settings
@@ -119,8 +119,6 @@ spec:
       app: web
 ```
 
-Kubernetes describes minAvailable / maxUnavailable as the two key availability knobs, and notes you can only specify one per PDB.
-
 Why it works well in practice:
 - Consolidation/drift/expiration can still proceed.
 - You avoid large brownouts caused by draining too many replicas at once.
@@ -149,7 +147,8 @@ This can be intentional for extremely sensitive workloads, but it has a cost: if
 
 There are two different operator intents that often get conflated:
 
-- **When** consolidation is allowed and will happen- **How much** disruption can happen concurrently (budgets / rate limiting)
+- **When** consolidation is allowed and will happen
+- **How much** disruption can happen concurrently (budgets / rate limiting)
 
 ### Consolidation policy (when)
 
@@ -176,7 +175,7 @@ spec:
 
 ### Node Disruption budgets (how fast)
 
-NAP exposes Karpenter-style disruption budgets on the NodePool. If you don’t set them, a default budget of `nodes: 10%` is used. Use budgets to regulate how many nodes are consolidate at a time.
+NAP exposes Karpenter-style disruption budgets on the NodePool. If you don’t set them, a default budget of `nodes: 10%` is used. Use budgets to regulate how many nodes are consolidated at a time.
 
 The following example sets the node disruption budget to 1 node at a time. 
 
