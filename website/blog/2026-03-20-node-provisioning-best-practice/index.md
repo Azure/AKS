@@ -10,7 +10,7 @@ tags:
 
 ## Background
 
-AKS users want to ensure their workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and its easy to be unclear what settings to use to accomplish this. Node Auto-Provisioning allows amazing benefits for compute efficiency, but to best utilize it - users need to make sure certain best practices are followed for predictable behavior.
+AKS users want to ensure their workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and its easy to be unclear what settings to use to accomplish this. Node Auto-Provisioning optimizes bin-packing your compute, but to best utilize it - users need to make sure certain best practices are followed for predictable behavior.
 
 When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes (or VMs)?” — they’re:
 
@@ -47,10 +47,10 @@ Node auto-provisioning provisions, scales, and manages nodes. NAP senses pending
 
 NAP uses the following levers to control workload scheduling:
 
-- NodePool CRD (policies / constraints) - Node settings like (SKU selection, capacity type, zones, labels, node-level resource limits)
-- AKSNodeClass CRD (policies / constraints) - Azure-specific node settings like subnet behavior, image/OS disk/kubelet configuration, etc
+- [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) (policies / constraints) - Node settings like (SKU selection, capacity type, zones, labels, node-level resource limits)
+- [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) (policies / constraints) - Azure-specific node settings like subnet behavior, image/OS disk/kubelet configuration, etc
 - NodeClaims - details the state of provisioned and provisioning nodes
-- Workload spec / deployment file - The Kubernetes manifest that defines your workload's resource requirements and scheduling constraints
+- Workload spec / deployment file - The Kubernetes manifest that defines your workload's resource requirements and scheduling constraints (Node Affinity, Tolerations, and Topology Spread Constraints)
 
 Simply put, Workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
 
@@ -73,9 +73,9 @@ On AKS, you can express workload intent in your workload deployment file using K
 
 AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler features, including taints/tolerations and affinity.
 
-## Part 2 — Topology Spread Constraints: the #1 tool for zone-aware replicas
+## Part 2 — Topology Spread Constraints: tool for zone-aware replicas
 
-**Topology Spread Constraints** let you tell the scheduler: “Keep these replicas balanced across domains like zones or nodes.” The Kubernetes docs describe it as a way to spread pods across failure domains such as regions, zones, nodes, and custom topology keys.
+**Topology Spread Constraints** let you tell the scheduler: “Keep these replicas balanced across domains like zones or nodes.” The Kubernetes documentation describe it as a way to spread pods across failure domains such as regions, zones, nodes, and custom topology keys.
 
 ### How NAP handles Topology Spread
 
@@ -133,7 +133,7 @@ Node affinity is the evolution of [nodeSelector](https://kubernetes.io/docs/conc
 
 Common use cases:
 
-1. “Only run on GPU nodes” - You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
+Simple Example “Only run on GPU nodes” - You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
 
 Basic Example (with NodeSelector):
 
@@ -145,7 +145,7 @@ spec:
         accelerator: gpu
 ```
 
-Standard Example (with nodeAffinity):
+Standard Example (with nodeAffinity) - sets a hard rule using ` requiredDuringSchedulingIgnoredDuringExecution` requiring gpu support:
 
 ```yaml
 affinity:
@@ -159,13 +159,12 @@ affinity:
                 - gpu
 ```
 
-1) “Prefer this node type, but don’t block if it’s unavailable” - Use `preferredDuringSchedulingIgnoredDuringExecution` (soft preference).
+Standard Example (with nodeAffinity) - “Prefer this node type, but don’t block if it’s unavailable” - Uses a soft rule of `preferredDuringSchedulingIgnoredDuringExecution` that prefer a specific SKU, but will apply best effort and schedule elsewhere if this SKU is unavailable:
 
 ```yaml
 affinity:
   nodeAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
         preference:
           matchExpressions:
             - key: node.kubernetes.io/instance-type
@@ -173,9 +172,10 @@ affinity:
               values: ["Standard_D16ds_v5"]
 ```
 
-1) “Never co-locate replicas on the same node”
-That’s usually podAntiAffinity or topology spread across hostname.
-A simple (but strict) approach is to spread on kubernetes.io/hostname:
+ Standard Example - “Never co-locate replicas on the same node”
+
+That’s usually `podAntiAffinity` or topology spread across hostname.
+This scenario uses a hard rule `DoNotSchedule` to spread pods using kubernetes.io/hostname:
 
 ```yaml
 topologySpreadConstraints:
@@ -187,19 +187,58 @@ topologySpreadConstraints:
       app: web
 ```
 
+### How do Topology Spread Constraints interact with Node Affinity rules?
+
+Both Topology Spread Constraints and Node Affinity have hard and soft controls. If you set both, depending on how they are set Kubernetes and AKS with factor them into scheduling logic in multiple paths. 
+
+Node Affinity rules can either be:
+
+- Hard Rule - `requiredDuringSchedulingIgnoredDuringExecution`
+- Soft Rule (best effort) - `preferredDuringSchedulingIgnoredDuringExecution`
+
+Topology Spread Constraint can either be:
+
+- Hard Rule - `whenUnsatisfiable: DoNotSchedule`
+- Soft Rule (best effort) - `whenUnsatisfiable: ScheduleAnyway`
+
+The following table lists what to expect when you set these two constraints together in common scenarios, and our recommended setting:
+
+| Topology Spread Configuration | Affinity Configuration | Observed Scheduling Behavior | Recommendation |
+|------------------------------|------------------------|------------------------------|----------------|
+| **Hard** (`whenUnsatisfiable: DoNotSchedule`) | **Hard Node Affinity** (`requiredDuringSchedulingIgnoredDuringExecution`) | Pod remains **Pending** if no node satisfies *both* constraints. The scheduler filters out all nodes that violate either rule. | Use only when you are certain the constraints are always compatible (for example, multi‑zone node affinity plus multi‑zone spread). Avoid mixing single‑zone affinity with multi‑zone spread. |
+| **Soft** (`whenUnsatisfiable: ScheduleAnyway`) | **Hard Node Affinity** (`requiredDuringSchedulingIgnoredDuringExecution`) | Pod schedules only on nodes matching affinity. Topology spread is applied as **best‑effort**, and distribution may be uneven. | ✅ **Recommended default** for most workloads. Enforce strict placement requirements while keeping high availability best‑effort. |
+| **Hard** (`whenUnsatisfiable: DoNotSchedule`) | **Soft Node Affinity** (`preferredDuringSchedulingIgnoredDuringExecution`) | Pod schedules only if topology spread constraints are met. Affinity acts only as a preference among valid nodes. | Use when even distribution across zones or nodes is more important than node‑level preferences. |
+| **Soft** (`whenUnsatisfiable: ScheduleAnyway`) | **Soft Node Affinity** | Pod always schedules. Both constraints only influence scoring; placement is flexible and may be imbalanced. | Suitable for dev/test, batch, or low‑criticality workloads. |
+| **Hard multi‑zone spread** (`whenUnsatisfiable: DoNotSchedule` and `minDomains` >= 2) | **Single‑zone hard affinity** | Pod enters a permanent **Pending** state due to a logical contradiction between constraints. | Align affinity and spread to the same topology domains, or relax one of the constraints. |
+
+#### Practical Guidance
+
+1. Decide which requirement is truly “must-have.”
+
+- Make that one hard (required… or DoNotSchedule).
+- Make the other a preference (preferred… or ScheduleAnyway).
+
+2. If you combine strict affinity with strict multi-zone spread, double-check feasibility:
+
+- If affinity restricts you to 1 zone, you cannot also require even spread across 3 zones with `DoNotSchedule`.
+
+3. Use nodeAffinityPolicy: Honor when your intent is “spread within the nodes I’ve made eligible via affinity.”
+
 ## Part 4 — Taints and Tolerations  
 
 Taints and tolerations are mechanisms used in Kubernetes to control which pods can be scheduled onto which nodes. They allow you to ensure that certain pods do not run on particular nodes, enabling more fine-grained control over your clusters.
 
-### A Practical AKS/NAP Mental Model  
+### A Practical AKS/NAP Mental Model  for taints and tolerations
 
 Think of taints as a ‘Do Not Enter’ sign on a node. If a node has a specific taint, pods must tolerate it to be scheduled on that node. This helps families of workloads maintain their operational boundaries while ensuring they run on appropriate resources.  
 
+Taints are defined in your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools), and Tolerations are defined in your workload deployment file. 
+
 ### Taint your NAP-managed nodes
 
-In NAP, you can provide taints in your NodePool CRD, and every node created based on this NodePool CRD will have this taint. If you only want specific nodes to have this taint, make sure you have a specific NodePool CRD file created for this purpose (since you can have multiple NodePool CRDs). 
+In NAP, you can provide taints in your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools), and every node created based on this NodePool CRD will have this taint. If you only want specific nodes to have this taint, make sure you have a specific NodePool CRD file created for this purpose (as you can have multiple NodePool CRDs). 
 
-In the following example shows a taint called `test.com/custom-taint` that is added in the `spec.template.spec.taints` field in a NodePool CRD:
+In the following example shows a taint called `test.com/custom-taint` that is added in the `spec.template.spec.taints` field in a [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools):
 
 ```yaml
 apiVersion: karpenter.sh/v1
@@ -215,8 +254,6 @@ spec:
 
 > ![NOTE] Taints can prevent pods from being scheduled to these nodes if they are not tolerated by the pods. A proper toleration must be added to your specific pods to allow them to be scheduled to nodes that are based on this NodePool CRD.
 
-
-
 ### Tolerations for your workloads
 
 Tolerations are a field you place in your workload deployment file to flag what types of tainted nodes these pods can be scheduled to. There are two general behaviors for tolerations:
@@ -224,7 +261,7 @@ Tolerations are a field you place in your workload deployment file to flag what 
 - `NoSchedule` - strict toleration. Only pods with the proper toleration can be scheduled to the node with a specific taint.
 - `PreferNoSchedule` - less strict toleration. AKS will _try_ to avoid placing pods that don't tolerate this node's taint, but it's not gauranteed.
 
-1. **NoSchedule Toleration** example
+1. **NoSchedule Toleration** example:
 
 ```yaml  
    tolerations:  
@@ -234,7 +271,7 @@ Tolerations are a field you place in your workload deployment file to flag what 
      effect: "NoSchedule"  
 ```
 
-2. **PreferNoSchedule Toleration** example
+2. **PreferNoSchedule Toleration** example:
 
 ```yaml
 tolerations:  
