@@ -6,14 +6,14 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-As reported by CastAI, on average Kubernetes clusters only reach [10% CPU utilization][cast-ai-k8s-cost-report] and Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers]. This data signals that underutilized resources are materially contributing to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization.
+In 2025 Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers] and in 2023 Weights and Biases foound that nearly a third of our users are [averaging less than 15% utilization.][wb-gpu-utilization]. This data signals that underutilized resources materially contribute to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization.
 
 [Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS lets customers configure their own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. The result: higher node density, better GPU utilization, and lower infrastructure costs.
 
 This blog explains how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization using Configurable Scheduler Profiles on AKS.
 
 1. [How does kube-scheduler work?](#how-does-the-default-kubernetes-scheduler-place-pods)
-2. [Use Configurable Scheduler Profiles to ncrease node utilization and operator control](#configurable-scheduler-profiles-on-aks)
+2. [Use Configurable Scheduler Profiles to increase node utilization and operator control](#configurable-scheduler-profiles-on-aks)
 3. [Increase AKS cluster CPU utilization up to 85% with Configurable Scheduler](#increase-aks-cpu-utilization)
 4. [Increase AKS cluster GPU or CPU utilization while balancing memory with Configurable Scheduler](#increase-aks-gpu-utilization)
 5. [How do Configurable Scheduler Profiles interact with autoscalers?](#faq)
@@ -38,6 +38,8 @@ Once a node is selected, the binding cycle can process multiple pods in parallel
 5. TopologySpreadConstraints
 
 ![Diagram of the kube-scheduler workflow showing pods entering the scheduling cycle and binding cycle to assign a pod on a node](./kube-scheduler-scheduling-phases-diagram.png)
+
+For a deep dive on the Kubernetes Scheduler visit technical blog from SIG Scheduling contributor and AKS Upstream Engineer, Heba Elayoty, [Deep Dive into the Kubernetes Scheduler Framework][deep-dive-scheduler-framework].
 
 ### Limitations of the default Kubernetes scheduler
 
@@ -209,3 +211,5 @@ With Configurable Scheduler Profiles, teams gain fine-grained control over pod p
 [configure-most-allocated]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster#configure-node-bin-packing-with-mostallocated-plugin
 [configure-multi-config]: https://learn.microsoft.com/azure/aks/configure-aks-scheduler?tabs=new-cluster#configure-multiple-scheduler-profiles
 [#aks-cost-analysis-add-on]: https://learn.microsoft.com/azure/aks/cost-analysis
+[wb-gpu-utilization]: https://wandb.ai/wandb_fc/articles/reports/Monitor-Improve-GPU-Usage-for-Model-Training--Vmlldzo1NDQzNjM3
+[deep-dive-scheduler-framework]: https://helayoty.org/blog/inside-kube-scheduler-the-plugin?r=h58xa
