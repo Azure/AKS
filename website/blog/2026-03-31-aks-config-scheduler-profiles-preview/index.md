@@ -49,7 +49,7 @@ Today, the default scheduler on AKS lacks the flexibility for users to change wh
 
 ## Configurable Scheduler Profiles on AKS
 
-[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows customers to benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defining a custom scheduler. Configurable Scheduler Profiles use a Custom Resource Definition (CRD) that lets users define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a new configuration causes the scheduler to become unhealthy, the controller automatically reverts to the last known good state to ensure cluster stability.
+[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allow customers to benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defining a custom scheduler. Configurable Scheduler Profiles use a Custom Resource Definition (CRD) that lets users define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a new configuration causes the scheduler to become unhealthy, the controller automatically reverts to the last known good state to ensure cluster stability.
 
 ![Architecture diagram showing how Configurable Scheduler Profiles use a CRD and controller to reconcile user-defined profiles with the kube-scheduler deployment](./config-scheduler-profiles.png)
 
@@ -67,7 +67,7 @@ The key takeaway is that each profile expresses a distinct scheduling intent. Th
 
 ### Increase AKS CPU utilization
 
-`RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes. Lastly, it is critical to note that `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals and the scheduling logic may prioritize pod spreading. If you need both high utilization AND zone resilience, define a new profile to achieve both goals as the default scheduler's behavoir resort to pod spreading.
+`RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes. Lastly, it is critical to note that `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals and the scheduling logic may prioritize pod spreading. If you need both high utilization AND zone resilience, define a new profile to achieve both goals as the default scheduler's behavior resort to pod spreading.
 
 By shaping the scoring curve to target a range of 50-85% CPU utilization, operators can increase pod density on provisioned nodes while preserving headroom for bursts, background processes, and system components in CPU-based workloads. [Configure node bin-packing][configure-requested-to-capacity] using the `RequestedToCapacityRatio` strategy to improve utilization and reduce infrastructure costs.
 
@@ -186,10 +186,10 @@ spec:
 4. Can multiple Configurable Scheduler Profiles be used for different workloads on the same cluster? Yes, multiple scheduling profiles can coexist in a single cluster. This allows different placement strategies (for example, cost‑optimized vs. latency‑sensitive workloads) to run side‑by‑side. Visit the documentation for a [multiple scheduler profiles example][configure-multi-config]
     - Multiple profiles can be defined centrally in a single scheduler configuration.
     - Individual workloads select a profile via `schedulerName` in the pod spec.
-5. How do I monitor whether my scheduler profile is improving utilization? These help confirm the scheduler is behaving correctly. Ultimately, you should see higher average node utilization, reduced variance between nodes, fewer lightly‑utilized nodes over time
-   - Node‑level utilization metrics: CPU and memory utilization per node and Distribution of pods across nodes using Azure Monitor Container Insights and `kubectl top nodes` for quick validation
-   - Autoscaler outcomes: fewer scale‑ups during normal load and more decisive scale‑downs after demand drops
-   - Cost Metrics: reduced idle costs when using [Cost-Analysis add-on][aks-cost-analysis-add-on]
+5. How do I monitor whether my scheduler profile is improving utilization? Monitor these signals to confirm that the scheduler is behaving correctly. Over time, you should see higher average node utilization, reduced variance between nodes, and fewer lightly utilized nodes.
+   - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights and `kubectl top nodes` for quick validation.
+   - Review autoscaler outcomes, looking for fewer scale‑ups during normal load and more decisive scale‑downs after demand drops.
+   - Measure cost metrics, such as reduced idle costs when you use the [Cost Analysis add-on][aks-cost-analysis-add-on].
 
 ## Next steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
@@ -211,4 +211,4 @@ With Configurable Scheduler Profiles, teams gain fine-grained control over pod p
 [configure-multi-config]: https://learn.microsoft.com/azure/aks/configure-aks-scheduler?tabs=new-cluster#configure-multiple-scheduler-profiles
 [aks-cost-analysis-add-on]: https://learn.microsoft.com/azure/aks/cost-analysis
 [wb-gpu-utilization]: https://wandb.ai/wandb_fc/articles/reports/Monitor-Improve-GPU-Usage-for-Model-Training--Vmlldzo1NDQzNjM3
-[deep-dive-scheduler-framework]: https://helayoty.org/blog/inside-kube-scheduler-the-plugin?r=h58xa
+[deep-dive-scheduler-framework]: https://helayoty.org/blog/inside-kube-scheduler-the-plugin
