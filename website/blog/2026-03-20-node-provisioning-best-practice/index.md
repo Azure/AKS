@@ -1,5 +1,5 @@
 ---
-title: "Controlling Node Provisioning Outcomes on AKS: PDBs, Affinity, and Topology Spread"
+title: "Controlling Node Provisioning Outcomes on AKS: Taints, Affinity, and Topology Spread"
 description: "Learn AKS best practices for Node Auto-Provisioning, using taints and tolerations, affinity, and topology spread constraints to achieve predictable, resilient pod scheduling."
 date: 2026-03-30
 authors: ["wilson-darko"]
