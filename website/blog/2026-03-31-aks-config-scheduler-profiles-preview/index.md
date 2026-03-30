@@ -64,6 +64,11 @@ While this experiment uses intentionally simple, CPU-bound containers to isolate
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
 The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how MostAllocated and RequestedToCapacityRatio achieve these outcomes.
+| Scheduler / Profile | Scheduling intent | Operator Benefits |
+|---|---|---|
+| Default scheduler<br/>NodeResourcesFit: LeastAllocated | Balance and hotspot reduction | No tuning |
+| Configurable Scheduler Profile<br/>NodeResourcesFit: MostAllocated | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential |
+| Configurable Scheduler Profile<br/>NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | Stronger control over consolidation and burst headroom, finer control than `MostAllocated` |
 
 ### Increase AKS CPU utilization
 
