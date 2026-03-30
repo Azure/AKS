@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-In 2025 Datadog finds most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers] and in 2023 Weights and Biases foound that nearly a third of our users are [averaging less than 15% utilization.][wb-gpu-utilization]. This data signals that underutilized resources materially contribute to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization.
+In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers] and in 2023 Weights and Biases foound that nearly a third of GPU users are [averaging less than 15% utilization.][wb-gpu-utilization]. This data signals that underutilized resources materially contribute to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization.
 
 [Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS lets customers configure their own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. The result: higher node density, better GPU utilization, and lower infrastructure costs.
 
@@ -206,7 +206,6 @@ With Configurable Scheduler Profiles, teams gain fine-grained control over pod p
 [supported-in-tree-scheduling-plugins]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration#supported-in-tree-scheduling-plugins
 [node-bin-packing-configurations]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster
 [datadog-state-of-containers]: https://www.datadoghq.com/state-of-containers-and-serverless/
-[cast-ai-k8s-cost-report]: https://cast.ai/reports/kubernetes-cost-benchmark/
 [configure-requested-to-capacity]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster#configure-node-bin-packing-with-requestedtocapacity-plugin
 [configure-most-allocated]: https://learn.microsoft.com/azure/aks/configure-node-binpack-scheduler?tabs=new-cluster#configure-node-bin-packing-with-mostallocated-plugin
 [configure-multi-config]: https://learn.microsoft.com/azure/aks/configure-aks-scheduler?tabs=new-cluster#configure-multiple-scheduler-profiles
