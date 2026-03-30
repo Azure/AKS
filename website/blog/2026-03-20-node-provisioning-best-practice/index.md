@@ -75,7 +75,7 @@ AKS also publishes [operator best-practices guidance](https://learn.microsoft.co
 
 ## Part 2 — Topology Spread Constraints: tool for zone-aware replicas
 
-**Topology Spread Constraints** let you tell the scheduler: “Keep these replicas balanced across domains like zones or nodes.” The Kubernetes documentation describe it as a way to spread pods across failure domains such as regions, zones, nodes, and custom topology keys.
+**Topology Spread Constraints** let you tell the scheduler: “Keep these replicas balanced across domains like zones or nodes.” The Kubernetes documentation describes them as a way to spread pods across failure domains such as regions, zones, nodes, and custom topology keys.
 
 ### How NAP handles Topology Spread
 
@@ -165,11 +165,13 @@ Standard Example (with nodeAffinity) - “Prefer this node type, but don’t blo
 affinity:
   nodeAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
         preference:
           matchExpressions:
             - key: node.kubernetes.io/instance-type
               operator: In
-              values: ["Standard_D16ds_v5"]
+              values:
+                - Standard_D16ds_v5
 ```
 
  Standard Example - “Never co-locate replicas on the same node”
@@ -247,19 +249,20 @@ metadata:
   name: default
 spec:
   template:
+    spec:
       taints:
-        - key: test.com/custom-taint
-          effect: NoSchedule
+      - key: test.com/custom-taint
+        effect: NoSchedule
 ```
 
-> ![NOTE] Taints can prevent pods from being scheduled to these nodes if they are not tolerated by the pods. A proper toleration must be added to your specific pods to allow them to be scheduled to nodes that are based on this NodePool CRD.
+> **Note**: Taints can prevent pods from being scheduled to these nodes if they are not tolerated by the pods. A proper toleration must be added to your specific pods to allow them to be scheduled to nodes that are based on this NodePool CRD.
 
 ### Tolerations for your workloads
 
 Tolerations are a field you place in your workload deployment file to flag what types of tainted nodes these pods can be scheduled to. There are two general behaviors for tolerations:
 
 - `NoSchedule` - strict toleration. Only pods with the proper toleration can be scheduled to the node with a specific taint.
-- `PreferNoSchedule` - less strict toleration. AKS will _try_ to avoid placing pods that don't tolerate this node's taint, but it's not gauranteed.
+- `PreferNoSchedule` - less strict toleration. AKS will _try_ to avoid placing pods that don't tolerate this node's taint, but it's not guaranteed.
 
 1. **NoSchedule Toleration** example:
 
@@ -296,9 +299,9 @@ When using NAP, you can set your resource needs slightly higher than you expect 
 
 - How can I reduce latency when trying to schedule nodes?
 
-You can consider enabling features such as [Artifact Stream](https://learn.microsoft.com/en-us/azure/aks/artifact-streaming) which can decrease pod readiness time. 
+You can consider enabling features such as [Artifact Stream](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time. 
 
-For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/en-us/azure/aks/best-practices-performance-scale).
+For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/azure/aks/best-practices-performance-scale).
 
 ## Next steps
 
