@@ -16,7 +16,7 @@ This blog explains how the default Kubernetes scheduler places pods, where the d
 2. [Use Configurable Scheduler Profiles to increase node utilization and operator control](#configurable-scheduler-profiles-on-aks)
 3. [Increase AKS cluster CPU utilization up to 85% with Configurable Scheduler](#increase-aks-cpu-utilization)
 4. [Increase AKS cluster GPU or CPU utilization while balancing memory with Configurable Scheduler](#increase-aks-gpu-utilization)
-5. [How do Configurable Scheduler Profiles interact with autoscalers?](#faq)
+5. [FAQ: How do Configurable Scheduler Profiles interact with autoscalers?](#faq)
 
 <!-- truncate -->
 
@@ -68,11 +68,11 @@ The key takeaway is that each profile expresses a distinct scheduling intent. Th
 |---|---|---|
 | Default scheduler<br/>NodeResourcesFit: LeastAllocated | Balance and hotspot reduction | No tuning |
 | Configurable Scheduler Profile<br/>NodeResourcesFit: MostAllocated | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential |
-| Configurable Scheduler Profile<br/>NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | Stronger control over consolidation and burst headroom, finer control than `MostAllocated` |
+| Configurable Scheduler Profile<br/>NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated` |
 
 ### Increase AKS CPU utilization
 
-`RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes. Lastly, it is critical to note that `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals and the scheduling logic may prioritize pod spreading. If you need both high utilization AND zone resilience, define a new profile to achieve both goals as the default scheduler's behavior resort to pod spreading.
+`RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes. Lastly, it is critical to note that `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals and the scheduling logic may prioritize pod spreading. If you need both high utilization _and_ zone resilience, define a new profile to achieve both goals.
 
 By shaping the scoring curve to target a range of 50-85% CPU utilization, operators can increase pod density on provisioned nodes while preserving headroom for bursts, background processes, and system components in CPU-based workloads. [Configure node bin-packing][configure-requested-to-capacity] using the `RequestedToCapacityRatio` strategy to improve utilization and reduce infrastructure costs.
 
@@ -184,7 +184,7 @@ spec:
 
 1. Which Bin packing strategy does AKS recommend to increase node utilization? AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes. For example, this bin packing strategy allows users to configure a target utilization of 85%.
 2. How does Configurable Scheduler Profiles interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CA), and Vertical Pod Autoscaler (VPA)? These components are complementary to each other. Configurable Scheduler Profiles influence how pods are placed on nodes, while autoscalers make scaling decisions based on resource utilization and pending pods.
-    - **Node Auto Provisioning (NAP)** is triggered when pods are unschedulable. If a suitable node already exists, that pod will be scheduled with the defined Configurable Scheduler Profile. If no suitable node exists, NAP provisions new capacity and schedules pod.
+    - **Node Auto Provisioning (NAP)** is triggered when pods are unschedulable. If a suitable node already exists, that pod will be scheduled with the defined Configurable Scheduler Profile. If no suitable node exists, NAP provisions new capacity and schedules the pod.
     - **Cluster Autoscaler (CA)** manages node scale-up and scale-down. On scale-up, CA is triggered when there aren't any suitable nodes available for the pending pod. Using Configurable Scheduler Profiles ensures nodes are only scaled when provisioned resources are no longer suitable. On scale-down, CA is triggered when nodes fall below utilization thresholds, the default is 50%. As active nodes are packed more efficiently, underutilized nodes become easier candidates for removal.
     - **VPA** optimizes resource utilization patterns in pods. As pods are recreated with updated CPU and memory requests, they are scheduled using the configured scheduler profile, allowing placement decisions to reflect the new resource requirements.
 3. What if a resource, like `memory`, is omitted in the `scoringStrategy`? If a resource is omitted in the `scoringStrategy`, then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile. If that resource should be considered, but with a reduced influence on the final score, it can be included with reduced weight.
@@ -200,7 +200,7 @@ spec:
 
 With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to application resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
 
-- For best practices using the kube-scheduler visit [kube-scheduler best practices][best-practices-advanced-scheduler]
+- For additional guidance and best practices, see [kube-scheduler best practices][best-practices-advanced-scheduler]
 - Increase node utilization using [Configurable Scheduler Profiles][node-bin-packing-configurations]
 - If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
 
