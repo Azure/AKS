@@ -474,3 +474,12 @@ jaiveer-katariya:
   page: true
   socials:
     github: jaiveerk
+
+kevin-thomas:
+  name: Kevin Thomas
+  title: Product Manager for Azure Kubernetes Service
+  url: https://www.linkedin.com/in/kevin-krupa-thomas/
+  image_url: https://github.com/kevinkrp93.png
+  page: true
+  socials:
+    github: kevinkrp93
