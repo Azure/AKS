@@ -474,3 +474,13 @@ jaiveer-katariya:
   page: true
   socials:
     github: jaiveerk
+
+
+jonathan-wang:
+  name: Jonathan Wang
+  title: Product Manager for Azure Container Networking
+  url: https://www.linkedin.com/in/jonathanwhwang/
+  image_url: 
+  page: true
+  socials:
+    github: msftjonw
