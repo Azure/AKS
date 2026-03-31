@@ -5,7 +5,6 @@ description: "Announcing agent skills for AKS, easily pluggable into any agent t
 authors: [julia-yin]
 tags: [agent, skills, mcp, developer]
 draft: true
-image: ./hero-image.png
 ---
 
 We're excited to announce **agent skills for AKS**, bringing AKS best practices and troubleshooting guidance directly into **any AI agent** of your choosing. The AKS-specific skills are now available as part of the **GitHub Copilot for Azure** extension, directly available through VS Code, Copilot CLI, and Claude and pluggable into any compatible agent.
@@ -13,6 +12,9 @@ We're excited to announce **agent skills for AKS**, bringing AKS best practices 
 For AKS, skills matter because AI agents already carry a good baseline of Kubernetes and AKS knowledge, but that knowledge is only as current as their training data and varies across models. What agents typically lack is the prescriptive, up-to-date guidance specific to AKS: what the AKS engineering team recommends today, the exact workflows and tools for real troubleshooting scenarios, and the guardrails that keep changes safe in production. Today, we're releasing the first set of skills covering the two areas teams ask for help with most: best practices for AKS clusters and scenario-based troubleshooting.
 
 <!-- truncate -->
+
+![Diagram showing artistic rendition of the components](./hero-image.png
+)
 
 ## What are agent skills?
 
