@@ -14,11 +14,13 @@ tags:
 
 DNS and service load-balancing sit on the hot path for almost every request in a Kubernetes cluster. This post explores how combining Upstream NodeLocal DNSCache with Cilium Local Redirect Policy can reduce cross-node DNS traffic and keep common network decisions on the fast path.
 
+<!-- truncate -->
+
 ## Why this matters
 
 When DNS resolution or Service load-balancing spills across nodes or bounces between user space and kernel space, the overhead is small per request—but it adds up quickly at scale: extra hops, more packets, more CPU time, and more variance.
 
-Throughout this post, Upstream NodeLocal DNSCache refers to the general pattern of running a DNS cache close to workloads (typically on each node), and Cilium Local Redirect Policy refers to the general capability to redirect traffic to local endpoints when they exist. Azure LocalDNS does not support Cilium Local Redirect Policy as of today.
+Throughout this post, Upstream NodeLocal DNSCache refers to the general pattern of running a DNS cache close to workloads (typically on each node), and Cilium Local Redirect Policy refers to the general capability to redirect traffic to local endpoints when they exist.
 
 ## Where the overhead comes from
 
@@ -40,7 +42,7 @@ The conceptual benefit is straightforward: **reduce how often DNS traffic needs 
 
 **Cilium** uses eBPF to implement networking and security functions with a high-performance data path. Conceptually, this enables common decisions-such as how to translate a Service to a concrete backend-to be made efficiently as packets traverse the node, with minimal context switching and consistent behavior at scale.
 
-**Local Redirect Policy (LRP)** adds a locality preference: if a suitable backend exists on the same node, traffic can be steered there rather than traversing the node-to-node network. This can be especially effective for per-node agents and caches (including DNS caches), where the goal is not global load distribution but minimizing hops for a latency-sensitive, high-rate traffic class. Azure LocalDNS does not support Cilium Local Redirect Policy as of today.
+**Local Redirect Policy (LRP)** adds a locality preference: if a suitable backend exists on the same node, traffic can be steered there rather than traversing the node-to-node network. This can be especially effective for per-node agents and caches (including DNS caches), where the goal is not global load distribution but minimizing hops for a latency-sensitive, high-rate traffic class.
 
 ### Why the combination works well
 
