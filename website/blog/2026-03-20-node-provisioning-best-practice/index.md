@@ -1,6 +1,6 @@
 ---
-title: "Controlling Node Provisioning Outcomes on AKS: Taints, Affinity, and Topology Spread"
-description: "Learn AKS best practices for Node Auto-Provisioning, using taints and tolerations, affinity, and topology spread constraints to achieve predictable, resilient pod scheduling."
+title: "Control where your pods land on AKS with NAP"
+description: "Combine taints, affinity, and topology spread constraints with AKS Node Auto-Provisioning to control where your pods land."
 date: 2026-03-30
 authors: ["wilson-darko"]
 tags:
@@ -52,7 +52,7 @@ NAP uses the following levers to control workload scheduling:
 - NodeClaims - details the state of provisioned and provisioning nodes
 - Workload spec / deployment file - The Kubernetes manifest that defines your workload's resource requirements and scheduling constraints (Node Affinity, Tolerations, and Topology Spread Constraints)
 
-Simply put, Workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
+Simply put, workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
 
 You can think of the NodePool/AKSNodeClass as your “node policy envelope,” which your workload intent has to fit inside it.
 
@@ -191,7 +191,7 @@ topologySpreadConstraints:
 
 ### How do Topology Spread Constraints interact with Node Affinity rules?
 
-Both Topology Spread Constraints and Node Affinity have hard and soft controls. If you set both, depending on how they are set Kubernetes and AKS with factor them into scheduling logic in multiple paths. 
+Both Topology Spread Constraints and Node Affinity have hard and soft controls. If you set both, depending on how you configure them, Kubernetes and AKS will factor them into scheduling logic in multiple ways.
 
 Node Affinity rules can either be:
 
@@ -225,8 +225,9 @@ The following table lists what to expect when you set these two constraints toge
 - If affinity restricts you to 1 zone, you cannot also require even spread across 3 zones with `DoNotSchedule`.
 
 3. Use nodeAffinityPolicy: Honor when your intent is “spread within the nodes I’ve made eligible via affinity.”
+## Taints and tolerations
 
-## Part 4 — Taints and Tolerations  
+Taints and tolerations control which pods can run on which nodes. Think of a taint as a "keep out" sign on a node. If your pod doesn't carry a matching toleration, the scheduler skips that node.
 
 Taints and tolerations are mechanisms used in Kubernetes to control which pods can be scheduled onto which nodes. They allow you to ensure that certain pods do not run on particular nodes, enabling more fine-grained control over your clusters.
 
@@ -251,14 +252,15 @@ spec:
   template:
     spec:
       taints:
-      - key: test.com/custom-taint
-        effect: NoSchedule
+        - key: test.com/custom-taint
+          effect: NoSchedule
 ```
 
 > **Note**: Taints can prevent pods from being scheduled to these nodes if they are not tolerated by the pods. A proper toleration must be added to your specific pods to allow them to be scheduled to nodes that are based on this NodePool CRD.
+Tolerations are a field in your pod spec that declare which taint effects a pod can accept. The two most common taint effects are:
 
-### Tolerations for your workloads
-
+- `NoSchedule`: strict. Only pods with a matching toleration can land on the tainted node.
+- `PreferNoSchedule`: best-effort. AKS tries to avoid placing pods that don't tolerate the taint, but doesn't guarantee it.
 Tolerations are a field you place in your workload deployment file to flag what types of tainted nodes these pods can be scheduled to. There are two general behaviors for tolerations:
 
 - `NoSchedule` - strict toleration. Only pods with the proper toleration can be scheduled to the node with a specific taint.
@@ -299,7 +301,7 @@ When using NAP, you can set your resource needs slightly higher than you expect 
 
 - How can I reduce latency when trying to schedule nodes?
 
-You can consider enabling features such as [Artifact Stream](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time. 
+You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time. 
 
 For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/azure/aks/best-practices-performance-scale).
 
