@@ -1,6 +1,6 @@
 ---
 title: "Announcing Azure Container Storage v2.1.0: Elastic SAN integration, on-demand installation, and node placement"
-description: "Explore what’s new in Azure Container Storage v2.1.0 with Elastic SAN integration, modular on‑demand installation, and enhanced node selector support."
+description: "Explore what’s new in Azure Container Storage v2.1.0 with Elastic SAN integration, modular on-demand installation, and enhanced node selector support."
 date: 2026-04-08 # date is important. future dates will not be published
 authors:
   - saurabh-sharma
@@ -48,12 +48,13 @@ Here are the key advantages we see customers looking for:
 
 **Simplified management with an on-ramp to open-source flexibility**: Azure Container Storage v2 is designed so you install only the components needed for the selected storage type, and it’s aligned with a broader direction where both Azure Container Storage v2 and the SAN CSI Driver are planned to be open sourced to give customers flexibility in how they orchestrate storage.  
 
-![Azure Container Storage v2.1.0 supported storage types and volume provisioning](./acstorv2-architecture.png)
+![Diagram showing Azure Container Storage v2.1.0 architecture with supported storage types (Elastic SAN and local NVMe) and the volume provisioning workflow for AKS workloads](./acstorv2-architecture.png)
 
 ## Which workloads benefit most
 
 Elastic SAN with Azure Container Storage is a strong fit for stateful workloads that combine many volumes with elastic provisioning needs. Here are a few workload patterns we’ve seen align well:
-DBaaS / multi-tenant database platforms: A representative scenario is a DBaaS provider running containerized databases on AKS. The key requirements tend to be:
+
+**DBaaS / multi-tenant database platforms**: A representative scenario is a DBaaS provider running containerized databases on AKS. The key requirements tend to be:
 
 - scale out workload instances while keeping infrastructure overhead manageable
 - provision and attach many PVs quickly
@@ -68,21 +69,20 @@ DBaaS / multi-tenant database platforms: A representative scenario is a DBaaS pr
 Azure Container Storage v2.1.0 supports a lightweight, modular installation model. With v2.1.0, you have flexibility in how you enable Azure Container Storage. You can enable Azure Container Storage first, then choose a backing storage type when you need it, so you deploy only the components required for that storage type. It supports two kinds of modes for installation:
 
 **Flow A**: Enable Azure Container Storage and choose storage type upfront
-If you know which storage type (local NVMe/Elastic SAN) you want to use up-front, enable Azure Container Storage with your preferred storage type so the relevant driver and a default StorageClass can be configured.
+If you know which storage type (local NVMe/Elastic SAN) you want to use upfront, enable Azure Container Storage with your preferred storage type so the relevant driver and a default StorageClass can be configured.
 
 **Flow B**: Enable Azure Container Storage first, then add storage type later
-If you want to keep the initial install lightweight, you can enable Azure Container Storage first and then create a StorageClass of your preferred storage type which triggers installation of the respective CSI driver when you need it.  
-configured.
+If you want to keep the initial install lightweight, you can enable Azure Container Storage first and then create a StorageClass of your preferred storage type which triggers installation of the respective CSI driver when you need it.
 
 ## Node selector support for component placement
 
-In many real clusters, you don’t want “every component everywhere” You might have:
+In production clusters, running every component on every node usually isn’t the goal. You might have:
 
 - a dedicated node pool optimized for storage-heavy workloads
 - GPU pools where you want to minimize background DaemonSet footprint
 - mixed compute/storage topologies where placement matters
 
-Azure Container Storage v2.1.0 adds node selector support so you can control where Azure Container Storage components run, helping optimize performance and resource usage
+Azure Container Storage v2.1.0 adds node selector support so you can control where Azure Container Storage components run, helping optimize performance and resource usage.
 
 ## Getting started with Azure Container Storage v2.1.0
 
@@ -90,9 +90,9 @@ Ready to run your stateful workloads using Azure Container Storage v2.1.0? Here 
 
 - New to Azure Container Storage? Start with our [comprehensive documentation](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction)
 
-- Want to use Azure Elastic SAN as storage type? Follow [the step-by-step guide](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-container-storage-with-local-disk)
+- Want to use Azure Elastic SAN as storage type? Follow [the step-by-step guide](https://learn.microsoft.com/azure/storage/container-storage/use-container-storage-with-elastic-san?tabs=cli)
 
-- Want to use local NVMe as storage type? Follow [the step-by-step guide](https://learn.microsoft.com/azure/storage/container-storage/use-container-storage-with-elastic-san?tabs=cli)
+- Want to use local NVMe as storage type? Follow [the step-by-step guide](https://learn.microsoft.com/azure/storage/container-storage/use-container-storage-with-local-disk)
 
 - Deploying specific workloads? Check out our updated deployment guide for [PostgreSQL](https://learn.microsoft.com/azure/aks/postgresql-ha-overview)
 
