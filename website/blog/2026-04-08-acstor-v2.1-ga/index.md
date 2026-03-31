@@ -11,9 +11,9 @@ tags:
   - databases
 ---
 
-## Introduction
-
 Stateful workloads on Kubernetes continue to demand not only faster performance but also larger scale and more streamlined operational simplicity. [Azure Container Storage v2.1.0](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction) is now generally available with three headline improvements: a native Elastic SAN (ESAN) integration, a modular on-demand installation model, and node selector support to control where Azure Container Storage components run.
+
+<!-- truncate -->
 
 ## What’s new in v2.1.0
 
@@ -48,7 +48,7 @@ Here are the key advantages we see customers looking for:
 
 **Simplified management with an on-ramp to open-source flexibility**: Azure Container Storage v2 is designed so you install only the components needed for the selected storage type, and it’s aligned with a broader direction where both Azure Container Storage v2 and the SAN CSI Driver are planned to be open sourced to give customers flexibility in how they orchestrate storage.  
 
-![Azure Container Storage v2.1.0](./acstorv2-architecture.png)
+![Azure Container Storage v2.1.0 supported storage types and volume provisioning](./acstorv2-architecture.png)
 
 ## Which workloads benefit most
 
