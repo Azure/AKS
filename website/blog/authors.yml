@@ -480,7 +480,7 @@ jonathan-wang:
   name: Jonathan Wang
   title: Product Manager for Azure Container Networking
   url: https://www.linkedin.com/in/jonathanwhwang/
-  image_url: 
-  page: true
+  page: false
   socials:
+    linkedin: jonathanwhwang
     github: msftjonw

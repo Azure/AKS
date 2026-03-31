@@ -1,5 +1,5 @@
 ---
-title: "Improving Kubernetes Networking Performance with NodeLocal DNSCache and Cilium"
+title: "Improving Cilium Performance with NodeLocal DNSCache and Cilium"
 date: 2026-03-31
 description: "Reduce cross-node DNS traffic and keep Service decisions on the fast path by combining Upstream NodeLocal DNSCache with Cilium Local Redirect Policy on AKS."
 authors: [jonathan-wang]
@@ -13,8 +13,6 @@ tags:
 ---
 
 DNS and service load-balancing sit on the hot path for almost every request in a Kubernetes cluster. This post explores how combining Upstream NodeLocal DNSCache with Cilium Local Redirect Policy can reduce cross-node DNS traffic and keep common network decisions on the fast path.
-
-<!-- truncate -->
 
 ## Why this matters
 
