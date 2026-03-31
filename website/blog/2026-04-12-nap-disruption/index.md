@@ -7,7 +7,6 @@ tags:
   - node-auto-provisioning
 ---
 
-## Background
 AKS users want to ensure that their workloads scale when needed and are disrupted only when (and where) desired. 
 AKS Node Auto-Provisioning (NAP) is designed to keep clusters efficient: it provisions nodes for pending pods, and it also continuously *removes* nodes when it’s safe to do so (for example, when nodes are empty or underutilized). That node-removal **disruption** is where many production surprises happen.
 
@@ -26,6 +25,9 @@ If you’re new to these NAP features, this post will give you “good defaults�
 ---
 
 <!-- truncate -->
+
+![Diagram showing two concentric defensive layers protecting workloads during NAP node consolidation](./hero-image.png
+)
 
 :::info
 
