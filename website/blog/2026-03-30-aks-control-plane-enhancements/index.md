@@ -9,9 +9,7 @@ tags:
   - performance
 ---
 
-AKS is introducing several control plane enhancements to improve API server scalability, performance, and stability for large clusters and demanding workloads.
-
-<!-- truncate -->
+AKS is introducing several control plane enhancements to improve scalability, performance, and stability for large clusters and demanding workloads.
 
 ## [Streaming encoder for LIST responses](https://kubernetes.io/blog/2025/05/09/kubernetes-v1-33-streaming-list-responses/)
 
@@ -47,7 +45,7 @@ When the API server remains unstable after scaling to the maximum control plane 
 
 Defragmentation is essential for reclaiming unused space in etcd by rewriting fragmented data into contiguous storage. Because defragmentation is a blocking operation, it is performed on one etcd replica at a time, and larger etcd databases can increase defragmentation duration. AKS has introduced etcd defragmentation optimizations for large clusters, reducing defragmentation time by up to 50%. For example, in a sample cluster with an etcd size of about 2 GB, per-replica defragmentation time decreased from about 18 seconds to about 9 seconds.
 
-### Benefits 
+### Benefits
 
 - Reduced API server latency spikes and intermittent timeouts during etcd operations that serve client read and write traffic.
 
