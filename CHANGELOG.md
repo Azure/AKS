@@ -3,7 +3,7 @@
 
 ## Changelog Since v20260305
 
-> Auto-generated draft of upcoming changes since the [2026-03-05 release](https://github.com/Azure/AKS/releases/tag/2026-03-05). This section covers merged PRs through daily branch `official/v20260331`.
+> Auto-generated draft of upcoming changes since the [2026-03-05 release](https://github.com/Azure/AKS/releases/tag/2026-03-05). This section covers merged PRs through daily branch `official/v20260329`.
 > 
 > **This is a working draft for PM review.** Entries marked `(PM: @alias)` were flagged by the PR author; entries marked `(AI-flagged: label)` were identified by automated analysis using the v2 scoring rubric.
 
