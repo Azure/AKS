@@ -5,6 +5,7 @@ description: "Announcing agent skills for AKS, easily pluggable into any agent t
 authors: [julia-yin]
 tags: [agent, skills, mcp, developer]
 draft: true
+image: ./hero-image.png
 ---
 
 We're excited to announce **agent skills for AKS**, bringing AKS best practices and troubleshooting guidance directly into **any AI agent** of your choosing. The AKS-specific skills are now available as part of the **GitHub Copilot for Azure** extension, directly available through VS Code, Copilot CLI, and Claude and pluggable into any compatible agent.
