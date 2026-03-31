@@ -11,6 +11,8 @@ tags:
 
 AKS is introducing several control plane enhancements to improve scalability, performance, and stability for large clusters and demanding workloads.
 
+<!-- truncate -->
+
 ## [Streaming encoder for LIST responses](https://kubernetes.io/blog/2025/05/09/kubernetes-v1-33-streaming-list-responses/)
 
 API server's response encoders traditionally just serialize the entire response into a single contiguous memory and perform one [ResponseWriter.Write](https://pkg.go.dev/net/http#ResponseWriter.Write) call to transmit data to the client. If multiple large LIST requests occur simultaneously, the cumulative memory consumption can grow quickly, leading to Out-of-Memory (OOM) events that compromise cluster stability. Kubernetes v1.33 introduced streaming encoding for LIST responses, which processes and transmits each item individually, allowing memory to be freed progressively as a frame or chunk is transmitted. In benchmarks, this reduced memory usage by up to 20x in heavy LIST scenarios.
