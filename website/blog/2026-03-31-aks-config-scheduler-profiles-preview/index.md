@@ -220,7 +220,7 @@ spec:
 
 ## Next steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
-With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to application resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
+With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to application resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves return on investment (ROI) but also accelerates development by allowing more jobs to run concurrently and reliably.
 
 - For additional guidance and best practices, see [kube-scheduler best practices][best-practices-advanced-scheduler]
 - Increase node utilization using [Configurable Scheduler Profiles][node-bin-packing-configurations]
