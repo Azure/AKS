@@ -1,6 +1,6 @@
 ---
 title: "AKS Control Plane Enhancements"
-description: "Learn how AKS improves control plane scalability and stability with streaming LIST encoding, increased resource allocation, and API server guardrails"
+description: "Learn how AKS improves control plane scalability and stability through a new set of control plane enhancements"
 date: 2026-03-30
 authors: ["kevin-thomas"]
 tags:
