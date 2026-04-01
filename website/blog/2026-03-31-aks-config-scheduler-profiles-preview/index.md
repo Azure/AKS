@@ -71,7 +71,7 @@ While this experiment uses intentionally simple, CPU-bound containers to isolate
 |---|---|---|---|
 | Default scheduler | NodeResourcesFit: LeastAllocated | Balance and hotspot reduction | No tuning |
 | Configurable Scheduler Profile | NodeResourcesFit: MostAllocated | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential |
-| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅**Recommended Strategy** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated`    |
+| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy:** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated`    |
 
 ### Increase AKS CPU utilization
 
@@ -185,11 +185,11 @@ spec:
 
 ### FAQ
 
-1. Which Bin packing strategy does AKS recommend to increase node utilization?
+1. Which bin-packing strategy does AKS recommend to increase node utilization?
 
-    AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes. For example, this bin packing strategy allows users to configure a target utilization of 85%.
+AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes. For example, this bin packing strategy allows users to configure a target utilization of 85%.
 
-2. How does Configurable Scheduler Profiles interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CA), and Vertical Pod Autoscaler (VPA)?
+2. How do Configurable Scheduler Profiles interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CA), and Vertical Pod Autoscaler (VPA)?
 
     These components are complementary to each other. Configurable Scheduler Profiles influence how pods are placed on nodes, while autoscalers make scaling decisions based on resource utilization and pending pods.
 
@@ -201,12 +201,14 @@ spec:
 
     If a resource is omitted in the `scoringStrategy`, then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile. If that resource should be considered, but with a reduced influence on the final score, it can be included with reduced weight.
 
-4. Can multiple Configurable Scheduler Profiles be used for different workloads on the same cluster? Yes, multiple scheduling profiles can coexist in a single cluster. This allows different placement strategies (for example, cost‑optimized vs. latency‑sensitive workloads) to run side‑by‑side. Visit the documentation for a [multiple scheduler profiles example][configure-multi-config]
+4. Can multiple Configurable Scheduler Profiles be used for different workloads on the same cluster?
+
+    Yes, multiple scheduling profiles can coexist in a single cluster. This allows different placement strategies (for example, cost‑optimized vs. latency‑sensitive workloads) to run side‑by‑side. Visit the documentation for a [multiple scheduler profiles example][configure-multi-config]
     - Multiple profiles can be defined centrally in a single scheduler configuration.
     - Individual workloads select a profile via `schedulerName` in the pod spec.
 
 5. How do I monitor whether my scheduler profile is improving utilization? Monitor these signals to confirm that the scheduler is behaving correctly. Over time, you should see higher average node utilization, reduced variance between nodes, and fewer lightly utilized nodes.
-   - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights, and AKS node viewer [tool][aks-node-viewer] or and `kubectl top nodes` for quick validation.
+   - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights, the AKS node viewer [tool][aks-node-viewer], or `kubectl top nodes` for quick validation.
    - Review autoscaler outcomes, looking for fewer scale‑ups during normal load and more decisive scale‑downs after demand drops.
    - Measure cost metrics, such as reduced idle costs when you use the [Cost Analysis add-on][aks-cost-analysis-add-on].
 
