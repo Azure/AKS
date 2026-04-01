@@ -13,7 +13,7 @@ In 2025, Datadog found most Kubernetes containers use less than [25% of their re
 This blog explains how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization using Configurable Scheduler Profiles on AKS.
 
 1. [How does kube-scheduler work?](#how-does-the-default-kubernetes-scheduler-place-pods)
-2. [Use Configurable Scheduler Profiles to increase node utilization and operator control](#configurable-scheduler-profiles-on-aks)
+2. [Use Configurable Scheduler Profiles to increase node utilization and operator control](#increase-node-utilization-and-operator-control)
 3. [Increase AKS cluster CPU utilization up to 85% with Configurable Scheduler](#increase-aks-cpu-utilization)
 4. [Increase AKS cluster GPU or CPU utilization while balancing memory with Configurable Scheduler](#increase-aks-gpu-utilization)
 5. [FAQ: How do Configurable Scheduler Profiles interact with autoscalers?](#faq)
@@ -57,14 +57,17 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 
 ## Increase node utilization and operator control
 
-In this simple scale-out scenario, when you manually increase replicas from 8 to 30 with identical pod specs, the default scheduler distributes pods evenly across nodes. Configurable Scheduler Profiles that use the `NodeResourcesFit` plugin show a visible consolidation pattern that differs from the default scheduler's logic. Instead of spreading pods evenly, the scheduler intentionally concentrates workloads onto fewer nodes. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
+The default scheduler distributes pods evenly across nodes in this simple scale-out scenario, manually increasing CPU-bound replicas from 8 to 30 with identical pod specs.
+
+Configurable Scheduler Profiles that use the `NodeResourcesFit` plugin show a visible consolidation pattern that differs from the default scheduler. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
 
 While this experiment uses intentionally simple, CPU-bound containers to isolate scheduling behavior, the placement patterns observed here generalize to more complex workloads where consolidation and utilization efficiency matter. This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread.
 
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
-The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how MostAllocated and RequestedToCapacityRatio achieve these outcomes.
-| Scheduler | Profile | Scheduling intent | Operator Benefits |
+**The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
+
+| Scheduler | Scoring Strategy | Scheduling intent | Operator Benefits |
 |---|---|---|---|
 | Default scheduler | NodeResourcesFit: LeastAllocated | Balance and hotspot reduction | No tuning |
 | Configurable Scheduler Profile | NodeResourcesFit: MostAllocated | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential |
