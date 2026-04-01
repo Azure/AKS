@@ -61,13 +61,11 @@ In this simple scale-out scenario, manually increasing identical CPU-bound repli
 
 Configurable Scheduler Profiles configured for bin-packing show a visible consolidation pattern that differs from the default scheduler, and improves capacity for new pods. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
 
-#### Scenario: Increase CPU utilization
-
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
 While this experiment uses intentionally simple, CPU-bound containers to isolate scheduling behavior, the placement patterns observed here can be applied to GPU-bound workloads where consolidation and utilization efficiency matter. In this constrained GPU scenario the bin‑packing scheduler plays a critical role in maximizing usable capacity of 4 GPU's spread across 2 nodes. Consolidating single‑GPU workloads onto the same node instead of spreading them evenly, the scheduler avoids stranding idle GPUs and enables all four GPUs to be actively used before new nodes are required.
 
-#### Scenario: Increase GPU utilization
+![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler for gpu's across multiple scheduling iterations](./default-config-scheduler-comparison-gpu.png)
 
 This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
 
@@ -75,7 +73,7 @@ This change in distribution shape enables downstream efficiencies: improved cont
 |---|---|---|---|
 | Default scheduler | NodeResourcesFit: LeastAllocated | Balance and hotspot reduction | No tuning |
 | Configurable Scheduler Profile | NodeResourcesFit: MostAllocated | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential |
-| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy:** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated`    |
+| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated`    |
 
 ### Increase AKS CPU utilization
 
