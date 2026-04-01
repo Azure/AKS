@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023, Weights and Biases found that nearly a third of GPU users [average less than 15% utilization][wb-gpu-utilization]. This data signals that underutilized resources materially contribute to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler plays a critical role in node utilization.
+In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023, Weights and Biases found that nearly a third of GPU users [average less than 15% utilization][wb-gpu-utilization]. Underutilized resources materially contribute to increased infrastructure cost and this data signals that most users can greatly improve resource utilization. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler plays a critical role in node utilization.
 
 [Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS lets customers configure their own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. **The result: higher node density, better GPU utilization, and lower infrastructure costs.**
 
