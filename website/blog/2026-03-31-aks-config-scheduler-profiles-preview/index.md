@@ -61,13 +61,13 @@ In this simple scale-out scenario, manually increasing identical CPU-bound repli
 
 Configurable Scheduler Profiles configured for bin-packing show a visible consolidation pattern that differs from the default scheduler, and improves capacity for new pods. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
 
-**Scenario: Increase CPU utilization**
+#### Scenario: Increase CPU utilization
 
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
-While this experiment uses intentionally simple, CPU-bound containers to isolate scheduling behavior, the placement patterns observed here can be applied to GPU-bound workloads where consolidation and utilization efficiency matter. In this constrained GPU scenario the bin‑packing scheduler plays a critical role in maximizing usable capacity of 4 GPU's spread across 2 nodes. Consolidating single‑GPU workloads onto the same node instead of spreading them evenly, the scheduler avoids stranding idle GPUs and enables all four GPUs to be actively used before new nodes are required. 
+While this experiment uses intentionally simple, CPU-bound containers to isolate scheduling behavior, the placement patterns observed here can be applied to GPU-bound workloads where consolidation and utilization efficiency matter. In this constrained GPU scenario the bin‑packing scheduler plays a critical role in maximizing usable capacity of 4 GPU's spread across 2 nodes. Consolidating single‑GPU workloads onto the same node instead of spreading them evenly, the scheduler avoids stranding idle GPUs and enables all four GPUs to be actively used before new nodes are required.
 
-**Scenario: Increase GPU utilization**
+#### Scenario: Increase GPU utilization
 
 This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
 
@@ -191,31 +191,35 @@ spec:
 
 1. Which bin-packing strategy does AKS recommend to increase node utilization?
 
-AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes. For example, this bin packing strategy allows users to configure a target utilization of 85%.
+   AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it provides a more granular scoring approach allowing users to define an ideal utilization curve for their respective nodes. For example, this bin packing strategy allows users to configure a target utilization of 85%.
 
 2. How do Configurable Scheduler Profiles interact with autoscalers such as Node Auto Provisioning (NAP), Cluster Autoscaler (CA), and Vertical Pod Autoscaler (VPA)?
 
-    These components are complementary to each other. Configurable Scheduler Profiles influence how pods are placed on nodes, while autoscalers make scaling decisions based on resource utilization and pending pods.
+   These components are complementary to each other. Configurable Scheduler Profiles influence how pods are placed on nodes, while autoscalers make scaling decisions based on resource utilization and pending pods.
 
-    - **Node Auto Provisioning (NAP)** is triggered when pods are unschedulable. If a suitable node already exists, that pod will be scheduled with the defined Configurable Scheduler Profile. If no suitable node exists, NAP provisions new capacity and schedules the pod.
-    - **Cluster Autoscaler (CA)** manages node scale-up and scale-down. On scale-up, CA is triggered when there aren't any suitable nodes available for the pending pod. Using Configurable Scheduler Profiles ensures nodes are only scaled when provisioned resources are no longer suitable. On scale-down, CA is triggered when nodes fall below utilization thresholds, the default is 50%. As active nodes are packed more efficiently, underutilized nodes become easier candidates for removal.
-    - **VPA** optimizes resource utilization patterns in pods. As pods are recreated with updated CPU and memory requests, they are scheduled using the configured scheduler profile, allowing placement decisions to reflect the new resource requirements.
+   - **Node Auto Provisioning (NAP)** is triggered when pods are unschedulable. If a suitable node already exists, that pod will be scheduled with the defined Configurable Scheduler Profile. If no suitable node exists, NAP provisions new capacity and schedules the pod.
+   - **Cluster Autoscaler (CA)** manages node scale-up and scale-down. On scale-up, CA is triggered when there aren't any suitable nodes available for the pending pod. Using Configurable Scheduler Profiles ensures nodes are only scaled when provisioned resources are no longer suitable. On scale-down, CA is triggered when nodes fall below utilization thresholds, the default is 50%. As active nodes are packed more efficiently, underutilized nodes become easier candidates for removal.
+   - **Vertical Pod Autoscaler (VPA)** optimizes resource utilization patterns in pods. As pods are recreated with updated CPU and memory requests, they are scheduled using the configured scheduler profile, allowing placement decisions to reflect the new resource requirements.
 
 3. What if a resource, like `memory`, is omitted in the `scoringStrategy`?
 
-    If a resource is omitted in the `scoringStrategy`, then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile. If that resource should be considered, but with a reduced influence on the final score, it can be included with reduced weight.
+   If a resource is omitted in the `scoringStrategy`, then that resource will not be considered in the filter or scoring cycles of the defined Configurable Scheduler Profile. If that resource should be considered, but with a reduced influence on the final score, it can be included with reduced weight.
 
 4. Can multiple Configurable Scheduler Profiles be used for different workloads on the same cluster?
 
-    Yes, multiple scheduling profiles can coexist in a single cluster. This allows different placement strategies (for example, cost‑optimized vs. latency‑sensitive workloads) to run side‑by‑side. Visit the documentation for a [multiple scheduler profiles example][configure-multi-config]
-    - Multiple profiles can be defined centrally in a single scheduler configuration.
-    - Individual workloads select a profile via `schedulerName` in the pod spec.
+   Yes, multiple scheduling profiles can coexist in a single cluster. This allows different placement strategies (for example, cost‑optimized vs. latency‑sensitive workloads) to run side‑by‑side. Visit the documentation for a [multiple scheduler profiles example][configure-multi-config].
 
-5. How do I monitor whether my scheduler profile is improving utilization? Monitor these signals to confirm that the scheduler is behaving correctly. Over time, you should see higher average node utilization, reduced variance between nodes, and fewer lightly utilized nodes.
+   - Multiple profiles can be defined centrally in a single scheduler configuration.
+   - Individual workloads select a profile via `schedulerName` in the pod spec.
 
-    - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights, the AKS node viewer [tool][aks-node-viewer], or `kubectl top nodes` for quick validation.
-    - Review autoscaler outcomes, looking for fewer scale‑ups during normal load and more decisive scale‑downs after demand drops.
-    - Measure cost metrics, such as reduced idle costs when you use the [Cost Analysis add-on][aks-cost-analysis-add-on].
+5. How do I monitor whether my scheduler profile is improving utilization?
+
+   Monitor these signals to confirm that the scheduler is behaving correctly. Over time, you should see higher average node utilization, reduced variance between nodes, and fewer lightly utilized nodes.
+
+   - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights, the AKS node viewer [tool][aks-node-viewer], or `kubectl top nodes` for quick validation.
+   - Review autoscaler outcomes, looking for fewer scale‑ups during normal load and more decisive scale‑downs after demand drops.
+   - Measure cost metrics, such as reduced idle costs when you use the [Cost Analysis add-on][aks-cost-analysis-add-on].
+
 ## Next steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
 With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to application resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
