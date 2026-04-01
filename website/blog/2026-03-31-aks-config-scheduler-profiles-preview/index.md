@@ -57,7 +57,7 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 
 ## Increase node utilization and operator control
 
-In this simple scale-out scenario, manually increasing identitical CPU-bound replicas from 8 to 30, the default scheduler distributes pods evenly across nodes.
+In this simple scale-out scenario, manually increasing identical CPU-bound replicas from 8 to 30, the default scheduler distributes pods evenly across nodes.
 
 Configurable Scheduler Profiles configured for bin-packing show a visible consolidation pattern that differs from the default scheduler, and improves capacity for new pods. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
 
@@ -212,10 +212,10 @@ AKS recommends using the scoring strategy `RequestedToCapacityRatio` because it 
     - Individual workloads select a profile via `schedulerName` in the pod spec.
 
 5. How do I monitor whether my scheduler profile is improving utilization? Monitor these signals to confirm that the scheduler is behaving correctly. Over time, you should see higher average node utilization, reduced variance between nodes, and fewer lightly utilized nodes.
-   - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights, the AKS node viewer [tool][aks-node-viewer], or `kubectl top nodes` for quick validation.
-   - Review autoscaler outcomes, looking for fewer scale‑ups during normal load and more decisive scale‑downs after demand drops.
-   - Measure cost metrics, such as reduced idle costs when you use the [Cost Analysis add-on][aks-cost-analysis-add-on].
 
+    - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights, the AKS node viewer [tool][aks-node-viewer], or `kubectl top nodes` for quick validation.
+    - Review autoscaler outcomes, looking for fewer scale‑ups during normal load and more decisive scale‑downs after demand drops.
+    - Measure cost metrics, such as reduced idle costs when you use the [Cost Analysis add-on][aks-cost-analysis-add-on].
 ## Next steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
 With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to application resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves ROI but also accelerates development by allowing more jobs to run concurrently and reliably.
