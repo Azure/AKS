@@ -6,9 +6,9 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023 Weights and Biases found that nearly a third of GPU users [average less than 15% utilization][wb-gpu-utilization]. This data signals that underutilized resources materially contribute to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler has a big influence on node utilization.
+In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023, Weights and Biases found that nearly a third of GPU users [average less than 15% utilization][wb-gpu-utilization]. This data signals that underutilized resources materially contribute to increased infrastructure cost. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler plays a critical role in node utilization.
 
-[Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS lets customers configure their own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. The result: higher node density, better GPU utilization, and lower infrastructure costs.
+[Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS lets customers configure their own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. **The result: higher node density, better GPU utilization, and lower infrastructure costs.**
 
 This blog explains how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization using Configurable Scheduler Profiles on AKS.
 
@@ -43,9 +43,9 @@ For a deep dive on the Kubernetes Scheduler visit technical blog from SIG Schedu
 
 ### Limitations of the default Kubernetes scheduler
 
-The default scheduler is primarily designed for general-purpose workloads that prioritize nodes with the most available resources using the _LeastAllocated_ scoring strategy. This spreads pods across nodes, even when they could safely be packed more densely. While this works well for many services, the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand optimizing GPU and CPU utilization. In these scenarios, spreading pods across nodes can lead to fragmented resources, underutilized GPUs, and increased infrastructure cost.
+The default scheduler is primarily designed for general-purpose workloads. It prioritizes nodes with the most available resources using the _LeastAllocated_ scoring strategy. This strategy spreads pods across nodes, even when they could safely be packed more densely. While this works well for many services, the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand optimizing GPU and CPU utilization. In these scenarios, spreading pods across nodes can lead to fragmented resources, underutilized GPUs, and increased infrastructure cost.
 
-Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, or ignored, in the scheduling cycle on a per cluster basis. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. Starting with Kubernetes v1.33, AKS introduces Configurable Scheduler Profiles - an AKS-managed CRD - that exposes the upstream scheduling framework without maintaining a separate scheduler. Now, users can adjust the `NodeResourcesFit` plugin from the default configuration to favor nodes with higher utilization to achieve more efficient bin‑packing and reduce infrastructure cost.
+Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, or ignored, in the scheduling cycle on a per cluster basis. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. Starting with Kubernetes v1.33, AKS introduces [Configurable Scheduler Profiles][concepts-scheduler-configuration] - an AKS-managed CRD - that exposes the upstream scheduling framework without maintaining a separate scheduler. Now, users can adjust the `NodeResourcesFit` plugin from the default configuration to favor nodes with higher utilization to achieve more efficient bin‑packing and reduce infrastructure cost.
 
 ## Configurable Scheduler Profiles on AKS
 
@@ -57,15 +57,19 @@ A profile is a set of one or more in-tree scheduling plugins and configurations 
 
 ## Increase node utilization and operator control
 
-The default scheduler distributes pods evenly across nodes in this simple scale-out scenario, manually increasing CPU-bound replicas from 8 to 30 with identical pod specs.
+In this simple scale-out scenario, manually increasing identitical CPU-bound replicas from 8 to 30, the default scheduler distributes pods evenly across nodes.
 
-Configurable Scheduler Profiles that use the `NodeResourcesFit` plugin show a visible consolidation pattern that differs from the default scheduler. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
+Configurable Scheduler Profiles configured for bin-packing show a visible consolidation pattern that differs from the default scheduler, and improves capacity for new pods. This shift occurs without changing the workload, node size, or autoscaling behavior - only the scheduler’s scoring logic.
 
-While this experiment uses intentionally simple, CPU-bound containers to isolate scheduling behavior, the placement patterns observed here generalize to more complex workloads where consolidation and utilization efficiency matter. This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread.
+**Scenario: Increase CPU utilization**
 
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler](./default-config-scheduler-comparison.png)
 
-**The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
+While this experiment uses intentionally simple, CPU-bound containers to isolate scheduling behavior, the placement patterns observed here can be applied to GPU-bound workloads where consolidation and utilization efficiency matter. In this constrained GPU scenario the bin‑packing scheduler plays a critical role in maximizing usable capacity of 4 GPU's spread across 2 nodes. Consolidating single‑GPU workloads onto the same node instead of spreading them evenly, the scheduler avoids stranding idle GPUs and enables all four GPUs to be actively used before new nodes are required. 
+
+**Scenario: Increase GPU utilization**
+
+This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
 
 | Scheduler | Scoring Strategy | Scheduling intent | Operator Benefits |
 |---|---|---|---|
