@@ -245,7 +245,7 @@ Taints and tolerations control which pods can run on which nodes. Think of a tai
 
 Taints and tolerations are mechanisms used in Kubernetes to control which pods can be scheduled onto which nodes. They allow you to ensure that certain pods do not run on particular nodes, enabling more fine-grained control over your clusters.
 
-### A Practical AKS/NAP Mental Model  for taints and tolerations
+### A Practical AKS/NAP Mental Model for taints and tolerations
 
 Think of taints as a ‘Do Not Enter’ sign on a node. If a node has a specific taint, pods must tolerate it to be scheduled on that node. This helps families of workloads maintain their operational boundaries while ensuring they run on appropriate resources.  
 
@@ -307,17 +307,27 @@ tolerations:
 
 For more on Taints and Tolerations, visit our [operator best practices docs](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#provide-dedicated-nodes-using-taints-and-tolerations) or the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
 
+## Recap
+
+General Recommendations:
+
+- Configure your NAP NodePool CRD spec to allow as flexible (or as specific) of a range of nodes that your workloads are allowed to schedule to. You can also create multiple NodePool CRDs, just make sure they are mutually exclusive.
+- Configure your AKSNodeClass CRD spec to define any Azure-specific settings.
+- Define desired scheduling behavior in the deployment spec with Topology Spread Constraints, Node Affinity, and/or Taints and Tolerations.
+- Consider your priorities between Topology Spread and certain Node Affinities, and set one with a hard rule and the other with best effort.
+- Use Taints and Tolerations to ensure special workloads schedule only to the exact nodes you want them to. Be sure to use in moderation to not overcomplicate your cluster.
+
 ## FAQ
 
-- How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
+#### How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
 
- When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic.
+When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic.
 
-- How can I reduce latency when trying to schedule nodes?
+#### How can I reduce latency when trying to schedule nodes?
 
- You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time.
+You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time.
 
- For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/azure/aks/best-practices-performance-scale).
+For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/azure/aks/best-practices-performance-scale).
 
 ## Next steps
 
