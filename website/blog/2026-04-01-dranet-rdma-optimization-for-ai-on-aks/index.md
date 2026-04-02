@@ -8,9 +8,9 @@ tags: ["ai", "gpu", "networking", "performance"]
 
 Large-scale AI training on Kubernetes depends on high-throughput, low-latency GPU-to-GPU communication. On Azure's ND GB300-v6 VMs, each node exposes four NVIDIA GB300 GPUs and four 800 Gb/s InfiniBand NICs spread across two NUMA domains. Scheduling a workload onto the wrong NIC -- one on a different NUMA node than the GPU -- can silently degrade collective performance by 4.5x or more.
 
-[DRANET](https://github.com/anson627/dranet) is an open-source DRA network driver that discovers InfiniBand-only RDMA devices, exposes their topology as Kubernetes DRA attributes, and injects only the allocated `/dev/infiniband/uverbsN` devices into each container. Combined with the NVIDIA GPU DRA driver, it enables topology-aware co-scheduling of GPUs and NICs without requiring privileged containers.
+[DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers InfiniBand-only RDMA devices, exposes their topology as Kubernetes DRA attributes, and injects only the allocated `/dev/infiniband/uverbsN` devices into each container. Combined with the NVIDIA GPU DRA driver, it enables topology-aware co-scheduling of GPUs and NICs without requiring privileged containers.
 
-In this post, we walk through how DRANET works on AKS with ND GB300-v6 nodes, demonstrate three NUMA placement scenarios, and show the benchmark results.
+In previous post, we covered foundational [DRA concepts](/2025/11/17/dra-devices-and-drivers-on-kubernetes). In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA placement scenarios, and show the benchmark results.
 
 <!-- truncate -->
 
@@ -340,43 +340,6 @@ The cross-NUMA (`1nic-unaligned`) case shows a 4.5x performance degradation comp
 3. **Cross-NUMA memory traffic** -- every transfer crosses the QPI/UPI interconnect between NUMA domains
 
 With two NUMA-aligned NICs (`2nic-aligned`), throughput doubles to ~112 GB/s as NCCL stripes data across both NICs with 16 channels and GDR active on both paths.
-
-## Getting started
-
-### Prerequisites
-
-- An AKS cluster running Kubernetes 1.34 or later (DRA feature gate enabled)
-- A GPU node pool with [ND GB300-v6 series](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) VMs
-- The [NVIDIA GPU DRA driver](https://github.com/NVIDIA/k8s-dra-driver-gpu) installed (publishes GPU `ResourceSlices`)
-- DRANET installed (publishes NIC `ResourceSlices` with RDMA and NUMA attributes)
-- The [MPI Operator](https://github.com/kubeflow/mpi-operator) for running multi-node NCCL benchmarks
-
-### Install DRANET
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/anson627/dranet/main/examples/dranetctl-install.yaml
-```
-
-Verify that DRANET has published NIC ResourceSlices:
-
-```bash
-kubectl get resourceslices -o wide
-```
-
-You should see slices from both the `gpu.nvidia.com` and `dra.net` drivers for each GPU node.
-
-## Key takeaways
-
-- **NUMA alignment delivers 4.5x better NCCL throughput**: pairing GPUs with NUMA-local NICs enables GPU-Direct RDMA, doubles available channels, and avoids cross-NUMA memory traffic
-- **Two NUMA-aligned NICs double throughput further**: the `count: 2` + pool-selector pattern in DRA is the idiomatic way to allocate multiple devices from a homogeneous group
-- **DRANET enforces per-pod device isolation**: only allocated `uverbs` devices are visible in the container, without requiring privileged mode
-
-## Next steps
-
-- Explore the [DRANET examples](https://github.com/anson627/dranet/tree/main/examples) for additional configurations
-- Learn more about [Dynamic Resource Allocation in Kubernetes](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/)
-- Read about [DRA devices and drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes) for foundational DRA concepts
-- Read about [DRA with NVIDIA vGPU on AKS](/2026/03/06/dra-with-vGPUs-on-aks) for fractional GPU scenarios
 
 ## Questions?
 
