@@ -6,9 +6,9 @@ authors: ["anson-qian"]
 tags: ["ai", "gpu", "networking", "performance"]
 ---
 
-Large-scale AI training and inferencing on Kubernetes depends on high-throughput, low-latency GPU-to-GPU communication. [DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers RDMA capable devices, exposes their topology as Kubernetes DRA attributes, and injects only desired devices into each container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-purgatory/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs to deliver high-performance networking for demanding applications in Kubernetes.
+Large-scale AI training and inferencing on Kubernetes depends on high-throughput, low-latency GPU-to-GPU communication. [DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers RDMA capable devices, exposes their topology as Kubernetes DRA attributes, and injects only desired devices into each container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs to deliver high-performance networking for demanding applications in Kubernetes.
 
-In previous post, we covered [fundamental DRA concepts](/2025/11/17/dra-devices-and-drivers-on-kubernetes). In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-uniform memory access) alignment scenarios, and show the benchmark results.
+In previous post, we covered fundamental [DRA concepts](/2025/11/17/dra-devices-and-drivers-on-kubernetes). In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-uniform memory access) alignment scenarios, and show the benchmark results.
 
 <!-- truncate -->
 
