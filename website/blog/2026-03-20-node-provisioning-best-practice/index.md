@@ -230,16 +230,14 @@ The following table lists what to expect when you set these two constraints toge
 
 #### Practical Guidance
 
-1. Decide which requirement is truly “must-have.”
+Consider your priorities for topology spread and node affinity.
 
+- Decide which requirement is truly “must-have.”
   - Make that one hard (required… or DoNotSchedule).
   - Make the other a preference (preferred… or ScheduleAnyway).
-
-2. If you combine strict affinity with strict multi-zone spread, double-check feasibility:
-
+- If you combine strict affinity with strict multi-zone spread, double-check feasibility:
   - If affinity restricts you to 1 zone, you cannot also require even spread across 3 zones with `DoNotSchedule`.
-
-3. Use nodeAffinityPolicy: Honor when your intent is “spread within the nodes I’ve made eligible via affinity.”
+- Use `nodeAffinityPolicy: Honor` when your intent is “spread within the nodes I’ve made eligible via affinity.”
 
 ## Part 3 - Taints and tolerations
 
