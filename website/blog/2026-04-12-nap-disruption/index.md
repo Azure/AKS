@@ -16,7 +16,6 @@ When managing Kubernetes, operational questions that users might have are:
 - Why won’t NAP scale down, even though I have lots of underused capacity?
 - Why do upgrades get “stuck” on certain nodes?
 
-
 This post focuses on **NAP disruption best practices**, not workload scheduling (tools like topology spread constraints, node affinity, and taints). For scheduling best practices, see the NAP scheduling fundamentals post (link TBD).
 
 If you’re new to these NAP features, this post will give you “good defaults” as a starting point. If you’re already deep into NAP disruption settings, treat it as a checklist for the behaviors AKS users most commonly ask about.
@@ -54,6 +53,7 @@ Pod disruption budgets protect against **voluntary evictions**, not involuntary 
 NAP exposes disruption controls at the node level.
 
 NAP is built on Karpenter concepts and exposes disruption controls on the **NodePool**:
+
 - **Consolidation policy** (when NAP is allowed to consolidate)
 - **Disruption budgets** (how many nodes can be disrupted at once, and when)
 - **Expire-after** (node lifetime)
@@ -153,12 +153,7 @@ There are two different operator intents that often get conflated:
 - `consolidateAfter: 1d` - Time-based setting that controls the delay before NAP consolidates underutilized nodes, working with the `consolidationPolicy` setting.
 - `expireAfter: 24h` - Time-based setting that determines how long nodes in this NodePool CRD can exist. Older nodes are deleted regardless of consolidation policies.
 
-_NOTE:_ How NAP defines "underutilized" is not currently a value you can set. It is determined by the cost simulations NAP runs.
-- `ConsolidationPolicy: WhenEmptyOrUnderutilized` - Triggered when NAP identifies that the existing nodes are underutilized (or empty). NAP runs cost simulations to determine which combination of VM sizes best matches the current configuration. Once a suitable combination is found, this triggers consolidation.
-- `ConsolidateAfter: 1d` - Time-based setting that controls the delay before NAP consolidates nodes that are underutilized, working in conjunction with the `consolidationPolicy` setting.
-- `expireAfter: 24hr` - Time-based setting that determines how long nodes defined in this NodePool CRD are allowed to exist. Any older nodes will be deleted, regardless of consolidation policy settings.
-
-_NOTE:_ NAP defines "underutilized" internally. You cannot configure this value; it is determined by the cost simulation runs that NAP performs.
+**NOTE:** How NAP defines "underutilized" is not currently a value you can set. It is determined by the cost simulations NAP runs.
 
 The following example showed these disruption tools in action:
 
@@ -181,7 +176,7 @@ spec:
 
 NAP exposes Karpenter-style disruption budgets on the NodePool. If you don’t set them, a default budget of `nodes: 10%` is used. Use budgets to regulate how many nodes are consolidated at a time.
 
-The following example sets the node disruption budget to 1 node at a time. 
+The following example sets the node disruption budget to 1 node at a time.
 
 ```yaml
 apiVersion: karpenter.sh/v1
@@ -239,7 +234,7 @@ Operational takeaway:
 
 ---
 
-## Part 7 — Observability: verify disruption decisions with events/logs
+## Part 7 - Observability: verify disruption decisions with events/logs
 
 Before changing policies, confirm what NAP *thinks* it’s doing:
 
@@ -248,6 +243,7 @@ Before changing policies, confirm what NAP *thinks* it’s doing:
 - Or use AKS control plane logs in Log Analytics (filter for `karpenter-events`)
 
 This helps distinguish:
+
 - “NAP wants to disrupt but is blocked by PDBs / budgets”
 from
 - “NAP isn’t trying to disrupt because consolidation policy doesn’t allow it”
@@ -261,10 +257,12 @@ from
 ### Symptom: NAP won’t consolidate / drains hang forever
 
 **Likely cause**
+
 - PDBs effectively allow zero voluntary evictions (`maxUnavailable: 0` / `minAvailable: 100%`), or
 - Too few replicas to satisfy the PDB during drain.
 
 **Fix**
+
 - Relax PDBs (for example `maxUnavailable: 1`) or increase replicas.
 - If a workload truly must not be disrupted, accept that nodes running it won’t be good consolidation targets.
 
@@ -274,6 +272,7 @@ Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at o
 Cause: User has not set any guardrails on node disruption behavior.
 
 **Fix**
+
 - Add PDBs that regulate disruption pace
 - Add NodePool disruption budgets (start with `nodes: "1"` or a small percentage).
 - Add time-based budgets (maintenance windows) so disruption happens when you want it.
@@ -281,9 +280,11 @@ Cause: User has not set any guardrails on node disruption behavior.
 ### Symptom: disruption happens at the wrong time
 
 **Likely cause**
+
 - No time-based budgets / maintenance window.
 
 **Fix**
+
 - Add `schedule` + `duration` budgets to block disruption during business hours.
 - Combine “block window” with a “small allowed disruption” budget outside the window.
 
