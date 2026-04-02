@@ -8,25 +8,7 @@ tags:
   - scheduler
 ---
 
-## Background
-
-AKS users want to ensure their workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and its easy to be unclear what settings to use to accomplish this. Node Auto-Provisioning optimizes bin-packing your compute, but to best utilize it - users need to make sure certain best practices are followed for predictable behavior.
-
-When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes (or VMs)?” — they’re:
-
-- Where will my workload replicas land (zones / nodes)?
-- How do I express node preferences without accidentally blocking scheduling?
-- If I’m using Node Auto-Provisioning (NAP), how does it interpret the rules I set?
-
-This post will connect NAP with three most important workload-level tools for shaping predictable node provisioning outcomes on AKS:
-
-1. **Taints and Tolerations** – control which pods can go to which nodes
-2. **Affinity/Anti-Affinity** – control where workloads can (or should not) run
-3. **Topology Spread Constraints** – control replica distribution across failure domains
-
-Then we’ll connect the dots to explain what AKS Node Auto-Provisioning (NAP) does with those signals to manage your workloads.
-
-If you’re new to these Kubernetes features, this post will give you “good defaults” as a starting point. If you’re already deep into scheduling, treat it as a checklist for the behaviors AKS users most commonly ask about.
+With Kubernetes, you control what your workloads (or pods) need with resource requests. But how do you control where they land? On AKS, three scheduling levers work with Node Auto-Provisioning (NAP) to give you predictable placement: taints, affinity, and topology spread constraints.
 
 ---
 
@@ -41,39 +23,53 @@ Learn more in the official documentation: [Node Auto Provisioning](https://learn
 
 ---
 
-## How NAP handles node selection
+## Background
 
-Node auto-provisioning provisions, scales, and manages nodes. NAP senses pending pod pressure, chooses/provisions nodes that satisfy workload specs and NodePool allowed options — and then schedules pods onto those nodes.
+You want to ensure that workloads schedule, scale, and are disrupted only when (or where) desired. The problem here is Kubernetes can feel complex, and it's easy to be unclear what settings to use to accomplish this. Node Auto-Provisioning optimizes bin-packing your compute, but to best utilize it - users need to make sure certain best practices are followed for predictable behavior.
 
-NAP uses the following levers to control workload scheduling:
+When adopting Kubernetes at scale, the hardest operational questions often aren’t “How do I scale nodes (or VMs)?” — they’re:
 
-- [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) (policies / constraints) - Node settings like (SKU selection, capacity type, zones, labels, node-level resource limits)
-- [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) (policies / constraints) - Azure-specific node settings like subnet behavior, image/OS disk/kubelet configuration, etc
-- NodeClaims - details the state of provisioned and provisioning nodes
-- Workload spec / deployment file - The Kubernetes manifest that defines your workload's resource requirements and scheduling constraints (Node Affinity, Tolerations, and Topology Spread Constraints)
-
-Simply put, workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
-
-You can think of the NodePool/AKSNodeClass as your “node policy envelope,” which your workload intent has to fit inside it.
-
-_**Note:**_ NAP is a node-level (or infrastructure) autoscaler that schedules pods to nodes (VMs). For application level autoscaling, you can use [KEDA](https://learn.microsoft.com/azure/aks/keda-about) with NAP. We also suggest using [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) in recommendation-only mode (for example, with `updateMode: Off` in the VPA custom resource) for resource sizing recommendations.
-
-## Part 1 — The mental model: scheduling constraints are “workload intent”
+- Where will my workload replicas land (zones / nodes)?
+- How do I express node preferences without accidentally blocking scheduling?
+- If I’m using Node Auto-Provisioning (NAP), how does it interpret the rules I set?
 
 Kubernetes scheduling is a negotiation between:
 
 - Workload intent (what your pod spec asks for)
 - Available capacity (what nodes exist, and what the platform can create)
 
-On AKS, you can express workload intent in your workload deployment file using Kubernetes concepts including:
+This workload intent can be expressed in your workload manifest using 3 levers:
 
-- nodeSelector / nodeAffinity / podAffinity / podAntiAffinity
-- taints & tolerations
-- topologySpreadConstraints
+1. **Taints and Tolerations** – control which pods can go to which nodes
+2. **Affinity/Anti-Affinity** – control where workloads can (or should not) run
+3. **Topology Spread Constraints** – control replica distribution across failure domains
 
-AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler features.
+AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler constraints and now provide guidance on configuring the AKS scheduler using Configurable Scheduler Profiles. Look for incoming blog that aligns pod placement to critical workloads with Configurable Scheduler Profiles on AKS.
 
-## Part 2 — Topology Spread Constraints: tool for zone-aware replicas
+This post will connect NAP with three most important workload-level tools for shaping predictable node provisioning outcomes on AKS. Then we’ll connect the dots to explain what AKS Node Auto-Provisioning (NAP) does with those signals to manage your workloads.
+
+If you’re new to these Kubernetes features, this post will give you “good defaults” as a starting point. If you’re already deep into scheduling, treat it as a checklist for the behaviors AKS users most commonly ask about.
+
+For more on operator and scheduling best practices, visit the [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) documentation.
+
+## How NAP handles node selection
+
+Node auto-provisioning provisions, scales, and manages nodes. NAP senses pending pod pressure, chooses/provisions nodes that satisfy workload specs and NodePool allowed options — and then AKS schedules pods onto those nodes.
+
+NAP uses the following levers to control workload scheduling:
+
+- [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) (policies / constraints) - Node settings like (SKU selection, capacity type, zones, labels, node-level resource limits)
+- [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) (policies / constraints) - Azure-specific node settings like subnet behavior, image/OS disk/kubelet configuration, etc
+- NodeClaims - detail the state of provisioned and provisioning nodes
+- Workload spec / deployment file - The Kubernetes manifest that defines your workload's resource requirements and scheduling constraints (Node Affinity, Tolerations, and Topology Spread Constraints)
+
+Simply put, workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
+
+You can think of the NodePool/AKSNodeClass as your "acceptable range of compute options” which your workload intent has to fit inside it.
+
+_**Note:**_ NAP is a node-level (or infrastructure) autoscaler that schedules pods to nodes (VMs). For application level autoscaling, you can use [KEDA](https://learn.microsoft.com/azure/aks/keda-about) with NAP. We also suggest using [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) in recommendation-only mode (for example, with `updateMode: Off` in the VPA custom resource) for resource sizing recommendations.
+
+## Part 1 — Topology Spread Constraints: tool for zone-aware replicas
 
 **Topology Spread Constraints** let you tell the scheduler: “Keep these replicas balanced across domains like zones or nodes.” The Kubernetes documentation describes them as a way to spread pods across failure domains such as regions, zones, nodes, and custom topology keys.
 
@@ -120,6 +116,26 @@ Kubernetes gives you two behaviors:
 - _DoNotSchedule_: strict; better for HA-critical workloads, but can stall rollouts (pods stay pending) if capacity is constrained.
 - _ScheduleAnyway_: best-effort; scheduler still places pods wherever there is capacity but prioritizes choices that reduce skew.
 
+The following example uses the "soft rule" of `whenUnsatisfiable:ScheduleAnyway` which will attempt to spread workloads across zones evenly, but will prioritize scale-up success over even topology spread. This method does not gaurantee topology spread, so consider tradeoffs between zonal resiliency and scheduling success. :
+
+```yaml
+spec:
+  replicas: 6
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: web
+```
+
+
 **Practical guidance:**
 
 Start with `DoNotSchedule` for Tier-0 services where zonal placement is critical and more important than scheduling speed.
@@ -127,7 +143,7 @@ Use `ScheduleAnyway` if you’d rather progress than block workload readiness du
 
 For more info, visit the [upstream Kubernetes docs on topology spread constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/#topologyspreadconstraints-field).
 
-## Part 3 — Node Affinity / Anti-Affinity: shaping which nodes are eligible
+## Part 2 — Node Affinity / Anti-Affinity: shaping which nodes are eligible
 
 Node affinity is the evolution of [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector): it’s more expressive and lets you define hard requirements vs soft preferences.
 
@@ -225,7 +241,8 @@ The following table lists what to expect when you set these two constraints toge
 - If affinity restricts you to 1 zone, you cannot also require even spread across 3 zones with `DoNotSchedule`.
 
 3. Use nodeAffinityPolicy: Honor when your intent is “spread within the nodes I’ve made eligible via affinity.”
-## Taints and tolerations
+
+## Part 3 - Taints and tolerations
 
 Taints and tolerations control which pods can run on which nodes. Think of a taint as a "keep out" sign on a node. If your pod doesn't carry a matching toleration, the scheduler skips that node.
 
@@ -241,7 +258,7 @@ Taints are defined in your [NodePool CRD](https://learn.microsoft.com/azure/aks/
 
 In NAP, you can provide taints in your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools), and every node created based on this NodePool CRD will have this taint. If you only want specific nodes to have this taint, make sure you have a specific NodePool CRD file created for this purpose (as you can have multiple NodePool CRDs). 
 
-In the following example shows a taint called `test.com/custom-taint` that is added in the `spec.template.spec.taints` field in a [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools):
+The following example shows a taint called `test.com/custom-taint` that is added in the `spec.template.spec.taints` field in a [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools):
 
 ```yaml
 apiVersion: karpenter.sh/v1
@@ -297,13 +314,13 @@ For more on Taints and Tolerations, visit our [operator best practices docs](htt
 
 - How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
 
-When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic. 
+ When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic. 
 
 - How can I reduce latency when trying to schedule nodes?
 
-You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time. 
+ You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time. 
 
-For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/azure/aks/best-practices-performance-scale).
+ For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/azure/aks/best-practices-performance-scale).
 
 ## Next steps
 
