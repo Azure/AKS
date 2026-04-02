@@ -7,8 +7,7 @@ tags:
   - node-auto-provisioning
 ---
 
-AKS users want to ensure that their workloads scale when needed and are disrupted only when (and where) desired. 
-AKS Node Auto-Provisioning (NAP) is designed to keep clusters efficient: it provisions nodes for pending pods, and it also continuously *removes* nodes when it’s safe to do so (for example, when nodes are empty or underutilized). That node-removal **disruption** is where many production surprises happen.
+Azure Kubernetes Service (AKS) Node Auto-Provisioning (NAP) keeps your clusters efficient: it provisions nodes for pending pods, and it continuously *removes* nodes when it's safe to do so (for example, when nodes are empty or underutilized). That node-removal **disruption** is where many production surprises happen.
 
 When managing Kubernetes, operational questions that users might have are:
 
@@ -18,7 +17,7 @@ When managing Kubernetes, operational questions that users might have are:
 - Why do upgrades get “stuck” on certain nodes?
 
 
-This post focuses on **NAP disruption best practices**, and not workload scheduling (tools like topology spread constraints, node affinity, taints, etc.). For more on scheduling best practices, check out our earlier blog post on NAP scheduling fundamentals.
+This post focuses on **NAP disruption best practices**, not workload scheduling (tools like topology spread constraints, node affinity, and taints). For scheduling best practices, see the NAP scheduling fundamentals post (link TBD).
 
 If you’re new to these NAP features, this post will give you “good defaults” as a starting point. If you’re already deep into NAP disruption settings, treat it as a checklist for the behaviors AKS users most commonly ask about.
 
@@ -26,8 +25,7 @@ If you’re new to these NAP features, this post will give you “good defaults�
 
 <!-- truncate -->
 
-![Diagram showing two concentric defensive layers protecting workloads during NAP node consolidation](./hero-image.png
-)
+![Diagram showing two concentric defensive layers protecting workloads during NAP node consolidation](./hero-image.png)
 
 :::info
 
@@ -37,7 +35,7 @@ Learn more about how to [configure disruption policies for NAP](https://learn.mi
 
 ---
 
-## Part 1 — The mental model: two layers of disruption control
+## Two layers of disruption control
 
 When NAP decides a node (virtual machine) *could* be removed, there are two layers of controls that determine whether it actually happens:
 
@@ -53,7 +51,7 @@ Pod disruption budgets protect against **voluntary evictions**, not involuntary 
 
 ### Infrastructure layer: Node-level disruption settings
 
-NAP allows setting disruption settings at the node level
+NAP exposes disruption controls at the node level.
 
 NAP is built on Karpenter concepts and exposes disruption controls on the **NodePool**:
 - **Consolidation policy** (when NAP is allowed to consolidate)
@@ -82,7 +80,7 @@ NAP honors Kubernetes-native concepts such as Pod Disruption Budgets when making
 In NAP, “disruption” typically refers to **voluntary** actions that delete nodes after draining them, such as:
 
 - **Consolidation**: deleting or replacing nodes (with better VM sizes) to increase compute efficiency (and reduce cost).
-- **Drift**: replacing existing nodes that no longer match desired configuration (for example, an updated settings in your NodePool and AKSNodeClass CRDs).
+- **Drift**: replacing existing nodes that no longer match desired configuration (for example, updated settings in your NodePool and AKSNodeClass CRDs).
 - **Expiration**: replacing nodes after a configured lifetime.
 
 These are different from **involuntary** disruptions such as:
@@ -100,7 +98,7 @@ PDBs and Karpenter disruption budgets mainly help with **voluntary** disruptions
 The most common NAP disruption problems come from PDBs that are either:
 
 - **Too strict**, too strong of a guardrail blocks node drains indefinitely
-- **Missing**, No gaurdrail allows too much disruption at once
+- **Missing**: no guardrail allows too much disruption at once
 
 ### A good default PDB
 
@@ -151,17 +149,16 @@ There are two different operator intents that often get conflated:
 - **When** consolidation is allowed and will happen
 - **How much** disruption can happen concurrently (budgets / rate limiting)
 
-### Consolidation policy (when)
+- `consolidationPolicy: WhenEmptyOrUnderutilized` - Triggered when NAP identifies that the existing nodes are underutilized (or empty). NAP runs cost simulations of VM size combinations that best match the current configuration. When a better combination is found, consolidation triggers.
+- `consolidateAfter: 1d` - Time-based setting that controls the delay before NAP consolidates underutilized nodes, working with the `consolidationPolicy` setting.
+- `expireAfter: 24h` - Time-based setting that determines how long nodes in this NodePool CRD can exist. Older nodes are deleted regardless of consolidation policies.
 
-Use the NodePool’s consolidation policy to express your comfort level with cost-optimization moves. For many clusters, a safe baseline is “only consolidate when empty or underutilized,” and then use budgets to keep the pace controlled.
+_NOTE:_ How NAP defines "underutilized" is not currently a value you can set. It is determined by the cost simulations NAP runs.
+- `ConsolidationPolicy: WhenEmptyOrUnderutilized` - Triggered when NAP identifies that the existing nodes are underutilized (or empty). NAP runs cost simulations to determine which combination of VM sizes best matches the current configuration. Once a suitable combination is found, this triggers consolidation.
+- `ConsolidateAfter: 1d` - Time-based setting that controls the delay before NAP consolidates nodes that are underutilized, working in conjunction with the `consolidationPolicy` setting.
+- `expireAfter: 24hr` - Time-based setting that determines how long nodes defined in this NodePool CRD are allowed to exist. Any older nodes will be deleted, regardless of consolidation policy settings.
 
-Consolidation Settings
-
-- `ConsolidationPolicy: WhenEmptyOrUnderutilized` - Triggered when NAP identifies that the existing nodes are underutilized (or empty). This is determined by NAP running cost simulations of combination of VM sizes will best match the currently configuration. Once one combination is found, this triggers consolidation. 
-- `ConsolidateAfter: 1d` - time-based setting that ontrols the delay before NAP consolidates nodes that are underutilized, working in conjunction with the `consolidationPolicy` setting
-- `expireAfter: 24hr` - time-based setting that determines how long nodes defined in this NodePool CRD are allowed to exist. Any olders nodes will be deleted, regardless of Consolidation Policies.
-
-_NOTE:_ - How NAP defines "Underutilized" is not currently a value that can be set by users, is is determined by the cost simulation runs by NAP.
+_NOTE:_ NAP defines "underutilized" internally. You cannot configure this value; it is determined by the cost simulation runs that NAP performs.
 
 The following example showed these disruption tools in action:
 
@@ -269,7 +266,7 @@ from
 
 **Fix**
 - Relax PDBs (for example `maxUnavailable: 1`) or increase replicas.
-- If a workload truly must be undisruptable, accept that nodes running it won’t be good consolidation targets.
+- If a workload truly must not be disrupted, accept that nodes running it won’t be good consolidation targets.
 
 ### Symptom: NAP disrupts too often or too much at once
 
@@ -289,22 +286,6 @@ Cause: User has not set any guardrails on node disruption behavior.
 **Fix**
 - Add `schedule` + `duration` budgets to block disruption during business hours.
 - Combine “block window” with a “small allowed disruption” budget outside the window.
-
-#### Common pitfalls for NAP disruption
-
-Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once
-Cause: User has not set any guardrails on node disruption behavior.
-
-- Fix: Add PDBs that regulate disruption pace
-- Fix: Consider adding [Consolidation Policies](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption)
-- Fix: Configure [Node Disruption Budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets) and/or enable a Maintenance Window using the [AKS Node OS Maintenance Schedule](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image#node-os-upgrade-maintenance-windows-for-nap)
-
-Behavior: NAP node upgrades fail and/or NAP nodes will not scale down voluntarily
-Cause: PDBs are set too strictly (for example, `maxUnavailable = 0` or `minAvailable: 100%`)
-
-- Fix: Ensure PDBs are not too strict; set maxUnavailable to a low (but not 0) number like 1.
-
-_**Note:**_ This section is describing voluntary disruption, not to be confused with involuntary eviction (for example, spot VM evictions, node termination events, node stopping events)
 
 ---
 
