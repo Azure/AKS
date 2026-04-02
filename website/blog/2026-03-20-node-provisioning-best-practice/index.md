@@ -65,9 +65,9 @@ NAP uses the following levers to control workload scheduling:
 
 Simply put, workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
 
-You can think of the NodePool/AKSNodeClass as your "acceptable range of compute options” which your workload intent has to fit inside it.
+You can think of the NodePool/AKSNodeClass as your "acceptable range of compute options” which your workload intent has to fit inside it. Check out our documentation for a good default spec for your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools#review-default-node-pool-configuration) and the options for your [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass#comprehensive-aksnodeclass-configuration-example) configuration.
 
-_**Note:**_ NAP is a node-level (or infrastructure) autoscaler that schedules pods to nodes (VMs). For application level autoscaling, you can use [KEDA](https://learn.microsoft.com/azure/aks/keda-about) with NAP. We also suggest using [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) in recommendation-only mode (for example, with `updateMode: Off` in the VPA custom resource) for resource sizing recommendations.
+_**Note:**_ NAP is a node-level (or infrastructure) autoscaler that provisions and manages nodes (VMs) based on pending pods and their requirements, while the Kubernetes scheduler continues to schedule pods onto those nodes. For application level autoscaling, you can use [KEDA](https://learn.microsoft.com/azure/aks/keda-about) with NAP. We also suggest using [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) in recommendation-only mode (for example, with `updateMode: Off` in the VPA custom resource) for resource sizing recommendations.
 
 ## Part 1 — Topology Spread Constraints: tool for zone-aware replicas
 
@@ -116,7 +116,7 @@ Kubernetes gives you two behaviors:
 - _DoNotSchedule_: strict; better for HA-critical workloads, but can stall rollouts (pods stay pending) if capacity is constrained.
 - _ScheduleAnyway_: best-effort; scheduler still places pods wherever there is capacity but prioritizes choices that reduce skew.
 
-The following example uses the "soft rule" of `whenUnsatisfiable:ScheduleAnyway` which will attempt to spread workloads across zones evenly, but will prioritize scale-up success over even topology spread. This method does not guarantee topology spread, so consider tradeoffs between zonal resiliency and scheduling success. :
+The following example uses the "soft rule" of `whenUnsatisfiable: ScheduleAnyway` which will attempt to spread workloads across zones evenly, but will prioritize scale-up success over even topology spread. This method does not guarantee topology spread, so consider tradeoffs between zonal resiliency and scheduling success.
 
 ```yaml
 spec:
@@ -180,9 +180,9 @@ Standard Example (with nodeAffinity) - “Prefer this node type, but don’t blo
 affinity:
   nodeAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
+       - weight: 100
         preference:
-          matchExpressions:
+            matchExpressions:
             - key: node.kubernetes.io/instance-type
               operator: In
               values:
@@ -286,7 +286,7 @@ Hard Rule - **NoSchedule Toleration** example:
 
 ```yaml  
    tolerations:  
-   - key: "key1"  
+     - key: "key1"  
      operator: "Equal"  
      value: "value1"  
      effect: "NoSchedule"  
@@ -296,7 +296,7 @@ Best-effort rule - **PreferNoSchedule Toleration** example:
 
 ```yaml
 tolerations:  
-- key: "key2"  
+  - key: "key2"  
   operator: "Equal"  
   value: "value2"  
   effect: "PreferNoSchedule"  
