@@ -1,22 +1,20 @@
 ---
 title: "Optimizing RDMA performance for AI workloads on AKS with DRANET"
 date: "2026-04-01"
-description: "Use DRANET with Dynamic Resource Allocation (DRA) to achieve topology-aware GPU and InfiniBand NIC scheduling on AKS, delivering up to 4.5x better NCCL collective performance through NUMA alignment and placement group awareness."
+description: "Use DRANET with Dynamic Resource Allocation (DRA) to achieve topology-aware scheduling with GPU and NIC alignment on AKS"
 authors: ["anson-qian"]
 tags: ["ai", "gpu", "networking", "performance"]
 ---
 
-Large-scale AI training on Kubernetes depends on high-throughput, low-latency GPU-to-GPU communication. On Azure's ND GB300-v6 VMs, each node exposes four NVIDIA GB300 GPUs and four 800 Gb/s InfiniBand NICs spread across two NUMA domains. Scheduling a workload onto the wrong NIC -- one on a different NUMA node than the GPU -- can silently degrade collective performance by 4.5x or more.
+Large-scale AI training and inferencing on Kubernetes depends on high-throughput, low-latency GPU-to-GPU communication. [DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers RDMA capable devices, exposes their topology as Kubernetes DRA attributes, and injects only desired devices into each container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-purgatory/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs to deliver high-performance networking for demanding applications in Kubernetes.
 
-[DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers InfiniBand-only RDMA devices, exposes their topology as Kubernetes DRA attributes, and injects only the allocated `/dev/infiniband/uverbsN` devices into each container. Combined with the NVIDIA GPU DRA driver, it enables topology-aware co-scheduling of GPUs and NICs without requiring privileged containers.
-
-In previous post, we covered foundational [DRA concepts](/2025/11/17/dra-devices-and-drivers-on-kubernetes). In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA placement scenarios, and show the benchmark results.
+In previous post, we covered [fundamental DRA concepts](/2025/11/17/dra-devices-and-drivers-on-kubernetes). In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-uniform memory access) alignment scenarios, and show the benchmark results.
 
 <!-- truncate -->
 
 ## The problem: NUMA-blind scheduling hurts RDMA performance
 
-On an ND GB300-v6 node, the hardware topology looks like this:
+On an Azure ND GB300-v6 node, there are four NVIDIA GB300 GPUs and four 800 Gb/s InfiniBand NICs spread across two NUMA domains. The hardware topology looks like this:
 
 | Resource | Count | Detail |
 |---|---|---|
@@ -35,11 +33,12 @@ The NUMA topology (from `nvidia-smi topo -m`) reveals the affinity relationships
 
 GPUs 0-1 and NICs 0-1 share NUMA node 0. GPUs 2-3 and NICs 2-3 share NUMA node 1. A **NODE** relationship means the GPU and NIC share a direct PCIe root complex, enabling GPU-Direct RDMA (GDR). A **SYS** relationship means data must cross the QPI/UPI interconnect between NUMA domains, disabling GDR and adding latency.
 
-Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same resource claim. NCCL will work, but silently fall back to slower data paths.
+Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same resource claim. NCCL will work, but silently fall back to slower data paths. Scheduling a workload onto the wrong NIC -- one on a different NUMA node than the GPU -- can silently degrade collective performance by 4.5x or more.
+
 
 ## How DRANET solves this
 
-The following diagrams show how the control plane and data plane components work together to achieve topology-aware GPU and NIC alignment.
+The following system diagrams show how the control plane and data plane components work together to achieve topology-aware GPU and NIC alignment.
 
 **Control plane**: DRA drivers discover hardware topology and publish ResourceSlices. The scheduler evaluates CEL selectors from ResourceClaimTemplates to allocate NUMA-aligned GPU and NIC pairs.
 
