@@ -116,7 +116,7 @@ Kubernetes gives you two behaviors:
 - _DoNotSchedule_: strict; better for HA-critical workloads, but can stall rollouts (pods stay pending) if capacity is constrained.
 - _ScheduleAnyway_: best-effort; scheduler still places pods wherever there is capacity but prioritizes choices that reduce skew.
 
-The following example uses the "soft rule" of `whenUnsatisfiable:ScheduleAnyway` which will attempt to spread workloads across zones evenly, but will prioritize scale-up success over even topology spread. This method does not gaurantee topology spread, so consider tradeoffs between zonal resiliency and scheduling success. :
+The following example uses the "soft rule" of `whenUnsatisfiable:ScheduleAnyway` which will attempt to spread workloads across zones evenly, but will prioritize scale-up success over even topology spread. This method does not guarantee topology spread, so consider tradeoffs between zonal resiliency and scheduling success. :
 
 ```yaml
 spec:
@@ -134,7 +134,6 @@ spec:
             matchLabels:
               app: web
 ```
-
 
 **Practical guidance:**
 
@@ -223,7 +222,7 @@ The following table lists what to expect when you set these two constraints toge
 
 | Topology Spread Configuration | Affinity Configuration | Observed Scheduling Behavior | Recommendation |
 |------------------------------|------------------------|------------------------------|----------------|
-| **Hard** (`whenUnsatisfiable: DoNotSchedule`) | **Hard Node Affinity** (`requiredDuringSchedulingIgnoredDuringExecution`) | Pod remains **Pending** if no node satisfies *both* constraints. The scheduler filters out all nodes that violate either rule. | Use only when you are certain the constraints are always compatible (for example, multi‑zone node affinity plus multi‑zone spread). Avoid mixing single‑zone affinity with multi‑zone spread. |
+| **Hard** (`whenUnsatisfiable: DoNotSchedule`) | **Hard Node Affinity** (`requiredDuringSchedulingIgnoredDuringExecution`) | Pod remains **Pending** if no node satisfies both constraints. The scheduler filters out all nodes that violate either rule. | Use only when you are certain the constraints are always compatible (for example, multi‑zone node affinity plus multi‑zone spread). Avoid mixing single‑zone affinity with multi‑zone spread. |
 | **Soft** (`whenUnsatisfiable: ScheduleAnyway`) | **Hard Node Affinity** (`requiredDuringSchedulingIgnoredDuringExecution`) | Pod schedules only on nodes matching affinity. Topology spread is applied as **best‑effort**, and distribution may be uneven. | ✅ **Recommended default** for most workloads. Enforce strict placement requirements while keeping high availability best‑effort. |
 | **Hard** (`whenUnsatisfiable: DoNotSchedule`) | **Soft Node Affinity** (`preferredDuringSchedulingIgnoredDuringExecution`) | Pod schedules only if topology spread constraints are met. Affinity acts only as a preference among valid nodes. | Use when even distribution across zones or nodes is more important than node‑level preferences. |
 | **Soft** (`whenUnsatisfiable: ScheduleAnyway`) | **Soft Node Affinity** | Pod always schedules. Both constraints only influence scoring; placement is flexible and may be imbalanced. | Suitable for dev/test, batch, or low‑criticality workloads. |
@@ -233,12 +232,12 @@ The following table lists what to expect when you set these two constraints toge
 
 1. Decide which requirement is truly “must-have.”
 
-- Make that one hard (required… or DoNotSchedule).
-- Make the other a preference (preferred… or ScheduleAnyway).
+  - Make that one hard (required… or DoNotSchedule).
+  - Make the other a preference (preferred… or ScheduleAnyway).
 
 2. If you combine strict affinity with strict multi-zone spread, double-check feasibility:
 
-- If affinity restricts you to 1 zone, you cannot also require even spread across 3 zones with `DoNotSchedule`.
+  - If affinity restricts you to 1 zone, you cannot also require even spread across 3 zones with `DoNotSchedule`.
 
 3. Use nodeAffinityPolicy: Honor when your intent is “spread within the nodes I’ve made eligible via affinity.”
 
@@ -252,11 +251,11 @@ Taints and tolerations are mechanisms used in Kubernetes to control which pods c
 
 Think of taints as a ‘Do Not Enter’ sign on a node. If a node has a specific taint, pods must tolerate it to be scheduled on that node. This helps families of workloads maintain their operational boundaries while ensuring they run on appropriate resources.  
 
-Taints are defined in your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools), and Tolerations are defined in your workload deployment file. 
+Taints are defined in your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools), and Tolerations are defined in your workload deployment file.
 
 ### Taint your NAP-managed nodes
 
-In NAP, you can provide taints in your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools), and every node created based on this NodePool CRD will have this taint. If you only want specific nodes to have this taint, make sure you have a specific NodePool CRD file created for this purpose (as you can have multiple NodePool CRDs). 
+In NAP, you can provide taints in your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools), and every node created based on this NodePool CRD will have this taint. If you only want specific nodes to have this taint, make sure you have a specific NodePool CRD file created for this purpose (as you can have multiple NodePool CRDs).
 
 The following example shows a taint called `test.com/custom-taint` that is added in the `spec.template.spec.taints` field in a [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools):
 
@@ -283,7 +282,7 @@ Tolerations are a field you place in your workload deployment file to flag what 
 - `NoSchedule` - strict toleration. Only pods with the proper toleration can be scheduled to the node with a specific taint.
 - `PreferNoSchedule` - less strict toleration. AKS will _try_ to avoid placing pods that don't tolerate this node's taint, but it's not guaranteed.
 
-1. **NoSchedule Toleration** example:
+Hard Rule - **NoSchedule Toleration** example:
 
 ```yaml  
    tolerations:  
@@ -293,7 +292,7 @@ Tolerations are a field you place in your workload deployment file to flag what 
      effect: "NoSchedule"  
 ```
 
-2. **PreferNoSchedule Toleration** example:
+Best-effort rule - **PreferNoSchedule Toleration** example:
 
 ```yaml
 tolerations:  
@@ -314,11 +313,11 @@ For more on Taints and Tolerations, visit our [operator best practices docs](htt
 
 - How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
 
- When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic. 
+ When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic.
 
 - How can I reduce latency when trying to schedule nodes?
 
- You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time. 
+ You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time.
 
  For more visit our documentation on [performance and scaling best practices](https://learn.microsoft.com/azure/aks/best-practices-performance-scale).
 
