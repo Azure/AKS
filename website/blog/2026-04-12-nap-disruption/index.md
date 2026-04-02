@@ -229,6 +229,7 @@ To learn more about node disruption budgets, visit our [NAP Disruption documenta
 NAP nodes are regularly updated as images change. The node image updates doc calls out a key behavior: **if a node image version is older than 90 days, NAP forces pickup of the latest image version, bypassing any existing maintenance window**.
 
 Operational takeaway:
+
 - Set up maintenance windows and budgets, but also ensure you’re not drifting so long that you hit a forced-update scenario.
 - Treat “keep nodes reasonably fresh” as part of disruption planning, not an afterthought.
 
@@ -256,22 +257,26 @@ from
 
 ### Symptom: NAP won’t consolidate / drains hang forever
 
-**Likely cause**
+Behavior: Nodes will not scale down for consolidation or updates.
+Cause:
 
 - PDBs effectively allow zero voluntary evictions (`maxUnavailable: 0` / `minAvailable: 100%`), or
 - Too few replicas to satisfy the PDB during drain.
 
-**Fix**
+Fix:
 
 - Relax PDBs (for example `maxUnavailable: 1`) or increase replicas.
-- If a workload truly must not be disrupted, accept that nodes running it won’t be good consolidation targets.
+- If a workload truly must not be disrupted, accept that nodes running it will not consolidate, and that this also risks update failure. A strict 100% available PDB will cause scale down failures and update failures.
 
 ### Symptom: NAP disrupts too often or too much at once
 
 Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once
-Cause: User has not set any guardrails on node disruption behavior.
+Cause: 
 
-**Fix**
+- User has not set any guardrails on node disruption behavior such as PDBs or node disruption budgets
+- No maintenance window set for scheduled disruption times
+
+Fix:
 
 - Add PDBs that regulate disruption pace
 - Add NodePool disruption budgets (start with `nodes: "1"` or a small percentage).
@@ -279,14 +284,15 @@ Cause: User has not set any guardrails on node disruption behavior.
 
 ### Symptom: disruption happens at the wrong time
 
-**Likely cause**
+Behavior: Disruption happens during inconvenient times, such as during work hours or when workloads are in common use. 
+Cause: 
 
 - No time-based budgets / maintenance window.
 
-**Fix**
+Fix:
 
-- Add `schedule` + `duration` budgets to block disruption during business hours.
-- Combine “block window” with a “small allowed disruption” budget outside the window.
+- Add Karpenter disruption budgets to block disruption during business hours.
+- Alternative: Combine “maintenance window” with a “small allowed disruption” budget outside the window.
 
 ---
 
