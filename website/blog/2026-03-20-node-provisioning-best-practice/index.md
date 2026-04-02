@@ -557,7 +557,7 @@ General Recommendations:
 
 ## FAQ
 
-### How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
+### How can I overprovision to respond to spikes of traffic?
 
 When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic.
 
