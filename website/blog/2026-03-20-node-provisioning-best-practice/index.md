@@ -42,17 +42,15 @@ This workload intent can be expressed in your workload manifest using 3 levers:
 2. **Affinity/Anti-Affinity** – control where workloads can (or should not) run
 3. **Topology Spread Constraints** – control replica distribution across failure domains
 
-AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler constraints and now provides guidance on configuring the AKS scheduler using Configurable Scheduler Profiles. Watch for an upcoming post that explains how to align pod placement to critical workloads with Configurable Scheduler Profiles on AKS.
-
 This post will connect NAP with three most important workload-level tools for shaping predictable node provisioning outcomes on AKS. Then we’ll connect the dots to explain what AKS Node Auto-Provisioning (NAP) does with those signals to manage your workloads.
 
 If you’re new to these Kubernetes features, this post will give you “good defaults” as a starting point. If you’re already deep into scheduling, treat it as a checklist for the behaviors AKS users most commonly ask about.
 
-For more on operator and scheduling best practices, visit the [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) documentation.
+For more on operator and scheduling best practices, visit [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) or configure the AKS scheduler using [Configurable Scheduler Profiles](https://learn.microsoft.com/azure/aks/configure-aks-scheduler?tabs=new-cluster). Watch for an upcoming post that explains how to align pod placement to achieve cost efficiencies with Configurable Scheduler Profiles on AKS.
 
 ## How NAP handles node selection
 
-Node auto-provisioning provisions, scales, and manages nodes. NAP senses pending pod pressure, chooses/provisions nodes that satisfy workload specs and NodePool allowed options — and then AKS schedules pods onto those nodes.
+Node auto-provisioning provisions, scales, and manages nodes. NAP senses pending pod pressure, provisions new nodes that satisfy workload specs and NodePool allowed options — and then AKS schedules pods onto those nodes.
 
 NAP uses the following levers to control workload scheduling:
 
@@ -61,7 +59,7 @@ NAP uses the following levers to control workload scheduling:
 - NodeClaims - detail the state of provisioned and provisioning nodes
 - Workload spec / deployment file - The Kubernetes manifest that defines your workload's resource requirements and scheduling constraints (Node Affinity, Tolerations, and Topology Spread Constraints)
 
-Simply put, workload spec expresses “where and how this pod should run”, NodePool / AKSNodeClass expresses “what nodes are allowed to exist for this class of workloads”, NodeClaims track what nodes are being scheduled or currently running.
+Simply put, NAP uses each lever to express “where and how this pod should run”, “what nodes should exist for this class of workloads”, and track what nodes are being scheduled or currently running.
 
 You can think of the NodePool/AKSNodeClass as your "acceptable range of compute options” which your workload intent has to fit inside it. Check out our documentation for a good default spec for your [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools#review-default-node-pool-configuration) and the options for your [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass#comprehensive-aksnodeclass-configuration-example) configuration.
 
