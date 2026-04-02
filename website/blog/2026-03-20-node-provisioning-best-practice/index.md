@@ -10,8 +10,6 @@ tags:
 
 With Kubernetes, you control what your workloads (or pods) need with resource requests. But how do you control where they land? On AKS, three scheduling levers work with Node Auto-Provisioning (NAP) to give you predictable placement: taints, affinity, and topology spread constraints.
 
----
-
 <!-- truncate -->
 
 ![Diagram showing NAP topology spread behavior](./hero-image.png)
@@ -357,12 +355,12 @@ spec:
               app: sample-gaming-low-latency-prefer-local
 
       containers:
-      - name: session
-        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
-        resources:
-          requests:
-            cpu: "500m"
-            memory: "256Mi"
+        - name: session
+          image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "256Mi"
 ```
 
 ### Spot-optimized workload
@@ -463,12 +461,12 @@ spec:
               topologyKey: kubernetes.io/hostname
 
       topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: DoNotSchedule  # HARD: ensure zone spread for HA
-        labelSelector:
-          matchLabels:
-            app: sample-healthcare-phi-zone-hardened
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule  # HARD: ensure zone spread for HA
+          labelSelector:
+            matchLabels:
+              app: sample-healthcare-phi-zone-hardened
 
       containers:
       - name: api
@@ -537,7 +535,7 @@ spec:
                     values: ["amd"]
 
       containers:
-      - name: app
+        - name: app
         image: mcr.microsoft.com/oss/kubernetes/pause:3.6
         resources:
           requests:
