@@ -160,7 +160,7 @@ spec:
         accelerator: gpu
 ```
 
-Standard Example (with nodeAffinity) - sets a hard rule using ` requiredDuringSchedulingIgnoredDuringExecution` requiring gpu support:
+Standard Example (with nodeAffinity) - sets a hard rule using `requiredDuringSchedulingIgnoredDuringExecution` requiring gpu support:
 
 ```yaml
 affinity:
