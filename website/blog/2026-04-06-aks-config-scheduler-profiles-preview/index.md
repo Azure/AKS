@@ -69,11 +69,11 @@ While this experiment uses intentionally simple, CPU-bound containers to isolate
 
 This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
 
-| Scheduler | Scoring Strategy | Scheduling intent | Operator Benefits |
-|---|---|---|---|
-| Default scheduler | NodeResourcesFit: LeastAllocated | Balance and hotspot reduction | No tuning |
-| Configurable Scheduler Profile | NodeResourcesFit: MostAllocated | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential |
-| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated`|
+| Scheduler                      | Scoring strategy                       | Scheduling intent                    | Operator benefits                                                                                                  |
+| ------------------------------ | -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Default scheduler              | NodeResourcesFit: LeastAllocated       | Balance and hotspot reduction        | No tuning                                                                                                          |
+| Configurable Scheduler Profile | NodeResourcesFit: MostAllocated        | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential                                                         |
+| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated` |
 
 ### Increase AKS CPU utilization
 
