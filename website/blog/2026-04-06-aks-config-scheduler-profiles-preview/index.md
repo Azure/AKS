@@ -39,7 +39,7 @@ Once a node is selected, the binding cycle can process multiple pods in parallel
 
 ![Diagram of the kube-scheduler workflow showing pods entering the scheduling cycle and binding cycle to assign a pod on a node](./kube-scheduler-scheduling-phases-diagram.png)
 
-For a deep dive on the Kubernetes Scheduler visit technical blog from SIG Scheduling contributor and AKS Upstream Engineer, Heba Elayoty, [Deep Dive into the Kubernetes Scheduler Framework][deep-dive-scheduler-framework].
+For a deep dive on the Kubernetes scheduler, visit the technical blog post from SIG Scheduling contributor and AKS upstream engineer Heba Elayoty, [Deep Dive into the Kubernetes Scheduler Framework][deep-dive-scheduler-framework].
 
 ### Limitations of the default Kubernetes scheduler
 
