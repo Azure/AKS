@@ -39,6 +39,16 @@ Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and 
 
 ## How DRANET solves this
 
+The following diagrams show how the control plane and data plane components work together to achieve topology-aware GPU and NIC alignment.
+
+**Control plane**: DRA drivers discover hardware topology and publish ResourceSlices. The scheduler evaluates CEL selectors from ResourceClaimTemplates to allocate NUMA-aligned GPU and NIC pairs.
+
+![Control plane diagram showing DRA drivers publishing device topology to ResourceSlices, and the scheduler evaluating CEL selectors to allocate NUMA-aligned GPU and NIC pairs](./control-plane-diagram.svg)
+
+**Data plane**: Once the scheduler binds a pod, the kubelet instructs containerd to create the container. DRANET's NRI plugin intercepts the OCI hook and injects only the allocated InfiniBand devices, enabling GPU-Direct RDMA over NUMA-local PCIe paths.
+
+![Data plane diagram showing kubelet, containerd, NRI plugin injecting allocated InfiniBand devices into the pod, with NUMA-aligned GPU-NIC PCIe GDR paths](./data-plane-diagram.svg)
+
 DRANET is a DRA network resource driver that runs as a DaemonSet on each node. It handles three key tasks:
 
 ### 1. Discovering InfiniBand-only devices
@@ -331,49 +341,6 @@ The cross-NUMA (`1nic-unaligned`) case shows a 4.5x performance degradation comp
 
 With two NUMA-aligned NICs (`2nic-aligned`), throughput doubles to ~112 GB/s as NCCL stripes data across both NICs with 16 channels and GDR active on both paths.
 
-## Placement group awareness for multi-node scheduling
-
-Beyond NUMA topology within a single node, there is a cluster-level topology concern: Azure placement groups. VMs in different placement groups do not share an InfiniBand fabric. Cross-placement-group RDMA traffic fails silently with transport retry errors, and NCCL jobs hang indefinitely.
-
-This is not detectable from Kubernetes node labels or NVIDIA GPU Feature Discovery attributes.
-
-DRANET solves this by querying the Azure Instance Metadata Service (IMDS) at startup and attaching placement group attributes to every device in the node's `ResourceSlice`:
-
-| Attribute | Source | Example |
-|---|---|---|
-| `azure.dra.net/placementGroupId` | IMDS `compute/placementGroupId` | `739e6cfb-2607-462e-9e2b-21d24b31f5ed` |
-| `azure.dra.net/vmSize` | IMDS `compute/vmSize` | `Standard_ND128isr_GB300_v6` |
-
-A `ResourceClaimTemplate` can then constrain NIC allocation to a specific placement group:
-
-```yaml
-apiVersion: resource.k8s.io/v1
-kind: ResourceClaimTemplate
-metadata:
-  name: ib-same-fabric
-spec:
-  spec:
-    devices:
-      requests:
-      - name: nic
-        exactly:
-          deviceClassName: dranet.net
-          selectors:
-          - cel:
-              expression: >-
-                device.attributes["azure.dra.net"]["placementGroupId"] ==
-                "739e6cfb-2607-462e-9e2b-21d24b31f5ed"
-          - cel:
-              expression: >-
-                device.attributes["dra.net"]["rdma"] == true
-```
-
-This ensures the scheduler only allocates RDMA devices on nodes within the same InfiniBand fabric. In testing with two GB300 nodes in different placement groups:
-
-- **Intra-placement-group `ib_write_bw`**: 449.43 Gb/s (working)
-- **Cross-placement-group `ib_write_bw`**: transport retry counter exceeded (broken)
-- **Cross-placement-group NCCL `all_reduce_perf`**: hangs at RDMA data transfer
-
 ## Getting started
 
 ### Prerequisites
@@ -403,7 +370,6 @@ You should see slices from both the `gpu.nvidia.com` and `dra.net` drivers for e
 - **NUMA alignment delivers 4.5x better NCCL throughput**: pairing GPUs with NUMA-local NICs enables GPU-Direct RDMA, doubles available channels, and avoids cross-NUMA memory traffic
 - **Two NUMA-aligned NICs double throughput further**: the `count: 2` + pool-selector pattern in DRA is the idiomatic way to allocate multiple devices from a homogeneous group
 - **DRANET enforces per-pod device isolation**: only allocated `uverbs` devices are visible in the container, without requiring privileged mode
-- **Placement group awareness prevents silent failures**: DRANET exposes Azure placement group IDs as DRA attributes, allowing CEL selectors to constrain scheduling to a single InfiniBand fabric
 
 ## Next steps
 
