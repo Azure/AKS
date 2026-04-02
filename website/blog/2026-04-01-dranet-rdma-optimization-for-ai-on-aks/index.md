@@ -320,25 +320,19 @@ Expected results by template:
 
 Devices for non-allocated NICs are absent -- isolation is enforced by the DRANET NRI plugin without requiring `privileged: true`.
 
-## Benchmark results
+## Benchmark results: why NUMA alignment matters
 
-Two-node `all_reduce_perf`, 1 GPU per worker, message sizes from 512 MB to 8 GB. Transport: `NET/IBext_v11/GDRDMA`.
+We ran two-node `all_reduce_perf` (1 GPU per worker, message sizes 512 MB–8 GB, transport `NET/IBext_v11/GDRDMA`) across our three ResourceClaimTemplates:
 
-| Template | GPU | NIC(s) | NUMA | Channels | GDR | Avg busbw |
-|---|---|---|---|---|---|---|
-| `1nic-aligned` | gpu-0 (NUMA 0) | mlx5_0 (NUMA 0) | NODE | 8 | Yes | **~56 GB/s** |
-| `2nic-aligned` | gpu-0 (NUMA 0) | mlx5_0+mlx5_1 (NUMA 0) | NODE | 16 | Yes | **~112 GB/s** |
-| `1nic-unaligned` | gpu-0 (NUMA 0) | mlx5_2 (NUMA 1) | SYS | 2 | No | **~25 GB/s** |
+![Bar chart comparing NCCL all_reduce_perf average bus bandwidth across three NUMA placement scenarios: 1nic-unaligned at 25 GB/s, 1nic-aligned at 56 GB/s, and 2nic-aligned at 112 GB/s](./benchmark-chart.svg)
 
-### Why NUMA alignment matters: a 4.5x difference
+The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers only ~25 GB/s -- a **4.5x degradation** compared to the NUMA-aligned `1nic-aligned` case at ~56 GB/s. Three compounding penalties explain this:
 
-The cross-NUMA (`1nic-unaligned`) case shows a 4.5x performance degradation compared to the NUMA-aligned (`1nic-aligned`) case. Three compounding penalties explain this:
-
-1. **GDR disabled** -- NCCL falls back from `GDRDMA` to staging through host memory when the NIC has no direct PCIe path to the GPU
+1. **GDR disabled** -- with a SYS relationship between GPU and NIC, NCCL falls back from `GDRDMA` to staging through host memory because there is no direct PCIe path
 2. **Fewer channels** -- NCCL's topology engine allocates only 2 channels for SYS-distant NICs versus 8 for NODE-local NICs
 3. **Cross-NUMA memory traffic** -- every transfer crosses the QPI/UPI interconnect between NUMA domains
 
-With two NUMA-aligned NICs (`2nic-aligned`), throughput doubles to ~112 GB/s as NCCL stripes data across both NICs with 16 channels and GDR active on both paths.
+With two NUMA-aligned NICs (`2nic-aligned`), throughput doubles again to ~112 GB/s. NCCL stripes data across both NICs with 16 channels and GDR active on both paths.
 
 ## Questions?
 
