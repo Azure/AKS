@@ -178,13 +178,13 @@ Standard Example (with nodeAffinity) - “Prefer this node type, but don’t blo
 affinity:
   nodeAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
-     - weight: 100
-        preference:
-         matchExpressions:
-            - key: node.kubernetes.io/instance-type
-              operator: In
-              values:
-                - Standard_D16ds_v5
+      - weight: 100
+      preference:
+      matchExpressions:
+        - key: node.kubernetes.io/instance-type
+        operator: In
+          values:
+            - Standard_D16ds_v5
 ```
 
  Standard Example - “Never co-locate replicas on the same node”
@@ -194,7 +194,7 @@ This scenario uses a hard rule `DoNotSchedule` to spread pods using kubernetes.i
 
 ```yaml
 topologySpreadConstraints:
-- maxSkew: 1
+  - maxSkew: 1
   topologyKey: kubernetes.io/hostname
   whenUnsatisfiable: DoNotSchedule
   labelSelector:
@@ -280,22 +280,22 @@ Tolerations are a field you place in your workload deployment file to flag what 
 
 Hard Rule - **NoSchedule Toleration** example:
 
-```yaml  
-   tolerations:  
-     - key: "key1"  
-       operator: "Equal"  
-       value: "value1"  
-       effect: "NoSchedule"  
+```yaml
+   tolerations:
+     - key: "key1"
+       operator: "Equal"
+       value: "value1"
+       effect: "NoSchedule"
 ```
 
 Best-effort rule - **PreferNoSchedule Toleration** example:
 
 ```yaml
-tolerations:  
-  - key: "key2"  
-    operator: "Equal"  
-    value: "value2"  
-    effect: "PreferNoSchedule"  
+tolerations:
+  - key: "key2"
+    operator: "Equal"
+    value: "value2"
+    effect: "PreferNoSchedule"
 ```
 
 ### Common Taint + Toleration Pitfalls
@@ -445,7 +445,7 @@ spec:
     spec:
       # If you taint compliance nodes like: example.com/compliance=phi:NoSchedule
       tolerations:
-      - key: "example.com/compliance"
+        - key: "example.com/compliance"
         operator: "Equal"
         value: "phi"
         effect: "NoSchedule"
@@ -469,7 +469,7 @@ spec:
               app: sample-healthcare-phi-zone-hardened
 
       containers:
-      - name: api
+        - name: api
         image: mcr.microsoft.com/oss/kubernetes/pause:3.6
         resources:
           requests:
