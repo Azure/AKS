@@ -339,22 +339,22 @@ spec:
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          # Prefer a node pool you label for low-latency networking.
-          - weight: 50
-            preference:
-              matchExpressions:
-              - key: example.com/network-tier
-                operator: In
-                values: ["low-latency"]
+            # Prefer a node pool you label for low-latency networking.
+            - weight: 50
+              preference:
+                matchExpressions:
+                  - key: example.com/network-tier
+                    operator: In
+                    values: ["low-latency"]
 
       # Best-effort: try to keep spread across zones, but don't block scheduling.
       topologySpreadConstraints:
-      - maxSkew: 2
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            app: sample-gaming-low-latency-prefer-local
+        - maxSkew: 2
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: sample-gaming-low-latency-prefer-local
 
       containers:
       - name: session
@@ -370,7 +370,7 @@ spec:
 The following example workload uses best effort topology spread, a soft rule node affinity, and a toleration for spot.
 
 ```yaml
- Batch / ETL workload that can run on preemptible/spot nodes.
+# Batch / ETL workload that can run on preemptible/spot nodes.
 # Goals:
 # - Use cheaper capacity (spot), tolerate eviction/disruption
 # - Avoid strict constraints that reduce scheduling opportunities
@@ -392,30 +392,30 @@ spec:
       restartPolicy: Never
 
       tolerations:
-      # If your spot pool is tainted like: example.com/capacity=spot:NoSchedule
-      - key: "example.com/capacity"
-        operator: "Equal"
-        value: "spot"
-        effect: "NoSchedule"
+        # If your spot pool is tainted like: example.com/capacity=spot:NoSchedule
+        - key: "example.com/capacity"
+          operator: "Equal"
+          value: "spot"
+          effect: "NoSchedule"
 
       # Soft preference to spot nodes IF they exist, but allow fallback if desired.
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            preference:
-              matchExpressions:
-              - key: example.com/capacity
-                operator: In
-                values: ["spot"]
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: example.com/capacity
+                    operator: In
+                    values: ["spot"]
 
       containers:
-      - name: worker
-        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
-        resources:
-          requests:
-            cpu: "2"
-            memory: "1Gi"
+        - name: worker
+          image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+          resources:
+            requests:
+              cpu: "2"
+              memory: "1Gi"
 ```
 
 ### Healthcare workload example
@@ -457,10 +457,10 @@ spec:
           # HARD anti-affinity at hostname: don't put 2 replicas on same node.
           # Tradeoff: can go Pending if cluster is small.
           requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: sample-healthcare-phi-zone-hardened
-            topologyKey: kubernetes.io/hostname
+            - labelSelector:
+                matchLabels:
+                  app: sample-healthcare-phi-zone-hardened
+              topologyKey: kubernetes.io/hostname
 
       topologySpreadConstraints:
       - maxSkew: 1
@@ -512,29 +512,29 @@ spec:
           # HARD constraints (must match):
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              # Allow either amd64 or arm64 nodes (multi-arch image).
-              - key: kubernetes.io/arch
-                operator: In
-                values: ["amd64", "arm64"]
+              - matchExpressions:
+                # Allow either amd64 or arm64 nodes (multi-arch image).
+                - key: kubernetes.io/arch
+                  operator: In
+                  values: ["amd64", "arm64"]
 
           # SOFT preferences (scheduler will try, but can fall back):
           preferredDuringSchedulingIgnoredDuringExecution:
-          # Prefer AMD64 nodes (common default for many workloads).
-          - weight: 80
-            preference:
-              matchExpressions:
-              - key: kubernetes.io/arch
-                operator: In
-                values: ["amd64"]
-          # If you label nodes by CPU vendor (you must add this label yourself),
-          # prefer AMD CPU nodes. Tradeoff: custom labels must be maintained.
-          - weight: 20
-            preference:
-              matchExpressions:
-              - key: example.com/cpu-vendor
-                operator: In
-                values: ["amd"]
+            # Prefer AMD64 nodes (common default for many workloads).
+            - weight: 80
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values: ["amd64"]
+            # If you label nodes by CPU vendor (you must add this label yourself),
+            # prefer AMD CPU nodes. Tradeoff: custom labels must be maintained.
+            - weight: 20
+              preference:
+                matchExpressions:
+                  - key: example.com/cpu-vendor
+                    operator: In
+                    values: ["amd"]
 
       containers:
       - name: app
