@@ -307,6 +307,244 @@ tolerations:
 
 For more on Taints and Tolerations, visit our [operator best practices docs](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#provide-dedicated-nodes-using-taints-and-tolerations) or the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
 
+## Examples of Workloads
+
+### Gaming Workload
+
+The following example workload uses best effort topology spread with a hard rule node affinity.
+
+```yaml
+# Gaming workload example: low-latency session service.
+# Goals:
+# - Prefer same-zone placement for the service to minimize cross-zone latency/cost
+# - But keep some resilience with best-effort distribution
+#
+# Pattern:
+# - Use preferred topology spread instead of hard (ScheduleAnyway)
+# - Optionally prefer nodes labeled as "low-latency" / "premium networking" / etc.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-gaming-low-latency-prefer-local
+spec:
+  replicas: 12
+  selector:
+    matchLabels:
+      app: sample-gaming-low-latency-prefer-local
+  template:
+    metadata:
+      labels:
+        app: sample-gaming-low-latency-prefer-local
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          # Prefer a node pool you label for low-latency networking.
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: example.com/network-tier
+                operator: In
+                values: ["low-latency"]
+
+      # Best-effort: try to keep spread across zones, but don't block scheduling.
+      topologySpreadConstraints:
+      - maxSkew: 2
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: sample-gaming-low-latency-prefer-local
+
+      containers:
+      - name: session
+        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "256Mi"
+```
+
+### Spot-optimized workload
+
+The following example workload uses best effort topology spread, a soft rule node affinity, and a toleration for spot.
+
+```yaml
+ Batch / ETL workload that can run on preemptible/spot nodes.
+# Goals:
+# - Use cheaper capacity (spot), tolerate eviction/disruption
+# - Avoid strict constraints that reduce scheduling opportunities
+#
+# Pattern:
+# - Spot node pool is often tainted (so only spot-tolerant pods land there)
+# - Use best-effort topology spread, or none, to maximize packing/cost efficiency
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sample-batch-cost-optimized-spot
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        app: sample-batch-cost-optimized-spot
+    spec:
+      restartPolicy: Never
+
+      tolerations:
+      # If your spot pool is tainted like: example.com/capacity=spot:NoSchedule
+      - key: "example.com/capacity"
+        operator: "Equal"
+        value: "spot"
+        effect: "NoSchedule"
+
+      # Soft preference to spot nodes IF they exist, but allow fallback if desired.
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: example.com/capacity
+                operator: In
+                values: ["spot"]
+
+      containers:
+      - name: worker
+        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+        resources:
+          requests:
+            cpu: "2"
+            memory: "1Gi"
+```
+
+### Healthcare workload example
+
+The following example workload uses hard rule topology spread with a hard rule node affinity and toleration to ensure resiliency and limited node co-location.
+
+```yaml
+# Healthcare-ish workload example (PHI-sensitive service).
+# Goals:
+# - Prefer multi-zone spread (availability)
+# - Strong anti-co-location at node level (reduce blast radius)
+# - Tolerate dedicated "compliance" nodes (tainted)
+#
+# NOTE: Kubernetes scheduling constraints don't provide compliance by themselves.
+# You still need encryption, RBAC, network policy, audit logging, etc.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-healthcare-phi-zone-hardened
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sample-healthcare-phi-zone-hardened
+  template:
+    metadata:
+      labels:
+        app: sample-healthcare-phi-zone-hardened
+    spec:
+      # If you taint compliance nodes like: example.com/compliance=phi:NoSchedule
+      tolerations:
+      - key: "example.com/compliance"
+        operator: "Equal"
+        value: "phi"
+        effect: "NoSchedule"
+
+      affinity:
+        podAntiAffinity:
+          # HARD anti-affinity at hostname: don't put 2 replicas on same node.
+          # Tradeoff: can go Pending if cluster is small.
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: sample-healthcare-phi-zone-hardened
+            topologyKey: kubernetes.io/hostname
+
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule  # HARD: ensure zone spread for HA
+        labelSelector:
+          matchLabels:
+            app: sample-healthcare-phi-zone-hardened
+
+      containers:
+      - name: api
+        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+```
+
+### Multi-architecture allowed workload
+
+The following example workload uses a hard rule node affinity for two types of architecture (AMD64 or ARM64) This multi-architecture scenario might be useful when looking to save cost, but have fall back availability.
+
+```yaml
+# Multi-architecture + preference for AMD64 (x86_64) and AMD CPUs.
+# Use case: you build multi-arch images, but want to prefer amd64 + AMD CPU nodes for perf/cost.
+#
+# Notes:
+# - kubernetes.io/arch is the canonical arch label (amd64/arm64).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-multiarch-prefer-amd64-amd
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: sample-multiarch-prefer-amd64-amd
+  template:
+    metadata:
+      labels:
+        app: sample-multiarch-prefer-amd64-amd
+    spec:
+      # Hard requirement: only schedule on Linux nodes (avoid Windows pools).
+      nodeSelector:
+        kubernetes.io/os: linux
+
+      affinity:
+        nodeAffinity:
+          # HARD constraints (must match):
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              # Allow either amd64 or arm64 nodes (multi-arch image).
+              - key: kubernetes.io/arch
+                operator: In
+                values: ["amd64", "arm64"]
+
+          # SOFT preferences (scheduler will try, but can fall back):
+          preferredDuringSchedulingIgnoredDuringExecution:
+          # Prefer AMD64 nodes (common default for many workloads).
+          - weight: 80
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values: ["amd64"]
+          # If you label nodes by CPU vendor (you must add this label yourself),
+          # prefer AMD CPU nodes. Tradeoff: custom labels must be maintained.
+          - weight: 20
+            preference:
+              matchExpressions:
+              - key: example.com/cpu-vendor
+                operator: In
+                values: ["amd"]
+
+      containers:
+      - name: app
+        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "256Mi"
+```
+
 ## Recap
 
 General Recommendations:
@@ -319,11 +557,11 @@ General Recommendations:
 
 ## FAQ
 
-#### How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
+### How can I overprovision? I always want to be overprovisioned by 10% so I can respond to spikes of traffic
 
 When using NAP, you can set your resource needs slightly higher than you expect to actually use. NAP responds to pending pod pressure, so by default it provisions nodes to match the amount you request in your deployment file. When not using an autoscaler, you have the option to use [overprovisioning](https://learn.microsoft.com/azure/aks/best-practices-performance-scale#overprovisioning) to have excess compute to respond quickly to spikes of traffic.
 
-#### How can I reduce latency when trying to schedule nodes?
+### How can I reduce latency when trying to schedule nodes?
 
 You can consider enabling features such as [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) which can decrease pod readiness time.
 
