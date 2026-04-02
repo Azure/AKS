@@ -12,14 +12,13 @@ In 2025, Datadog found most Kubernetes containers use less than [25% of their re
 
 This blog explains how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization using Configurable Scheduler Profiles on AKS.
 
+<!-- truncate -->
+
 1. [How does kube-scheduler work?](#how-does-the-default-kubernetes-scheduler-place-pods)
 2. [Use Configurable Scheduler Profiles to increase node utilization and operator control](#increase-node-utilization-and-operator-control)
 3. [Increase AKS cluster CPU utilization up to 85% with Configurable Scheduler](#increase-aks-cpu-utilization)
 4. [Increase AKS cluster GPU or CPU utilization while balancing memory with Configurable Scheduler](#increase-aks-gpu-utilization)
 5. [FAQ: How do Configurable Scheduler Profiles interact with autoscalers?](#faq)
-
-<!-- truncate -->
-
 ![Diagram showing increased node utilization with the node bin packing scheduler profile](./hero-image.png)
 
 ## How does the default Kubernetes scheduler place pods?
