@@ -44,7 +44,7 @@ This workload intent can be expressed in your workload manifest using 3 levers:
 2. **Affinity/Anti-Affinity** – control where workloads can (or should not) run
 3. **Topology Spread Constraints** – control replica distribution across failure domains
 
-AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler constraints and now provide guidance on configuring the AKS scheduler using Configurable Scheduler Profiles. Look for incoming blog that aligns pod placement to critical workloads with Configurable Scheduler Profiles on AKS.
+AKS also publishes [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler) for these scheduler constraints and now provides guidance on configuring the AKS scheduler using Configurable Scheduler Profiles. Watch for an upcoming post that explains how to align pod placement to critical workloads with Configurable Scheduler Profiles on AKS.
 
 This post will connect NAP with three most important workload-level tools for shaping predictable node provisioning outcomes on AKS. Then we’ll connect the dots to explain what AKS Node Auto-Provisioning (NAP) does with those signals to manage your workloads.
 
@@ -180,9 +180,9 @@ Standard Example (with nodeAffinity) - “Prefer this node type, but don’t blo
 affinity:
   nodeAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
-       - weight: 100
+     - weight: 100
         preference:
-            matchExpressions:
+         matchExpressions:
             - key: node.kubernetes.io/instance-type
               operator: In
               values:
@@ -285,9 +285,9 @@ Hard Rule - **NoSchedule Toleration** example:
 ```yaml  
    tolerations:  
      - key: "key1"  
-     operator: "Equal"  
-     value: "value1"  
-     effect: "NoSchedule"  
+       operator: "Equal"  
+       value: "value1"  
+       effect: "NoSchedule"  
 ```
 
 Best-effort rule - **PreferNoSchedule Toleration** example:
@@ -295,9 +295,9 @@ Best-effort rule - **PreferNoSchedule Toleration** example:
 ```yaml
 tolerations:  
   - key: "key2"  
-  operator: "Equal"  
-  value: "value2"  
-  effect: "PreferNoSchedule"  
+    operator: "Equal"  
+    value: "value2"  
+    effect: "PreferNoSchedule"  
 ```
 
 ### Common Taint + Toleration Pitfalls
