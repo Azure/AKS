@@ -49,7 +49,7 @@ Today, the default scheduler on AKS lacks the flexibility for users to change wh
 
 ## Configurable Scheduler Profiles on AKS
 
-[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] let you benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defining a custom scheduler. 
+[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] let you benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defining a custom scheduler.
 
 Configurable Scheduler Profiles use a Custom Resource Definition (CRD) that lets you define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a new configuration causes the scheduler to become unhealthy, the controller automatically reverts to the last known good state to ensure cluster stability.
 
@@ -139,13 +139,13 @@ spec:
 
 ### Increase AKS GPU utilization
 
-When plugins `MostAllocated` and  `NodeResourcesBalancedAllocation` are combined, the scheduler favors GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This results in more balanced GPU placement and fewer partially utilized nodes. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
+When `MostAllocated` and  `NodeResourcesBalancedAllocation` are combined, the scheduler favors GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This approach reduces fragmented GPU capacity and fewer underutilized secondary resources. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
 
-1. `MostAllocated` scores nodes based on its current resource utilization, favoring nodes that are already heavily used.
-2. `RequestedToCapacityRatio`, on the other hand, scores nodes based on both the resource requests and the remaining node capacity, making `MostAllocated` more suitable for an aggressive cost-optimization scheduling strategy since it intentionally ignores capacity.
+1. `MostAllocated` scores nodes based on its current resource utilization, favoring nodes that are already heavily used for the specified resources.
+2. `RequestedToCapacityRatio`, lets you define a scoring curve so you can explicitly control preferred utilization ranges and scores nodes based  resource requests relative to the remaining node capacity. This makes `MostAllocated` more aggressive for consolidation but gives you less explicit control over headroom.
 3. `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals. Enabling both can result in spreading over consolidation, weakening the intended packing behavior.
 
-When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure.
+`NodeResourcesBalancedAllocation` complements `MostAllocated` because it prefers nodes whose CPU and memory utilization stay proportionally balanced, helping reduce bottlenecks caused by asymmetric resource pressure.
 
 **This scheduler configuration maximizes GPU utilization by consolidating smaller jobs onto fewer nodes, reducing idle accelerator capacity while maintaining reasonable CPU and memory balance.**
 
@@ -230,6 +230,7 @@ spec:
 ## Next steps: Optimize resources with Configurable Scheduler Profiles on AKS
 
 Configurable Scheduler Profiles give you direct control over pod placement. With these scheduling plugins, your workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning.
+
 - For additional guidance and best practices, see [kube-scheduler best practices][best-practices-advanced-scheduler]
 - Increase node utilization using [Configurable Scheduler Profiles][node-bin-packing-configurations]
 - To schedule and queue batch workloads, [install and configure Kueue on AKS][kueue-overview].
