@@ -48,7 +48,7 @@ In most cases, resource-intensive LIST operations from unoptimized clients trigg
 ### Benefits
 
 - **Protects API server integrity**: Prevents your API server becoming unresponsive due to excessive load, helping preserve overall cluster stability.
-- **Simplify troubleshooting**: AKS proactively notifies you through a Resource Health alert when API server guard is applied. The API server intensive listing detector helps you identify unoptimized clients. Once client call patterns are optimized, you also have the ability to override or modify the managed API server guard.
+- **Simplified troubleshooting**: AKS proactively notifies you through a Resource Health alert when API server guard is applied. The API server intensive listing detector helps you identify unoptimized clients. Once client call patterns are optimized, you also have the ability to override or modify the managed API server guard.
 
 ![alt text](image.png)
 
