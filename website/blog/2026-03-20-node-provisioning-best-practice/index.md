@@ -144,18 +144,6 @@ Node affinity is the evolution of [nodeSelector](https://kubernetes.io/docs/conc
 
 Common use cases:
 
-Simple Example “Only run on GPU nodes” - You typically implement this with node labels + nodeSelector / nodeAffinity (and often taints/tolerations if you want strong isolation).
-
-Basic Example (with NodeSelector):
-
-```yaml
-spec:
-  template:
-    spec:
-      nodeSelector:
-        accelerator: gpu
-```
-
 Standard Example (with nodeAffinity) - sets a hard rule using `requiredDuringSchedulingIgnoredDuringExecution` requiring gpu support:
 
 ```yaml
@@ -198,6 +186,52 @@ topologySpreadConstraints:
   labelSelector:
     matchLabels:
       app: web
+```
+
+### Node Affinity Example - Gaming Workload
+
+The following example workload uses best effort topology spread with a hard rule node affinity.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-gaming-low-latency-prefer-local
+spec:
+  replicas: 12
+  selector:
+    matchLabels:
+      app: sample-gaming-low-latency-prefer-local
+  template:
+    metadata:
+      labels:
+        app: sample-gaming-low-latency-prefer-local
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 50
+              preference:
+                matchExpressions:
+                  - key: example.com/network-tier
+                    operator: In
+                    values: ["low-latency"]
+
+      topologySpreadConstraints:
+        - maxSkew: 2
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: sample-gaming-low-latency-prefer-local
+
+      containers:
+        - name: session
+          image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "256Mi"
 ```
 
 ### How do Topology Spread Constraints interact with Node Affinity rules?
@@ -267,14 +301,11 @@ spec:
 ```
 
 > **Note**: Taints can prevent pods from being scheduled to these nodes if they are not tolerated by the pods. A proper toleration must be added to your specific pods to allow them to be scheduled to nodes that are based on this NodePool CRD.
+
 Tolerations are a field in your pod spec that declare which taint effects a pod can accept. The two most common taint effects are:
 
 - `NoSchedule`: strict. Only pods with a matching toleration can land on the tainted node.
 - `PreferNoSchedule`: best-effort. AKS tries to avoid placing pods that don't tolerate the taint, but doesn't guarantee it.
-Tolerations are a field you place in your workload deployment file to flag what types of tainted nodes these pods can be scheduled to. There are two general behaviors for tolerations:
-
-- `NoSchedule` - strict toleration. Only pods with the proper toleration can be scheduled to the node with a specific taint.
-- `PreferNoSchedule` - less strict toleration. AKS will _try_ to avoid placing pods that don't tolerate this node's taint, but it's not guaranteed.
 
 Hard Rule - **NoSchedule Toleration** example:
 
@@ -296,137 +327,11 @@ tolerations:
     effect: "PreferNoSchedule"
 ```
 
-### Common Taint + Toleration Pitfalls
-
-- Over-tainting Nodes: Be cautious not to overuse taints as they can create scheduling issues.
-- Complexity in Management: Managing multiple taints and tolerations can become complex, making debugging and management harder.
-
-For more on Taints and Tolerations, visit our [operator best practices docs](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#provide-dedicated-nodes-using-taints-and-tolerations) or the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
-
-## Examples of Workloads
-
-### Gaming Workload
-
-The following example workload uses best effort topology spread with a hard rule node affinity.
-
-```yaml
-# Gaming workload example: low-latency session service.
-# Goals:
-# - Prefer same-zone placement for the service to minimize cross-zone latency/cost
-# - But keep some resilience with best-effort distribution
-#
-# Pattern:
-# - Use preferred topology spread instead of hard (ScheduleAnyway)
-# - Optionally prefer nodes labeled as "low-latency" / "premium networking" / etc.
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sample-gaming-low-latency-prefer-local
-spec:
-  replicas: 12
-  selector:
-    matchLabels:
-      app: sample-gaming-low-latency-prefer-local
-  template:
-    metadata:
-      labels:
-        app: sample-gaming-low-latency-prefer-local
-    spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            # Prefer a node pool you label for low-latency networking.
-            - weight: 50
-              preference:
-                matchExpressions:
-                  - key: example.com/network-tier
-                    operator: In
-                    values: ["low-latency"]
-
-      # Best-effort: try to keep spread across zones, but don't block scheduling.
-      topologySpreadConstraints:
-        - maxSkew: 2
-          topologyKey: topology.kubernetes.io/zone
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app: sample-gaming-low-latency-prefer-local
-
-      containers:
-        - name: session
-          image: mcr.microsoft.com/oss/kubernetes/pause:3.6
-          resources:
-            requests:
-              cpu: "500m"
-              memory: "256Mi"
-```
-
-### Spot-optimized workload
-
-The following example workload uses best effort topology spread, a soft rule node affinity, and a toleration for spot.
-
-```yaml
-# Batch / ETL workload that can run on preemptible/spot nodes.
-# Goals:
-# - Use cheaper capacity (spot), tolerate eviction/disruption
-# - Avoid strict constraints that reduce scheduling opportunities
-#
-# Pattern:
-# - Spot node pool is often tainted (so only spot-tolerant pods land there)
-# - Use best-effort topology spread, or none, to maximize packing/cost efficiency
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: sample-batch-cost-optimized-spot
-spec:
-  backoffLimit: 2
-  template:
-    metadata:
-      labels:
-        app: sample-batch-cost-optimized-spot
-    spec:
-      restartPolicy: Never
-
-      tolerations:
-        # If your spot pool is tainted like: example.com/capacity=spot:NoSchedule
-        - key: "example.com/capacity"
-          operator: "Equal"
-          value: "spot"
-          effect: "NoSchedule"
-
-      # Soft preference to spot nodes IF they exist, but allow fallback if desired.
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: example.com/capacity
-                    operator: In
-                    values: ["spot"]
-
-      containers:
-        - name: worker
-          image: mcr.microsoft.com/oss/kubernetes/pause:3.6
-          resources:
-            requests:
-              cpu: "2"
-              memory: "1Gi"
-```
-
 ### Healthcare workload example
 
 The following example workload uses hard rule topology spread with a hard rule node affinity and toleration to ensure resiliency and limited node co-location.
 
 ```yaml
-# Healthcare-ish workload example (PHI-sensitive service).
-# Goals:
-# - Prefer multi-zone spread (availability)
-# - Strong anti-co-location at node level (reduce blast radius)
-# - Tolerate dedicated "compliance" nodes (tainted)
-#
-# NOTE: Kubernetes scheduling constraints don't provide compliance by themselves.
-# You still need encryption, RBAC, network policy, audit logging, etc.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -460,6 +365,7 @@ spec:
 
       topologySpreadConstraints:
         - maxSkew: 1
+          minDomains: 3
           topologyKey: topology.kubernetes.io/zone
           whenUnsatisfiable: DoNotSchedule  # HARD: ensure zone spread for HA
           labelSelector:
@@ -475,71 +381,12 @@ spec:
             memory: "256Mi"
 ```
 
-### Multi-architecture allowed workload
+### Common Taint + Toleration Pitfalls
 
-The following example workload uses a hard rule node affinity for two types of architecture (AMD64 or ARM64) This multi-architecture scenario might be useful when looking to save cost, but have fall back availability.
+- Over-tainting Nodes: Be cautious not to overuse taints as they can create scheduling issues.
+- Complexity in Management: Managing multiple taints and tolerations can become complex, making debugging and management harder.
 
-```yaml
-# Multi-architecture + preference for AMD64 (x86_64) and AMD CPUs.
-# Use case: you build multi-arch images, but want to prefer amd64 + AMD CPU nodes for perf/cost.
-#
-# Notes:
-# - kubernetes.io/arch is the canonical arch label (amd64/arm64).
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sample-multiarch-prefer-amd64-amd
-spec:
-  replicas: 6
-  selector:
-    matchLabels:
-      app: sample-multiarch-prefer-amd64-amd
-  template:
-    metadata:
-      labels:
-        app: sample-multiarch-prefer-amd64-amd
-    spec:
-      # Hard requirement: only schedule on Linux nodes (avoid Windows pools).
-      nodeSelector:
-        kubernetes.io/os: linux
-
-      affinity:
-        nodeAffinity:
-          # HARD constraints (must match):
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                # Allow either amd64 or arm64 nodes (multi-arch image).
-                - key: kubernetes.io/arch
-                  operator: In
-                  values: ["amd64", "arm64"]
-
-          # SOFT preferences (scheduler will try, but can fall back):
-          preferredDuringSchedulingIgnoredDuringExecution:
-            # Prefer AMD64 nodes (common default for many workloads).
-            - weight: 80
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values: ["amd64"]
-            # If you label nodes by CPU vendor (you must add this label yourself),
-            # prefer AMD CPU nodes. Tradeoff: custom labels must be maintained.
-            - weight: 20
-              preference:
-                matchExpressions:
-                  - key: example.com/cpu-vendor
-                    operator: In
-                    values: ["amd"]
-
-      containers:
-        - name: app
-        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
-        resources:
-          requests:
-            cpu: "500m"
-            memory: "256Mi"
-```
+For more on Taints and Tolerations, visit our [operator best practices docs](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler#provide-dedicated-nodes-using-taints-and-tolerations) or the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
 
 ## Recap
 
