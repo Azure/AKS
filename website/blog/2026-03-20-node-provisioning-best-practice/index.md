@@ -349,9 +349,9 @@ spec:
       # If you taint compliance nodes like: example.com/compliance=phi:NoSchedule
       tolerations:
         - key: "example.com/compliance"
-        operator: "Equal"
-        value: "phi"
-        effect: "NoSchedule"
+          operator: "Equal"
+          value: "phi"
+          effect: "NoSchedule"
 
       affinity:
         podAntiAffinity:
@@ -374,11 +374,11 @@ spec:
 
       containers:
         - name: api
-        image: mcr.microsoft.com/oss/kubernetes/pause:3.6
-        resources:
-          requests:
-            cpu: "250m"
-            memory: "256Mi"
+          image: mcr.microsoft.com/oss/kubernetes/pause:3.6
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
 ```
 
 ### Common Taint + Toleration Pitfalls
