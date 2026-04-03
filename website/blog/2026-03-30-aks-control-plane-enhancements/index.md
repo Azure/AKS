@@ -60,9 +60,11 @@ AKS now includes etcd defragmentation optimizations for large clusters, reducing
 
 ### Benefits
 
-- Reduced API server latency spikes and intermittent timeouts during etcd operations that serve client reads and writes.
+- Reduced your API server latency spikes and intermittent timeouts during etcd operations that serve client reads and writes.
 
-## Additional resources
+## Conclusion
+
+These improvements make your control plane more resilient, scalable, and performant, and reduce the manual configuration needed to scale your existing clusters further. However, the Kubernetes scale envelope remains multidimensional. The number and size of cluster objects, such as pods, nodes, CRDs, Secrets, and ConfigMaps, along with client behavior, continue to play a critical role in how efficiently your cluster scales.
 
 To learn more about the Kubernetes scale envelope, its interaction with the control plane, client optimization, and best practices for running large clusters, refer to:
 
