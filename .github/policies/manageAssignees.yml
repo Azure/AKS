@@ -99,7 +99,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Security Center
@@ -111,7 +111,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - mayaherskovic
+              - kaarthis
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Security
@@ -124,6 +124,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - Azure/aks-security
+              - shashankbarsin
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Confidential Computing
@@ -135,7 +136,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - jakjang
+              - shashankbarsin
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Azure Portal
@@ -161,6 +162,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - Azure/aks-portal
+              - chandraneel
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Azure Government
@@ -184,8 +186,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
-              - danbosscher
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Cilium
@@ -197,8 +198,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
-              - paulgmiller
+              - therealmitchconnors
               - quantumn-a5
               - tamilmani1989
               replyTemplate: ${mentionees} would you be able to assist?
@@ -212,8 +212,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
-              - danbosscher
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Pod Identity
@@ -226,6 +225,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - Azure/aks-security
+              - shashankbarsin
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Windows Containers
@@ -303,7 +303,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -317,7 +317,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - JackStromberg
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # App Gateway
@@ -329,8 +329,8 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
-              - jackstromberg
+              - therealmitchconnors
+              - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Upstream - Helm
@@ -369,7 +369,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - azure/aks-traffic
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Mesh networking
@@ -381,7 +381,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
+              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Copilot
@@ -394,7 +394,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - wangyira
-              - pavneeta
               - chandraneel
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -407,7 +406,6 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - jakjang
               - toddysm
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -433,7 +431,6 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - chasewilson
               - sjwaight
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -497,7 +494,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - AllenWen-at-Azure
-              - pavneeta
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Upgrades
@@ -512,7 +508,7 @@ configuration:
               - kaarthis
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Flux
+        # Flux extension
         - if:
           - hasLabel:
               label: extension/flux
@@ -523,6 +519,19 @@ configuration:
               mentionees:
               - dipti-pai
               - bavneetsingh16
+              - ponatara
+              replyTemplate: ${mentionees} would you be able to assist?
+              assignMentionees: True
+        # ArgoCD extension
+        - if:
+          - hasLabel:
+              label: extension/argocd
+          - not:
+              isAssignedToSomeone
+          then:
+          - mentionUsers:
+              mentionees:
+              - ponatara
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # GPU

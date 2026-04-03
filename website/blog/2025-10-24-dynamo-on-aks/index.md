@@ -7,7 +7,7 @@ authors:
 - sachi-desai
 - sertac-ozercan
 - rita-zhang
-tags: ["ai", "gpu", "oss", "GB200"]
+tags: ["dynamo-series", "ai", "gpu", "oss", "GB200"]
 ---
 
 *This blog post is co-authored with
@@ -82,7 +82,7 @@ without constraining the compute-heavy prefill phase, improving overall
 resource utilization and performance.
 
 Dynamo includes an
-[SLA-based Planner](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner_quickstart.md)
+[SLA-based Planner](https://docs.nvidia.com/dynamo/v-0-9-0/components/planner)
 that proactively manages GPU scaling for prefill/decode (PD) disaggregated
 inference. Using pre-deployment profiling, it evaluates how model parallelism
 and batching affect performance, recommending configurations that meet
@@ -92,7 +92,7 @@ time-series models, dynamically adjusting PD worker counts based on predicted
 demand and real-time metrics.
 
 The Dynamo
-[LLM-aware Router](https://github.com/ai-dynamo/dynamo/tree/main/docs/router)
+[LLM-aware Router](https://docs.nvidia.com/dynamo/v-0-9-0/components/router)
 manages the key-value (KV) cache across large GPU clusters by hashing requests
 and tracking cache locations. It calculates overlap scores between incoming
 requests and cached KV blocks, routing requests to GPUs that maximize cache
@@ -285,7 +285,7 @@ This post focused on the foundational serving stack. In upcoming
 blogs, we will build on this foundation and explore more of Dynamo's
 advanced features, such as
 [Disaggregated Serving](https://github.com/ai-dynamo/dynamo/blob/9defc01b9b9c51a4a21abbb02907a4f1d5d2a2d2/examples/basics/disaggregated_serving/README.md#L4)
-and [SLA-based Planner](https://github.com/ai-dynamo/dynamo/blob/main/docs/planner/sla_planner_quickstart.md).
+and [SLA-based Planner](https://docs.nvidia.com/dynamo/v-0-9-0/components/planner).
 We'll demonstrate how these features allow for even greater efficiency, moving
 from a static, holistic deployment to a flexible, phase-splitted architecture.
 Moving forward, we also plan to extend our testing to include larger

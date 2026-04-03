@@ -1,3 +1,12 @@
+andy-zhang:
+  name: Andy Zhang
+  title: Principal Software Engineer for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/andy-zhang-a7bb9676/
+  image_url: https://avatars.githubusercontent.com/andyzhangx
+  socials:
+    linkedin: andy-zhang-a7bb9676
+    github: andyzhangx
+
 ahmed-sabbour:
   name: Ahmed Sabbour
   title: Principal PM Lead for the Azure Kubernetes Service
@@ -230,6 +239,16 @@ ally-ford:
     linkedin: allison-ford-pm
     github: allyford
 
+wilson-darko:
+  name: Wilson Darko
+  title: Product Manager at Microsoft
+  url: https://www.linkedin.com/in/wilsondarko/
+  image_url: https://github.com/wdarko1.png
+  page: true
+  socials:
+    linkedin: wilsondarko
+    github: wdarko1
+
 sarah-zhou:
   name: Sarah Zhou
   title: Product Manager at Microsoft
@@ -395,7 +414,7 @@ jack-ma:
   name: Jack Ma
   title: Principal Software Engineer at Microsoft
   url: https://www.linkedin.com/in/jack4it
-  image_url: https://media.licdn.com/dms/image/v2/D5603AQHWwAMPN6xj4w/profile-displayphoto-scale_200_200/B56ZlTcSj3G4AY-/0/1758041549408?e=1765411200&v=beta&t=cdJXzpnYartjuhqMlvhay18El6rlGu2VfNK4xGdviss
+  image_url: https://avatars.githubusercontent.com/u/3120462?s=400&u=19b5d6c8c8c536874771373ed92ba73f404e8ca1&v=4
   socials:
     x: jack4it
     linkedin: jack4it
@@ -418,3 +437,40 @@ thilo-fromm:
   socials:
     linkedin: thilo-fromm-b6832a56
     github: t-lo
+
+harshit-gupta:
+  name: Harshit Gupta
+  title: Senior Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/hagupta/
+  socials:
+    linkedin: hagupta
+    github: harshitgupta1337
+
+johnson-shi:
+  name: Johnson Shi
+  title: Senior Product Manager at Microsoft
+  url: https://johnsonshi.com
+  image_url: https://github.com/johnsonshi.png
+  page: true
+  socials:
+    x: johnsonshi86
+    linkedin: johnsonshi
+    github: johnsonshi
+
+devi-vasudevan:
+  name: Devi Vasudevan
+  title: Principal Engineering Manager for Azure Upstream
+  url: https://www.linkedin.com/in/devi-vasudevan/
+  image_url: https://github.com/devivasudevan.png
+  socials:
+    linkedin: devi-Vasudevan
+    github: devivasudevan
+
+jaiveer-katariya:
+  name: Jaiveer Katariya
+  title: Software Engineer for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/jaiveer-k-900865166/
+  image_url: https://github.com/jaiveerk.png
+  page: true
+  socials:
+    github: jaiveerk

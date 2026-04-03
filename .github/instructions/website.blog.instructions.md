@@ -19,6 +19,7 @@ date: YYYY-MM-DD
 description: "SEO-optimized summary (150-160 characters)"
 authors: [author-key]  # From blog/authors.yml
 tags: [tag1, tag2]     # From blog/tags.yml
+draft: false            # Optional: set to true to hide from production
 ---
 ```
 
@@ -29,6 +30,18 @@ tags: [tag1, tag2]     # From blog/tags.yml
 - [ ] `description`: 150-160 chars, includes keywords
 - [ ] `authors`: Valid keys from `blog/authors.yml`
 - [ ] `tags`: Valid keys from `blog/tags.yml`
+
+### Blog Post Date
+
+The publish date is determined by the **folder name** (e.g., `2025-12-19-my-post/index.md`). Docusaurus extracts the date from folder/filename patterns like `YYYY-MM-DD-slug` or `YYYY/MM/DD/slug`. If you specify a `date` in front matter, it **overrides** the folder-derived date.
+
+**Important**: Unlike Jekyll, Docusaurus does **NOT** hide future-dated posts. All posts are published immediately when deployed, regardless of date. To prevent premature publishing:
+
+- Use `draft: true` in front matter to exclude from production builds (visible only in dev)
+- Use `unlisted: true` to hide from listings but keep accessible via direct link
+- Alternatively, keep the post in a separate branch until ready
+
+**Before merging**: If PR review takes longer than expected and the folder date becomes stale, update the folder name (or add a `date` override in front matter) to reflect the actual publish date. Posts should show the date readers will see them, not when they were originally drafted.
 
 ## Content Structure
 
@@ -248,7 +261,8 @@ See our previous post on [AKS networking fundamentals](/2024/01/15/aks-networkin
 
 ## Common Mistakes to Avoid
 
-❌ **Future-dated posts**: Will not appear on site until publish date
+❌ **Future-dated posts without `draft: true`**: Docusaurus publishes all posts immediately—use `draft: true` to hold back unready content
+❌ **Stale dates from long PR reviews**: Update the folder name or add `date` front matter before merging if the original date is now in the past
 ❌ **Missing truncate marker**: Full post shows on listing page  
 ❌ **Bare URLs**: Always use `[text](url)` syntax  
 ❌ **Locale based URLs**: Use generic links (no `/en-us/`)  

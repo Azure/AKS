@@ -47,6 +47,11 @@ app-routing:
   permalink: /app-routing
   description: AKS Application Routing add-on usage, ingress, certificates, and traffic management.
 
+azure-container-registry:
+  label: Azure Container Registry
+  permalink: /azure-container-registry
+  description: Building, distributing, and deploying container images with ACR and AKS.
+
 azure-front-door:
   label: Azure Front Door
   permalink: /azure-front-door
@@ -122,6 +127,16 @@ dns-performance:
   permalink: /dns-performance
   description: Improving and accelerating DNS query performance within AKS clusters.
 
+dynamo-series:
+  label: Dynamo on AKS series
+  permalink: /dynamo-series
+  description: Series highlighting LLM inference in production using OSS Dynamo project on an AKS cluster.
+
+entra:
+  label: Entra
+  permalink: /entra
+  description: Microsoft Entra identity and access management for AKS clusters and workloads.
+
 extensions:
   label: Extensions
   permalink: /extensions
@@ -156,6 +171,11 @@ general:
   label: General
   permalink: /general
   description: Broad AKS topics, announcements, conceptual overviews, and cross-cutting guidance.
+
+gpu:
+  label: GPU
+  permalink: /gpu
+  description: Configuration and optimization of GPU-accelerated workloads on AKS.
 
 grafana:
   label: Grafana
@@ -192,10 +212,15 @@ kube-fleet:
   permalink: /kube-fleet
   description: Using Kube-Fleet for multi-cluster application deployment and management with AKS.
 
+kubevirt:
+  label: KubeVirt
+  permalink: /kubevirt
+  description: Using KubeVirt to run VMs with Kubernetes and AKS.
+
 kueue:
   label: Kueue
   permalink: /kueue
-  description: Kueue workload queueing and scheduling for batch AI/ML jobs on AK
+  description: Kueue workload queueing and scheduling for batch AI/ML jobs on AKS.
 
 kro:
   label: KRO
@@ -242,6 +267,11 @@ networking:
   permalink: /networking
   description: Cluster and application networking, eBPF, traffic management, and connectivity patterns.
 
+node-auto-provisioning:
+  label: Node Auto Provisioning
+  permalink: /node-auto-provisioning
+  description: Managed Karpenter project for node provisioning and compute management on AKS.
+
 observability:
   label: Observability
   permalink: /observability
@@ -280,8 +310,7 @@ scaling:
 scheduler:
   label: Scheduler
   permalink: /scheduler
-  description: Techniques and capabilities to control pod placement, improve resource efficiency, and tune scheduling for diverse AKS workloads.
-
+  description: Scheduling workloads and managing scheduling constraints on AKS.
 security:
   label: Security
   permalink: /security
@@ -306,6 +335,11 @@ troubleshooting:
   label: Troubleshooting
   permalink: /troubleshooting
   description: Systematic diagnosis of cluster, networking, performance, and application issues.
+
+virtual-machine-node-pools:
+  label: Virtual Machine Node Pools
+  permalink: /virtual-machine-node-pools
+  description: Node pools that support multiple VM SKUs in a single pool for flexible capacity management and improved resilience in AKS clusters.
 
 workload-identity:
   label: Workload Identity

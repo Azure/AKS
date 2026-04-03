@@ -1,5 +1,235 @@
 # Azure Kubernetes Service Changelog
 
+## Release Notes - 2026-03-05
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* Azure Kubernetes Service support for [Flatcar Container Linux for AKS (preview)](https://github.com/Azure/AKS/issues/5648) will be retired on 8 June 2026, transition to a supported alternative by that date. From now to 7 June 2026, you can continue to use Flatcar Container Linux for AKS (preview) on Azure Kubernetes Service without disruption. Starting on 8 June 2026, Azure Kubernetes Service will no longer support Flatcar Container Linux for AKS (preview). You will no longer be able to create new node pools. AKS will not produce new node images and will no longer provide security patches for existing node pools. AKS will remove Flatcar Container Linux for AKS (preview) node images and existing code on 8 September 2026, meaning that scaling and remediation operations will fail.
+* Azure Linux has expanded GPU support to include NVIDIA A100, H100, and H200 VMs. Find the full list of supported GPUs with Azure Linux on AKS [here](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux#azure-linux-container-host-supported-gpu-virtual-machine-sizes).
+
+### Kubernetes Version
+* New Kubernetes patch versions are now available: `1.32.11`, `1.33.7`, `1.34.3`.
+* AKS Kubernetes Long Term Support (LTS) version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
+
+For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Preview Features
+* [Azure Monitor Profile OTLP gRPC support](https://learn.microsoft.com/azure/azure-monitor/containers/container-insights-overview) is now available in public preview, enabling OpenTelemetry Protocol gRPC endpoints for Azure Monitor metrics collection.
+* [ACNS](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) preview feature is now supported on dual-stack clusters.
+* [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to Karpenter Azure provider [v1.7.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.7.2). This release adds a new alpha resource `NodeOverlay` for controlling node priorities and supports two new scheduling labels: `kubernetes.azure.com/scalesetpriority` and `kubernetes.azure.com/os-sku`.
+
+### Features
+* [Application Monitoring auto-instrumentation](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless) is now generally available.
+* Azure Linux now supports the [AI Toolchain Operator (KAITO) add-on](https://learn.microsoft.com/azure/aks/ai-toolchain-operator) for running AI and ML workloads on AKS.
+
+### Behavioral Changes
+* [AKS Automatic clusters](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about#restrictions-that-prevent-running-workloads-on-the-managed-system-node-pool) now enforce multiple layers of defense against remote code execution via `nodes/proxy` permissions:
+  - A ValidatingAdmissionPolicy (VAP) restricts creation or updates of ClusterRole and Role objects granting `nodes/proxy`, except for approved system users and groups.
+  - An authorization policy denies `nodes/proxy` by default. Approved system users, groups, and kube-system service accounts are exempt.
+* On clusters where ACNS performance is used to enable [eBPF host routing](https://learn.microsoft.com/azure/aks/how-to-enable-ebpf-host-routing), nodes will be labeled with `kubernetes.azure.com/ebpf-host-routing=true`. This is done by a node image upgrade.
+
+### Component Updates
+* Cilium has been updated from v1.18.2 to [v1.18.6](https://github.com/cilium/cilium/releases/tag/v1.18.6) to address CVEs: [CVE-2025-64715](https://nvd.nist.gov/vuln/detail/CVE-2025-64715) and [CVE-2026-26963](https://nvd.nist.gov/vuln/detail/CVE-2026-26963).
+* Retina has been updated to [v1.0.3](https://github.com/microsoft/retina/releases/tag/v1.0.3) to address [CVE-2013-3900](https://nvd.nist.gov/vuln/detail/CVE-2013-3900).
+* Retina Enterprise has been updated to [v0.1.16](https://github.com/azure-networking/retina-enterprise/releases/tag/v0.1.16).
+* Konnectivity has been updated to [v0.32.1](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.32.1) with bug fixes and dependency updates.
+* Microsoft Defender for Containers sensor has been upgraded to v0.9.51 on AKS >= 1.35 and to v0.8.48 on AKS < 1.35. See [release notes](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode). The following defender for containers components were updated:
+  * Inspektor Gadget upgraded from v0.41.1 to [v0.41.2](https://github.com/inspektor-gadget/inspektor-gadget/tree/v0.41.2).
+  * Fluent Bit updated from 4.1.1 to [4.2.2](https://fluentbit.io/announcements/v4.2.2/).
+  * Multiple CVEs remediated as part of this change, listed below:
+    * [CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121)
+    * [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621)
+    * [CVE-2025-68156](https://nvd.nist.gov/vuln/detail/CVE-2025-68156)
+    * [CVE-2025-52881](https://nvd.nist.gov/vuln/detail/CVE-2025-52881)
+    * [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183)
+    * [CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726)
+    * [CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728)
+    * [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729)
+    * [CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730)
+    * [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329)
+    * [CVE-2026-24137](https://nvd.nist.gov/vuln/detail/CVE-2026-24137)
+    * [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914)
+    * [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181)
+    * [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912)
+    * [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185)
+    * [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186)
+    * [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187)
+    * [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188)
+    * [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189)
+    * [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723)
+    * [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724)
+    * [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725)
+    * [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
+* [Cluster autoscaler images](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) have been updated with CVE fixes across all supported Kubernetes versions: v1.29.5-aks-5, v1.30.7-aks-5, v1.31.5-aks-7, v1.32.3-aks-7, v1.33.1-aks-7, v1.34.1-aks-4.
+* Container Insights has been updated to [3.1.35](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.35).
+* AKS Azure Linux images:
+  * v3.0 - [202603.04.0](vhd-notes/AzureLinuxv3/202603.04.0.txt).
+* AKS Ubuntu images:
+  * Ubuntu 22.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202603.04.0.txt).
+  * Ubuntu 24.04 - [202603.04.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202603.04.0.txt).
+  
+  ---
+ 
+## Release Notes 2026-02-08
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* [Windows Server 2019 is scheduled for retirement on March 1, 2026](https://aka.ms/aks/ws2019-retirement-github). Please [transition to Windows Server 2022+](https://aka.ms/aks/upgrade-windows-os-version) by that date. After that date, AKS will no longer produce new node images or provide security patches for Windows Server 2019. After that date, you will not be able to create new node pools with Windows Server 2019 on any Kubernetes version. All existing node pools with Windows Server 2019 will be unsupported. Windows Server 2019 is not supported in Kubernetes versions >= 1.33. Starting on April 1, 2027, AKS will remove all existing node images for Windows Server 2019 which will result in failure of scaling and remediation (reimage and redeploy) operations.
+* [Windows Server Annual Channel (Preview)](https://aka.ms/aks/windows-annual-channel-retirement) on AKS will be retired on May 15, 2026, please transition to the [Long Term Servicing Channel (LTSC)](https://aka.ms/aks/upgrade-windows-os-version) by that date. From now to May 15, 2026 you can continue to use Windows Server Annual Channel (Preview) without disruption. On May 15, 2026, AKS will no longer produce new Windows Server Annual Channel node images or provide security patches. You will not be able to create new node pools with Windows Server Annual Channel. On May 15, 2027, AKS will remove all existing Windows Server Annual Channel node images, which will cause scaling and remediation (reimage and redeploy) operations to fail.
+
+### Kubernetes Version
+* AKS Kubernetes patch versions `1.34.2`, `1.33.6`, and `1.32.10` are now available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+* AKS Kubernetes version [`1.35` preview](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) is rolling out to multiple regions and is expected to complete by early March.
+
+### Preview Features
+* [Managed GPU profiles](https://learn.microsoft.com/azure/aks/gpu-cluster) are now available in public preview via API version `2026-01-02-preview`.
+* [Blue-green node pool upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) is now available in public preview via API version `2025-08-02-preview` and Azure CLI version `2.64.0` or higher.
+* [Node pool version rollback](https://learn.microsoft.com/azure/aks/roll-back-node-pool-version) is now available in public preview via API version `2025-08-02-preview` and Azure CLI version `2.64.0` or higher.
+
+### Features
+* [API Server VNET Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
+* HTTP Proxy and Custom Certificate Authority (CA) are now supported in Node Auto-provisioning (NAP) enabled clusters. Visit [HTTP Proxy documentation](https://learn.microsoft.com/azure/aks/http-proxy) and [Custom CA documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) to enable these features.
+
+### Behavioral Changes
+* Nodes are now annotated with a `kubernetes.azure.com/security-patch-timestamp` annotation during a security VHD reboot upgrade. This gives you a unified way to verify when the last security patch was applied to each node. Refer to [Autoupgrade Node OS Image FAQs](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli#node-os-autoupgrades-faq) for more information.
+* By default, AKS no longer creates or updates Network Security Groups on subnets it delegates for [Application Gateway for Containers](https://learn.microsoft.com/azure/application-gateway/for-containers/quickstart-deploy-application-gateway-for-containers-alb-controller-addon), improving reliability in policy-managed environments.
+* To protect against potential security concern of [remote code execution via nodes/proxy get permission](https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/#kubelet-authorization:~:text=Warning%3A,executing%20commands%20in%20any%20container%20running%20on%20the%20node.), AKS Automatic has added multiple layers of defense:
+  1. A ValidatingAdmissionPolicy(VAP) that restrict the use of the Kubernetes nodes/proxy permission. One policy blocks creation or updates of ClusterRole and Role objects granting nodes/proxy, except for approved system users and groups.
+  2. An authorization policy that denies nodes/proxy by default. This prevents exploitation even if a user has already been granted nodes/proxy permission through existing RBAC bindings. Approved system users, groups, and kube-system service accounts are exempt.
+* AKS Deployment Safeguards no longer **Deny** missing startup, liveness, and readiness probe requirements on AKS Automatic clusters. The policy has been changed to **warn only**. [Learn more](https://learn.microsoft.com/azure/aks/deployment-safeguards).
+* [Gateway API CRDs](https://learn.microsoft.com/azure/aks/managed-gateway-api) can now be enabled directly without first requiring a supported gateway implementation such as the [Managed Istio service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) to be enabled on the cluster.
+
+### Component Updates
+* Konnectivity has been updated to [v0.31.4-6](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.31.4) to resolve CVEs: [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729), [CVE-2025-61727](https://nvd.nist.gov/vuln/detail/CVE-2025-61727)
+* Karpenter has been updated to [v1.6.8](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.6.8) to enforce stricter DNS forwarding rules.
+* Azure Blob CSI driver has been updated to [v1.26.9](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.9) (k8s >= 1.32) and [v1.27.2](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.2) (k8s >= 1.34).
+* AKS Windows images:
+  * Server 2019 – [17763.8276.260120](vhd-notes/AKSWindows/2019/17763.8276.260120.txt).
+  * Server 2019 – [17763.8389.260210](vhd-notes/AKSWindows/2019/17763.8389.260210.txt).
+  * Server 2022 – [20348.4648.260120](vhd-notes/AKSWindows/2022/20348.4648.260120.txt).
+  * Server 2022 – [20348.4773.260210](vhd-notes/AKSWindows/2022/20348.4773.260210.txt).
+  * Server 2025 – [26100.32230.260120](vhd-notes/AKSWindows/2025/26100.32230.260120.txt).
+  * Server 2025 – [26100.32370.260210](vhd-notes/AKSWindows/2025/26100.32370.260210.txt).
+* AKS Azure Linux images:
+  * v3.0 - [202512.18.0](vhd-notes/AzureLinuxv3/202512.18.0.txt).
+  * v3.0 - [202601.07.0](vhd-notes/AzureLinuxv3/202601.07.0.txt).
+  * v3.0 - [202601.13.0](vhd-notes/AzureLinuxv3/202601.13.0.txt).
+  * v3.0 - [202601.27.0](vhd-notes/AzureLinuxv3/202601.27.0.txt).
+* AKS Ubuntu images:
+  * Ubuntu 22.04 - [202512.18.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202512.18.0.txt).
+  * Ubuntu 22.04 - [202601.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202601.07.0.txt).
+  * Ubuntu 22.04 - [202601.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202601.13.0.txt).
+  * Ubuntu 22.04 - [202601.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202601.27.0.txt).
+  * Ubuntu 24.04 - [202512.18.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202512.18.0.txt).
+  * Ubuntu 24.04 - [202601.07.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202601.07.0.txt).
+  * Ubuntu 24.04 - [202601.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202601.13.0.txt).
+  * Ubuntu 24.04 - [202601.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202601.27.0.txt).
+* Managed Prometheus add-on has been updated to [v6.24.2](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-01-22-2026).
+* The following control plane components have been updated to address security vulnerabilities:
+  * etcd has been updated to v3.5.22‑5 across all supported AKS versions.
+  * kube-apiserver/kube-controller-manager/kube-scheduler has been updated to v1.34.0-5 on AKS v1.34.0 and v1.34.1-4 on AKS v1.34.1.
+  * kubectl has been updated to v1.34.0-6 on AKS v1.34.0 and v1.34.1-5  on AKS v1.34.1.
+* ACNS has been updated to [v1.16.16](https://github.com/cilium/cilium/releases/tag/v1.16.16) for Kubernetes v1.31 to resolve CVEs: [CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874), [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907), [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913), [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673), [CVE-2025-47906](https://nvd.nist.gov/vuln/detail/CVE-2025-47906), [CVE-2025-6297](https://nvd.nist.gov/vuln/detail/CVE-2025-6297), [CVE-2023-4039](https://nvd.nist.gov/vuln/detail/CVE-2023-4039), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230) 
+* Updated Cilium to [v1.17.9](https://github.com/cilium/cilium/releases/tag/v1.17.9) for Kubernetes v1.32 and v1.33 to resolve CVEs: [CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874), [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907), [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913), [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673), [CVE-2025-47906](https://nvd.nist.gov/vuln/detail/CVE-2025-47906), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [CVE-2024-10963](https://nvd.nist.gov/vuln/detail/CVE-2024-10963), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2025-6297](https://nvd.nist.gov/vuln/detail/CVE-2025-6297)
+* Kube-egress-gateway has been updated to [v0.1.4](https://github.com/Azure/kube-egress-gateway/releases/tag/v0.1.4) to address multiple CVEs:  [CVE-2025-4673](https://nvd.nist.gov/vuln/detail/CVE-2025-4673), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-47914](https://nvd.nist.gov/vuln/detail/CVE-2025-47914), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-47906](https://nvd.nist.gov/vuln/detail/CVE-2025-47906), [CVE-2025-58181](https://nvd.nist.gov/vuln/detail/CVE-2025-58181), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-22874](https://nvd.nist.gov/vuln/detail/CVE-2025-22874), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-0913](https://nvd.nist.gov/vuln/detail/CVE-2025-0913), [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2025-64329](https://nvd.nist.gov/vuln/detail/CVE-2025-64329), and [CVE-2024-25621](https://nvd.nist.gov/vuln/detail/CVE-2024-25621)
+* Application Monitoring has been updated to [v1.1.0](https://github.com/microsoft/appmonitoring-k8s/releases/tag/1.1.0). [Learn more](https://learn.microsoft.com/azure/azure-monitor/app/kubernetes-codeless?tabs=portal).
+* Container Insights has been updated to [3.1.34](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.34).
+* [Application routing](https://learn.microsoft.com/azure/aks/app-routing) operator has been updated to [v0.2.17](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.17) to address security vulnerabilities in ingress-nginx, including: [CVE-2026-1580](https://nvd.nist.gov/vuln/detail/CVE-2026-1580), [CVE-2026-24512](https://nvd.nist.gov/vuln/detail/CVE-2026-24512), [CVE-2026-24513](https://nvd.nist.gov/vuln/detail/CVE-2026-24513), [CVE-2026-24514](https://nvd.nist.gov/vuln/detail/CVE-2026-24514).
+* Cilium operator has been updated to [v1.16.16](https://github.com/cilium/cilium/releases/tag/v1.16.16) and agent has been updated to [v1.17.9](https://github.com/cilium/cilium/releases/tag/v1.17.9).
+* Azure Disk CSI driver has been updated to [v1.32.12](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.32.12) and [v1.33.8](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.8) for AKS 1.33 and 1.34.
+* Istio-based service mesh add-on revision `asm-1-25` has been deprecated. Revision `asm-1-28` is now supported. See the [Istio add-on upgrade documentation](https://learn.microsoft.com/azure/aks/istio-upgrade) for details on how to upgrade mesh revisions.
+
+---
+
+## Release Notes 2026-01-04
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Announcements
+* Ubuntu version updates
+  * Ubuntu 24.04 is now generally available and will be the default for OS SKU `Ubuntu` starting in Kubernetes v1.35. This means that if you upgrade to Kubernetes v1.35 with `Ubuntu` OS SKU, you'll automatically update your OS version from Ubuntu 22.04 to Ubuntu 24.04. If you'd like to continue to use Ubuntu 22.04, you can use it until Kubernetes v1.36 end of life. You can also create or update your existing node pools using CLI version 2.82.0+. For more information, see [documentation](https://aka.ms/aks/upgrade-os-version).
+  * Ubuntu 18.04 support has been removed from AKS, meaning you'll no longer be able to scale your node pools. If you are currently using Ubuntu 18.04 on AKS, please follow our instructions to [upgrade](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster) your Kubernetes version to 1.25+ where Ubuntu 22.04 will be the default Ubuntu version. For more information on this retirement and removal, see [AKS Github Issues](https://github.com/Azure/AKS/issues/4873)
+* AKS has now published the results from the [CIS Kubernetes Benchmark v1.12.0](https://www.cisecurity.org/benchmark/kubernetes/) recommendations on AKS. The results are applicable to AKS 1.32.x through AKS 1.34.x. Detailed report is available in [documentation](https://learn.microsoft.com/azure/aks/cis-kubernetes).
+* AKS has now published the results from the [CIS Ubuntu 24.04 LTS Benchmark v1.0.0](https://www.cisecurity.org/benchmark/ubuntu_linux). Detailed report is available in [documentation](https://aka.ms/aks/ubuntu-cis).
+* Since November 30, 2025, Azure Kubernetes Service (AKS) no longer supports or provides security updates for Azure Linux 2.0. The Azure Linux 2.0 node image is frozen at the [202512.06.0 release](vhd-notes/AzureLinux/202512.06.0.txt). Beginning March 31, 2026, node images will be removed, and you'll be unable to scale your node pools.  Migrate to a supported Azure Linux version by [upgrading your node pools](https://learn.microsoft.com/azure/aks/upgrade-cluster?tabs=azure-cli) to a supported Kubernetes version or migrating to [osSku AzureLinux3](https://learn.microsoft.com/azure/aks/upgrade-os-version). For more information, see [Retirement of Azure Linux 2.0 node pools on AKS](https://github.com/Azure/AKS/issues/4988)
+* AKS now blocks the creation of clusters with Basic Load Balancer which [retired on 30 September 2025](https://learn.microsoft.com/answers/questions/1033471/retirement-announcement-basic-load-balancer-will-b). Clusters still using Basic Load Balancers are considered out of support and you must [upgrade to the Standard Load Balancer](https://learn.microsoft.com/azure/aks/upgrade-basic-load-balancer-on-aks).
+* Starting on March 30, 2026 the node pool tag, `aks-disable-kubelet-serving-certificate-rotation=true` will no longer be supported. New node pools can be created with the node pool tag, but AKS will not respect the node pool tag. For new node pools, that means that they will be created with [Kubelet Serving Certificate Rotation (KSCR)](https://aka.ms/aks/kubelet-serving-certificate-rotation) enabled, despite the node pool tag. For existing node pools, this means that KSCR will be automatically enabled on their next reimage operation. For updates about this retirement, see [AKS Github Issue](https://github.com/Azure/AKS/issues/5539).
+* Since 19 October 2025, AKS Automatic clusters have transitioned to a new billing model in alignment with the service moving from preview to General Availability. To learn more about Azure Kubernetes Service pricing, please visit the [pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/) page. As part of this transition, the following pricing updates have taken effect in supported regions:
+  * Compute charges based on the duration and type of virtual machines used by AKS Automatic clusters.
+  * A $0.16 cluster / hour hosted control plane fee. 
+* Starting in Kubernetes v1.35, if a cluster upgrade fails due to capacity when using maxSurge>1, AKS will by default retry scaling to a surge of 1 to attempt the upgrade again.
+* Customer-managed keys and Disk Encryption Sets are now supported on clusters using [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning). For instructions, BYOK limitations, and requirements visit our [Bring your own keys on AKS documentation](https://learn.microsoft.com/azure/aks/azure-disk-customer-managed-keys).
+* LocalDNS is now supported with [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-auto-provisioning) enabled clusters. To learn how to enable LocalDNS on NAP-enabled clusters, visit our [AKSNodeClass CRD documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass).
+
+### Kubernetes Version
+* AKS Kubernetes version `1.31` is deprecated. Please upgrade your clusters to `1.32` version or above. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) for more information.
+* AKS Kubernetes version `1.34` is now generally available. Refer to [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions) and [upgrading a cluster](https://learn.microsoft.com/azure/aks/upgrade-cluster) for more information.
+* AKS LTS (Long Term Support) patch versions are now available:
+  * Kubernetes 1.30.101-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.30-lts/CHANGELOG/CHANGELOG-1.30.md)
+  * Kubernetes 1.29.101-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.29-lts/CHANGELOG/CHANGELOG-1.29.md)
+  * Kubernetes 1.28.103-akslts - [Changelog](https://github.com/aks-lts/kubernetes/blob/release-1.28-lts/CHANGELOG/CHANGELOG-1.28.md)
+
+For deprecation and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/)
+
+### Preview features
+* [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) now supports Pod CIDR address space expansion in public preview, allowing you to add more Pod IPs without recreating the cluster.
+* OpenTelemetry support for AKS monitoring is now in limited public preview. Sign up form can be found [here](https://aka.ms/AzureMonitorOTelPreview)
+* [Private IP support for Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway#static-private-ip-support-preview) is now available in public preview on clusters of version >=1.34.
+* [External identity provider based authentication to cluster control plane](https://learn.microsoft.com/azure/aks/external-identity-provider-authentication-configure?pivots=github) is now available in preview.
+* [Identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts) is now available in preview. This addresses [workload identity's](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=dotnet) scale limitation of 20 federated identities credentials per managed identity.
+* [Entra ID based SSH access to nodes](https://learn.microsoft.com/azure/aks/manage-ssh-node-access?pivots=entraid-ssh) is now available in preview.
+* Revised experience for [data encryption at rest for secrets in AKS using KMS provider for Azure Key Vault](https://learn.microsoft.com/azure/aks/kms-data-encryption-concepts) with options for platform-managed keys or customer-managed keys is now available in preview.
+* [Flatcar Container Linux for AKS (preview)](https://aka.ms/aks/flatcar) is a CNCF-based vendor-neutral container-optimized immutable OS, best suited for running on multi-cloud and on-prem environments. Flatcar Container Linux is now available in preview as an OS option on AKS. You can deploy Flatcar Container Linux node pools in a new AKS cluster or add Flatcar Container Linux node pools to your existing clusters.
+* Windows Server 2025 is now supported in preview. This new version includes the following updates: Containerd 2.0 is now default, Generation 2 VMs are enabled by default, and FIPS is enabled by default. For more information on upgrading your windows OS version, see [AKS documentation](https://aka.ms/aks/upgrade-windows-os-version).
+* [Azure Linux with OS Guard](https://learn.microsoft.com/azure/azure-linux/intro-azure-linux-os-guard), a hardened and immutable variant of Azure Linux, is now in public preview.
+* [Istio CNI](https://learn.microsoft.com/azure/aks/istio-cni) is now in public preview. Istio CNI improves security by eliminating the need for `NET_ADMIN` and `NET_RAW` capabilities in application workloads within the service mesh.
+* Advanced Container Networking Services (ACNS) [performance acceleration mode](https://learn.microsoft.com/azure/aks/how-to-enable-ebpf-host-routing#enable-advanced-container-networking-services-and-ebpf-host-routing) is now in public preview. Choose the `BpfVeth` datapath acceleration mode for Azure CNI Powered by Cilium to improve pod networking performance and reduce node CPU usage.
+
+### Behavioral Changes
+* Starting with API version `2026-01-01`, AKS returns `podCIDR` and `podCIDRs` fields when `networkPlugin=none`, allowing customers to update their podCIDR to match their CNI configuration.
+* When using [LocalDNS](https://learn.microsoft.com/azure/aks/localdns-custom), AKS now rejects forwarding external domains to CoreDNS from vnetDNSOverrides to prevent DNS resolution issues.
+* AKS now enforces required subnet configuration for networking add-ons such as Application Gateway for Containers, which may cause cluster creation or upgrades to fail if add-on subnets are misconfigured or do not meet required constraints. See [Application Gateway for Containers networking requirements](https://learn.microsoft.com/azure/application-gateway/for-containers/quickstart-create-application-gateway-for-containers-managed-by-alb-controller).
+* AKS now returns a client error when virtual network encryption is used with API server VNet integration, as this configuration is not supported. See [API server VNet integration limitations](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#limitations)
+
+### Component Updates
+* AKS Azure Linux v2 image has been updated to [202512.06.0](vhd-notes/AzureLinux/202512.06.0.txt).
+* AKS Azure Linux v3 image has been updated to [202512.06.0](vhd-notes/AzureLinuxv3/202512.06.0.txt).
+* AKS Ubuntu 22.04 node image has been updated to [202512.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202512.06.0.txt).
+* AKS Ubuntu 24.04 node image has been updated to [202512.06.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202512.06.0.txt).
+* Windows node images:
+  * Server 2019 Gen1 – [17763.8146.251212](vhd-notes/AKSWindows/2019/17763.8146.251212.txt).
+  * Server 2022 Gen1/Gen2 – [20348.4529.251212](vhd-notes/AKSWindows/2022/20348.4529.251212.txt).
+  * Server 23H2 Gen1/Gen2 – [25398.2025.251212](vhd-notes/AKSWindows/23H2/25398.2025.251212.txt).  
+  * Server 2025 Gen1/Gen2 – [26100.7462.251212](vhd-notes/AKSWindows/2025/26100.7462.251212.txt).
+* Windows GMSA container has been updated to 0.12.1-2_5 in the latest Windows node images.
+* Azure Disk CSI driver has been updated to [v1.33.7](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.7) for AKS clusters of version >= 1.33.
+* Azure Blob CSI driver has been downgraded to [v1.26.6](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.6) for AKS clusters of version >= 1.34 to address stability issues.
+* Secrets Store CSI driver has been updated to [v1.7.2](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.7.2) for AKS clusters of version >= 1.26.
+* Cilium has been updated to [v1.18.2](https://github.com/cilium/cilium/releases/tag/v1.18.2) (now distroless) for AKS clusters of version >= 1.34.
+* Calico images have been updated to address multiple security vulnerabilities, including: [CVE-2025-61725](https://nvd.nist.gov/vuln/detail/CVE-2025-61725), [CVE-2025-61724](https://nvd.nist.gov/vuln/detail/CVE-2025-61724), [CVE-2025-61723](https://nvd.nist.gov/vuln/detail/CVE-2025-61723), [CVE-2025-58189](https://nvd.nist.gov/vuln/detail/CVE-2025-58189), [CVE-2025-58188](https://nvd.nist.gov/vuln/detail/CVE-2025-58188), [CVE-2025-58187](https://nvd.nist.gov/vuln/detail/CVE-2025-58187), [CVE-2025-58186](https://nvd.nist.gov/vuln/detail/CVE-2025-58186), [CVE-2025-58185](https://nvd.nist.gov/vuln/detail/CVE-2025-58185), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), and [CVE-2025-47912](https://nvd.nist.gov/vuln/detail/CVE-2025-47912).
+* `azure-cns` and `azure-cni` versions have been updated to [1.7.9](https://github.com/Azure/azure-container-networking/releases/tag/v1.7.9) for AKS clusters of version >= 1.33.
+* CoreDNS images have been updated to address multiple CVEs:
+  * CoreDNS image on AKS clusters with version >= 1.34.0 updated to [v1.13.1-1](https://github.com/coredns/coredns/releases/tag/v1.13.1)
+  * CoreDNS image on AKS clusters with version >= 1.33.0 and < 1.34.0 updated to [v1.12.1-6](https://github.com/coredns/coredns/releases/tag/v1.12.1)
+  * CoreDNS image on AKS clusters with version >= 1.32.0 and < 1.33.0 updated to [v1.11.3-13](https://github.com/coredns/coredns/releases/tag/v1.11.3)
+  * CoreDNS image on AKS clusters with version >= 1.24.0 and < 1.32.0 updated to [v1.9.4-7](https://github.com/coredns/coredns/releases/tag/v1.9.4)
+* Network Policy Manager (NPM) has been updated to [v1.6.34](https://github.com/Azure/azure-container-networking/releases/tag/v1.6.34) for all supported Kubernetes versions to resolve CVEs: [CVE-2025-6297](https://nvd.nist.gov/vuln/detail/CVE-2025-6297), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2024-10963](https://nvd.nist.gov/vuln/detail/CVE-2024-10963), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [GHSA-2464-8j7c-4cjm](https://github.com/advisories/GHSA-2464-8j7c-4cjm).
+* IP Masq Agent has been updated to [v0.1.15-7](https://github.com/Azure/ip-masq-agent-v2/releases/tag/v0.1.15) with an Azure Linux 3.0 OS refresh, addressing glibc and OpenSSL vulnerabilities: [CVE-2025-4802](https://nvd.nist.gov/vuln/detail/CVE-2025-4802), [CVE-2025-8058](https://nvd.nist.gov/vuln/detail/CVE-2025-8058), [CVE-2025-9230](https://nvd.nist.gov/vuln/detail/CVE-2025-9230), [CVE-2025-9232](https://nvd.nist.gov/vuln/detail/CVE-2025-9232).
+* Istio-based service mesh add-on has been upgraded to [v1.27.4](https://istio.io/latest/news/releases/1.27.x/announcing-1.27.4/) to address CVEs: [CVE-2025-66220](https://nvd.nist.gov/vuln/detail/CVE-2025-66220), [CVE-2025-64527](https://nvd.nist.gov/vuln/detail/CVE-2025-64527), [CVE-2025-64763](https://nvd.nist.gov/vuln/detail/CVE-2025-64763), [CVE-2025-55162](https://nvd.nist.gov/vuln/detail/CVE-2025-55162), [CVE-2025-54588](https://nvd.nist.gov/vuln/detail/CVE-2025-54588). Users can restart workload pods to trigger re-injection of the updated istio-proxy version. More details on patch upgrades are available [here](https://learn.microsoft.com/azure/aks/istio-upgrade).
+* [Open Service Mesh add-on](https://learn.microsoft.com/azure/aks/open-service-mesh-about) has been updated to [v1.2.11](https://github.com/openservicemesh/osm/releases/tag/v1.2.11) to address CVEs: [CVE-2024-45337](https://nvd.nist.gov/vuln/detail/CVE-2024-45337), [CVE-2025-22869](https://nvd.nist.gov/vuln/detail/CVE-2025-22869), [CVE-2025-22868](https://nvd.nist.gov/vuln/detail/CVE-2025-22868), [CVE-2024-24790](https://nvd.nist.gov/vuln/detail/CVE-2024-24790), [CVE-2024-34156](https://nvd.nist.gov/vuln/detail/CVE-2024-34156), [CVE-2025-47907](https://nvd.nist.gov/vuln/detail/CVE-2025-47907), [CVE-2025-58183](https://nvd.nist.gov/vuln/detail/CVE-2025-58183), [CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729).
+* Azure Policy add-on has been updated to [v1.15.1](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1151).
+* Application Gateway Ingress Controller (AGIC) has been updated to [v1.9.4](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.9.4).
+* Application Monitoring has been upgraded to [v1.0.0-beta.10](https://github.com/microsoft/Docker-Provider/releases/tag/appmonitoring-1.0.0-beta.10).
+* Container Insights has been updated to [3.1.32](https://github.com/microsoft/Docker-Provider/releases/tag/3.1.32) with CVE patches
+* Azure Monitor Metrics (ama-metrics) has been updated to the [release-11-13-2025](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-11-13-2025).
+* Cloud controller manager has been updated to [v1.34.2](https://github.com/kubernetes-sigs/cloud-provider-azure/compare/v1.34.1...v1.34.2) to fix a bug where services sharing Azure IPv6 PIP would not get reconciled.
+* Cluster autoscaler has been upgraded to [v1.34.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.1)
+* Microsoft Defender for Containers Sensor has been updated to [v0.8.39](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-versions-available-per-release).
+
+---
+
 ## Release Notes 2025-10-12
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
@@ -121,7 +351,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Server 23H2 Gen1/Gen2 – [25398.1849.250910](vhd-notes/AKSWindows/23H2/25398.1849.250910.txt)   
   * Server 2025 Gen1/Gen2 – [26100.6584.250910](vhd-notes/AKSWindows/2025/26100.6584.250910.txt) 
 * AKS Azure Linux v2 image has been updated to [202509.11.0](vhd-notes/AzureLinux/202509.11.0.txt)
-* AKS Azure Linux v3 image has been updated to [202509.18.0](vhd-notes/AKSAzureLinuxv3/202509.18.0.txt).
+* AKS Azure Linux v3 image has been updated to [202509.18.0](vhd-notes/AzureLinuxv3/202509.18.0.txt).
 * AKS Ubuntu 22.04 node image has been updated to [202509.11.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202509.11.0.txt).
 * AKS Ubuntu 24.04 node image has been updated to [202509.11.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202509.11.0.txt).
 * `Azure File CSI driver` has been upgraded to [`v1.32.7`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.32.7) on AKS 1.32, and [`v1.33.5`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.5) on AKS 1.33.
