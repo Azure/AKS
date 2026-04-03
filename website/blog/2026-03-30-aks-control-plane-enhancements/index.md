@@ -14,11 +14,11 @@ Azure Kubernetes Service (AKS) now includes several control plane enhancements i
 
 ## Introduction
 
-A key factor in Kubernetes scalability is how clients interact with the control plane and how those interactions shape the cluster’s overall scale envelope. Unoptimized API server call patterns by clients and growing etcd footprints can place increasing pressure on the control plane, ultimately limiting scalability. To address this, AKS includes a set of built‑in control plane enhancements for large clusters that automatically improve scalability, performance, and stability—without requiring any manual configuration from customers
+A key factor in Kubernetes scalability is how clients interact with the control plane and how those interactions shape the cluster’s overall scale envelope. Unoptimized API server call patterns by clients and growing etcd footprints can place increasing pressure on the control plane, ultimately limiting scalability. To address this, AKS includes a set of built‑in control plane enhancements for large clusters that automatically improve scalability, performance, and stability—without requiring any manual configuration from customers.
 
 ## Streaming encoder for LIST responses
 
-The API server's response encoders traditionally serialize the entire response into a contiguous block of memory and performs one [ResponseWriter.Write](https://pkg.go.dev/net/http#ResponseWriter.Write) call to transmit data to the client. If multiple large LIST requests arrive simultaneously, the cumulative memory consumption can grow quickly, leading to Out-of-Memory (OOM) events that compromise cluster stability.
+The API server's response encoders traditionally serialize the entire response into a contiguous block of memory and perform one [ResponseWriter.Write](https://pkg.go.dev/net/http#ResponseWriter.Write) call to transmit data to the client. If multiple large LIST requests arrive simultaneously, the cumulative memory consumption can grow quickly, leading to Out-of-Memory (OOM) events that compromise cluster stability.
 
 Kubernetes v1.33 introduced [streaming encoding for LIST responses](https://kubernetes.io/blog/2025/05/09/kubernetes-v1-33-streaming-list-responses/). Streaming processes and transmits each item individually, so memory is freed progressively as each chunk is sent. In benchmarks, this reduced memory usage by up to 20x in heavy LIST scenarios.
 
