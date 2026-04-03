@@ -35,9 +35,9 @@ AKS autoscales your control plane based on cluster size, measured by total compu
 
 ### Benefits
 
-- **Greater scalability**: Supports bigger clusters and workloads for advanced scenarios such as AI inference and training.
-- **Improved performance**: Higher CPU and memory allocation enables faster, more responsive API server operations.
-- **Enhanced stability**: Increased resources reduce bottlenecks and improve control plane stability under load.
+- **Greater scalability**: Your cluster can support more nodes and workloads for advanced scenarios such as AI inference and training.
+- **Lower Latency**: Higher CPU and memory helps reduce your API server's response time.
+- **Higher stability**: Your control plane encounters fewer bottlenecks and remains more stable under load.
 
 ## AKS managed API server guard
 
