@@ -281,7 +281,7 @@ Key details:
 - **`IPC_LOCK`** capability is required for RDMA memory registration
 - NCCL environment variables disable shared memory (`NCCL_SHM_DISABLE=1`) and NVLink multi-node (`NCCL_MNNVL_ENABLE=0`) to isolate InfiniBand performance
 
-### Running the test
+### Running the benchmark
 
 ```bash
 # Install the MPI Operator (if not already installed)
@@ -321,19 +321,17 @@ Expected results by template:
 
 Devices for non-allocated NICs are absent -- isolation is enforced by the DRANET NRI plugin without requiring `privileged: true`.
 
-## Benchmark results: why NUMA alignment matters
+### Checking benchmark results
 
 We ran two-node `all_reduce_perf` (1 GPU per worker, message sizes 512 MB–8 GB, transport `NET/IBext_v11/GDRDMA`) across our three ResourceClaimTemplates:
 
 ![Bar chart comparing NCCL all_reduce_perf average bus bandwidth across three NUMA placement scenarios: 1nic-unaligned at 25 GB/s, 1nic-aligned at 56 GB/s, and 2nic-aligned at 112 GB/s](./benchmark-chart.svg)
 
-The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers only ~25 GB/s -- a **4.5x degradation** compared to the NUMA-aligned `1nic-aligned` case at ~56 GB/s. Three compounding penalties explain this:
+The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers only **~25 GB/s** -- a **2.2x degradation** compared to the NUMA-aligned `1nic-aligned` case at **~56 GB/s**, and a **4.5x degradation** compared to the `2nic-aligned` case at **~112 GB/s**. Three compounding penalties explain this:
 
-1. **GDR disabled** -- with a SYS relationship between GPU and NIC, NCCL falls back from `GDRDMA` to staging through host memory because there is no direct PCIe path
-2. **Fewer channels** -- NCCL's topology engine allocates only 2 channels for SYS-distant NICs versus 8 for NODE-local NICs
-3. **Cross-NUMA memory traffic** -- every transfer crosses the QPI/UPI interconnect between NUMA domains
-
-With two NUMA-aligned NICs (`2nic-aligned`), throughput doubles again to ~112 GB/s. NCCL stripes data across both NICs with 16 channels and GDR active on both paths.
+1. **GDR disabled** -- with a SYS relationship between GPU and NIC, NCCL falls back from `GPUDirect` to staging through host memory because there is no direct PCIe path
+2. **Cross-NUMA** -- every data transfer crosses the QPI/UPI interconnect between NUMA domains
+3. **Fewer channels** -- NCCL's topology engine allocates only 2 channels for SYS-distant NICs versus 8 channels with NUMA-aligned NIC (`1nic-aligned`), and 16 channels with two NUMA-aligned NICs (`2nic-aligned`)
 
 ## Questions?
 
