@@ -134,7 +134,7 @@ spec:
 
 ### Increase AKS GPU utilization
 
-`MostAllocated` scores nodes based on its current resource utilization, favoring nodes that are already heavily used. `RequestedToCapacityRatio`, on the other hand, scores nodes based on both the resource requests and the remaining node capacity, making `MostAllocated` more suitable for an aggressive cost-optimization scheduling strategy since it intentionally ignores capacity. When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure. Lastly, it is critical to note that `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals. Enabling both can result in spreading over consolidation, weakening the intended packing behavior.
+`MostAllocated` scores nodes based on its current resource utilization, favoring nodes that are already heavily used. `RequestedToCapacityRatio`, on the other hand, scores nodes based on both the resource requests and the remaining node capacity, making `MostAllocated` more suitable for an aggressive cost-optimization scheduling strategy since it intentionally ignores capacity. When paired with MostAllocated, `NodeResourcesBalancedAllocation` complements the behavior because it encourages pod placement on nodes with user-defined proportional utilization, helping reduce bottlenecks caused by asymmetric resource pressure. `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals. Enabling both can result in spreading over consolidation, weakening the intended packing behavior.
 
 When combined, these plugins favor GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This results in more efficient GPU placement and fewer partially utilized nodes. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
 
@@ -225,6 +225,7 @@ Configurable Scheduler Profiles give you direct control over pod placement. With
 - Increase node utilization using [Configurable Scheduler Profiles][node-bin-packing-configurations]
 - If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
 - To schedule and queue batch workloads, [install and configure Kueue on AKS][kueue-overview] for efficient, policy-driven scheduling.
+
 [concepts-scheduler-configuration]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration
 [kueue-overview]: https://learn.microsoft.com/azure/aks/kueue-overview
 [best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
