@@ -139,10 +139,10 @@ spec:
 
 ### Increase AKS GPU utilization
 
-When `MostAllocated` and  `NodeResourcesBalancedAllocation` are combined, the scheduler favors GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This approach reduces fragmented GPU capacity and fewer underutilized secondary resources. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
+When `MostAllocated` and  `NodeResourcesBalancedAllocation` are combined, the scheduler favors GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This approach reduces fragmented GPU capacity and results in fewer underutilized secondary resources. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
 
 1. `MostAllocated` scores nodes based on its current resource utilization, favoring nodes that are already heavily used for the specified resources.
-2. `RequestedToCapacityRatio`, lets you define a scoring curve so you can explicitly control preferred utilization ranges and scores nodes based  resource requests relative to the remaining node capacity. This makes `MostAllocated` more aggressive for consolidation but gives you less explicit control over headroom.
+2. `RequestedToCapacityRatio`, lets you define a scoring curve so you can explicitly control preferred utilization ranges and scores nodes based on resource requests relative to the remaining node capacity. This makes `MostAllocated` more aggressive for consolidation but gives you less explicit control over headroom.
 3. `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals. Enabling both can result in spreading over consolidation, weakening the intended packing behavior.
 
 `NodeResourcesBalancedAllocation` complements `MostAllocated` because it prefers nodes whose CPU and memory utilization stay proportionally balanced, helping reduce bottlenecks caused by asymmetric resource pressure.
