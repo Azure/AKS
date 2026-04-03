@@ -8,9 +8,9 @@ tags: [ai, performance, scheduler, best-practices, cost]
 
 In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023, Weights and Biases found that nearly a third of GPU users [average less than 15% utilization][wb-gpu-utilization]. Underutilized resources materially contribute to increased infrastructure cost and this data signals that most users can greatly improve resource utilization. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler plays a critical role in node utilization.
 
-[Configurable Scheduler Profiles][concepts-scheduler-configuration] on AKS lets customers configure their own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. **The result: higher node density, better GPU utilization, and lower infrastructure costs.**
+[Configurable Scheduler Profiles][concepts-scheduler-configuration] on Azure Kubernetes Service (AKS) let you configure your own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. **The result: higher node density, better GPU utilization, and lower infrastructure costs.**
 
-This blog explains how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization using Configurable Scheduler Profiles on AKS.
+You'll learn how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization with Configurable Scheduler Profiles on AKS.
 
 <!-- truncate -->
 
@@ -39,7 +39,7 @@ Once a node is selected, the binding cycle can process multiple pods in parallel
 
 ![Diagram of the kube-scheduler workflow showing pods entering the scheduling cycle and binding cycle to assign a pod on a node](./kube-scheduler-scheduling-phases-diagram.png)
 
-For a deep dive on the Kubernetes scheduler, visit the technical blog post from SIG Scheduling contributor and AKS upstream engineer Heba Elayoty, [Deep Dive into the Kubernetes Scheduler Framework][deep-dive-scheduler-framework].
+For more on how the Kubernetes scheduler works, see the technical blog post from SIG Scheduling contributor and AKS upstream engineer Heba Elayoty, [Deep Dive into the Kubernetes Scheduler Framework][deep-dive-scheduler-framework].
 
 ### Limitations of the default Kubernetes scheduler
 
@@ -67,7 +67,7 @@ While this experiment uses intentionally simple, CPU-bound containers to isolate
 
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler for GPUs across multiple scheduling iterations](./default-config-scheduler-comparison-gpu.png)
 
-This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **The key takeaway is that each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
+This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **Each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
 
 | Scheduler                      | Scoring strategy                       | Scheduling intent                    | Operator benefits                                                                                                  |
 | ------------------------------ | -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
@@ -77,7 +77,7 @@ This change in distribution shape enables downstream efficiencies: improved cont
 
 ### Increase AKS CPU utilization
 
-`RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes. Lastly, it is critical to note that `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals and the scheduling logic may prioritize pod spreading. If you need both high utilization _and_ zone resilience, define a new profile to achieve both goals.
+`RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes. `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals and the scheduling logic may prioritize pod spreading. If you need both high utilization _and_ zone resilience, define a new profile to achieve both goals.
 
 By shaping the scoring curve to target a range of 50-85% CPU utilization, operators can increase pod density on provisioned nodes while preserving headroom for bursts, background processes, and system components in CPU-based workloads. [Configure node bin-packing][configure-requested-to-capacity] using the `RequestedToCapacityRatio` strategy to improve utilization and reduce infrastructure costs.
 
@@ -220,12 +220,11 @@ spec:
 
 ## Next steps: Optimize Azure resources and test Configurable Scheduler Profiles on AKS
 
-With Configurable Scheduler Profiles, teams gain fine-grained control over pod placement strategies like bin-packing, topology distribution, and resource-based scoring that directly addresses challenges related to application resilience and resource utilization for their AKS clusters. By leveraging these scheduling plugins, AKS users can ensure their workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning. This not only improves return on investment (ROI) but also accelerates development by allowing more jobs to run concurrently and reliably.
-
+Configurable Scheduler Profiles give you direct control over pod placement. With these scheduling plugins, your workloads make full use of available GPU capacity, reduce idle costs, and avoid costly overprovisioning.
 - For additional guidance and best practices, see [kube-scheduler best practices][best-practices-advanced-scheduler]
 - Increase node utilization using [Configurable Scheduler Profiles][node-bin-packing-configurations]
 - If additional capabilities or ML frameworks are needed to schedule and queue batch workloads, you can [install and configure Kueue on AKS][kueue-overview] to ensure efficient, policy-driven scheduling in AKS clusters.
-
+- To schedule and queue batch workloads, [install and configure Kueue on AKS][kueue-overview] for efficient, policy-driven scheduling.
 [concepts-scheduler-configuration]: https://learn.microsoft.com/azure/aks/concepts-scheduler-configuration
 [kueue-overview]: https://learn.microsoft.com/azure/aks/kueue-overview
 [best-practices-advanced-scheduler]: https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler
