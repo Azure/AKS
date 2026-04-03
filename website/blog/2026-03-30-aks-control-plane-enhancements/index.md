@@ -60,7 +60,7 @@ AKS now includes etcd defragmentation optimizations for large clusters, reducing
 
 ### Benefits
 
-- Reduced your API server latency spikes and intermittent timeouts during etcd operations that serve client reads and writes.
+- Reduces your API server latency spikes and intermittent timeouts during etcd operations that serve client reads and writes.
 
 ## Conclusion
 
