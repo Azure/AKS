@@ -31,12 +31,12 @@ This capability is backported to AKS versions 1.31.9+ and 1.32.6+, so your clust
 
 ## Higher control plane resource limits
 
-AKS autoscales your control plane based on cluster size, measured by total compute cores in the cluster, and the control plane's CPU/ Memory utilization. With this enhancement, Your AKS control plane can now receive up to 4x higher CPU and memory limits during scaling. This gives large clusters more room to handle demanding workloads.
+AKS autoscales your control plane based on cluster size, measured by total compute cores in the cluster, and the control plane's CPU and memory utilization. With this enhancement, your AKS control plane can now receive up to 4x higher CPU and memory limits during scaling. This gives large clusters more room to handle demanding workloads.
 
 ### Benefits
 
 - **Greater scalability**: Your cluster can support more nodes and workloads for advanced scenarios such as AI inference and training.
-- **Lower Latency**: Higher CPU and memory helps reduce your API server's response time.
+- **Lower latency**: Higher CPU and memory helps reduce your API server's response time.
 - **Higher stability**: Your control plane encounters fewer bottlenecks and remains more stable under load.
 
 ## AKS managed API server guard
