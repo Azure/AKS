@@ -6,7 +6,9 @@ authors: ["anson-qian", "michael-zappa", "sachi-desai"]
 tags: ["ai", "gpu", "networking", "performance"]
 ---
 
-Large-scale AI training and inferencing on Kubernetes depends on high-throughput, low-latency GPU-to-GPU communication. [DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers RDMA capable devices, exposes their topology as Kubernetes DRA attributes, and injects only desired devices into each container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs to deliver high-performance networking for demanding applications in Kubernetes.
+RDMA (Remote Direct Memory Access) is critical for unlocking the full potential of GPU infrastructure, enabling the high-throughput, low-latency GPU-to-GPU communication that large-scale AI workloads demand. In distributed training, collective operations like all-reduce and all-gather synchronize gradients and activations across GPUs — any network bottleneck stalls the entire training pipeline. In disaggregated inference, RDMA provides the fast inter-node transfers needed to move KV-cache data between the prefill and decode phases run on separate GPU pools.
+
+[DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers RDMA capable devices, exposes their topology as Kubernetes DRA attributes, and injects only desired devices into each container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs to deliver high-performance networking for demanding applications in Kubernetes.
 
 In previous post, we covered fundamental [DRA concepts](/2025/11/17/dra-devices-and-drivers-on-kubernetes). In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-uniform memory access) alignment scenarios, and show the benchmark results.
 
@@ -34,7 +36,6 @@ The NUMA topology (from `nvidia-smi topo -m`) reveals the affinity relationships
 GPUs 0-1 and NICs 0-1 share NUMA node 0. GPUs 2-3 and NICs 2-3 share NUMA node 1. A **NODE** relationship means the GPU and NIC share a direct PCIe root complex, enabling GPU-Direct RDMA (GDR). A **SYS** relationship means data must cross the QPI/UPI interconnect between NUMA domains, disabling GDR and adding latency.
 
 Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same resource claim. NCCL will work, but silently fall back to slower data paths. Scheduling a workload onto the wrong NIC -- one on a different NUMA node than the GPU -- can silently degrade collective performance by 4.5x or more.
-
 
 ## How DRANET solves this
 
