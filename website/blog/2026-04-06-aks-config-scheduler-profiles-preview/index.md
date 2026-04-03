@@ -69,7 +69,7 @@ While this experiment uses intentionally simple, CPU-bound containers to isolate
 
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler for GPUs across multiple scheduling iterations](./default-config-scheduler-comparison-gpu.png)
 
-This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **Each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio achieve these outcomes.**
+This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **Each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio, achieve these outcomes.**
 
 | Scheduler                      | Scoring strategy                       | Scheduling intent                    | Operator benefits                                                                                                  |
 | ------------------------------ | -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
