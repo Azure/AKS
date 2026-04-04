@@ -11,7 +11,7 @@ tags:
 Azure Kubernetes Service (AKS) now includes several control plane enhancements to enable large clusters scale more efficiently and operate reliably. These enhancements include streaming LIST responses, higher control plane resource limits, API server guard and etcd defragmentation optimizations.
 
 <!-- truncate -->
-![AKS control plane enhancements for scalability, stability and performance](control-plane-enhancements-large.png)
+![AKS control plane enhancements for scalability, stability and performance](./control-plane-enhancements-large.png)
 
 ## Introduction
 
@@ -51,7 +51,7 @@ In most cases, resource-intensive LIST operations from unoptimized clients trigg
 - **Protects API server integrity**: Prevents your API server from becoming unresponsive due to excessive load, helping preserve overall cluster stability.
 - **Simplified troubleshooting**: AKS proactively notifies you through a Resource Health alert when API server guard is applied. The [API server resource intensive listing detector](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#step-2---identify-and-analyse-latency-for-user-agent) in Diagnose & Solve helps you identify unoptimized clients. Once client call patterns are optimized, you also have the ability to override or modify the managed API server guard.
 
-![Resource Health alert notification indicating that AKS managed API server guard was applied to your cluster](rh-apf-image.png)
+![Resource Health alert notification indicating that AKS managed API server guard was applied to your cluster](./rh-apf-image.png)
 
 ## etcd defragmentation optimizations
 
