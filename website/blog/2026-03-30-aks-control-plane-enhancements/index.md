@@ -10,7 +10,7 @@ tags:
 ---
 Azure Kubernetes Service (AKS) now includes several control plane enhancements to enable large clusters scale more efficiently and operate reliably. These enhancements include streaming LIST responses, higher control plane resource limits, API server guard and etcd defragmentation optimizations.
 
-![AKS control plane enhancements for scalability, stability and performance](./control-plane-enhancements.png)
+![AKS control plane enhancements for scalability, stability and performance](./control-plane-enhancements-large.png)
 
 <!-- truncate -->
 
