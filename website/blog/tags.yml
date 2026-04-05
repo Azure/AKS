@@ -77,6 +77,11 @@ backup:
   permalink: /backup
   description: Protecting and restoring Kubernetes applications and data (e.g., Azure Backup for AKS).
 
+benchmarking:
+  label: Benchmarking
+  permalink: /benchmarking
+  description: Performance testing, benchmarking methodologies, and comparative analysis of AKS workloads.
+
 best-practices:
   label: Best Practices
   permalink: /best-practices
