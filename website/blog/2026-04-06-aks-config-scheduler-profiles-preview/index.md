@@ -45,13 +45,18 @@ For more on how the Kubernetes scheduler works, see the technical blog post from
 
 The default scheduler is primarily designed for general-purpose workloads. It prioritizes nodes with the most available resources using the _LeastAllocated_ scoring strategy. This strategy spreads pods across nodes, even when they could safely be packed more densely. While this works well for many services, the default scheduling criteria, and their fixed priority order, are not suitable for workloads that demand optimizing GPU and CPU utilization. In these scenarios, spreading pods across nodes can lead to fragmented resources, underutilized GPUs, and increased infrastructure cost.
 
-Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, or ignored, in the scheduling cycle on a per cluster basis. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. Starting with Kubernetes v1.33, AKS introduces [Configurable Scheduler Profiles][concepts-scheduler-configuration] - an AKS-managed CRD - that exposes the upstream scheduling framework without maintaining a separate scheduler. Now, users can adjust the `NodeResourcesFit` plugin from the default configuration to favor nodes with higher utilization to achieve more efficient bin‑packing and reduce infrastructure cost.
+Today, the default scheduler on AKS lacks the flexibility for users to change which criteria should be prioritized, or ignored, in the scheduling cycle because the default scheduler is not accessible to users. This rigidity often forces users to either accept suboptimal placement or manage a separate custom scheduler, both of which increase operational complexity. Starting with Kubernetes v1.33, AKS introduces [Configurable Scheduler Profiles][concepts-scheduler-configuration] - an AKS-managed CRD - that exposes the upstream scheduling framework without maintaining a separate scheduler. Now, users can adjust the `NodeResourcesFit` plugin from the default configuration to favor nodes with higher utilization to achieve more efficient bin‑packing and reduce infrastructure cost.
 
 ## Configurable Scheduler Profiles on AKS
 
-[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] let you benefit from the extensibility of the [scheduling framework][scheduling-framework-interfaces] while reducing the operational overhead of adopting a second scheduler or defining a custom scheduler.
+[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows users to change the default scheduler behavior using the extensibility of the [scheduling framework][scheduling-framework-interfaces], without the operational overhead of adopting a second scheduler or defining a custom scheduler. You express the intent declaratively, while AKS safely applies and manages the resulting scheduler behavior using a Custom Resource Definition (CRD).
 
-Configurable Scheduler Profiles use a Custom Resource Definition (CRD) that lets you define custom scheduler profiles with their own scheduling logic. A dedicated controller continuously reconciles these user-defined configurations with the underlying kube-scheduler deployment, validating changes and applying them transparently. If a new configuration causes the scheduler to become unhealthy, the controller automatically reverts to the last known good state to ensure cluster stability.
+1. AKS begins with the default scheduling configuration.
+2. You declare your desired scheduling behavior using a Configurable Scheduler Profile applied as a CRD.
+3. The controller overlays the user-defined configuration on top of the base scheduler configuration.
+4. The controller produces and maintains a reconciled scheduler ConfigMap representing the combined configuration.
+5. The kube-scheduler deployment consumes the controller-managed ConfigMap and applies the updated scheduling behavior.
+6. If the scheduler becomes unhealthy, the controller automatically rolls back to the last known good configuration.
 
 ![Architecture diagram showing how Configurable Scheduler Profiles use a CRD and controller to reconcile user-defined profiles with the kube-scheduler deployment](./config-scheduler-profiles.png)
 
@@ -69,7 +74,7 @@ While this experiment uses intentionally simple, CPU-bound containers to isolate
 
 ![Table showing increased node utilization with the node bin packing scheduler profiles versus the pod distribution using the default scheduler for GPUs across multiple scheduling iterations](./default-config-scheduler-comparison-gpu.png)
 
-This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **Each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio, achieve these outcomes.**
+This change in distribution shape enables downstream efficiencies: improved control for platform engineers, efficient resource usage, and cost optimization that are difficult to achieve when pods are evenly spread. **Configurable Scheduler has many use cases and each profile expresses a distinct scheduling intent. The next two sections detail how the scoring strategies, MostAllocated and RequestedToCapacityRatio, are configured to achieve increased utilization outcomes.**
 
 | Scheduler                      | Scoring strategy                       | Scheduling intent                    | Operator benefits                                                                                                  |
 | ------------------------------ | -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
