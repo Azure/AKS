@@ -4,17 +4,16 @@ date: 2026-03-26
 description: "Announcing agent skills for AKS, easily pluggable into any agent to enhance them with built-in AKS expertise, safer workflows, and reduced developer overhead."
 authors: [julia-yin]
 tags: [agent, skills, mcp, developer]
-draft: true
+draft: false
 ---
 
-We're excited to announce **agent skills for AKS**, bringing AKS best practices and troubleshooting guidance directly into **any AI agent** of your choosing. The AKS-specific skills are now available as part of the **GitHub Copilot for Azure** extension, directly available through VS Code, Copilot CLI, and Claude and pluggable into any compatible agent.
+**Agent skills for Azure Kubernetes Service (AKS)** brings production-grade AKS guidance, troubleshooting checklists, and guardrails directly into any compatible AI agent. The first set of skills are now available through the **GitHub Copilot for Azure** extension, with support for VS Code, Copilot CLI, and Claude.
 
-For AKS, skills matter because AI agents already carry a good baseline of Kubernetes and AKS knowledge, but that knowledge is only as current as their training data and varies across models. What agents typically lack is the prescriptive, up-to-date guidance specific to AKS: what the AKS engineering team recommends today, the exact workflows and tools for real troubleshooting scenarios, and the guardrails that keep changes safe in production. Today, we're releasing the first set of skills covering the two areas teams ask for help with most: best practices for AKS clusters and scenario-based troubleshooting.
+While AI agents already carry a good baseline of Kubernetes and AKS knowledge, that knowledge is only as current as their training data and varies across models. Skills enhance agents with prescriptive, up-to-date guidance on the tools and process our AKS engineers use today to make the right AKS decisions across cluster creation, operations, and issue resolution.
 
 <!-- truncate -->
 
-![Diagram showing artistic rendition of the components](./hero-image.png
-)
+![Diagram showing artistic rendition of the components](./hero-image.png)
 
 ## What are agent skills?
 
@@ -23,12 +22,12 @@ Agent skills are an open standard pioneered by Anthropic for enhancing AI agents
 - If you're not asking about AKS, the skill **stays out of the way** and doesn't add to your token usage.
 - When you do ask an AKS-related question, the skill **activates automatically** and brings in the right guidance, commands, and context.
 
-## Skills which are currently available
+## Available skills
 
 The first release includes the following skills:
 
-1. A high level **AKS best practices** skill: 
-1. Sub-skills for **AKS troubleshooting**: 
+1. A high-level [**AKS best practices** skill](https://github.com/microsoft/GitHub-Copilot-for-Azure/blob/main/plugin/skills/azure-kubernetes/SKILL.md)
+1. Sub-skills for [**AKS troubleshooting**](https://github.com/microsoft/GitHub-Copilot-for-Azure/tree/main/plugin/skills/azure-diagnostics/aks-troubleshooting)
 
 The **AKS best practices** skill guides agents through cluster configuration recommendations across networking, upgrade strategy, security, reliability, scale, and more. The guidance reflects what the AKS engineering team recommends for production clusters for optimal performance and uptime, along with specific defaults and critical decisions that apply to AKS. After installing the skill, try the following commands to invoke the skill and receive targeted recommendations for your AKS cluster:
 
@@ -60,7 +59,7 @@ You have two options: install individual skills directly, or get the full bundle
 
 The GitHub Copilot for Azure plugin is available through VS Code, Claude, and Copilot CLI and bundles AKS skills alongside 20+ skills across cost optimization, other Azure resources, and deployment workflows. Learn more about [GitHub Copilot for Azure](https://learn.microsoft.com/azure/developer/github-copilot-azure/introduction?tabs=vscode), and get the extension:
 
-**Install the Azure plugin to VS Code:**
+**Install the Azure extension to VS Code:**
 
 1. Open VS Code and go to the Extensions marketplace (`Ctrl+Shift+X` / `Cmd+Shift+X`).
 1. Search for **GitHub Copilot for Azure** and select **Install**. ([Direct link to the marketplace](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azure-github-copilot))
@@ -85,4 +84,4 @@ The GitHub Copilot for Azure plugin is available through VS Code, Claude, and Co
 
 ## Conclusion
 
-AKS skills give your agents a baseline of production AKS knowledge using the same guidance, commands, and diagnostic approaches that AKS engineers use. The first release covers best practices and troubleshooting, and we are planning to cover more scenarios based on customer feedback. If you run into issues or have scenarios you'd like to see covered, please feel free to open an issue on the [AKS repository](https://github.com/Azure/AKS/issues).
+AKS skills give your agents a baseline of production AKS knowledge using the same guidance, commands, and diagnostic approaches that AKS engineers use. The first release covers best practices and troubleshooting, and we're planning to cover more scenarios based on customer feedback. If you run into issues or have scenarios you'd like to see covered, open an issue on the [AKS repository](https://github.com/Azure/AKS/issues).
