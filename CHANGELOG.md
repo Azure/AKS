@@ -28,6 +28,8 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
   - A ValidatingAdmissionPolicy (VAP) restricts creation or updates of ClusterRole and Role objects granting `nodes/proxy`, except for approved system users and groups.
   - An authorization policy denies `nodes/proxy` by default. Approved system users, groups, and kube-system service accounts are exempt.
 * On clusters where ACNS performance is used to enable [eBPF host routing](https://learn.microsoft.com/azure/aks/how-to-enable-ebpf-host-routing), nodes will be labeled with `kubernetes.azure.com/ebpf-host-routing=true`. This is done by a node image upgrade.
+* AKS now supports [configuring Standard V2 Azure NAT Gateway](https://learn.microsoft.com/azure/aks/nat-gateway#create-an-aks-cluster-with-a-user-assigned-nat-gateway) as a user‑assigned NAT gateway for outbound (egress) traffic.
+
 
 ### Component Updates
 * Cilium has been updated from v1.18.2 to [v1.18.6](https://github.com/cilium/cilium/releases/tag/v1.18.6) to address CVEs: [CVE-2025-64715](https://nvd.nist.gov/vuln/detail/CVE-2025-64715) and [CVE-2026-26963](https://nvd.nist.gov/vuln/detail/CVE-2026-26963).
