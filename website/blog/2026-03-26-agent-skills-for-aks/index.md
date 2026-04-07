@@ -7,9 +7,9 @@ tags: [agent, skills, mcp, developer]
 draft: false
 ---
 
-**Agent skills for Azure Kubernetes Service (AKS)** brings production-grade AKS guidance, troubleshooting checklists, and guardrails directly into any compatible AI agent. The first set of skills are now available through the **GitHub Copilot for Azure** extension, with support for VS Code, Copilot CLI, and Claude.
+**Agent skills for Azure Kubernetes Service (AKS)** bring production-grade AKS guidance, troubleshooting checklists, and guardrails directly into any compatible AI agent. The first set of skills are now available through the **GitHub Copilot for Azure** extension, with support for VS Code, Visual Studio, Copilot CLI, and Claude.
 
-While AI agents already carry a good baseline of Kubernetes and AKS knowledge, that knowledge is only as current as their training data and varies across models. Skills enhance agents with prescriptive, up-to-date guidance on the tools and process our AKS engineers use today to make the right AKS decisions across cluster creation, operations, and issue resolution.
+While AI agents already carry a good baseline of Kubernetes and AKS knowledge, that knowledge is only as current as their training data and varies across models. Skills enhance agents with prescriptive, up-to-date guidance on the tools and processes our AKS engineers use today to make the right AKS decisions across cluster creation, operations, and issue resolution.
 
 <!-- truncate -->
 
@@ -55,7 +55,7 @@ You have two options: install individual skills directly, or get the full bundle
 
 The GitHub Copilot for Azure plugin is available through VS Code, Claude, and Copilot CLI and bundles AKS skills alongside 20+ skills across cost optimization, other Azure resources, and deployment workflows. Learn more about [GitHub Copilot for Azure](https://learn.microsoft.com/azure/developer/github-copilot-azure/introduction?tabs=vscode), and get the extension:
 
-**Install the Azure extension to VS Code:**
+**Install the Azure extension for VS Code:**
 
 1. Open VS Code and go to the Extensions marketplace (`Ctrl+Shift+X` / `Cmd+Shift+X`).
 1. Search for **GitHub Copilot for Azure** and select **Install**. ([Direct link to the marketplace](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azure-github-copilot))
