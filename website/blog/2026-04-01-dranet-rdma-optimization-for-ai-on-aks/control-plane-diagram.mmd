@@ -1,0 +1,37 @@
+flowchart TB
+    subgraph User["User / Workload Author"]
+        RCT["ResourceClaimTemplate<br/>(CEL selectors:<br/>NUMA match)"]
+        PodSpec["Pod Spec<br/>(resourceClaims reference)"]
+    end
+
+    subgraph CP["Kubernetes Control Plane"]
+        API["API Server"]
+        Sched["Scheduler<br/>(DRA-aware)"]
+        RS_GPU["ResourceSlice<br/>(gpu.nvidia.com)<br/>pciBusID, NUMA, pcieRoot"]
+        RS_NIC["ResourceSlice<br/>(dra.net)<br/>rdmaDevice, NUMA, pciAddress"]
+    end
+
+    subgraph Node["AKS Node (ND GB300-v6)"]
+        NVDRV["NVIDIA GPU DRA Driver<br/>(DaemonSet)"]
+        DRANETDRV["DRANET DRA Driver<br/>(DaemonSet)"]
+    end
+
+    %% User submits workload
+    PodSpec -->|"Submit pod with<br/>resource claims"| API
+    RCT -->|"Define GPU+NIC<br/>co-location constraints"| API
+
+    %% Drivers publish device topology
+    NVDRV -->|"Discover GPUs &<br/>publish topology"| RS_GPU
+    DRANETDRV -->|"Discover NICs &<br/>publish topology"| RS_NIC
+
+    %% Scheduler uses slices to allocate
+    RS_GPU --> Sched
+    RS_NIC --> Sched
+    API -->|"Pending pod"| Sched
+    Sched -->|"Evaluate CEL selectors<br/>& allocate NUMA-aligned<br/>GPU + NIC"| API
+    API -->|"Bind pod to node<br/>with allocation result"| Node
+
+    %% Styling
+    style User fill:#fef7e0,stroke:#fbbc04
+    style CP fill:#e8f0fe,stroke:#4285f4
+    style Node fill:#f3e8fd,stroke:#9f62eb
