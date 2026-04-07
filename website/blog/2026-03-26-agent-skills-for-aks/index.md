@@ -17,7 +17,7 @@ While AI agents already carry a good baseline of Kubernetes and AKS knowledge, t
 
 ## What are agent skills?
 
-Agent skills are an open standard pioneered by Anthropic for enhancing AI agents with domain-specific expertise in a token-efficient way. You install a skill once, and any compatible agent (such as GitHub Copilot, Claude, Gemini, or others) picks it up automatically for relevant prompts. They provide essential expertise to your agents while staying context efficient, as each skill loads only when your prompt is relevant to the skill's content:
+[Agent skills](https://learn.microsoft.com/agent-framework/agents/skills) are an open standard pioneered by Anthropic for enhancing AI agents with domain-specific expertise in a token-efficient way. You install a skill once, and any compatible agent (such as GitHub Copilot, Claude, Gemini, or others) picks it up automatically for relevant prompts. They provide essential expertise to your agents while staying context efficient, as each skill loads only when your prompt is relevant to the skill's content:
 
 - If you're not asking about AKS, the skill **stays out of the way** and doesn't add to your token usage.
 - When you do ask an AKS-related question, the skill **activates automatically** and brings in the right guidance, commands, and context.
@@ -74,9 +74,11 @@ The GitHub Copilot for Azure plugin is available through VS Code, Claude, and Co
 
 ### Option 2: Install AKS skills directly
 
-1. Go to [skills.sh](https://skills.sh/microsoft/github-copilot-for-azure) and locate the AKS skills: [azure-kubernetes](https://skills.sh/microsoft/github-copilot-for-azure/azure-kubernetes) and [azure-diagnostics](https://skills.sh/microsoft/github-copilot-for-azure/azure-diagnostics).
-1. Follow the `npx skills add` command at the top of the page to install the skill directly.
-1. Run any AKS-related prompt such as *"Review my cluster for best practices"*, and the skill will activate automatically.
+1. To install specific skills directly, use `npx skills add https://github.com/microsoft/github-copilot-for-azure --skill [skill name]`:
+    1. `npx skills add https://github.com/microsoft/github-copilot-for-azure --skill azure-kubernetes`
+    1. `npx skills add https://github.com/microsoft/github-copilot-for-azure --skill azure-diagnostics`
+1. Alternatively, download the skill file directly from the repo from the reference links below and move it to your skills directory (e.g. `~/.copilot/skills` or `~/.claude/skills`).
+1. Run any AKS-related prompt such as *"Review my AKS cluster for best practices"*, and the skill will activate automatically.
 
 ## AI-powered capabilities for AKS
 
@@ -93,6 +95,17 @@ The three layers are designed to complement each other:
 | AKS skills | Knowledge | No | Wide range of scenarios from cluster configuration to troubleshooting/operations |
 | AKS MCP server | Tools | Yes | Live diagnostics, cluster state, Azure and Kubernetes API access |
 | Agentic CLI for AKS | End-to-end experience | Yes | AI-powered cluster operations and workflows |
+
+## Creating your own skills
+
+Your team can get the most value from skills by combining AKS-authored skills with skills specific to your organization. If you have existing AKS workflows tailored to your specific workloads, you can encode them into reusable skills using the same format and run them together.
+
+Good candidates for internal skills include:
+
+- Governance guardrails (required tags, approved regions, allowed SKUs, naming policies)
+- Security controls (network isolation checks, image and registry policies, workload identity requirements)
+- Platform standards (ingress patterns, DNS conventions, observability defaults, escalation paths)
+- Troubleshooting workbooks (common issues that your team faces, specifics on how your clusters are configured, monitoring setup)
 
 ## Conclusion
 
