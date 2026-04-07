@@ -105,6 +105,14 @@ allowVolumeExpansion: true
 
 For more details on configuring component placement, see the [node selector documentation](https://learn.microsoft.com/en-us/azure/storage/container-storage/manage-local-container-storage-interface-driver-placement).
 
+## Practical guidance
+
+- Validate scale targets in your environment: very high PV density scenarios should be tested with your workload’s I/O patterns and cluster topology.
+
+- Use node selectors to align component placement with your node pool strategy (for example, dedicated storage pools or mixed pools).
+
+- Consolidate where it makes sense: Elastic SAN is most compelling when you have many PVs and want centralized capacity/performance management.
+
 ## Getting started with Azure Container Storage v2.1.0
 
 Ready to run your stateful workloads using Azure Container Storage v2.1.0? Here are your next steps:
@@ -120,11 +128,3 @@ Ready to run your stateful workloads using Azure Container Storage v2.1.0? Here 
 - Want the open-source local CSI driver? Visit our [GitHub repository](https://github.com/Azure/local-csi-driver) for installation instructions
 
 - Have questions or feedback? Reach out to our team at [AskContainerStorage@microsoft.com](mailto:AskContainerStorage@microsoft.com)
-
-## Practical guidance
-
-- Validate scale targets in your environment: very high PV density scenarios should be tested with your workload’s I/O patterns and cluster topology.
-
-- Use node selectors to align component placement with your node pool strategy (for example, dedicated storage pools or mixed pools).
-
-- Consolidate where it makes sense: Elastic SAN is most compelling when you have many PVs and want centralized capacity/performance management.
