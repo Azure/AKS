@@ -38,17 +38,13 @@ The **AKS best practices** skill guides agents through cluster configuration rec
 **AKS troubleshooting** covers the most common incident scenarios: node health failures and networking issues. It includes the exact CLI commands and diagnostic sequences that AKS engineers use internally when working customer incidents. Commands are permission-gated: the skill only suggests and executes commands that your current credentials allow, so there's no risk of unintentional changes. Here's what a typical troubleshooting session looks like in VS Code with the skill active:
 
 ```text
-User: My node has been in NotReady for 10 minutes. What should I check?
+User: What are the best practices for deploying a secure, reliable, and cost-efficient AKS cluster?
 
-Copilot [AKS troubleshooting skill]: Let's start with the node conditions and recent events.
+Copilot: I’ll pull AKS-specific best-practice guidance first so I can give you a concise, production-ready checklist for security, reliability, and cost.
 
-> kubectl describe node <node-name>
-> kubectl get events --field-selector involvedObject.name=<node-name> \
-    --sort-by='.lastTimestamp'
+Action: Read skill `azure-kubernetes`
 
-If the output shows a disk pressure or memory pressure condition, we'll check
-the kubelet logs next. If it's a network issue, we'll look at the CNI plugin
-and node connectivity. Share the output and we'll go from there.
+For AKS, the best results come from making strong Day-0 choices, then layering autoscaling, policy, and operational guardrails.
 ```
 
 ## How to get started
@@ -80,8 +76,30 @@ The GitHub Copilot for Azure plugin is available through VS Code, Claude, and Co
 
 1. Go to [skills.sh](https://skills.sh/microsoft/github-copilot-for-azure) and locate the AKS skills: [azure-kubernetes](https://skills.sh/microsoft/github-copilot-for-azure/azure-kubernetes) and [azure-diagnostics](https://skills.sh/microsoft/github-copilot-for-azure/azure-diagnostics).
 1. Follow the `npx skills add` command at the top of the page to install the skill directly.
-1. Run any AKS-related prompt — for example, *"Review my cluster for best practices"* — and the skill will activate automatically.
+1. Run any AKS-related prompt such as *"Review my cluster for best practices"*, and the skill will activate automatically.
+
+## AI-powered capabilities for AKS
+
+AKS now has several AI-powered experiences: skills, the [AKS MCP server](/2025/08/06/aks-mcp-server), and the [agentic CLI for AKS](https://aka.ms/aks/agentic-cli). Understanding the differences helps you choose the right combination for your workflow.
+
+The **[AKS MCP server](/2025/08/06/aks-mcp-server)** is a tool layer that pairs directly with skills. Where skills tell the agent *what* to do, the MCP server gives it the ability to *act*: securely access your cluster details, run scoped diagnostic commands, and interact with Kubernetes and Azure APIs. Without the AKS MCP server, agents fall back to running direct CLI commands, which lack the structured, permission-aware interface the MCP server provides.
+
+Skills enhance the base knowledge of any agent, including the **[agentic CLI for AKS](https://aka.ms/aks/agentic-cli)** (`az aks agent`). We're working on built-in support for all AKS skills in the agentic CLI, making it the right choice when you want a purpose-built terminal experience without assembling the individual pieces across tooling and AKS expertise yourself.
+
+The three layers are designed to complement each other:
+
+| Capability | Role | Requires cluster | Best for |
+|:---|:---|:---|:---|
+| AKS skills | Knowledge | No | Wide range of scenarios from cluster configuration to troubleshooting/operations |
+| AKS MCP server | Tools | Yes | Live diagnostics, cluster state, Azure and Kubernetes API access |
+| Agentic CLI for AKS | End-to-end experience | Yes | AI-powered cluster operations and workflows |
 
 ## Conclusion
 
 AKS skills give your agents a baseline of production AKS knowledge using the same guidance, commands, and diagnostic approaches that AKS engineers use. The first release covers best practices and troubleshooting, and we're planning to cover more scenarios based on customer feedback. If you run into issues or have scenarios you'd like to see covered, open an issue on the [AKS repository](https://github.com/Azure/AKS/issues).
+
+## Resources
+
+- Link to the [azure-kubernetes skill](https://github.com/microsoft/GitHub-Copilot-for-Azure/blob/main/plugin/skills/azure-kubernetes/SKILL.md)
+- Link to the [azure-diagnostics skill](https://github.com/microsoft/GitHub-Copilot-for-Azure/blob/main/plugin/skills/azure-diagnostics/SKILL.md)
+- Find all skills in the [Microsoft/skills repo](https://github.com/microsoft/skills/tree/main/.github/plugins/azure-skills)
