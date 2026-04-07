@@ -1,5 +1,5 @@
 ---
-title: "Announcing Azure Container Storage v2.1.0: Elastic SAN integration, on-demand installation, and node placement"
+title: "Azure Container Storage v2.1.0: Now GA with Elastic SAN"
 description: "Explore what’s new in Azure Container Storage v2.1.0 with Elastic SAN integration, modular on-demand installation, and enhanced node selector support."
 date: 2026-04-08 # date is important. future dates will not be published
 authors:
@@ -11,19 +11,21 @@ tags:
   - databases
 ---
 
-Stateful workloads on Kubernetes continue to demand not only faster performance but also larger scale and more streamlined operational simplicity. [Azure Container Storage v2.1.0](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction) is now generally available with three headline improvements: a native Elastic SAN (ESAN) integration, a modular on-demand installation model, and node selector support to control where Azure Container Storage components run.
+Stateful workloads on Kubernetes continue to demand not only faster performance but also larger scale and more streamlined operational simplicity. [Azure Container Storage v2.1.0](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction) is now generally available with three headline improvements:
+
+**Elastic SAN (ESAN) integration**: consolidate hundreds of persistent volumes under a single managed ESAN, bypassing VM disk-attachment limits
+
+**Modular on-demand installation**: deploy only the components your chosen storage type requires, reducing install time and cluster footprint
+
+**Node selector support**: control where Azure Container Storage components run so you can optimize resource usage across node pools
 
 <!-- truncate -->
 
-## What’s new in v2.1.0
+![Azure Container Storage v2.1.0 architecture overview](./acstorv2-architecture.png)
 
-- Elastic SAN integration: Elastic SAN is available as a supported storage type in Azure Container Storage v2.1.0.
-- Modular installation: You can selectively deploy only the components required for your chosen storage type, reducing install time and cluster footprint.
-- Node selector support: You can control the placement of Azure Container Storage components on dedicated storage node pools or mixed topologies.
+## Why Elastic SAN for Kubernetes storage
 
-## How Elastic SAN integration helps
-
-Elastic SAN is a managed, shared block storage service that provides a central pool of capacity and performance including IOPS and throughput. From this pool, you create multiple volumes and attach them to many compute resources.
+[Elastic SAN](https://learn.microsoft.com/azure/storage/elastic-san/) is a managed, shared block storage service that provides a central pool of capacity and performance including IOPS and throughput. From this pool, you create multiple volumes and attach them to many compute resources.
 
 Below are example ESAN “base capacity” sizes and the ESAN-level provisioned performance you get from that base size (because ESAN scales SAN IOPS + throughput linearly with base TiB). Specifically, each 1 TiB of base capacity adds 5,000 IOPS and 200 MB/s throughput; additional/capacity-only TiB does not increase IOPS or throughput.
 
@@ -35,44 +37,42 @@ Below are example ESAN “base capacity” sizes and the ESAN-level provisioned 
 | 50 | 250,000 | 10,000 MB/s |
 | 200 | 1,000,000 | 40,000 MB/s |
 
-For Kubernetes users, the key benefit is a shared, centrally managed model that helps consolidate large numbers of persistent volumes under a single SAN resource, which can reduce management overhead for stateful workloads.
-
-Elastic SAN uses iSCSI over TCP/IP for volume connectivity. This helps bypass traditional VM disk attachment constraints (for example, limits such as 64 disks per VM) when attaching many PVs per node, improving scalability for high-volume PV scenarios.
 Here are the key advantages we see customers looking for:
 
-**Seamless scalability for container workloads**: Elastic SAN increases the potential PV density per node by using iSCSI sessions instead of traditional disk attachments. On AKS Linux nodes, iSCSI sessions aren’t constrained by the same “disk attachment” limits, so you can attach significantly more PVs per node. This is especially useful for clusters that need to scale out PV-backed pods without hitting VM-level disk attachment ceilings.  
+**Scalability beyond VM disk limits**: ESAN uses iSCSI over TCP/IP for volume connectivity, which bypasses traditional VM disk attachment constraints (for example, limits such as 64 disks per VM). On AKS Linux nodes, iSCSI sessions aren't constrained by the same disk-attachment limits, so you can attach significantly more PVs per node. This is a key differentiator for high-volume PV scenarios.
 
-**Cost efficiency through storage consolidation**: Elastic SAN provisions storage at the TiB level, which enables consolidating hundreds (or thousands) of smaller GiB-scale PVs under a single SAN. This reduces overprovisioning at the volume level and can lower management overhead by consolidating many volumes under fewer top-level storage resources.  
+**Cost efficiency through storage consolidation**: Elastic SAN provisions capacity at the TiB level, enabling you to consolidate hundreds (or thousands) of smaller GiB-scale PVs under a single SAN. This reduces overprovisioning and lowers management overhead. Use the [ESAN pricing calculator](https://azure.microsoft.com/pricing/calculator/?msockid=386fb3dcdad3644830f9a576dbe16569) for a cost estimation of your storage requirements.
 
-**Fast attach/detach operations for burst scale scenarios**: Elastic SAN uses iSCSI. In practice, customers care about attach/detach during burst scale when dozens to hundreds of pods come and go quickly. The key point: iSCSI session establishment can be fast and avoids disk-centric attachment throttling patterns.
+**Fast attach/detach for burst scale scenarios**: iSCSI session establishment is fast and avoids disk-centric attachment throttling patterns, which matters during burst scale when dozens to hundreds of pods come and go quickly.
 
-**Simplified management with an on-ramp to open-source flexibility**: Azure Container Storage v2 is designed so you install only the components needed for the selected storage type, and it’s aligned with a broader direction where both Azure Container Storage v2 and the SAN CSI Driver are planned to be open sourced to give customers flexibility in how they orchestrate storage.  
-
-![Diagram showing Azure Container Storage v2.1.0 architecture with supported storage types (Elastic SAN and local NVMe) and the volume provisioning workflow for AKS workloads](./acstorv2-architecture.png)
+**Simplified management with an on-ramp to open-source flexibility**: Azure Container Storage v2 is designed so you install only the components needed for the selected storage type. The SAN CSI Driver is also planned to be open sourced to give customers flexibility in how they orchestrate storage.
 
 ## Which workloads benefit most
 
 Elastic SAN with Azure Container Storage is a strong fit for stateful workloads that combine many volumes with elastic provisioning needs. Here are a few workload patterns we’ve seen align well:
 
-**DBaaS / multi-tenant database platforms**: A representative scenario is a DBaaS provider running containerized databases on AKS. The key requirements tend to be:
+**Database as a service (DBaaS) and multi-tenant database platforms**: Many customers run containerized databases such as PostgreSQL and beyond on AKS, either as DBaaS offerings or shared, multi-tenant platforms. In these scenarios, storage choices have a direct impact on scalability, performance, durability, and day‑to‑day operability.
+Common requirements include:
 
-- scale out workload instances while keeping infrastructure overhead manageable
-- provision and attach many PVs quickly
-- avoid “monolithic” installs when only one storage type is needed
+- Scaling database instances efficiently while keeping infrastructure overhead under control
+- Fast provisioning and attachment of many PVs, especially in multi-tenant or bursty environments
+- Avoiding monolithic installs when only a single storage backend is needed
+  
+**Large-scale developer environments and per-user volumes**: Another pattern is per-user or per-project environments where each user instance maps to a PV. One example described in planning is a large environment with many pods across multiple clusters, where daily burst creation can stress volume provisioning and attachment if implemented as thousands of independent disks. Elastic SAN enables consolidating volumes under a SAN and accelerating provisioning/attachment flows compared to disk-per-PV approaches.
 
-**Large-scale developer environments and per-user volumes**: Another pattern is per-user or per-project environments where each user instance maps to a PV. One example described in planning is a large environment with many pods across multiple clusters, where daily burst creation can stress volume provisioning and attachment if implemented as thousands of independent disks. Elastic SAN enables consolidating volumes under a SAN and accelerating provisioning/attachment flows compared to disk-per-PV approaches.  
-
-**Stateful databases on AKS (PostgreSQL and beyond)**: AKS guidance and benchmarks frequently show how storage choices impact database performance and operability. Azure Container Storage is used to orchestrate Kubernetes volume deployment, and it supports local NVMe and Elastic SAN. So, you can choose backing storage based on durability, scale, or cost needs. If you’re deciding between local NVMe and network-backed options such as Elastic SAN, the “right” answer usually depends on your latency and durability requirements. The goal with Azure Container Storage is to keep the Kubernetes-native experience consistent while letting you select the backend that matches the workload.
+For using ESAN with Azure Container Storage, see the [configure Elastic SAN documentation](https://learn.microsoft.com/azure/storage/container-storage/use-container-storage-with-elastic-san?tabs=cli).
 
 ## On-demand installation model
 
-Azure Container Storage v2.1.0 supports a lightweight, modular installation model. With v2.1.0, you have flexibility in how you enable Azure Container Storage. You can enable Azure Container Storage first, then choose a backing storage type when you need it, so you deploy only the components required for that storage type. It supports two kinds of modes for installation:
+Azure Container Storage v2.1.0 supports a lightweight, modular installation model. You can enable Azure Container Storage first, then choose a backing storage type when you need it, deploying only the components required for that storage type. You can also add, update, or remove storage components after the initial setup. It supports two installation flows:
 
 **Flow A**: Enable Azure Container Storage and choose storage type upfront
 If you know which storage type (local NVMe/Elastic SAN) you want to use upfront, enable Azure Container Storage with your preferred storage type so the relevant driver and a default StorageClass can be configured.
 
 **Flow B**: Enable Azure Container Storage first, then add storage type later
 If you want to keep the initial install lightweight, you can enable Azure Container Storage first and then create a StorageClass of your preferred storage type which triggers installation of the respective CSI driver when you need it.
+
+For detailed steps, see the [on-demand installation documentation](https://learn.microsoft.com/azure/storage/container-storage/install-container-storage-aks?pivots=azurecli).
 
 ## Node selector support for component placement
 
@@ -82,7 +82,28 @@ In production clusters, running every component on every node usually isn’t th
 - GPU pools where you want to minimize background DaemonSet footprint
 - mixed compute/storage topologies where placement matters
 
-Azure Container Storage v2.1.0 adds node selector support so you can control where Azure Container Storage components run, helping optimize performance and resource usage.
+Azure Container Storage v2.1.0 adds node selector support so you can control where Azure Container Storage components run, helping optimize performance and resource usage. The local CSI drivers can be deployed only in selected node pools by configuring node affinity based on the agentpool label. The following example shows a StorageClass configuration:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-nvme
+  annotations:
+    storageoperator.acstor.io/nodeAffinity: |
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.azure.com/agentpool
+            operator: In
+            values: [mygpu,mygpu2]
+provisioner: localdisk.csi.acstor.io
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+```
+
+For more details on configuring component placement, see the [node selector documentation](https://learn.microsoft.com/en-us/azure/storage/container-storage/manage-local-container-storage-interface-driver-placement).
 
 ## Getting started with Azure Container Storage v2.1.0
 
@@ -102,7 +123,7 @@ Ready to run your stateful workloads using Azure Container Storage v2.1.0? Here 
 
 ## Practical guidance
 
-- Validate scale targets in your environment: very high PV density scenarios should be tested with your workload’s IO patterns and cluster topology.
+- Validate scale targets in your environment: very high PV density scenarios should be tested with your workload’s I/O patterns and cluster topology.
 
 - Use node selectors to align component placement with your node pool strategy (for example, dedicated storage pools or mixed pools).
 
