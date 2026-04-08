@@ -49,7 +49,7 @@ Today, the default scheduler on AKS lacks the flexibility for users to change wh
 
 ## Configurable Scheduler Profiles on AKS
 
-[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allows users to change the default scheduler behavior using the extensibility of the [scheduling framework][scheduling-framework-interfaces], without the operational overhead of adopting a second scheduler or defining a custom scheduler. You express the intent declaratively, while AKS safely applies and manages the resulting scheduler behavior using a Custom Resource Definition (CRD).
+[Configurable Scheduler Profiles on AKS][concepts-scheduler-configuration] allow users to change the default scheduler behavior using the extensibility of the [scheduling framework][scheduling-framework-interfaces], without the operational overhead of adopting a second scheduler or defining a custom scheduler. You express the intent declaratively, while AKS safely applies and manages the resulting scheduler behavior using a Custom Resource Definition (CRD).
 
 1. AKS begins with the default scheduling configuration.
 2. You declare your desired scheduling behavior using a Configurable Scheduler Profile applied as a CRD.
