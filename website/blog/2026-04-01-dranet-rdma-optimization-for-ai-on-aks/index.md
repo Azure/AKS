@@ -46,11 +46,11 @@ Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and 
 
 The following system diagrams show how the control plane and data plane components work together to achieve topology-aware GPU and NIC alignment.
 
-**Control plane**: DRA drivers discover hardware topology and publish ResourceSlices. The scheduler evaluates CEL selectors from ResourceClaimTemplates to allocate NUMA-aligned GPU and NIC pairs.
+**Control plane**: DRA drivers discover hardware topology and publish ResourceSlices. The scheduler evaluates [Common Expression Language](https://kubernetes.io/docs/reference/using-api/cel/) (CEL) selectors from ResourceClaimTemplates to allocate NUMA-aligned GPU and NIC pairs.
 
 ![Control plane diagram showing DRA drivers publishing device topology to ResourceSlices, and the scheduler evaluating CEL selectors to allocate NUMA-aligned GPU and NIC pairs](./control-plane-diagram.svg)
 
-**Data plane**: Once the scheduler binds a pod, the kubelet instructs containerd to create the container. DRANET's [NRI plugin](https://github.com/containerd/nri) intercepts the OCI hook and injects the allocated RDMA devices, enabling GPU-Direct RDMA over NUMA-local PCIe paths.
+**Data plane**: Once the scheduler binds a pod with ResourceClaim, the kubelet instructs containerd to create the container. The [Node Resource Interfac](https://github.com/containerd/nri) (NRI) plugin intercepts the OCI hook and injects the allocated RDMA devices, enabling GPU-Direct RDMA over NUMA-local PCIe paths.
 
 ![Data plane diagram showing kubelet, containerd, NRI plugin injecting allocated RDMA devices into the pod, with NUMA-aligned GPU-NIC PCIe GDR paths](./data-plane-diagram.svg)
 
@@ -110,7 +110,7 @@ Here are the full device inventories on a GB300 node:
 
 ### 3. Enforcing device isolation
 
-At pod start, DRANET's NRI (Node Resource Interface) plugin injects only the allocated `/dev/infiniband/uverbsN` character devices into the container. Without this, all four `uverbs*` devices would be visible in every pod, providing no isolation between workloads -- and no need for `privileged: true`.
+At pod start, the NRI plugin injects only the allocated `/dev/infiniband/uverbsN` character devices into the container. Without this, all four `uverbs*` devices would be visible in every pod, providing no isolation between workloads -- and no need for `privileged: true`.
 
 ## ResourceClaimTemplates for topology-aware allocation
 
