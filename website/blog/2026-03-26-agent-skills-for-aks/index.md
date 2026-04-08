@@ -109,7 +109,7 @@ Good candidates for internal skills include:
 
 ## Conclusion
 
-AKS skills give your agents a baseline of production AKS knowledge using the same guidance, commands, and diagnostic approaches that AKS engineers use. The first release covers best practices and troubleshooting, and we're planning to cover more scenarios based on customer feedback. If you run into issues or have scenarios you'd like to see covered, open an issue on the [AKS repository](https://github.com/Azure/AKS/issues).
+AKS skills give your agents a baseline of production AKS knowledge using the same guidance, commands, and diagnostic approaches that AKS engineers use. The first release covers best practices and troubleshooting, and we're planning to cover more scenarios based on customer feedback. If you run into issues or have scenarios you'd like to see covered, submit your feedback in the [AKS agent skills forum on GitHub](https://github.com/Azure/AKS/issues/5705).
 
 ## Resources
 
