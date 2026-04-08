@@ -16,7 +16,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 
 ### Preview Features
 * [Cilium Gateway API](https://learn.microsoft.com/azure/aks/managed-gateway-api) is now available in preview for clusters running Kubernetes 1.32 or later with Azure CNI Powered by Cilium v1.17 or later.
-
+* Added support for AKS-managed [NAT Gateway V2](https://learn.microsoft.com/azure/aks/nat-gateway) outbound in supported public Azure regions, with automatic exclusion in sovereign clouds and regions where StandardV2 NAT Gateway isn't yet available.
 
 ### Features
 * Customers using `Standard_NC80ads_H100_v5` VM sizes can now configure [MIG (multi-instance GPU) profiles](https://learn.microsoft.com/azure/aks/gpu-cluster) on their agent pools, enabling partitioning of H100 GPUs into smaller instances (MIG1g, MIG2g, MIG3g, MIG4g, MIG7g) for better GPU utilization and multi-tenancy scenarios.
@@ -35,6 +35,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 
 ### Component Updates
 * [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to Karpenter Azure provider [v1.10.1](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.10.1).
+* Azure Monitor Metrics (ama-metrics) has been updated to the [release-03-05-2026](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-03-05-2026)
 * Azure File CSI driver has been updated to [v1.33.8](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.8) (AKS 1.33), [v1.34.4](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.4) (AKS 1.34), and [v1.35.1](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.1) (AKS 1.35).
 * Azure Blob CSI driver has been updated to [v1.26.10](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.10) (AKS 1.33) and [v1.27.3](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.3) (AKS 1.34/1.35).
 * Microsoft Defender for Containers sensor has been upgraded to v0.9.52 on AKS >= 1.35 and to v0.8.49 on AKS < 1.35. See release notes for [v0.9.52](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-deployed-by-helm-or-arc-for-k8s-in-preview-mode) and [v0.8.49](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v08-relevant-to-all-aks-supported-versions-and-arc-for-k8s). The following Defender for Containers components were also updated:
