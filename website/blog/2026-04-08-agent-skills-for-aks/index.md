@@ -1,6 +1,6 @@
 ---
 title: "Turn your agents into AKS experts: Agent Skills for AKS"
-date: 2026-04-07
+date: 2026-04-08
 description: "Announcing agent skills for AKS, easily pluggable into any agent to enhance them with built-in AKS expertise, safer workflows, and reduced developer overhead."
 authors: [julia-yin]
 tags: [agent, skills, mcp, developer]
