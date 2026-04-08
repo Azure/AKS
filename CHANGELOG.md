@@ -11,6 +11,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Kubernetes Version
 * New Kubernetes patch versions are now available: `1.32.11`, `1.33.7`, `1.34.3`.
 * AKS Kubernetes Long Term Support (LTS) version `1.28` is deprecated. Please upgrade your clusters to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
+* AKS Kubernetes version `1.35` is now generally available and being rolled out across regions. Please refer to the [components breaking changes](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version) for more information.
+* AKS Kubernetes version `1.32` reaches the end of standard support on April 30, 2026. Please upgrade your clusters to a supported version. Refer to the [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar), [version support policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy) for more information. 
 
 For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
