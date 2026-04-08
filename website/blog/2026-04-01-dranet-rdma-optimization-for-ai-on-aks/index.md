@@ -6,13 +6,18 @@ authors: ["anson-qian", "michael-zappa", "sachi-desai"]
 tags: ["ai", "gpu", "networking", "performance"]
 ---
 
-RDMA (Remote Direct Memory Access) is critical for unlocking the full potential of GPU infrastructure, enabling the high-throughput, low-latency GPU-to-GPU communication that large-scale AI workloads demand. In distributed training, collective operations like all-reduce and all-gather synchronize gradients and activations across GPUs — any network bottleneck stalls the entire training pipeline. In disaggregated inference, RDMA provides the fast inter-node transfers needed to move KV-cache data between the prefill and decode phases run on separate GPU pools.
+RDMA (Remote Direct Memory Access) is critical for unlocking the full potential of GPU infrastructure, enabling the high-throughput, low-latency GPU-to-GPU communication that large-scale AI workloads demand. In distributed training, collective operations like all-reduce and all-gather synchronize gradients and activations across GPUs — any communication bottleneck stalls the entire training pipeline. In disaggregated inference, RDMA provides the fast inter-node transfers needed to move KV-cache data between prefill and decode phases running on separate GPU pools.
 
-[DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source DRA network driver that discovers RDMA capable devices, exposes their topology as Kubernetes DRA attributes, and injects only desired devices into each container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs to deliver high-performance networking for demanding applications in Kubernetes.
-
-In previous post, we covered fundamental [DRA concepts](/2025/11/17/dra-devices-and-drivers-on-kubernetes). In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-uniform memory access) alignment scenarios, and show the benchmark results.
+[DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (DRA) network driver that discovers RDMA-capable devices, exposes them as ResourceSlices, and injects the allocated devices into each pod and container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs for high-performance AI networking on Kubernetes.
 
 <!-- truncate -->
+
+:::note
+For a deeper walkthrough of DRA concepts and a hands-on tutorial with the NVIDIA GPU DRA driver, see our previous post on [DRA devices and drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes).
+:::
+
+In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-Uniform Memory Access) alignment scenarios, and show the benchmark results.
+
 
 ## The problem: NUMA-blind scheduling hurts RDMA performance
 
@@ -35,7 +40,7 @@ The NUMA topology (from `nvidia-smi topo -m`) reveals the affinity relationships
 
 GPUs 0-1 and NICs 0-1 share NUMA node 0. GPUs 2-3 and NICs 2-3 share NUMA node 1. A **NODE** relationship means the GPU and NIC share a direct PCIe root complex, enabling GPU-Direct RDMA (GDR). A **SYS** relationship means data must cross the QPI/UPI interconnect between NUMA domains, disabling GDR and adding latency.
 
-Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same resource claim. NCCL will work, but silently fall back to slower data paths. Scheduling a workload onto the wrong NIC -- one on a different NUMA node than the GPU -- can silently degrade collective performance by 4.5x or more.
+Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same ResourceClaim. RDMA may still work, but silently fall back to slower data paths. Scheduling a workload onto the wrong NIC -- one on a different NUMA node than the GPU -- can silently degrade collective performance.
 
 ## How DRANET solves this
 
@@ -45,13 +50,13 @@ The following system diagrams show how the control plane and data plane componen
 
 ![Control plane diagram showing DRA drivers publishing device topology to ResourceSlices, and the scheduler evaluating CEL selectors to allocate NUMA-aligned GPU and NIC pairs](./control-plane-diagram.svg)
 
-**Data plane**: Once the scheduler binds a pod, the kubelet instructs containerd to create the container. DRANET's NRI plugin intercepts the OCI hook and injects only the allocated InfiniBand devices, enabling GPU-Direct RDMA over NUMA-local PCIe paths.
+**Data plane**: Once the scheduler binds a pod, the kubelet instructs containerd to create the container. DRANET's [NRI plugin](https://github.com/containerd/nri) intercepts the OCI hook and injects the allocated RDMA devices, enabling GPU-Direct RDMA over NUMA-local PCIe paths.
 
-![Data plane diagram showing kubelet, containerd, NRI plugin injecting allocated InfiniBand devices into the pod, with NUMA-aligned GPU-NIC PCIe GDR paths](./data-plane-diagram.svg)
+![Data plane diagram showing kubelet, containerd, NRI plugin injecting allocated RDMA devices into the pod, with NUMA-aligned GPU-NIC PCIe GDR paths](./data-plane-diagram.svg)
 
 DRANET is a DRA network resource driver that runs as a DaemonSet on each node. It handles three key tasks:
 
-### 1. Discovering InfiniBand-only devices
+### 1. Discovering RDMA devices
 
 The ConnectX VFs on GB300 nodes operate in InfiniBand mode -- they have no Ethernet netdev interface. DRANET discovers them by:
 
@@ -59,9 +64,9 @@ The ConnectX VFs on GB300 nodes operate in InfiniBand mode -- they have no Ether
 - Recording the RDMA link name (`rdmaDevice`) on each PCI device
 - Identifying IB-only devices as those with a non-empty `rdmaDevice` and no `ifName`
 
-### 2. Publishing DRA device attributes
+### 2. Publishing device attributes as ResourceSlices
 
-DRANET publishes a `ResourceSlice` for each node, exposing each NIC with topology attributes:
+DRANET publishes a ResourceSlice for each node, exposing every discovered NIC as a named device with topology attributes that the scheduler can match against:
 
 ```yaml
 spec:
@@ -109,7 +114,7 @@ At pod start, DRANET's NRI (Node Resource Interface) plugin injects only the all
 
 ## ResourceClaimTemplates for topology-aware allocation
 
-Using CEL (Common Expression Language) selectors in `ResourceClaimTemplates`, you can express precise GPU-NIC co-location constraints. We define three templates to demonstrate different NUMA placement strategies.
+With both drivers publishing ResourceSlices, we can write ResourceClaimTemplates that use CEL selectors to express precise GPU-NIC co-location constraints. Each template creates a per-pod ResourceClaim that requests devices from both the `gpu.nvidia.com` and `dranet.net` DeviceClasses, filtered by attributes like NUMA node or PCI address. We define three templates to demonstrate different NUMA placement strategies.
 
 ### 1nic-aligned: 1 GPU + 1 NIC, same NUMA
 
