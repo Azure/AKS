@@ -337,12 +337,11 @@ steve-womack:
 
 julia-yin:
   name: "Julia Yin"
-  title: "Product Manager at Microsoft"
+  title: "Product Manager for AKS agentic experiences and troubleshooting"
   url: "https://www.linkedin.com/in/juliayin/"
   image_url: "https://github.com/julia-yin.png"
   socials:
     linkedin: juliayin
-    github: julia-yin
 
 qasim-sarfraz:
   name: "Qasim Sarfraz"
