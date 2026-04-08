@@ -337,9 +337,9 @@ steve-womack:
 
 julia-yin:
   name: Julia Yin
-  title: "Product Manager at AKS: Agentic experiences and troubleshooting
-  url: "https://www.linkedin.com/in/juliayin/"
-  image_url: "https://github.com/julia-yin.png"
+  title: Product Manager at AKS: Agentic experiences and troubleshooting
+  url: https://www.linkedin.com/in/juliayin/
+  image_url: https://github.com/julia-yin.png
   socials:
     linkedin: juliayin
 
