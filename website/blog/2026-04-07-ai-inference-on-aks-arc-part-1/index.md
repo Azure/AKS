@@ -18,42 +18,15 @@ Whether you are processing sensor data on a factory floor, analyzing medical ima
 
 ## Why AI inferencing on AKS enabled by Azure Arc matters
 
-Running AI inference on AKS enabled by Azure Arc addresses several urgent customer needs and industry trends:
-
-- **Low latency and data residency –**
-Inference workloads can run locally on-premises or at the edge, ensuring real-time responsiveness and compliance with data sovereignty requirements. This is essential for scenarios like factory automation, medical imaging, or retail analytics, where data must remain on-site and latency is a key constraint.
-
-- **Existing hardware utilization –**
-This lets you use existing infrastructure while keeping the flexibility to scale with GPUs or other accelerators later.
-
-- **Hybrid and disconnected operations –**
-AKS enabled by Azure Arc provides a consistent deployment and governance experience across connected and disconnected environments. Customers can centrally manage AI workloads from Azure while ensuring local execution continues even during network outages.
-
-- **Aligned with industry trends –**
-The shift toward hybrid and edge AI is driven by trends like data gravity, regulatory compliance, and the need for real-time insights. AKS enabled by Azure Arc aligns with these trends by enabling scalable, secure, and flexible AI deployments across industries such as manufacturing, healthcare, retail, and logistics.
+- **Low latency and data residency:** Inference runs locally, meeting real-time and compliance requirements for factory automation, medical imaging, and retail analytics.
+- **Existing hardware utilization:** Use your current infrastructure with flexibility to add GPUs or accelerators later.
+- **Hybrid and disconnected operations:** Manage workloads centrally from Azure while local execution continues during network outages.
+- **Industry alignment:** Support the shift toward edge AI driven by data gravity, regulatory compliance, and real-time requirements.
 
 ## A platform for distributed AI operations
 
-AKS enabled by Azure Arc enables you to bring your own AI runtimes and models to Kubernetes clusters running in hybrid environments. It provides:
-
-- A consistent DevOps experience for deploying and managing AI models across environments
-- Centralized governance, monitoring, and security via Azure
-- Integration with Azure ML and Microsoft Foundry for model lifecycle management
-- Support for diverse hardware configurations, including CPUs, GPUs, and NPUs
-
-By managing Kubernetes clusters across hybrid and edge environments, AKS enabled by Azure Arc helps you operationalize AI workloads using the tools and runtimes that best fit your infrastructure and use cases.
-
-## Explore AI inference with step-by-step tutorials
-
-To help you explore and validate AI inference on AKS enabled by Azure Arc, we’ve created a series of scenario-driven tutorials that show how to run both generative and predictive workloads in hybrid and edge environments. The series walks through concrete examples step by step, using open-source tools and real models to demonstrate hybrid AI capabilities in action. Each tutorial highlights a different inference pattern and technology stack, reflecting the diverse options available for edge inferencing:
-
-- Deploy open-source large language models (LLMs) using GPU-accelerated inference engines
-- Serve predictive models like ResNet-50 using a unified model server
-- Configure and validate inference workloads across different hardware types
-- Manage and monitor inference services using Azure-native tools
-
-These tutorials help you build confidence running AI at the edge using your existing Kubernetes skills and AKS enabled by Azure Arc infrastructure. The examples rely on off the shelf assets such as open source models and containers to highlight an open and flexible approach. You can bring your own models and select the inference engine best suited to the task whether that is a lightweight CPU friendly runtime or a vendor optimized GPU server.
+AKS enabled by Azure Arc enables you to bring your own AI runtimes and models to Kubernetes clusters running in hybrid environments. It provides a consistent DevOps experience, centralized governance via Azure, integration with Azure ML and Microsoft Foundry, and support for CPUs, GPUs, and NPUs so you can operationalize AI workloads using the tools that best fit your infrastructure.
 
 ## Get started
 
-To get started, follow the tutorial series: [AI Inference on AKS Arc: Series Introduction and Scope](/2026/04/07/ai-inference-on-aks-arc-part-2). By the end, you'll have hands-on experience running AI models across hybrid cloud and edge environments on Azure Arc.
+This series walks you through deploying generative and predictive AI workloads step by step, using open-source tools and real models on your AKS enabled by Azure Arc clusters. For the full list of topics, prerequisites, and hands-on tutorials, head to the [Series Introduction and Scope](/2026/04/07/ai-inference-on-aks-arc-part-2).

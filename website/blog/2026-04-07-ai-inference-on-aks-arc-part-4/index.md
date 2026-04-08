@@ -18,14 +18,10 @@ In this post, you'll deploy NVIDIA Triton Inference Server on your Azure Kuberne
 The previous post covered deploying LLM servers for text generation. This post shifts to predictive AI, specifically computer vision. You'll use NVIDIA Triton Inference Server with the ONNX runtime backend to serve ResNet-50, a classic "hello world" for image classification. Triton is an enterprise-grade, multi-framework model server, and deploying it here gives you a reusable pattern for serving any ONNX model on your AKS enabled by Azure Arc managed cluster.
 
 :::note
-Before you begin, ensure the prerequisites described in [AI Inference on AKS Arc: Series Introduction and Scope](/2026/04/07/ai-inference-on-aks-arc-part-2) are fully met.
-You should have an AKS enabled by Azure Arc cluster (on Azure Local or similar) with a **GPU node** available and configured for **nvidia.com/gpu**.
-The cluster nodes must have **internet access** to download the model. If restricted, you must manually provide the model files via a Persistent Volume. **Expect a delay** during the initial deployment while the **pod downloads** and caches the large model files.
+Before you begin, ensure the [Part 2 prerequisites](/2026/04/07/ai-inference-on-aks-arc-part-2) are met, including a GPU node configured for **nvidia.com/gpu**. Cluster nodes need **internet access** to download models. **Expect a delay** during initial deployment while the pod downloads and caches model files.
 :::
 
 ## AI Inference with Triton (ONNX)
-
-With the environment in place, you'll deploy NVIDIA Triton Inference Server using the ONNX Runtime backend to serve a ResNet‑50 model for image classification. You'll then send a sample image to validate the deployment and confirm that the inference pipeline is working as expected.
 
 ### Preparing storage for the model repository
 
@@ -110,11 +106,6 @@ print('Download Complete')
 "
 ```
 
-:::note
-Ensure the cluster nodes have internet connectivity to download the model file. If internet access from the cluster is restricted, you may have to manually provide the model file to the volume via an alternate method.
-:::
-This one-line command creates the required directory (/models/repository/resnet50/1) and downloads the **ResNet-50 ONNX** model file into it, outputting “Download Complete” when finished.
-
 #### Confirm the model file (~98 MB) exists
 
 ```powershell
@@ -172,8 +163,6 @@ spec:
         persistentVolumeClaim:
           claimName: triton-model-repository-pvc
 ```
-
-This **Deployment** runs a Triton Inference Server container (image nvcr.io/nvidia/tritonserver:24.08-py3) pointing to the model repository at /models/repository (our PVC). This exposes Triton's **HTTP API** (port 8000) and **gRPC API** (port 8001) and requests **1 GPU** (nvidia.com/gpu: 1) to run on a GPU node. The volumeMount attaches the triton-model-repository-pvc at **/models** inside the container so Triton can access the model file.
 
 Apply the Triton deployment manifest and verify Triton server is running
 
@@ -295,7 +284,7 @@ Now you'll test it end-to-end. You'll send an image to Triton and confirm you ge
     }
     ```
 
-The script prompts you for an image path, sends it to Triton's endpoint, and prints the prediction — animal type, breed, and confidence score. Here's an example:
+Example output:
 
 ```output
 Example Output:
@@ -309,7 +298,7 @@ SPECIFIC BREED : sorrel
 SCORE          : 12.5520
 ```
 
-The model correctly identified a horse (sorrel breed) — confirming Triton is serving ResNet-50 predictions. The script maps ImageNet labels to broad animal categories for readability; your actual output will include the full class name.
+The script maps ImageNet labels to broad animal categories for readability; your actual output will include the full class name.
 
 ### Cleanup
 
@@ -319,7 +308,7 @@ To free resources, delete the triton-inference namespace and all its contents:
 kubectl delete namespace triton-inference
 ```
 
-This removes the Triton server Deployment, model-downloader Pod, and PVC. If you installed the GPU Operator specifically for this test, you can also uninstall it via Helm to release cluster resources.
+If you installed the GPU Operator specifically for this test, you can also uninstall it via Helm to release cluster resources.
 
 ### Troubleshooting
 

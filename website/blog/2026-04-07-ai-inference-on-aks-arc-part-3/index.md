@@ -7,7 +7,7 @@ authors:
 tags: ["aks-arc", "ai", "ai-inference"]
 ---
 
-In this post, you'll explore how to deploy and run generative AI inference workloads using open-source large language model servers on Azure Kubernetes Service (AKS) enabled by Azure Arc. You'll focus on running these workloads locally, on-premises or at the edge, using GPU acceleration with centralized management. This approach is especially useful when cloud-based AI services are not viable due to data sovereignty, latency, cost, or limited connectivity.
+In this post, you'll explore how to deploy and run generative AI inference workloads using open-source large language model servers on Azure Kubernetes Service (AKS) enabled by Azure Arc. You'll focus on running these workloads locally, on-premises or at the edge, using GPU acceleration with centralized management.
 
 <!-- truncate -->
 
@@ -15,21 +15,19 @@ In this post, you'll explore how to deploy and run generative AI inference workl
 
 ## Introduction
 
-Rather than using managed AI services, you'll deploy Ollama and vLLM as standalone Kubernetes workloads directly on your cluster. This keeps things transparent — you'll see exactly how model serving, GPU scheduling, and inference requests work inside your Arc-managed environment. Performance tuning and benchmarks are out of scope here; the focus is a clear, repeatable, and diagnosable foundation for GPU-accelerated inference. These fundamentals set you up for the more advanced architectures covered in later posts.
+Rather than using managed AI services, you'll deploy Ollama and vLLM as standalone Kubernetes workloads directly on your cluster. This keeps things transparent. You'll see exactly how model serving, GPU scheduling, and inference requests work inside your Arc-managed environment. Performance tuning and benchmarks are out of scope here; the focus is a clear, repeatable, and diagnosable foundation for GPU-accelerated inference. These fundamentals set you up for the more advanced architectures covered in later posts.
 
 :::note
-Before you begin, ensure the prerequisites described in [AI Inference on AKS enabled by Azure Arc: Series Introduction and Scope](/2026/04/07/ai-inference-on-aks-arc-part-2) are fully met.
-You should have an AKS enabled by Azure Arc cluster (on Azure Local or similar) with a **GPU node** available and configured for **nvidia.com/gpu**.
-The cluster nodes must have **internet access** to download the model. If restricted, you must manually provide the model files via a Persistent Volume. **Expect a delay** during the initial deployment while the **pod downloads** and caches the large model files.
+Before you begin, ensure the [Part 2 prerequisites](/2026/04/07/ai-inference-on-aks-arc-part-2) are met, including a GPU node configured for **nvidia.com/gpu**. Cluster nodes need **internet access** to download models. **Expect a delay** during initial deployment while the pod downloads and caches model files.
 :::
 
 ## AI inference with Ollama
 
-Now that your environment is ready, you'll deploy the Ollama model server. You'll use Ollama's official container image to serve a large language model — specifically **Phi-3 Mini** with 4-bit quantization (~2.2 GB), which fits comfortably on a single **16 GB GPU**. Once deployed, you'll have a single endpoint that supports both Ollama's native REST API and an OpenAI-compatible interface.
+Now that your environment is ready, you'll deploy the Ollama model server. You'll use Ollama's official container image to serve a large language model, specifically **Phi-3 Mini** with 4-bit quantization (~2.2 GB), which fits comfortably on a single **16 GB GPU**. Once deployed, you'll have a single endpoint that supports both Ollama's native REST API and an OpenAI-compatible interface.
 
 ### Deploying the Ollama model server
 
-First, ensure you have connected to your Arc-enabled cluster (see Prerequisites) and that it has a GPU node with the NVIDIA device plugin ready (the GPU Operator should be installed). If your cluster has multiple GPU nodes, apply the accelerator=nvidia-gpu label to a node to ensure the Ollama pod schedules on your target hardware.
+If your cluster has multiple GPU nodes, apply the `accelerator=nvidia-gpu` label to a node to ensure the Ollama pod schedules on your target hardware.
 
 ```powershell
 # 1. FIND THE GPU NODE NAME
@@ -126,7 +124,7 @@ spec:
     targetPort: 11434  # The port the Ollama application is listening on inside the pod.
 ```
 
-This defines a **Deployment** running one instance of the ollama/ollama:0.18.3 container image, exposing the server on port **11434**, and requesting 1 GPU (nvidia.com/gpu: 1) so it runs on your GPU node. A LoadBalancer Service on port 11434 forwards requests to the pod; on Azure Local, if no external load balancer is available, you can use port-forwarding to access the service. Apply the manifest to start the Ollama server:
+Apply the manifest to start the Ollama server. On Azure Local, if no external load balancer is available, use port-forwarding to access the service.
 
 ```powershell
 kubectl apply -f ollama-deployment.yaml                  # apply deployment yaml
@@ -192,11 +190,11 @@ kubectl label node $nodeName accelerator-
 
 ## AI inference with vLLM
 
-Before starting this step, make sure you have completed the cleanup and any required prerequisites. You will then serve a local large language model using the vLLM inference engine on an AKS enabled by Azure Arc cluster. With its optimized memory management approach, vLLM enables efficient text generation for large models. In this step, you will deploy a sample Mistral 7B model (quantized to about 4 GB) using vLLM’s OpenAI‑compatible API, then submit a prompt to validate the response.
+Make sure you have completed the Ollama cleanup above. In this step, you will deploy a **Mistral 7B** model (AWQ quantized, ~4 GB) using vLLM's OpenAI‑compatible API, then submit a prompt to validate the response.
 
 ### Deploying the vLLM model server
 
-After connecting to your Arc-enabled cluster (see Prerequisites), confirm the cluster’s GPU node is ready and run the NVIDIA GPU Operator if not already installed (to provide the device plugin).
+Label the GPU node for scheduling affinity, the same as in the Ollama section above.
 
 ```powershell
 # 1. FIND THE GPU NODE NAME
@@ -300,8 +298,6 @@ spec:
     targetPort: 8000   # The port the vLLM container is actually listening on
 ```
 
-This Deployment launches one vllm/vllm-openai:v0.18.0 container that runs vLLM’s OpenAI-compatible API server for the Mistral-7B model (TheBloke/Mistral-7B-v0.1-AWQ from Hugging Face). The container is configured with a 4096 token context, uses 80% of GPU memory (--gpu-memory-utilization 0.80), and employs AWQ 4-bit quantized weights (to fit in a ~16 GB GPU). It requests 1 GPU, and mounts a 2 GiB emptyDir at /dev/shm for fast memory access. A Service vllm-service is used to forward port 80 to the container’s port 8000 (the API) as a LoadBalancer.
-
 Apply the manifest to start the vLLM server:
 
 ```powershell
@@ -309,7 +305,7 @@ kubectl apply -f vllm-deployment.yaml                       # apply deployment y
 kubectl get pods -l app=vllm-mistral -n vllm-inference -w   # wait for vllm-mistral pod to run
 ```
 
-Kubernetes will pull the container image and start the server. Wait for the vllm-mistral pod to reach Running. Once running, if no external IP address is assigned to vllm-service, open a terminal and port-forward it (e.g. `kubectl port-forward svc/vllm-service -n vllm-inference 8080:80`) to access the API at `http://localhost:8080`.
+Wait for the vllm-mistral pod to reach Running. If no external IP is assigned, port-forward with `kubectl port-forward svc/vllm-service -n vllm-inference 8080:80` to access the API at `http://localhost:8080`.
 
 ### Testing the LLM endpoint
 
@@ -339,6 +335,6 @@ $nodeName = (kubectl get nodes -l accelerator=nvidia-gpu -o jsonpath='{.items[0]
 kubectl label node $nodeName accelerator-
 ```
 
-This removes the vllm-mistral Deployment (stopping the pod) and the Service. If no more GPU inference is needed, you may also remove the GPU Operator (`helm uninstall <release-name>`) to reclaim cluster resources.
+If no more GPU inference is needed, you can also remove the GPU Operator (`helm uninstall <release-name>`) to reclaim cluster resources.
 
 ### Next up: [Predictive AI using Triton and ResNet-50](/2026/04/07/ai-inference-on-aks-arc-part-4)

@@ -14,89 +14,36 @@ This series gives you **practical, step-by-step guidance** for running generativ
 
 ## Introduction
 
-This series explores emerging patterns for running generative and predictive AI inference workloads on AKS enabled by Azure Arc clusters in on-premises and edge environments. If you're looking to deploy AI closer to where your data is generated on factory floors, in retail stores, across manufacturing lines, and within infrastructure monitoring systems—they face unique challenges: limited connectivity, diverse hardware, and constrained resources.
-High-end GPUs may not always be available or practical in these environments due to cost, power, or space limitations. That's why you may be exploring how to leverage your existing infrastructure—such as CPU-based clusters—or exploring new accelerators like NPUs to enable scalable, low-latency inference at the edge.
-The series focuses on scenario-driven experimentation with AI inference on AKS enabled by Azure Arc, validating real-world deployments that go beyond traditional cloud-centric patterns. From deploying open-source LLM servers like **Ollama** and **vLLM** to integrating **NVIDIA Triton** with custom backends, each entry provides a structured approach to evaluating feasibility, performance, and operational readiness. Our goal is to equip you with practical insights and repeatable strategies for enabling AI inference in hybrid and edge-native environments.
+[Part 1](/2026/04/07/ai-inference-on-aks-arc-part-1) covered why running AI inference at the edge matters. This post defines the series scope, ground rules, and shared prerequisites so each tutorial can focus on the hands-on deployment.
 
-## Audience and assumptions
+## Scope and ground rules
 
-This series assumes:
+This series assumes you are familiar with Kubernetes (pods, deployments, services, node scheduling), comfortable with kubectl, Azure CLI, and Helm, and operating or planning to operate AKS enabled by Azure Arc on Azure Local or a comparable environment. The focus is infrastructure and platform validation, not data science or model training.
 
-- You are already familiar with Kubernetes concepts such as pods, deployments, services, and node scheduling.
-- You are operating, or plan to operate, AKS enabled by Azure Arc on Azure Local or a comparable on‑premises / edge environment.
-- You are comfortable using command‑line tools such as kubectl, Azure CLI, and Helm.
-- You are evaluating AI inference workloads (LLMs or predictive models) from an infrastructure and platform perspective, not from a data science or model‑training perspective.
+**Not covered:**
 
-### Explicit Non‑Goals
+- [Kubernetes fundamentals](https://learn.microsoft.com/training/modules/intro-to-kubernetes/)
+- [AKS enabled by Azure Arc overview](https://learn.microsoft.com/azure/azure-arc/kubernetes/overview)
+- [AKS enabled by Azure Arc documentation](https://learn.microsoft.com/azure/aks/aksarc/)
+- Model training and fine-tuning
+- [Triton Inference Server internals](https://docs.nvidia.com/deeplearning/triton-inference-server/)
+- [GPU Operator internals](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html)
 
-To keep this series focused and actionable, the following topics are intentionally **not** covered:
-
-- **Kubernetes fundamentals or onboarding:**
-  Readers new to Kubernetes should complete foundational material first:
-  - [Introduction to Kubernetes (Microsoft Learn)](https://learn.microsoft.com/training/modules/intro-to-kubernetes/)
-  - [Kubernetes Basics Tutorial (Upstream)](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
-
-- **AKS enabled by Azure Arc conceptual overview or onboarding:**
-  This series assumes you already understand what Azure Arc provides and how AKS enabled by Azure Arc works:
-  - [AKS enabled by Azure Arc Kubernetes overview](https://learn.microsoft.com/azure/azure-arc/kubernetes/overview)
-  - [AKS enabled by Azure Arc documentation](https://learn.microsoft.com/azure/aks/aksarc/)
-
-- **Model training, fine‑tuning, or data preparation:**
-  All scenarios assume models are already trained and packaged in formats supported by the selected inference engine.
-
-- **Deep internals of inference engines:**
-  Engine-specific internals are referenced only where required for deployment or configuration. For deeper learning:
-  - [NVIDIA Triton Inference Server documentation](https://docs.nvidia.com/deeplearning/triton-inference-server/)
-  - [NVIDIA GPU Operator documentation](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html)
-
-If you’re looking for conceptual comparisons, performance benchmarks, or model‑level optimizations, those topics are intentionally out of scope for this series.
-
-## Series ground rules (What this series guarantees)
-
-Here are the set of baseline guarantees and assumptions that apply to all subsequent parts of the series:
-
-- All scenarios use the same AKS enabled by Azure Arc environment unless explicitly noted otherwise.
-- AKS enabled by Azure Arc is used as the management and control plane only; inference execution always occurs locally on the cluster.
-- No managed Azure AI services are used to execute inference.
-- Each scenario follows a consistent, repeatable structure so results can be compared across inference engines and hardware types.
-
-### Standard workflow
-
-Each scenario follows the same high-level workflow:
-
-- **Connect and verify:**
-  Log in to Azure and get cluster credentials. Inspect available compute resources (CPU, GPU, NPU) and node labels/capabilities
-
-- **Prepare the accelerator (If Required):**
-  Install or validate the required accelerator enablement based on the scenario.
-  - GPU: NVIDIA GPU Operator
-  - NPU: Vendor‑specific enablement (future)
-  - CPU: No accelerator setup required
-- **Deploy the inference Workload:**
-  - Deploy the model server or inference pipeline (LLM server, Triton, or other engine)
-  - Configure runtime parameters appropriate to the selected hardware
-- **Validate inference:**
-  - Send a test request (prompt, image, or payload)
-  - Confirm functional and expected inference output
-- **Cleanup resources:**
-  - Remove deployed workloads
-  - Release cluster resources (compute, storage, accelerator allocations)
+**Ground rules:** All scenarios use the same AKS enabled by Azure Arc environment and follow a consistent structure. Inference execution always occurs locally on the cluster. No managed Azure AI services are used. Each scenario follows the same steps: **connect and verify** cluster access, **prepare the accelerator** if required, **deploy the inference workload**, **validate inference** with a test request, and **clean up resources**.
 
 ## Series outline
 
-In this series, we walk you through a range of AI inference patterns on AKS enabled by Azure Arc clusters, spanning both generative and predictive AI workloads. The series is designed to evolve over time, and we'll continue adding topics as we validate new scenarios, runtimes, and architectures.
+The series is designed to evolve. New topics will be added as additional scenarios, runtimes, and architectures are validated.
 
 ### Topics covered in this series
 
 | Topic | Type | Status |
 | ----- | ---- | ------ |
-| [**Ollama** — open-source LLM server](/2026/04/07/ai-inference-on-aks-arc-part-3) | Generative | ✅ Available |
-| [**vLLM** — high-throughput LLM engine](/2026/04/07/ai-inference-on-aks-arc-part-3) | Generative | ✅ Available |
-| [**Triton + ONNX** — ResNet‑50 image classification](/2026/04/07/ai-inference-on-aks-arc-part-4) | Predictive | ✅ Available |
-| **Triton + TensorRT‑LLM** — optimized large-model inference | Generative | 🔜 Coming soon |
-| **Triton + vLLM backend** — vision-language model serving | Generative | 🔜 Coming soon |
-
-This series will continue to grow as we introduce new inference engines, hardware configurations, and real‑world deployment patterns across edge, on‑premises, and hybrid environments.
+| [**Ollama**: open-source LLM server](/2026/04/07/ai-inference-on-aks-arc-part-3) | Generative | ✅ Available |
+| [**vLLM**: high-throughput LLM engine](/2026/04/07/ai-inference-on-aks-arc-part-3) | Generative | ✅ Available |
+| [**Triton + ONNX**: ResNet‑50 image classification](/2026/04/07/ai-inference-on-aks-arc-part-4) | Predictive | ✅ Available |
+| **Triton + TensorRT‑LLM**: optimized large-model inference | Generative | 🔜 Coming soon |
+| **Triton + vLLM backend**: vision-language model serving | Generative | 🔜 Coming soon |
 
 ## Prerequisites
 
