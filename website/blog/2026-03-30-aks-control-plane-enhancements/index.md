@@ -36,7 +36,7 @@ AKS autoscales your control plane based on cluster size, measured by total compu
 
 ### Benefits
 
-- **Greater scalability**: Your cluster can support more nodes and workloads for advanced scenarios such as AI inference and training.
+- **Greater scalability**: Your cluster can support more nodes and workloads. This is especially beneficial for advanced scenarios such as AI inference and training.
 - **Lower latency**: Higher CPU and memory help reduce your API server's response time.
 - **Higher stability**: Your control plane encounters fewer bottlenecks and remains more stable under heavy load.
 
@@ -49,7 +49,7 @@ In most cases, resource-intensive LIST operations from unoptimized clients trigg
 ### Benefits
 
 - **Protects API server integrity**: Prevents your API server from becoming unresponsive due to excessive load, helping preserve overall cluster stability.
-- **Simplified troubleshooting**: AKS proactively notifies you through a Resource Health alert when API server guard is applied. The [API server resource intensive listing detector](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#step-2---identify-and-analyse-latency-for-user-agent) in Diagnose & Solve helps you identify unoptimized clients. Once client call patterns are optimized, you also have the ability to override or modify the managed API server guard.
+- **Simplified troubleshooting**: AKS proactively notifies you through a [resource health notification](https://learn.microsoft.com/azure/service-health/resource-health-overview) when API server guard is applied. The [API server resource intensive listing detector](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#step-2---identify-and-analyse-latency-for-user-agent) in Diagnose & Solve helps you identify unoptimized clients. Once client call patterns are optimized, you also have the ability to override or modify the managed API server guard.
 
 ![Resource Health alert notification indicating that AKS managed API server guard was applied to your cluster](./rh-apf-image.png)
 
@@ -67,7 +67,8 @@ AKS now includes etcd defragmentation optimizations for large clusters, reducing
 
 These improvements make your control plane more resilient, scalable, and performant, and reduce the manual configuration needed to scale your existing clusters to handle the most demanding workloads. Always remember, the Kubernetes scale envelope remains multidimensional. The number and size of cluster objects, such as pods, nodes, CRDs, Secrets, ConfigMaps, and other resources along with client behavior, continue to play a critical role in how efficiently your cluster scales.
 
-To learn more about the Kubernetes scale envelope, its interaction with the control plane, client optimization, and best practices for running large clusters, refer to:
+To learn more about the Kubernetes scale envelope, its interaction with the control plane, client optimization, creating resource health alerts and best practices for running large clusters, refer to:
 
 - **[AKS Best Practices for Large Clusters](https://learn.microsoft.com/azure/aks/best-practices-performance-scale-large)**
 - **[API Server and etcd - Troubleshooting Guide](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd)**
+- **[Create Resource Health Alerts](https://learn.microsoft.com/azure/service-health/resource-health-alert-arm-template-guide)**
