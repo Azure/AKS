@@ -32,6 +32,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 ### Bug Fixes
 * Fixed a bug in the AKS-managed `nodes/proxy` ValidatingAdmissionPolicy on [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) clusters where RBAC rules containing only `nonResourceURLs` were incorrectly denied.
 * A new ValidatingAdmissionPolicy has been added to [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) clusters to prevent creation or mutation of Kubernetes Service objects (such as `clusterIP`, `externalIPs`, or `loadBalancerIP`) that could redirect traffic to the Azure WireServer IP address, mitigating a potential remote code execution risk.
+* Fixed an issue in the AKS Istio add-on that could prevent CRD installer pods from scheduling on nodes tainted with CriticalAddonsOnly and cni.istio.io/ready=false, improving installation and upgrade reliability.
 
 ### Behavioral Changes
 * Starting with Kubernetes 1.34, clusters using [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) include a new AKS-managed `cilium-fluent-bit` component to improve Cilium supportability.
