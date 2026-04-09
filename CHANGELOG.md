@@ -1,3 +1,44 @@
+<!-- markdownlint-disable MD024 -->
+<!-- REVIEWED_PR_IDS: 15316663,15314586,15318877,15318777,15208401,15246045,15276503,15285783,15124054,15317667,15290519,15316365,15302257,15257413,15302450,15315411,15308887,15304537,14733550,15315878,15026257,15303984,15040228,15304357,15259250,15243693,15287959,15315790,15303100,15314693,15313293,15274995,15314346,15306396,15117815,15190702,15313421,15314369,15288204,15305369,15272769,15255838,15304297,15304847,15277390,15309241,15088554,15287627,15314036,15302950,15301049,15313627,15302125,15087117,15235016,15240794,14975631,15305435,15257095,15312558,15089272,15177801,15095907,15312109,15261233,15282284,15300476,15261618,15311829,15051150,15299025,15311789,15283748,15308427,14898243,15188216,15310005,15309902,15306798,15266409,15309207,15233032,15302660,15304333,15276271,15302836,15275701,15266751,15166548,15308567,15308453,15240105,15136473,15175691,15231121,15306425,15195645,15194557,15265267,15163884,15167319,15307936,15235773,15298195,15306801,15302242,15307373,15306400,15293836,15303309,15278758,15307450,15306632,15267515,15307219,15247803,15307105,15295864,15306971,15300160,15300250,15302263,15307159,15262890,15160390,15306742,15306389,15257006,15302014,15298668,15192571,15220128,15303665,15265453,15294069,15304268,15305342,15291313,15144483,15300515,15301399,15017384,15302922,15017993,15303323,15300922,15224129,15303466,15016488,15301681,15300627,15303042,15300645,15300005,15300806,15294712,15301497,15275338,15291228,15283272,15262071,15236957,15296173,15166230,15234965,15172923,15293062,15180275,15293649,15203220,14811777,15235013,15134027,15235021,15291357,15291354,15291359,15195172,15270542,15291358,15215187,15279232,14981815,15292035,15264669,15278669,15267617,15292804,15270518,15278794,15270535,15270477,15278517 -->
+
+## Changelog Since v20260402
+
+> Daily release notes collection from aks-rp merged PRs. Latest daily branch: `official/v20260407`.
+
+### Release notes
+
+#### Kubernetes versions
+
+* AKS version 1.29 is now deprecated under community support.
+* AKS version 1.32 is now available under [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#long-term-support-lts) only. [PR 15259250](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15259250) @PM:kaarthis
+
+#### Preview features
+
+* [NAT Gateway v2](https://learn.microsoft.com/azure/aks/nat-gateway) managed outbound type is now available as preview in public cloud supported regions. [PR 15293836](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15293836) @PM:cozhang
+
+#### Behavioral changes
+
+* [Deployment safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) now blocks ClusterRoleBinding creation to privileged ClusterRoles via a new ValidatingAdmissionPolicy, preventing privilege escalation through pre-existing cluster-wide impersonation roles. Enforcement is controlled via toggle and defaults to disabled on initial rollout. [PR 15257413](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15257413) @AI-flagged
+* [KAITO](https://learn.microsoft.com/azure/aks/aks-extension-kaito) enablement is now blocked on unsupported clouds and FIPS-enabled clusters. Only MSI-enabled clusters in public cloud are supported. [PR 15278758](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15278758) @AI-flagged
+* [Pod identity](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) enablement is now blocked on FIPS-enabled clusters. [PR 15265267](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15265267) @AI-flagged
+* AKS now surfaces `ControlPlaneAddOnsNotReady` as a client error with actionable messaging when all schedulable nodes are cordoned by the customer. Previously this was reported as an internal server error. [PR 15166548](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15166548) @AI-flagged
+
+#### Bug fixes
+
+* Fixed a regression where network plugin validation was not called on cluster create, potentially allowing invalid network plugin configurations. [PR 15224129](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15224129) @AI-flagged
+
+#### Component updates
+
+* Azure CNI Powered by Cilium has been updated to [`v1.17.10`](https://github.com/cilium/cilium/releases/tag/v1.17.10) on AKS 1.32 and 1.33, adding Gateway API support. [PR 15095907](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15095907) @PM:samfoo
+* AgentBaker has been updated to [`v0.20260330.0`](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15261618). [PR 15261618](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15261618) @PM:allyford
+* Microsoft Defender for Containers components have been updated: security-publisher to `1.1.59`, low-level-collector to `2.1.110` (AKS ≥1.35) and `2.0.243` (AKS 1.29–1.34), addressing CVE-2025-15558, CVE-2026-24051, CVE-2026-33186, CVE-2026-25679, CVE-2026-27142, and CVE-2026-27139. [PR 15282284](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15282284) @AI-flagged
+* Secrets Store CSI Driver has been updated to [`v1.5.6-1`](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.6). [PR 14898243](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/14898243) @AI-flagged
+* Secrets Store Provider Azure (Windows) has been updated to [`v1.7.2-5`](https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.7.2). [PR 15188216](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15188216) @AI-flagged
+* Application Gateway Ingress Controller has been updated to [`1.9.8`](https://github.com/Azure/application-gateway-kubernetes-ingress/releases/tag/1.9.8). [PR 15172923](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15172923) @AI-flagged
+* Open Service Mesh components (injector, CRDs, init, bootstrap) have been updated to [`v1.2.14-1`](https://github.com/openservicemesh/osm/releases/tag/v1.2.14). [PR 15270542](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15270542), [PR 15270518](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15270518), [PR 15270535](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15270535), [PR 15270477](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15270477) @AI-flagged
+
+---
+
 # Azure Kubernetes Service Changelog
 
 ## Release Notes - 2026-04-02
