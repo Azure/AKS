@@ -15,41 +15,47 @@ In this post, you'll deploy NVIDIA Triton Inference Server on your Azure Kuberne
 
 ## Introduction
 
-The previous post covered deploying LLM servers for text generation. This post shifts to predictive AI, specifically computer vision. You'll use NVIDIA Triton Inference Server with the ONNX runtime backend to serve ResNet-50, a classic "hello world" for image classification. Triton is an enterprise-grade, multi-framework model server, and deploying it here gives you a reusable pattern for serving any ONNX model on your AKS enabled by Azure Arc managed cluster.
+The previous post covered deploying LLM servers for text generation. This post shifts to predictive AI, specifically computer vision. You'll use NVIDIA Triton Inference Server with the ONNX runtime backend to serve ResNet-50, a classic "hello world" for image classification. Triton is an enterprise-grade, multi-framework model server, and deploying it here gives you a starting pattern for serving any ONNX model on your AKS enabled by Azure Arc managed cluster.
 
-:::note
-Before you begin, ensure the prerequisites described in [AI Inference on AKS Arc: Series Introduction and Scope](/2026/04/07/ai-inference-on-aks-arc-part-2) are fully met.
-You should have an AKS enabled by Azure Arc cluster (on Azure Local or similar) with a **GPU node** available and configured for **nvidia.com/gpu**.
-The cluster nodes must have **internet access** to download the model. If restricted, you must manually provide the model files via a Persistent Volume. **Expect a delay** during the initial deployment while the **pod downloads** and caches the large model files.
+:::note[PREREQUISITES AND SCOPE]
+Before you begin, ensure the [Part 2 prerequisites](/2026/04/07/ai-inference-on-aks-arc-part-2) are met, including a GPU node configured for **nvidia.com/gpu**. Cluster nodes need **internet access** to download models. **Expect a delay** during initial deployment while the pod downloads and caches model files.
+
+This tutorial is designed for experimentation and learning. The configurations shown are not production-ready and should not be deployed to production environments without additional security, reliability, performance hardening, and following standard practices.
 :::
 
 ## AI Inference with Triton (ONNX)
-
-With the environment in place, you'll deploy NVIDIA Triton Inference Server using the ONNX Runtime backend to serve a ResNet‑50 model for image classification. You'll then send a sample image to validate the deployment and confirm that the inference pipeline is working as expected.
 
 ### Preparing storage for the model repository
 
 In addition to the prerequisites, you'll need persistent **storage** for model files. First, create a **triton-inference** namespace and a **PersistentVolumeClaim** (PVC) for the model repository.
 
-Save the following YAML as triton-pvc.yaml:
+Save the following YAML as `triton-pvc.yaml`:
 
 ```yaml
+# 1. THE NAMESPACE
+# Creates an isolated logical boundary for your Triton resources.
+# All subsequent resources must reference this namespace to communicate.
 apiVersion: v1
 kind: Namespace
 metadata:
   name: triton-inference
 ---
+# 2. THE STORAGE (PVC)
+# Requests a persistent disk from the cluster to store your model weights.
+# This ensures that if the Pod restarts, your downloaded models remain intact.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: triton-model-repository-pvc
-  namespace: triton-inference
+  namespace: triton-inference # Ensures the storage is available within your namespace
 spec:
+  # ReadWriteOnce (RWO) allows the volume to be mounted as read-write by a single node.
   accessModes:
-  - ReadWriteOnce
-  storageClassName: default
+    - ReadWriteOnce
+  # Omit storageClassName to use the cluster's default StorageClass. 
   resources:
     requests:
+      # Allocates 10GB of space. Ensure your underlying disk provider supports this size.
       storage: 10Gi
 ```
 
@@ -62,28 +68,48 @@ kubectl get pvc -n triton-inference
 
 ### Deploy a helper pod to download the model
 
-Next, you'll spin up a temporary pod to download the model into storage. Save the following YAML as model-download-pod.yaml:
+:::tip
+This tutorial uses a helper pod for interactive model downloading, which makes it easy to troubleshoot and retry. For automated workflows, consider using a Kubernetes [Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) instead, which handles retries and completion tracking natively.
+:::
+
+Next, you'll spin up a temporary pod to download the model into storage. Save the following YAML as `model-download-pod.yaml`:
 
 ```yaml
 apiVersion: v1
 kind: Pod
 metadata:
+  # Name of the helper pod used to stage or download models
   name: model-downloader
+
+  # Namespace where Triton and related components are deployed
   namespace: triton-inference
+
   labels:
+    # Label to identify this pod for management or cleanup
     app: model-downloader
+
 spec:
   volumes:
-  - name: model-storage
-    persistentVolumeClaim:
-      claimName: triton-model-repository-pvc
-  containers:
-  - name: helper
-    image: python:3.11-slim
-    command: ["/bin/sh","-c","tail -f /dev/null"]
-    volumeMounts:
     - name: model-storage
-      mountPath: /models
+      # Persistent volume claim backing the Triton model repository
+      # Models downloaded by this pod will be visible to Triton
+      persistentVolumeClaim:
+        claimName: triton-model-repository-pvc
+
+  containers:
+    - name: helper
+      # Lightweight Python image used as a utility container
+      image: python:3.11-slim
+
+      # Keep the container running so you can exec into it
+      # and download or manage model files interactively
+      command: ["/bin/sh", "-c", "tail -f /dev/null"]
+
+      volumeMounts:
+        - name: model-storage
+          # Mount path where models will be placed
+          # This should match Triton's model repository path
+          mountPath: /models
 ```
 
 Apply the manifest and wait for the model-downloader pod to reach Running (you can stop watching with Ctrl+C once it’s running).
@@ -110,11 +136,6 @@ print('Download Complete')
 "
 ```
 
-:::note
-Ensure the cluster nodes have internet connectivity to download the model file. If internet access from the cluster is restricted, you may have to manually provide the model file to the volume via an alternate method.
-:::
-This one-line command creates the required directory (/models/repository/resnet50/1) and downloads the **ResNet-50 ONNX** model file into it, outputting “Download Complete” when finished.
-
 #### Confirm the model file (~98 MB) exists
 
 ```powershell
@@ -123,57 +144,80 @@ kubectl exec -n triton-inference model-downloader -- ls -lh /models/repository/r
 
 ### Deploying Triton inference server (ONNX)
 
-With the model in place, you'll deploy Triton. Save this as triton-deployment.yaml:
+With the model in place, you'll deploy Triton. Save this as `triton-deployment.yaml`:
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  # Name of the Triton Inference Server deployment
   name: triton-server
+
+  # Namespace where Triton and related resources are deployed
   namespace: triton-inference
+
 spec:
+  # Number of Triton pods to run
   replicas: 1
+
   selector:
     matchLabels:
+      # Label selector used by the Deployment to manage pods
       app: triton-server
+
   template:
     metadata:
       labels:
+        # Labels applied to the Triton pod
         app: triton-server
+
     spec:
       containers:
       - name: triton
+        # Official NVIDIA Triton Inference Server image
         image: nvcr.io/nvidia/tritonserver:24.08-py3
+
+        # Start Triton with the model repository mounted at /models/repository
+        # --strict-model-config=false allows Triton to infer model configs
         args: ["tritonserver", "--model-repository=/models/repository", "--strict-model-config=false"]
+
         ports:
+        # HTTP endpoint for inference and health checks
         - containerPort: 8000
           name: http
+
+        # gRPC endpoint for inference
         - containerPort: 8001
           name: grpc
-        # READINESS PROBE: Tells Kubernetes when this pod is ready to accept traffic.
-        # Triton exposes /v2/health/ready, which returns HTTP 200 only after the
-        # server is fully initialized and all models in the repository are loaded.
-        # The Service will not route inference requests to this pod until this probe succeeds.
+
+        # READINESS PROBE:
+        # Checks whether Triton is ready to accept inference requests.
+        # Triton exposes /v2/health/ready and returns HTTP 200 only after
+        # the server is initialized and all models are loaded.
         readinessProbe:
           httpGet:
             path: /v2/health/ready
             port: 8000
-          initialDelaySeconds: 60 # Wait 60s after container start before first check.
-          periodSeconds: 10       # Check every 10 seconds after that.
-          failureThreshold: 6     # Mark unready after 6 consecutive failures.
+          initialDelaySeconds: 60 # Wait 60 seconds before the first probe
+          periodSeconds: 10       # Probe every 10 seconds
+          failureThreshold: 6     # Mark pod unready after 6 failures
+
         resources:
           limits:
+            # Request exclusive access to one NVIDIA GPU
             nvidia.com/gpu: 1
+
         volumeMounts:
         - name: model-vol
+          # Mount the persistent volume containing the Triton model repository
           mountPath: /models
+
       volumes:
       - name: model-vol
+        # Persistent volume claim backing the Triton model repository
         persistentVolumeClaim:
           claimName: triton-model-repository-pvc
 ```
-
-This **Deployment** runs a Triton Inference Server container (image nvcr.io/nvidia/tritonserver:24.08-py3) pointing to the model repository at /models/repository (our PVC). This exposes Triton's **HTTP API** (port 8000) and **gRPC API** (port 8001) and requests **1 GPU** (nvidia.com/gpu: 1) to run on a GPU node. The volumeMount attaches the triton-model-repository-pvc at **/models** inside the container so Triton can access the model file.
 
 Apply the Triton deployment manifest and verify Triton server is running
 
@@ -200,7 +244,7 @@ Now you'll test it end-to-end. You'll send an image to Triton and confirm you ge
     pip install numpy pillow requests
     ```
 
-4. Run an inference request using a script: Save the following script as ImageClassificationSample.ps1 and run it:
+4. Run an inference request using a script. Save the following script as `ImageClassificationSample.ps1`, then execute it to submit a request to Triton:
 
     :::note
     ResNet‑50 predicts one of 1,000 ImageNet classes. This sample applies a demo‑only mapping that groups some animal‑related labels for simplicity. You can extend the sample to handle additional classes or custom mappings. This is provided for demonstration purposes only.
@@ -295,10 +339,9 @@ Now you'll test it end-to-end. You'll send an image to Triton and confirm you ge
     }
     ```
 
-The script prompts you for an image path, sends it to Triton's endpoint, and prints the prediction — animal type, breed, and confidence score. Here's an example:
+Example output:
 
 ```output
-Example Output:
 PS D:\Dynamo-Triton> powershell.exe -ExecutionPolicy Bypass -File .\ImageClassificationSample.ps1
 Enter the full path to your local image (e.g., C:\pics\animal.jpg): "D:\Dynamo-Triton\susanneedele-quarter-horse.jpg"
 Processing Inference...
@@ -309,7 +352,7 @@ SPECIFIC BREED : sorrel
 SCORE          : 12.5520
 ```
 
-The model correctly identified a horse (sorrel breed) — confirming Triton is serving ResNet-50 predictions. The script maps ImageNet labels to broad animal categories for readability; your actual output will include the full class name.
+The script maps ImageNet labels to broad animal categories for readability; your actual output will include the full class name.
 
 ### Cleanup
 
@@ -319,7 +362,7 @@ To free resources, delete the triton-inference namespace and all its contents:
 kubectl delete namespace triton-inference
 ```
 
-This removes the Triton server Deployment, model-downloader Pod, and PVC. If you installed the GPU Operator specifically for this test, you can also uninstall it via Helm to release cluster resources.
+If you installed the GPU Operator specifically for this test, you can also uninstall it via Helm to release cluster resources.
 
 ### Troubleshooting
 
