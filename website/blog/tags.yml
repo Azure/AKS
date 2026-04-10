@@ -22,10 +22,20 @@ ai:
   permalink: /ai
   description: Artificial intelligence workloads, patterns, model deployment, and orchestration on AKS.
 
+ai-inference:
+  label: AI Inference
+  permalink: /ai-inference
+  description: AI inference is the process of using a trained AI model to make predictions, generate content, or make decisions on new, unseen data.
+
 airflow:
   label: Airflow
   permalink: /airflow
   description: Using Apache Airflow for orchestrating data and machine learning workflows on AKS.
+
+aks-arc:
+  label: AKS Arc
+  permalink: /aks-arc
+  description: Azure Kubernetes Service enabled by Azure Arc.
 
 aks-automatic:
   label: AKS Automatic
@@ -311,6 +321,11 @@ security:
   permalink: /security
   description: Securing clusters, workloads, supply chain, identities, and network boundaries in AKS.
 
+skills:
+  label: Skills
+  permalink: /skills
+  description: Reusable agent skills, guided workflows, and domain-specific expertise for AKS tasks.
+
 spot:
   label: Spot
   permalink: /spot
@@ -340,9 +355,9 @@ workload-identity:
   label: Workload Identity
   permalink: /workload-identity
   description: Using Microsoft Entra Workload Identity for secure pod identity and access management in AKS.
-# NOTE: If you remove or rename a tag key, search the repo for usages first to avoid broken references.
 
 application-network:
   label: Application Network
   permalink: /application-network
   description: Azure Kubernetes Application Network for secure, zero-trust connectivity between AKS workloads and clusters.
+# NOTE: If you remove or rename a tag key, search the repo for usages first to avoid broken references.

@@ -486,3 +486,13 @@ john-howard:
   title: Senior Architect at Solo.io
   url: https://www.linkedin.com/in/-johnhoward/
   image_url: https://github.com/howardjohn.png
+  
+datta-rajpure:
+  name: Datta Rajpure
+  title: Principal Group Eng Manager at Microsoft Azure Core
+  url: https://www.linkedin.com/in/dattarajpure/
+  image_url: https://github.com/drajpure.png
+  page: true
+  socials:
+    linkedin: dattarajpure
+    github: drajpure
