@@ -28,6 +28,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) now supports the `Recreate` update mode.
 * Users can now customize the termination grace period on [Istio-based service mesh](https://learn.microsoft.com/azure/aks/istio-about) gateway proxy pods.
 * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now generally available. It's enabled by default for new clusters and can be disabled for existing AKS clusters. Once you disable HTTP proxy on a cluster, the proxy configuration is saved in the database but the proxy variables are removed from the pods and nodes.
+* [AKS managed API server guard](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#cause-4-aks-managed-api-server-guard-was-applied) is now generally available. It acts as a last-resort safeguard for the kube-apiserver during extreme load.
 
 ### Bug Fixes
 * Fixed a bug in the AKS-managed `nodes/proxy` ValidatingAdmissionPolicy on [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) clusters where RBAC rules containing only `nonResourceURLs` were incorrectly denied.
@@ -159,6 +160,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 ### Features
 * [API Server VNET Integration](https://learn.microsoft.com/azure/aks/api-server-vnet-integration#availability) is now available in eastus2, eastus3, and belgiumcentral. 
 * HTTP Proxy and Custom Certificate Authority (CA) are now supported in Node Auto-provisioning (NAP) enabled clusters. Visit [HTTP Proxy documentation](https://learn.microsoft.com/azure/aks/http-proxy) and [Custom CA documentation](https://learn.microsoft.com/azure/aks/custom-certificate-authority) to enable these features.
+* [AKS managed API server guard](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#cause-4-aks-managed-api-server-guard-was-applied) is now Generally Available
 
 ### Behavioral Changes
 * Nodes are now annotated with a `kubernetes.azure.com/security-patch-timestamp` annotation during a security VHD reboot upgrade. This gives you a unified way to verify when the last security patch was applied to each node. Refer to [Autoupgrade Node OS Image FAQs](https://learn.microsoft.com/azure/aks/auto-upgrade-node-os-image?tabs=azure-cli#node-os-autoupgrades-faq) for more information.
