@@ -355,4 +355,9 @@ workload-identity:
   label: Workload Identity
   permalink: /workload-identity
   description: Using Microsoft Entra Workload Identity for secure pod identity and access management in AKS.
+
+application-network:
+  label: Application Network
+  permalink: /application-network
+  description: Azure Kubernetes Application Network for secure, zero-trust connectivity between AKS workloads and clusters.
 # NOTE: If you remove or rename a tag key, search the repo for usages first to avoid broken references.
