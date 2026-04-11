@@ -6,25 +6,25 @@ flowchart TB
     subgraph NUMA0["NUMA Node 0"]
         GPU0["GPU 0<br/>NVIDIA GB300"]
         GPU1["GPU 1<br/>NVIDIA GB300"]
-        NIC0["NIC 0 · mlx5_0<br/>800 Gb/s IB"]
-        NIC1["NIC 1 · mlx5_1<br/>800 Gb/s IB"]
+        NIC0["NIC 0<br/>NVIDIA ConnectX-5"]
+        NIC1["NIC 1<br/>NVIDIA ConnectX-5"]
     end
 
     subgraph NUMA1["NUMA Node 1"]
         GPU2["GPU 2<br/>NVIDIA GB300"]
         GPU3["GPU 3<br/>NVIDIA GB300"]
-        NIC2["NIC 2 · mlx5_2<br/>800 Gb/s IB"]
-        NIC3["NIC 3 · mlx5_3<br/>800 Gb/s IB"]
+        NIC2["NIC 2<br/>NVIDIA ConnectX-5"]
+        NIC3["NIC 3<br/>NVIDIA ConnectX-5"]
     end
 
     subgraph Pod["Scheduled Pod"]
-        Container["Container<br/>/dev/infiniband/uverbs0<br/>/dev/infiniband/uverbs1"]
+        Container["Container<br/>/dev/infiniband/uverbs*"]
     end
 
     %% Runtime flow
-    Kubelet -->|"1. Receive allocation<br/>result from API Server"| CRI
-    CRI -->|"2. OCI CreateContainer<br/>hook"| NRI
-    NRI -->|"3. Inject only allocated<br/>/dev/infiniband/* devices"| Pod
+    Kubelet -->|"1. Receive device allocation<br/>result from API Server"| CRI
+    CRI -->|"2. Execute OCI CreateContainer<br/>hook"| NRI
+    NRI -->|"3. Inject allocated<br/>/dev/infiniband/* devices"| Pod
 
     %% NUMA-aligned GDR paths
     GPU0 <-.->|"PCIe · GDR ✓"| NIC0
@@ -33,12 +33,10 @@ flowchart TB
     GPU3 <-.->|"PCIe · GDR ✓"| NIC3
 
     %% Cross-NUMA penalty
-    GPU0 <-.->|"QPI/UPI · No GDR ✗"| NIC2
+    GPU0 <-.->|"QPI/UPI · No GDR ✗"| NIC3
 
     %% Pod uses aligned devices
-    Container -.->|"NCCL uses<br/>GPU 0 + mlx5_0, mlx5_1"| GPU0
-    Container -.->|"RDMA traffic"| NIC0
-    Container -.->|"RDMA traffic"| NIC1
+    Container -.->|"4. NCCL uses<br/>GPU * + mlx5_*"| GPU0
 
     %% Styling
     style NUMA0 fill:#e6f4ea,stroke:#34a853

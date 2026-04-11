@@ -8,7 +8,7 @@ tags: ["ai", "gpu", "networking", "performance"]
 
 RDMA (Remote Direct Memory Access) is critical for unlocking the full potential of GPU infrastructure, enabling the high-throughput, low-latency GPU-to-GPU communication that large-scale AI workloads demand. In distributed training, collective operations like all-reduce and all-gather synchronize gradients and activations across GPUs — any communication bottleneck stalls the entire training pipeline. In disaggregated inference, RDMA provides the fast inter-node transfers needed to move KV-cache data between prefill and decode phases running on separate GPU pools.
 
-[DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (DRA) network driver that discovers RDMA-capable devices, exposes them as ResourceSlices, and injects the allocated devices into each pod and container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs for high-performance AI networking on Kubernetes.
+[DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (DRA) network driver that discovers RDMA-capable devices, advertises them as ResourceSlices, and injects the allocated devices into each pod and container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs for high-performance AI networking on Kubernetes.
 
 <!-- truncate -->
 
@@ -16,20 +16,20 @@ RDMA (Remote Direct Memory Access) is critical for unlocking the full potential 
 For a deeper walkthrough of DRA concepts and a hands-on tutorial with the NVIDIA GPU DRA driver, see our previous post on [DRA devices and drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes).
 :::
 
-In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-Uniform Memory Access) alignment scenarios, and show the benchmark results.
+In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [Azure ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-Uniform Memory Access) alignment scenarios, show and compare the RDMA benchmark results.
 
 
-## The problem: NUMA-blind scheduling hurts RDMA performance
+## Naive scheduling hurts performance
 
-On an Azure ND GB300-v6 node, there are four NVIDIA GB300 GPUs and four 800 Gb/s InfiniBand NICs spread across two NUMA domains. The hardware topology looks like this:
+On an Azure ND GB300-v6 node, there are four NVIDIA GB300 GPUs and four [Nvidia ConnectX-5](https://www.nvidia.com/en-sg/networking/ethernet/connectx-5/) NICs with [InfiniBand](https://www.nvidia.com/en-us/networking/products/infiniband/) spread across two NUMA domains. The hardware topology looks like this:
 
 | Resource | Count | Detail |
 |---|---|---|
-| GPU | 4x NVIDIA GB300 | 288 GB HBM3E each, NVLink-18 all-to-all |
-| NIC | 4x Mellanox ConnectX | 800 Gb/s InfiniBand each |
+| GPU | 4x NVIDIA GB300 | 288 GB HBM3E each |
+| NIC | 4x Mellanox ConnectX | 100 GB/s InfiniBand each |
 | NUMA nodes | 2 | 2 GPUs + 2 NICs per NUMA node |
 
-The NUMA topology (from `nvidia-smi topo -m`) reveals the affinity relationships:
+The NUMA topology from `nvidia-smi topo -m` reveals the affinity relationships:
 
 |      | GPU0 | GPU1 | GPU2 | GPU3 | NIC0 | NIC1 | NIC2 | NIC3 |
 |------|------|------|------|------|------|------|------|------|
@@ -40,31 +40,31 @@ The NUMA topology (from `nvidia-smi topo -m`) reveals the affinity relationships
 
 GPUs 0-1 and NICs 0-1 share NUMA node 0. GPUs 2-3 and NICs 2-3 share NUMA node 1. A **NODE** relationship means the GPU and NIC share a direct PCIe root complex, enabling GPU-Direct RDMA (GDR). A **SYS** relationship means data must cross the QPI/UPI interconnect between NUMA domains, disabling GDR and adding latency.
 
-Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same ResourceClaim. RDMA may still work, but silently fall back to slower data paths. Scheduling a workload onto the wrong NIC -- one on a different NUMA node than the GPU -- can silently degrade collective performance.
+Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same ResourceClaim. Scheduling a workload onto a GPU with a wrong  NIC on a different NUMA node, can silently result in slower data paths and degrade RDMA performance.
 
-## How DRANET solves this
+## How does DRANET work
 
-The following system diagrams show how the control plane and data plane components work together to achieve topology-aware GPU and NIC alignment.
+The following system diagrams show how the DRA and DRANET control plane and data plane components work together to achieve topology-aware GPU and NIC alignment.
 
 **Control plane**: DRA drivers discover hardware topology and publish ResourceSlices. The scheduler evaluates [Common Expression Language](https://kubernetes.io/docs/reference/using-api/cel/) (CEL) selectors from ResourceClaimTemplates to allocate NUMA-aligned GPU and NIC pairs.
 
 ![Control plane diagram showing DRA drivers publishing device topology to ResourceSlices, and the scheduler evaluating CEL selectors to allocate NUMA-aligned GPU and NIC pairs](./control-plane-diagram.svg)
 
-**Data plane**: Once the scheduler binds a pod with ResourceClaim, the kubelet instructs containerd to create the container. The [Node Resource Interfac](https://github.com/containerd/nri) (NRI) plugin intercepts the OCI hook and injects the allocated RDMA devices, enabling GPU-Direct RDMA over NUMA-local PCIe paths.
+**Data plane**: Once the scheduler binds a pod with ResourceClaim, the kubelet instructs containerd to create the container. The [Node Resource Interface](https://github.com/containerd/nri) (NRI) plugin intercepts the OCI hook and injects the allocated RDMA devices, enabling GPU-Direct RDMA over NUMA-local PCIe paths.
 
 ![Data plane diagram showing kubelet, containerd, NRI plugin injecting allocated RDMA devices into the pod, with NUMA-aligned GPU-NIC PCIe GDR paths](./data-plane-diagram.svg)
 
-DRANET is a DRA network resource driver that runs as a DaemonSet on each node. It handles three key tasks:
+That high-level flow depends on node-local DRANET agents to turn scheduling decisions into usable RDMA resources. DRANET runs as a DaemonSet on each node and handles three key tasks:
 
 ### 1. Discovering RDMA devices
 
-The ConnectX VFs on GB300 nodes operate in InfiniBand mode -- they have no Ethernet netdev interface. DRANET discovers them by:
+The Nvidia ConnectX-5 NICs on Azure ND GB300-v6 nodes operate in InfiniBand mode -- they have no Ethernet netdev interface. DRANET discovers them by:
 
 - Skipping IPoIB interfaces during netdev discovery
 - Recording the RDMA link name (`rdmaDevice`) on each PCI device
 - Identifying IB-only devices as those with a non-empty `rdmaDevice` and no `ifName`
 
-### 2. Publishing device attributes as ResourceSlices
+### 2. Publishing DRANET ResourceSlices
 
 DRANET publishes a ResourceSlice for each node, exposing every discovered NIC as a named device with topology attributes that the scheduler can match against:
 
@@ -86,9 +86,9 @@ spec:
   driver: dra.net
 ```
 
-The NVIDIA GPU DRA driver (`gpu.nvidia.com`) similarly publishes GPU attributes including `pciBusID` and `pcieRoot`. Together, these attributes give the Kubernetes scheduler enough information to make NUMA-aligned allocation decisions.
+The NVIDIA GPU DRA driver (`gpu.nvidia.com`) similarly publishes GPU attributes including `pciBusID` and `numaNode`. Together, these attributes give the Kubernetes scheduler enough information to make NUMA-aligned allocation decisions.
 
-Here are the full device inventories on a GB300 node:
+Here are the full device inventories on Azure ND GB300 node:
 
 **GPUs** (driver: `gpu.nvidia.com`):
 
@@ -108,13 +108,45 @@ Here are the full device inventories on a GB300 node:
 | pci-0103-00-00-0 | 0103:00:00.0 | mlx5_2 | 1 |
 | pci-0104-00-00-0 | 0104:00:00.0 | mlx5_3 | 1 |
 
-### 3. Enforcing device isolation
+### 3. Injecting RDMA Devices
 
-At pod start, the NRI plugin injects only the allocated `/dev/infiniband/uverbsN` character devices into the container. Without this, all four `uverbs*` devices would be visible in every pod, providing no isolation between workloads -- and no need for `privileged: true`.
+At pod start, the NRI plugin injects only the allocated `/dev/infiniband/uverbsN` character devices into containers, to give each pod visibility into exactly the devices it was allocated. This also reduces the security risk of setting `privileged: true`, which grants containers far more permissions than workloads actually need to leverage RDMA.
 
-## ResourceClaimTemplates for topology-aware allocation
+## How to use DRANET
 
-With both drivers publishing ResourceSlices, we can write ResourceClaimTemplates that use CEL selectors to express precise GPU-NIC co-location constraints. Each template creates a per-pod ResourceClaim that requests devices from both the `gpu.nvidia.com` and `dranet.net` DeviceClasses, filtered by attributes like NUMA node or PCI address. We define three templates to demonstrate different NUMA placement strategies.
+With ResourceSlices published, workload authors can write ResourceClaimTemplates that use CEL selectors to express precise GPU-NIC alignment constraints. Each template creates a per-pod ResourceClaim that requests devices from both the `gpu.nvidia.com` and `dranet.net` DeviceClasses, filtered by attributes like device name  or PCI address. We define three ResourceClaimTemplates to demonstrate different alignment strategies.
+
+### 1nic-unaligned: 1 GPU + 1 NIC, cross-NUMA
+
+```yaml
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaimTemplate
+metadata:
+  name: 1nic-unaligned
+spec:
+  spec:
+    devices:
+      requests:
+      - name: gpu
+        exactly:
+          deviceClassName: gpu.nvidia.com
+          count: 1
+          selectors:
+          - cel:
+              expression:
+                device.attributes["resource.kubernetes.io"].pciBusID == "0008:06:00.0"
+      - name: nic
+        exactly:
+          deviceClassName: dranet.net
+          count: 1
+          selectors:
+          - cel:
+              expression:
+                device.attributes["dra.net"]["rdmaDevice"] == "mlx5_2"
+```
+
+GPU 0 (NUMA 0) is paired with mlx5_2 (NUMA 1) with **SYS** affinity, meaning cross-NUMA with no GDR path. This serves as the baseline.
+
 
 ### 1nic-aligned: 1 GPU + 1 NIC, same NUMA
 
@@ -133,7 +165,7 @@ spec:
           count: 1
           selectors:
           - cel:
-              expression: >-
+              expression:
                 device.attributes["resource.kubernetes.io"].pciBusID == "0008:06:00.0"
       - name: nic
         exactly:
@@ -141,11 +173,11 @@ spec:
           count: 1
           selectors:
           - cel:
-              expression: >-
+              expression:
                 device.attributes["dra.net"]["rdmaDevice"] == "mlx5_0"
 ```
 
-GPU 0 (NUMA 0) paired with mlx5_0 (NUMA 0). **NODE** affinity provides a direct PCIe path for GDR.
+GPU 0 (NUMA 0) is paired with mlx5_0 (NUMA 0) with **NODE** affinity and a direct PCIe path for GDR.
 
 ### 2nic-aligned: 1 GPU + 2 NICs, same NUMA
 
@@ -164,7 +196,7 @@ spec:
           count: 1
           selectors:
           - cel:
-              expression: >-
+              expression:
                 device.attributes["resource.kubernetes.io"].pciBusID == "0008:06:00.0"
       - name: nic
         exactly:
@@ -172,45 +204,15 @@ spec:
           count: 2
           selectors:
           - cel:
-              expression: >-
+              expression:
                 device.attributes["dra.net"]["rdma"] == true &&
                 device.attributes["dra.net"]["numaNode"] == 0
 ```
 
-GPU 0 (NUMA 0) paired with both RDMA NICs from NUMA 0 (mlx5_0 + mlx5_1). The `count: 2` with a NUMA selector is the idiomatic DRA pattern for multi-device allocation from a homogeneous group -- the scheduler picks two distinct devices matching the predicate.
+GPU 0 (NUMA 0) is paired with both RDMA NICs mlx5_0 + mlx5_1 (NUMA 0). The `count: 2` with a NUMA selector is the idiomatic DRA pattern for multi-device allocation from a homogeneous group.
 
-### 1nic-unaligned: 1 GPU + 1 NIC, cross-NUMA (baseline)
 
-```yaml
-apiVersion: resource.k8s.io/v1
-kind: ResourceClaimTemplate
-metadata:
-  name: 1nic-unaligned
-spec:
-  spec:
-    devices:
-      requests:
-      - name: gpu
-        exactly:
-          deviceClassName: gpu.nvidia.com
-          count: 1
-          selectors:
-          - cel:
-              expression: >-
-                device.attributes["resource.kubernetes.io"].pciBusID == "0008:06:00.0"
-      - name: nic
-        exactly:
-          deviceClassName: dranet.net
-          count: 1
-          selectors:
-          - cel:
-              expression: >-
-                device.attributes["dra.net"]["rdmaDevice"] == "mlx5_2"
-```
-
-GPU 0 (NUMA 0) paired with mlx5_2 (NUMA 1). **SYS** affinity -- cross-NUMA with no GDR path. This serves as the degraded baseline.
-
-## Running the NCCL benchmark
+## Running NCCL benchmark
 
 The benchmark uses an MPIJob from the Kubeflow MPI Operator to run NCCL `all_reduce_perf` across two worker pods on different nodes, each with one GPU and one or more NICs allocated through DRA.
 
