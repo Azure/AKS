@@ -18,7 +18,6 @@ For a deeper walkthrough of DRA concepts and a hands-on tutorial with the NVIDIA
 
 In this post, we walk through how DRANET works on [AKS 1.34](https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/) with [Azure ND GB300-v6](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-gb300-v6-series?tabs=sizebasic) nodes, demonstrate three NUMA (Non-Uniform Memory Access) alignment scenarios, show and compare the RDMA benchmark results.
 
-
 ## Naive scheduling hurts performance
 
 On an Azure ND GB300-v6 node, there are four NVIDIA GB300 GPUs and four [Nvidia ConnectX-5](https://www.nvidia.com/en-sg/networking/ethernet/connectx-5/) NICs with [InfiniBand](https://www.nvidia.com/en-us/networking/products/infiniband/) spread across two NUMA domains. The hardware topology looks like this:
@@ -147,7 +146,6 @@ spec:
 
 GPU 0 (NUMA 0) is paired with mlx5_2 (NUMA 1) with **SYS** affinity, meaning cross-NUMA with no GDR path. This serves as the baseline.
 
-
 ### 1nic-aligned: 1 GPU + 1 NIC, same NUMA
 
 ```yaml
@@ -202,7 +200,6 @@ spec:
 ```
 
 GPU 0 (NUMA 0) is paired with both RDMA NICs mlx5_0 + mlx5_1 (NUMA 0). The `count: 2` with a NUMA selector is the idiomatic DRA pattern for multi-device allocation from a homogeneous group.
-
 
 ## Benchmark and Comparison
 
@@ -277,6 +274,6 @@ The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers onl
 
 ## Conclusion
 
-NUMA-aware GPU-NIC placement isn't optional for high-performance RDMA. DRANET and the DRA framework give you declarative, topology-aware control over that placement without privileged containers or manual device management.
+Topology-aware scheduling with GPU-NIC alignment isn't optional for high-performance RDMA. DRANET and the DRA framework give you declarative, fine granular control over that placement without privileged containers or manual device management.
 
 Connect with the AKS team through our [GitHub discussions](https://github.com/Azure/AKS/discussions) or [share your feedback and suggestions](https://github.com/Azure/AKS/issues).
