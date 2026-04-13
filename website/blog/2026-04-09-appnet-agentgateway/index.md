@@ -1,12 +1,11 @@
 ---
 title: Control AI spend with per-application token rate limiting using Application Network and agentgateway
 description: "Use Application Network identity and agentgateway to enforce per-application token rate limiting and control shared AI service spend on AKS."
-author: Mitch Connors, John Howard
-ms.author: [mitch-connors, john-howard]
+ms.authors: [mitch-connors, john-howard]
 ms.topic: conceptual
 ms.service: azure-kubernetes-service
 ms.subservice: application-network
-ms.date: 2026-04-13
+ms.date: 2026-04-09
 tags: [application-network, ai]
 ---
 
@@ -167,7 +166,7 @@ metadata:
   name: ratelimit-config
 ```
 
-Now that we've configured our rate limiter, let's send some completion requests to Azure Foundry to see it in action (full test instructions available (here)[https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md]):
+Now that we've configured our rate limiter, let's send some completion requests to Azure Foundry to see it in action. Full test instructions are available in the [details gist](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md):
 
 ```bash
 / $ curl gateway.default/v1/chat/completions -i -H content-type:application/json  -d '{
