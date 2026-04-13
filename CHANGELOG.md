@@ -28,7 +28,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * [Vertical Pod Autoscaler (VPA)](https://learn.microsoft.com/azure/aks/vertical-pod-autoscaler) now supports the `Recreate` update mode.
 * Users can now customize the termination grace period on [Istio-based service mesh](https://learn.microsoft.com/azure/aks/istio-about) gateway proxy pods.
 * [Disable HTTP Proxy](https://aka.ms/aks/http-proxy) is now generally available. It's enabled by default for new clusters and can be disabled for existing AKS clusters. Once you disable HTTP proxy on a cluster, the proxy configuration is saved in the database but the proxy variables are removed from the pods and nodes.
-* [AKS managed API server guard](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#cause-4-aks-managed-api-server-guard-was-applied) is now generally available. It acts as a last-resort safeguard for the kube-apiserver during extreme load.
+* [AKS Managed API Server Guard](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#cause-4-aks-managed-api-server-guard-was-applied) is now generally available. It acts as a last-resort safeguard for the kube-apiserver during extreme load.
 
 ### Bug Fixes
 * Fixed a bug in the AKS-managed `nodes/proxy` ValidatingAdmissionPolicy on [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) clusters where RBAC rules containing only `nonResourceURLs` were incorrectly denied.
