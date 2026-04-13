@@ -204,7 +204,7 @@ spec:
 GPU 0 (NUMA 0) is paired with both RDMA NICs mlx5_0 + mlx5_1 (NUMA 0). The `count: 2` with a NUMA selector is the idiomatic DRA pattern for multi-device allocation from a homogeneous group.
 
 
-## Benchmark and Comparision
+## Benchmark and Comparison
 
 The RDMA benchmark uses an MPIJob from the Kubeflow MPI Operator to run NCCL `all_reduce_perf` across two worker pods on different nodes, each with one GPU and one or more NICs allocated through DRA. Here is one example MPIJob yaml file:
 
