@@ -2,7 +2,7 @@
 title: "Optimizing RDMA performance for AI workloads on AKS with DRANET"
 date: "2026-04-01"
 description: "Use DRANET and DRA on AKS to boost RDMA performance with topology-aware scheduling, GPU/NIC alignment, and fast placement for AI training and inferencing."
-authors: ["anson-qian", "michael-zappa", "sachi-desai"]
+authors: ["anson-qian", "michael-zappa", "ahmed-sabbour"]
 tags: ["ai", "gpu", "networking", "performance"]
 ---
 
