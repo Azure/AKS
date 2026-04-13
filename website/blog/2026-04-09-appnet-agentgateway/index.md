@@ -91,7 +91,7 @@ In contrast with our initial scenario, the Azure Foundry API Key is only accessi
 
 ## Deep Dive
 
-While the complete configuration for this demo can be found here, let's have a look at the key components that make up our rate limit. First, let's configure agentgateway to interoperate with AppNet, which exposes an Istio-compliant control plane:
+Let's have a look at the key components that make up our rate limit (step by step details available [here](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md)). First, let's configure agentgateway to interoperate with AppNet, which exposes an Istio-compliant control plane:
 
 ```yaml
 apiVersion: agentgateway.dev/v1alpha1
@@ -169,34 +169,34 @@ metadata:
 Now that we've configured our rate limiter, let's send some completion requests to Azure Foundry to see it in action. Full test instructions are available in the [details gist](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md):
 
 ```bash
-/ $ curl gateway.default/v1/chat/completions -i -H content-type:application/json  -d '{
->    "model": "",
->    "messages": [
->      {
->        "role": "system",
->        "content": "You are a helpful assistant."
->      },
->      {
->        "role": "user",
->        "content": "Write a short haiku about cloud computing."
->      }
->    ]
->  }'
+curl gateway.default/v1/chat/completions -i -H content-type:application/json  -d '{
+   "model": "",
+   "messages": [
+     {
+       "role": "system",
+       "content": "You are a helpful assistant."
+     },
+     {
+       "role": "user",
+       "content": "Write a short haiku about cloud computing."
+     }
+   ]
+ }'
 HTTP/1.1 200 OK
 ...(succeeds several times)
-/ $ curl gateway.default/v1/chat/completions -i -H content-type:application/json  -d '{
->    "model": "",
->    "messages": [
->      {
->        "role": "system",
->        "content": "You are a helpful assistant."
->      },
->      {
->        "role": "user",
->        "content": "Write a short haiku about cloud computing."
->      }
->    ]
->  }'
+curl gateway.default/v1/chat/completions -i -H content-type:application/json  -d '{
+   "model": "",
+   "messages": [
+     {
+       "role": "system",
+       "content": "You are a helpful assistant."
+     },
+     {
+       "role": "user",
+       "content": "Write a short haiku about cloud computing."
+     }
+   ]
+ }'
 HTTP/1.1 429 Too Many Requests
 content-length: 0
 date: Fri, 03 Apr 2026 22:59:18 GMT
