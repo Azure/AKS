@@ -160,17 +160,13 @@ spec:
     devices:
       requests:
       - name: gpu
-        exactly:
-          deviceClassName: gpu.nvidia.com
-          count: 1
+        ...
           selectors:
           - cel:
               expression:
                 device.attributes["resource.kubernetes.io"].pciBusID == "0008:06:00.0"
       - name: nic
-        exactly:
-          deviceClassName: dranet.net
-          count: 1
+        ...
           selectors:
           - cel:
               expression:
@@ -191,17 +187,13 @@ spec:
     devices:
       requests:
       - name: gpu
-        exactly:
-          deviceClassName: gpu.nvidia.com
-          count: 1
+        ...
           selectors:
           - cel:
               expression:
                 device.attributes["resource.kubernetes.io"].pciBusID == "0008:06:00.0"
       - name: nic
-        exactly:
-          deviceClassName: dranet.net
-          count: 2
+        ...
           selectors:
           - cel:
               expression:
@@ -212,9 +204,9 @@ spec:
 GPU 0 (NUMA 0) is paired with both RDMA NICs mlx5_0 + mlx5_1 (NUMA 0). The `count: 2` with a NUMA selector is the idiomatic DRA pattern for multi-device allocation from a homogeneous group.
 
 
-## Running NCCL benchmark
+## Benchmark and Comparision
 
-The benchmark uses an MPIJob from the Kubeflow MPI Operator to run NCCL `all_reduce_perf` across two worker pods on different nodes, each with one GPU and one or more NICs allocated through DRA.
+The RDMA benchmark uses an MPIJob from the Kubeflow MPI Operator to run NCCL `all_reduce_perf` across two worker pods on different nodes, each with one GPU and one or more NICs allocated through DRA. Here is one example MPIJob yaml file:
 
 ```yaml
 apiVersion: kubeflow.org/v2beta1
@@ -222,31 +214,22 @@ kind: MPIJob
 metadata:
   name: nccl-test-dra
 spec:
-  slotsPerWorker: 1
   mpiReplicaSpecs:
     Launcher:
       replicas: 1
       template:
         spec:
           containers:
-          - name: nccl
-            image: ghcr.io/coreweave/nccl-tests:12.9.1-devel-ubuntu24.04-nccl2.29.2-1-d73ec07
+          - name: launcher
             command: ["/bin/bash", "-c"]
             args:
             - |
-              sleep 5
               mpirun -np 2 \
-                --allow-run-as-root \
-                -bind-to none \
-                -x LD_LIBRARY_PATH \
-                -x NCCL_DEBUG=INFO \
-                -x NCCL_SOCKET_IFNAME=eth0 \
                 -x NCCL_IB_DISABLE=0 \
                 -x NCCL_SHM_DISABLE=1 \
                 -x NCCL_MNNVL_ENABLE=0 \
                 -x NCCL_NVLS_ENABLE=0 \
-                -x NCCL_NET_GDR_LEVEL=PHB \
-                -x NCCL_IB_DATA_DIRECT=0 \
+                ...
                 /opt/nccl_tests/build/all_reduce_perf \
                   -b 512M -e 8G -f 2 -g 1 -c 0
     Worker:
@@ -261,76 +244,28 @@ spec:
                     training.kubeflow.org/job-name: nccl-test-dra
                     training.kubeflow.org/job-role: worker
                 topologyKey: kubernetes.io/hostname
-          automountServiceAccountToken: false
           resourceClaims:
           - name: gpu-nic
             resourceClaimTemplateName: 1nic-aligned
           containers:
-          - name: nccl
-            image: ghcr.io/coreweave/nccl-tests:12.9.1-devel-ubuntu24.04-nccl2.29.2-1-d73ec07
+          - name: worker
             resources:
               claims:
               - name: gpu-nic
-            securityContext:
-              capabilities:
-                add:
-                - IPC_LOCK
-          tolerations:
-          - key: "nvidia.com/gpu"
-            operator: "Exists"
-            effect: "NoSchedule"
+            ...
 ```
 
-Key details:
+There are a few pieces worth calling out:
 
-- **Pod anti-affinity** ensures the two workers land on different nodes, forcing inter-node RDMA communication
-- **`resourceClaimTemplateName`** controls which GPU-NIC template is used -- swap between `1nic-aligned`, `2nic-aligned`, or `1nic-unaligned` to test different topologies
-- **`IPC_LOCK`** capability is required for RDMA memory registration
-- NCCL environment variables disable shared memory (`NCCL_SHM_DISABLE=1`) and NVLink multi-node (`NCCL_MNNVL_ENABLE=0`) to isolate InfiniBand performance
+**NCCL environment variables force pure InfiniBand transport.** The launcher pod sets `NCCL_IB_DISABLE=0` to explicitly enable the InfiniBand transport, `NCCL_SHM_DISABLE=1` to prevent NCCL from using shared memory for intra-node transfers, `NCCL_MNNVL_ENABLE=0` to disable multi-node NVLink (MNNVL), and `NCCL_NVLS_ENABLE=0` to disable NVLink SHARP (NVLS) so that collectives don't offload to NVSwitch hardware. Together, these flags force all collective traffic through the InfiniBand transport, so the results reflect pure RDMA throughput.
 
-### Running the benchmark
+**Pod anti-affinity forces inter-node RDMA.** The `podAntiAffinity` rule uses `requiredDuringSchedulingIgnoredDuringExecution` with `topologyKey: kubernetes.io/hostname` to guarantee that the two worker replicas land on different nodes. Without this, the scheduler could place both workers on the same node, where GPUs communicate intra-node instead of over InfiniBand fabric.
 
-```bash
-# Install the MPI Operator (if not already installed)
-kubectl apply --server-side -k \
-  "https://github.com/kubeflow/mpi-operator/manifests/overlays/standalone?ref=v0.7.0"
+**`resourceClaimTemplateName` selects the GPU-NIC topology.** Each worker pod references a single ResourceClaimTemplate through the `resourceClaimTemplateName` field under `resourceClaims`. To switch between alignment scenarios, change this field from `1nic-aligned` to `2nic-aligned` or `1nic-unaligned` -- the scheduler will then allocate a different set of GPU and NIC devices based on the CEL selectors defined in each template. This is the only line that needs to change between benchmark runs.
 
-# Apply the ResourceClaimTemplates
-kubectl apply -f resource-claim-template.yaml
+For full step-by-step instructions on running the benchmark and verifying device allocation, see the [DRANET AKS GB300 InfiniBand example](https://github.com/kubernetes-sigs/dranet/tree/main/examples/aks-gb300-infiniband-dranet).
 
-# Edit mpi-job.yaml to select a template, then apply
-kubectl apply -f mpi-job.yaml
-
-# Wait for workers and stream launcher logs
-kubectl wait --for=condition=ready pod \
-  -l training.kubeflow.org/job-name=nccl-test-dra,training.kubeflow.org/job-role=worker \
-  --timeout=300s
-
-launcher=$(kubectl get pods \
-  -l training.kubeflow.org/job-name=nccl-test-dra,training.kubeflow.org/job-role=launcher \
-  -o jsonpath='{.items[0].metadata.name}')
-kubectl logs -f "${launcher}"
-```
-
-### Verifying device isolation
-
-After the job starts, confirm that each worker only sees its allocated InfiniBand devices:
-
-```bash
-kubectl exec nccl-test-dra-worker-0 -- ls /dev/infiniband/
-```
-
-Expected results by template:
-
-- **1nic-aligned**: `uverbs0`, `umad0`, `rdma_cm` (only mlx5_0)
-- **2nic-aligned**: `uverbs0`, `uverbs1`, `umad0`, `umad1`, `rdma_cm` (mlx5_0 + mlx5_1)
-- **1nic-unaligned**: `uverbs2`, `umad2`, `rdma_cm` (only mlx5_2)
-
-Devices for non-allocated NICs are absent -- isolation is enforced by the DRANET NRI plugin without requiring `privileged: true`.
-
-### Checking benchmark results
-
-We ran two-node `all_reduce_perf` (1 GPU per worker, message sizes 512 MB–8 GB, transport `NET/IBext_v11/GDRDMA`) across our three ResourceClaimTemplates:
+Below chart shows the benchmark results across our three ResourceClaimTemplates:
 
 ![Bar chart comparing NCCL all_reduce_perf average bus bandwidth across three NUMA placement scenarios: 1nic-unaligned at 25 GB/s, 1nic-aligned at 56 GB/s, and 2nic-aligned at 112 GB/s](./benchmark-chart.svg)
 
@@ -340,6 +275,8 @@ The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers onl
 2. **Cross-NUMA** -- every data transfer crosses the QPI/UPI interconnect between NUMA domains
 3. **Fewer channels** -- NCCL's topology engine allocates only 2 channels for SYS-distant NICs versus 8 channels with NUMA-aligned NIC (`1nic-aligned`), and 16 channels with two NUMA-aligned NICs (`2nic-aligned`)
 
-## Questions?
+## Conclusion
+
+NUMA-aware GPU-NIC placement isn't optional for high-performance RDMA. DRANET and the DRA framework give you declarative, topology-aware control over that placement without privileged containers or manual device management.
 
 Connect with the AKS team through our [GitHub discussions](https://github.com/Azure/AKS/discussions) or [share your feedback and suggestions](https://github.com/Azure/AKS/issues).
