@@ -1,7 +1,7 @@
 ---
 title: Control AI spend with per-application token rate limiting using Application Network and agentgateway
 description: "Use Application Network identity and agentgateway to enforce per-application token rate limiting and control shared AI service spend on AKS."
-ms.authors: [mitch-connors, john-howard]
+ms.authors: [mitch-connors, john-howard, zhewei-hu]
 ms.topic: conceptual
 ms.service: azure-kubernetes-service
 ms.subservice: application-network

@@ -479,7 +479,7 @@ mitch-connors:
   name: Mitch Connors
   title: Principal Product Manager for the Azure Kubernetes Service
   url: https://www.linkedin.com/in/mitchconnors
-  image_url: https://github.com/therealmitchconnors.png
+  image_url: https://media.licdn.com/dms/image/v2/C5603AQHqHePsUJ7HHQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1634316290402?e=1777507200&v=beta&t=Vv4LHYMWlKRIul-SCLTKIyNULo_3oWyCqhn0KUyQz2A
 
 john-howard:
   name: John Howard
@@ -496,3 +496,9 @@ datta-rajpure:
   socials:
     linkedin: dattarajpure
     github: drajpure
+
+zhewei-hu: 
+  name: Zhewei Hu
+  title: Senior Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/zhewei-hu/
+  image_url: https://media.licdn.com/dms/image/v2/C4E03AQGX2jNulI1iGg/profile-displayphoto-shrink_400_400-alternative/profile-displayphoto-shrink_400_400-alternative/0/1528427276964?e=1777507200&v=beta&t=92f1n-t3pO0mw-41Jh-yzORTLVLEC19fqSEZvOVj7FY
