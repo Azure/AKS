@@ -20,7 +20,7 @@ This article describes a **platform-oriented approach** to controlling AI spend 
 
 <!-- truncate -->  
 
-**Azure Kubernetes Application Network** (AppNet, currently in Public Preview) is Azure's fully-managed L7 network for AKS, providing Security, Observability, and Control for your L7 network out-of-the-box. You can learn more about AppNet here, but in this article, we're focusing on AppNet's secure, automatic mTLS Authentication.
+**Azure Kubernetes Application Network** (AppNet, currently in Public Preview) is Azure's fully managed L7 network for AKS, providing security, observability, and control for your L7 network out of the box. This article focuses on AppNet's secure, automatic mTLS authentication.
 
 ---
 
