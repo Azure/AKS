@@ -475,15 +475,6 @@ jaiveer-katariya:
   socials:
     github: jaiveerk
 
-<<<<<<< add-dranet-blog
-michael-zappa:
-  name: Michael Zappa
-  title: Software Engineer for Azure Container Networking
-  url: https://www.linkedin.com/in/michaelzappa/
-  image_url: https://github.com/MikeZappa87.png
-  socials:
-    linkedin: michaelzappa
-=======
 datta-rajpure:
   name: Datta Rajpure
   title: Principal Group Eng Manager at Microsoft Azure Core
@@ -493,4 +484,12 @@ datta-rajpure:
   socials:
     linkedin: dattarajpure
     github: drajpure
->>>>>>> master
+
+michael-zappa:
+  name: Michael Zappa
+  title: Software Engineer for Azure Container Networking
+  url: https://www.linkedin.com/in/michaelzappa/
+  image_url: https://github.com/MikeZappa87.png
+  socials:
+    linkedin: michaelzappa
+
