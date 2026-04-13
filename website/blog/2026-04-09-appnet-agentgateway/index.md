@@ -1,6 +1,6 @@
 ---
 title: Control AI spend with per-application token rate limiting using Application Network and agentgateway
-description: Use Application Network identity and agentgateway to enforce per-application, token-based rate limiting for shared AI services
+description: "Use Application Network identity and agentgateway to enforce per-application token rate limiting and control shared AI service spend on AKS."
 author: Mitch Connors, John Howard
 ms.author: [mitch-connors, john-howard]
 ms.topic: conceptual
@@ -207,4 +207,4 @@ Once we've exhausted our token budget, all requests from httpbin to Azure Foundr
 
 ## Conclusion
 
-By adopting this platform-oriented approach, we gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency. Applications gain transparent rate limiting without code changes, while platform teams reduce overhead and enforce fair resource allocation across the organization. This is just one of the many ways you can benefit from Application Network, built on Istio's Ambient Mode, with readily available open source tools like agentgateway. To learn more chec kout (AppNet Docs)[https://learn.microsoft.com/en-us/azure/application-network/overview] and (agentgateway docs)[https://agentgateway.dev].
+By adopting this platform-oriented approach, we gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency. Applications gain transparent rate limiting without code changes, while platform teams reduce overhead and enforce fair resource allocation across the organization. This is just one of the many ways you can benefit from Application Network, built on Istio's Ambient Mode, with readily available open source tools like agentgateway. To learn more, see [Application Network documentation](https://learn.microsoft.com/azure/application-network/overview) and [agentgateway documentation](https://agentgateway.dev).
