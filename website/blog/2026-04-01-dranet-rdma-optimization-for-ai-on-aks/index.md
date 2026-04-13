@@ -40,7 +40,7 @@ The NUMA topology from `nvidia-smi topo -m` reveals the affinity relationships:
 
 GPUs 0-1 and NICs 0-1 share NUMA node 0. GPUs 2-3 and NICs 2-3 share NUMA node 1. A **NODE** relationship means the GPU and NIC share a direct PCIe root complex, enabling GPU-Direct RDMA (GDR). A **SYS** relationship means data must cross the QPI/UPI interconnect between NUMA domains, disabling GDR and adding latency.
 
-Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same ResourceClaim. Scheduling a workload onto a GPU with a wrong  NIC on a different NUMA node, can silently result in slower data paths and degrade RDMA performance.
+Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same ResourceClaim. Scheduling a workload onto a GPU with the wrong NIC on a different NUMA node can silently result in slower data paths and degrade RDMA performance.
 
 ## How does DRANET work
 
