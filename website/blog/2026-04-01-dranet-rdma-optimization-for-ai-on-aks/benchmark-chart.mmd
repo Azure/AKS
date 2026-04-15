@@ -1,0 +1,11 @@
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: "#9f62eb"
+---
+xychart-beta
+    title "NCCL all_reduce_perf — Avg Bus Bandwidth (GB/s)"
+    x-axis ["1nic-unaligned (cross-NUMA)", "1nic-aligned (same NUMA)", "2nic-aligned (same NUMA)"]
+    y-axis "Avg busbw (GB/s)" 0 --> 120
+    bar [25, 56, 112]
