@@ -102,6 +102,11 @@ cilium:
   permalink: /cilium
   description: Cilium CNI, eBPF networking, observability, and security features on AKS.
 
+cost:
+  label: Cost
+  permalink: /cost
+  description: Recommended patterns, anti-patterns, and guidance for managing and optimizing AKS cluster costs.
+
 databases:
   label: Databases
   permalink: /databases
