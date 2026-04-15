@@ -2,7 +2,7 @@
 title: "Optimizing RDMA performance for AI workloads on AKS with DRANET"
 date: "2026-04-01"
 description: "Use DRANET and DRA on AKS to boost RDMA performance with topology-aware scheduling, GPU/NIC alignment, and fast placement for AI training and inferencing."
-authors: ["anson-qian", "michael-zappa", "ahmed-sabbour"]
+authors: ["anson-qian", "michael-zappa"]
 tags: ["ai", "gpu", "networking", "performance"]
 ---
 
@@ -11,6 +11,8 @@ RDMA (Remote Direct Memory Access) is critical for unlocking the full potential 
 [DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (DRA) network driver that discovers RDMA-capable devices, advertises them as ResourceSlices, and injects the allocated devices into each pod and container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs for high-performance AI networking on Kubernetes.
 
 <!-- truncate -->
+
+![Bar chart comparing NCCL all_reduce_perf average bus bandwidth across three NUMA placement scenarios: 1nic-unaligned at 25 GB/s, 1nic-aligned at 56 GB/s, and 2nic-aligned at 112 GB/s](./benchmark-chart.svg)
 
 :::note
 For a deeper walkthrough of DRA concepts and a hands-on tutorial with the NVIDIA GPU DRA driver, see our previous post on [DRA devices and drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes).
