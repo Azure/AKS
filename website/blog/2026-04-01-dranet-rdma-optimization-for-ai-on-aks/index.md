@@ -22,12 +22,12 @@ In this post, you’ll learn how DRANET works on [AKS 1.34](https://kubernetes.i
 
 ## Naive scheduling hurts performance
 
-On an Azure ND GB300-v6 node, there are four NVIDIA GB300 GPUs and four [Nvidia ConnectX-5](https://www.nvidia.com/en-sg/networking/ethernet/connectx-5/) NICs with [InfiniBand](https://www.nvidia.com/en-us/networking/products/infiniband/) spread across two NUMA domains. The hardware topology looks like this:
+On an Azure ND GB300-v6 node, there are four [NVIDIA GB300](https://www.nvidia.com/en-us/data-center/gb300-nvl72/) GPUs and four [NVIDIA ConnectX-5](https://www.nvidia.com/en-sg/networking/ethernet/connectx-5/) NICs with [InfiniBand](https://www.nvidia.com/en-us/networking/products/infiniband/) spread across two NUMA domains. The hardware topology looks like this:
 
 | Resource | Count | Detail |
 |---|---|---|
 | GPU | 4x NVIDIA GB300 | 288 GB HBM3E each |
-| NIC | 4x Mellanox ConnectX | 100 GB/s InfiniBand each |
+| NIC | 4x NVIDIA ConnectX-5 | 100 GB/s InfiniBand each |
 | NUMA nodes | 2 | 2 GPUs + 2 NICs per NUMA node |
 
 The NUMA topology from `nvidia-smi topo -m` reveals the affinity relationships:
@@ -59,7 +59,7 @@ That high-level flow depends on node-local DRANET agents to turn scheduling deci
 
 ### 1. Discovering RDMA devices
 
-The Nvidia ConnectX-5 NICs on Azure ND GB300-v6 nodes operate in InfiniBand mode -- they have no Ethernet netdev interface. DRANET discovers them by:
+The NVIDIA ConnectX-5 NICs on Azure ND GB300-v6 nodes operate in InfiniBand mode -- they have no Ethernet netdev interface. DRANET discovers them by:
 
 - Skipping IPoIB interfaces during netdev discovery
 - Recording the RDMA link name (`rdmaDevice`) on each PCI device
@@ -82,8 +82,7 @@ spec:
         bool: true
       dra.net/rdmaDevice:
         string: mlx5_0
-      dra.net/pciVendor:
-        string: Mellanox Technologies
+      ...
   driver: dra.net
 ```
 
