@@ -273,6 +273,4 @@ The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers onl
 
 Topology-aware scheduling with GPU-NIC alignment isn't optional for high-performance RDMA. DRANET and the DRA framework give you declarative, fine-grained control over that placement without privileged containers or manual device management.
 
-Topology-aware scheduling with GPU-NIC alignment isn't optional for high-performance RDMA. DRANET and the DRA framework give you declarative, fine granular control over that placement without privileged containers or manual device management.
-
 Connect with the AKS team through our [GitHub discussions](https://github.com/Azure/AKS/discussions) or [share your feedback and suggestions](https://github.com/Azure/AKS/issues).
