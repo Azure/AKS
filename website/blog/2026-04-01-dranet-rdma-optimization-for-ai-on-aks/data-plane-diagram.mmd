@@ -6,15 +6,15 @@ flowchart TB
     subgraph NUMA0["NUMA Node 0"]
         GPU0["GPU 0<br/>NVIDIA GB300"]
         GPU1["GPU 1<br/>NVIDIA GB300"]
-        NIC0["NIC 0<br/>NVIDIA ConnectX-5"]
-        NIC1["NIC 1<br/>NVIDIA ConnectX-5"]
+        NIC0["NIC 0<br/>NVIDIA ConnectX-8"]
+        NIC1["NIC 1<br/>NVIDIA ConnectX-8"]
     end
 
     subgraph NUMA1["NUMA Node 1"]
         GPU2["GPU 2<br/>NVIDIA GB300"]
         GPU3["GPU 3<br/>NVIDIA GB300"]
-        NIC2["NIC 2<br/>NVIDIA ConnectX-5"]
-        NIC3["NIC 3<br/>NVIDIA ConnectX-5"]
+        NIC2["NIC 2<br/>NVIDIA ConnectX-8"]
+        NIC3["NIC 3<br/>NVIDIA ConnectX-8"]
     end
 
     subgraph Pod["Scheduled Pod"]
