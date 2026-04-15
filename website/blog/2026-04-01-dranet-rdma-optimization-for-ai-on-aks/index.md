@@ -263,8 +263,6 @@ There are a few pieces worth calling out:
 
 The following chart shows the benchmark results across the three ResourceClaimTemplates:
 
-Below chart shows the benchmark results across our three ResourceClaimTemplates:
-
 ![Bar chart comparing NCCL all_reduce_perf average bus bandwidth across three NUMA placement scenarios: 1nic-unaligned at 25 GB/s, 1nic-aligned at 56 GB/s, and 2nic-aligned at 112 GB/s](./benchmark-chart.svg)
 
 The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers only **~25 GB/s** -- a **2.2x degradation** compared to the NUMA-aligned `1nic-aligned` case at **~56 GB/s**, and a **4.5x degradation** compared to the `2nic-aligned` case at **~112 GB/s**. Three compounding penalties explain this:
