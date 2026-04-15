@@ -43,7 +43,7 @@ GPUs 0-1 and NICs 0-1 share NUMA node 0. GPUs 2-3 and NICs 2-3 share NUMA node 1
 
 Without topology-aware scheduling, Kubernetes has no way to co-locate a GPU and its NUMA-local NICs in the same ResourceClaim. Scheduling a workload onto a GPU with the wrong NIC on a different NUMA node can silently result in slower data paths and degrade RDMA performance.
 
-## How does DRANET work
+## How DRANET works
 
 The following system diagrams show how the DRA and DRANET control plane and data plane components work together to achieve topology-aware GPU and NIC alignment.
 
