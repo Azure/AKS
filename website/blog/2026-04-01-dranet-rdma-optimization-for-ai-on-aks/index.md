@@ -8,11 +8,11 @@ tags: ["ai", "gpu", "networking", "performance"]
 
 RDMA (Remote Direct Memory Access) is critical for unlocking the full potential of GPU infrastructure, enabling the high-throughput, low-latency GPU-to-GPU communication that large-scale AI workloads demand. In distributed training, collective operations like all-reduce and all-gather synchronize gradients and activations across GPUs — any communication bottleneck stalls the entire training pipeline. In disaggregated inference, RDMA provides the fast inter-node transfers needed to move KV-cache data between prefill and decode phases running on separate GPU pools.
 
+![rdma-for-ai-workload-on-gpu-infra](./rdma-for-gpu-infra-ai-workload.png)
+
 [DRANET](https://github.com/kubernetes-sigs/dranet) is an open-source [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (DRA) network driver that discovers RDMA-capable devices, advertises them as ResourceSlices, and injects the allocated devices into each pod and container. Combined with the [NVIDIA GPU DRA driver](https://github.com/kubernetes-sigs/nvidia-dra-driver-gpu), it enables topology-aware co-scheduling of GPUs and NICs for high-performance AI networking on Kubernetes.
 
 <!-- truncate -->
-
-![Bar chart comparing NCCL all_reduce_perf average bus bandwidth across three NUMA placement scenarios: 1nic-unaligned at 25 GB/s, 1nic-aligned at 56 GB/s, and 2nic-aligned at 112 GB/s](./benchmark-chart.svg)
 
 :::note
 For a deeper walkthrough of DRA concepts and a hands-on tutorial with the NVIDIA GPU DRA driver, see our previous post on [DRA devices and drivers on Kubernetes](/2025/11/17/dra-devices-and-drivers-on-kubernetes).
