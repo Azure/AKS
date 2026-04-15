@@ -273,7 +273,7 @@ The cross-NUMA `1nic-unaligned` case (GPU on NUMA 0, NIC on NUMA 1) delivers onl
 2. **Cross-NUMA** -- every data transfer crosses the QPI/UPI interconnect between NUMA domains
 3. **Fewer channels** -- NCCL's topology engine allocates only 2 channels for SYS-distant NICs versus 8 channels with NUMA-aligned NIC (`1nic-aligned`), and 16 channels with two NUMA-aligned NICs (`2nic-aligned`)
 
-## Conclusion
+Topology-aware scheduling with GPU-NIC alignment isn't optional for high-performance RDMA. DRANET and the DRA framework give you declarative, fine-grained control over that placement without privileged containers or manual device management.
 
 Topology-aware scheduling with GPU-NIC alignment isn't optional for high-performance RDMA. DRANET and the DRA framework give you declarative, fine granular control over that placement without privileged containers or manual device management.
 
