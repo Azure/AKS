@@ -67,7 +67,7 @@ AKS now includes etcd defragmentation optimizations for large clusters, reducing
 
 These improvements make your control plane more resilient, scalable, and performant, and reduce the manual configuration needed to scale your existing clusters to handle the most demanding workloads. Always remember, the Kubernetes scale envelope remains multidimensional. The number and size of cluster objects, such as pods, nodes, CRDs, Secrets, ConfigMaps, and other resources along with client behavior, continue to play a critical role in how efficiently your cluster scales.
 
-We’re always working to improve the Kubernetes control plane upstream and the AKS control plane downstream to make the platform more reliable and easier to operate. If you have feedback or ideas, we’d love to hear from yo
+We’re always working to improve the Kubernetes control plane upstream and the AKS control plane downstream to make the platform more reliable and easier to operate. If you have feedback or ideas, we’d love to hear from you.
 
 To learn more about the Kubernetes scale envelope, its interaction with the control plane, client optimization, creating resource health alerts and best practices for running large clusters, refer to:
 
