@@ -261,7 +261,7 @@ There are a few pieces worth calling out:
 
 **`resourceClaimTemplateName` selects the GPU-NIC topology.** Each worker pod references a single ResourceClaimTemplate through the `resourceClaimTemplateName` field under `resourceClaims`. To switch between alignment scenarios, change this field from `1nic-aligned` to `2nic-aligned` or `1nic-unaligned` -- the scheduler will then allocate a different set of GPU and NIC devices based on the CEL selectors defined in each template. This is the only line that needs to change between benchmark runs.
 
-For full step-by-step instructions on running the benchmark and verifying device allocation, see the [DRANET AKS GB300 InfiniBand example](https://github.com/kubernetes-sigs/dranet/tree/main/examples/aks-gb300-infiniband-dranet).
+The following chart shows the benchmark results across the three ResourceClaimTemplates:
 
 Below chart shows the benchmark results across our three ResourceClaimTemplates:
 
