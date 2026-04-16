@@ -16,13 +16,13 @@ As organizations scale AI adoption, platform teams must balance two competing go
 - Enable broad, low-friction access to AI services  
 - Prevent a single application from exhausting shared quotas
 
-This article describes a **platform-oriented approach** to controlling AI spend using **Azure Kubernetes Application Network** and **agentgateway**. By leveraging **workload identity already present in the network**, you can enforce **per-application, token-based rate limiting** without issuing API keys to every application.
+This article describes a **platform-oriented approach** to controlling AI spend using **Azure Kubernetes Application Network** (AppNet) and **agentgateway**. By leveraging **workload identity already present in the network**, you can enforce **per-application, token-based rate limiting** without issuing API keys to every application.
 
 By adopting this platform-oriented approach, you gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency.
 
 <!-- truncate -->  
 
-**Azure Kubernetes Application Network** (AppNet, currently in Public Preview) is Azure's fully managed L7 network for AKS, providing security, observability, and control for your L7 network out of the box. This article focuses on AppNet's secure, automatic mTLS authentication.
+**Azure Kubernetes Application Network** (currently in Public Preview) is Azure's fully managed L7 network for AKS, providing security, observability, and control for your L7 network out of the box. This article focuses on AppNet's secure, automatic mTLS authentication.
 
 ---
 
@@ -65,7 +65,7 @@ A more scalable approach is to shift rate limiting out of application code and i
 
 **The key idea is: Identify applications by identity, not by secrets.**
 
-In AppNet, workload identity is automatically established through mutual TLS (mTLS) using Istio's ztunnel proxy. By enforcing policy based on this identity, the platform can apply per-application limits transparently. 
+Azure Kubernetes Application Network automatically establishes workload identity through mutual TLS (mTLS) using Istio's ztunnel proxy. By enforcing policy based on this identity, the platform can apply per-application limits transparently. 
 
 This solution combines AppNet's automatic mTLS identity on all traffic with agentgateway's ability to define Token Rate Limiting buckets with CEL expressions to accomplish per-application Token budgets. By configuring agentgateway to terminate mTLS directly, we're able to have it participate in the network just like an Istio waypoint would, which gives it direct access to the TLS identity on the wire.
 
