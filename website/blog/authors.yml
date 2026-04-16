@@ -297,7 +297,7 @@ francis-yu:
 
 anson-qian:
   name: Anson Qian
-  title: Software Engineer at Microsoft
+  title: Software Engineer at Azure Kubernetes Service
   url: https://www.linkedin.com/in/aqian/
   image_url: https://github.com/anson627.png
   page: true
@@ -389,7 +389,7 @@ diego-casati:
   socials:
     linkedin: diegocasati
     github: dcasati
-    
+
 sertac-ozercan:
   name: Sertaç Özercan
   title: Principal Engineering Manager for Azure Upstream
@@ -508,3 +508,12 @@ zhewei-hu:
   socials:
     linkedin: zhewei-hu
     github: zheweihu
+    
+michael-zappa:
+  name: Michael Zappa
+  title: Software Engineer for Azure Container Networking
+  url: https://www.linkedin.com/in/michaelzappa/
+  image_url: https://github.com/MikeZappa87.png
+  socials:
+    linkedin: michaelzappa
+
