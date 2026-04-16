@@ -18,6 +18,8 @@ As organizations scale AI adoption, platform teams must balance two competing go
 
 This article describes a **platform-oriented approach** to controlling AI spend using **Azure Kubernetes Application Network** and **agentgateway**. By leveraging **workload identity already present in the network**, you can enforce **per-application, token-based rate limiting** without issuing API keys to every application.
 
+By adopting this platform-oriented approach, you gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency.
+
 <!-- truncate -->  
 
 **Azure Kubernetes Application Network** (AppNet, currently in Public Preview) is Azure's fully managed L7 network for AKS, providing security, observability, and control for your L7 network out of the box. This article focuses on AppNet's secure, automatic mTLS authentication.
@@ -61,9 +63,7 @@ Instead of removing blockers, the platform becomes one.
 
 A more scalable approach is to shift rate limiting out of application code and into the **platform layer**.
 
-The key idea is:
-
-> **Identify applications by identity, not by secrets.**
+**The key idea is: Identify applications by identity, not by secrets.**
 
 In AppNet, workload identity is automatically established through mutual TLS (mTLS) using Istio's ztunnel proxy. By enforcing policy based on this identity, the platform can apply per-application limits transparently. 
 
@@ -89,7 +89,7 @@ flowchart LR
 
 In contrast with our initial scenario, the Azure Foundry API Key is only accessible to the agentgateway, so application teams don't touch any secrets, while AppNet provides per-application identity information on the wire.
 
-## Deep Dive
+## Deep Dive: Configure **Azure Kubernetes Application Network** and **agentgateway** for token-based rate limiting
 
 Let's have a look at the key components that make up our rate limit (step by step details available [here](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md)). First, let's configure agentgateway to interoperate with AppNet, which exposes an Istio-compliant control plane:
 
@@ -206,4 +206,4 @@ Once we've exhausted our token budget, all requests from httpbin to Azure Foundr
 
 ## Conclusion
 
-By adopting this platform-oriented approach, we gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency. Applications gain transparent rate limiting without code changes, while platform teams reduce overhead and enforce fair resource allocation across the organization. This is just one of the many ways you can benefit from Application Network, built on Istio's Ambient Mode, with readily available open source tools like agentgateway. To learn more, see [Application Network documentation](https://learn.microsoft.com/azure/application-network/overview) and [agentgateway documentation](https://agentgateway.dev).
+By adopting this platform-oriented approach, you gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency. Applications gain transparent rate limiting without code changes, while platform teams reduce overhead and enforce fair resource allocation across the organization. This is just one of the many ways you can benefit from Application Network, built on Istio's Ambient Mode, with readily available open source tools like agentgateway. To learn more, see [Application Network documentation](https://learn.microsoft.com/azure/application-network/overview) and [agentgateway documentation](https://agentgateway.dev).
