@@ -47,6 +47,11 @@ aks-mcp:
   permalink: /aks-mcp
   description: Model Context Protocol (MCP) server and client usage on AKS.
 
+argocd:
+  label: Argo CD
+  permalink: /argocd
+  description: Argo CD GitOps continuous delivery tool deployment and configuration on AKS.
+
 anyscale:
   label: Anyscale
   permalink: /anyscale
