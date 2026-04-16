@@ -42,7 +42,7 @@ AKS autoscales your control plane based on cluster size, measured by total compu
 
 ## AKS managed API server guard
 
-When the API server remains unstable after scaling to the maximum control plane resource limits, and out-of-memory (OOM) incidents continue, AKS applies a [managed flow schema and priority level configuration](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#cause-4-aks-managed-api-server-guard-was-applied) that throttles non-system API server requests. 
+When the API server remains unstable after scaling to the maximum control plane resource limits, and out-of-memory (OOM) incidents continue, AKS applies a [managed flow schema and priority level configuration](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific#cause-4-aks-managed-api-server-guard-was-applied) that throttles non-system API server requests.
 
 In most cases, resource-intensive LIST operations from unoptimized clients trigger this instability. This last-resort safeguard keeps the API server stable and operational, even under extreme load.
 
