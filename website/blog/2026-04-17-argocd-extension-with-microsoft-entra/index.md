@@ -427,7 +427,7 @@ In this post, we walked through how to secure Argo CD with Microsoft Entra ID fo
 - Expose Argo CD with an Ingress controller and a real TLS certificate
 - Deploy a sample GitOps application through Argo CD to see it in action
 - Add granular RBAC roles for different teams in your organization
-- Explore the [Argo CD extension docs](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-argocd) for more tutorials
+- Explore the [Argo CD extension docs](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-argocd) for more tutorials
 
 Tried this out? We'd love to hear how it went — drop us feedback in [GitHub Discussions](https://github.com/Azure/AKS/discussions) or open an [issue](https://github.com/Azure/AKS/issues/new) if you run into anything.
 
