@@ -67,11 +67,7 @@ A more scalable approach is to shift rate limiting out of application code and i
 
 In AppNet, workload identity is automatically established through mutual TLS (mTLS) using Istio's ztunnel proxy. By enforcing policy based on this identity, the platform can apply per-application limits transparently. 
 
----
-
-## Solution overview
-
-In this solution, we'll combine agentgateway's ability to define Token Rate Limiting buckets with CEL expressions with AppNet's automatic mTLS identity on all traffic to accomplish per-application Token budgets. By configuring agentgateway to terminate mTLS directly, we're able to have it participate in the network just like an Istio waypoint would, which gives it direct access to the TLS identity on the wire.
+This solution combines AppNet's automatic mTLS identity on all traffic with agentgateway's ability to define Token Rate Limiting buckets with CEL expressions to accomplish per-application Token budgets. By configuring agentgateway to terminate mTLS directly, we're able to have it participate in the network just like an Istio waypoint would, which gives it direct access to the TLS identity on the wire.
 
 ```mermaid
 flowchart LR
