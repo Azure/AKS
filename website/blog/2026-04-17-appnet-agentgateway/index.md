@@ -1,0 +1,214 @@
+---
+title: Control AI spend with per-application token rate limiting using Application Network and agentgateway
+description: "Use Application Network identity and agentgateway to enforce per-application token rate limiting and control shared AI service spend on AKS."
+authors: [mitch-connors, john-howard, zhewei-hu]
+tags: [application-network, ai]
+---
+
+As organizations scale AI adoption, platform teams must balance two competing goals:
+
+- Enable broad, low-friction access to AI services  
+- Prevent a single application from exhausting shared quotas
+
+This article describes a **platform-oriented approach** to controlling AI spend using **Azure Kubernetes Application Network** (AppNet) and **agentgateway**. By leveraging **workload identity already present in the network**, you can enforce **per-application, token-based rate limiting** without issuing API keys to every application.
+
+By adopting this platform-oriented approach, you gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency.
+
+<!-- truncate -->  
+
+**Azure Kubernetes Application Network** (currently in Public Preview) is Azure's fully managed L7 network for AKS, providing security, observability, and control for your L7 network out of the box. This article focuses on AppNet's secure, automatic mTLS authentication.
+
+---
+
+## The challenge with shared AI quotas
+
+A typical AI inference workflow looks like this:
+
+1. Create an AI or model provider account.
+2. Distribute a shared API key.
+3. Allow applications to call the service.
+
+This approach works initially, but as usage grows, teams often encounter a shared failure mode:
+
+> **403: Insufficient Quota**
+
+When the quota is exhausted:
+
+- All applications are affected simultaneously.
+- It is difficult to identify which workload consumed the quota.
+- One misbehaving application can impact the entire platform.
+
+---
+
+## Why per-application API keys don’t scale
+
+A common mitigation is to issue one API key per application, each with an independent quota. While this improves attribution, it introduces new operational challenges:
+
+- Manual key provisioning by platform engineers
+- Secret distribution and rotation
+- Slower onboarding for new applications
+- Increased operational overhead
+
+Instead of removing blockers, the platform becomes one.
+
+---
+
+## A platform-oriented solution
+
+A more scalable approach is to shift rate limiting out of application code and into the **platform layer**.
+
+**The key idea is: Identify applications by identity, not by secrets.**
+
+Azure Kubernetes Application Network automatically establishes workload identity through mutual TLS (mTLS) using Istio's ztunnel proxy. By enforcing policy based on this identity, the platform can apply per-application limits transparently.
+
+This solution combines AppNet's automatic mTLS identity on all traffic with agentgateway's ability to define Token Rate Limiting buckets with CEL expressions to accomplish per-application Token budgets. By configuring agentgateway to terminate mTLS directly, we're able to have it participate in the network just like an Istio waypoint would, which gives it direct access to the TLS identity on the wire.
+
+```mermaid
+flowchart LR
+    App1[Application A]
+    App2[Application B]
+
+    Z1[Istio ztunnel]
+
+    AG[agentgateway]
+    AI[Azure Foundry]
+
+    App1 --> Z1 -->|id:a| AG --> AI
+    App2 --> Z1 -->|id:b| AG --> AI
+```
+
+In contrast with our initial scenario, the Azure Foundry API Key is only accessible to the
+agentgateway, so application teams don't touch any secrets, while AppNet provides
+per-application identity information on the wire.
+
+## Deep Dive: Configure **Application Network** and **agentgateway** for token-based rate limiting
+
+Let's look at the key components that make up our rate limit.
+For step-by-step setup details, see the [detailed configuration gist](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md).
+First, let's configure agentgateway to interoperate with AppNet, which exposes an
+Istio-compliant control plane:
+
+```yaml
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayParameters
+metadata:
+  name: agentgateway
+spec:
+  deployment:
+    spec:
+      template:
+        metadata:
+          labels:
+            istio.io/dataplane-mode: none
+            networking.istio.io/tunnel: http
+  istio: {}
+  rawConfig:
+    binds:
+    - listeners:
+      port: 15008
+      tunnelProtocol: hboneGateway
+  service:
+    spec:
+      ports:
+      - name: hbone
+        port: 15008
+```
+
+Next, let's create a policy to perform token-based rate limiting on this gateway's traffic, using the AppNet mTLS identity as the bucket key.
+
+```yaml
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
+metadata:
+  name: minute-token-budget
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: gateway
+  traffic:
+    rateLimit:
+      global:
+        backendRef:
+          group: ""
+          kind: Service
+          name: ratelimit
+          namespace: ratelimit
+          port: 8081
+        descriptors:
+        - entries:
+          - expression: source.identity.namespace
+            name: client_ns
+          unit: Tokens
+        domain: token-budgets
+```
+
+Finally, let's configure our Rate Limiting Server to deny traffic after 100 tokens per application per minute (in reality, we'd need a much bigger budget, but this low budget lets us easily demo exceeding the rate limiter).
+
+```yaml
+apiVersion: v1
+data:
+  config.yaml: |
+    domain: token-budgets
+    descriptors:
+      # Rate limit by client namespace
+      - key: client_ns
+        rate_limit:
+          unit: minute
+          requests_per_unit: 100
+kind: ConfigMap
+metadata:
+  name: ratelimit-config
+```
+
+Now that we've configured our rate limiter, let's send some completion requests to Azure Foundry to see it in action. Full test instructions are available in the [details gist](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md):
+
+```bash
+curl gateway.default/v1/chat/completions -i -H content-type:application/json  -d '{
+   "model": "",
+   "messages": [
+     {
+       "role": "system",
+       "content": "You are a helpful assistant."
+     },
+     {
+       "role": "user",
+       "content": "Write a short haiku about cloud computing."
+     }
+   ]
+ }'
+HTTP/1.1 200 OK
+...(succeeds several times)
+curl gateway.default/v1/chat/completions -i -H content-type:application/json  -d '{
+   "model": "",
+   "messages": [
+     {
+       "role": "system",
+       "content": "You are a helpful assistant."
+     },
+     {
+       "role": "user",
+       "content": "Write a short haiku about cloud computing."
+     }
+   ]
+ }'
+HTTP/1.1 429 Too Many Requests
+content-length: 0
+date: Fri, 03 Apr 2026 22:59:18 GMT
+```
+
+Once we've exhausted our token budget, all requests from httpbin to Azure Foundry will be
+blocked by agentgateway until our budget resets in 1 minute. Requests from other
+applications can proceed without being blocked, because each application has its own rate
+limit bucket, keyed on AppNet identity.
+
+## Conclusion
+
+By adopting this platform-oriented approach, you gain centralized control over AI spending,
+eliminate secrets distribution, and improve operational efficiency. Applications gain
+transparent rate limiting without code changes, while platform teams reduce overhead and
+enforce fair resource allocation across the organization. This is just one of the many ways
+you can benefit from Application Network, built on Istio's Ambient Mode, with readily
+available open source tools like agentgateway. To learn more, see [Application Network
+documentation](https://learn.microsoft.com/azure/application-network/overview) and
+[agentgateway documentation](https://agentgateway.dev).
