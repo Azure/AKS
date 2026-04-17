@@ -77,11 +77,11 @@ flowchart LR
     App2 --> Z1 -->|id:b| AG --> AI
 ```
 
-In contrast with our initial scenario, the Azure Foundry API Key is only accessible to the 
-agentgateway, so application teams don't touch any secrets, while AppNet provides 
+In contrast with our initial scenario, the Azure Foundry API Key is only accessible to the
+agentgateway, so application teams don't touch any secrets, while AppNet provides
 per-application identity information on the wire.
 
-## Deep Dive: Configure **Azure Kubernetes Application Network** and **agentgateway** for token-based rate limiting
+## Deep Dive: Configure **Application Network** and **agentgateway** for token-based rate limiting
 
 Let's look at the key components that make up our rate limit.
 For step-by-step setup details, see the [detailed configuration gist](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md).
