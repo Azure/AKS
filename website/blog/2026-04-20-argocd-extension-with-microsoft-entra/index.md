@@ -1,6 +1,5 @@
 ---
 title: "Securing Argo CD with Microsoft Entra ID: A Step-by-Step Guide"
-date: 2026-04-17
 description: "Learn how to secure the Argo CD extension for AKS with Microsoft Entra ID using Terraform, workload identity, OIDC, RBAC, and policy-based access control."
 authors: [paul-yu]
 tags: [argo-cd, entra, extensions, security, best-practices]
