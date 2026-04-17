@@ -9,8 +9,6 @@ ms.date: 2026-04-09
 tags: [application-network, ai]
 ---
 
-## Control AI spend with per-application token rate limiting using Application Network and agentgateway
-
 As organizations scale AI adoption, platform teams must balance two competing goals:
 
 - Enable broad, low-friction access to AI services  
