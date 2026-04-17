@@ -36,7 +36,7 @@ When the quota is exhausted:
 
 - All applications are affected simultaneously.
 - It is difficult to identify which workload consumed the quota.
-- One misbehaving application can impact the entire platform. 
+- One misbehaving application can impact the entire platform.
 
 ---
 
@@ -49,7 +49,7 @@ A common mitigation is to issue one API key per application, each with an indepe
 - Slower onboarding for new applications
 - Increased operational overhead
 
-Instead of removing blockers, the platform becomes one. 
+Instead of removing blockers, the platform becomes one.
 
 ---
 
@@ -59,7 +59,7 @@ A more scalable approach is to shift rate limiting out of application code and i
 
 **The key idea is: Identify applications by identity, not by secrets.**
 
-Azure Kubernetes Application Network automatically establishes workload identity through mutual TLS (mTLS) using Istio's ztunnel proxy. By enforcing policy based on this identity, the platform can apply per-application limits transparently. 
+Azure Kubernetes Application Network automatically establishes workload identity through mutual TLS (mTLS) using Istio's ztunnel proxy. By enforcing policy based on this identity, the platform can apply per-application limits transparently.
 
 This solution combines AppNet's automatic mTLS identity on all traffic with agentgateway's ability to define Token Rate Limiting buckets with CEL expressions to accomplish per-application Token budgets. By configuring agentgateway to terminate mTLS directly, we're able to have it participate in the network just like an Istio waypoint would, which gives it direct access to the TLS identity on the wire.
 
@@ -81,7 +81,10 @@ In contrast with our initial scenario, the Azure Foundry API Key is only accessi
 
 ## Deep Dive: Configure **Azure Kubernetes Application Network** and **agentgateway** for token-based rate limiting
 
-Let's have a look at the key components that make up our rate limit (step by step details available [here](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md)). First, let's configure agentgateway to interoperate with AppNet, which exposes an Istio-compliant control plane:
+Let's look at the key components that make up our rate limit.
+For step-by-step setup details, see the [detailed configuration gist](https://gist.github.com/therealmitchconnors/b2776cea7a72e25f805b0228eef986cc#file-details-md).
+First, let's configure agentgateway to interoperate with AppNet, which exposes an
+Istio-compliant control plane:
 
 ```yaml
 apiVersion: agentgateway.dev/v1alpha1
@@ -192,8 +195,18 @@ content-length: 0
 date: Fri, 03 Apr 2026 22:59:18 GMT
 ```
 
-Once we've exhausted our token budget, all requests from httpbin to Azure Foundry will be blocked by agentgateway until our budget resets in 1 minute.  Requests from other applications can proceed without being blocked, because each application has its own rate limit bucket, keyed on AppNet identity.
+Once we've exhausted our token budget, all requests from httpbin to Azure Foundry will be
+blocked by agentgateway until our budget resets in 1 minute. Requests from other
+applications can proceed without being blocked, because each application has its own rate
+limit bucket, keyed on AppNet identity.
 
 ## Conclusion
 
-By adopting this platform-oriented approach, you gain centralized control over AI spending, eliminate secrets distribution, and improve operational efficiency. Applications gain transparent rate limiting without code changes, while platform teams reduce overhead and enforce fair resource allocation across the organization. This is just one of the many ways you can benefit from Application Network, built on Istio's Ambient Mode, with readily available open source tools like agentgateway. To learn more, see [Application Network documentation](https://learn.microsoft.com/azure/application-network/overview) and [agentgateway documentation](https://agentgateway.dev).
+By adopting this platform-oriented approach, you gain centralized control over AI spending,
+eliminate secrets distribution, and improve operational efficiency. Applications gain
+transparent rate limiting without code changes, while platform teams reduce overhead and
+enforce fair resource allocation across the organization. This is just one of the many ways
+you can benefit from Application Network, built on Istio's Ambient Mode, with readily
+available open source tools like agentgateway. To learn more, see [Application Network
+documentation](https://learn.microsoft.com/azure/application-network/overview) and
+[agentgateway documentation](https://agentgateway.dev).
