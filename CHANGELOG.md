@@ -18,7 +18,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Preview Features
-* [Cilium Gateway API](https://cilium.io/use-cases/gateway-api/) is now available in preview for clusters running Kubernetes 1.32 or later with Azure CNI Powered by Cilium v1.17 or later.
 * Added support for AKS-managed [NAT Gateway V2](https://learn.microsoft.com/azure/aks/nat-gateway) outbound in supported public Azure regions, with automatic exclusion in sovereign clouds and regions where StandardV2 NAT Gateway isn't yet available.
 
 ### Features
