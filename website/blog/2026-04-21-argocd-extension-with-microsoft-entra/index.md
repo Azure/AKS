@@ -5,7 +5,7 @@ authors: [paul-yu]
 tags: [argo-cd, entra, extensions, security, best-practices]
 ---
 
-A few weeks ago at KubeCon Europe 2026, the [public preview of Argo CD extension for AKS was announced](https://techcommunity.microsoft.com/blog/azurearcblog/announcing-public-preview-of-argo-cd-extension-on-aks-and-azure-arc-enabled-kube/4504497). In this post, we will walk through how to deploy Argo CD via AKS extension and configure it to use Microsoft Entra ID using Terraform.
+AKS has offered GitOps support for a while now with the [Flux v2 cluster extension](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2?tabs=azure-cli), and many users have been asking for Argo CD support as well. A few weeks ago at KubeCon Europe 2026, the [public preview of Argo CD extension for AKS was announced](https://techcommunity.microsoft.com/blog/azurearcblog/announcing-public-preview-of-argo-cd-extension-on-aks-and-azure-arc-enabled-kube/4504497). In this post, we will walk through how to deploy Argo CD via AKS extension and configure it to use Microsoft Entra ID using Terraform.
 
 <!-- truncate -->
 
