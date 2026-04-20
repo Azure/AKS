@@ -517,3 +517,12 @@ michael-zappa:
   socials:
     linkedin: michaelzappa
 
+kevin-thomas:
+  name: Kevin Thomas
+  title: Product Manager for Azure Kubernetes Service
+  url: https://www.linkedin.com/in/kevin-krupa-thomas/
+  image_url: https://github.com/kevinkrp93.png
+  page: true
+  socials:
+    linkedin: kevin-krupa-thomas
+    github: kevinkrp93
