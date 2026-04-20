@@ -5,7 +5,11 @@ authors: [paul-yu]
 tags: [argo-cd, entra, extensions, security, best-practices]
 ---
 
-AKS has offered GitOps support for a while now with the [Flux v2 cluster extension](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2?tabs=azure-cli), and many users have been asking for Argo CD support as well. A few weeks ago at KubeCon Europe 2026, the [public preview of Argo CD extension for AKS was announced](https://techcommunity.microsoft.com/blog/azurearcblog/announcing-public-preview-of-argo-cd-extension-on-aks-and-azure-arc-enabled-kube/4504497). In this post, we will walk through how to deploy Argo CD via AKS extension and configure it to use Microsoft Entra ID using Terraform.
+AKS has offered GitOps support for a while now with the [Flux v2 cluster extension](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2?tabs=azure-cli), and many users have been asking for Argo CD support as well. A few weeks ago at KubeCon Europe 2026, the [public preview of Argo CD extension for AKS was announced](https://techcommunity.microsoft.com/blog/azurearcblog/announcing-public-preview-of-argo-cd-extension-on-aks-and-azure-arc-enabled-kube/4504497).
+
+Integrating Argo CD with Microsoft Entra ID gives your developers single sign-on (SSO) access to Argo CD using their existing corporate identities - no separate passwords to manage. You also get the full power of Azure's identity platform: multi-factor authentication (MFA), conditional access policies, and group-based role assignments to control who can do what in Argo CD.
+
+In this post, we'll automate the entire setup with Terraform so the configuration is repeatable, version-controlled, and easy to adapt across environments.
 
 <!-- truncate -->
 
@@ -13,7 +17,7 @@ AKS has offered GitOps support for a while now with the [Flux v2 cluster extensi
 
 By now, [Argo CD](https://argo-cd.readthedocs.io/en/stable/) probably needs no introduction. But if you are new to Argo CD, it is a declarative, GitOps continuous delivery tool for Kubernetes. It allows you to manage your Kubernetes applications using Git repositories as the source of truth.
 
-Argo CD is heavily used in production environments and many have already adopted the open-source version of Argo CD. With the new Argo CD extension for AKS, you can now easily deploy the software on your cluster as an Azure-native resource. But what does that mean? Well, for one, it means you can now leverage Azure CLI, Azure Resource Manager (ARM) templates, Bicep, or Terraform to manage your Argo CD deployments as you bootstrap clusters. It also means that Azure can be in charge of the lifecycle of your Argo CD deployment, including upgrades and security patches. This is a huge win for users who want to focus on their applications and not worry about managing the underlying infrastructure.
+Argo CD is heavily used in production environments and many have already adopted the open-source version of Argo CD. With the new Argo CD extension for AKS, you can now easily deploy the software on your cluster as an Azure-native resource. But what does that mean? Well, for one, it means you can now leverage Azure CLI, Azure Resource Manager (ARM) templates, Bicep, or Terraform to manage your Argo CD deployments as you bootstrap clusters. It also means you no longer need to worry about upgrading and patching Argo CD. Azure handles that for you, so you can focus on deploying applications.
 
 By default, the Argo CD installation comes with a built-in admin user. However, for production environments, it is recommended to use an external identity provider for authentication and authorization. Microsoft Entra ID is a great choice for this as it provides robust security features and seamless integration with Azure services. My motto has always been "ditch the passwords" and using Microsoft Entra ID for authentication allows you to do just that. You can leverage features like multi-factor authentication (MFA), conditional access policies, and role-based access control (RBAC) to secure your Argo CD deployment.
 
@@ -26,7 +30,7 @@ At a high level, the process of securing Argo CD with Microsoft Entra ID involve
 5. Deploy the Argo CD extension for AKS
 6. Verify the integration
 
-There's a lot of "setup goo" to go through, especially when it comes to configuring Microsoft Entra ID applications and OIDC settings, but don't worry, we'll automate all of that using Terraform and I'll go through each step in detail. The end result will be a secure Argo CD deployment that is integrated with Microsoft Entra ID for authentication and authorization.
+There's a bit of prerequisite setup to go through, especially when it comes to configuring Microsoft Entra ID applications and OIDC settings, but don't worry, we'll automate all of that using Terraform and I'll go through each step in detail. The end result will be a secure Argo CD deployment that is integrated with Microsoft Entra ID for authentication and authorization.
 
 ## Step 0: Prerequisites
 
