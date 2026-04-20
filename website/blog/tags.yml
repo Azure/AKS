@@ -52,6 +52,11 @@ anyscale:
   permalink: /anyscale
   description: Using Anyscale and Ray for distributed AI/ML workloads on AKS.
 
+application-network:
+  label: Application Network
+  permalink: /application-network
+  description: Azure Kubernetes Application Network for secure, zero-trust connectivity between AKS workloads and clusters.
+
 app-routing:
   label: App Routing
   permalink: /app-routing

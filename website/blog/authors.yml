@@ -475,6 +475,21 @@ jaiveer-katariya:
   socials:
     github: jaiveerk
 
+mitch-connors:
+  name: Mitch Connors
+  title: Principal Product Manager for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/mitchconnors
+  image_url: https://github.com/therealmitchconnors.png
+  socials:
+    linkedin: mitchconnors
+    github: therealmitchconnors
+
+john-howard:
+  name: John Howard
+  title: Senior Architect at Solo.io
+  url: https://www.linkedin.com/in/-johnhoward/
+  image_url: https://github.com/howardjohn.png
+
 datta-rajpure:
   name: Datta Rajpure
   title: Principal Group Eng Manager at Microsoft Azure Core
@@ -484,6 +499,15 @@ datta-rajpure:
   socials:
     linkedin: dattarajpure
     github: drajpure
+
+zhewei-hu:
+  name: Zhewei Hu
+  title: Senior Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/zhewei-hu/
+  image_url: https://github.com/winbobob.png
+  socials:
+    linkedin: zhewei-hu
+    github: zheweihu
 
 michael-zappa:
   name: Michael Zappa
