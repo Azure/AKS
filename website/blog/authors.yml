@@ -474,21 +474,6 @@ jaiveer-katariya:
   page: true
   socials:
     github: jaiveerk
-   
-mitch-connors:
-  name: Mitch Connors
-  title: Principal Product Manager for the Azure Kubernetes Service
-  url: https://www.linkedin.com/in/mitchconnors
-  image_url: https://github.com/therealmitchconnors.png
-  socials:
-    linkedin: mitchconnors
-    github: therealmitchconnors
-
-john-howard:
-  name: John Howard
-  title: Senior Architect at Solo.io
-  url: https://www.linkedin.com/in/-johnhoward/
-  image_url: https://github.com/howardjohn.png
 
 mitch-connors:
   name: Mitch Connors
