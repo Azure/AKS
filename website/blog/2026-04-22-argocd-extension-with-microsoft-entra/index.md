@@ -5,11 +5,9 @@ authors: [paul-yu]
 tags: [argo-cd, entra, extensions, security, best-practices]
 ---
 
-AKS has offered GitOps support for a while now with the [Flux v2 cluster extension](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2?tabs=azure-cli), and many users have been asking for Argo CD support as well. A few weeks ago at KubeCon Europe 2026, the [public preview of Argo CD extension for AKS was announced](https://techcommunity.microsoft.com/blog/azurearcblog/announcing-public-preview-of-argo-cd-extension-on-aks-and-azure-arc-enabled-kube/4504497).
+AKS has offered GitOps support for a while now with the [Flux v2 cluster extension](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2?tabs=azure-cli), and many users have been asking for Argo CD support as well. A few weeks ago at KubeCon Europe 2026, the [public preview of Argo CD extension for AKS was announced](https://techcommunity.microsoft.com/blog/azurearcblog/announcing-public-preview-of-argo-cd-extension-on-aks-and-azure-arc-enabled-kube/4504497). Running Argo CD as an AKS extension means you can lean on Azure for enhanced security and operations: automatic patch releases so you're always up to date, reduced CVEs with images based on Azure Linux, easy single sign-on (SSO) with Microsoft Entra ID, and workload identity federation so Argo CD can authenticate to Azure services without managing secrets.
 
-Integrating Argo CD with Microsoft Entra ID gives your developers single sign-on (SSO) access to Argo CD using their existing corporate identities - no separate passwords to manage. You also get the full power of Azure's identity platform: multi-factor authentication (MFA), conditional access policies, and group-based role assignments to control who can do what in Argo CD.
-
-In this post, we'll automate the entire setup with Terraform so the configuration is repeatable, version-controlled, and easy to adapt across environments.
+In this post, we'll focus on the identity side of that story. We'll walk through integrating Argo CD with Microsoft Entra ID to give your developers SSO access using their existing corporate identities; no separate passwords to manage. You also get the full power of Azure's identity platform: multi-factor authentication (MFA), conditional access policies, and group-based role assignments to control who can do what in Argo CD. We'll automate the entire setup with Terraform so the configuration is repeatable, version-controlled, and easy to adapt across environments.
 
 <!-- truncate -->
 
