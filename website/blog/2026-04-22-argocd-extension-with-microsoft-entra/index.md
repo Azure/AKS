@@ -263,7 +263,7 @@ resource "azurerm_kubernetes_cluster" "example" {
 
 :::warning
 
-Enabling the OIDC issuer and workload identity on the AKS cluster is crucial for the integration with Microsoft Entra ID as it allows the cluster to issue OIDC tokens that Argo CD pods can use to exchange with Microsoft Entra ID for authentication and authorization.
+This sample configuration creates a very basic AKS standard cluster. It is crucial to enable the OIDC issuer and workload identity for the integration with Microsoft Entra ID as these features allow the cluster to issue OIDC tokens that Argo CD pods can use to exchange with Microsoft Entra ID for authentication and authorization. You could also choose to deploy an AKS Automatic cluster instead which will have the OIDC issuer and workload identity enabled by default.
 
 :::
 
