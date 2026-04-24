@@ -73,6 +73,27 @@ const config: Config = {
     require.resolve('./src/js/consentModule.ts'),
   ],
 
+  plugins: [
+    function htmlAssetPlugin() {
+      return {
+        name: 'html-asset-plugin',
+        configureWebpack() {
+          return {
+            module: {
+              rules: [
+                {
+                  test: /\.html$/i,
+                  type: 'asset/resource',
+                  generator: { filename: 'assets/embed/[name]-[hash][ext]' },
+                },
+              ],
+            },
+          };
+        },
+      };
+    },
+  ],
+
   markdown: {
     mermaid: true,
   },
