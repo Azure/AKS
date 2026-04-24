@@ -1,0 +1,157 @@
+id: bugIssueLifecycleManagement
+name: GitOps.PullRequestIssueManagement
+description: Manage lifecycle of issues labeled as bugs
+owner: Azure/aks-pm
+resource: repository
+disabled: false
+where: 
+configuration:
+  resourceManagementConfiguration:
+    scheduledSearches:
+    - description: Stale any open bugs that are not being investigated or fixed that have 30 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - noActivitySince:
+          days: 30
+      - hasLabel:
+          label: bug
+      - isNotLabeledWith:
+          label: stale
+      - isNotLabeledWith:
+          label: fixing
+      - isNotLabeledWith:
+          label: Under Investigation
+      actions:
+      - addLabel:
+          label: stale
+      - addReply:
+          reply: This issue has been automatically marked as stale because it has not had any activity for **30 days**. It will be closed if no further activity occurs **within 7 days of this comment**. Please review ${assignees}.
+    - description: Mark any bug labeled with 'Under Investigation' that is not waiting on Author Feedback with 'Needs Attention' after 14 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: bug
+      - hasLabel:
+          label: 'Under Investigation'
+      - noActivitySince:
+          days: 14
+      - isNotLabeledWith:
+          label: Needs Author Feedback
+      actions:
+      - addLabel:
+          label: 'Needs Attention :wave:'
+      - addReply:
+          reply: This issue needs attention of ${assignees}. Please provide an update on the investigation progress. Thanks!
+    - description: Add reply and mention assignees on any bug labeled with 'Under Investigation' that is not waiting on Author Feedback which has been marked as 'Needs Attention' and had 7 days inactivity - runs every 6 hours
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: bug
+      - hasLabel:
+          label: 'Under Investigation'
+      - hasLabel:
+          label: 'Needs Attention :wave:'
+      - noActivitySince:
+          days: 7
+      - isNotLabeledWith:
+          label: Needs Author Feedback
+      actions:
+      - addReply:
+          reply: This issue needs attention of ${assignees}. Please provide an update on the investigation progress. Thanks! 
+    eventResponderTasks:
+      - description: When a bug is labeled with 'SR-Support Request', add a reply with instructions on how to create a support ticket.
+        if:
+          - hasLabel:
+              label: bug
+          - payloadType: Issues
+          - labelAdded:
+              label: SR-Support Request
+          - isOpen
+        then:
+          - addLabel:
+              label: Needs Author Feedback
+          - addReply:
+              reply: >-
+                Hi there :wave: AKS bot here. This issue has been tagged as needing a support request so that the AKS support and engineering teams have a look into this particular cluster/issue.
+
+
+                Follow the steps [here](https://azure.microsoft.com/support/create-ticket/) to create a support ticket for Azure Kubernetes Service and the cluster discussed in this issue.
+
+
+                Please do mention this issue in the case description so our teams can coordinate to help you. When you have created the support ticket, please add the case number as a comment to this issue to help us with tracking.  
+
+
+                Thank you!
+      - description: When a bug is labeled with 'fixing', add a reply that notes the fix is under way and to expect updates when the fix is complete.
+        if:
+          - hasLabel:
+              label: bug
+          - payloadType: Issues
+          - labelAdded:
+              label: fixing
+          - isOpen
+        then:
+          - addReply:
+              reply: >-
+                Hi there :wave: AKS bot here. 
+
+                
+                Thank you for reporting this bug to the AKS team. 
+                
+
+                This issue has been tagged as 'fixing' as a bug fix is currently in progress. 
+                
+
+                When the fix is complete, we will update you with the investigation and fix details.
+
+
+                Thank you!
+      - description: When a bug is labeled with 'Under Investigation', add a reply that notes the investigation is under way and to check back later.
+        if:
+          - hasLabel:
+              label: bug
+          - payloadType: Issues
+          - labelAdded:
+              label: 'Under Investigation'
+          - isOpen
+        then:
+          - addReply:
+              reply: >-
+                Hi there :wave: AKS bot here. 
+            
+
+                This issue has been tagged as 'Under Investigation' by the AKS team. 
+                
+
+                Please check back shortly to see if any additional information or actions are needed from you.
+
+
+                Thank you!                
+      - description: If a new comment containing 'Released/Shipped/Fixed on release' is added to a bug, add the resolution labels. 
+        if:
+          - payloadType: Issue_Comment
+          - isOpen
+          - hasLabel:
+              label: bug
+          - commentContains:
+              pattern: Released/Shipped/Fixed on release
+              isRegex: False
+        then:
+          - addLabel:
+              label: resolution/fix-released
+          - addLabel:
+              label: resolution/shipped
+onFailure: 
+onSuccess:

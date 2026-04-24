@@ -1,0 +1,61 @@
+apiVersion: kiali.io/v1alpha1
+kind: Kiali
+metadata:
+  name: kiali
+  namespace: aks-istio-system
+spec:
+  istio_namespace: "aks-istio-system"
+  
+  auth:
+    strategy: "token"
+  
+  deployment:
+    accessible_namespaces:
+    - "**"
+    ingress_enabled: false
+    namespace: aks-istio-system
+    service_type: "ClusterIP"
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+  
+  external_services:
+    istio:
+      root_namespace: "aks-istio-system"
+      istiod_deployment_name: "${ISTIOD_DEPLOYMENT}"
+      istio_sidecar_injector_config_map_name: "${ISTIO_SIDECAR_INJECTOR_CM}"
+      istio_api_enabled: true
+      gateway:
+        name: "${ISTIO_GATEWAY_NAME}"
+        namespace: "aks-istio-ingress"
+    
+    prometheus:
+      url: "http://aad-auth-proxy.aad-auth-proxy-ns.svc.cluster.local"
+      health_check_url: "http://aad-auth-proxy.aad-auth-proxy-ns.svc.cluster.local/api/v1/query?query=up"
+      custom_headers:
+        Accept: "application/json"
+      query_timeout: 30
+      auth:
+        type: "none"
+    
+    grafana:
+      enabled: false
+    
+    tracing:
+      enabled: false
+
+  server:
+    port: 20001
+    web_root: "/"
+  
+  api:
+    namespaces:
+      exclude:
+      - "kube-.*"
+      - "gatekeeper-system"
+      - "aad-auth-proxy-ns"
+      - "kiali-operator"

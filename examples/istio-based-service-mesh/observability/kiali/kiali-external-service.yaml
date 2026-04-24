@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kiali-external
+spec:
+  ports:
+  - port: 20001
+    targetPort: 20001
+    name: http-kiali
+  selector:
+    app: kiali
+  type: LoadBalancer

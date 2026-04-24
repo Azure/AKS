@@ -1,0 +1,86 @@
+---
+title: "Announcing Azure Container Storage v2.0.0: Transforming Performance for Stateful Workloads on AKS"
+description: "Discover how Azure Container Storage v2.0.0 delivers improved performance and advanced features for stateful workloads on AKS."
+date: 2025-09-15 # date is important. future dates will not be published
+authors:
+  - saurabh-sharma
+tags:
+  - general
+  - developer
+  - storage
+  - databases
+---
+
+## Introduction
+
+Last year we announced the general availability of [Azure Container Storage](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction), the industry’s first platform-managed container native storage service in the public cloud. This solution delivers high performance and scalable storage that can effectively meet the demands of containerized environments. Today we are announcing a new v2.0.0 release of Azure Container Storage for Azure Kubernetes Service (AKS). It builds on the foundation of previous release and takes it further by focusing on higher performance, lower latency, efficient resource management and a Kubernetes native user experience for managing stateful workloads on AKS.
+
+<!-- truncate -->
+
+Furthermore, it’s now also completely free to use, and available as [an open-source version](https://github.com/Azure/local-csi-driver) for installation on non-AKS clusters. Whether you’re running databases, AI inferencing or training or any I/O-intensive application, v2.0.0 aims to provide cloud-native storage that performs like local hardware while being easier to use than ever. In this post, we’ll dive into what’s new in Azure Container Storage v2.0.0, how it achieves its performance gains, and how you can get started using it on your AKS or self-hosted clusters.
+
+## Improved Performance with Local NVMe
+
+Azure Container Storage v2.0.0 offers blazing fast performance, enabled by deep integration with local NVMe disks on Azure VM instances. By utilizing ephemeral NVMe attached to AKS nodes, Azure Container Storage can offer extremely high IOPS and throughput, and extremely low latency compared to network-attached disks while also reducing the infrastructure costs. But v2.0.0 goes even further. Through improvements in the data plane and leaner architecture (discussed later), v2.0.0 can squeeze even more performance out of local disks. In [fio](https://github.com/axboe/fio) benchmarking tests, this version has demonstrated reduced sub-millisecond latency at even higher transaction rates than previous version. In practice, this means this version can help accelerate your databases commit and your AI models load data more quickly, directly translating to faster application response times.
+
+Let's look at the benchmarks. On fio, the industry standard for storage testing, Azure Container Storage with NVMe striping delivers approximately 7x higher IOPS and 4x less latency compared to the previous version.
+
+![image](performance-comparsion-fio.png)
+
+But how does this translate to real workloads? We tested our own [PostgreSQL for AKS deployment guide](https://learn.microsoft.com/azure/aks/postgresql-ha-overview) and found that PostgreSQL's transactions per second improved by 60% while cutting latency by over 30%. For database-driven applications, this means faster query responses, higher throughput, and better user experiences.
+
+![image](perf-comparsion-pgsql.png)
+
+## Integration with KAITO for Fast AI Model Loading
+
+Azure Container Storage v2.0.0 isn’t just for traditional databases; it’s also proving hugely beneficial for AI and machine learning use cases on AKS. A great example is our integration with KAITO, [the Kubernetes AI Toolchain Operator](https://blog.aks.azure.com/2025/07/02/kaito-inference-with-acstor). KAITO is a tool that helps deploy and manage AI inference workloads (like large language models) on AKS. These AI workloads often involve huge model files (tens or hundreds of GB) that need to be loaded into GPU memory. Loading such models from remote storage can be painfully slow, becoming a bottleneck.
+
+With this version, KAITO can accelerate model loading by using local NVMe drives. Here’s what happens: when you deploy a model with KAITO on an AKS cluster, KAITO will automatically provision an Azure Container Storage-backed striped NVMe volume on each GPU node and place the model files on that volume. Because the volume stays attached to the node (even if the pod restarts or is replaced), subsequent runs can reuse the local cached model instead of pulling it over the network again. We saw over a 5X improvement in model file loading performance when using Azure Container Storage v2.0.0 with a locally striped NVMe volume, compared to using an ephemeral OS disk.
+
+This improvement means you can scale out AI inference pods much more quickly and respond to traffic spikes without long cold starts. It also means better utilization of expensive GPU nodes – they spend less time waiting on I/O and more time doing actual compute.
+
+![image](kaito-performance.png)
+
+## Simplified Architecture – No StoragePool CRDs, No Prometheus Hassles
+
+Azure Container Storage v2.0.0 not only runs faster, it’s also simpler to use and manage. We took feedback from users of previous versions to remove complexity and toil from the system. Some major changes in this regard are: (1) eliminating the custom StoragePool object, and (2) removing several built-in components (like a bundled Prometheus) which were not as helpful for some of the users of previous versions.
+
+**No more StoragePool custom resource**: In Azure Container Storage’s previous versions, you had to create a storage pool object to carve out storage (e.g. define a pool of NVMe devices or an Elastic SAN pool) before creating PVCs. Now you just use Kubernetes StorageClasses to describe what kind of storage you want and then create PVCs as usual. This aligns with the standard Kubernetes patterns, if you know how to request a volume in K8s, you already know how to use Azure Container Storage.
+
+**Lighter footprint and no reserved resources**: Architecture of previous release included multiple controllers and node daemons (for pooling, replication, etc.), and by default it would reserve a portion of each node’s CPU for its own. From release v2.0.0, the architecture has been streamlined. There is a single lightweight operator running plus the CSI driver components. There’s also less that can go wrong: fewer moving parts means fewer chances for a bug or crash. Now single-node or two-node clusters are also supported, unlike previous versions which needed 3 nodes. This allows its use in smaller development or testing environments.
+
+**No built-in Prometheus Operator**: One of the pain points for some users of previous versions was that it automatically deployed a Prometheus operator (for metrics) in the cluster. If you already had your own Prometheus, this could lead to conflicts (duplicate operators fighting over Custom Resources). In v2.0.0, we removed the bundled Prometheus stack. Instead, now Azure Container Storage exposes metrics that can be scraped by Azure Monitor or an existing Prometheus, so you get full observability but without Azure Container Storage injecting its own monitoring components. This change makes it much friendlier to integrate into clusters that already have monitoring set up, and it means one less thing to manage (or upgrade). You can still deploy Prometheus if you want, or use the Azure Managed Prometheus service, and pick up Azure Container Storage metrics from the standard endpoints.
+
+**User Experience Improvements**: This version does not depend on cert-manager for its webhooks (it uses a built-in certificate approach), so you don’t have to worry about certificate CRDs or renewal jobs. This version also runs in the kube-system namespace now just like the built-in CSI drivers, instead of a special namespace, which avoids issues with certain restrictive policies. In general, our goal was to make Azure Container Storage feel like a natural part of AKS as if it were just another CSI driver.
+
+## Pricing changes
+
+As before, you'll continue to pay for the underlying storage backend you use. But Azure Container Storage v2.0.0 and beyond will no longer charge a per-GB monthly fee for storage pools larger than 5 TiB for both our first party managed and open-source version, making the service now completely free to use. Provision as much storage as you need without worrying about additional management fees. This means you get enterprise-grade storage orchestration and breakthrough performance without any additional service costs, just pure value for your Kubernetes workloads.
+
+## Open-Source Foundations
+
+Another important aspect of Azure Container Storage v2.0.0 is its open-source core. Open source is the cornerstone of AKS, and we’ve open-sourced the key components of [Azure Container Storage on GitHub](https://github.com/Azure/local-csi-driver), including the “local CSI driver” that manages NVMe and ephemeral disks. It brings a few big benefits:
+
+- **Self-hosted K8s cluster support**: Perhaps most significantly, open-sourcing means that the technology behind Azure Container Storage can be used outside of AKS. For example, if you have a self-managed Kubernetes cluster on Azure VMs, you could deploy the open-source local CSI driver to get similar NVMe support.
+
+- **Transparency**: Users and the community can see how Azure Container Storage works under the hood. This builds trust and allows experts to review or suggest improvements.
+
+- **Community contributions**: By open sourcing, we invite the Kubernetes community to contribute features, bug fixes, and enhancements. Over time, this can accelerate development and ensure Azure Container Storage stays aligned with real-world needs.
+
+## What’s Next
+
+While local NVMe is a game-changer for performance, not every workload can tolerate ephemeral storage. Some stateful applications need larger capacity and durable storage that persists even if nodes are deallocated. This is where [Azure Elastic SAN](https://learn.microsoft.com/azure/storage/elastic-san/elastic-san-introduction) storage-type comes in. Azure Container Storage is set to expand its capabilities with upcoming support for Azure Elastic SAN which is a block storage option that provides optimized price-performance through dynamic resource sharing. With native remote block storage support through iSCSI, it also enables for fast attach and detach of volumes. In a future update, you’ll be able to create StorageClasses for Elastic SAN and provision persistent volumes that are backed by Elastic SAN, all orchestrated through Azure Container Storage.
+
+This means you’ll have a spectrum of options under one umbrella: ultra-fast ephemeral NVMe for when you need sheer speed (and handle durability at the app level), and Elastic SAN for when you need large, durable volumes with excellent price-performance. Both will be usable simultaneously in the same cluster through Azure Container Storage’s next release (v2.1.0).
+
+## Getting started
+
+Ready to experience the performance boost? Here are your next steps:
+
+• New to Azure Container Storage? Start with our [comprehensive documentation](https://learn.microsoft.com/azure/storage/container-storage/container-storage-introduction)
+
+• Deploying specific workloads? Check out our updated deployment guide for [PostgreSQL](https://learn.microsoft.com/azure/aks/postgresql-ha-overview)
+
+• Want the open-source version? Visit our [GitHub repository](https://github.com/Azure/local-csi-driver) for installation instructions
+
+• Have questions or feedback? Reach out to our team at [AskContainerStorage@microsoft.com](mailto:AskContainerStorage@microsoft.com)
