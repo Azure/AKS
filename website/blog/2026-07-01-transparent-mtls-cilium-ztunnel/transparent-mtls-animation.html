@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Transparent mTLS Works — Cilium + ztunnel + SPIRE</title>
+  <style>
+    :root {
+      --bg: #0B1622;
+      --card: #111E2E;
+      --text: #B8C4D0;
+      --bright: #E2EAF4;
+      --dim: #3A4A5C;
+      --border: #1E3048;
+      --muted: #7A8FA3;
+      --btn-bg: #152030;
+      --btn-border: #1E3048;
+      --btn-hover: #1E3048;
+    }
+
+    :root.light {
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --text: #1A2332;
+      --bright: #0F1B2D;
+      --dim: #94A3B8;
+      --border: #C8D6E5;
+      --muted: #64748B;
+      --btn-bg: #F0F4F8;
+      --btn-border: #C8D6E5;
+      --btn-hover: #D8E2EC;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px 16px 16px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--bright);
+      margin-bottom: 2px;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 1400px;
+      max-width: 100%;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      max-width: 1400px;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .controls button {
+      background: var(--btn-bg);
+      color: var(--text);
+      border: 1px solid var(--btn-border);
+      border-radius: 6px;
+      padding: 8px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .controls button:hover {
+      background: var(--btn-hover);
+      border-color: var(--dim);
+    }
+
+    .controls button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .controls button.active {
+      background: #326CE5;
+      border-color: #4A8AF4;
+      color: #fff;
+    }
+
+    .controls button.nav-btn {
+      padding: 8px 24px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .step-counter {
+      font-size: 14px;
+      color: var(--muted);
+      min-width: 90px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .speed-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
+    }
+
+    .speed-group label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-right: 2px;
+    }
+
+    .speed-group button {
+      padding: 5px 10px;
+      font-size: 12px;
+      min-width: 36px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 18px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      background: var(--btn-bg);
+      color: var(--text);
+      border: 1px solid var(--btn-border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--btn-hover);
+    }
+
+    .legend-swatch {
+      width: 16px;
+      height: 4px;
+      border-radius: 2px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <button class="theme-toggle" id="themeToggle">☀️ Light</button>
+  <h1>How Transparent mTLS Works</h1>
+  <p class="subtitle">Cilium + ztunnel + SPIRE &mdash; step-by-step walkthrough</p>
+
+  <div class="canvas-wrap">
+    <canvas id="c"></canvas>
+  </div>
+
+  <div class="controls">
+    <button id="btnBack" class="nav-btn" title="Left Arrow">&#9664; Back</button>
+    <span class="step-counter" id="stepCounter">Step 1 / 25</span>
+    <button id="btnForward" class="nav-btn" title="Right Arrow">Forward &#9654;</button>
+    <button id="btnReset" title="Reset">&#10226; Reset</button>
+    <button id="btnAuto" title="Space">&#9654; Auto-play</button>
+    <button id="btnOverview" title="Show all flows">&#9673; Overview</button>
+    <div class="speed-group">
+      <label>Speed:</label>
+      <button class="speed-btn active" data-speed="1">1x</button>
+      <button class="speed-btn" data-speed="2">2x</button>
+      <button class="speed-btn" data-speed="3">3x</button>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#326CE5"></div>Plaintext traffic
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#00C9A7"></div>Encrypted / mTLS
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#E5A00D"></div>SPIRE certificate flow
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#F5C542"></div>TLS handshake
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#9B6DFF"></div>Cilium control plane
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    /* ================================================================
+       Canvas setup
+       ================================================================ */
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const CW = 1400, CH = 880;
+
+    function resize() {
+      const dpr = Math.max(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(CW * dpr);
+      canvas.height = Math.round(CH * dpr);
+      canvas.style.aspectRatio = CW + ' / ' + CH;
+      /* Fallback for browsers without aspect-ratio support */
+      if (typeof CSS === 'undefined' || !CSS.supports || !CSS.supports('aspect-ratio', '1 / 1')) {
+        canvas.style.height = (canvas.clientWidth * CH / CW) + 'px';
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      if (ctx.imageSmoothingQuality !== undefined) ctx.imageSmoothingQuality = 'high';
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    /* ================================================================
+       Color palette
+       ================================================================ */
+    const THEMES = {
+      dark: {
+        bg: '#0B1622', border: '#1E3048', text: '#B8C4D0', bright: '#E2EAF4', dim: '#3A4A5C',
+        blue: '#326CE5', green: '#00C9A7', orange: '#E5A00D', gold: '#F5C542',
+        purple: '#9B6DFF', red: '#F85149',
+        nsGreen: '#0B2028', nsBorderGreen: '#00A383',
+        dpFill: '#0E1A32', dpBorder: '#326CE5',
+        cpFill: '#141A24', cpBorder: '#4A6A8A',
+        compBg: '#111E2E', compBorder: '#1E3048',
+        dimAlpha: 0.3,
+      },
+      light: {
+        bg: '#F8FAFC', border: '#C8D6E5', text: '#1A2332', bright: '#0F1B2D', dim: '#94A3B8',
+        blue: '#2557B8', green: '#008F7A', orange: '#B8860B', gold: '#C99A2E',
+        purple: '#7C4DFF', red: '#CF222E',
+        nsGreen: '#D6F5ED', nsBorderGreen: '#008F7A',
+        dpFill: '#E8F0FE', dpBorder: '#2557B8',
+        cpFill: '#EFF2F7', cpBorder: '#5A7DA0',
+        compBg: '#FFFFFF', compBorder: '#C8D6E5',
+        dimAlpha: 0.25,
+      },
+    };
+    let isDark = true;
+    let C = { ...THEMES.dark };
+
+    function applyTheme(dark) {
+      isDark = dark;
+      Object.assign(C, dark ? THEMES.dark : THEMES.light);
+      document.documentElement.classList.toggle('light', !dark);
+      const btn = document.getElementById('themeToggle');
+      btn.textContent = dark ? '☀️ Light' : '🌙 Dark';
+      /* Update legend swatches to match theme */
+      const swatches = document.querySelectorAll('.legend-swatch');
+      const legendColors = [C.blue, C.green, C.orange, C.gold, C.purple];
+      swatches.forEach((sw, i) => { if (legendColors[i]) sw.style.background = legendColors[i]; });
+    }
+    document.getElementById('themeToggle').addEventListener('click', () => applyTheme(!isDark));
+
+    /* Apply theme from query param (e.g., ?theme=light for iframe embedding) */
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('theme') === 'light') applyTheme(false);
+
+    /* ================================================================
+       Logo loading (SVG/PNG icons with emoji fallback)
+       ================================================================ */
+    const LOGO_REGISTRY = {
+      pod: {
+        url: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB3aWR0aD0iMTguMDM1MzM0bW0iCiAgIGhlaWdodD0iMTcuNTAwMzc4bW0iCiAgIHZpZXdCb3g9IjAgMCAxOC4wMzUzMzQgMTcuNTAwMzc4IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcxMzgyNiIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45MSByMTM3MjUiCiAgIHNvZGlwb2RpOmRvY25hbWU9InBvZC5zdmciPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMxMzgyMCIgLz4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9ImJhc2UiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMC4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6em9vbT0iOCIKICAgICBpbmtzY2FwZTpjeD0iLTIuMDkwMDA0IgogICAgIGlua3NjYXBlOmN5PSIzMy43NTIyMzkiCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9Im1tIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9ImxheWVyMSIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSIxNDQwIgogICAgIGlua3NjYXBlOndpbmRvdy1oZWlnaHQ9Ijc3NSIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMCIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMSIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGZpdC1tYXJnaW4tdG9wPSIwIgogICAgIGZpdC1tYXJnaW4tbGVmdD0iMCIKICAgICBmaXQtbWFyZ2luLXJpZ2h0PSIwIgogICAgIGZpdC1tYXJnaW4tYm90dG9tPSIwIiAvPgogIDxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTEzODIzIj4KICAgIDxyZGY6UkRGPgogICAgICA8Y2M6V29yawogICAgICAgICByZGY6YWJvdXQ9IiI+CiAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+CiAgICAgICAgPGRjOnR5cGUKICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPgogICAgICAgIDxkYzp0aXRsZSAvPgogICAgICA8L2NjOldvcms+CiAgICA8L3JkZjpSREY+CiAgPC9tZXRhZGF0YT4KICA8ZwogICAgIGlua3NjYXBlOmxhYmVsPSJDYWxxdWUgMSIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXllcjEiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTAuOTkyNjI2MzgsLTEuMTc0MTgxKSI+CiAgICA8ZwogICAgICAgaWQ9Imc3MCIKICAgICAgIHRyYW5zZm9ybT0ibWF0cml4KDEuMDE0ODg4NywwLDAsMS4wMTQ4ODg3LDE2LjkwMjE0NiwtMi42OTg3MjYpIj4KICAgICAgPHBhdGgKICAgICAgICAgaW5rc2NhcGU6ZXhwb3J0LXlkcGk9IjI1MC41NSIKICAgICAgICAgaW5rc2NhcGU6ZXhwb3J0LXhkcGk9IjI1MC41NSIKICAgICAgICAgaW5rc2NhcGU6ZXhwb3J0LWZpbGVuYW1lPSJuZXcucG5nIgogICAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIgogICAgICAgICBpZD0icGF0aDMwNTUiCiAgICAgICAgIGQ9Im0gLTYuODQ5MjAxNSw0LjI3MjQ2NjggYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIC0wLjQyODg4MTgsMC4xMDg1MzAzIGwgLTUuODUyNDAzNywyLjc5NjMzOTQgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIC0wLjYwNTUyNCwwLjc1Mjk3NTkgbCAtMS40NDM4MjgsNi4yODEyODQ2IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAwLjE1MTk0MywwLjg1MTAyOCAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIDAuMDYzNjIsMC4wODgzMiBsIDQuMDUwOCw1LjAzNjU1NSBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgMC44NzQ5NzksMC40MTc2NTQgbCA2LjQ5NjEwMTEsLTAuMDAxNSBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgMC44NzQ5Nzg4LC0wLjQxNjkwNiBMIDEuMzgxODg3MiwxNS4xNDk0NTMgQSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIDEuNTk4MTk4NiwxNC4yMTAxMDQgTCAwLjE1MjEyNjU3LDcuOTI4ODE1NCBBIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgLTAuNDUzMzk3OTQsNy4xNzU4Mzk2IEwgLTYuMzA2NTQ5Niw0LjM4MDk5NzEgQSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIC02Ljg0OTIwMTUsNC4yNzI0NjY4IFoiCiAgICAgICAgIHN0eWxlPSJmaWxsOiMzMjZjZTU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgLz4KICAgICAgPHBhdGgKICAgICAgICAgaWQ9InBhdGgzMDU0LTItOSIKICAgICAgICAgZD0iTSAtNi44NTIzNDM1LDMuODE3NjM3MiBBIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAtNy4zMDQ0Mjg0LDMuOTMyOTA0IGwgLTYuMTc4NzQyNiwyLjk1MTI3NTggYSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgLTAuNjM5MjA2LDAuNzk0ODkxIGwgLTEuNTIzOTE1LDYuNjMwODI4MiBhIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAwLjE2MDE3NSwwLjg5ODkzIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAwLjA2NzM2LDAuMDkyODEgbCA0LjI3NjA5NCw1LjMxNzIzNiBhIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAwLjkyMzYzLDAuNDQwODU4IGwgNi44NTc2MTg4LC0wLjAwMTUgYSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgMC45MjM2MzA4LC0wLjQ0MDExIGwgNC4yNzQ1OTY2LC01LjMxNzk4NSBhIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAwLjIyODI4OCwtMC45OTA5OTMgTCAwLjUzODk0NDM5LDcuNjc3NTczOCBBIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAtMC4xMDAyNjEwMSw2Ljg4MzQzMTMgTCAtNi4yNzkwMDM3LDMuOTMyMTU1NSBBIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAtNi44NTIzNDM1LDMuODE3NjM3MiBaIG0gMC4wMDI5OSwwLjQ1NTA3ODkgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIDAuNTQyNjUxNywwLjEwODUzMDMgbCA1Ljg1MzE1MTY5LDIuNzk0ODQyNSBBIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgMC4xNTE5NzgxMSw3LjkyOTA2NDggTCAxLjU5ODA1MSwxNC4yMTAzNSBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgLTAuMjE2MzEyMywwLjkzOTM0OCBsIC00LjA0OTMwMzIsNS4wMzczMDQgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIC0wLjg3NDk3ODksMC40MTY5MDYgbCAtNi40OTYxMDA2LDAuMDAxNSBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgLTAuODc0OTc5LC0wLjQxNzY1MiBsIC00LjA1MDgsLTUuMDM2NTU0IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAtMC4wNjM2MiwtMC4wODgzMiAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIC0wLjE1MTk0MiwtMC44NTEwMjggbCAxLjQ0MzgyNywtNi4yODEyODUzIGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAwLjYwNTUyNCwtMC43NTI5NzU4IGwgNS44NTI0MDM2LC0yLjc5NjMzOTUgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIDAuNDI4ODgxOSwtMC4xMDg1MzAzIHoiCiAgICAgICAgIHN0eWxlPSJjb2xvcjojMDAwMDAwO2ZvbnQtc3R5bGU6bm9ybWFsO2ZvbnQtdmFyaWFudDpub3JtYWw7Zm9udC13ZWlnaHQ6bm9ybWFsO2ZvbnQtc3RyZXRjaDpub3JtYWw7Zm9udC1zaXplOm1lZGl1bTtsaW5lLWhlaWdodDpub3JtYWw7Zm9udC1mYW1pbHk6U2FuczstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOlNhbnM7dGV4dC1pbmRlbnQ6MDt0ZXh0LWFsaWduOnN0YXJ0O3RleHQtZGVjb3JhdGlvbjpub25lO3RleHQtZGVjb3JhdGlvbi1saW5lOm5vbmU7bGV0dGVyLXNwYWNpbmc6bm9ybWFsO3dvcmQtc3BhY2luZzpub3JtYWw7dGV4dC10cmFuc2Zvcm06bm9uZTt3cml0aW5nLW1vZGU6bHItdGI7ZGlyZWN0aW9uOmx0cjtiYXNlbGluZS1zaGlmdDpiYXNlbGluZTt0ZXh0LWFuY2hvcjpzdGFydDtkaXNwbGF5OmlubGluZTtvdmVyZmxvdzp2aXNpYmxlO3Zpc2liaWxpdHk6dmlzaWJsZTtmaWxsOiNmZmZmZmY7ZmlsbC1vcGFjaXR5OjE7ZmlsbC1ydWxlOm5vbnplcm87c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7bWFya2VyOm5vbmU7ZW5hYmxlLWJhY2tncm91bmQ6YWNjdW11bGF0ZSIKICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4KICAgIDwvZz4KICAgIDxnCiAgICAgICBpZD0iZzMzNDEiCiAgICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjEyNzY2NjYxLDAuMzUxNDc4MDEpIj4KICAgICAgPHBhdGgKICAgICAgICAgaW5rc2NhcGU6ZXhwb3J0LXlkcGk9IjM3Ni41Nzk5OSIKICAgICAgICAgaW5rc2NhcGU6ZXhwb3J0LXhkcGk9IjM3Ni41Nzk5OSIKICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLXJ1bGU6ZXZlbm9kZDtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MC4yNjQ1ODMzMjtzdHJva2UtbGluZWNhcDpzcXVhcmU7c3Ryb2tlLW1pdGVybGltaXQ6MTAiCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiCiAgICAgICAgIGQ9Ik0gNi4yNjE3OTE0LDcuMDM2MDg2IDkuODgyNjMxNyw1Ljk4NjA4NyAxMy41MDM0NjIsNy4wMzYwODYgOS44ODI2MzE3LDguMDg2MDg3IFoiCiAgICAgICAgIGlkPSJwYXRoOTEwIiAvPgogICAgICA8cGF0aAogICAgICAgICBpbmtzY2FwZTpleHBvcnQteWRwaT0iMzc2LjU3OTk5IgogICAgICAgICBpbmtzY2FwZTpleHBvcnQteGRwaT0iMzc2LjU3OTk5IgogICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtcnVsZTpldmVub2RkO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowLjI2NDU4MzMyO3N0cm9rZS1saW5lY2FwOnNxdWFyZTtzdHJva2UtbWl0ZXJsaW1pdDoxMCIKICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgZD0ibSA2LjI2MTc5MTQsNy40MzgxNyAwLDMuODUyNzc4IDMuMzczNjEwMywxLjg2ODc0OSAwLjAxNjcsLTQuNzEzMTkzIHoiCiAgICAgICAgIGlkPSJwYXRoOTEyIiAvPgogICAgICA8cGF0aAogICAgICAgICBpbmtzY2FwZTpleHBvcnQteWRwaT0iMzc2LjU3OTk5IgogICAgICAgICBpbmtzY2FwZTpleHBvcnQteGRwaT0iMzc2LjU3OTk5IgogICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtcnVsZTpldmVub2RkO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowLjI2NDU4MzMyO3N0cm9rZS1saW5lY2FwOnNxdWFyZTtzdHJva2UtbWl0ZXJsaW1pdDoxMCIKICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgZD0ibSAxMy41MDM0NjIsNy40MzgxNyAwLDMuODUyNzc4IC0zLjM3MzYxLDEuODY4NzQ5IC0wLjAxNjcsLTQuNzEzMTkzIHoiCiAgICAgICAgIGlkPSJwYXRoOTE0IiAvPgogICAgPC9nPgogIDwvZz4KPC9zdmc+Cg==',
+        fallback: '\uD83D\uDCE6', img: null, loaded: false,
+      },
+      istio: {
+        url: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3Ny42Mjc0NSAxMDIuNSI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogIzUxNmJhYTsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJtMzEuMDU1NDgsNTQuNDQ1MjN2MjQuMTc3M2MuMDAwNjUuMDQ1MTItLjAzMTY0LjA4NC0uMDc2MTEuMDkxNjRsLTIzLjI3OTQ5LDMuOTkwNDdjLS4wNTA5MS4wMDc2LS4wOTgzNC0uMDI3NTEtLjEwNTk0LS4wNzg0MS0uMDAyNTYtLjAxNzEyLS4wMDAzLS4wMzQ2MS4wMDY1My0uMDUwNTFMMzAuODc5OTYsMzAuNTg2MzVjLjAyMjQyLS4wNDYzMy4wNzgxNS0uMDY1NzIuMTI0NDktLjA0MzMxLjAzMTYuMDE1MjkuMDUxOTMuMDQ3MDQuMDUyNTkuMDgyMTRsLS4wMDE1NiwyMy44MjAwNVptMy45MjM2Ny0xMy45MzMyMXYzOC4yMTE0OGMuMDAwNDYuMDQ2OTEuMDM1NzMuMDg2MTcuMDgyMzIuMDkxNjRsMzQuODcwMzEsMy44OTQxNWMuMDUxMi4wMDUyNy4wOTY5OC0uMDMxOTYuMTAyMjYtLjA4MzE2LjAwMTY3LS4wMTYxNi0uMDAwOTItLjAzMjQ3LS4wMDc1MS0uMDQ3MzJMMzUuMTU2MjMsNC43MDA0MWMtLjAyMjM3LS4wNDYzNi0uMDc4MDktLjA2NTgtLjEyNDQ0LS4wNDM0My0uMDMxMTcuMDE1MDQtLjA1MTQ0LjA0NjEyLS4wNTI2NC4wODA3MXYzNS43NzQzM1ptMzQuNjg1NDYsNDUuNzYyMTNsLTM4LjU3MzQxLDExLjU3MjE4Yy0uMDIxNTUuMDA3OTctLjA0NTI0LjAwNzk3LS4wNjY3OSwwbC0yMy4zMDktMTEuNTcyMTdjLS4wNDYzNi0uMDIwMy0uMDY3NDktLjA3NDM1LS4wNDcxOS0uMTIwNzEuMDE1MTMtLjAzNDU1LjA0OTg4LS4wNTYzLjA4NzU3LS4wNTQ4MWg2MS44ODI0MWMuMDUwOC4wMDgyNS4wODUzMS4wNTYxMy4wNzcwNi4xMDY5My0uMDA0ODIuMDI5Ny0uMDIzNjkuMDU1MjUtLjA1MDY2LjA2ODU5WiIvPgo8L3N2Zz4=',
+        fallback: '\uD83D\uDD12', img: null, loaded: false,
+      },
+      cilium: {
+        url: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMzA0LjIxNjk4Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2NiZGQ3Mjt9LmNscy0ye2ZpbGw6Izk4Y2EzZjt9LmNscy0ze2ZpbGw6IzYzODljNjt9LmNscy00e2ZpbGw6I2U4MjgyYjt9LmNscy01e2ZpbGw6I2Y4YzUxOTt9LmNscy02e2ZpbGw6I2YwNzUyNTt9LmNscy03e2ZpbGw6IzgxNjJhYTt9LmNscy04e2ZpbGw6IzM3MzczNzt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDAuNTMxMzksNjIuNTk1Mmg0NC43NzE1bDIyLjM4NTc1LDM4LjgzNzkzTDg1LjMwMjg5LDE0MC4yNzEwNkg0MC41MzEzOUwxOC4xNDU2NCwxMDEuNDMzMTNaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNNDAuNTMxMzksMTYyLjM4NzFoNDQuNzcxNWwyMi4zODU3NSwzOC41NjgyMkw4NS4zMDI4OSwyMzkuNTIzNTRINDAuNTMxMzlMMTguMTQ1NjQsMjAwLjk1NTMyWiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTEyNy45MTY3MywyMTEuNDczOTNoNDQuNzcxNUwxOTUuMDc0LDI1MC4wNDIxNWwtMjIuMzg1NzUsMzguNTY4MjJoLTQ0Ljc3MTVMMTA1LjUzMSwyNTAuMDQyMTVaIi8+PHBhdGggY2xhc3M9ImNscy00IiBkPSJNMTI3LjkxNjczLDExMS42ODJoNDQuNzcxNUwxOTUuMDc0LDE1MC41MmwtMjIuMzg1NzUsMzguODM3OTJoLTQ0Ljc3MTVMMTA1LjUzMSwxNTAuNTJaIi8+PHBhdGggY2xhc3M9ImNscy01IiBkPSJNMTI3LjkxNjczLDEyLjQyOTU0aDQ0Ljc3MTVMMTk1LjA3NCw1MC45OTc3NiwxNzIuNjg4MjMsODkuNTY2aC00NC43NzE1TDEwNS41MzEsNTAuOTk3NzZaIi8+PHBhdGggY2xhc3M9ImNscy02IiBkPSJNMjE0LjYyNzgsNjIuNTk1Mmg0NS41ODA2MmwyMi43OTAzMiwzOC44Mzc5My0yMi43OTAzMiwzOC44Mzc5M0gyMTQuNjI3OGwtMjIuNzkwMzEtMzguODM3OTNaIi8+PHBhdGggY2xhc3M9ImNscy03IiBkPSJNMjE0LjYyNzgsMTYyLjM4NzFoNDUuNTgwNjJsMjIuNzkwMzIsMzguNTY4MjItMjIuNzkwMzIsMzguNTY4MjJIMjE0LjYyNzhsLTIyLjc5MDMxLTM4LjU2ODIyWiIvPjxwYXRoIGNsYXNzPSJjbHMtOCIgZD0iTTE3Ni42NzQ1MiwxMDQuNjY5NjJoLTUzLjQ4NjNMOTYuMzYwOTEsMTUwLjk0OTg3bDI2LjgyNzMxLDQ1Ljk1OTgzaDUzLjQ4NjNsMjcuMDMwMTEtNDUuOTc3MDhabS02Ljk5NDA3LDc5LjkxMjI4SDEzMC40ODY1MWwtMTkuOTM0NjQtMzMuNTY1MTUsMTkuODMzMjItMzQuMDE5MzJoMzkuMjk1MzZMMTg5LjQ5NywxNTEuMDE2NzVaIi8+PHBhdGggY2xhc3M9ImNscy04IiBkPSJNMTc2LjY3NDUyLDIwMy45MjIxMWgtNTMuNDg2M0w5Ni4zNjA5MSwyNTAuMTYwMjhsMjYuODI3MzEsNDYuMDAxOTFoNTMuNDg2M2wyNy4wMzAxMS00Ni4wMDE5MVptLTYuOTk0MDcsNzkuODg4NTNIMTMwLjQ4NjUxbC0xOS45MzQ2NC0zMy41NjYyMSwxOS44MzMyMi0zNC4wMzgyaDM5LjI5NTM2bDE5LjgxNjUyLDM0LjAzODJaIi8+PHBhdGggY2xhc3M9ImNscy04IiBkPSJNMTc2LjY3NDUyLDUuNDE3MTRoLTUzLjQ4NjNsLTI2LjgyNzMxLDQ2LjI5NywyNi44MjczMSw0NS45NDMxMWg1My40ODYzbDI3LjAzMDExLTQ1Ljk0MzExWk0xNjkuNjgwNDUsODUuMzcySDEzMC40ODY1MUwxMTAuNTUxODcsNTEuNzE0MTFsMTkuODMzMjItMzMuOTk0OTVoMzkuMjk1MzZsMTkuNzQ5MDksMzMuOTk1WiIvPjxwYXRoIGNsYXNzPSJjbHMtOCIgZD0iTTI2NC4wNTk4NiwxNTQuMjk1ODdoLTUzLjUwM2wtMjYuODEwNTgsNDYuMjc5N0wyMTAuNTU2ODMsMjQ2LjUzNmg1My41MDNMMjkxLjA5LDIwMC41NzU1N1ptLTcuMDc4NzUsNzkuODk5ODZoLTM5LjE5NEwxOTcuOTUzOTEsMjAwLjY0M2wxOS44MzMyNC0zNC4wNzQzM2gzOS4xOTRsMTkuODMzNzcsMzQuMDA2OTFaIi8+PHBhdGggY2xhc3M9ImNscy04IiBkPSJNMjY0LjA1OTg2LDU1LjA0MzM4aC01My41MDNsLTI2LjgxMDU4LDQ2LjUzMzc3LDI2LjgxMDU4LDQ2LjI0NTczaDUzLjUwM0wyOTEuMDksMTAxLjU3NzE1Wm0tNy4wNzg3NSw4MC4zOTY2N2gtMzkuMTk0bC0xOS44MzMyNC0zMy43NjE0OSwxOS44MzMyNC0zNC4yMTgzN2gzOS4xOTRsMTkuODMzNzcsMzQuMjE4MzdaIi8+PHBhdGggY2xhc3M9ImNscy04IiBkPSJNODkuNDI1MSwxNTQuMjk1ODdIMzYuMjA3NDNMOS41MTUsMjAwLjU3NTU3LDM2LjIwNzQzLDI0Ni41MzZIODkuNDI1MWwyNi44OTQxOS00NS45NjAzOFptLTcuMDI2NDIsNzkuODk5ODZINDMuNDAyMTZMMjMuNjY4MTgsMjAwLjY0M2wxOS43MzQtMzQuMDc0MzNIODIuMzk4NjhsMTkuNzM0LDM0LjA3NDMzWiIvPjxwYXRoIGNsYXNzPSJjbHMtOCIgZD0iTTg5LjQyNTEsNTUuMDQzMzhIMzYuMjA3NDNMOS41MTUsMTAxLjU3NzE1bDI2LjY5MjQ0LDQ2LjI0NTczSDg5LjQyNTFsMjYuODk0MTktNDYuMjQ1NzNabS03LjAyNjQyLDgwLjM5NjY3SDQzLjQwMjE2bC0xOS43MzQtMzMuNzk0OTMsMTkuNzM0LTM0LjIxODkySDgyLjM5ODY4bDE5LjczNCwzNC4yMTg5MloiLz48L3N2Zz4=',
+        fallback: '\uD83D\uDC1D', img: null, loaded: false,
+      },
+      spiffe: {
+        url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHJvbGU9ImltZyIgdmlld0JveD0iMC4xMSAxLjg2IDM1OC4yOCAzNTguMjgiPjxzdHlsZT5zdmcge2VuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzYwIDM2MH08L3N0eWxlPjxzdHlsZT4uc3QyLC5zdDN7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojYmNkOTE4fS5zdDN7ZmlsbDojMDRiZGQ5fTwvc3R5bGU+PGcgaWQ9IkxPR08iPjxwYXRoIGQ9Ik0xMi4xIDguOWgyOC4zYzIuNyAwIDUgMi4yIDUgNXYyOC4zYzAgMi43LTIuMiA1LTUgNUgxMi4xYy0yLjcgMC01LTIuMi01LTVWMTMuOWMuMS0yLjcgMi4zLTUgNS01eiIgY2xhc3M9InN0MiIvPjxwYXRoIGQ9Ik04OC43IDguOWgyNThjMi43IDAgNSAyLjIgNSA1djI4LjNjMCAyLjctMi4yIDUtNSA1aC0yNThjLTIuNyAwLTUtMi4yLTUtNVYxMy45YzAtMi43IDIuMi01IDUtNXoiIGNsYXNzPSJzdDMiLz48cGF0aCBkPSJNMzQ2LjcgODUuNWgtMjguM2MtMi43IDAtNSAyLjItNSA1djI4LjNjMCAyLjggMi4yIDUgNSA1aDI4LjNjMi43IDAgNS0yLjIgNS01VjkwLjVjMC0yLjgtMi4zLTUtNS01eiIgY2xhc3M9InN0MiIvPjxwYXRoIGQ9Ik0xOTMuNiA4NS41SDEyLjFjLTIuNyAwLTUgMi4zLTUgNXYyOC4zYzAgMi43IDIuMiA1IDUgNWgxODEuNWMyLjcgMCA1LTIuMiA1LTVWOTAuNWMwLTIuOC0yLjItNS01LTV6IiBjbGFzcz0ic3QzIi8+PHBhdGggZD0iTTI3MC4yIDg1LjVoLTI4LjNjLTIuNyAwLTUgMi4yLTUgNXYyOC4zYzAgMi44IDIuMiA1IDUgNWgyOC4zYzIuNyAwIDUtMi4yIDUtNVY5MC41Yy0uMS0yLjgtMi4zLTUtNS01eiIgY2xhc3M9InN0MiIvPjxwYXRoIGQ9Ik0yNzAuMiAxNjJIODguN2MtMi43IDAtNSAyLjItNSA1djI4LjNjMCAyLjcgMi4yIDUgNSA1aDE4MS41YzIuNyAwIDUtMi4yIDUtNVYxNjdjLS4xLTIuOC0yLjMtNS01LTV6IiBjbGFzcz0ic3QzIi8+PHBhdGggZD0iTTM0Ni43IDE2MmgtMjguM2MtMi43IDAtNSAyLjItNSA1djI4LjNjMCAyLjggMi4yIDUgNSA1aDI4LjNjMi43IDAgNS0yLjIgNS01VjE2N2MwLTIuOC0yLjMtNS01LTV6bS0zMDYuMyAwSDEyLjFjLTIuNyAwLTUgMi4yLTUgNXYyOC4zYzAgMi44IDIuMiA1IDUgNWgyOC4zYzIuNyAwIDUtMi4yIDUtNVYxNjdjMC0yLjgtMi4yLTUtNS01em0tMjguMyA3Ni41aDI4LjNjMi43IDAgNSAyLjIgNSA1djI4LjNjMCAyLjctMi4yIDUtNSA1SDEyLjFjLTIuNyAwLTUtMi4yLTUtNXYtMjguM2MuMS0yLjcgMi4zLTUgNS01eiIgY2xhc3M9InN0MiIvPjxwYXRoIGQ9Ik0xNjUuMiAyMzguNWgxODEuNWMyLjcgMCA1IDIuMiA1IDV2MjguM2MwIDIuNy0yLjIgNS01IDVIMTY1LjJjLTIuNyAwLTUtMi4yLTUtNXYtMjguM2MwLTIuNyAyLjItNSA1LTV6IiBjbGFzcz0ic3QzIi8+PHBhdGggZD0iTTg4LjcgMjM4LjVIMTE3YzIuNyAwIDUgMi4yIDUgNXYyOC4zYzAgMi43LTIuMiA1LTUgNUg4OC43Yy0yLjcgMC01LTIuMi01LTV2LTI4LjNjMC0yLjcgMi4yLTUgNS01em0yNTggNzYuN2gtMjguM2MtMi43IDAtNSAyLjItNSA1djI4LjNjMCAyLjggMi4yIDUgNSA1aDI4LjNjMi43IDAgNS0yLjIgNS01di0yOC4zYzAtMi44LTIuMy01LTUtNXoiIGNsYXNzPSJzdDIiLz48cGF0aCBkPSJNMjcwLjIgMzE1LjJoLTI1OGMtMi43IDAtNSAyLjItNSA1djI4LjNjMCAyLjcgMi4yIDUgNSA1aDI1OGMyLjcgMCA1LTIuMiA1LTV2LTI4LjNjLS4xLTIuOC0yLjMtNS01LTV6IiBjbGFzcz0ic3QzIi8+PC9nPjwvc3ZnPg==',
+        fallback: '\uD83D\uDD10', img: null, loaded: false,
+      },
+      containerd: {
+        url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHJvbGU9ImltZyIgdmlld0JveD0iMzAuODQgLTAuMTYgMTUzLjMxIDIxNi4wNiI+PHN0eWxlPnN2ZyB7ZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyMTYgMjE2fTwvc3R5bGU+PHBhdGggZD0iTTM1LjEgNHYyMDhoMTQ1LjFWNEgzNS4xem0xMjEgMTgzLjhINTkuM1Y5NS45SDEyN1Y2MmgyOXYxMjUuOHoiLz48cGF0aCBkPSJNODguMyAxMjAuMUgxMjd2NDMuNUg4OC4zeiIvPjwvc3ZnPg==',
+        fallback: '\uD83D\uDC33', img: null, loaded: false,
+      },
+      endpoint: {
+        url: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB3aWR0aD0iMTguMDM1MzM0bW0iCiAgIGhlaWdodD0iMTcuNTAwMzc4bW0iCiAgIHZpZXdCb3g9IjAgMCAxOC4wMzUzMzQgMTcuNTAwMzc4IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcxMzgyNiIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45MSByMTM3MjUiCiAgIHNvZGlwb2RpOmRvY25hbWU9ImVwLnN2ZyI+CiAgPGRlZnMKICAgICBpZD0iZGVmczEzODIwIiAvPgogIDxzb2RpcG9kaTpuYW1lZHZpZXcKICAgICBpZD0iYmFzZSIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp6b29tPSI4IgogICAgIGlua3NjYXBlOmN4PSItMi4wOTAwMDQiCiAgICAgaW5rc2NhcGU6Y3k9IjMzLjc1MjIzOSIKICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0ibW0iCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjE0NDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNzc1IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIxIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgZml0LW1hcmdpbi10b3A9IjAiCiAgICAgZml0LW1hcmdpbi1sZWZ0PSIwIgogICAgIGZpdC1tYXJnaW4tcmlnaHQ9IjAiCiAgICAgZml0LW1hcmdpbi1ib3R0b209IjAiIC8+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhMTM4MjMiPgogICAgPHJkZjpSREY+CiAgICAgIDxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj4KICAgICAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4KICAgICAgICA8ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+CiAgICAgICAgPGRjOnRpdGxlIC8+CiAgICAgIDwvY2M6V29yaz4KICAgIDwvcmRmOlJERj4KICA8L21ldGFkYXRhPgogIDxnCiAgICAgaW5rc2NhcGU6bGFiZWw9IkNhbHF1ZSAxIgogICAgIGlua3NjYXBlOmdyb3VwbW9kZT0ibGF5ZXIiCiAgICAgaWQ9ImxheWVyMSIKICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC45OTI2MjYzOCwtMS4xNzQxODEpIj4KICAgIDxnCiAgICAgICBpZD0iZzcwIgogICAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMS4wMTQ4ODg3LDAsMCwxLjAxNDg4ODcsMTYuOTAyMTQ2LC0yLjY5ODcyNikiPgogICAgICA8cGF0aAogICAgICAgICBpbmtzY2FwZTpleHBvcnQteWRwaT0iMjUwLjU1IgogICAgICAgICBpbmtzY2FwZTpleHBvcnQteGRwaT0iMjUwLjU1IgogICAgICAgICBpbmtzY2FwZTpleHBvcnQtZmlsZW5hbWU9Im5ldy5wbmciCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiCiAgICAgICAgIGlkPSJwYXRoMzA1NSIKICAgICAgICAgZD0ibSAtNi44NDkyMDE1LDQuMjcyNDY2OCBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgLTAuNDI4ODgxOCwwLjEwODUzMDMgbCAtNS44NTI0MDM3LDIuNzk2MzM5NCBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgLTAuNjA1NTI0LDAuNzUyOTc1OSBsIC0xLjQ0MzgyOCw2LjI4MTI4NDYgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIDAuMTUxOTQzLDAuODUxMDI4IDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgMC4wNjM2MiwwLjA4ODMyIGwgNC4wNTA4LDUuMDM2NTU1IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAwLjg3NDk3OSwwLjQxNzY1NCBsIDYuNDk2MTAxMSwtMC4wMDE1IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAwLjg3NDk3ODgsLTAuNDE2OTA2IEwgMS4zODE4ODcyLDE1LjE0OTQ1MyBBIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgMS41OTgxOTg2LDE0LjIxMDEwNCBMIDAuMTUyMTI2NTcsNy45Mjg4MTU0IEEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAtMC40NTMzOTc5NCw3LjE3NTgzOTYgTCAtNi4zMDY1NDk2LDQuMzgwOTk3MSBBIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgLTYuODQ5MjAxNSw0LjI3MjQ2NjggWiIKICAgICAgICAgc3R5bGU9ImZpbGw6IzMyNmNlNTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MDtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2Utb3BhY2l0eToxIiAvPgogICAgICA8cGF0aAogICAgICAgICBpZD0icGF0aDMwNTQtMi05IgogICAgICAgICBkPSJNIC02Ljg1MjM0MzUsMy44MTc2MzcyIEEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIC03LjMwNDQyODQsMy45MzI5MDQgbCAtNi4xNzg3NDI2LDIuOTUxMjc1OCBhIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAtMC42MzkyMDYsMC43OTQ4OTEgbCAtMS41MjM5MTUsNi42MzA4MjgyIGEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIDAuMTYwMTc1LDAuODk4OTMgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIDAuMDY3MzYsMC4wOTI4MSBsIDQuMjc2MDk0LDUuMzE3MjM2IGEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIDAuOTIzNjMsMC40NDA4NTggbCA2Ljg1NzYxODgsLTAuMDAxNSBhIDEuMTgxNDMwNCwxLjE3MTc2MiAwIDAgMCAwLjkyMzYzMDgsLTAuNDQwMTEgbCA0LjI3NDU5NjYsLTUuMzE3OTg1IGEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIDAuMjI4Mjg4LC0wLjk5MDk5MyBMIDAuNTM4OTQ0MzksNy42Nzc1NzM4IEEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIC0wLjEwMDI2MTAxLDYuODgzNDMxMyBMIC02LjI3OTAwMzcsMy45MzIxNTU1IEEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIC02Ljg1MjM0MzUsMy44MTc2MzcyIFogbSAwLjAwMjk5LDAuNDU1MDc4OSBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgMC41NDI2NTE3LDAuMTA4NTMwMyBsIDUuODUzMTUxNjksMi43OTQ4NDI1IEEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAwLjE1MTk3ODExLDcuOTI5MDY0OCBMIDEuNTk4MDUxLDE0LjIxMDM1IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAtMC4yMTYzMTIzLDAuOTM5MzQ4IGwgLTQuMDQ5MzAzMiw1LjAzNzMwNCBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgLTAuODc0OTc4OSwwLjQxNjkwNiBsIC02LjQ5NjEwMDYsMC4wMDE1IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAtMC44NzQ5NzksLTAuNDE3NjUyIGwgLTQuMDUwOCwtNS4wMzY1NTQgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIC0wLjA2MzYyLC0wLjA4ODMyIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgLTAuMTUxOTQyLC0wLjg1MTAyOCBsIDEuNDQzODI3LC02LjI4MTI4NTMgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIDAuNjA1NTI0LC0wLjc1Mjk3NTggbCA1Ljg1MjQwMzYsLTIuNzk2MzM5NSBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgMC40Mjg4ODE5LC0wLjEwODUzMDMgeiIKICAgICAgICAgc3R5bGU9ImNvbG9yOiMwMDAwMDA7Zm9udC1zdHlsZTpub3JtYWw7Zm9udC12YXJpYW50Om5vcm1hbDtmb250LXdlaWdodDpub3JtYWw7Zm9udC1zdHJldGNoOm5vcm1hbDtmb250LXNpemU6bWVkaXVtO2xpbmUtaGVpZ2h0Om5vcm1hbDtmb250LWZhbWlseTpTYW5zOy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246U2Fuczt0ZXh0LWluZGVudDowO3RleHQtYWxpZ246c3RhcnQ7dGV4dC1kZWNvcmF0aW9uOm5vbmU7dGV4dC1kZWNvcmF0aW9uLWxpbmU6bm9uZTtsZXR0ZXItc3BhY2luZzpub3JtYWw7d29yZC1zcGFjaW5nOm5vcm1hbDt0ZXh0LXRyYW5zZm9ybTpub25lO3dyaXRpbmctbW9kZTpsci10YjtkaXJlY3Rpb246bHRyO2Jhc2VsaW5lLXNoaWZ0OmJhc2VsaW5lO3RleHQtYW5jaG9yOnN0YXJ0O2Rpc3BsYXk6aW5saW5lO292ZXJmbG93OnZpc2libGU7dmlzaWJpbGl0eTp2aXNpYmxlO2ZpbGw6I2ZmZmZmZjtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6bm9uemVybztzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MDtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6bm9uZTttYXJrZXI6bm9uZTtlbmFibGUtYmFja2dyb3VuZDphY2N1bXVsYXRlIgogICAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiAvPgogICAgPC9nPgogICAgPGcKICAgICAgIGlkPSJnMzM1MCIKICAgICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDkyMzg3NDYsMC42MzM2OTk1NikiPgogICAgICA8cGF0aAogICAgICAgICBpZD0icGF0aDE5OTEiCiAgICAgICAgIGQ9Im0gNC40OTQ5ODk3LDExLjI5NjEwNCAyLjkwODMzMDEsMCAwLDIuMDQxNjY3IC0yLjkwODMzMDEsMCB6IgogICAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIgogICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtcnVsZTpldmVub2RkO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowLjI2NDU4MzMyO3N0cm9rZS1saW5lY2FwOnNxdWFyZTtzdHJva2UtbWl0ZXJsaW1pdDoxMCIgLz4KICAgICAgPHBhdGgKICAgICAgICAgaWQ9InBhdGgxOTkzIgogICAgICAgICBkPSJtIDguNDYzNzQwNiwxMS4yOTYxMDQgMi45MDgzMzE0LDAgMCwyLjA0MTY2NyAtMi45MDgzMzE0LDAgeiIKICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLXJ1bGU6ZXZlbm9kZDtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MC4yNjQ1ODMzMjtzdHJva2UtbGluZWNhcDpzcXVhcmU7c3Ryb2tlLW1pdGVybGltaXQ6MTAiIC8+CiAgICAgIDxwYXRoCiAgICAgICAgIGlkPSJwYXRoMjAwMiIKICAgICAgICAgZD0ibSAxMi40MzI0OTIsMTEuMjk2MTA0IDIuOTA4MzMsMCAwLDIuMDQxNjY3IC0yLjkwODMzLDAgeiIKICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLXJ1bGU6ZXZlbm9kZDtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MC4yNjQ1ODMzMjtzdHJva2UtbGluZWNhcDpzcXVhcmU7c3Ryb2tlLW1pdGVybGltaXQ6MTAiIC8+CiAgICAgIDxwYXRoCiAgICAgICAgIGlkPSJwYXRoMjAwNSIKICAgICAgICAgZD0ibSA3LjYxMzczOTgsNS4yNDM1Njk5IDQuNjA4MzMyMiwwIDAsMi4wNDE2NjcgLTQuNjA4MzMyMiwwIHoiCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiCiAgICAgICAgIHN0eWxlPSJmaWxsOiNmZmZmZmY7ZmlsbC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMjY0NTgzMzI7c3Ryb2tlLWxpbmVjYXA6c3F1YXJlO3N0cm9rZS1taXRlcmxpbWl0OjEwIiAvPgogICAgICA8ZwogICAgICAgICB0cmFuc2Zvcm09Im1hdHJpeCgwLjcwNjkwMjkyLDAuNzA3MzEwNTksLTAuNzA3MzEwNTksMC43MDY5MDI5MiwxMDUuMTk5MzksMjMxLjU2NTIxKSIKICAgICAgICAgaWQ9ImcyMDYyIj4KICAgICAgICA8cmVjdAogICAgICAgICAgIHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowLjM2NzYzMDQ1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEwO3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2UtZGFzaG9mZnNldDoxMy4wMDE1NzU0NztzdHJva2Utb3BhY2l0eToxIgogICAgICAgICAgIGlkPSJyZWN0MjA1NiIKICAgICAgICAgICB3aWR0aD0iMC42NTE3MDkyIgogICAgICAgICAgIGhlaWdodD0iMi45MDkxMzMiCiAgICAgICAgICAgeD0iLTIyNi44ODY0OSIKICAgICAgICAgICB5PSItODkuNTg5MzEiCiAgICAgICAgICAgcnk9IjAiIC8+CiAgICAgICAgPHBhdGgKICAgICAgICAgICBzb2RpcG9kaTp0eXBlPSJzdGFyIgogICAgICAgICAgIHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowLjU3NDk5OTk5O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEwO3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2UtZGFzaG9mZnNldDoxMy4wMDE1NzU0NztzdHJva2Utb3BhY2l0eToxIgogICAgICAgICAgIGlkPSJwYXRoMjA1OCIKICAgICAgICAgICBzb2RpcG9kaTpzaWRlcz0iMyIKICAgICAgICAgICBzb2RpcG9kaTpjeD0iLTIyNS4yNDMwNyIKICAgICAgICAgICBzb2RpcG9kaTpjeT0iLTkxLjk3MDU1OCIKICAgICAgICAgICBzb2RpcG9kaTpyMT0iMi4yNTM0NzIzIgogICAgICAgICAgIHNvZGlwb2RpOnIyPSIxLjEyNjczNjIiCiAgICAgICAgICAgc29kaXBvZGk6YXJnMT0iMS4xOTk3NTU0IgogICAgICAgICAgIHNvZGlwb2RpOmFyZzI9IjIuMjQ2OTUzIgogICAgICAgICAgIGlua3NjYXBlOmZsYXRzaWRlZD0iZmFsc2UiCiAgICAgICAgICAgaW5rc2NhcGU6cm91bmRlZD0iMCIKICAgICAgICAgICBpbmtzY2FwZTpyYW5kb21pemVkPSIwIgogICAgICAgICAgIGQ9Im0gLTIyNC40MjYsLTg5Ljg3MDQzNCAtMS41MjIxOCwtMS4yMjEyODggLTEuNTIyMTksLTEuMjIxMjg5IDEuODE4NzYsLTAuNzA3NjA5IDEuODE4NzYsLTAuNzA3NjEgLTAuMjk2NTcsMS45Mjg4OTggeiIKICAgICAgICAgICBpbmtzY2FwZTp0cmFuc2Zvcm0tY2VudGVyLXg9Ii0wLjEyOTUyNDQyIgogICAgICAgICAgIGlua3NjYXBlOnRyYW5zZm9ybS1jZW50ZXIteT0iMC4yODc0NjQ1IgogICAgICAgICAgIHRyYW5zZm9ybT0ibWF0cml4KDAuNDg4NzA0NjIsMC4xODc2Nzk0NSwtMC4xODc2Nzk0NSwwLjQ4ODcwNDYyLC0xMzMuNzQxNzEsMC4yMTM4MDIwNikiIC8+CiAgICAgIDwvZz4KICAgICAgPGcKICAgICAgICAgaWQ9ImcyMDY4IgogICAgICAgICB0cmFuc2Zvcm09Im1hdHJpeCgtMC43MDY5MDI5MiwwLjcwNzMxMDU5LDAuNzA3MzEwNTksMC43MDY5MDI5MiwtODUuODAxNTM3LDIzMS41NjUyKSI+CiAgICAgICAgPHJlY3QKICAgICAgICAgICByeT0iMCIKICAgICAgICAgICB5PSItODkuNTg5MzEiCiAgICAgICAgICAgeD0iLTIyNi44ODY0OSIKICAgICAgICAgICBoZWlnaHQ9IjIuOTA5MTMzIgogICAgICAgICAgIHdpZHRoPSIwLjY1MTcwOTIiCiAgICAgICAgICAgaWQ9InJlY3QyMDY0IgogICAgICAgICAgIHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowLjM2NzYzMDQ1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEwO3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2UtZGFzaG9mZnNldDoxMy4wMDE1NzU0NztzdHJva2Utb3BhY2l0eToxIiAvPgogICAgICAgIDxwYXRoCiAgICAgICAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMC40ODg3MDQ2MiwwLjE4NzY3OTQ1LC0wLjE4NzY3OTQ1LDAuNDg4NzA0NjIsLTEzMy43NDE3MSwwLjIxMzgwMjA2KSIKICAgICAgICAgICBpbmtzY2FwZTp0cmFuc2Zvcm0tY2VudGVyLXk9IjAuMjg3NDY0NSIKICAgICAgICAgICBpbmtzY2FwZTp0cmFuc2Zvcm0tY2VudGVyLXg9Ii0wLjEyOTUyNDQyIgogICAgICAgICAgIGQ9Im0gLTIyNC40MjYsLTg5Ljg3MDQzNCAtMS41MjIxOCwtMS4yMjEyODggLTEuNTIyMTksLTEuMjIxMjg5IDEuODE4NzYsLTAuNzA3NjA5IDEuODE4NzYsLTAuNzA3NjEgLTAuMjk2NTcsMS45Mjg4OTggeiIKICAgICAgICAgICBpbmtzY2FwZTpyYW5kb21pemVkPSIwIgogICAgICAgICAgIGlua3NjYXBlOnJvdW5kZWQ9IjAiCiAgICAgICAgICAgaW5rc2NhcGU6ZmxhdHNpZGVkPSJmYWxzZSIKICAgICAgICAgICBzb2RpcG9kaTphcmcyPSIyLjI0Njk1MyIKICAgICAgICAgICBzb2RpcG9kaTphcmcxPSIxLjE5OTc1NTQiCiAgICAgICAgICAgc29kaXBvZGk6cjI9IjEuMTI2NzM2MiIKICAgICAgICAgICBzb2RpcG9kaTpyMT0iMi4yNTM0NzIzIgogICAgICAgICAgIHNvZGlwb2RpOmN5PSItOTEuOTcwNTU4IgogICAgICAgICAgIHNvZGlwb2RpOmN4PSItMjI1LjI0MzA3IgogICAgICAgICAgIHNvZGlwb2RpOnNpZGVzPSIzIgogICAgICAgICAgIGlkPSJwYXRoMjA2NiIKICAgICAgICAgICBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6I2ZmZmZmZjtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6bm9uemVybztzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MC41NzQ5OTk5OTtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoxMDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLWRhc2hvZmZzZXQ6MTMuMDAxNTc1NDc7c3Ryb2tlLW9wYWNpdHk6MSIKICAgICAgICAgICBzb2RpcG9kaTp0eXBlPSJzdGFyIiAvPgogICAgICA8L2c+CiAgICAgIDxyZWN0CiAgICAgICAgIHRyYW5zZm9ybT0ibWF0cml4KC0wLjk5OTk4ODQ3LC0wLjAwNDgwMTQ5LC0wLjAwODAzNjY4LDAuOTk5OTY3NzEsMCwwKSIKICAgICAgICAgcnk9IjAiCiAgICAgICAgIHk9IjcuODgzMzE5OSIKICAgICAgICAgeD0iLTEwLjIyMjczNyIKICAgICAgICAgaGVpZ2h0PSIyLjI0ODYxMDUiCiAgICAgICAgIHdpZHRoPSIwLjY1MTcwNDEzIgogICAgICAgICBpZD0icmVjdDIwNzAiCiAgICAgICAgIHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowLjMyMzIxMDI0O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEwO3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2UtZGFzaG9mZnNldDoxMy4wMDE1NzU0NztzdHJva2Utb3BhY2l0eToxIiAvPgogICAgICA8cGF0aAogICAgICAgICB0cmFuc2Zvcm09Im1hdHJpeCgtMC40ODk4NjEwNCwwLjE4NDY0MDAyLDAuMTg0NjQwMDIsMC40ODk4NjEwNCwtODMuNTQxNTY2LDk2LjQ5NDM3OCkiCiAgICAgICAgIGlua3NjYXBlOnRyYW5zZm9ybS1jZW50ZXIteT0iMC4yODc0NjQ1IgogICAgICAgICBpbmtzY2FwZTp0cmFuc2Zvcm0tY2VudGVyLXg9Ii0wLjEyOTUyNDQyIgogICAgICAgICBkPSJtIC0yMjQuNDI2LC04OS44NzA0MzQgLTEuNTIyMTgsLTEuMjIxMjg4IC0xLjUyMjE5LC0xLjIyMTI4OSAxLjgxODc2LC0wLjcwNzYwOSAxLjgxODc2LC0wLjcwNzYxIC0wLjI5NjU3LDEuOTI4ODk4IHoiCiAgICAgICAgIGlua3NjYXBlOnJhbmRvbWl6ZWQ9IjAiCiAgICAgICAgIGlua3NjYXBlOnJvdW5kZWQ9IjAiCiAgICAgICAgIGlua3NjYXBlOmZsYXRzaWRlZD0iZmFsc2UiCiAgICAgICAgIHNvZGlwb2RpOmFyZzI9IjIuMjQ2OTUzIgogICAgICAgICBzb2RpcG9kaTphcmcxPSIxLjE5OTc1NTQiCiAgICAgICAgIHNvZGlwb2RpOnIyPSIxLjEyNjczNjIiCiAgICAgICAgIHNvZGlwb2RpOnIxPSIyLjI1MzQ3MjMiCiAgICAgICAgIHNvZGlwb2RpOmN5PSItOTEuOTcwNTU4IgogICAgICAgICBzb2RpcG9kaTpjeD0iLTIyNS4yNDMwNyIKICAgICAgICAgc29kaXBvZGk6c2lkZXM9IjMiCiAgICAgICAgIGlkPSJwYXRoMjA3MyIKICAgICAgICAgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiNmZmZmZmY7ZmlsbC1vcGFjaXR5OjE7ZmlsbC1ydWxlOm5vbnplcm87c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjAuNTc0OTk5OTk7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLWRhc2hhcnJheTpub25lO3N0cm9rZS1kYXNob2Zmc2V0OjEzLjAwMTU3NTQ3O3N0cm9rZS1vcGFjaXR5OjEiCiAgICAgICAgIHNvZGlwb2RpOnR5cGU9InN0YXIiIC8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K',
+        fallback: '\uD83D\uDD17', img: null, loaded: false,
+      },
+      node: {
+        url: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB3aWR0aD0iMTguMDM1MzM0bW0iCiAgIGhlaWdodD0iMTcuNTAwMzc4bW0iCiAgIHZpZXdCb3g9IjAgMCAxOC4wMzUzMzQgMTcuNTAwMzc4IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcxMzgyNiIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45MSByMTM3MjUiCiAgIHNvZGlwb2RpOmRvY25hbWU9Im5vZGUuc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMTM4MjAiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJiYXNlIgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxLjAiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnpvb209IjgiCiAgICAgaW5rc2NhcGU6Y3g9IjE2Ljg0NzQ5NiIKICAgICBpbmtzY2FwZTpjeT0iMzMuNzUyMjM5IgogICAgIGlua3NjYXBlOmRvY3VtZW50LXVuaXRzPSJtbSIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJsYXllcjEiCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTQ0MCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI3NzUiCiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjEiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIKICAgICBmaXQtbWFyZ2luLXRvcD0iMCIKICAgICBmaXQtbWFyZ2luLWxlZnQ9IjAiCiAgICAgZml0LW1hcmdpbi1yaWdodD0iMCIKICAgICBmaXQtbWFyZ2luLWJvdHRvbT0iMCIgLz4KICA8bWV0YWRhdGEKICAgICBpZD0ibWV0YWRhdGExMzgyMyI+CiAgICA8cmRmOlJERj4KICAgICAgPGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPgogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PgogICAgICAgIDxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz4KICAgICAgICA8ZGM6dGl0bGUgLz4KICAgICAgPC9jYzpXb3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJlbD0iQ2FscXVlIDEiCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpZD0ibGF5ZXIxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0wLjk5MjYyNjM4LC0xLjE3NDE4MSkiPgogICAgPGcKICAgICAgIGlkPSJnNzAiCiAgICAgICB0cmFuc2Zvcm09Im1hdHJpeCgxLjAxNDg4ODcsMCwwLDEuMDE0ODg4NywxNi45MDIxNDYsLTIuNjk4NzI2KSI+CiAgICAgIDxwYXRoCiAgICAgICAgIGlua3NjYXBlOmV4cG9ydC15ZHBpPSIyNTAuNTUiCiAgICAgICAgIGlua3NjYXBlOmV4cG9ydC14ZHBpPSIyNTAuNTUiCiAgICAgICAgIGlua3NjYXBlOmV4cG9ydC1maWxlbmFtZT0ibmV3LnBuZyIKICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgaWQ9InBhdGgzMDU1IgogICAgICAgICBkPSJtIC02Ljg0OTIwMTUsNC4yNzI0NjY4IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAtMC40Mjg4ODE4LDAuMTA4NTMwMyBsIC01Ljg1MjQwMzcsMi43OTYzMzk0IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAtMC42MDU1MjQsMC43NTI5NzU5IGwgLTEuNDQzODI4LDYuMjgxMjg0NiBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDAgMC4xNTE5NDMsMC44NTEwMjggMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAwLjA2MzYyLDAuMDg4MzIgbCA0LjA1MDgsNS4wMzY1NTUgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIDAuODc0OTc5LDAuNDE3NjU0IGwgNi40OTYxMDExLC0wLjAwMTUgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIDAuODc0OTc4OCwtMC40MTY5MDYgTCAxLjM4MTg4NzIsMTUuMTQ5NDUzIEEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAxLjU5ODE5ODYsMTQuMjEwMTA0IEwgMC4xNTIxMjY1Nyw3LjkyODgxNTQgQSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAwIC0wLjQ1MzM5Nzk0LDcuMTc1ODM5NiBMIC02LjMwNjU0OTYsNC4zODA5OTcxIEEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMCAtNi44NDkyMDE1LDQuMjcyNDY2OCBaIgogICAgICAgICBzdHlsZT0iZmlsbDojMzI2Y2U1O2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWRhc2hhcnJheTpub25lO3N0cm9rZS1vcGFjaXR5OjEiIC8+CiAgICAgIDxwYXRoCiAgICAgICAgIGlkPSJwYXRoMzA1NC0yLTkiCiAgICAgICAgIGQ9Ik0gLTYuODUyMzQzNSwzLjgxNzYzNzIgQSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgLTcuMzA0NDI4NCwzLjkzMjkwNCBsIC02LjE3ODc0MjYsMi45NTEyNzU4IGEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIC0wLjYzOTIwNiwwLjc5NDg5MSBsIC0xLjUyMzkxNSw2LjYzMDgyODIgYSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgMC4xNjAxNzUsMC44OTg5MyAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgMC4wNjczNiwwLjA5MjgxIGwgNC4yNzYwOTQsNS4zMTcyMzYgYSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgMC45MjM2MywwLjQ0MDg1OCBsIDYuODU3NjE4OCwtMC4wMDE1IGEgMS4xODE0MzA0LDEuMTcxNzYyIDAgMCAwIDAuOTIzNjMwOCwtMC40NDAxMSBsIDQuMjc0NTk2NiwtNS4zMTc5ODUgYSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgMC4yMjgyODgsLTAuOTkwOTkzIEwgMC41Mzg5NDQzOSw3LjY3NzU3MzggQSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgLTAuMTAwMjYxMDEsNi44ODM0MzEzIEwgLTYuMjc5MDAzNywzLjkzMjE1NTUgQSAxLjE4MTQzMDQsMS4xNzE3NjIgMCAwIDAgLTYuODUyMzQzNSwzLjgxNzYzNzIgWiBtIDAuMDAyOTksMC40NTUwNzg5IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAwLjU0MjY1MTcsMC4xMDg1MzAzIGwgNS44NTMxNTE2OSwyLjc5NDg0MjUgQSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIDAuMTUxOTc4MTEsNy45MjkwNjQ4IEwgMS41OTgwNTEsMTQuMjEwMzUgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIC0wLjIxNjMxMjMsMC45MzkzNDggbCAtNC4wNDkzMDMyLDUuMDM3MzA0IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAtMC44NzQ5Nzg5LDAuNDE2OTA2IGwgLTYuNDk2MTAwNiwwLjAwMTUgYSAxLjExOTEyNTUsMS4xMDk5NjcxIDAgMCAxIC0wLjg3NDk3OSwtMC40MTc2NTIgbCAtNC4wNTA4LC01LjAzNjU1NCBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgLTAuMDYzNjIsLTAuMDg4MzIgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAtMC4xNTE5NDIsLTAuODUxMDI4IGwgMS40NDM4MjcsLTYuMjgxMjg1MyBhIDEuMTE5MTI1NSwxLjEwOTk2NzEgMCAwIDEgMC42MDU1MjQsLTAuNzUyOTc1OCBsIDUuODUyNDAzNiwtMi43OTYzMzk1IGEgMS4xMTkxMjU1LDEuMTA5OTY3MSAwIDAgMSAwLjQyODg4MTksLTAuMTA4NTMwMyB6IgogICAgICAgICBzdHlsZT0iY29sb3I6IzAwMDAwMDtmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0Om5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZTptZWRpdW07bGluZS1oZWlnaHQ6bm9ybWFsO2ZvbnQtZmFtaWx5OlNhbnM7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjpTYW5zO3RleHQtaW5kZW50OjA7dGV4dC1hbGlnbjpzdGFydDt0ZXh0LWRlY29yYXRpb246bm9uZTt0ZXh0LWRlY29yYXRpb24tbGluZTpub25lO2xldHRlci1zcGFjaW5nOm5vcm1hbDt3b3JkLXNwYWNpbmc6bm9ybWFsO3RleHQtdHJhbnNmb3JtOm5vbmU7d3JpdGluZy1tb2RlOmxyLXRiO2RpcmVjdGlvbjpsdHI7YmFzZWxpbmUtc2hpZnQ6YmFzZWxpbmU7dGV4dC1hbmNob3I6c3RhcnQ7ZGlzcGxheTppbmxpbmU7b3ZlcmZsb3c6dmlzaWJsZTt2aXNpYmlsaXR5OnZpc2libGU7ZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDowO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWRhc2hhcnJheTpub25lO21hcmtlcjpub25lO2VuYWJsZS1iYWNrZ3JvdW5kOmFjY3VtdWxhdGUiCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+CiAgICA8L2c+CiAgICA8cGF0aAogICAgICAgc29kaXBvZGk6bm9kZXR5cGVzPSJjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY3NjY2NjY2NjY2NjY2NjY2NjIgogICAgICAgaWQ9InBhdGgxOTk0IgogICAgICAgZD0iTSA5Ljk5MjE4MDMsNS4wMTAxNzU5IEMgOS44NTM4NTA1LDUuMDA1Nzc1OSA1Ljk5NzA4MDUsNi45MDIwNDkgNS45NDY2NTA0LDYuOTk5Mjk1IGMgLTAuMTIxMTcsMC4yMzM2ODIgLTAuOTk4OSw0LjI4MTgyNyAtMC45NDczMSw0LjM2OTA3NCAwLjAzLDAuMDUwNjUgMC42NjIxOSwwLjg1MTg2MSAxLjQwNDU4LDEuNzgwMzI3IGwgMS4zNDk4MjAxLDEuNjg4MDE0IDIuMjIxMTkwMSw5LjMxZS00IDIuMjIxNjQwNCw5LjMxZS00IDEuNDEzMjEsLTEuNzY1NzMxIDEuNDEzNjUsLTEuNzY1MjI4IC0wLjQ5NDc5LC0yLjE2ODU3NTkgQyAxNC4yNTY0NDEsNy45NDYyNzEgMTQuMDEyOTgxLDYuOTUwNDIzIDEzLjk4ODExMSw2LjkyNjQzMyAxMy45MTg2MTEsNi44NTk1NTMgMTAuMDY3MTUxLDUuMDEyNjM4OSA5Ljk5MjE4MDMsNS4wMTAyMTc5IFogbSAwLjE5NjE0MDcsMC45NDc3NTMgMC45MDg5MywwLjI2MzU3NzEgLTAuOTA4OTMsMC4yNjM1NzYgLTAuOTA4OTIwOSwtMC4yNjM1NzYgeiBtIC0wLjkwODkyMDksMC4zNjQ1MiAwLjg1MTEyMDksMC4yNTMyMjYxIC0wLjAwNCwxLjE4MzI4OSAtMC44NDY4MTA5LC0wLjQ2OTM0NyB6IG0gMS44MTc4NTA5LDAgMCwwLjk2NzE2ODEgLTAuODQ2NzksMC40NjkzNDcgLTAuMDA0LC0xLjE4MzI4OSB6IE0gOC44OTk3NzA1LDcuOTM3MTI3IDkuODA4NzEwMSw4LjIwMDcwMjcgOC44OTk3NzA1LDguNDY0Mjc5NyA3Ljk5MDg1MDQsOC4yMDA3MDI3IFogbSAyLjIwODcwMDUsMCAwLjkwODk0LDAuMjYzNTc1NyAtMC45MDg5NCwwLjI2MzU3NyAtMC45MDg5MywtMC4yNjM1NzcgeiBtIC0zLjExNzYyMDYsMC4zNjQ1MTk3IDAuODUxMTIwMiwwLjI1Mjc5MiAtMC4wMDQsMS4xODMyOTA4IC0wLjg0NjgxOTksLTAuNDY4OTE1IHogbSAxLjgxNzg1OTcsMCAwLDAuOTY3MTY3OCAtMC44NDY4MDk4LDAuNDY4OTE1IC0wLjAwNCwtMS4xODMyOTA4IHogbSAwLjM5MDgzMDksMCAwLjg1MTEzLDAuMjUyNzkyIC0wLjAwNCwxLjE4MzI5MDggLTAuODQ2ODIsLTAuNDY4OTE1IHogbSAxLjgxNzg3LDAgMCwwLjk2NzE2NzggLTAuODQ2ODIsMC40Njg5MTUgLTAuMDA0LC0xLjE4MzI5MDggeiBtIC0zLjQ0OTY2MDUsMS41MTUwMjggYyAwLjI3MDYyOTksMC4wMDk2IDAuMDYxMSwwLjI4MTkwOTMgMC4zNjg0MTAxLDAuNDI3OTM1MyAwLjMyNzc0OTUsMC4xNTU3NjQgMC4zOTUzOTk1LC0wLjIzNTM1NCAwLjYwMTMzOTUsMC4wNjM0MSAwLjIwNTk5LDAuMjk4NzY2IC0wLjE4MzM5LDAuMjIzMjM5IC0wLjE1NDQzLDAuNTg0OTU3IDAuMDI5LDAuMzYxNzE4IDAuNDAxNjUsMC4yMjQ4NTggMC4yNDU4OSwwLjU1MjYwNiAtMC4xNTU3NSwwLjMyNzc0NiAtMC4yODUzMiwtMC4wNDc2NCAtMC41ODQwODk1LDAuMTU4MzE3IC0wLjI5ODc0MDEsMC4yMDU5NTcgMC4wMDYsMC40NjAyMDggLTAuMzU1NDYsMC40ODkxOTIgLTAuMzYxNzQwMSwwLjAyODk4IC0wLjEwMTUwMDEsLTAuMjcwNDQ3IC0wLjQyOTI0LC0wLjQyNjIwOCAtMC4zMjc3NSwtMC4xNTU3NjUgLTAuMzk1MzgwMSwwLjIzNDkyMSAtMC42MDEzNDAyLC0wLjA2Mzg1IC0wLjIwNTk1OTksLTAuMjk4NzY3IDAuMTgzODI5OSwtMC4yMjI4MSAwLjE1NDg1LC0wLjU4NDUyOCAtMC4wMjksLTAuMzYxNzE4IC0wLjQwMTY0OTksLTAuMjI0ODU5IC0wLjI0NTg3LC0wLjU1MjYwNCAwLjE1NTc1MDEsLTAuMzI3NzQ5IDAuMjg0ODgwMSwwLjA0NzY0IDAuNTgzNjUwMiwtMC4xNTgzMiAwLjI5ODc4OTgsLTAuMjA1OTU2IC0wLjAwNiwtMC40NjAyMDgzIDAuMzU1OTA5OSwtMC40ODkxOTAzIDAuMDIyNDk5LC0wLjAwMTggMC4wNDI0LC0wLjAwMjMgMC4wNjA0LC0wLjAwMTggeiBtIDIuMzM1OTYwNSwwLjM2Mjc5NDMgYyAwLjQ4MzM1LDAuMDEzNTggMC4wMTQ2LDAuNDY3MjE4IDAuNDU1OTYsMC42NjQ3NjYgMC40NDE0NCwwLjE5NzU0OCAwLjQ2NzE0LC0wLjQ1NDEwMyAwLjc5OTM3LC0wLjEwMjY2OSAwLjMzMjIxLDAuMzUxNDMyIC0wLjMxOTk3LDAuMzQwNjQgLTAuMTQ3NTMsMC43OTI0NTUgMC4xNzI0MywwLjQ1MTgxMyAwLjY1MTYzLDAuMDA5MiAwLjYzODAyLDAuNDkyNjQgLTAuMDEzNywwLjQ4MzQxMSAtMC40NjcyMywwLjAxNDU2IC0wLjY2NDc3LDAuNDU1OTc3IC0wLjE5NzU1LDAuNDQxNDEyIDAuNDU0MSwwLjQ2NzE0MyAwLjEwMjY2LDAuNzk5MzU3IC0wLjM1MTQxLDAuMzMyMjEyIC0wLjM0MDIxLC0wLjMxOTk3NCAtMC43OTIwMiwtMC4xNDc1MzQgLTAuNDUxODMsMC4xNzI0MzcgLTAuMDA5LDAuNjUxNjEgLTAuNDkyNjUsMC42MzgwMTkgLTAuNDgzMzksLTAuMDEzNTggLTAuMDE0NiwtMC40NjcyMTYgLTAuNDU1OTYsLTAuNjY0NzY0IC0wLjQ0MTQxMDUsLTAuMTk3NTUxIC0wLjQ2NzU4MDUsMC40NTQxMDIgLTAuNzk5NzkwOSwwLjEwMjY2OSAtMC4zMzIyMDk3LC0wLjM1MTQzMSAwLjMxOTk4MDQsLTAuMzQwMjA5IDAuMTQ3NTQsLTAuNzkyMDI1IC0wLjE3MjQ1LC0wLjQ1MTgxNSAtMC42NTE2Mjk2LC0wLjAwOTIgLTAuNjM4MDI5NSwtMC40OTI2NDIgMC4wMTM2OTksLTAuNDgzNDA4IDAuNDY3MjA5NSwtMC4wMTQ5OSAwLjY2NDc3OTUsLTAuNDU2NDA1IDAuMTk3NTIwNCwtMC40NDE0MTQgLTAuNDU0MTEsLTAuNDY3MTQzIC0wLjEwMjY5LC0wLjc5OTM1NyAwLjM1MTQ1MDUsLTAuMzMyMjEzIDAuMzQwNjUwNSwwLjMxOTk3MSAwLjc5MjQ2MDksMC4xNDc1MzQgMC40NTE4NCwtMC4xNzI0NCAwLjAwOSwtMC42NTE2MTEgMC40OTI2NSwtMC42MzgwMjEgeiBtIC0yLjMxNDgyMDcsMC4yNTM2NTUgYyAtMC4yOTM2NDk5LDllLTUgLTAuNTMxNjA5OCwwLjIzODI0OSAtMC41MzE0NDk4LDAuNTMxODk4IDcuOTllLTUsMC4yOTM0ODEgMC4yMzc5NzAxLDAuNTMxMzc3IDAuNTMxNDQ5OCwwLjUzMTQ2NyAwLjI5MzY2MDIsMS41OWUtNCAwLjUzMTgyMDIsLTAuMjM3ODEgMC41MzE5LC0wLjUzMTQ2NyAxLjYwMWUtNCwtMC4yOTM4MjUgLTAuMjM4MDY5OSwtMC41MzIwNTcgLTAuNTMxOSwtMC41MzE4OTggeiBtIDIuMjY0MzYwNywwLjQ4MDU2NCBjIC0wLjU4Njg5LC0xLjk2ZS00IC0xLjA2MjcxMDksMC40NzU2MTQgLTEuMDYyNTIwOSwxLjA2MjUwMiA1ZS01LDAuNTg2NzE5IDAuNDc1ODAwOSwxLjA2MjI2NyAxLjA2MjUyMDksMS4wNjIwNzEgMC41ODY1NCwtNS44ZS01IDEuMDYyMDEsLTAuNDc1NTMxIDEuMDYyMDYsLTEuMDYyMDcxIDEuOWUtNCwtMC41ODY3MDggLTAuNDc1MzUsLTEuMDYyNDQ0IC0xLjA2MjA2LC0xLjA2MjUwMiB6IgogICAgICAgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiNmZmZmZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiNlZWVlZWU7c3Ryb2tlLXdpZHRoOjA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLWRhc2hhcnJheTpub25lO3N0cm9rZS1kYXNob2Zmc2V0OjExLjIzNjQyMzQ5O3N0cm9rZS1vcGFjaXR5OjEiCiAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiAvPgogIDwvZz4KPC9zdmc+Cg==',
+        fallback: '\uD83D\uDD0C', img: null, loaded: false,
+      },
+    };
+
+    function loadLogos() {
+      const entries = Object.values(LOGO_REGISTRY);
+      return Promise.all(entries.map(entry => {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => { entry.img = img; entry.loaded = true; resolve(); };
+          img.onerror = () => { entry.loaded = false; resolve(); };
+          img.src = entry.url;
+        });
+      }));
+    }
+
+    /* ================================================================
+       IPs
+       ================================================================ */
+    const IPs = {
+      nodeA: '10.224.0.4',
+      nodeB: '10.224.0.5',
+      clientPod: '10.240.1.52',
+      serverPod: '10.240.0.132',
+      ztunnelA: '10.240.1.239',
+      ztunnelB: '10.240.0.216',
+    };
+
+    /* ================================================================
+       Layout constants
+       ================================================================ */
+    const NODE_W = 620, NODE_H = 704;
+    const GAP = 80;
+    const NODE_AX = Math.round((CW - 2 * NODE_W - GAP) / 2);
+    const NODE_BX = NODE_AX + NODE_W + GAP;
+    const NODE_Y = 32;
+    const NODE_HEADER = 34;
+    const COMP_W = 200, COMP_H = 55;
+    const CP_COMP_W = 170, CP_COMP_H = 48;
+
+    /* Component layout builder */
+    function nodeLayout(nx, isLeft) {
+      const nsY = NODE_Y + NODE_HEADER + 30;
+      const nsPadV = 18;
+      const nsH = COMP_H + 2 * nsPadV + 8;
+
+      /* lxc veth sits just below namespace zone — host-side of pod's veth pair */
+      const lxcY = nsY + nsH + 4;
+
+      const dpY = lxcY + CP_COMP_H + 6;
+      const dpPadV = 18;
+      const dpH = COMP_H + 2 * dpPadV + 8;
+
+      /* Control plane: 2x3 grid of smaller components */
+      const cpY = dpY + dpH + 10;
+      const cpColGap = 24;
+      const cpRowGap = 16;
+      const cpGridH = 3 * CP_COMP_H + 2 * cpRowGap;
+      const cpPadTop = 28;
+      const cpPadBot = 14;
+      const cpH = cpPadTop + cpGridH + cpPadBot;
+
+      /* Centering helpers */
+      const centerX = nx + NODE_W / 2;
+      const podX = centerX - COMP_W / 2;
+      const podY = nsY + nsPadV + 4;
+      const ztX = centerX - COMP_W / 2;
+      const ztY = dpY + dpPadV + 4;
+
+      /* Control plane: 2x3 grid */
+      const gridW = CP_COMP_W * 2 + cpColGap;
+      const gx = nx + (NODE_W - gridW) / 2;
+      const gy = cpY + cpPadTop;
+
+      return {
+        nx, nsY, nsH, dpY, dpH, cpY, cpH,
+        pod: { x: podX, y: podY, w: COMP_W, h: COMP_H },
+        zt: { x: ztX, y: ztY, w: COMP_W, h: COMP_H },
+        ciliumAgent: { x: gx, y: gy, w: CP_COMP_W, h: CP_COMP_H },
+        ciliumOp: { x: gx + CP_COMP_W + cpColGap, y: gy, w: CP_COMP_W, h: CP_COMP_H },
+        spireAgent: { x: gx, y: gy + CP_COMP_H + cpRowGap, w: CP_COMP_W, h: CP_COMP_H },
+        spireServer: { x: gx + CP_COMP_W + cpColGap, y: gy + CP_COMP_H + cpRowGap, w: CP_COMP_W, h: CP_COMP_H },
+        containerd: { x: gx, y: gy + 2 * (CP_COMP_H + cpRowGap), w: CP_COMP_W, h: CP_COMP_H },
+        /* lxc veth: host-side veth pair, attached below pod's namespace zone */
+        lxc: { x: centerX - CP_COMP_W / 2, y: lxcY, w: CP_COMP_W, h: CP_COMP_H },
+        /* Unenrolled namespace zone (Node B only) */
+        unenrolledY: cpY + cpH + 10,
+        unenrolledH: COMP_H + 2 * 12 + 8,
+        monitoringPod: { x: centerX - COMP_W / 2, y: cpY + cpH + 10 + 12 + 4, w: COMP_W, h: COMP_H },
+        /* NIC at bottom-inner edge of node box (facing the gap between nodes) */
+        nic: { x: isLeft ? nx + NODE_W - CP_COMP_W - 12 : nx + 12, y: NODE_Y + NODE_H - CP_COMP_H - 8, w: CP_COMP_W, h: CP_COMP_H },
+      };
+    }
+
+    const LA = nodeLayout(NODE_AX, true);
+    const LB = nodeLayout(NODE_BX, false);
+
+    /* ================================================================
+       Component registry
+       ================================================================ */
+    const COMP = {
+      podA: { r: LA.pod, label: 'Client Pod', icon: '\uD83D\uDCE6', iconType: 'pod', ip: IPs.clientPod, sub: 'ns: frontend / sa: web-client' },
+      podB: { r: LB.pod, label: 'Server Pod', icon: '\uD83D\uDCE6', iconType: 'pod', ip: IPs.serverPod, sub: 'ns: backend / sa: api-server' },
+      ztA: { r: LA.zt, label: 'ztunnel', icon: '\uD83D\uDD12', iconType: 'istio', ip: IPs.ztunnelA },
+      ztB: { r: LB.zt, label: 'ztunnel', icon: '\uD83D\uDD12', iconType: 'istio', ip: IPs.ztunnelB },
+      ciliumAgentA: { r: LA.ciliumAgent, label: 'Cilium Agent', icon: '\uD83D\uDC1D', iconType: 'cilium', ip: '' },
+      ciliumAgentB: { r: LB.ciliumAgent, label: 'Cilium Agent', icon: '\uD83D\uDC1D', iconType: 'cilium', ip: '' },
+      ciliumOpA: { r: LA.ciliumOp, label: 'Cilium Operator', icon: '\u2699\uFE0F', iconType: 'cilium', ip: '' },
+      spireAgentA: { r: LA.spireAgent, label: 'SPIRE Agent', icon: '\uD83D\uDD10', iconType: 'spiffe', ip: '' },
+      spireAgentB: { r: LB.spireAgent, label: 'SPIRE Agent', icon: '\uD83D\uDD10', iconType: 'spiffe', ip: '' },
+      spireServerA: { r: LA.spireServer, label: 'SPIRE Server', icon: '\uD83C\uDFDB\uFE0F', iconType: 'spiffe', ip: '' },
+      containerdA: { r: LA.containerd, label: 'containerd', icon: '\uD83D\uDC33', iconType: 'containerd', ip: '' },
+      containerdB: { r: LB.containerd, label: 'containerd', icon: '\uD83D\uDC33', iconType: 'containerd', ip: '' },
+      lxcA: { r: LA.lxc, label: 'lxc veth (host)', icon: '\uD83D\uDD17', iconType: 'endpoint', ip: '' },
+      lxcB: { r: LB.lxc, label: 'lxc veth (host)', icon: '\uD83D\uDD17', iconType: 'endpoint', ip: '' },
+      nicA: { r: LA.nic, label: 'eth0 (NIC)', icon: '\uD83D\uDD0C', iconType: 'node', ip: IPs.nodeA },
+      nicB: { r: LB.nic, label: 'eth0 (NIC)', icon: '\uD83D\uDD0C', iconType: 'node', ip: IPs.nodeB },
+      monitoringPod: { r: LB.monitoringPod, label: 'Monitoring Pod', icon: '\uD83D\uDCE6', iconType: 'pod', ip: '10.240.0.88', sub: 'ns: monitoring (not enrolled)' },
+    };
+
+    function getRect(id) { return COMP[id] ? COMP[id].r : null; }
+
+    /* Namespace zone rects */
+    const nsRectA = { x: NODE_AX + 10, y: LA.nsY, w: NODE_W - 20, h: LA.nsH };
+    const nsRectB = { x: NODE_BX + 10, y: LB.nsY, w: NODE_W - 20, h: LB.nsH };
+    /* ================================================================
+       25-step narrative
+       ================================================================ */
+    const STEPS = [
+      /* --- Enrollment 1-3 --- */
+      {
+        n: 1,
+        title: 'User enrolls namespace',
+        desc: 'kubectl label ns frontend io.cilium/mtls-enabled="true" && kubectl label ns backend io.cilium/mtls-enabled="true" — both namespace zones activate, enabling transparent mTLS for all workloads.',
+        phase: 'enrollment',
+        active: ['podA', 'podB'],
+        arrows: [],
+        fx: ['nsEnroll'],
+        links: [
+          { repo: 'cilium/cilium', label: 'K8sNamespaceToEnrolledNamespace()', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/table/enrolled_namespaces.go' },
+          { repo: 'cilium/cilium', label: 'EnrollmentReconciler.Update()', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/reconciler/reconciler.go' },
+        ],
+      },
+      {
+        n: 2,
+        title: 'Cilium Operator registers SPIFFE entries',
+        desc: 'Cilium Operator (admin access) registers SPIFFE entries per service account in SPIRE Server: spiffe://cluster.local/ns/frontend/sa/web-client and spiffe://cluster.local/ns/backend/sa/api-server.',
+        phase: 'enrollment',
+        active: ['ciliumOpA', 'spireServerA'],
+        arrows: [{ from: 'ciliumOpA', to: 'spireServerA', color: 'orange', label: 'Register SPIFFE entries (2 SAs)' }],
+        fx: [],
+        links: [
+          { repo: 'cilium/cilium', label: 'SPIRE Client.Upsert()', url: 'https://github.com/cilium/cilium/blob/main/operator/auth/spire/client.go' },
+          { repo: 'cilium/cilium', label: 'IdentityWatcher.run()', url: 'https://github.com/cilium/cilium/blob/main/operator/auth/watcher.go' },
+          { repo: 'spiffe/spire', label: 'Entry API: BatchCreateEntry()', url: 'https://github.com/spiffe/spire/blob/main/pkg/server/api/entry/v1/service.go' },
+        ],
+      },
+      {
+        n: 3,
+        title: 'Cilium Agent installs iptables rules in pod netns (both nodes)',
+        desc: 'On BOTH nodes concurrently: Cilium Agent enters each enrolled pod\'s network namespace and installs iptables REDIRECT rules (OUTPUT: ! --mark 0x539/0xfff → :15001, PREROUTING: → :15006/:15008). This is done via ZDS EnrollEndpoint() → CreateInPodRules().',
+        phase: 'enrollment',
+        active: ['ciliumAgentA', 'ciliumAgentB', 'podA', 'podB'],
+        arrows: [
+          { from: 'ciliumAgentA', to: 'podA', color: 'purple', label: 'Enter netns → install iptables' },
+          { from: 'ciliumAgentB', to: 'podB', color: 'purple', label: 'Enter netns → install iptables' },
+        ],
+        fx: [],
+        links: [
+          { repo: 'cilium/cilium', label: 'CreateInPodRules()', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/iptables/inpod.go' },
+          { repo: 'cilium/cilium', label: 'ZDS Server.EnrollEndpoint()', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/zds/server.go' },
+        ],
+      },
+      {
+        n: 4,
+        title: 'ztunnel enters pod netns, opens listeners (both nodes)',
+        desc: 'On BOTH nodes: Cilium Agent notifies ztunnel via ZDS. ztunnel enters each pod\'s netns via setns(CLONE_NEWNET) and opens listening sockets — :15001 (outbound capture), :15006 (inbound plaintext), :15008 (HBONE inbound). Cilium Agent also pushes xDS workload metadata for all enrolled workloads in the cluster to ztunnel via unix:///var/run/cilium/xds.sock.',
+        phase: 'enrollment',
+        active: ['ztA', 'ztB', 'ciliumAgentA', 'ciliumAgentB', 'podA', 'podB'],
+        arrows: [
+          { from: 'ciliumAgentA', to: 'ztA', color: 'purple', label: 'ZDS: enroll pod', offX: -35, labelOffY: -10 },
+          { from: 'ciliumAgentB', to: 'ztB', color: 'purple', label: 'ZDS: enroll pod', offX: -35, labelOffY: -10 },
+          { from: 'ztA', to: 'podA', color: 'green', label: 'setns() → bind :15001/:15006/:15008' },
+          { from: 'ztB', to: 'podB', color: 'green', label: 'setns() → bind :15001/:15006/:15008' },
+          { from: 'ciliumAgentA', to: 'ztA', color: 'purple', label: 'xDS: workload metadata', offX: 35, labelOffY: 10 },
+          { from: 'ciliumAgentB', to: 'ztB', color: 'purple', label: 'xDS: workload metadata', offX: 35, labelOffY: 10 },
+        ],
+        fx: [],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'ZDS WorkloadStreamProcessor', url: 'https://github.com/cilium/ztunnel/blob/main/src/inpod/protocol.rs' },
+          { repo: 'cilium/ztunnel', label: 'WorkloadProxyManager.run()', url: 'https://github.com/cilium/ztunnel/blob/main/src/inpod/workloadmanager.rs' },
+          { repo: 'cilium/ztunnel', label: 'InpodNetns::run() [setns]', url: 'https://github.com/cilium/ztunnel/blob/main/src/inpod/netns.rs' },
+          { repo: 'cilium/ztunnel', label: 'Outbound::new() [:15001]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/outbound.rs' },
+          { repo: 'cilium/ztunnel', label: 'InboundPassthrough::new() [:15006]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound_passthrough.rs' },
+          { repo: 'cilium/ztunnel', label: 'Inbound::new() [:15008]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound.rs' },
+          { repo: 'cilium/cilium', label: 'xDS Server for ztunnel', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/xds/xds_server.go' },
+        ],
+      },
+
+      /* --- First packet + on-demand cert fetch --- */
+      {
+        n: 5,
+        title: 'Client Pod sends HTTP request (plaintext)',
+        desc: 'Client Pod (' + IPs.clientPod + ') sends HTTP request. Plaintext packet hits iptables OUTPUT chain in pod\'s netns.',
+        phase: 'data',
+        active: ['podA'],
+        arrows: [],
+        fx: ['packetAtPod'],
+        links: [],
+      },
+      {
+        n: 6,
+        title: 'iptables REDIRECT in pod netns',
+        desc: 'iptables OUTPUT chain in pod\'s netns: ! --mark 0x539/0xfff -j REDIRECT --to-ports 15001. Packet redirected to ztunnel\'s listener inside the pod netns. SO_MARK=0x539 (1337) on ztunnel sockets bypasses its own rules.',
+        phase: 'data',
+        active: ['podA', 'ztA'],
+        arrows: [{ from: 'podA', to: 'ztA', color: 'blue', label: 'iptables REDIRECT → :15001 (in pod netns)' }],
+        fx: ['packetPodToZt'],
+        links: [
+          { repo: 'cilium/cilium', label: 'iptables REDIRECT rules', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/iptables/inpod.go' },
+          { repo: 'cilium/ztunnel', label: 'DEFAULT_INPOD_MARK = 1337', url: 'https://github.com/cilium/ztunnel/blob/main/src/config.rs' },
+          { repo: 'cilium/ztunnel', label: 'Outbound::new() [:15001 listener]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/outbound.rs' },
+        ],
+      },
+      {
+        n: 7,
+        title: 'ztunnel reads SO_ORIGINAL_DST, resolves workload',
+        desc: 'ztunnel receives on :15001 inside pod netns, reads original destination (' + IPs.serverPod + ':80) via SO_ORIGINAL_DST, looks up workload via cached xDS state. No cached cert yet — triggers on-demand SPIRE fetch.',
+        phase: 'data',
+        active: ['ztA'],
+        arrows: [],
+        fx: ['lookupPulse'],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'orig_dst_addr() [SO_ORIGINAL_DST]', url: 'https://github.com/cilium/ztunnel/blob/main/src/socket.rs' },
+          { repo: 'cilium/ztunnel', label: 'Outbound connection handling', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/outbound.rs' },
+        ],
+      },
+
+      /* --- On-demand certificate fetch (first connection only) 8-11 --- */
+      {
+        n: 8,
+        title: 'ztunnel resolves workload PID via CRI-API',
+        desc: 'First connection for this identity — no cached cert. ztunnel calls containerd via CRI-API (/run/containerd/containerd.sock): ListPodSandbox → ListContainers → ContainerStatus → extract PID.',
+        phase: 'cert',
+        active: ['ztA', 'containerdA'],
+        arrows: [{ from: 'ztA', to: 'containerdA', color: 'orange', label: 'CRI-API: resolve workload PID' }],
+        fx: [],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'CA client (certificate fetching)', url: 'https://github.com/cilium/ztunnel/blob/main/src/identity/caclient.rs' },
+        ],
+      },
+      {
+        n: 9,
+        title: 'ztunnel requests X.509 SVID from SPIRE Agent',
+        desc: 'ztunnel calls SPIRE Agent via Delegated Identity API (stream_x509_svids with DelegateAttestationRequest::Pid) at /run/spire/sockets/agent.sock.',
+        phase: 'cert',
+        active: ['ztA', 'spireAgentA'],
+        arrows: [{ from: 'ztA', to: 'spireAgentA', color: 'orange', label: 'Delegated Identity API (PID attestation)' }],
+        fx: [],
+        links: [
+          { repo: 'spiffe/spire', label: 'SubscribeToX509SVIDs() [Delegated Identity]', url: 'https://github.com/spiffe/spire/blob/main/pkg/agent/api/delegatedidentity/v1/service.go' },
+          { repo: 'cilium/ztunnel', label: 'CA client (SVID request)', url: 'https://github.com/cilium/ztunnel/blob/main/src/identity/caclient.rs' },
+        ],
+      },
+      {
+        n: 10,
+        title: 'SPIRE Agent attests workload, requests SVID from Server',
+        desc: 'SPIRE Agent attests workload locally via k8s WorkloadAttestor (reads /proc/&lt;pid&gt;/cgroup, skip_kubelet_verification=true). Then requests X.509 SVID from SPIRE Server, which validates the SPIRE Agent\'s node identity via TokenReview API.',
+        phase: 'cert',
+        active: ['spireAgentA', 'spireServerA'],
+        arrows: [
+          { from: 'spireAgentA', to: 'spireServerA', color: 'orange', label: 'Request SVID', offY: -8 },
+          { from: 'spireServerA', to: 'spireAgentA', color: 'orange', label: 'X.509 SVID (EC-P256) issued', offY: 8 },
+        ],
+        fx: ['spireAttest'],
+        links: [
+          { repo: 'spiffe/spire', label: 'k8s WorkloadAttestor.Attest()', url: 'https://github.com/spiffe/spire/blob/main/pkg/agent/plugin/workloadattestor/k8s/k8s.go' },
+          { repo: 'spiffe/spire', label: 'cgroup PID parsing (POSIX)', url: 'https://github.com/spiffe/spire/blob/main/pkg/agent/plugin/workloadattestor/k8s/k8s_posix.go' },
+          { repo: 'spiffe/spire', label: 'k8s_psat NodeAttestor [TokenReview]', url: 'https://github.com/spiffe/spire/blob/main/pkg/server/plugin/nodeattestor/k8spsat/psat.go' },
+          { repo: 'spiffe/spire', label: 'CA.SignWorkloadX509SVID()', url: 'https://github.com/spiffe/spire/blob/main/pkg/server/ca/ca.go' },
+        ],
+      },
+      {
+        n: 11,
+        title: 'X.509 SVID cached in ztunnel — connection resumes',
+        desc: 'Certificate returned to ztunnel and cached. SPIFFE ID: spiffe://cluster.local/ns/frontend/sa/web-client. Subsequent connections skip steps 8-11 (cache hit). Connection now resumes.',
+        phase: 'cert',
+        active: ['ztA'],
+        arrows: [{ from: 'spireAgentA', to: 'ztA', color: 'orange', label: 'Deliver SVID → cached' }],
+        fx: ['certReady'],
+        links: [
+          { repo: 'spiffe/spire', label: 'SubscribeToX509SVIDs() [stream delivery]', url: 'https://github.com/spiffe/spire/blob/main/pkg/agent/api/delegatedidentity/v1/service.go' },
+          { repo: 'cilium/ztunnel', label: 'CA client (cert caching)', url: 'https://github.com/cilium/ztunnel/blob/main/src/identity/caclient.rs' },
+        ],
+      },
+
+      /* --- TLS + HBONE + Data transfer 12-19 --- */
+      {
+        n: 12,
+        title: 'Connection reaches ztunnel B — server-side cert needed',
+        desc: 'ztunnel A initiates TCP to ' + IPs.serverPod + ':15008 (using IP_TRANSPARENT from pod netns). ztunnel B receives on :15008 in server pod netns and begins TLS accept. But ztunnel B has no cached cert yet — it must fetch its own X.509 SVID before completing the handshake.',
+        phase: 'data',
+        active: ['ztA', 'ztB'],
+        arrows: [
+          { from: 'ztA', to: 'ztB', color: 'gold', label: 'TCP SYN → :15008 (TLS accept pending)' },
+        ],
+        fx: [],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'set_freebind_and_transparent()', url: 'https://github.com/cilium/ztunnel/blob/main/src/socket.rs' },
+          { repo: 'cilium/ztunnel', label: 'Inbound::new() [:15008 listener]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound.rs' },
+        ],
+      },
+      {
+        n: 13,
+        title: 'ztunnel B fetches cert from SPIRE (server side)',
+        desc: 'Same on-demand SPIRE flow on Node B: CRI-API to containerd (resolve server pod PID) → SPIRE Agent (Delegated Identity API) → SPIRE Agent contacts the cluster-wide SPIRE Server on Node A (TokenReview + SVID issuance) → X.509 SVID cached. Skipped on subsequent connections.',
+        phase: 'cert',
+        active: ['ztB', 'spireAgentB', 'spireServerA'],
+        arrows: [
+          { from: 'ztB', to: 'spireAgentB', color: 'orange', label: 'CRI-API + Delegated Identity API' },
+          { from: 'spireAgentB', to: 'spireServerA', color: 'orange', label: 'Attest + issue SVID (cross-node)' },
+          { from: 'spireAgentB', to: 'ztB', color: 'orange', label: 'SVID cached' },
+        ],
+        fx: [],
+        links: [
+          { repo: 'spiffe/spire', label: 'SubscribeToX509SVIDs()', url: 'https://github.com/spiffe/spire/blob/main/pkg/agent/api/delegatedidentity/v1/service.go' },
+          { repo: 'spiffe/spire', label: 'CA.SignWorkloadX509SVID()', url: 'https://github.com/spiffe/spire/blob/main/pkg/server/ca/ca.go' },
+        ],
+      },
+      {
+        n: 14,
+        title: 'TLS 1.3 mutual handshake — both ztunnels present certs',
+        desc: 'Both ztunnels now have X.509 SVIDs. ztunnel A initiates TLS 1.3 from pod netns (IP_TRANSPARENT + IP_FREEBIND to maintain source IP). ClientHello / ServerHello+Cert / Finished. Both sides verify peer\'s SPIFFE identity.',
+        phase: 'data',
+        active: ['ztA', 'ztB'],
+        arrows: [],
+        fx: ['tlsHandshake'],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'OutboundConnector::connect() [TLS client]', url: 'https://github.com/cilium/ztunnel/blob/main/src/tls/workload.rs' },
+          { repo: 'cilium/ztunnel', label: 'InboundAcceptor::accept() [TLS server]', url: 'https://github.com/cilium/ztunnel/blob/main/src/tls/workload.rs' },
+          { repo: 'cilium/ztunnel', label: 'IdentityVerifier [SPIFFE SAN check]', url: 'https://github.com/cilium/ztunnel/blob/main/src/tls/workload.rs' },
+          { repo: 'cilium/ztunnel', label: 'set_freebind_and_transparent()', url: 'https://github.com/cilium/ztunnel/blob/main/src/socket.rs' },
+        ],
+      },
+      {
+        n: 15,
+        title: 'HBONE tunnel formed',
+        desc: 'HTTP/2 CONNECT over TLS 1.3 — HBONE tunnel active. Original destination (' + IPs.serverPod + ':80) preserved in CONNECT URI. All data encrypted end-to-end between ztunnels.',
+        phase: 'data',
+        active: ['ztA', 'ztB'],
+        arrows: [],
+        fx: ['hboneTunnel'],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'create_hbone_request() [CONNECT URI]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/outbound.rs' },
+          { repo: 'cilium/ztunnel', label: 'H2ConnectClient::send_request()', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/h2/client.rs' },
+          { repo: 'cilium/ztunnel', label: 'Inbound H2 server [CONNECT handler]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound.rs' },
+        ],
+      },
+      {
+        n: 16,
+        title: 'Client Pod sends plaintext — ztunnel intercepts',
+        desc: 'Client Pod sends HTTP request. iptables OUTPUT chain in pod netns: ! --mark 0x539 -j REDIRECT --to-ports 15001. Plaintext packet redirected to ztunnel\'s outbound listener inside the pod netns. ztunnel reads SO_ORIGINAL_DST, encrypts via HBONE.',
+        phase: 'data',
+        active: ['podA', 'ztA'],
+        arrows: [
+          { from: 'podA', to: 'ztA', color: 'blue', label: 'Plaintext → iptables REDIRECT :15001', offX: -55 },
+        ],
+        fx: ['encryptedEgress'],
+        links: [
+          { repo: 'cilium/cilium', label: 'iptables REDIRECT rules', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/iptables/inpod.go' },
+          { repo: 'cilium/ztunnel', label: 'Outbound::new() [:15001]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/outbound.rs' },
+        ],
+      },
+      {
+        n: 17,
+        title: 'Encrypted packet exits pod netns → lxc veth → NIC',
+        desc: 'ztunnel encrypts and sends HBONE packet from pod netns (IP_TRANSPARENT + SO_MARK=0x539 bypasses iptables): src=' + IPs.clientPod + ':52340 → dst=' + IPs.serverPod + ':15008. Exits pod eth0 → lxc veth (host side) → Cilium BPF → host eth0 (' + IPs.nodeA + ').',
+        phase: 'data',
+        active: ['ztA', 'lxcA', 'nicA'],
+        arrows: [
+          { from: 'ztA', to: 'lxcA', color: 'green', label: 'Encrypted → pod eth0 → lxc veth' },
+          { from: 'lxcA', to: 'nicA', color: 'green', label: 'Cilium BPF → NIC' },
+        ],
+        fx: ['encryptedEgress'],
+        links: [
+          { repo: 'cilium/cilium', label: 'cil_from_container [bpf_lxc.c]', url: 'https://github.com/cilium/cilium/blob/main/bpf/bpf_lxc.c' },
+        ],
+      },
+      {
+        n: 18,
+        title: 'Encrypted packet crosses the wire',
+        desc: 'Encrypted HBONE packet travels from Node A eth0 (' + IPs.nodeA + ') to Node B eth0 (' + IPs.nodeB + '). Encrypted end-to-end.',
+        phase: 'data',
+        active: ['nicA', 'nicB'],
+        arrows: [],
+        fx: ['crossWire'],
+        links: [],
+      },
+      {
+        n: 19,
+        title: 'NIC → lxc veth → server pod netns → ztunnel B',
+        desc: 'Arrives at Node B eth0 (' + IPs.nodeB + ') → Cilium BPF → lxc veth (host side) → server pod eth0 → ztunnel listener on :15008 in server pod netns.',
+        phase: 'data',
+        active: ['nicB', 'lxcB', 'ztB'],
+        arrows: [
+          { from: 'nicB', to: 'lxcB', color: 'green', label: 'NIC → Cilium BPF → lxc veth' },
+          { from: 'lxcB', to: 'ztB', color: 'green', label: 'pod eth0 → ztunnel :15008' },
+        ],
+        fx: ['encryptedIngress'],
+        links: [
+          { repo: 'cilium/cilium', label: 'cil_to_container [bpf_lxc.c]', url: 'https://github.com/cilium/cilium/blob/main/bpf/bpf_lxc.c' },
+          { repo: 'cilium/ztunnel', label: 'Inbound::new() [:15008]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound.rs' },
+        ],
+      },
+      {
+        n: 20,
+        title: 'ztunnel B terminates mTLS, verifies identity',
+        desc: 'ztunnel B (in server pod netns) receives on :15008, terminates mTLS, verifies peer SPIFFE identity: spiffe://cluster.local/ns/frontend/sa/web-client. Reads original dst from CONNECT URI. Decrypts to plaintext.',
+        phase: 'data',
+        active: ['ztB'],
+        arrows: [],
+        fx: ['decryptVerify'],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'InboundAcceptor::accept() [mTLS terminate]', url: 'https://github.com/cilium/ztunnel/blob/main/src/tls/workload.rs' },
+          { repo: 'cilium/ztunnel', label: 'IdentityVerifier [SPIFFE verify]', url: 'https://github.com/cilium/ztunnel/blob/main/src/tls/workload.rs' },
+          { repo: 'cilium/ztunnel', label: 'build_inbound_request() [CONNECT URI]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound.rs' },
+        ],
+      },
+      {
+        n: 21,
+        title: 'Plaintext delivered to Server Pod',
+        desc: 'ztunnel connects to 127.0.0.1:<original_port> inside server pod netns via freebind_connect (SO_MARK=0x539 bypasses iptables). App receives plaintext on its original port.',
+        phase: 'data',
+        active: ['ztB', 'podB'],
+        arrows: [{ from: 'ztB', to: 'podB', color: 'blue', label: 'localhost:<original_port> in server netns' }],
+        fx: ['deliverToServer'],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'freebind_connect()', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy.rs' },
+          { repo: 'cilium/ztunnel', label: 'MarkSocketFactory [SO_MARK=0x539]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy.rs' },
+          { repo: 'cilium/ztunnel', label: 'Inbound delivery path', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound.rs' },
+        ],
+      },
+      {
+        n: 22,
+        title: 'Enrolled client sends HTTP to unenrolled pod',
+        desc: 'Client Pod (enrolled, ns: frontend) sends HTTP request to Monitoring Pod (unenrolled, ns: monitoring). iptables REDIRECT on client pod intercepts ALL outbound TCP \u2192 packet goes to ztunnel on :15001.',
+        phase: 'data',
+        active: ['podA', 'ztA', 'monitoringPod'],
+        arrows: [{ from: 'podA', to: 'ztA', color: 'blue', label: 'iptables REDIRECT \u2192 :15001' }],
+        fx: [],
+        links: [
+          { repo: 'cilium/cilium', label: 'iptables OUTPUT REDIRECT rules', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/iptables/inpod.go' },
+          { repo: 'cilium/ztunnel', label: 'Outbound::new() [:15001]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/outbound.rs' },
+        ],
+      },
+      {
+        n: 23,
+        title: 'ztunnel detects unenrolled destination \u2192 TCP passthrough',
+        desc: 'ztunnel looks up Monitoring Pod in xDS state. Workload has protocol: TCP (not HBONE) \u2014 namespace not enrolled. ztunnel forwards as plaintext TCP directly. No mTLS, no HBONE tunnel. (outbound.rs:699-720 checks workload.protocol)',
+        phase: 'data',
+        active: ['ztA', 'monitoringPod'],
+        arrows: [{ from: 'ztA', to: 'monitoringPod', color: 'blue', label: 'TCP passthrough (no mTLS \u2014 dest not enrolled)' }],
+        fx: [],
+        links: [
+          { repo: 'cilium/ztunnel', label: 'workload.protocol check [HBONE vs TCP]', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/outbound.rs#L690-L716' },
+        ],
+      },
+      {
+        n: 24,
+        title: 'Unenrolled pod sends HTTP to enrolled Server Pod',
+        desc: 'Monitoring Pod (unenrolled) sends HTTP to Server Pod (enrolled). No ztunnel interception on source (no iptables rules). Traffic arrives at server pod directly. Inbound iptables PREROUTING redirects to :15006 (plaintext). ztunnel receives \u2014 no source SPIFFE identity. Forwards to app.',
+        phase: 'data',
+        active: ['monitoringPod', 'ztB', 'podB'],
+        arrows: [
+          { from: 'monitoringPod', to: 'ztB', color: 'blue', label: 'Direct TCP \u2192 :15006 (no source identity)' },
+          { from: 'ztB', to: 'podB', color: 'blue', label: 'Plaintext to app' },
+        ],
+        fx: [],
+        links: [
+          { repo: 'cilium/cilium', label: 'iptables PREROUTING → :15006', url: 'https://github.com/cilium/cilium/blob/main/pkg/ztunnel/iptables/inpod.go' },
+          { repo: 'cilium/ztunnel', label: 'InboundPassthrough::proxy_inbound_plaintext()', url: 'https://github.com/cilium/ztunnel/blob/main/src/proxy/inbound_passthrough.rs' },
+        ],
+      },
+      {
+        n: 25,
+        title: 'Summary \u2014 transparent mTLS',
+        desc: 'Enrolled \u2194 Enrolled: full mTLS with SPIFFE identity (green). Enrolled \u2192 Unenrolled: TCP passthrough, no encryption (blue). Unenrolled \u2192 Enrolled: plaintext via :15006, no source authentication (blue). No application changes needed.',
+        phase: 'enrollment',
+        active: ['podA', 'podB', 'ztA', 'ztB', 'monitoringPod'],
+        arrows: [],
+        fx: ['summary'],
+        links: [],
+      },
+    ];
+
+    /* ================================================================
+       State
+       ================================================================ */
+    let step = 0;
+    let autoPlay = false;
+    let overviewMode = false;
+    let autoTimer = null;
+    let speed = 1;
+
+    /* ================================================================
+       Drawing primitives
+       ================================================================ */
+    function roundRect(x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.arcTo(x + w, y, x + w, y + r, r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+      ctx.lineTo(x + r, y + h);
+      ctx.arcTo(x, y + h, x, y + h - r, r);
+      ctx.lineTo(x, y + r);
+      ctx.arcTo(x, y, x + r, y, r);
+      ctx.closePath();
+    }
+
+    function fillRoundRect(x, y, w, h, r, fill) {
+      roundRect(x, y, w, h, r);
+      ctx.fillStyle = fill;
+      ctx.fill();
+    }
+
+    /* Draw a zone (namespace / data plane / control plane) */
+    function drawZone(x, y, w, h, fill, stroke, label, opts) {
+      opts = opts || {};
+      ctx.save();
+      if (opts.dim) ctx.globalAlpha = C.dimAlpha;
+      if (opts.glow) {
+        ctx.shadowColor = stroke;
+        ctx.shadowBlur = 14;
+      }
+      roundRect(x, y, w, h, 8);
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = opts.glow ? 2 : 1;
+      if (opts.dashed) ctx.setLineDash([5, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.shadowBlur = 0;
+
+      /* Label */
+      ctx.fillStyle = opts.dim ? C.dim : C.text;
+      ctx.font = '11px "Segoe UI", system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(label, x + 10, y + 6);
+      ctx.restore();
+    }
+
+    /* Draw a component box */
+    function drawComp(id, opts) {
+      opts = opts || {};
+      const c = COMP[id];
+      if (!c) return;
+      const r = c.r;
+      const dim = opts.dim || false;
+      const glow = opts.glow || false;
+      const badge = opts.badge || null;
+      const borderColor = opts.borderColor || C.border;
+
+      ctx.save();
+      if (dim) ctx.globalAlpha = C.dimAlpha;
+
+      /* Glow */
+      if (glow && !dim) {
+        ctx.shadowColor = borderColor;
+        ctx.shadowBlur = 14;
+      }
+
+      /* Box */
+      roundRect(r.x, r.y, r.w, r.h, 7);
+      ctx.fillStyle = C.compBg || C.bg;
+      ctx.fill();
+      ctx.strokeStyle = borderColor;
+      ctx.lineWidth = glow ? 2.5 : 1;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      /* Icon on the left (SVG logo with emoji fallback) */
+      const cy = r.y + r.h / 2;
+      const ICON_SIZE = 22;
+      const iconX = r.x + 8;
+      const iconY = cy - ICON_SIZE / 2;
+      let drewLogo = false;
+      if (c.iconType) {
+        const logo = LOGO_REGISTRY[c.iconType];
+        if (logo && logo.loaded && logo.img) {
+          /* Subtle background circle for contrast in dark mode */
+          if (isDark) {
+            ctx.beginPath();
+            ctx.arc(iconX + ICON_SIZE / 2, cy, ICON_SIZE / 2 + 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fill();
+          }
+          ctx.drawImage(logo.img, iconX, iconY, ICON_SIZE, ICON_SIZE);
+          drewLogo = true;
+        }
+      }
+      if (!drewLogo) {
+        ctx.font = '18px "Segoe UI Emoji", "Apple Color Emoji", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(c.icon, r.x + 10, cy);
+      }
+
+      /* Label */
+      const hasSub = c.sub && c.ip;
+      const labelOffY = hasSub ? -12 : (c.ip ? -7 : 0);
+      ctx.fillStyle = dim ? C.dim : C.bright;
+      ctx.font = 'bold 14px "Segoe UI", system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(c.label, r.x + 36, cy + labelOffY);
+
+      /* IP address */
+      if (c.ip) {
+        ctx.font = '11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = dim ? C.dim : C.text;
+        ctx.fillText(c.ip, r.x + 36, cy + (hasSub ? 3 : 10));
+      }
+
+      /* Sub-label (namespace / service account) */
+      if (c.sub) {
+        ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = dim ? C.dim : C.text;
+        ctx.globalAlpha = dim ? C.dimAlpha : 0.6;
+        ctx.fillText(c.sub, r.x + 36, cy + 16);
+      }
+
+      /* Badge (checkmark, etc) */
+      if (badge) {
+        ctx.font = 'bold 15px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = badge.color || C.green;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(badge.text, r.x + r.w - 8, cy);
+      }
+
+      ctx.restore();
+    }
+
+    /* Draw animated arrow between two components */
+    /* Find the point where a ray from center of a rect toward (dx,dy) exits the rect, with pad. */
+    function rectEdgePoint(rect, dx, dy, pad) {
+      const cx = rect.x + rect.w / 2;
+      const cy = rect.y + rect.h / 2;
+      const hw = rect.w / 2 + pad;
+      const hh = rect.h / 2 + pad;
+      const adx = Math.abs(dx);
+      const ady = Math.abs(dy);
+      /* Scale factor to hit the edge */
+      let scale;
+      if (adx * hh > ady * hw) {
+        /* Hits left or right edge */
+        scale = hw / (adx || 1);
+      } else {
+        /* Hits top or bottom edge */
+        scale = hh / (ady || 1);
+      }
+      return { x: cx + dx * scale, y: cy + dy * scale };
+    }
+
+    function drawArrow(fromId, toId, color, label, opts, ts) {
+      opts = opts || {};
+      const fr = getRect(fromId);
+      const tr = getRect(toId);
+      if (!fr || !tr) return;
+
+      const offY = opts.offY || 0;
+      const offX = opts.offX || 0;
+      /* Build offset rects so offX/offY shift the virtual center */
+      const frOff = { x: fr.x + offX, y: fr.y + offY, w: fr.w, h: fr.h };
+      const trOff = { x: tr.x + offX, y: tr.y + offY, w: tr.w, h: tr.h };
+
+      /* Direction vector from source center to target center */
+      const ddx = (trOff.x + trOff.w / 2) - (frOff.x + frOff.w / 2);
+      const ddy = (trOff.y + trOff.h / 2) - (frOff.y + frOff.h / 2);
+
+      /* Shorten start/end to box edges using ray-rect intersection */
+      const angle = Math.atan2(ddy, ddx);
+      const spt = rectEdgePoint(frOff, ddx, ddy, 4);
+      const ept = rectEdgePoint(trOff, -ddx, -ddy, 4);
+      const sx = spt.x;
+      const sy = spt.y;
+      const ex = ept.x;
+      const ey = ept.y;
+
+      /* Travelling dot */
+      const t = ((ts || performance.now()) % 2000) / 2000;
+
+      ctx.save();
+      /* Line */
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.65;
+      ctx.setLineDash([6, 4]);
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      /* Arrowhead */
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - 10 * Math.cos(angle - 0.35), ey - 10 * Math.sin(angle - 0.35));
+      ctx.lineTo(ex - 10 * Math.cos(angle + 0.35), ey - 10 * Math.sin(angle + 0.35));
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      /* Travelling dot */
+      const dx = sx + (ex - sx) * t;
+      const dy = sy + (ey - sy) * t;
+      ctx.globalAlpha = 1;
+      ctx.beginPath();
+      ctx.arc(dx, dy, 5, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      /* Label */
+      if (label) {
+        const mx = (sx + ex) / 2;
+        const my = (sy + ey) / 2 - 12 + (opts.labelOffY || 0);
+        ctx.globalAlpha = 0.92;
+        ctx.font = '11px "Segoe UI", system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        const tw = ctx.measureText(label).width + 12;
+        fillRoundRect(mx - tw / 2, my - 14, tw, 16, 3, isDark ? 'rgba(11,22,34,0.92)' : 'rgba(255,255,255,0.92)');
+        ctx.fillStyle = color;
+        ctx.fillText(label, mx, my);
+      }
+
+      ctx.restore();
+    }
+
+    /* Glowing dot */
+    function drawDot(x, y, color, radius) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, radius || 7, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    /* ================================================================
+       HBONE tunnel line between ztunnels (cross-node)
+       ================================================================ */
+    function drawHBONELine(ts, fxOverride) {
+      const fxSet = fxOverride || new Set(STEPS[step].fx);
+      const tunnelActive = fxSet.has('hboneTunnel') || fxSet.has('encryptedEgress') ||
+        fxSet.has('crossWire') || fxSet.has('encryptedIngress') ||
+        fxSet.has('decryptVerify') || fxSet.has('deliverToServer');
+
+      const fromX = LA.pod.x + LA.pod.w + 2;
+      const toX = LB.pod.x - 2;
+      const y = LA.pod.y + LA.pod.h / 2;
+      const pipeHalf = 10; /* Half-height of the pipe (total ~20px) */
+      const mx = (fromX + toX) / 2;
+
+      ctx.save();
+
+      if (tunnelActive) {
+        /* Filled green pipe */
+        ctx.globalAlpha = 0.18;
+        ctx.fillStyle = C.green;
+        ctx.beginPath();
+        ctx.moveTo(fromX, y - pipeHalf);
+        ctx.lineTo(toX, y - pipeHalf);
+        ctx.lineTo(toX, y + pipeHalf);
+        ctx.lineTo(fromX, y + pipeHalf);
+        ctx.closePath();
+        ctx.fill();
+
+        /* Pipe border - top line */
+        ctx.globalAlpha = 0.9;
+        ctx.strokeStyle = C.green;
+        ctx.lineWidth = 2;
+        ctx.shadowColor = C.green;
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.moveTo(fromX, y - pipeHalf);
+        ctx.lineTo(toX, y - pipeHalf);
+        ctx.stroke();
+
+        /* Pipe border - bottom line */
+        ctx.beginPath();
+        ctx.moveTo(fromX, y + pipeHalf);
+        ctx.lineTo(toX, y + pipeHalf);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        /* Travelling dot inside the pipe (steps 16-20) */
+        const hasData = fxSet.has('encryptedEgress') || fxSet.has('crossWire') ||
+          fxSet.has('encryptedIngress') || fxSet.has('decryptVerify') || fxSet.has('deliverToServer');
+        if (hasData) {
+          const t = (ts % 2000) / 2000;
+          const dx = fromX + (toX - fromX) * t;
+          ctx.globalAlpha = 1;
+          drawDot(dx, y, C.green, 5);
+        }
+
+        /* Lock emoji in center */
+        ctx.globalAlpha = 1;
+        ctx.font = '14px "Segoe UI", system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('\uD83D\uDD12', mx, y);
+
+        /* Label above the pipe */
+        ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.green;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('HBONE (HTTP/2 + TLS 1.3)', mx, y - pipeHalf - 6);
+      } else {
+        /* Inactive: dashed pipe outline */
+        ctx.globalAlpha = 0.25;
+        ctx.strokeStyle = C.border;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([6, 6]);
+
+        ctx.beginPath();
+        ctx.moveTo(fromX, y - pipeHalf);
+        ctx.lineTo(toX, y - pipeHalf);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(fromX, y + pipeHalf);
+        ctx.lineTo(toX, y + pipeHalf);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+        /* Label */
+        ctx.globalAlpha = 0.45;
+        ctx.font = '11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.dim;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('HBONE tunnel', mx, y - pipeHalf - 4);
+      }
+      ctx.restore();
+    }
+
+    /* ================================================================
+       Wire line between NICs (cross-node)
+       ================================================================ */
+    function drawWireLine(ts, fxOverride) {
+      const fxSet = fxOverride || new Set(STEPS[step].fx);
+      const active = fxSet.has('crossWire');
+
+      const fromX = LA.nic.x + LA.nic.w + 2;
+      const toX = LB.nic.x - 2;
+      const y = LA.nic.y + LA.nic.h / 2;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(fromX, y);
+      ctx.lineTo(toX, y);
+
+      if (active) {
+        ctx.strokeStyle = C.green;
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = C.green;
+        ctx.shadowBlur = 8;
+      } else {
+        ctx.strokeStyle = C.border;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.globalAlpha = 0.3;
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.shadowBlur = 0;
+
+      const mx = (fromX + toX) / 2;
+      if (active) {
+        ctx.globalAlpha = 1;
+        ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.green;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('Encrypted on wire', mx, y - 6);
+
+        /* Travelling dot */
+        const t = (ts % 1600) / 1600;
+        const dx = fromX + (toX - fromX) * t;
+        drawDot(dx, y, C.green, 5);
+      } else {
+        ctx.globalAlpha = 0.3;
+        ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.dim;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('Wire (encrypted)', mx, y - 4);
+      }
+      ctx.restore();
+    }
+
+    /* ================================================================
+       Step indicator dots at the top
+       ================================================================ */
+    function drawStepDots() {
+      const dotR = 4.5;
+      const gap = 22;
+      const totalW = (STEPS.length - 1) * gap;
+      const startX = CW / 2 - totalW / 2;
+      const y = NODE_Y + 16;
+
+      const phaseColors = { enrollment: C.nsBorderGreen, cert: C.orange, data: C.blue };
+
+      for (let i = 0; i < STEPS.length; i++) {
+        const x = startX + i * gap;
+        const pc = phaseColors[STEPS[i].phase];
+        ctx.beginPath();
+        ctx.arc(x, y, dotR, 0, Math.PI * 2);
+
+        if (i === step) {
+          ctx.fillStyle = pc;
+          ctx.shadowColor = pc;
+          ctx.shadowBlur = 10;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else if (i < step) {
+          ctx.fillStyle = pc;
+          ctx.globalAlpha = 0.45;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        } else {
+          ctx.fillStyle = isDark ? '#152030' : '#D8E2EC';
+          ctx.fill();
+        }
+      }
+    }
+
+    /* ================================================================
+       Step description bar at bottom
+       ================================================================ */
+    function countWrapLines(text, maxW) {
+      const words = text.split(' ');
+      let line = '';
+      let count = 1;
+      for (let i = 0; i < words.length; i++) {
+        const test = line + words[i] + ' ';
+        if (ctx.measureText(test).width > maxW && line !== '') {
+          count++;
+          line = words[i] + ' ';
+        } else {
+          line = test;
+        }
+      }
+      return count;
+    }
+
+    /* Source chip click targets (populated each frame by drawDescBar) */
+    let sourceChipRects = [];
+
+    function drawDescBar() {
+      const s = STEPS[step];
+      const barX = NODE_AX;
+      const barY = NODE_Y + NODE_H + 12;
+      const barW = CW - 2 * NODE_AX;
+      const links = s.links || [];
+
+      /* Pre-calculate layout to determine dynamic bar height */
+      const phaseColors = { enrollment: C.nsBorderGreen, cert: C.orange, data: C.blue };
+      const phaseLabels = { enrollment: 'ENROLLMENT', cert: 'CERTIFICATE', data: 'DATA PATH' };
+      const pc = phaseColors[s.phase];
+      const pl = phaseLabels[s.phase];
+
+      const bx = barX + 14;
+      ctx.font = 'bold 10px "Segoe UI", system-ui, sans-serif';
+      const bw = ctx.measureText(pl).width + 14;
+      const tx = bx + bw + 14;
+
+      ctx.font = '12px "Segoe UI", system-ui, sans-serif';
+      const maxW = barW - (tx - barX) - 14;
+      const descLines = countWrapLines(s.desc, maxW);
+      const descBottom = 28 + descLines * 15;
+
+      /* Pre-calculate chip rows */
+      const CHIP_H = 18, CHIP_GAP = 5, CHIP_ROW_H = CHIP_H + 4;
+      let chipRows = 0;
+      if (links.length > 0) {
+        chipRows = 1;
+        let cx = 0;
+        for (const link of links) {
+          ctx.font = '9px "Segoe UI", system-ui, sans-serif';
+          const rw = ctx.measureText(link.repo.split('/')[1]).width + 10;
+          ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+          const lw = ctx.measureText(link.label).width + 8;
+          const cw = rw + lw + 6;
+          if (cx + cw > maxW && cx > 0) { chipRows++; cx = 0; }
+          cx += cw + CHIP_GAP;
+        }
+      }
+
+      const chipSection = links.length > 0 ? 10 + chipRows * CHIP_ROW_H + 4 : 0;
+      const barH = Math.max(62, descBottom + chipSection + 10);
+
+      /* Bar background */
+      roundRect(barX, barY, barW, barH, 8);
+      ctx.fillStyle = isDark ? '#070E18' : '#F0F4F8';
+      ctx.fill();
+      ctx.strokeStyle = C.border;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      /* Phase badge */
+      const by = barY + 10;
+      ctx.font = 'bold 10px "Segoe UI", system-ui, sans-serif';
+      roundRect(bx, by, bw, 18, 4);
+      ctx.fillStyle = pc;
+      ctx.globalAlpha = 0.18;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = pc;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = pc;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(pl, bx + 7, by + 9);
+
+      /* Step title */
+      ctx.font = 'bold 13px "Segoe UI", system-ui, sans-serif';
+      ctx.fillStyle = C.bright;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Step ' + s.n + ': ' + s.title, tx, barY + 8);
+
+      /* Description */
+      ctx.font = '12px "Segoe UI", system-ui, sans-serif';
+      ctx.fillStyle = C.text;
+      wrapText(s.desc, tx, barY + 28, maxW, 15);
+
+      /* Source code reference chips */
+      sourceChipRects = [];
+      if (links.length > 0) {
+        const chipStartY = barY + descBottom + 10;
+
+        /* Thin separator */
+        ctx.save();
+        ctx.globalAlpha = 0.25;
+        ctx.strokeStyle = C.border;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(tx, chipStartY - 4);
+        ctx.lineTo(barX + barW - 14, chipStartY - 4);
+        ctx.stroke();
+        ctx.restore();
+
+        let curX = tx, curY = chipStartY;
+
+        for (const link of links) {
+          ctx.font = '9px "Segoe UI", system-ui, sans-serif';
+          const repoShort = link.repo.split('/')[1];
+          const rw = ctx.measureText(repoShort).width + 10;
+          ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+          const lw = ctx.measureText(link.label).width + 8;
+          const cw = rw + lw + 6;
+
+          /* Wrap */
+          if (curX + cw > barX + barW - 14 && curX > tx) {
+            curX = tx;
+            curY += CHIP_ROW_H;
+          }
+
+          /* Chip background */
+          roundRect(curX, curY, cw, CHIP_H, 9);
+          ctx.fillStyle = isDark ? '#152030' : '#E8F0FE';
+          ctx.fill();
+          ctx.strokeStyle = C.border;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+
+          /* Repo badge */
+          roundRect(curX + 3, curY + 3, rw, CHIP_H - 6, 6);
+          ctx.fillStyle = isDark ? '#0B1622' : '#D8E2EC';
+          ctx.fill();
+          ctx.font = '9px "Segoe UI", system-ui, sans-serif';
+          ctx.fillStyle = C.dim;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(repoShort, curX + 7, curY + CHIP_H / 2);
+
+          /* Label */
+          ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+          ctx.fillStyle = C.blue;
+          ctx.fillText(link.label, curX + rw + 4, curY + CHIP_H / 2);
+
+          /* Store for click detection */
+          sourceChipRects.push({ x: curX, y: curY, w: cw, h: CHIP_H, url: link.url });
+
+          curX += cw + CHIP_GAP;
+        }
+      }
+    }
+
+    function wrapText(text, x, y, maxW, lineH) {
+      const words = text.split(' ');
+      let line = '';
+      let ly = y;
+      for (let i = 0; i < words.length; i++) {
+        const test = line + words[i] + ' ';
+        if (ctx.measureText(test).width > maxW && line !== '') {
+          ctx.fillText(line.trim(), x, ly);
+          line = words[i] + ' ';
+          ly += lineH;
+        } else {
+          line = test;
+        }
+      }
+      if (line.trim()) ctx.fillText(line.trim(), x, ly);
+    }
+
+    /* ================================================================
+       Special effects
+       ================================================================ */
+    function drawEffects(ts, fxOverride) {
+      const fxSet = fxOverride || new Set(STEPS[step].fx);
+      const cycle = (ts % 2000) / 2000;
+      const pulse = 0.5 + 0.5 * Math.sin(ts / 300);
+
+      /* 1. Namespace enrollment flash */
+      if (fxSet.has('nsEnroll')) {
+        const p2 = 0.4 + 0.3 * Math.sin(ts / 400);
+        ctx.save();
+        ctx.globalAlpha = p2;
+        ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.green;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.fillText('io.cilium/mtls-enabled: "true"', nsRectA.x + nsRectA.w - 8, nsRectA.y + 5);
+        ctx.fillText('io.cilium/mtls-enabled: "true"', nsRectB.x + nsRectB.w - 8, nsRectB.y + 5);
+        ctx.restore();
+      }
+
+      /* 6. SPIRE attestation annotation */
+      if (fxSet.has('spireAttest')) {
+        ctx.save();
+        ctx.globalAlpha = 0.7 + 0.3 * Math.sin(ts / 350);
+        ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.orange;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        const saR = getRect('spireAgentA');
+        ctx.fillText('k8s WorkloadAttestor: /proc/<pid>/cgroup', saR.x + saR.w / 2, saR.y - 6);
+        ctx.restore();
+      }
+
+      /* 7. Cert ready */
+      if (fxSet.has('certReady')) {
+        ctx.save();
+        ctx.globalAlpha = pulse;
+        ctx.font = 'bold 13px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.green;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        const ztR = getRect('ztA');
+        ctx.fillText('\u2713 Ready for mTLS', ztR.x + ztR.w / 2, ztR.y - 6);
+        ctx.restore();
+      }
+
+      /* 8. Packet at pod */
+      if (fxSet.has('packetAtPod')) {
+        const r = getRect('podA');
+        const pr = 5 + 3 * Math.sin(ts / 250);
+        drawDot(r.x + r.w / 2, r.y + r.h / 2, C.blue, pr);
+        ctx.save();
+        ctx.font = '10px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.blue;
+        ctx.globalAlpha = 0.8;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('HTTP request (plaintext)', r.x + r.w / 2, r.y + r.h + 4);
+        ctx.restore();
+      }
+
+      /* 9. Packet pod -> ztunnel */
+      if (fxSet.has('packetPodToZt')) {
+        const fr = getRect('podA');
+        const tr = getRect('ztA');
+        const sx = fr.x + fr.w / 2;
+        const sy = fr.y + fr.h;
+        const ex = tr.x + tr.w / 2;
+        const ey = tr.y;
+        const dx = sx + (ex - sx) * cycle;
+        const dy = sy + (ey - sy) * cycle;
+        drawDot(dx, dy, C.blue, 6);
+      }
+
+      /* 10. Lookup pulse */
+      if (fxSet.has('lookupPulse')) {
+        const ztR = getRect('ztA');
+        ctx.save();
+        ctx.globalAlpha = 0.3 + 0.4 * Math.sin(ts / 250);
+        roundRect(ztR.x - 5, ztR.y - 5, ztR.w + 10, ztR.h + 10, 9);
+        ctx.strokeStyle = C.blue;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.save();
+        ctx.font = '11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.blue;
+        ctx.globalAlpha = 0.85;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('SO_ORIGINAL_DST -> ' + IPs.serverPod + ':80', ztR.x + ztR.w / 2, ztR.y - 8);
+        ctx.restore();
+      }
+
+      /* 11. TLS handshake animation */
+      if (fxSet.has('tlsHandshake')) {
+        const fromX = LA.zt.x + LA.zt.w + 2;
+        const toX = LB.zt.x - 2;
+        const y = LA.zt.y + LA.zt.h / 2;
+        const msgs = ['ClientHello', 'ServerHello + Cert', 'Finished'];
+        const phase3 = (ts % 4200) / 4200;
+        const msgIdx = Math.min(Math.floor(phase3 * 3), 2);
+        const msgProgress = (phase3 * 3) % 1;
+
+        for (let i = 0; i <= msgIdx; i++) {
+          const p = (i === msgIdx) ? msgProgress : 1;
+          const goRight = (i % 2 === 0);
+          const fx = goRight ? fromX : toX;
+          const ex = goRight ? toX : fromX;
+          const yOff = (i - 1) * 16;
+          const dx = fx + (ex - fx) * p;
+          const dy = y + yOff;
+
+          ctx.save();
+          ctx.strokeStyle = C.gold;
+          ctx.lineWidth = 1.5;
+          ctx.globalAlpha = 0.55;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath();
+          ctx.moveTo(fx, y + yOff);
+          ctx.lineTo(dx, dy);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          if (i === msgIdx) {
+            drawDot(dx, dy, C.gold, 5);
+          }
+
+          ctx.globalAlpha = (i <= msgIdx) ? 0.85 : 0.25;
+          ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+          ctx.fillStyle = C.gold;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          const lx = (fromX + toX) / 2;
+          ctx.fillText(msgs[i], lx, y + yOff - 10);
+          ctx.restore();
+        }
+      }
+
+      /* 12. HBONE tunnel formation pulse */
+      if (fxSet.has('hboneTunnel')) {
+        const fromX = LA.pod.x + LA.pod.w + 2;
+        const toX = LB.pod.x - 2;
+        const y = LA.pod.y + LA.pod.h / 2;
+        ctx.save();
+        ctx.globalAlpha = 0.5 + 0.5 * Math.sin(ts / 400);
+        ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.green;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('Tunnel Active', (fromX + toX) / 2, y + 16);
+        ctx.restore();
+      }
+
+      /* 15. Decrypt + verify at ztunnel B */
+      if (fxSet.has('decryptVerify')) {
+        const ztR = getRect('ztB');
+        const cx = ztR.x + ztR.w / 2;
+        const cy = ztR.y + ztR.h / 2;
+
+        /* Green dot arriving, blue dot emerging */
+        drawDot(cx - 22, cy, C.green, 5 + 3 * pulse);
+        drawDot(cx + 22, cy, C.blue, 5 + 3 * (1 - pulse));
+
+        /* Arrow */
+        ctx.save();
+        ctx.strokeStyle = C.text;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(cx - 12, cy);
+        ctx.lineTo(cx + 12, cy);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx + 12, cy);
+        ctx.lineTo(cx + 6, cy - 4);
+        ctx.lineTo(cx + 6, cy + 4);
+        ctx.closePath();
+        ctx.fillStyle = C.text;
+        ctx.fill();
+        ctx.restore();
+
+        ctx.save();
+        ctx.font = '11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.green;
+        ctx.globalAlpha = 0.85;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('SPIFFE identity verified', cx, ztR.y - 6);
+        ctx.font = '9px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.text;
+        ctx.fillText('spiffe://cluster.local/ns/frontend/sa/web-client', cx, ztR.y + ztR.h + 14);
+        ctx.restore();
+      }
+
+      /* 16. Blue dot from ztunnel B to server pod */
+      if (fxSet.has('deliverToServer')) {
+        const fr = getRect('ztB');
+        const tr = getRect('podB');
+        const sx = fr.x + fr.w / 2;
+        const sy = fr.y;
+        const ex = tr.x + tr.w / 2;
+        const ey = tr.y + tr.h;
+        const dx = sx + (ex - sx) * cycle;
+        const dy = sy + (ey - sy) * cycle;
+        drawDot(dx, dy, C.blue, 6);
+      }
+
+      /* 24. Summary — enrolled vs unenrolled traffic lines */
+      if (fxSet.has('summary')) {
+        const podAR = getRect('podA');
+        const podBR = getRect('podB');
+        const monR = getRect('monitoringPod');
+        const podACx = podAR.x + podAR.w / 2;
+        const podACy = podAR.y + podAR.h / 2;
+        const podBCx = podBR.x + podBR.w / 2;
+        const podBCy = podBR.y + podBR.h / 2;
+        const monCx = monR.x + monR.w / 2;
+        const monCy = monR.y + monR.h / 2;
+        const pulseSummary = 0.6 + 0.4 * Math.sin(ts / 500);
+
+        ctx.save();
+
+        /* Green solid line: podA <-> podB (mTLS) */
+        ctx.globalAlpha = pulseSummary;
+        ctx.strokeStyle = C.green;
+        ctx.lineWidth = 3;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(podAR.x + podAR.w + 4, podACy);
+        ctx.lineTo(podBR.x - 4, podBCy);
+        ctx.stroke();
+        /* mTLS label */
+        ctx.font = 'bold 13px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.green;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('mTLS', (podAR.x + podAR.w + podBR.x) / 2, podACy - 14);
+
+        /* Blue dashed line: podA -> monitoringPod (plaintext) */
+        ctx.globalAlpha = pulseSummary * 0.85;
+        ctx.strokeStyle = C.blue;
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([8, 5]);
+        ctx.beginPath();
+        ctx.moveTo(podAR.x + podAR.w + 4, podACy + 8);
+        ctx.lineTo(monR.x - 4, monCy);
+        ctx.stroke();
+        /* Label */
+        ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.blue;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        const midAMx = (podAR.x + podAR.w + monR.x) / 2;
+        const midAMy = (podACy + 8 + monCy) / 2;
+        ctx.fillText('Plaintext', midAMx, midAMy - 6);
+
+        /* Blue dashed line: monitoringPod -> podB (plaintext :15006) */
+        ctx.beginPath();
+        ctx.moveTo(monR.x + monR.w / 2, monR.y - 4);
+        ctx.lineTo(podBR.x + podBR.w / 2, podBR.y + podBR.h + 4);
+        ctx.stroke();
+        /* Label */
+        const midMBx = (monCx + podBCx) / 2;
+        const midMBy = (monR.y - 4 + podBR.y + podBR.h + 4) / 2;
+        ctx.fillText('Plaintext :15006', midMBx, midMBy - 6);
+
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+    }
+
+    /* ================================================================
+       Main render loop
+       ================================================================ */
+    function draw(ts) {
+      ts = ts || 0;
+
+      /* Clear canvas */
+      ctx.fillStyle = C.bg;
+      ctx.fillRect(0, 0, CW, CH);
+
+      const s = overviewMode ? STEPS[STEPS.length - 1] : STEPS[step];
+      const activeSet = overviewMode ? new Set() : new Set(s.active);
+      const overviewFx = ['hboneTunnel', 'encryptedEgress', 'crossWire', 'encryptedIngress', 'deliverToServer'];
+      const fxSet = overviewMode ? new Set(overviewFx) : new Set(s.fx);
+
+      /* Determine which components are dimmed */
+      function isDim(id) {
+        if (overviewMode) return false; /* Everything visible in overview */
+        if (activeSet.size === 0) return false;
+        return !activeSet.has(id);
+      }
+
+      /* Determine if namespace should glow */
+      const nsGlow = overviewMode || fxSet.has('nsEnroll');
+
+      /* ---- Draw Node A ---- */
+      function drawNode(lay, nx, nodeLabel, nodeIP, isA) {
+        /* Node background — starts at NODE_Y + NODE_HEADER to leave room for title */
+        const nodeBoxY = NODE_Y + NODE_HEADER;
+        roundRect(nx, nodeBoxY, NODE_W, NODE_H - NODE_HEADER, 10);
+        ctx.fillStyle = C.bg;
+        ctx.fill();
+        ctx.strokeStyle = C.border;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        /* Node title — above the first zone, inside node box header area */
+        ctx.font = 'bold 15px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.bright;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(nodeLabel, nx + 14, nodeBoxY + 6);
+        const nodeLabelW = ctx.measureText(nodeLabel).width;
+
+        /* Node IP */
+        ctx.font = '12px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = C.text;
+        ctx.fillText(nodeIP, nx + 14 + nodeLabelW + 10, nodeBoxY + 8);
+
+        /* Namespace zone */
+        const nsR = isA ? nsRectA : nsRectB;
+        drawZone(nsR.x, nsR.y, nsR.w, nsR.h,
+          nsGlow ? (isDark ? '#0A2A30' : '#A8E8D4') : C.nsGreen,
+          nsGlow ? C.green : C.nsBorderGreen,
+          nsGlow ? (isA ? 'ns: frontend (enrolled)' : 'ns: backend (enrolled)') : (isA ? 'ns: frontend' : 'ns: backend'),
+          { glow: nsGlow });
+
+        /* Data plane zone */
+        drawZone(nx + 10, lay.dpY, NODE_W - 20, lay.dpH,
+          C.dpFill, C.dpBorder, 'Data Plane', {});
+
+        /* Control plane zone */
+        drawZone(nx + 10, lay.cpY, NODE_W - 20, lay.cpH,
+          C.cpFill, C.cpBorder, 'Control Plane', {});
+
+        /* Pod */
+        const podId = isA ? 'podA' : 'podB';
+        drawComp(podId, {
+          dim: isDim(podId),
+          glow: activeSet.has(podId),
+          borderColor: C.nsBorderGreen,
+        });
+
+        /* ztunnel */
+        const ztId = isA ? 'ztA' : 'ztB';
+        /* ztunnel A gets cert cached at step 11 (index 10), ztunnel B at step 13 (index 12) */
+        const hasCert = isA ? step >= 10 : step >= 12;
+        drawComp(ztId, {
+          dim: isDim(ztId),
+          glow: activeSet.has(ztId),
+          borderColor: C.dpBorder,
+          badge: hasCert ? { text: '\u2713', color: C.green } : null,
+        });
+
+        /* Cilium Agent */
+        const caId = isA ? 'ciliumAgentA' : 'ciliumAgentB';
+        drawComp(caId, {
+          dim: isDim(caId),
+          glow: activeSet.has(caId),
+          borderColor: C.cpBorder,
+        });
+
+        /* Cilium Operator (only on Node A) */
+        if (isA) {
+          drawComp('ciliumOpA', {
+            dim: isDim('ciliumOpA'),
+            glow: activeSet.has('ciliumOpA'),
+            borderColor: C.cpBorder,
+          });
+        } else {
+          /* Empty dashed placeholder */
+          const r = lay.ciliumOp;
+          ctx.save();
+          ctx.globalAlpha = 0.15;
+          roundRect(r.x, r.y, r.w, r.h, 7);
+          ctx.strokeStyle = C.border;
+          ctx.lineWidth = 1;
+          ctx.setLineDash([5, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.restore();
+        }
+
+        /* SPIRE Agent */
+        const saId = isA ? 'spireAgentA' : 'spireAgentB';
+        drawComp(saId, {
+          dim: isDim(saId),
+          glow: activeSet.has(saId),
+          borderColor: C.cpBorder,
+        });
+
+        /* SPIRE Server (cluster-wide, only on Node A) */
+        if (isA) {
+          drawComp('spireServerA', {
+            dim: isDim('spireServerA'),
+            glow: activeSet.has('spireServerA'),
+            borderColor: C.cpBorder,
+          });
+        } else {
+          /* Empty dashed placeholder */
+          const r = lay.spireServer;
+          ctx.save();
+          ctx.globalAlpha = 0.15;
+          roundRect(r.x, r.y, r.w, r.h, 7);
+          ctx.strokeStyle = C.border;
+          ctx.lineWidth = 1;
+          ctx.setLineDash([5, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.restore();
+        }
+
+        /* containerd */
+        const cdId = isA ? 'containerdA' : 'containerdB';
+        drawComp(cdId, {
+          dim: isDim(cdId),
+          glow: activeSet.has(cdId),
+          borderColor: C.cpBorder,
+        });
+
+        /* lxc veth (host-side veth pair) — green border ties it to pod namespace */
+        const lxcId = isA ? 'lxcA' : 'lxcB';
+        drawComp(lxcId, {
+          dim: isDim(lxcId),
+          glow: activeSet.has(lxcId),
+          borderColor: C.nsBorderGreen,
+        });
+
+        /* Veth pair connector: pod ↔ lxc (crosses namespace boundary) */
+        {
+          const podR = COMP[podId].r;
+          const lxcR = COMP[lxcId].r;
+          const nsR = isA ? nsRectA : nsRectB;
+          const vethX = podR.x + podR.w / 2;
+          const vethTop = podR.y + podR.h;       /* pod bottom edge */
+          const vethBot = lxcR.y;                 /* lxc top edge */
+          const nsBorderY = nsR.y + nsR.h;        /* namespace zone bottom */
+          const vethDim = isDim(podId) && isDim(lxcId);
+
+          ctx.save();
+          ctx.globalAlpha = vethDim ? C.dimAlpha : 0.55;
+
+          /* Dashed connector line */
+          ctx.strokeStyle = C.nsBorderGreen;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath();
+          ctx.moveTo(vethX, vethTop);
+          ctx.lineTo(vethX, vethBot);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          /* Endpoint dots (plug icons) */
+          ctx.fillStyle = C.nsBorderGreen;
+          ctx.beginPath();
+          ctx.arc(vethX, vethTop, 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(vethX, vethBot, 3, 0, Math.PI * 2);
+          ctx.fill();
+
+          /* NS boundary crossing indicator — small horizontal tick */
+          ctx.globalAlpha = vethDim ? C.dimAlpha : 0.35;
+          ctx.strokeStyle = C.nsBorderGreen;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(vethX - 10, nsBorderY);
+          ctx.lineTo(vethX + 10, nsBorderY);
+          ctx.stroke();
+
+          /* "veth" label */
+          ctx.globalAlpha = vethDim ? C.dimAlpha : 0.55;
+          ctx.font = '9px "Segoe UI", system-ui, sans-serif';
+          ctx.fillStyle = C.nsBorderGreen;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('veth', vethX + 6, (vethTop + vethBot) / 2);
+
+          ctx.restore();
+        }
+
+        /* NIC (eth0) */
+        const nicId = isA ? 'nicA' : 'nicB';
+        drawComp(nicId, {
+          dim: isDim(nicId),
+          glow: activeSet.has(nicId),
+          borderColor: C.cpBorder,
+        });
+
+        /* Unenrolled namespace zone (Node B only) */
+        if (!isA) {
+          const ueY = lay.unenrolledY;
+          const ueH = lay.unenrolledH;
+          const ueFill = isDark ? '#181E28' : '#F0F0F0';
+          const ueBorder = isDark ? '#5A6070' : '#9A9A9A';
+          drawZone(nx + 10, ueY, NODE_W - 20, ueH,
+            ueFill, ueBorder,
+            'ns: monitoring (not enrolled)',
+            { dashed: true });
+          drawComp('monitoringPod', {
+            dim: isDim('monitoringPod'),
+            glow: activeSet.has('monitoringPod'),
+            borderColor: ueBorder,
+          });
+        }
+      }
+
+      drawNode(LA, NODE_AX, 'Node A', IPs.nodeA, true);
+      drawNode(LB, NODE_BX, 'Node B', IPs.nodeB, false);
+
+      /* Cross-node connections */
+      drawHBONELine(ts, fxSet);
+      drawWireLine(ts, fxSet);
+
+      /* Step indicator dots */
+      drawStepDots();
+
+      /* Arrows */
+      if (overviewMode) {
+        /* Draw arrows from steps 16-21 (data path overview) */
+        const seen = new Set();
+        for (let i = 15; i <= 20 && i < STEPS.length; i++) {
+          for (const arr of STEPS[i].arrows) {
+            const key = arr.from + '>' + arr.to + '>' + arr.color;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            const color = C[arr.color] || arr.color;
+            drawArrow(arr.from, arr.to, color, arr.label, { offY: arr.offY || 0, offX: arr.offX || 0, labelOffY: arr.labelOffY || 0 }, ts);
+          }
+        }
+      } else {
+        for (const arr of s.arrows) {
+          const color = C[arr.color] || arr.color;
+          drawArrow(arr.from, arr.to, color, arr.label, { offY: arr.offY || 0, offX: arr.offX || 0, labelOffY: arr.labelOffY || 0 }, ts);
+        }
+      }
+
+      /* Special effects */
+      drawEffects(ts, fxSet);
+
+      /* Description bar */
+      drawDescBar();
+
+      requestAnimationFrame(draw);
+    }
+
+    /* ================================================================
+       Controls
+       ================================================================ */
+    const btnBack = document.getElementById('btnBack');
+    const btnForward = document.getElementById('btnForward');
+    const btnReset = document.getElementById('btnReset');
+    const btnAuto = document.getElementById('btnAuto');
+    const stepCounter = document.getElementById('stepCounter');
+
+    function goToStep(n) {
+      step = Math.max(0, Math.min(STEPS.length - 1, n));
+      if (overviewMode) {
+        overviewMode = false;
+        btnOverview.classList.remove('active');
+        btnOverview.textContent = '\u25C9 Overview';
+      }
+      updateUI();
+    }
+
+    function updateUI() {
+      stepCounter.textContent = overviewMode ? 'Overview' : 'Step ' + (step + 1) + ' / ' + STEPS.length;
+      btnBack.disabled = step === 0;
+      btnForward.disabled = step === STEPS.length - 1;
+      btnAuto.classList.toggle('active', autoPlay);
+      btnAuto.innerHTML = autoPlay ? '\u23F8 Pause' : '\u25B6 Auto-play';
+    }
+
+    btnBack.addEventListener('click', () => goToStep(step - 1));
+    btnForward.addEventListener('click', () => goToStep(step + 1));
+    btnReset.addEventListener('click', () => { stopAuto(); goToStep(0); });
+    btnAuto.addEventListener('click', toggleAuto);
+
+    /* Overview — toggle all-flows view */
+    const btnOverview = document.getElementById('btnOverview');
+    btnOverview.addEventListener('click', () => {
+      overviewMode = !overviewMode;
+      stopAuto();
+      btnOverview.classList.toggle('active', overviewMode);
+      btnOverview.textContent = overviewMode ? '\u25C9 Overview ON' : '\u25C9 Overview';
+      updateUI();
+    });
+
+    function toggleAuto() {
+      autoPlay = !autoPlay;
+      if (autoPlay) startAuto();
+      else stopAuto();
+      updateUI();
+    }
+
+    function startAuto() {
+      stopAuto();
+      autoPlay = true;
+      const interval = 3000 / speed;
+      autoTimer = setInterval(() => {
+        if (step < STEPS.length - 1) {
+          goToStep(step + 1);
+        } else {
+          stopAuto();
+          updateUI();
+        }
+      }, interval);
+    }
+
+    function stopAuto() {
+      autoPlay = false;
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    /* Speed buttons */
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        speed = parseInt(btn.dataset.speed);
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (autoPlay) { startAuto(); updateUI(); }
+      });
+    });
+
+    /* Keyboard: arrows, space */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { goToStep(step - 1); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { goToStep(step + 1); e.preventDefault(); }
+      if (e.key === ' ') { toggleAuto(); e.preventDefault(); }
+    });
+
+    /* Source chip click + hover on canvas */
+    function canvasToLogical(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (e.clientX - rect.left) * (CW / rect.width),
+        y: (e.clientY - rect.top) * (CH / rect.height),
+      };
+    }
+
+    canvas.addEventListener('click', (e) => {
+      const p = canvasToLogical(e);
+      for (const chip of sourceChipRects) {
+        if (p.x >= chip.x && p.x <= chip.x + chip.w && p.y >= chip.y && p.y <= chip.y + chip.h) {
+          window.open(chip.url, '_blank', 'noopener');
+          return;
+        }
+      }
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      const p = canvasToLogical(e);
+      let over = false;
+      for (const chip of sourceChipRects) {
+        if (p.x >= chip.x && p.x <= chip.x + chip.w && p.y >= chip.y && p.y <= chip.y + chip.h) {
+          over = true;
+          break;
+        }
+      }
+      canvas.style.cursor = over ? 'pointer' : 'default';
+    });
+
+    /* ================================================================
+       Init
+       ================================================================ */
+    loadLogos(); /* async — logos pop in as they load, emojis show until then */
+    updateUI();
+    requestAnimationFrame(draw);
+  </script>
+</body>
+
+</html>
+ 
