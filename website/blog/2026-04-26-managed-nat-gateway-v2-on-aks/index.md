@@ -1,17 +1,17 @@
 ---
 title: "Introducing Managed StandardV2 NAT Gateway for AKS"
 date: "2026-04-26"
-description: "AKS now supports managed NAT gateway v2 for scalable, resilient, and observable egress. Learn how to enable it, migrate safely, and validate outbound traffic."
+description: "AKS now supports managed StandardV2 NAT Gateway for scalable, resilient, and observable egress. Learn how to enable it, migrate safely, and validate outbound traffic."
 authors:
-  - ahmed-sabbour
+  - <TO_DO> add authors
 tags:
   - networking
   - traffic-management
   - operations
-keywords: ["AKS", "managed NAT gateway v2", "egress", "networking", "Azure Kubernetes Service"]
+keywords: ["AKS", "managed NAT gateway", "egress", "networking", "Azure Kubernetes Service"]
 ---
 
-AKS now supports **managed NAT gateway v2** for cluster egress. You get a larger egress scaling envelope, improved zone resiliency controls, and better operational visibility for outbound connections.
+AKS now supports **managed StandardV2 NAT gateway** for cluster egress. You get a larger egress scaling envelope, improved zone resiliency controls, and better operational visibility for outbound connections.
 
 If you run workloads with high outbound concurrency, strict outbound IP requirements, or periodic traffic spikes, managed NAT gateway v2 helps you keep egress stable without managing extra network infrastructure by hand.
 
@@ -21,7 +21,7 @@ If you run workloads with high outbound concurrency, strict outbound IP requirem
 
 Most production clusters depend on predictable outbound traffic for image pulls, package downloads, API calls, telemetry, and third-party integrations. When egress is constrained, you can see intermittent timeouts, source port pressure, and hard-to-debug failures.
 
-Managed NAT gateway v2 improves this in three areas:
+Managed StandardV2 NAT gateway improves this in three areas:
 
 - Better scale characteristics for outbound SNAT usage
 - Stronger resiliency options for zonal design
@@ -43,14 +43,14 @@ flowchart LR
 
 		N1 --> SLB[Standard Load Balancer outbound rules]
 		N2 --> SLB
-		SLB --> NATV2[Managed NAT gateway v2]
+		SLB --> NATV2[Managed StandardV2 NAT gateway]
 		NATV2 --> PIP[Public IPs or prefix]
 		PIP --> EXT[External services\nAzure APIs, package registries, SaaS endpoints]
 ```
 
-## What is new in managed NAT gateway v2
+## What is new in managed StandardV2 NAT gateway
 
-Managed NAT gateway v2 keeps the AKS-managed experience while adding key improvements:
+Managed StandardV2 NAT gateway keeps the AKS-managed experience while adding key improvements:
 
 - Expanded outbound connection handling for bursty workloads
 - Improved compatibility with zone-aware cluster designs
@@ -74,9 +74,9 @@ az feature register \
 az provider register --namespace Microsoft.ContainerService
 ```
 
-## Create a new AKS cluster with managed NAT gateway v2
+## Create a new AKS cluster with managed StandardV2 NAT gateway
 
-Use the following command to create a new cluster with managed NAT gateway v2 enabled.
+Use the following command to create a new cluster with managed StandardV2 NAT gateway enabled.
 
 ```bash
 RESOURCE_GROUP=my-rg
@@ -181,4 +181,4 @@ Follow these practices when you move production clusters:
 - Review [AKS networking concepts](https://learn.microsoft.com/azure/aks/concepts-network).
 - Share feedback through [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
 
-Managed NAT gateway v2 gives you a stronger default for production egress in AKS. Start with a canary, validate with telemetry, and roll out in phases for a low-risk transition.
+Managed StandardV2 NAT gateway gives you a stronger default for production egress in AKS. Start with a canary, validate with telemetry, and roll out in phases for a low-risk transition.
