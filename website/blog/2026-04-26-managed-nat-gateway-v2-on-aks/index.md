@@ -1,5 +1,5 @@
 ---
-title: "Announcing managed NAT gateway v2 support in AKS"
+title: "Introducing Managed StandardV2 NAT Gateway for AKS"
 date: "2026-04-26"
 description: "AKS now supports managed NAT gateway v2 for scalable, resilient, and observable egress. Learn how to enable it, migrate safely, and validate outbound traffic."
 authors:
