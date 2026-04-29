@@ -27,7 +27,7 @@ While AI agents already carry a good baseline of Kubernetes and AKS knowledge, t
 The first release includes the following skills:
 
 1. A high-level [**AKS best practices** skill](https://github.com/microsoft/GitHub-Copilot-for-Azure/blob/main/plugin/skills/azure-kubernetes/SKILL.md)
-1. Sub-skills for [**AKS troubleshooting**](https://github.com/microsoft/GitHub-Copilot-for-Azure/tree/main/plugin/skills/azure-diagnostics/aks-troubleshooting)
+1. Sub-skills for [**AKS troubleshooting**](https://github.com/microsoft/GitHub-Copilot-for-Azure/blob/main/plugin/skills/azure-diagnostics/troubleshooting/aks/aks-troubleshooting.md)
 
 The **AKS best practices** skill guides agents through cluster configuration recommendations across networking, upgrade strategy, security, reliability, scale, and more. The guidance reflects what the AKS engineering team recommends for production clusters for optimal performance and uptime, along with specific defaults and critical decisions that apply to AKS. After installing the skill, try the following commands to invoke the skill and receive targeted recommendations for your AKS cluster:
 
