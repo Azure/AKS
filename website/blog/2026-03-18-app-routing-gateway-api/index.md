@@ -180,13 +180,13 @@ You should see an `HTTP 200` response.
 
 ### Internal load balancer
 
-By default, AKS assigns a public IP to the Gateway's underlying Service. To expose the Gateway on an internal (private) IP instead, add Azure load balancer annotations to the Gateway's `spec.infrastructure.annotations` field. You can also target a specific subnet for the internal IP address.
+By default, AKS assigns a public IP to the Gateway's underlying Service. To expose the existing `httpbin-gateway` on an internal (private) IP instead, add Azure load balancer annotations to the Gateway's `spec.infrastructure.annotations` field. You can also target a specific subnet for the internal IP address.
 
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: internal-gateway
+  name: httpbin-gateway
 spec:
   gatewayClassName: approuting-istio
   infrastructure:
