@@ -206,8 +206,8 @@ spec:
 AKS propagates these annotations onto the Kubernetes Service it creates for the Gateway. After the Gateway is programmed, its `status.addresses` will contain a private IP from the specified subnet (or the cluster's default subnet if the subnet annotation is omitted):
 
 ```bash
-kubectl wait --for=condition=programmed gateways.gateway.networking.k8s.io internal-gateway --timeout=120s
-kubectl get gateways.gateway.networking.k8s.io internal-gateway -ojsonpath='{.status.addresses[0].value}'
+kubectl wait --for=condition=programmed gateways.gateway.networking.k8s.io httpbin-gateway --timeout=120s
+kubectl get gateways.gateway.networking.k8s.io httpbin-gateway -ojsonpath='{.status.addresses[0].value}'
 ```
 
 > **Note**: The subnet must exist in the cluster's virtual network and must be delegated or available for Azure Load Balancer use. See [Use an internal load balancer with AKS](https://learn.microsoft.com/azure/aks/internal-lb) for networking prerequisites.
