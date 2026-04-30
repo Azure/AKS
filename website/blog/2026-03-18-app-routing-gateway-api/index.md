@@ -212,7 +212,7 @@ kubectl get gateways.gateway.networking.k8s.io internal-gateway -ojsonpath='{.st
 
 > **Note**: The subnet must exist in the cluster's virtual network and must be delegated or available for Azure Load Balancer use. See [Use an internal load balancer with AKS](https://learn.microsoft.com/azure/aks/internal-lb) for networking prerequisites.
 
-Any annotation supported by the Azure load balancer controller can be used in `spec.infrastructure.annotations`. For the full list of supported annotations, see the [Azure load balancer annotations reference](https://learn.microsoft.com/azure/aks/load-balancer-standard#additional-customizations-via-kubernetes-annotations).
+Any Azure Load Balancer annotation supported by AKS can be used in `spec.infrastructure.annotations`. For the full list of supported annotations, see the [Azure Load Balancer annotations reference](https://learn.microsoft.com/azure/aks/load-balancer-standard#additional-customizations-via-kubernetes-annotations).
 
 ### Upgrades
 
