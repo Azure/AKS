@@ -35,15 +35,14 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Mesh Membership now requires the Managed Gateway API add-on to be enabled with `Standard` or `InferenceExtension` installation before a cluster can join an [Azure Kubernetes Application Network](https://learn.microsoft.com/azure/application-network/overview). Attempts to create a mesh membership without the required Gateway API add-on return a `400 Bad Request` error. For more information, see [aka.ms/managed-gateway-api](https://aka.ms/managed-gateway-api).
 * When using [HTTP Proxy](https://aka.ms/aks/http-proxy), you cannot add more than 20 Trusted CA certificates. See [HTTP Proxy limitations](https://aka.ms/aks/http-proxy) for more information.
 * AKS is rolling out kube-proxy reduced privileges for Kubernetes `1.30` and later. `kube-proxy` uses the `NET_ADMIN` and `SYS_RESOURCE` Linux capabilities instead of `privileged: true`. Kubernetes `1.29` and earlier are unaffected. 
-* Azure Monitor add-ons in West Central US, East Asia, and UK South are transitioning to an extension-based backend management model. This backend migration is non-disruptive, does not require customer action, and does not change workload behavior, data collection, monitoring functionality, CLI, Portal, or client experiences. For details, see [aka.ms/coreextensionmigration](https://aka.ms/coreextensionmigration).
 * Fleet-managed resources are now deployed through managed namespace [ClusterResourcePlacement](https://learn.microsoft.com/azure/kubernetes-fleet/concepts-resource-propagation) selection so fleet-managed resources can be rolled out separately from customer workloads.
 
 ### Component Updates
 * [Azure Policy add-on](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1161) has been updated to `1.16.1`. Gatekeeper has been updated to [3.20.1-8](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#gatekeeper-3201) with CVE fixes.
 * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) revisions have been updated: `asm-1-27` to `1.27.9-2`, `asm-1-28` to `1.28.6-1`, and `asm-1-29` to `1.29.2-1`. Revision `asm-1-29` is now available, and `asm-1-26` is deprecated. For more information, see [Istio add-on patch upgrades](https://learn.microsoft.com/azure/aks/istio-upgrade#patch-version-upgrades).
-* Container Insights has been updated to [3.3.0](https://github.com/microsoft/Docker-Provider/releases/tag/3.3.0).
+* [Azure Monitor Container Insights](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-overview) has been updated to [3.3.0](https://github.com/microsoft/Docker-Provider/releases/tag/3.3.0).
 * [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to Karpenter Azure provider [v1.10.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.10.2). This release sets Artifact Streaming uniformly disabled by default.
-* Application Routing NGINX now uses the Dalec NGINX image version `1.13.9` when the App Routing Operator uses Ingress NGINX. See the upstream [ingress-nginx controller 1.13.9 changelog](https://github.com/kubernetes/ingress-nginx/blob/main/changelog/controller-1.13.9.md).
+* Application Routing NGINX updated toNGINX image version `1.13.9`. See the upstream [ingress-nginx controller 1.13.9 changelog](https://github.com/kubernetes/ingress-nginx/blob/main/changelog/controller-1.13.9.md).
 * Azure Disk CSI driver has been updated to [v1.34.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.3) on AKS `1.35` and [v1.33.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.9) on AKS `1.33` and `1.34`.
 * Azure File CSI driver has been updated to [v1.35.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.2) on AKS `1.35`, [v1.34.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.5) on AKS `1.34`, and [v1.33.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.9) on AKS `1.33`.
 * Azure Blob CSI driver has been updated to [v1.27.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.4) on AKS `1.34` and `1.35`, and [v1.26.11](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.11) on AKS `1.33`.
@@ -52,7 +51,6 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Azure Monitor managed Prometheus collector has been updated to the [April 9, 2026 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-09-2026).
 * Cost-analysis agent and scraper images have been updated from `0.0.25` to `0.0.26` with CVE fixes.
 * Admissions Enforcer has been updated to `master.260420.2`, which updates Go to `1.25.9`.
-* AgentBaker has been updated through `v0.20260424.0`.
 * AKS Windows images:
   * Windows Server 2022 - [20348.5020.260415](vhd-notes/AKSWindows/2022/20348.5020.260415.txt).
   * Windows Server 2025 - [26100.32690.260415](vhd-notes/AKSWindows/2025/26100.32690.260415.txt).
