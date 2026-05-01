@@ -1,5 +1,68 @@
 # Azure Kubernetes Service Changelog
 
+## Release Notes - 2026-04-30
+
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). Vulnerabilities addressed by AKS releases can be tracked at [CVE API viewer](https://cve-api.prod-aks.azure.com/viewer/index.html).
+
+### Kubernetes Version
+* New Kubernetes patch versions are now available: `1.35.2`, `1.35.3`, `1.34.5`, `1.34.6`, `1.33.9`, and `1.33.10`.
+* AKS Kubernetes Long Term Support (LTS) version `1.29` is deprecated. Please [upgrade your clusters](https://learn.microsoft.com/azure/aks/upgrade-aks-cluster?tabs=azure-cli) to a supported version. Refer to [AKS Support Calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar) for more information.
+* AKS Kubernetes version `1.32` is now available only through [Long Term Support](https://learn.microsoft.com/azure/aks/long-term-support). Use an LTS support plan for clusters that need to remain on `1.32`, or upgrade to a supported standard-support Kubernetes version.
+
+For deprecation, rollouts and patch timelines by region, please check the [AKS-Release-Tracker](https://releases.aks.azure.com/).
+
+### Preview Features
+* Added preview support for AKS-managed [NAT Gateway V2](https://learn.microsoft.com/azure/aks/nat-gateway) outbound type in supported public Azure regions. Regions where StandardV2 NAT Gateway is not yet available remain excluded.
+* Customers can now preview customization of the default `kube-reserved` and hard eviction kubelet configuration through the existing custom node preview feature registration. **TODO:** Add public documentation link for kube-reserved and hard eviction customization.
+
+### Features
+* [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) is now generally available. Customers no longer need to register `Microsoft.ContainerService/ArtifactStreamingPreview` on their subscriptions to enable Artifact Streaming on agent pools.
+* Managed Gateway API CRDs are now generally available for [Kubernetes Gateway API with the application routing add-on](https://learn.microsoft.com/azure/aks/app-routing-gateway-api).
+* Gateway API based ingress for the [application routing add-on](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) is now generally available and no longer requires the `AppRoutingIstio` preview feature flag.
+* [Istio-based service mesh add-on for Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/istio-about) can now be used together with [ACNS Performance Datapath Acceleration Mode](https://learn.microsoft.com/azure/aks/container-network-performance-ebpf-host-routing) when eBPF host routing is enabled.
+* AKS Automatic clusters with managed system node pools can now migrate to AKS Standard clusters in additional regions after adding a system node pool. **TODO:** Add public documentation link for AKS Automatic to Standard cluster migration.
+* Users can now configure `spec.minReadySeconds` in the Application Routing Gateway Parameters configmap. This helps applications that need extra initialization time after passing their initial health check and can reduce disruption during rolling upgrades. See the related [AKS GitHub issue](https://github.com/Azure/AKS/issues/5667).
+
+### Bug Fixes
+* Fixed an issue in the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) where the CRD installer could pull busybox from an unintended registry in AGC environments. This also removes non-Job Helm hooks from related resources to avoid a CRD installer race condition.
+* Fixed empty PUT reconcile failures with `CustomRouteTableInvalidUpdateAttempt` on clusters using bring-your-own route tables. **TODO:** Add public documentation link for BYO route table behavior if available.
+* Added validation to prevent enabling [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) with [Pod Sandboxing](https://learn.microsoft.com/azure/aks/use-pod-sandboxing), which is not supported.
+* Added validation to block cluster-level FIPS when the [custom CA trust](https://aka.ms/aks/custom-certificate-authority) preview feature is registered and enabled, because the custom CA trust daemonset image is not FIPS compliant.
+* Added [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) managed system node pool protection that blocks `ClusterRoleBinding` create or update requests when the `roleRef` targets configured privileged `ClusterRole`s, reducing the risk of privilege escalation through service account impersonation. **TODO:** Add public documentation link for this AKS Automatic privileged ClusterRole protection.
+* Increased memory limits for affected AKS monitoring components to improve reliability under high memory pressure.
+
+### Behavioral Changes
+* Starting on AKS `1.36`, new [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) clusters will be preconfigured with [Kubernetes Gateway API via the application routing add-on](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) instead of [Managed NGINX ingress with the application routing add-on](https://learn.microsoft.com/azure/aks/app-routing) due to the upstream [Ingress NGINX retirement](https://www.kubernetes.dev/blog/2025/11/12/ingress-nginx-retirement/). Existing clusters are not changed. Creating Automatic clusters with explicit `--enable-app-routing` continues to enable NGINX, while explicit `--enable-app-routing-istio` enables Gateway API without NGINX.
+* Mesh Membership now requires the Managed Gateway API add-on to be enabled with `Standard` or `InferenceExtension` installation before a cluster can join an [Azure Kubernetes Application Network](https://learn.microsoft.com/azure/application-network/overview). Attempts to create a mesh membership without the required Gateway API add-on return a `400 Bad Request` error. For more information, see [aka.ms/managed-gateway-api](https://aka.ms/managed-gateway-api).
+* When using [HTTP Proxy](https://aka.ms/aks/http-proxy), you cannot add more than 20 Trusted CA certificates. See [HTTP Proxy limitations](https://aka.ms/aks/http-proxy) for more information.
+* AKS is rolling out kube-proxy reduced privileges for Kubernetes `1.30` and later. `kube-proxy` uses the `NET_ADMIN` and `SYS_RESOURCE` Linux capabilities instead of `privileged: true`. Kubernetes `1.29` and earlier are unaffected. **TODO:** Add public documentation link for kube-proxy reduced privileges when available.
+* Azure Monitor add-ons in West Central US, East Asia, and UK South are transitioning to an extension-based backend management model. This backend migration is non-disruptive, does not require customer action, and does not change workload behavior, data collection, monitoring functionality, CLI, Portal, or client experiences. For details, see [aka.ms/coreextensionmigration](https://aka.ms/coreextensionmigration).
+* Fleet-managed resources are now deployed through managed namespace [ClusterResourcePlacement](https://learn.microsoft.com/azure/kubernetes-fleet/concepts-resource-propagation) selection so fleet-managed resources can be rolled out separately from customer workloads.
+
+### Component Updates
+* [Azure Policy add-on](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1161) has been updated to `1.16.1`. Gatekeeper has been updated to [3.20.1-8](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#gatekeeper-3201) with CVE fixes.
+* [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) revisions have been updated: `asm-1-27` to `1.27.9-2`, `asm-1-28` to `1.28.6-1`, and `asm-1-29` to `1.29.2-1`. Revision `asm-1-29` is now available, and `asm-1-26` is deprecated. For more information, see [Istio add-on patch upgrades](https://learn.microsoft.com/azure/aks/istio-upgrade#patch-version-upgrades).
+* Container Insights has been updated to [3.3.0](https://github.com/microsoft/Docker-Provider/releases/tag/3.3.0).
+* [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to Karpenter Azure provider [v1.10.2](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.10.2). This release sets Artifact Streaming uniformly disabled by default.
+* Application Routing NGINX now uses the Dalec NGINX image version `1.13.9` when the App Routing Operator uses Ingress NGINX. See the upstream [ingress-nginx controller 1.13.9 changelog](https://github.com/kubernetes/ingress-nginx/blob/main/changelog/controller-1.13.9.md).
+* Azure Disk CSI driver has been updated to [v1.34.3](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.3) on AKS `1.35` and [v1.33.9](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.9) on AKS `1.33` and `1.34`.
+* Azure File CSI driver has been updated to [v1.35.2](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.2) on AKS `1.35`, [v1.34.5](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.5) on AKS `1.34`, and [v1.33.9](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.9) on AKS `1.33`.
+* Azure Blob CSI driver has been updated to [v1.27.4](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.4) on AKS `1.34` and `1.35`, and [v1.26.11](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.11) on AKS `1.33`.
+* Cloud-provider-azure components, including cloud-controller-manager, cloud-node-manager, and health-probe-proxy, have been updated for AKS `1.32`, `1.33`, `1.34`, and `1.35` with the April 2026 releases [v1.32.16](https://cloud-provider-azure.sigs.k8s.io/blog/2026/04/01/v1.32.16/), [v1.33.11](https://cloud-provider-azure.sigs.k8s.io/blog/2026/04/01/v1.33.11/), [v1.34.8](https://cloud-provider-azure.sigs.k8s.io/blog/2026/04/01/v1.34.8/), and [v1.35.3](https://cloud-provider-azure.sigs.k8s.io/blog/2026/04/01/v1.35.3/).
+* Cilium has been updated to [v1.17.10](https://github.com/cilium/cilium/releases/tag/v1.17.10) for Kubernetes `1.32` and `1.33` to support Gateway API scenarios.
+* Azure Monitor managed Prometheus collector has been updated to the [April 9, 2026 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-09-2026).
+* Cost-analysis agent and scraper images have been updated from `0.0.25` to `0.0.26` with CVE fixes. **TODO:** Add public release notes or image changelog link for cost-analysis `0.0.26`.
+* Admissions Enforcer has been updated to `master.260420.2`, which updates Go to `1.25.9`. **TODO:** Add public release notes or image changelog link for Admissions Enforcer `master.260420.2`.
+* AgentBaker has been updated through `v0.20260424.0`. **TODO:** Add AgentBaker release or tag link for `v0.20260424.0`.
+* AKS Windows images:
+  * Windows Server 2022 - [20348.5020.260415](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.5020.260415.txt).
+  * Windows Server 2022 Gen2 - [20348.5020.260415](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/2022-containerd-gen2/20348.5020.260415.txt).
+  * Windows Server 2025 - [26100.32690.260415](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/2025/26100.32690.260415.txt).
+  * Windows Server 2025 Gen2 - [26100.32690.260415](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/2025-gen2/26100.32690.260415.txt).
+  * Windows Server 23H2 - [25398.2274.260415](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/23H2/25398.2274.260415.txt).
+  * Windows Server 23H2 Gen2 - [25398.2274.260415](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/23H2-gen2/25398.2274.260415.txt).
+
+
 ## Release Notes - 2026-04-02
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). Vulnerabiltiies addressed by AKS releases can be tracked at [CVE API viewer](https://cve-api.prod-aks.azure.com/viewer/index.html).
