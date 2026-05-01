@@ -70,6 +70,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
   * Ubuntu 24.04 - [202604.13.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202604.13.0.txt).
   * Ubuntu 24.04 - [202604.24.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202604.24.0.txt).
 
+---
 
 ## Release Notes - 2026-04-02
 
