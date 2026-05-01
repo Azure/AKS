@@ -73,7 +73,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 
 ## Release Notes - 2026-04-02
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). Vulnerabiltiies addressed by AKS releases can be tracked at [CVE API viewer](https://cve-api.prod-aks.azure.com/viewer/index.html).
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). Vulnerabilities addressed by AKS releases can be tracked at [CVE API viewer](https://cve-api.prod-aks.azure.com/viewer/index.html).
 
 ### Announcements
 * Starting on **June 30, 2027**, Azure Kubernetes Service (AKS) no longer supports or provides security updates for Ubuntu 22.04. To avoid disruptions, transition to Ubuntu 24.04 or later by that date. Between now and June 30, 2027, you can continue to use Ubuntu 22.04 on AKS without disruption. If you don't migrate by June 30, 2027, you won't be able to create new node pools, AKS won't produce new node images, and you'll no longer receive security patches for existing node pools. If you want to enable long-term support (LTS) with Kubernetes version 1.33 or later, first update your node pools to Ubuntu 24.04. On **April 30, 2028**, AKS will remove Ubuntu 22.04 node images and existing code, causing scaling and remediation operations to fail. For more information, see [aka.ms/aks/ubuntu2204-retirement-github](https://aka.ms/aks/ubuntu2204-retirement-github).
