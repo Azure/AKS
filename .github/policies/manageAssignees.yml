@@ -304,6 +304,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - therealmitchconnors
+              - Vyshnavi-MSFT
               - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -317,6 +318,7 @@ configuration:
           - mentionUsers:
               mentionees:
               - JackStromberg
+              - Vyshnavi-MSFT
               - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -331,6 +333,7 @@ configuration:
               mentionees:
               - therealmitchconnors
               - JackStromberg
+              - Vyshnavi-MSFT
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Upstream - Helm
