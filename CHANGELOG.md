@@ -55,7 +55,6 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Cilium has been updated to [v1.17.10](https://github.com/cilium/cilium/releases/tag/v1.17.10) for Kubernetes `1.32` and `1.33` to support Gateway API scenarios.
 * Azure Monitor managed Prometheus collector has been updated to the [April 9, 2026 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-04-09-2026).
 * Cost-analysis agent and scraper images have been updated from `0.0.25` to `0.0.26` with CVE fixes.
-* Admissions Enforcer has been updated to `master.260420.2`, which updates Go to `1.25.9`.
 * AKS Windows images:
   * Windows Server 2022 - [20348.5020.260415](vhd-notes/AKSWindows/2022/20348.5020.260415.txt).
   * Windows Server 2025 - [26100.32690.260415](vhd-notes/AKSWindows/2025/26100.32690.260415.txt).
