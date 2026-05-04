@@ -1,6 +1,6 @@
 # Azure Kubernetes Service Changelog
 
-## Release Notes - 2026-05-01
+## Release Notes - 2026-04-28
 
 Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). Vulnerabilities addressed by AKS releases can be tracked at [CVE API viewer](https://cve-api.prod-aks.azure.com/viewer/index.html).
 
