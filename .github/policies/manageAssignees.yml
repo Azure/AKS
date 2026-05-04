@@ -508,7 +508,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - kaarthis
+              - swgriffith
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Flux extension
