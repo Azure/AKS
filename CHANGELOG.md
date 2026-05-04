@@ -18,7 +18,6 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 ### Preview Features
 * Added preview support for AKS-managed [NAT Gateway V2](https://learn.microsoft.com/azure/aks/nat-gateway) outbound type in supported public Azure regions. Regions where StandardV2 NAT Gateway is not yet available remain excluded.
 * Customers can now preview customization of the default `kube-reserved` and hard eviction kubelet configuration through the existing custom node preview feature registration starting with the 2026-03-02-preview API.
-* Customers can now view the VM SKUs supported on AKS and available in their Azure subscription with the [AKS List Available VM SKUs API](https://learn.microsoft.com/en-us/azure/aks/aks-list-skus), to create their clusters and/or add node pools.
 * Customers can now view the VM SKUs supported on AKS and available in their Azure subscription with the [AKS List Available VM SKUs API](https://learn.microsoft.com/azure/aks/aks-list-skus), to create their clusters and/or add node pools.
 * [AKS-managed GPU metrics](https://learn.microsoft.com/azure/aks/monitor-gpu-metrics) are now supported by default in Azure Managed Prometheus and Dashboards with Grafana in Azure Monitor.
 ### Features
