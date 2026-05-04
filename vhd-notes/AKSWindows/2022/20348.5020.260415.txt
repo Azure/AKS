@@ -1,4 +1,4 @@
-﻿Build Number: Release_20260415.1_v20260414_160488058
+Build Number: Release_20260415.1_v20260414_160488058
 Build Id:     160488058
 Build Repo:   https://github.com/Azure/AgentBaker
 Build Branch: refs/heads/windows/v20260414
