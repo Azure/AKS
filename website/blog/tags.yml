@@ -167,6 +167,11 @@ flatcar-container-linux:
   permalink: /flatcar-container-linux
   description: Flatcar Container Linux distribution available on AKS.
 
+fleet-manager:
+  label: Azure Kubernetes Fleet Manager
+  permalink: /fleet-manager
+  description: Azure Kubernetes Fleet Manager for multi-cluster management and governance.
+
 flux:
   label: Flux
   permalink: /flux
@@ -326,6 +331,7 @@ scheduler:
   label: Scheduler
   permalink: /scheduler
   description: Scheduling workloads and managing scheduling constraints on AKS.
+  
 security:
   label: Security
   permalink: /security
