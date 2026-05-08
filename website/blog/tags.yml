@@ -331,7 +331,7 @@ scheduler:
   label: Scheduler
   permalink: /scheduler
   description: Scheduling workloads and managing scheduling constraints on AKS.
-  
+
 security:
   label: Security
   permalink: /security
