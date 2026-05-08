@@ -3,7 +3,7 @@ title: "Preview: nftables support for kube-proxy in Azure Kubernetes Service (AK
 description: "Learn about how to use the nftables mode of kube-proxy on AKS."
 date: 2025-11-19
 authors: [jack-ma]
-tags: [ "networking" ]
+tags: [ networking ]
 ---
 
 ## Summary
