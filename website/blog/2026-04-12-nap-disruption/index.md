@@ -1,6 +1,6 @@
 ---
 title: "Managing disruption with AKS Node Auto-Provisioning"
-description: "Learn AKS best practices for managing NAP disruption with Pod Disruption Budgets, node pool budgets, consolidation, and maintenance windows."
+description: "Learn AKS best practices for managing NAP disruption with Pod Disruption Budgets, node pool budgets, consolidation, and maintenance windows in production."
 date: 2026-04-12
 authors: ["wilson-darko"]
 tags:
@@ -285,7 +285,7 @@ Fix:
 - Add time-based budgets so disruption happens when you want it.
 
 :::note
-[Spot VMs](https://learn.microsoft.com/en-us/azure/virtual-machines/spot-vms) by design are prone to evictions. For stable workloads that are not intended for frequent disruption, we recommend using on-demand virtual machines. 
+[Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms) by design are prone to evictions. For stable workloads that are not intended for frequent disruption, we recommend using on-demand virtual machines. 
 :::
 
 ### Symptom: disruption happens at the wrong time
