@@ -16,7 +16,7 @@ When you manage Kubernetes, a few disruption questions come up fast:
 - Why won’t NAP scale down my nodes, even with lots of underused capacity?
 - Why do upgrades get stuck on certain nodes?
 
-This post focuses on **NAP disruption best practices**, not workload scheduling tools such as topology spread constraints, node affinity, and taints. For scheduling best practices, see the [NAP scheduling fundamentals blog post](./2025-12-06-node-auto-provisioning-capacity-management/index.md).
+This post focuses on **NAP disruption best practices**, not workload scheduling tools such as topology spread constraints, node affinity, and taints. For scheduling best practices, see the [NAP scheduling fundamentals blog post](https://blog.aks.azure.com/2026/03/20/node-provisioning-best-practice).
 
 If you’re new to these features, start here. If you already use NAP disruption settings, use this post as a checklist for the behaviors AKS users most commonly ask about.
 
