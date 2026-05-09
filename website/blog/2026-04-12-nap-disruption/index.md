@@ -1,24 +1,24 @@
 ---
-title: "Managing Disruption with AKS Node Auto-Provisioning"
-description: "Learn AKS best practices to control NAP disruption with Pod Disruption Budgets (PDBs), node pool disruption budgets, consolidation, and maintenance windows."
+title: "Managing disruption with AKS Node Auto-Provisioning"
+description: "Learn AKS best practices for managing NAP disruption with Pod Disruption Budgets, node pool budgets, consolidation, and maintenance windows."
 date: 2026-04-12
 authors: ["wilson-darko"]
 tags:
   - node-auto-provisioning
 ---
 
-Azure Kubernetes Service (AKS) Node Auto-Provisioning (NAP) keeps your clusters efficient: it provisions nodes for pending pods, and it continuously *removes* nodes when it's safe to do so (for example, when nodes are empty or underutilized). That node-removal **disruption** is where many production surprises happen.
+Azure Kubernetes Service (AKS) Node Auto-Provisioning (NAP) keeps your clusters efficient: it provisions nodes for pending pods, and it continuously *removes* nodes when it's safe to do so, for example, when nodes are empty or underutilized. That node-removal disruption is where many production surprises happen.
 
-When managing Kubernetes, operational questions that users might have are:
+When you manage Kubernetes, a few disruption questions come up fast:
 
-- How do I control when scale downs happen, or when it shouldn't?
-- How do I control workload disruption to happen predictably?
-- Why won’t NAP scale down my nodes, even though I have lots of underused capacity?
-- Why do upgrades get “stuck” on certain nodes?
+- How do I control when scale down happens, or when it should not happen?
+- How do I make workload disruption predictable?
+- Why won’t NAP scale down my nodes, even with lots of underused capacity?
+- Why do upgrades get stuck on certain nodes?
 
-This post focuses on **NAP disruption best practices**, not workload scheduling (tools like topology spread constraints, node affinity, and taints). For scheduling best practices, see the [NAP scheduling fundamentals blog post](./2025-12-06-node-auto-provisioning-capacity-management/index.md).
+This post focuses on **NAP disruption best practices**, not workload scheduling tools such as topology spread constraints, node affinity, and taints. For scheduling best practices, see the [NAP scheduling fundamentals blog post](./2025-12-06-node-auto-provisioning-capacity-management/index.md).
 
-If you’re new to these NAP features, this post will give you “good defaults” as a starting point. If you’re already deep into NAP disruption settings, treat it as a checklist for the behaviors AKS users most commonly ask about.
+If you’re new to these features, start here. If you already use NAP disruption settings, use this post as a checklist for the behaviors AKS users most commonly ask about.
 
 ---
 
@@ -36,75 +36,75 @@ Learn more about how to [configure disruption policies for NAP](https://learn.mi
 
 ## Two layers of disruption control
 
-When NAP decides a node (virtual machine) *could* be removed, there are two layers of controls that determine whether it actually happens:
+When NAP decides a node (virtual machine) *could* be removed, two layers of controls determine whether it actually happens:
 
 ### Workload layer: Pod Disruption Budgets (PDBs)
 
-PDBs are Kubernetes-native guardrails that limit **voluntary evictions** of pods. PDBs are how you tell Kubernetes:
+PDBs are Kubernetes-native guardrails that limit **voluntary evictions** of pods. PDBs tell Kubernetes:
 
-“During voluntary disruptions, keep at least N replicas available (or limit max unavailable).”
+"During voluntary disruptions, keep at least N replicas available, or limit max unavailable."
 
 :::note
 Pod disruption budgets protect against **voluntary evictions**, not involuntary failures, forced migrations, or spot node eviction.
 :::
 
-### Infrastructure layer: Node-level disruption settings
+### Infrastructure layer: node-level disruption settings
 
 NAP exposes disruption controls at the node level.
 
 NAP is built on Karpenter concepts and exposes disruption controls on the **NodePool**:
 
-- **Consolidation policy** (when NAP is allowed to consolidate)
-- **Disruption budgets** (how many nodes can be disrupted at once, and when)
-- **Expire-after** (node lifetime)
-- **Drift** (replace nodes that are out of date with the desired NodePool configuration)
+- **Consolidation policy**: when NAP is allowed to consolidate
+- **Disruption budgets**: how many nodes can be disrupted at once, and when
+- **Expire-after**: node lifetime
+- **Drift**: replace nodes that are out of date with the desired NodePool configuration
 
-A good operational posture is: **use PDBs to protect *applications*** and **use NAP disruption tools to control *the cluster’s disruption rate***.
+A good operational posture is simple: **use PDBs to protect applications** and **use NAP disruption tools to control the cluster's disruption rate**.
 
 ---
 
-## Part 2 - NAP Overview
+## NAP overview
 
-Node auto-provisioning (NAP) provisions, scales, and manages nodes. NAP bases its scheduling and disruption logic on settings from 3 sources:
+Node auto-provisioning (NAP) provisions, scales, and manages nodes. NAP bases its scheduling and disruption logic on settings from three sources:
 
-- Workload deployment file - For disruption NAP honors the pod disruption budgets defined by the user here
-- [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools) - Used to list the range of allowed virtual machine options (size, zones, architecture) and also disruption settings
-- [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) - Used to define Azure-specific settings
+- Workload deployment file: for disruption, NAP honors the PodDisruptionBudgets you define here.
+- [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools): lists the allowed virtual machine options, such as size, zones, and architecture, and also defines disruption settings.
+- [AKSNodeClass CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass): defines Azure-specific settings.
 
 ### How NAP handles disruption
 
-NAP honors Kubernetes-native concepts such as Pod Disruption Budgets when making disruption decisions. NAP also has Karpenter-based concepts such as Consolidation, Drift, and Node Disruption Budgets.
+NAP honors Kubernetes-native concepts such as PodDisruptionBudgets when making disruption decisions. NAP also includes Karpenter-based concepts such as consolidation, drift, and node disruption budgets.
 
-#### What “disruption” means in NAP (and what it doesn’t)
+### What disruption means in NAP
 
-In NAP, “disruption” typically refers to **voluntary** actions that delete nodes after draining them, such as:
+In NAP, disruption typically refers to **voluntary** actions that delete nodes after draining them, such as:
 
-- **Consolidation**: deleting or replacing nodes (with better VM sizes) to increase compute efficiency (and reduce cost).
-- **Drift**: replacing existing nodes that no longer match desired configuration (for example, updated settings in your NodePool and AKSNodeClass CRDs).
-- **Expiration**: replacing nodes after a configured lifetime.
+- **Consolidation**: delete or replace nodes with better virtual machine sizes to improve compute efficiency and reduce cost.
+- **Drift**: replace existing nodes that no longer match the desired configuration, for example, updated settings in your NodePool and AKSNodeClass CRDs.
+- **Expiration**: replace nodes after a configured lifetime.
 
-These are different from **involuntary** disruptions such as:
+These actions differ from **involuntary** disruptions such as:
 
-- Spot/eviction events
+- Spot eviction events
 - Hardware failures
 - Host reboots outside your control
 
-PDBs and Karpenter disruption budgets mainly help with **voluntary** disruptions. These features do not regulate involuntary disruption (for example, spot VM evictions, node termination events, node stopping events).
+PDBs and Karpenter disruption budgets mainly help with **voluntary** disruptions. These features do not regulate involuntary disruption, for example, spot VM evictions, node termination events, or node stopping events.
 
 ---
 
-## Part 3 — Pod Disruption Budgets (PDBs): controlling voluntary disruption
+## Pod Disruption Budgets (PDBs): controlling voluntary disruption
 
-The most common NAP disruption problems come from PDBs that are either:
+Most NAP disruption problems come from PDBs that are either:
 
-- **Too strict**, too strong of a guardrail blocks node drains indefinitely
-- **Missing**: no guardrail allows too much disruption at once
+- **Too strict**: a strong guardrail blocks node drains indefinitely.
+- **Missing**: no guardrail limits disruption.
 
 ### A good default PDB
 
-Kubernetes documentation describes minAvailable / maxUnavailable as the two key availability knobs for PDBs, and notes you can only specify one per PDB.
+Kubernetes documentation describes `minAvailable` and `maxUnavailable` as the two key availability settings for PDBs. You can specify only one per PDB.
 
-Here's an example of a PDB that regulates disruption without blocking scale downs, upgrades, and consolidation:
+Here's an example of a PDB that regulates disruption without blocking scale down, upgrades, and consolidation:
 
 ```yaml
 apiVersion: policy/v1
@@ -120,42 +120,44 @@ spec:
 
 Why it works well in practice:
 
-- Consolidation/drift/expiration can still proceed.
-- You avoid large brownouts caused by draining too many replicas at once.
-- You reduce the chance of NAP “thrashing” a service by repeatedly moving too many pods.
+- Consolidation, drift, and expiration can still proceed.
+- It helps you avoid large brownouts caused by draining too many replicas at once.
+- It reduces the chance of NAP thrashing a service by repeatedly moving too many pods.
 
-### The common PDB pitfall: “zero voluntary evictions”
+### The common PDB pitfall: zero voluntary evictions
 
-If you effectively set zero voluntary evictions (`maxUnavailable: 0` or `minAvailable: 100%`), Kubernetes warns this can block node drains indefinitely for a node running one of those pods.
+If you effectively set zero voluntary evictions, for example, `maxUnavailable: 0` or `minAvailable: 100%`, Kubernetes warns that this can block node drains indefinitely for a node running one of those pods.
 
 This common misconfiguration can cause scenarios such as:
 
-- Node / Cluster upgrades fail as nodes won't voluntarily scale down
-- Migration fails
-- NAP Consolidation never happens
+- Node and cluster upgrades fail because nodes do not voluntarily scale down.
+- Migration fails.
+- NAP consolidation never happens.
 
-This can be intentional for extremely sensitive workloads, but it has a cost: if a node has one of these pods, draining that node can become impossible without changing the PDB (or taking an outage). We recommend setting some tolerance for their two settings, and also using disruption budgets or maintenance windows to control disruption.
+This can be intentional for extremely sensitive workloads, but it has a cost. If a node has one of these pods, draining that node can become impossible without changing the PDB or taking an outage. Set some tolerance in these PDB settings, and use disruption budgets or maintenance windows to control disruption.
 
 **Practical guidance:**
 
-- For critical workloads that you do not want to be disrupted at all, strictness of "zero eviction" may be intentional — but be deliberate. When you're ready to allow disruption to these workloads, you may have to change the PDBs in the workload deployment file.
-- For general workloads that can tolerate minor disruption, prefer a small maxUnavailable (like 1) rather than “zero evictions.”
-- Be clear on the tradeoff between zero tolerance (blocks upgrades, NAP consolidation, and scale down).
+- For critical workloads that you do not want to disrupt, zero eviction may be intentional. Be deliberate. When you're ready to allow disruption to these workloads, you may need to change the PDBs in the workload deployment file.
+- For general workloads that can tolerate minor disruption, prefer a small `maxUnavailable` value, such as `1`, instead of zero evictions.
+- Be clear on the tradeoff. Zero tolerance can block upgrades, NAP consolidation, and scale down.
 
-## Part 4 — Controlling consolidation - “when” vs “how fast”
+## Controlling consolidation: when vs. how fast
 
-There are two different operator intents that often get conflated:
+Two operator intents often get conflated:
 
-- **When** consolidation is allowed and will happen
-- **How much** disruption can happen concurrently (budgets / rate limiting)
+- **When** consolidation is allowed and happens.
+- **How much** disruption can happen concurrently.
 
-- `consolidationPolicy: WhenEmptyOrUnderutilized` - Triggered when NAP identifies that the existing nodes are underutilized (or empty). NAP runs cost simulations of VM size combinations that best match the current configuration. When a better combination is found, consolidation triggers.
-- `consolidateAfter: 1d` - Time-based setting that controls the delay before NAP consolidates underutilized nodes, working with the `consolidationPolicy` setting.
-- `expireAfter: 24h` - Time-based setting that determines how long nodes in this NodePool CRD can exist. Older nodes are deleted regardless of consolidation policies.
+Use these settings to control consolidation behavior:
 
-**NOTE:** How NAP defines "underutilized" is not currently a value you can set. It is determined by the cost simulations NAP runs.
+- `consolidationPolicy: WhenEmptyOrUnderutilized`: triggers when NAP identifies existing nodes as underutilized or empty. NAP runs cost simulations of virtual machine size combinations that best match the current configuration. When it finds a better combination, consolidation starts.
+- `consolidateAfter: 1d`: controls the delay before NAP consolidates underutilized nodes, and works with the `consolidationPolicy` setting.
+- `expireAfter: 24h`: determines how long nodes in this NodePool CRD can exist. Older nodes are deleted regardless of consolidation policies.
 
-The following example showed these disruption tools in action:
+**Note:** Underutilized is not a value you can set. NAP determines it through its cost simulations.
+
+The following example shows these disruption tools in action:
 
 ```yaml
 apiVersion: karpenter.sh/v1
@@ -172,11 +174,11 @@ spec:
       expireAfter: Never
 ```
 
-### Node Disruption budgets (how fast)
+### Node disruption budgets: how fast
 
-NAP exposes Karpenter-style disruption budgets on the NodePool. If you don’t set them, a default budget of `nodes: 10%` is used. Use budgets to regulate how many nodes are consolidated at a time.
+NAP exposes Karpenter-style disruption budgets on the NodePool. If you don’t set them, a default budget of `nodes: 10%` applies. Use budgets to regulate how many nodes are consolidated at a time.
 
-The following example sets the node disruption budget to 1 node at a time.
+The following example sets the node disruption budget to one node at a time.
 
 ```yaml
 apiVersion: karpenter.sh/v1
@@ -189,15 +191,15 @@ spec:
     - nodes: "1"
 ```
 
-This is often the simplest way to prevent “NAP moved too many nodes at once”.
+This is often the simplest way to prevent NAP from moving too many nodes at once.
 
 ---
 
-## Part 5 — Maintenance windows
+## Maintenance windows
 
-A good practice for managing disruption is to **allow some consolidation, but only during a specific time-window**.
+A good practice is to allow some consolidation, but only during a specific time window.
 
-NAP node disruption budgets support `schedule` and `duration` so you can create time-based rules (cron syntax). These node disruption budgets can be defined by setting the `spec.disruption.budgets` field in the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools)
+NAP node disruption budgets support `schedule` and `duration`, so you can create time-based rules with cron syntax. Define these budgets in the `spec.disruption.budgets` field of the [NodePool CRD](https://learn.microsoft.com/azure/aks/node-auto-provisioning-node-pools).
 
 For example, block disruptions during business hours:
 
@@ -208,7 +210,7 @@ budgets:
   duration: 8h
 ```
 
-Or allow higher disruption on weekends, and block otherwise:
+Or allow higher disruption on weekends, and block disruption otherwise:
 
 ```yaml
 budgets:
@@ -218,87 +220,88 @@ budgets:
 - nodes: "0"
 ```
 
-**Why this matters:** it aligns cost-optimization (consolidation/drift/expiration) and updates with the regulated timeline that works for your workload needs.
+**Why this matters:** It aligns cost optimization, including consolidation, drift, and expiration, with the timeline that works for your workload needs.
 
-To learn more about node disruption budgets, visit our [NAP Disruption documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets)
+To learn more about node disruption budgets, see the [NAP disruption documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets).
 
 ---
 
-## Part 6 — Don’t forget node image updates (drift) and the “90-day” reality
+## Keep node images current
 
-NAP nodes are regularly updated as images change. The node image updates doc calls out a key behavior: **if a node image version is older than 90 days, NAP forces pickup of the latest image version, bypassing any existing maintenance window**.
+NAP nodes are regularly updated as images change. The node image updates documentation calls out a key behavior: **if a node image version is older than 90 days, NAP forces pickup of the latest image version and bypasses any existing maintenance window**.
 
 Operational takeaway:
 
-- Set up maintenance windows and budgets, but also ensure you’re not drifting so long that you hit a forced-update scenario.
-- Treat “keep nodes reasonably fresh” as part of disruption planning, not an afterthought.
+- Set up maintenance windows and budgets, but also make sure you do not drift long enough to hit a forced update scenario.
+- Treat keeping nodes reasonably fresh as part of disruption planning.
 
 ---
 
-## Part 7 - Observability: verify disruption decisions with events/logs
+## Observability: verify disruption decisions with events and logs
 
-Before changing policies, confirm what NAP *thinks* it’s doing:
+Before you change policies, confirm what NAP *thinks* it's doing:
 
 - View events:
   - `kubectl get events --field-selector source=karpenter-events`
-- Or use AKS control plane logs in Log Analytics (filter for `karpenter-events`)
+- Or use AKS control plane logs in Log Analytics, filtered for `karpenter-events`
 
-This helps distinguish:
+This helps you distinguish between these cases:
 
-- “NAP wants to disrupt but is blocked by PDBs / budgets”
-from
-- “NAP isn’t trying to disrupt because consolidation policy doesn’t allow it”
-from
-- “NAP can’t replace nodes because provisioning is failing”
+- NAP wants to disrupt nodes, but PDBs or disruption budgets block it.
+- NAP is not trying to disrupt nodes because the consolidation policy does not allow it.
+- NAP can't replace nodes because provisioning is failing.
 
 ---
 
 ## Common disruption pitfalls
 
-### Symptom: NAP won’t consolidate / drains hang forever
+### Symptom: NAP won’t consolidate or drains hang forever
 
-Behavior: Nodes will not scale down for consolidation or updates.
+Behavior: Nodes do not scale down for consolidation or updates.
+
 Cause:
 
-- PDBs effectively allow zero voluntary evictions (`maxUnavailable: 0` / `minAvailable: 100%`), or
-- Too few replicas to satisfy the PDB during drain.
+- PDBs effectively allow zero voluntary evictions, for example, `maxUnavailable: 0` or `minAvailable: 100%`.
+- Too few replicas exist to satisfy the PDB during drain.
 
 Fix:
 
-- Relax PDBs (for example `maxUnavailable: 1`) or increase replicas.
-- If a workload truly must not be disrupted, accept that nodes running it will not consolidate, and that this also risks update failure. A strict 100% available PDB will cause scale down failures and update failures.
+- Relax PDBs, for example, `maxUnavailable: 1`, or increase replicas.
+- If a workload truly must not be disrupted, accept that nodes running it will not consolidate. This also increases the risk of update failure. A strict `100%` available PDB can cause scale down and update failures.
 
 ### Symptom: NAP disrupts too often or too much at once
 
-Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once
+Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once.
+
 Cause:
 
-- User has not set any guardrails on node disruption behavior such as PDBs or node disruption budgets
-- No maintenance window set for scheduled disruption times
+- No guardrails exist for node disruption behavior, such as PDBs or node disruption budgets.
+- No maintenance window exists for scheduled disruption times.
 
 Fix:
 
-- Add PDBs that regulate disruption pace
-- Add NodePool disruption budgets (start with `nodes: "1"` or a small percentage).
-- Add time-based budgets (maintenance windows) so disruption happens when you want it.
+- Add PDBs that regulate disruption pace.
+- Add NodePool disruption budgets. Start with `nodes: "1"` or a small percentage.
+- Add time-based budgets so disruption happens when you want it.
 
 ### Symptom: disruption happens at the wrong time
 
-Behavior: Disruption happens during inconvenient times, such as during work hours or when workloads are in common use.
+Behavior: Disruption happens during inconvenient times, such as work hours or peak usage windows.
+
 Cause:
 
-- No time-based budgets / maintenance window.
+- No time-based budgets or maintenance window exists.
 
 Fix:
 
 - Add Karpenter disruption budgets to block disruption during business hours.
-- Alternative: Combine “maintenance window” with a “small allowed disruption” budget outside the window.
+- Combine a maintenance window with a small allowed-disruption budget outside the window.
 
 ---
 
 ## Next steps
 
 1. **Try NAP today:** Check out the [Enable Node Auto Provisioning steps](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning).
-1. **Learn more:** Visit our AKS [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler)
-1. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
-1. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
+2. **Learn more:** Visit the AKS [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler).
+3. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
+4. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
