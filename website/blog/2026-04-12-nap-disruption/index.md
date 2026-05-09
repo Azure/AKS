@@ -284,6 +284,10 @@ Fix:
 - Add NodePool disruption budgets. Start with `nodes: "1"` or a small percentage.
 - Add time-based budgets so disruption happens when you want it.
 
+:::note
+[Spot VMs](https://learn.microsoft.com/en-us/azure/virtual-machines/spot-vms) by design are prone to evictions. For stable workloads that are not intended for frequent disruption, we recommend using on-demand virtual machines. 
+:::
+
 ### Symptom: disruption happens at the wrong time
 
 Behavior: Disruption happens during inconvenient times, such as work hours or peak usage windows.
