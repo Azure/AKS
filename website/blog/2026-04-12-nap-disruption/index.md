@@ -11,12 +11,12 @@ Azure Kubernetes Service (AKS) Node Auto-Provisioning (NAP) keeps your clusters 
 
 When managing Kubernetes, operational questions that users might have are:
 
-- How do I control when scale downs happen, or where it shouldn't?
-- How do I control workload disruption so it happens predictably (and not in the middle of business hours)?
-- Why won’t NAP scale down, even though I have lots of underused capacity?
+- How do I control when scale downs happen, or when it shouldn't?
+- How do I control workload disruption to happen predictably?
+- Why won’t NAP scale down my nodes, even though I have lots of underused capacity?
 - Why do upgrades get “stuck” on certain nodes?
 
-This post focuses on **NAP disruption best practices**, not workload scheduling (tools like topology spread constraints, node affinity, and taints). For scheduling best practices, see the NAP scheduling fundamentals post (link TBD).
+This post focuses on **NAP disruption best practices**, not workload scheduling (tools like topology spread constraints, node affinity, and taints). For scheduling best practices, see the [NAP scheduling fundamentals blog post](./2025-12-06-node-auto-provisioning-capacity-management/index.md).
 
 If you’re new to these NAP features, this post will give you “good defaults” as a starting point. If you’re already deep into NAP disruption settings, treat it as a checklist for the behaviors AKS users most commonly ask about.
 
@@ -271,7 +271,7 @@ Fix:
 ### Symptom: NAP disrupts too often or too much at once
 
 Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once
-Cause: 
+Cause:
 
 - User has not set any guardrails on node disruption behavior such as PDBs or node disruption budgets
 - No maintenance window set for scheduled disruption times
@@ -284,8 +284,8 @@ Fix:
 
 ### Symptom: disruption happens at the wrong time
 
-Behavior: Disruption happens during inconvenient times, such as during work hours or when workloads are in common use. 
-Cause: 
+Behavior: Disruption happens during inconvenient times, such as during work hours or when workloads are in common use.
+Cause:
 
 - No time-based budgets / maintenance window.
 
