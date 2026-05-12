@@ -112,6 +112,7 @@ For deprecation, rollouts and patch timelines by region, please check the [AKS-R
 * Starting with Kubernetes 1.34, clusters using [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) include a new AKS-managed `cilium-fluent-bit` component to improve Cilium supportability.
 * The `noProxy` validation for [HTTP proxy configuration](https://learn.microsoft.com/azure/aks/http-proxy) has been relaxed. The updated validation only runs upon changes to the `noProxy` field and uses a less strict regex, unblocking customers with non-standard `noProxy` entries.
 * When using [HTTP Proxy](https://aka.ms/aks/http-proxy), you can't add more than 20 Trusted CA Certificates. See [HTTP Proxy limitations](https://aka.ms/aks/http-proxy) for more information.
+* Going forward, new Azure Linux node images on AKS will have kernel lockdown disabled by default. Existing Azure Linux node pools will pick up this change upon node image upgrade. This change enables AKS customers to install custom GPU drivers on Azure Linux node pools. See [Disable kernel lockdown mode for Azure Linux](https://github.com/Azure/AKS/issues/5735) for more details.
 
 ### Component Updates
 * [Node Auto Provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) has been updated to Karpenter Azure provider [v1.10.1](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.10.1).
