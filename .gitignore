@@ -1,3 +1,5 @@
 .DS_Store
 .vscode
 package-lock.json
+website/build.log
+website/install.log

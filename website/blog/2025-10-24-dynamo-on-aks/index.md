@@ -7,7 +7,7 @@ authors:
 - sachi-desai
 - sertac-ozercan
 - rita-zhang
-tags: ["dynamo-series", "ai", "gpu", "oss", "GB200"]
+tags: ["dynamo-series", "ai", "gpu"]
 ---
 
 *This blog post is co-authored with
@@ -27,6 +27,8 @@ deployment. Frameworks like the [open-source NVIDIA Dynamo platform](https://git
 play a crucial role by coordinating execution across nodes, managing
 memory resources efficiently, and accelerating data transfers between GPUs
 to keep latency low.
+
+<!-- truncate -->
 
 However, software alone cannot solve these challenges. The underlying hardware
 must also support this level of scale and throughput. Rack-scale systems like

@@ -167,6 +167,11 @@ flatcar-container-linux:
   permalink: /flatcar-container-linux
   description: Flatcar Container Linux distribution available on AKS.
 
+fleet-manager:
+  label: Azure Kubernetes Fleet Manager
+  permalink: /fleet-manager
+  description: Azure Kubernetes Fleet Manager for multi-cluster management and governance.
+
 flux:
   label: Flux
   permalink: /flux
@@ -223,9 +228,9 @@ kaito:
   description: KAITO project usage for model fine-tuning, inference, and RAG on AKS.
 
 kube-fleet:
-  label: Kube-Fleet
+  label: KubeFleet
   permalink: /kube-fleet
-  description: Using Kube-Fleet for multi-cluster application deployment and management with AKS.
+  description: Using KubeFleet for multi-cluster application deployment and management with AKS.
 
 kubevirt:
   label: KubeVirt
@@ -326,6 +331,7 @@ scheduler:
   label: Scheduler
   permalink: /scheduler
   description: Scheduling workloads and managing scheduling constraints on AKS.
+
 security:
   label: Security
   permalink: /security
