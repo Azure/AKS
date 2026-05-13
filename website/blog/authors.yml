@@ -526,3 +526,13 @@ kevin-thomas:
   socials:
     linkedin: kevin-krupa-thomas
     github: kevinkrp93
+
+simon-waight:
+  name: Simon Waight
+  title: Product Manager for Azure Kubernetes Fleet Manager
+  url: https://www.linkedin.com/in/simon-waight/
+  image_url: https://github.com/sjwaight.png
+  page: true
+  socials:
+    linkedin: simon-waight
+    github: sjwaight
