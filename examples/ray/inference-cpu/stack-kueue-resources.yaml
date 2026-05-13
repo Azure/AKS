@@ -30,7 +30,7 @@ spec:
       - name: cpu
         nominalQuota: 6
       - name: memory
-        nominalQuota: 20Gi
+        nominalQuota: 24Gi
       - name: nvidia.com/gpu
         nominalQuota: 2
 ---
