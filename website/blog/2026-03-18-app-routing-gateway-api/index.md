@@ -178,6 +178,42 @@ curl -s -I -H "Host: httpbin.example.com" "http://$INGRESS_HOST/get"
 
 You should see an `HTTP 200` response.
 
+### Internal load balancer
+
+By default, AKS assigns a public IP to the Gateway's underlying Service. To expose the existing `httpbin-gateway` on an internal (private) IP instead, add Azure load balancer annotations to the Gateway's `spec.infrastructure.annotations` field. You can also target a specific subnet for the internal IP address.
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: httpbin-gateway
+spec:
+  gatewayClassName: approuting-istio
+  infrastructure:
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+      # Optional: place the internal LB on a dedicated subnet
+      service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "my-ilb-subnet"
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: Same
+```
+
+AKS propagates these annotations onto the Kubernetes Service it creates for the Gateway. After the Gateway is programmed, its `status.addresses` will contain a private IP from the specified subnet (or the cluster's default subnet if the subnet annotation is omitted):
+
+```bash
+kubectl wait --for=condition=programmed gateways.gateway.networking.k8s.io httpbin-gateway --timeout=120s
+kubectl get gateways.gateway.networking.k8s.io httpbin-gateway -ojsonpath='{.status.addresses[0].value}'
+```
+
+> **Note**: The subnet must exist in the cluster's virtual network and must be delegated or available for Azure Load Balancer use. See [Use an internal load balancer with AKS](https://learn.microsoft.com/azure/aks/internal-lb) for networking prerequisites.
+
+Any Azure Load Balancer annotation supported by AKS can be used in `spec.infrastructure.annotations`. For the full list of supported annotations, see the [Azure Load Balancer annotations reference](https://learn.microsoft.com/azure/aks/load-balancer-standard#additional-customizations-via-kubernetes-annotations).
+
 ### Upgrades
 
 The Istio control plane version is tied to your AKS cluster's Kubernetes version — AKS automatically reconciles the latest supported Istio revision that is compatible with your cluster's Kubernetes version. Patch version upgrades happen automatically as part of AKS releases. Minor version upgrades happen in-place when you upgrade your cluster's Kubernetes version, or automatically when a new Istio minor version is released for your AKS version. To see which Istio revision your cluster will receive, consult the [service mesh add-on release calendar](https://learn.microsoft.com/azure/aks/istio-support-policy#service-mesh-add-on-release-calendar). You can also follow the [AKS release notes](https://github.com/azure/aks/releases) to stay current.
