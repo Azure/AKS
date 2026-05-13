@@ -3,7 +3,7 @@ set -euo pipefail
 
 # --- Infrastructure Configuration ---
 RESOURCE_GROUP="${RESOURCE_GROUP:-ray-example-rg}"
-LOCATION="${LOCATION:-eastus}"
+LOCATION="${LOCATION:-centralus}"
 CLUSTER_NAME="${CLUSTER_NAME:-demo}"
 NODE_COUNT="${NODE_COUNT:-3}"
 NODE_VM_SIZE="${NODE_VM_SIZE:-Standard_D4ds_v4}"

@@ -10,7 +10,7 @@ variable "resource_group_owner" {
 
 variable "resource_group_location" {
   type        = string
-  default     = "westus3"
+  default     = "centralus"
   description = "Location of the resource group."
 }
 
@@ -22,20 +22,50 @@ variable "resource_group_name_prefix" {
 
 variable "system_node_pool_vm_size" {
   type        = string
-  description = "The size of the Virtual Machine."
-  default     = "Standard_D2_v2"
+  description = "The size of the Virtual Machine for the system node pool."
+  default     = "Standard_D4ds_v4"
 }
 
 variable "system_node_pool_node_count" {
   type        = number
   description = "The initial quantity of nodes for the system node pool."
-  default     = 1
+  default     = 3
 }
 
 variable "ray_node_pool_vm_size" {
   type        = string
-  description = "The size of the Virtual Machine."
-  default     = "Standard_D4s_v4"
+  description = "The size of the Virtual Machine for the Ray worker node pool."
+  default     = "Standard_D16ds_v7"
+}
+
+variable "ray_node_pool_node_count" {
+  type        = number
+  description = "The initial quantity of nodes for the Ray worker node pool."
+  default     = 2
+}
+
+variable "kubernetes_version" {
+  type        = string
+  description = "The Kubernetes version for the AKS cluster."
+  default     = "1.35"
+}
+
+variable "helm_registry" {
+  type        = string
+  description = "OCI registry for AKS AI Runtime Helm charts."
+  default     = "oci://mcr.microsoft.com/aks/ai-runtime/helm"
+}
+
+variable "kueue_version" {
+  type        = string
+  description = "Version of the Kueue Helm chart."
+  default     = "0.17.1"
+}
+
+variable "kuberay_operator_version" {
+  type        = string
+  description = "Version of the KubeRay Operator Helm chart."
+  default     = "1.6.1"
 }
 
 variable "msi_id" {

@@ -21,6 +21,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   name                             = random_pet.azurerm_kubernetes_cluster_name.id
   resource_group_name              = azurerm_resource_group.rg.name
   dns_prefix                       = random_pet.azurerm_kubernetes_cluster_dns_prefix.id
+  kubernetes_version               = var.kubernetes_version
     
   identity {
     type = "SystemAssigned"
@@ -88,10 +89,34 @@ resource "azapi_update_resource" "k8s-default-node-pool-systempool-taint" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "workload" {
-  name                  = "ray"
+  name                  = "cpupool"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.k8s.id
   vm_size               = var.ray_node_pool_vm_size
-  node_count            = 4
+  node_count            = var.ray_node_pool_node_count
 
   depends_on = [azapi_update_resource.k8s-default-node-pool-systempool-taint]
+}
+
+resource "helm_release" "kueue" {
+  name             = "kueue"
+  namespace        = "kueue-system"
+  create_namespace = true
+  repository       = var.helm_registry
+  chart            = "kueue"
+  version          = var.kueue_version
+  wait             = true
+
+  depends_on = [azurerm_kubernetes_cluster_node_pool.workload]
+}
+
+resource "helm_release" "kuberay_operator" {
+  name             = "kuberay-operator"
+  namespace        = "kuberay-system"
+  create_namespace = true
+  repository       = var.helm_registry
+  chart            = "kuberay-operator"
+  version          = var.kuberay_operator_version
+  wait             = true
+
+  depends_on = [azurerm_kubernetes_cluster_node_pool.workload]
 }
