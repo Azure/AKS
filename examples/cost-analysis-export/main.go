@@ -124,6 +124,9 @@ func ConfigureAndProcess(ctx context.Context, operation string) error {
 		return fmt.Errorf("invalid config: %w", err)
 	}
 
+	ctx, cancel := context.WithTimeout(ctx, cfg.Timeout)
+	defer cancel()
+
 	app, err := NewApp(cfg)
 	if err != nil {
 		return err
@@ -182,8 +185,9 @@ func (a *App) Export(ctx context.Context) error {
 		return fmt.Errorf("creating request: %w", err)
 	}
 
-	// Execute request
-	resp, err := http.DefaultClient.Do(req)
+	// Execute request with timeout
+	httpClient := &http.Client{Timeout: 2 * time.Minute}
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to reach cost analysis service: %w", err)
 	}
@@ -461,6 +465,10 @@ func (a *App) joinAndExportData(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("joining data: %w", err)
 	}
+	defer func() {
+		_ = file.Close()
+		_ = os.Remove(file.Name())
+	}()
 	slog.Info("data joined successfully", "file", file.Name())
 
 	contentType := "text/csv"
@@ -648,21 +656,21 @@ func stripBOMReader(r io.Reader) io.Reader {
 // - MCA: https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-mca
 // - FOCUS: https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-focus
 var columnsToMultiply = map[string]bool{
-	"PreTaxCost":              true,
-	"CostInBillingCurrency":   true,
-	"costInBillingCurrency":   true,
-	"BilledCost":              true,
-	"EffectiveCost":           true,
-	"ListCost":                true,
-	"ContractedCost":          true,
-	"costInUsd":               true,
+	"PreTaxCost":                true,
+	"CostInBillingCurrency":     true,
+	"costInBillingCurrency":     true,
+	"BilledCost":                true,
+	"EffectiveCost":             true,
+	"ListCost":                  true,
+	"ContractedCost":            true,
+	"costInUsd":                 true,
 	"paygCostInBillingCurrency": true,
-	"paygCostInUsd":           true,
-	"UsageQuantity":           true,
-	"Quantity":                true,
-	"quantity":                true,
-	"ConsumedQuantity":        true,
-	"PricingQuantity":         true,
+	"paygCostInUsd":             true,
+	"UsageQuantity":             true,
+	"Quantity":                  true,
+	"quantity":                  true,
+	"ConsumedQuantity":          true,
+	"PricingQuantity":           true,
 }
 
 // resourceIDColumns lists possible column names for resource ID.
