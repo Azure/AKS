@@ -1,0 +1,91 @@
+# RayJob for the stack integration test.
+#
+# Flow:
+#   1. Labelled with kueue.x-k8s.io/queue-name so Kueue gates admission.
+#   2. Kueue creates a Workload (name: rayjob-e2e-inference-<hash>) and admits it
+#      once head 2 CPU + 2 workers × 1 CPU = 4 CPU quota is available.
+#   3. KubeRay spawns head + 2 workers; Ray Data runs image classification on CPU.
+#
+# Uses the custom Ray image built from images/ray/. {{RAY_IMAGE}} is resolved at
+# test time from the RAY_E2E_IMAGE env var, which CI sets to the image pushed to
+# the PR-scoped ACR. {{RAY_VERSION}} is resolved from images/ray/Makefile.
+apiVersion: ray.io/v1
+kind: RayJob
+metadata:
+  name: e2e-inference
+  namespace: e2e-stack
+  labels:
+    kueue.x-k8s.io/queue-name: e2e-stack-queue
+spec:
+  entrypoint: python /home/ray/scripts/inference_job.py
+  shutdownAfterJobFinishes: true
+  ttlSecondsAfterFinished: 600
+  runtimeEnvYAML: |
+    pip:
+      packages:
+        - torch
+        - torchvision
+      pip_install_options:
+        - --index-url
+        - https://download.pytorch.org/whl/cpu
+        - --extra-index-url
+        - https://pypi.org/simple
+      pip_check: false
+  rayClusterSpec:
+    rayVersion: "{{RAY_VERSION}}"
+    enableInTreeAutoscaling: false
+    headGroupSpec:
+      rayStartParams:
+        num-cpus: "0"            # Don't schedule Ray tasks on head; Kueue still counts its K8s CPU requests.
+        dashboard-host: "0.0.0.0"
+      template:
+        spec:
+          containers:
+          - name: ray-head
+            image: {{RAY_IMAGE}}
+            resources:
+              requests:
+                cpu: "2"
+                memory: "4Gi"
+              limits:
+                cpu: "2"
+                memory: "4Gi"
+            startupProbe:
+              httpGet:
+                path: /api/version
+                port: 8265
+              periodSeconds: 5
+              timeoutSeconds: 2
+              failureThreshold: 60
+            volumeMounts:
+            - name: inference-script
+              mountPath: /home/ray/scripts
+          volumes:
+          - name: inference-script
+            configMap:
+              name: e2e-inference-script
+    workerGroupSpecs:
+    - groupName: workers
+      replicas: 2
+      minReplicas: 2
+      maxReplicas: 2
+      rayStartParams: {}
+      template:
+        spec:
+          containers:
+          - name: ray-worker
+            image: {{RAY_IMAGE}}
+            resources:
+              requests:
+                cpu: "1"
+                memory: "4Gi"
+              limits:
+                cpu: "1"
+                memory: "4Gi"
+            startupProbe:
+              httpGet:
+                path: /api/healthz
+                port: 52365
+              periodSeconds: 5
+              timeoutSeconds: 2
+              failureThreshold: 60

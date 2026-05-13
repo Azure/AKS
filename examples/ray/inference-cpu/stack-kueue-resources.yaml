@@ -1,0 +1,45 @@
+---
+# Namespace for the stack integration test.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: e2e-stack
+---
+# ResourceFlavor — represents CPU hardware for the stack test.
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ResourceFlavor
+metadata:
+  name: e2e-stack-flavor
+spec: {}
+---
+# ClusterQueue — sized to admit both the CPU-only inference job (head 2 + 2 workers × 1 CPU + submitter)
+# and the GPU variant (head 1 + 1 worker × 2 CPU + 1 GPU + submitter). GPU quota is only exercised
+# on GPU-capable clusters; on CPU clusters workloads that don't request GPU are unaffected.
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue
+metadata:
+  name: e2e-stack-cluster-queue
+spec:
+  namespaceSelector: {}
+  queueingStrategy: BestEffortFIFO
+  resourceGroups:
+  - coveredResources: ["cpu", "memory", "nvidia.com/gpu"]
+    flavors:
+    - name: e2e-stack-flavor
+      resources:
+      - name: cpu
+        nominalQuota: 6
+      - name: memory
+        nominalQuota: 20Gi
+      - name: nvidia.com/gpu
+        nominalQuota: 2
+---
+# LocalQueue — RayJobs must carry label kueue.x-k8s.io/queue-name: e2e-stack-queue
+# to be managed by Kueue.
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: e2e-stack-queue
+  namespace: e2e-stack
+spec:
+  clusterQueue: e2e-stack-cluster-queue
