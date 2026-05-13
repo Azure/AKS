@@ -12,8 +12,8 @@
 apiVersion: ray.io/v1
 kind: RayJob
 metadata:
-  name: e2e-inference
-  namespace: e2e-stack
+  name: cpu-inference
+  namespace: ray
   labels:
     kueue.x-k8s.io/queue-name: e2e-stack-queue
 spec:
@@ -63,7 +63,7 @@ spec:
           volumes:
           - name: inference-script
             configMap:
-              name: e2e-inference-script
+              name: cpu-inference-script
     workerGroupSpecs:
     - groupName: workers
       replicas: 2

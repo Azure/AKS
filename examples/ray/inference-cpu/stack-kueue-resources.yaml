@@ -1,9 +1,9 @@
 ---
-# Namespace for the stack integration test.
+# Namespace for the Ray example.
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: e2e-stack
+  name: ray
 ---
 # ResourceFlavor — represents CPU hardware for the stack test.
 apiVersion: kueue.x-k8s.io/v1beta2
@@ -40,6 +40,6 @@ apiVersion: kueue.x-k8s.io/v1beta2
 kind: LocalQueue
 metadata:
   name: e2e-stack-queue
-  namespace: e2e-stack
+  namespace: ray
 spec:
   clusterQueue: e2e-stack-cluster-queue

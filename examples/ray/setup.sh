@@ -17,6 +17,12 @@ HELM_REGISTRY="${HELM_REGISTRY:-oci://mcr.microsoft.com/aks/ai-runtime/helm}"
 KUEUE_VERSION="${KUEUE_VERSION:-0.17.1}"
 KUBERAY_OPERATOR_VERSION="${KUBERAY_OPERATOR_VERSION:-1.6.1}"
 
+# --- Inference CPU Configuration ---
+RAY_IMAGE="${RAY_IMAGE:-mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.54.0}"
+RAY_VERSION="${RAY_VERSION:-2.54.0}"
+INFERENCE_NAMESPACE="ray"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 create_infra() {
     echo "=== Creating resource group ==="
     az group create \
@@ -49,27 +55,20 @@ create_infra() {
       --overwrite-existing
 }
 
-install_kueue() {
+install_operators() {
     echo "=== Installing Kueue (v${KUEUE_VERSION}) ==="
     helm upgrade --install kueue "$HELM_REGISTRY/kueue" \
       --version "$KUEUE_VERSION" \
       --namespace kueue-system \
       --create-namespace \
       --wait
-}
 
-install_kuberay() {
     echo "=== Installing KubeRay Operator (v${KUBERAY_OPERATOR_VERSION}) ==="
     helm upgrade --install kuberay-operator "$HELM_REGISTRY/kuberay-operator" \
       --version "$KUBERAY_OPERATOR_VERSION" \
       --namespace kuberay-system \
       --create-namespace \
       --wait
-}
-
-install_operators() {
-    install_kueue
-    install_kuberay
 }
 
 status() {
@@ -79,6 +78,30 @@ status() {
     kubectl get pods -n kueue-system
     echo ""
     kubectl get pods -n kuberay-system
+}
+
+run_inference_cpu() {
+    echo "=== Deploying Kueue resources ==="
+    kubectl apply -f "$SCRIPT_DIR/inference-cpu/stack-kueue-resources.yaml"
+
+    echo "=== Creating inference script ConfigMap ==="
+    kubectl create configmap cpu-inference-script \
+      --from-file=inference_job.py="$SCRIPT_DIR/inference-cpu/inference_job.py" \
+      --namespace "$INFERENCE_NAMESPACE" \
+      --dry-run=client -o yaml | kubectl apply -f -
+
+    echo "=== Submitting RayJob ==="
+    sed "s|{{RAY_IMAGE}}|${RAY_IMAGE}|g; s|{{RAY_VERSION}}|${RAY_VERSION}|g" \
+      "$SCRIPT_DIR/inference-cpu/inference-rayjob.yaml" | kubectl apply -f -
+
+    echo "=== Waiting for RayJob to complete ==="
+    kubectl wait --for=jsonpath='{.status.jobStatus}'=SUCCEEDED \
+      rayjob/cpu-inference \
+      --namespace "$INFERENCE_NAMESPACE" \
+      --timeout=600s
+
+    echo "=== Job logs ==="
+    kubectl logs -l job-name=cpu-inference --namespace "$INFERENCE_NAMESPACE" --tail=50
 }
 
 all() {
@@ -94,12 +117,14 @@ usage() {
     echo "Commands:"
     echo "  check_prerequisites  Check and install required tools (az, helm)"
     echo "  create_infra       Create resource group, AKS cluster, node pool, and fetch credentials"
-    echo "  install_operators  Install both Kueue and KubeRay"
-    echo "  status             Show cluster and operator pod status"
+    echo "  install_operators    Install Kueue and KubeRay from MCR"
+    echo "  run_inference_cpu    Deploy and run the CPU inference example"
+    echo "  status               Show cluster and operator pod status"
     echo "  all                Run all steps end-to-end"
     echo ""
     echo "Examples:"
     echo "  $0 install_operators   # Just install Kueue + KubeRay"
+    echo "  $0 run_inference_cpu   # Run CPU inference example"
     echo "  $0 all                 # Full setup from scratch"
 }
 
@@ -130,7 +155,7 @@ check_prerequisites() {
 
 COMMAND="${1:-}"
 case "$COMMAND" in
-    check_prerequisites|create_infra|install_operators|status|all)
+    check_prerequisites|create_infra|install_operators|run_inference_cpu|status|all)
         "$COMMAND"
         ;;
     *)
