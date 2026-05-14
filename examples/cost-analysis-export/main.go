@@ -185,9 +185,8 @@ func (a *App) Export(ctx context.Context) error {
 		return fmt.Errorf("creating request: %w", err)
 	}
 
-	// Execute request with timeout
-	httpClient := &http.Client{Timeout: 2 * time.Minute}
-	resp, err := httpClient.Do(req)
+	// Execute request (timeout inherited from ctx)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to reach cost analysis service: %w", err)
 	}
