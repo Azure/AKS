@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kube & Tell//Reviewing Real-world AKS Architectures//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:AKS Architecture Review Hour
+X-WR-TIMEZONE:America/Los_Angeles
+BEGIN:VEVENT
+DTSTART;TZID=America/Los_Angeles:20260611T080000
+DTEND;TZID=America/Los_Angeles:20260611T090000
+RRULE:FREQ=MONTHLY;BYDAY=2TH
+SUMMARY:AKS Architecture Review Hour
+DESCRIPTION:Monthly architecture review session with the AKS team. Join to get your architectures reviewed and learn best practices.
+URL:https://aka.ms/aks/architecture-review/joinnow
+LOCATION:https://aka.ms/AKS/CommunityCalls
+END:VEVENT
+END:VCALENDAR
