@@ -71,10 +71,10 @@ const eventTypes: EventType[] = [
     id: "kube&tell-podcast",
     label: "Kube & Tell",
     description:
-      "Live-recorded podcast reviewing real-world AKS architectures",
+      "Live, community-driven podcast for Kubernetes practitioners",
     schedule:
       "8 AM Pacific / 11 AM Eastern / 4 PM GMT / 8:30 PM IST",
-    icsHref: "/webinars/calendar/AKS-Architecture-Review-Hour.ics",
+    icsHref: "/webinars/calendar/Kube & Tell _ Real Clusters, Real Conversations.ics",
     joinHref: "https://aka.ms/aks/architecture-review/joinnow",
     agendaBasePath: "/webinars/agenda/architecture-review.md",
     agendaMode: "static",

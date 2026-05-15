@@ -4,6 +4,9 @@ month: June 2026
 
 # Agenda
 
+## Architecture Review Hour
+Description: Platform Management at large enterprise  
+
 ## Introduction
 Presenter: Paul Yu, Host
 
