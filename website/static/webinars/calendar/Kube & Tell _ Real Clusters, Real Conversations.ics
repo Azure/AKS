@@ -1,0 +1,51 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Microsoft//Outlook Web//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:040000008200E00074C5B7101A82E00807EA060B2EBB732D67E4DC01000000000000000
+ 0100000005CFF54D6DAA4CE47AE6499C29C2B99BD
+DTSTAMP:20260515T124512Z
+DTSTART:20260611T150000Z
+DTEND:20260611T160000Z
+RECURRENCE-ID:20260611T150000Z
+SUMMARY:Kube & Tell : Real Clusters\, Real Conversations
+DESCRIPTION:Kube &amp\; Tell is a live\, community-driven podcast for Kuber
+ netes practitioners who'd rather show than tell. Expect hands-on walkthrou
+ ghs\, deep technical dives\, and candid conversations spanning AKS\, upstr
+ eam Kubernetes\, self-hosted clusters\, and the wider cloud-native\n ecosy
+ stem.\n\nBest of all\, we record it live. So as the audience\, you can bri
+ ng in your questions\, your hot takes\, and your war stories. The mic is o
+ pen.\n\n\n\n\nAgenda and Join Link:&nbsp\;https://aka.ms/aks/communitycall
+ s
+X-ALT-DESC;FMTTYPE=text/html:<div class="cal_5b4f">\n<div>\n<div class="x_e
+ lementToProof" style="font-family:Aptos\,Aptos_EmbeddedFont\,Aptos_MSFontS
+ ervice\,Calibri\,Helvetica\,sans-serif\; font-size:11pt\; color:rgb(0\,0\,
+ 0)">\nKube &amp\; Tell is a live\, community-driven podcast for Kubernetes
+  practitioners who'd rather show than tell. Expect hands-on walkthroughs\,
+  deep technical dives\, and candid conversations spanning AKS\, upstream K
+ ubernetes\, self-hosted clusters\, and the wider cloud-native\n ecosystem.
+ </div>\n<div class="x_elementToProof" style="font-family:Aptos\,Aptos_Embe
+ ddedFont\,Aptos_MSFontService\,Calibri\,Helvetica\,sans-serif\; font-size:
+ 11pt\; color:rgb(0\,0\,0)">\nBest of all\, we record it live. So as the au
+ dience\, you can bring in your questions\, your hot takes\, and your war s
+ tories. The mic is open.</div>\n<div class="x_elementToProof" style="font-
+ family:Aptos\,Aptos_EmbeddedFont\,Aptos_MSFontService\,Calibri\,Helvetica\
+ ,sans-serif\; font-size:11pt\; color:rgb(0\,0\,0)">\n<br>\n</div>\n<div cl
+ ass="x_elementToProof" style="font-family:Aptos\,Aptos_EmbeddedFont\,Aptos
+ _MSFontService\,Calibri\,Helvetica\,sans-serif\; font-size:11pt\; color:rg
+ b(0\,0\,0)">\n<b>Agenda and Join Link:</b>&nbsp\;<a href="https://aka.ms/a
+ ks/communitycalls" target="_blank" rel="noopener noreferrer" data-auth="No
+ tApplicable" id="OWAb7168000-e18c-6501-95db-1805504149c1" class="x_OWAAuto
+ Link">https://aka.ms/aks/communitycalls</a></div>\n<div class="x_elementTo
+ Proof" style="font-family:Aptos\,Aptos_EmbeddedFont\,Aptos_MSFontService\,
+ Calibri\,Helvetica\,sans-serif\; font-size:11pt\; color:rgb(0\,0\,0)">\n<b
+ r>\n</div>\n<div style="font-family:Aptos\,Aptos_EmbeddedFont\,Aptos_MSFon
+ tService\,Calibri\,Helvetica\,sans-serif\; font-size:11pt\; color:rgb(0\,0
+ \,0)">\n<br>\n</div>\n</div>\n</div>\n
+ORGANIZER;CN=Sanket Bakshi:mailto:Sanket.Bakshi@microsoft.com
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

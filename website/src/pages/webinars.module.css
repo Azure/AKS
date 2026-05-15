@@ -70,10 +70,12 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.6rem;
-  background: var(--ifm-color-primary);
-  color: #fff;
+  background: color-mix(in srgb, var(--event-accent) 10%, var(--ifm-background-surface-color) 90%);
+  color: var(--ifm-font-color-base);
+  border: 1px solid color-mix(in srgb, var(--event-accent) 22%, var(--ifm-color-emphasis-200) 78%);
+  border-left: 4px solid var(--event-accent);
   border-radius: 6px;
-  padding: 0.55rem 1rem;
+  padding: 0.75rem 1rem;
   margin-bottom: 0.75rem;
   font-size: 0.82rem;
 }
@@ -88,12 +90,13 @@
   text-transform: uppercase;
   letter-spacing: 0.6px;
   font-size: 0.68rem;
-  background: rgba(255, 255, 255, 0.18);
-  padding: 0.12rem 0.4rem;
+  background: color-mix(in srgb, var(--event-accent) 14%, transparent);
+  color: var(--event-accent);
+  padding: 0.18rem 0.48rem;
   border-radius: 3px;
 }
 .callStripSchedule {
-  opacity: 0.92;
+  color: var(--ifm-color-emphasis-800);
   font-size: 0.8rem;
 }
 .callStripActions {
@@ -104,41 +107,38 @@
 }
 .calendarLink {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ifm-color-emphasis-800);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .calendarLink:hover {
-  color: #fff;
+  color: var(--event-accent);
+}
+.linkDivider {
+  color: var(--ifm-color-emphasis-500);
+  font-size: 0.78rem;
 }
 
-/* Prominent Join Now button */
 .joinBtn {
-  background: #fff !important;
-  color: var(--ifm-color-primary) !important;
-  border: none !important;
+  background: var(--event-accent) !important;
+  color: #fff !important;
+  border: 1px solid var(--event-accent) !important;
   font-weight: 700 !important;
-  font-size: 0.85rem !important;
-  padding: 0.45rem 1.4rem !important;
+  font-size: 0.8rem !important;
+  padding: 0.4rem 1.1rem !important;
   border-radius: 4px;
-  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
-  animation: joinPulse 2s ease-in-out infinite;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: none;
+  animation: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 .joinBtn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.35);
-  animation: none;
-  color: var(--ifm-color-primary-darker) !important;
-}
-@keyframes joinPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.45); }
-  50%      { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+  background: color-mix(in srgb, var(--event-accent) 88%, black 12%) !important;
+  border-color: color-mix(in srgb, var(--event-accent) 88%, black 12%) !important;
+  color: #fff !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .joinBtn {
-    animation: none;
     transition: none;
   }
 }
@@ -151,19 +151,18 @@
 
 /* ── Agenda section ──────────────────────────────────────────────────────── */
 .agendaSection {
-  max-width: 960px;
-  margin: 1.5rem auto 2.5rem;
-  padding: 0 1.5rem;
+  margin: 0;
+  padding: 0;
 }
 .sectionHeader {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 .sectionHeader h2 {
   font-family: var(--ifm-heading-font-family);
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--ifm-color-primary);
   margin: 0;
@@ -174,81 +173,107 @@
   color: var(--ifm-color-emphasis-600);
 }
 .emptyState {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--ifm-color-emphasis-600);
-  padding: 1rem 0;
+  padding: 0.5rem 0;
 }
 
-/* Card grid */
-.agendaGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 0.75rem;
+/* Compact bullet-point agenda list */
+.agendaList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
-.agendaCard {
-  background: var(--ifm-background-surface-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 6px;
-  padding: 0.75rem 1rem;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+.agendaListItem {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-100);
 }
-.agendaCard:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-color: var(--ifm-color-emphasis-300);
+.agendaListItem:last-child {
+  border-bottom: none;
 }
-.agendaCard.featured {
-  border-left: 3px solid var(--ifm-color-primary);
-}
-.agendaCardTitle {
-  font-size: 0.88rem;
+.agendaItemTitle {
   font-weight: 600;
-  margin: 0 0 0.25rem;
-  color: var(--ifm-color-primary);
-  line-height: 1.3;
+  color: var(--ifm-font-color-base);
 }
-.agendaPresenter {
-  font-size: 0.76rem;
-  color: var(--ifm-color-emphasis-700);
-  margin: 0 0 0.2rem;
+.agendaItemTitle.featured {
+  color: var(--ifm-color-primary);
+}
+.agendaItemMeta {
+  font-size: 0.74rem;
+  color: var(--ifm-color-emphasis-600);
   font-style: italic;
 }
-.agendaDescription {
-  font-size: 0.76rem;
-  color: var(--ifm-color-emphasis-600);
-  margin: 0 0 0.3rem;
-  line-height: 1.35;
-}
-.agendaBullets {
-  margin: 0.2rem 0 0 1rem;
-  padding: 0;
-  font-size: 0.76rem;
-  line-height: 1.4;
-}
-.agendaBullets li {
-  margin-bottom: 0.15rem;
-}
-
-@media screen and (max-width: 640px) {
-  .agendaGrid { grid-template-columns: 1fr; }
-  .agendaSection { margin: 1rem auto 2rem; padding: 0 1rem; }
+.agendaItemDescription {
+  display: block;
 }
 
 /* ── Dark-mode tweaks ────────────────────────────────────────────────────── */
-[data-theme="dark"] .agendaCard {
-  background: var(--ifm-background-surface-color);
+[data-theme="dark"] .eventBlock {
   border-color: var(--ifm-color-emphasis-400);
 }
-[data-theme="dark"] .agendaCard:hover {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+[data-theme="dark"] .agendaListItem {
+  border-bottom-color: var(--ifm-color-emphasis-300);
 }
-[data-theme="dark"] .agendaPresenter {
-  color: var(--ifm-color-emphasis-600);
-}
-[data-theme="dark"] .agendaDescription {
+[data-theme="dark"] .agendaItemMeta {
   color: var(--ifm-color-emphasis-500);
 }
 [data-theme="dark"] .callStrip {
-  background: var(--ifm-color-primary-dark);
+  background: color-mix(in srgb, var(--event-accent) 20%, var(--ifm-background-surface-color) 80%);
+  border-color: color-mix(in srgb, var(--event-accent) 35%, var(--ifm-color-emphasis-400) 65%);
+}
+[data-theme="dark"] .callStripSchedule,
+[data-theme="dark"] .calendarLink {
+  color: var(--ifm-color-emphasis-100);
+}
+
+/* ── Events container (side-by-side on desktop) ─────────────────────────── */
+.eventsContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.eventBlock {
+  --event-accent: var(--ifm-color-primary);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: var(--ifm-background-surface-color);
+}
+.communityBlock {
+  --event-accent: #2f6fed;
+  background:
+    linear-gradient(180deg, rgba(47, 111, 237, 0.08), transparent 110px),
+    var(--ifm-background-surface-color);
+}
+.reviewBlock {
+  --event-accent: #b96a16;
+  background:
+    linear-gradient(180deg, rgba(185, 106, 22, 0.09), transparent 110px),
+    var(--ifm-background-surface-color);
+}
+.eventBlockTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--event-accent);
+  margin: 0 0 0.35rem;
+}
+.eventBlockSummary {
+  margin: 0 0 0.9rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-700);
+}
+.eventBlock .sectionHeader h2 {
+  color: var(--event-accent);
+}
+
+@media screen and (max-width: 768px) {
+  .eventsContainer { grid-template-columns: 1fr; padding: 1rem; gap: 1.5rem; }
 }
 
 /* ── Utility ─────────────────────────────────────────────────────────────── */
