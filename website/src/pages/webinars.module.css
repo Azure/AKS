@@ -70,8 +70,10 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.6rem;
+  background: rgba(159, 98, 235, 0.1);
   background: color-mix(in srgb, var(--event-accent) 10%, var(--ifm-background-surface-color) 90%);
   color: var(--ifm-font-color-base);
+  border: 1px solid rgba(159, 98, 235, 0.22);
   border: 1px solid color-mix(in srgb, var(--event-accent) 22%, var(--ifm-color-emphasis-200) 78%);
   border-left: 4px solid var(--event-accent);
   border-radius: 6px;
@@ -90,6 +92,7 @@
   text-transform: uppercase;
   letter-spacing: 0.6px;
   font-size: 0.68rem;
+  background: rgba(159, 98, 235, 0.14);
   background: color-mix(in srgb, var(--event-accent) 14%, transparent);
   color: var(--event-accent);
   padding: 0.18rem 0.48rem;
@@ -220,7 +223,9 @@
   color: var(--ifm-color-emphasis-500);
 }
 [data-theme="dark"] .callStrip {
+  background: rgba(159, 98, 235, 0.2);
   background: color-mix(in srgb, var(--event-accent) 20%, var(--ifm-background-surface-color) 80%);
+  border-color: rgba(159, 98, 235, 0.35);
   border-color: color-mix(in srgb, var(--event-accent) 35%, var(--ifm-color-emphasis-400) 65%);
 }
 [data-theme="dark"] .callStripSchedule,

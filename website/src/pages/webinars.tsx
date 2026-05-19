@@ -402,6 +402,17 @@ function EventSection({ event }: { event: EventType }): ReactNode {
               {item.presenter && (
                 <span className={styles.agendaItemMeta}>{metaSeparator}{item.presenter}</span>
               )}
+
+              {item.bullets && item.bullets.length > 0 && (
+                 <ul className={styles.agendaList}>
+                   {item.bullets.map((bullet, bulletIdx) => (
+                     <li key={bulletIdx} className={styles.agendaListItem}>
+                       <span className={styles.agendaItemMeta}>{bullet}</span>
+                     </li>
+                   ))}
+                 </ul>
+               )}
+
             </li>
           ))}
         </ul>
