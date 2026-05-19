@@ -75,7 +75,7 @@ const eventTypes: EventType[] = [
     schedule:
       "8 AM Pacific / 11 AM Eastern / 4 PM GMT / 8:30 PM IST",
     icsHref: "/webinars/calendar/Kube & Tell _ Real Clusters, Real Conversations.ics",
-    joinHref: "https://aka.ms/aks/architecture-review/joinnow",
+    joinHref: "https://aka.ms/aks/kubeandtell/joinnow",
     agendaBasePath: "/webinars/agenda/architecture-review.md",
     agendaMode: "static",
     getNextDate: getNextArchitectureReviewDate,
