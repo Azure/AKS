@@ -1,7 +1,7 @@
 // Maintenance overview:
 // Agenda content and its month label are sourced exclusively from markdown files:
 //   Community Calls: /website/static/webinars/agenda/YYYY-MM.md (monthly files)
-//   Architecture Review Hour: /website/static/webinars/agenda/architecture-review.md (single file, updated in-place)
+//   Architecture Review Hour: /website/static/webinars/agenda/kube-and-tell.md (single file, updated in-place)
 // Frontmatter must include: month: Month YYYY (or a label for the session)
 // Each agenda section uses a second-level heading (##) followed by optional lines:
 //   Presenter: Name and title
@@ -76,9 +76,9 @@ const eventTypes: EventType[] = [
       "8 AM Pacific / 11 AM Eastern / 4 PM GMT / 8:30 PM IST",
     icsHref: "/webinars/calendar/Kube & Tell _ Real Clusters, Real Conversations.ics",
     joinHref: "https://aka.ms/aks/kubeandtell/joinnow",
-    agendaBasePath: "/webinars/agenda/architecture-review.md",
+    agendaBasePath: "/webinars/agenda/kube-and-tell.md",
     agendaMode: "static",
-    getNextDate: getNextArchitectureReviewDate,
+    getNextDate: getNextKubeAndTellDate,
   },
 ];
 
@@ -114,16 +114,16 @@ function getNextThirdWednesday(): Date {
 
 // Returns the next Architecture Review Hour date.
 // Known upcoming dates: June 11, 2026. After that, assume 2nd Thursday monthly.
-function getNextArchitectureReviewDate(): Date {
+function getNextKubeAndTellDate(): Date {
   const PST_OFFSET_MS = 8 * 60 * 60 * 1000;
   const nowUTC = Date.now();
   const nowPST = new Date(nowUTC - PST_OFFSET_MS);
   const todayMs = Date.UTC(nowPST.getUTCFullYear(), nowPST.getUTCMonth(), nowPST.getUTCDate());
 
   // Known fixed date
-  const knownDate = new Date(2026, 5, 11); // June 11, 2026
-  if (knownDate.getTime() >= todayMs) {
-    return knownDate;
+  const knownMs = Date.UTC(2026, 5, 11); // June 11, 2026
+  if (knownMs >= todayMs) {
+    return new Date(2026, 5, 11);
   }
 
   // Fallback: 2nd Thursday of each month
