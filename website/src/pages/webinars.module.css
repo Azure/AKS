@@ -211,6 +211,15 @@
 .agendaItemDescription {
   display: block;
 }
+.agendaBulletList {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.76rem;
+  color: var(--ifm-color-emphasis-700);
+}
+.agendaBulletItem {
+  margin: 0.18rem 0;
+}
 
 /* ── Dark-mode tweaks ────────────────────────────────────────────────────── */
 [data-theme="dark"] .eventBlock {
@@ -221,6 +230,9 @@
 }
 [data-theme="dark"] .agendaItemMeta {
   color: var(--ifm-color-emphasis-500);
+}
+[data-theme="dark"] .agendaBulletList {
+  color: var(--ifm-color-emphasis-300);
 }
 [data-theme="dark"] .callStrip {
   background: rgba(159, 98, 235, 0.2);

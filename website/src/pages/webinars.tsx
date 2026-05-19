@@ -228,6 +228,10 @@ function useMonthlyAgenda(basePath: string): MonthlyAgendaResult {
   });
 
   useEffect(() => {
+    if (!basePath) {
+      setState({ items: [], loading: false });
+      return;
+    }
     if (!ExecutionEnvironment.canUseDOM) {
       setState({ items: [], loading: false });
       return;
@@ -288,6 +292,10 @@ function useStaticAgenda(filePath: string): MonthlyAgendaResult {
   });
 
   useEffect(() => {
+    if (!filePath) {
+      setState({ items: [], loading: false });
+      return;
+    }
     if (!ExecutionEnvironment.canUseDOM) {
       setState({ items: [], loading: false });
       return;
@@ -339,7 +347,6 @@ function EventSection({ event }: { event: EventType }): ReactNode {
   const label = month || "Latest";
   const empty = !loading && items.length === 0;
   const nextDate = event.getNextDate();
-  const metaSeparator = ": ";
 
   return (
     <section className={styles.agendaSection}>
@@ -400,19 +407,17 @@ function EventSection({ event }: { event: EventType }): ReactNode {
                 </span>
               )}
               {item.presenter && (
-                <span className={styles.agendaItemMeta}>{metaSeparator}{item.presenter}</span>
+                <span className={styles.agendaItemMeta}>Presenter: {item.presenter}</span>
               )}
-
               {item.bullets && item.bullets.length > 0 && (
-                 <ul className={styles.agendaList}>
-                   {item.bullets.map((bullet, bulletIdx) => (
-                     <li key={bulletIdx} className={styles.agendaListItem}>
-                       <span className={styles.agendaItemMeta}>{bullet}</span>
-                     </li>
-                   ))}
-                 </ul>
-               )}
-
+                <ul className={styles.agendaBulletList}>
+                  {item.bullets.map((bullet, bulletIdx) => (
+                    <li key={bulletIdx} className={styles.agendaBulletItem}>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
