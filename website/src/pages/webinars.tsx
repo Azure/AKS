@@ -327,8 +327,6 @@ function Hero(): ReactNode {
         <p className={styles.heroSubtitle}>
           Monthly public sessions with the AKS Product Team.
         </p>
-        <div className={styles.heroButtons}>
-        </div>
       </div>
     </div>
   );
@@ -425,9 +423,9 @@ export default function Webinars(): ReactNode {
             key={evt.id}
             className={`${styles.eventBlock} ${evt.id === "community-calls" ? styles.communityBlock : styles.reviewBlock}`}
           >
-            <Heading as="h2" className={styles.eventBlockTitle}>
-              {evt.label}
-            </Heading>
+            <div className={styles.eventBlockTitle}>
+            {evt.label}
+            </div>
             <p className={styles.eventBlockSummary}>{evt.description}</p>
             <EventSection event={evt} />
           </div>
