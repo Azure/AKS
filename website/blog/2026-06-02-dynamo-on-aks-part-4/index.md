@@ -12,7 +12,8 @@ tags: ["dynamo-series", "ai", "performance", "open-source"]
 [Anish Maddipoti](https://www.linkedin.com/in/anish-maddipoti/),
 [Rohan Varma](https://www.linkedin.com/in/rohan-s-varma/),
 [Clement Pakkam Isaac](https://www.linkedin.com/in/clement-ai/), and
-[Stephen Mccoulough](https://www.linkedin.com/in/stephen-mcc/)
+[Stephen Mccoulough](https://www.linkedin.com/in/stephen-mcc/)
+
 from NVIDIA.*
 
 In the [first three blog posts](https://blog.aks.azure.com/tags/dynamo-series) of this series, we introduced [NVIDIA Dynamo](https://www.nvidia.com/en-us/ai/dynamo/) on AKS, covered SLO-driven scaling with the Dynamo Planner and Profiler, and explored KV-cache-aware routing. In this post, we move up one layer of the inference stack: how to describe and operate the distributed inference workload on a Kubernetes cluster.
@@ -54,7 +55,8 @@ In an inference deployment, Dynamo provides the serving stack: inference workers
 Grove's user-facing model is built around three hierarchical primitives that together describe the full shape of an inference deployment, from individual roles up to the complete service:
 
 | Grove primitive | What it represents | Example in model inference |
-| --- | --- | --- |
+| --- | --- | --- |
+
 | PodClique | A group of pods with the same role and pod template. It has its own replica count, resource needs, and optional autoscaling policy | Router pods, prefill workers, decode workers, frontend pods |
 | PodCliqueScalingGroup | A group of PodClique objects that must scale together while preserving role ratios | A multi-node prefill instance with one leader and four workers |
 | PodCliqueSet | The top-level workload object that describes the full inference system | Router + prefill group + decode group, with startup order and scaling policy |
@@ -87,7 +89,7 @@ Scheduling is only the first step. Distributed serving systems often have startu
 
 Grove has multiple scaling boundaries in a hierarchy model: a PodClique for one role, a PodCliqueScalingGroup for a complete leader-worker unit, and a PodCliqueSet for the full service. This preserves independent scaling even when scheduling is coordinated: prefill and decode can be scheduled as viable units while still scaling separately in response to various bottlenecks.
 
-Different scaling boundaries also integrate well with the Dynamo Planner (covered in [Part 2 of this blog series](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2)). While the Planner reasons about traffic shape, sequence lengths, and TTFT or ITL targets to decide when capacity should change, Grove ensures this decision targets the appropriate Grove workload boundary: a PodClique for a single role, a PodCliqueScalingGroup for a complete leader-worker instance, or the PodCliqueSet for the end-to-end inference service. Ultimately, Planner-driven scale-out doesn't just add pods; it adds a complete, gang-scheduled inference instance that is ready to serve.
+Different scaling boundaries also integrate well with the Dynamo Planner (covered in [Part 2 of this blog series](https://blog.aks.azure.com/2026/01/22/dynamo-on-aks-part-2)). While the Planner reasons about traffic shape, sequence lengths, and time-to-first-token (TTFT) or inter-token latency (ITL) targets to decide when capacity should change, Grove ensures this decision targets the appropriate Grove workload boundary: a PodClique for a single role, a PodCliqueScalingGroup for a complete leader-worker instance, or the PodCliqueSet for the end-to-end inference service. Ultimately, Planner-driven scale-out doesn't just add pods; it adds a complete, gang-scheduled inference instance that is ready to serve.
 
 ## Modeling inference deployments with Grove
 
