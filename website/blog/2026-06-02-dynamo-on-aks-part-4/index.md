@@ -12,9 +12,7 @@ tags: ["dynamo-series", "ai", "performance", "open-source"]
 [Anish Maddipoti](https://www.linkedin.com/in/anish-maddipoti/),
 [Rohan Varma](https://www.linkedin.com/in/rohan-s-varma/),
 [Clement Pakkam Isaac](https://www.linkedin.com/in/clement-ai/), and
-[Stephen Mccoulough](https://www.linkedin.com/in/stephen-mcc/)
-
-from NVIDIA.*
+[Stephen Mccoulough](https://www.linkedin.com/in/stephen-mcc/) from NVIDIA.*
 
 In the [first three blog posts](https://blog.aks.azure.com/tags/dynamo-series) of this series, we introduced [NVIDIA Dynamo](https://www.nvidia.com/en-us/ai/dynamo/) on AKS, covered SLO-driven scaling with the Dynamo Planner and Profiler, and explored KV-cache-aware routing. In this post, we move up one layer of the inference stack: how to describe and operate the distributed inference workload on a Kubernetes cluster.
 
@@ -56,7 +54,6 @@ Grove's user-facing model is built around three hierarchical primitives that tog
 
 | Grove primitive | What it represents | Example in model inference |
 | --- | --- | --- |
-
 | PodClique | A group of pods with the same role and pod template. It has its own replica count, resource needs, and optional autoscaling policy | Router pods, prefill workers, decode workers, frontend pods |
 | PodCliqueScalingGroup | A group of PodClique objects that must scale together while preserving role ratios | A multi-node prefill instance with one leader and four workers |
 | PodCliqueSet | The top-level workload object that describes the full inference system | Router + prefill group + decode group, with startup order and scaling policy |
@@ -103,7 +100,7 @@ Grove's [PodCliqueSet API](https://github.com/ai-dynamo/grove/blob/main/docs/api
 
 The Grove GitHub repository includes [reference manifests](https://github.com/ai-dynamo/grove/tree/main/operator/samples/user-guide/01_core-concepts) for these deployment patterns, giving teams concrete starting points for mapping their own serving architecture into PodCliques, PodCliqueScalingGroups, and PodCliqueSets.
 
-See Grove in action below as it orchestrates a multi-node Llama 3.1 70B deployment on AKS. The demo serves [Llama-3.1-70B-Instruct-FP8](https://huggingface.co/nvidia/Llama-3.1-70B-Instruct-FP8) on 16x NVIDIA H100 (2 nodes of [Azure Standard_ND96isr_H100_v5](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndh100v5-series?tabs=sizebasic)) with tp=16. The walkthrough shows a DynamoGraphDeployment being translated into Grove resources, worker pods landing across H100 nodes, and scale-out adding a second gang-scheduled two-pod worker as a grouped unit.
+See Grove in action below as it orchestrates a multi-node Llama 3.1 70B deployment on AKS. The demo serves [Llama-3.1-70B-Instruct-FP8](https://huggingface.co/nvidia/Llama-3.1-70B-Instruct-FP8) on 16x NVIDIA H100 (2 nodes of [Azure Standard_ND96isr_H100_v5](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ndh100v5-series)) with tp=16. The walkthrough shows a DynamoGraphDeployment being translated into Grove resources, worker pods landing across H100 nodes, and scale-out adding a second gang-scheduled two-pod worker as a grouped unit.
 
 [![Demo: Multi-node inference with NVIDIA Dynamo + Grove on AKS](https://asciinema.org/a/TLoDssztIJ3XZVpo.svg)](https://asciinema.org/a/TLoDssztIJ3XZVpo)
 
