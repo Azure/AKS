@@ -14,7 +14,7 @@ tags: ["dynamo-series", "ai", "performance", "open-source"]
 [Clement Pakkam Isaac](https://www.linkedin.com/in/clement-ai/), and
 [Stephen Mccoulough](https://www.linkedin.com/in/stephen-mcc/) from NVIDIA.*
 
-In the [first three blog posts](https://blog.aks.azure.com/tags/dynamo-series) of this series, we introduced [NVIDIA Dynamo](https://www.nvidia.com/en-us/ai/dynamo/) on AKS, covered SLO-driven scaling with the Dynamo Planner and Profiler, and explored KV-cache-aware routing. In this post, we move up one layer of the inference stack: how to describe and operate the distributed inference workload on a Kubernetes cluster.
+In the [first three blog posts](https://blog.aks.azure.com/tags/dynamo-series) of this series, we introduced [NVIDIA Dynamo](https://www.nvidia.com/en-us/ai/dynamo/) on AKS, covered SLO-driven scaling with the Dynamo Planner and Profiler, and explored KV-cache-aware routing to establish the foundations for high-performance LLM serving. In this post, we move up one layer of the inference stack: how to describe and operate the distributed inference workload on a Kubernetes cluster.
 
 As inference deployments evolve from simple model-serving replicas to systems with disaggregated prefill and decode phases, multi-node model instances, and explicit startup dependencies, an inference deployment benefits from a single API that describes the full serving pipeline: which roles exist, how they relate, and what constitutes a **deployable unit** of inference-serving capacity.
 
