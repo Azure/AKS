@@ -536,3 +536,11 @@ simon-waight:
   socials:
     linkedin: simon-waight
     github: sjwaight
+
+ralph-squillace:
+  name: Ralph Squillace
+  title: Principal Product Manager for Azure Upstream
+  url: https://opensource.microsoft.com/blog/author/ralph-squillace/
+  image_url: https://github.com/squillace.png
+  socials:
+    github: squillace
