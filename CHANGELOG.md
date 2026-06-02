@@ -16,7 +16,6 @@
 * Kubernetes Version [1.36 Preview](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md) is being rolled out. [PR#15260377](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15260377) (PM: @kaarthis)
 * Kubernetes patch versions [1.35.4](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md), [1.34.7](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md), and [1.33.11](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md) are now available. These builds use Go 1.25.9, which includes fixes for customer-requested CVEs (CVE-2026-27140, CVE-2026-27143, CVE-2026-27144, CVE-2026-32282, CVE-2026-32283, CVE-2026-32288, CVE-2026-32289). [PR#15662139](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15662139) (PM: @kaarthis)
 * Kubernetes patch versions [1.35.5](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md), [1.34.8](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md), and [1.33.12](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md) are now available. [PR#15899050](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15899050) (PM: @kaarthis)
-* 
 
 #### Features
 
