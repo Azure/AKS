@@ -78,11 +78,21 @@
 * [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview) add-on has been updated with the May release. [PR#15698784](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15698784) (PM: @riychoudhary)
 * [Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision) Karpenter provider has been updated to [`v1.12.1`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.12.1). [PR#15608149](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15608149) (PM: @wilsondarko), [PR#15816945](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15816945) (PM: @wilsondarko)
 * AKS node images have been updated to AgentBaker [`v0.20260527.0`](https://github.com/Azure/AgentBaker/releases), incorporating the latest weekly SIG release and node image patches. [PR#15905939](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15905939) (PM: @allyford)
-* Windows node images have been updated to build `v20260513`:
-  * Server 2022 Gen1/Gen2 – [`20348.5139.260513`](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/2022-containerd/20348.5139.260513.txt)
-  * Server 23H2 Gen1/Gen2 – [`25398.2330.260513`](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/23H2/25398.2330.260513.txt)
-  * Server 2025 Gen1/Gen2 – [`26100.32860.260513`](https://github.com/Azure/AgentBaker/blob/main/vhdbuilder/release-notes/AKSWindows/2025/26100.32860.260513.txt)
-  * [PR#15737675](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/15737675) (PM: @allyford)
+* AKS Windows images:
+  * Windows Server 2022 - [20348.5139.260513](vhd-notes/AKSWindows/2022/20348.5139.260513.txt).
+  * Windows Server 2025 - [26100.32860.260513](vhd-notes/AKSWindows/2025/26100.32860.260513.txt).
+  * Windows Server 23H2 - [25398.2330.260513](vhd-notes/AKSWindows/23H2/25398.2330.260513.txt).
+* AKS Azure Linux images:
+  * v3.0 - [202605.05.1](vhd-notes/AzureLinuxv3/202605.05.1.txt).
+  * v3.0 - [202605.14.0](vhd-notes/AzureLinuxv3/202605.14.0.txt).
+  * v3.0 - [202605.27.0](vhd-notes/AzureLinuxv3/202605.27.0.txt).
+* AKS Ubuntu images:
+  * Ubuntu 22.04 - [202605.05.1](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202605.05.1.txt).
+  * Ubuntu 22.04 - [202605.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202605.14.0.txt).
+  * Ubuntu 22.04 - [202605.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202605.27.0.txt).
+  * Ubuntu 24.04 - [202605.05.1](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.05.1.txt).
+  * Ubuntu 24.04 - [202605.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.14.0.txt).
+  * Ubuntu 24.04 - [202605.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.27.0.txt).
 
 ## Release Notes - 2026-04-28
 
