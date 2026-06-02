@@ -1,8 +1,8 @@
 # Azure Kubernetes Service Changelog
 
-## Release Notes 2026-05-29
+## Release Notes - 2026-05-29
 
-> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
 
 ### Announcements of upcoming changes and retirements
 
