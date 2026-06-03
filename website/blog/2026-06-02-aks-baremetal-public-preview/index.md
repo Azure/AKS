@@ -8,9 +8,7 @@ authors:
 tags: ["aks-on-baremetal", "fleet-manager"]
 ---
 
-# Announcing the public preview of AKS on bare metal
-
-*AKS runs everywhere — now on bare metal at the edge*
+AKS runs everywhere — now on bare metal at the edge.
 
 Our vision for Azure Kubernetes Service has always been simple: AKS runs everywhere. The same Azure Kubernetes Service you run across Azure regions is the same platform you run in sovereign and private clouds, and on OEM hardware. One platform, every substrate — so that the skills, the tooling, and the operational model you already know come with you wherever your applications need to run.
 
