@@ -15,6 +15,8 @@ Our vision for Azure Kubernetes Service has always been simple: AKS runs everywh
 
 Today, we're adding the newest member to that family — and it answers one of the strongest signals we've heard from customers at the edge. **AKS now runs directly on bare-metal, small-form-factor devices at the edge, available today in public preview.**
 
+![An overview of the AKS on bare metal resource in Azure Portal](./AKS-on-baremetal-Overview.png)
+
 ## Why bare metal
 
 For years, customers have told us the same thing: the edge forces hard trade-offs on Kubernetes. They want the consistency of a managed Kubernetes platform in the places where their business actually happens — the retail back room, the factory floor, the quick-service restaurant, the branch office, the remote site. But the edge is not the datacenter. Space, power, and budget are constrained. Hardware is small and sometimes ruggedized. Connectivity is intermittent, and sites often need to keep running through disconnection.
