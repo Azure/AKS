@@ -3,8 +3,7 @@ title: "Announcing the public preview of AKS on bare metal"
 date: 2026-06-02
 description: "AKS on bare metal is now available in public preview!."
 authors:
-- SummerSmith
-- schumann-ge
+- summer-cefalu
 tags: ["bare-metal", "azure-local-sff"]
 ---
   
