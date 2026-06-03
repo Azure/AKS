@@ -1,3 +1,12 @@
+summer-cefalu:
+  name: Summer Cefalu
+  title: AKS Product Manager
+  url: https://github.com/SummerSmith
+  image_url: https://avatars.githubusercontent.com/SummerSmith
+  socials:
+    linkedin: Summer Smith
+    github: SummerSmith
+
 andy-zhang:
   name: Andy Zhang
   title: Principal Software Engineer for the Azure Kubernetes Service
