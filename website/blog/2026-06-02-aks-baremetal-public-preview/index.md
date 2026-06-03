@@ -20,7 +20,7 @@ Today, we're adding the newest member to that family — and it answers one of t
 
 ## Why bare metal
 
-For years, customers have told us the same thing: the edge forces hard trade-offs on Kubernetes. They want the consistency of a managed Kubernetes platform in the places where their business actually happens — the retail back room, the factory floor, the quick-service restaurant, the branch office, the remote site. But the edge is not the datacenter. Space, power, and budget are constrained. Hardware is small and sometimes ruggedized. Connectivity is intermittent, and sites often need to keep running through disconnection.
+For years, customers have told us the same thing: the edge forces hard trade-offs on Kubernetes. They want the consistency of a managed Kubernetes platform in the places where their business actually happens — the retail back room, the factory floor, the quick-service restaurant, the branch office, the remote site. But the edge is not the datacenter. Space, power, and budget are constrained. Hardware is small and sometimes ruggedized. Connectivity is intermittent, and sites often need to keep running through disconnection. Given the Kubernetes control plane runs locally on the device, deployed workloads continue to operate normally during connectivity loss. Only portal visibility and Azure management actions are interrupted until the connection is restored.
 
 What customers have asked us for is precise: run real Kubernetes directly on the hardware, with no hypervisor underneath and no virtualization layer to license or maintain; do it on lightweight edge hardware rather than datacenter-class servers; and let it keep operating through intermittent connectivity.
 
