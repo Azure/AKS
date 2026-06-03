@@ -17,6 +17,11 @@ agent:
   permalink: /agent
   description: AI agents and agent frameworks running on AKS.
 
+aks-on-baremetal:
+  label: AKS on bare metal
+  permalink: /aks-on-baremetal
+  description: Azure Kubernetes Service running on bare metal platforms.
+
 ai:
   label: AI
   permalink: /ai
