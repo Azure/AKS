@@ -1,3 +1,19 @@
+schumann-ge:
+  name: Schumann Ge
+  title: AKS Product Manager Lead
+  url: https://github.com/nnamuhcs/
+  image_url: https://avatars.githubusercontent.com/nnamuhcs
+  socials:
+    github: nnamuhcs
+
+summer-cefalu:
+  name: Summer Cefalu
+  title: AKS Product Manager
+  url: https://github.com/SummerSmith
+  image_url: https://avatars.githubusercontent.com/SummerSmith
+  socials:
+    github: SummerSmith
+
 andy-zhang:
   name: Andy Zhang
   title: Principal Software Engineer for the Azure Kubernetes Service
