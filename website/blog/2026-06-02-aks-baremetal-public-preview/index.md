@@ -1,10 +1,10 @@
 ---
 title: "Announcing the public preview of AKS on bare metal"
 date: 2026-06-02
-description: "AKS on bare metal is now available in public preview!."
+description: "AKS on bare metal is now available in public preview!"
 authors:
 - summer-cefalu
-tags: ["bare-metal", "azure-local-sff"]
+tags: ["aks-arc", "fleet-manager"]
 ---
   
 # Announcing the public preview of AKS on bare metal 
@@ -17,7 +17,7 @@ Today, we're adding the newest member to that family — and it answers one of t
 
 ## Why bare metal
 
-For years, cusotmers have told us the same thing: the edge forces hard trade-offs on Kubernetes. They want the consistency of a managed Kubernetes platform in the places where their business actually happens — the retail back room, the factory floor, the quick-service restaurant, the branch office, the remote site. But the edge is not the datacenter. Space, power, and budget are constrained. Hardware is small and sometimes ruggedized. Connectivity is intermittent, and sites often need to keep running through disconnection.
+For years, customers have told us the same thing: the edge forces hard trade-offs on Kubernetes. They want the consistency of a managed Kubernetes platform in the places where their business actually happens — the retail back room, the factory floor, the quick-service restaurant, the branch office, the remote site. But the edge is not the datacenter. Space, power, and budget are constrained. Hardware is small and sometimes ruggedized. Connectivity is intermittent, and sites often need to keep running through disconnection.
 
 What customers have asked us for is precise: run real Kubernetes directly on the hardware, with no hypervisor underneath and no virtualization layer to license or maintain; do it on lightweight edge hardware rather than datacenter-class servers; and let it keep operating through intermittent connectivity.
 
@@ -40,3 +40,5 @@ Because it's a first-class AKS cluster, it shows up in Azure Kubernetes Fleet Ma
 This is what "AKS everywhere" was always meant to become: not a fragmented collection of edge-specific products and tools, but one Kubernetes platform that follows your applications to every place they need to run — now including the smallest, most constrained, and most remote hardware at the edge.
 
 **AKS on bare metal is now in public preview.** We can't wait to see what you build on it.
+
+Join the preview today at [aka.ms/aks-edge-baremetal](https://aka.ms/aks-edge-baremetal).
