@@ -4,7 +4,7 @@ date: 2026-06-02
 description: "AKS on bare metal is now available in public preview!"
 authors:
 - summer-cefalu
-tags: ["aks-arc", "fleet-manager"]
+tags: ["aks-on-baremetal", "fleet-manager"]
 ---
   
 # Announcing the public preview of AKS on bare metal 
