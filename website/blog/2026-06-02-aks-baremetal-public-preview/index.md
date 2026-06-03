@@ -6,8 +6,8 @@ authors:
 - summer-cefalu
 tags: ["aks-on-baremetal", "fleet-manager"]
 ---
-  
-# Announcing the public preview of AKS on bare metal 
+
+# Announcing the public preview of AKS on bare metal
 
 *AKS runs everywhere — now on bare metal at the edge*
 
@@ -35,7 +35,7 @@ From there, everything happens in Azure. The machine is onboarded through the [A
 
 ## One consistent AKS experience, from cloud to edge
 
-Provisioning is only half the story. What matters at the edge is how you operate the cluster over time — and here the principle is simple: AKS on bare metal is just an AKS cluster. There's no edge-specific console, no separate operational model, no exceptions to learn. 
+Provisioning is only half the story. What matters at the edge is how you operate the cluster over time — and here the principle is simple: AKS on bare metal is just an AKS cluster. There's no edge-specific console, no separate operational model, no exceptions to learn.
 
 Because it's a first-class AKS cluster, it shows up in Azure Kubernetes Fleet Manager right alongside your cloud clusters, managed and monitored with the same controls and the same tooling you already use everywhere else. The same AKS, the same experience, consistent across cloud and edge — now including bare metal.
 
