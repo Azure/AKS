@@ -29,6 +29,8 @@ The experience is deliberately simple. On-site, someone plugs in a USB drive wit
 
 From there, everything happens in Azure. The machine is onboarded through the [Azure Local small form factor](https://learn.microsoft.com/en-us/azure/azure-local/whats-new) creation experience — create a site, upload the voucher, and the machine comes up as Provisioned. The cluster creation looks exactly like AKS anywhere else: configure Azure RBAC, set the control-plane networking, enable Azure Monitor, and deploy. When it completes, you have an AKS cluster running on Azure Linux, on bare metal, fully manageable from Azure: workloads, services, ingress, and Kubernetes upgrades, all without leaving the portal.
 
+![Upgrade your AKS on bare metal cluster via the Azure Portal](./aks-on-baremetal-upgrade.png)
+
 ## One consistent AKS experience, from cloud to edge
 
 Provisioning is only half the story. What matters at the edge is how you operate the cluster over time — and here the principle is simple: AKS on bare metal is just an AKS cluster. There's no edge-specific console, no separate operational model, no exceptions to learn. 
