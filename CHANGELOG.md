@@ -2,7 +2,7 @@
 
 ## Release Notes - 2026-05-29
 
-Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/).
+Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). Vulnerabilities addressed by AKS releases can be tracked at [CVE API viewer](https://cve-api.prod-aks.azure.com/viewer/index.html).
 
 ### Announcements of upcoming changes and retirements
 
@@ -10,17 +10,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Windows Server Annual Channel for Containers retired on AKS on May 15, 2026. 5B is the last image that AKS will produce for Windows Server Annual Channel. After 5B, AKS will no longer produce new Windows Server Annual Channel node images or provide security patches. You will not be able to create new node pools with Windows Server Annual Channel. On May 15, 2027, AKS will remove all existing Windows Annual Channel node images, which will cause scaling and remediation (reimage and redeploy) operations to fail. Customers must migrate their Windows Server Annual Channel node pools to Long Term Servicing Channel (LTSC) by following the [migration guide](https://learn.microsoft.com/azure/aks/upgrade-windows-os).
 * Windows Server 2019 retired on March 1, 2026 and its preview feature flag has been removed. You can expect the following impact: AKS no longer produces new node images or provides security patches. All existing node pools with Windows Server 2019 are unsupported. You will not be able to create new node pools in k8s 1.33+. Starting on April 1, 2027, AKS will remove all existing node images for Windows Server 2019, meaning that scaling operations will fail. For more information, see [aka.ms/aks/ws2019-retirement-github](https://aka.ms/aks/ws2019-retirement-github). 
 * Starting on June 8, 2026, AKS no longer supports Flatcar Container Linux for Azure Kubernetes Service (AKS) (preview). At that point, AKS will no longer produce new Flatcar Container Linux node images or provide security patches, and you'll be unable to create new node pools with Flatcar Container Linux. On September 8, 2026, AKS will remove all existing Flatcar Container Linux node images, causing scaling and remediation (reimage and redeploy) operations to fail. Migrate existing Flatcar Container Linux for AKS node pools to [Azure Container Linux for AKS](https://learn.microsoft.com/azure/azure-linux/tutorial-migrate-azure-container-linux-aks).
-* [Managed system node pools](aka.ms/aks/managedsystemnodepools) is now generally available for AKS Automatic. New AKS Automatic clusters preconfigure managed system node pool by default. If you have existing Automatic cluster without managed system node pools, you should recreate the cluster and migrate the workloads.
+* [Managed system node pools](https://aka.ms/aks/managedsystemnodepools) are now generally available for AKS Automatic. New AKS Automatic clusters preconfigure managed system node pools by default. If you have existing Automatic cluster without managed system node pools, you should recreate the cluster and migrate the workloads.
     * New AKS Automatic clusters now preconfigure [LocalDNS](https://learn.microsoft.com/azure/aks/localdns-custom) mode to `Required` by default, including new node pools added to existing Automatic clusters. Existing node pools are unchanged. 
     * Users with the Azure Kubernetes Service Contributor or Contributor role (with `Microsoft.ContainerService/deploymentSafeguards/write` permission) can now [edit the `excludedNamespaces` field for deployment safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards#excluding-namespaces) on Automatic clusters, controlling which policies apply to specific namespaces. 
-    * [Deployment safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) in Enforce mode and Pod Security Standards set to Baseline now allows pods on Automatic clusters to read the `/var/log` and `/hostfs` hostpaths (read-only), supporting log exporter scenarios.
+    * [Deployment safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) in Enforce mode and Pod Security Standards set to Baseline now allow pods on Automatic clusters to read the `/var/log` and `/hostfs` hostPath volumes (read-only), supporting log exporter scenarios.
     * Since AKS manages the system node pool on your behalf, AKS applies multiple layers of security restrictions: 
         * New AKS Automatic clusters with managed system node pools now block customer-supplied SSH keys. Existing Automatic clusters with managed system node pools keep their existing keys but can't add new ones; clusters without managed system node pools are unaffected. 
         * AKS Automatic clusters enforce a ValidatingAdmissionPolicy that blocks Services from setting `spec.externalIPs`, in line with the [upstream deprecation of Service externalIPs](https://kubernetes.io/blog/2026/05/14/kubernetes-v1-36-deprecation-and-removal-of-service-externalips/). The policy applies immediately to Automatic clusters with managed system node pools, and to Automatic clusters without managed system node pools starting in Kubernetes 1.36. 
-        * AKS Automatic clusters with managed system node pools denies `kubectl port-forward` for objects and pods running on the managed system node pool. 
+        * AKS Automatic clusters with managed system node pools deny `kubectl port-forward` for objects and pods running on the managed system node pool. 
         * AKS Automatic clusters with managed system node pools block read access to secrets in the `kube-system` namespace, except for known trusted identities. This mitigates the risk of attackers using the node bootstrap token to deploy pods on managed system node pools. 
         * AKS Automatic clusters with managed system node pools enforce stricter authorization on MutatingAdmissionPolicyBinding resources by blocking unauthorized mutation operations (create, update, patch, delete).
-        * For AKS versions prior to 1.36, AKS Automatic clusters with managed system node pools block all mutating admission resources (MutatingWebhookConfiguration, MutatingAdmissionPolicy, and MutatingAdmissionPolicyBinding) to reduce risk from unsafe mutations. Starting in AKS 1.36, Automatic clusters with managed system node pools allow a controlled subset of mutating admission configurations, provided they do not target the following sensitive resources: nodes, persistentVolumnes, certificatesigningrequests, and tokenreviews.
+        * For AKS versions prior to 1.36, AKS Automatic clusters with managed system node pools block all mutating admission resources (MutatingWebhookConfiguration, MutatingAdmissionPolicy, and MutatingAdmissionPolicyBinding) to reduce risk from unsafe mutations. Starting in AKS 1.36, Automatic clusters with managed system node pools allow a controlled subset of mutating admission configurations, provided they do not target the following sensitive resources: nodes, persistentvolumes, certificatesigningrequests, and tokenreviews.
    
 ### Release notes
 
@@ -72,7 +72,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium) has been updated:
   * Cilium [`v1.19.3`](https://github.com/cilium/cilium/releases/tag/v1.19.3) (agent, operator, ACNS, cilium-envoy, Hubble, ClusterMesh) for Kubernetes 1.36+.
   * Cilium [`v1.18.9`](https://github.com/cilium/cilium/releases/tag/v1.18.9) agent and operator images for Kubernetes 1.34.
-* [Advanced Container Networking Services (ACNS)](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) DNS proxy has been updated to v1.18.9-260520 on AKS 1.34+ and includes security patch updates addressing CVEs
+* [Advanced Container Networking Services (ACNS)](https://learn.microsoft.com/azure/aks/advanced-container-networking-services-overview) DNS proxy has been updated to v1.18.9-260520 on AKS 1.34+ and includes security patch updates addressing CVEs.
 * [Azure Policy add-on](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes) has been updated to v1.15.5-1 on AKS 1.30+ clusters and patches CVE-2026-25679, CVE-2026-27142, CVE-2026-27139, CVE-2026-32280, CVE-2025-68121, CVE-2025-61726, CVE-2025-61728, CVE-2026-32281, and CVE-2026-32283.
 * [Microsoft Defender for Containers](https://learn.microsoft.com/azure/defender-for-cloud/defender-for-containers-introduction) sensor has been upgraded to [`v0.9.53`](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v09-aks-135-or-by-helm) on AKS 1.35+ and [`v0.8.50`](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v08-aks-versions-134-and-below) on AKS earlier than 1.35. This update introduces malware scanning as a new optional capability that customers can enable, along with blocking support for the existing GA Drift Detection capability.
 * [Microsoft Defender for Containers](https://learn.microsoft.com/azure/defender-for-cloud/defender-for-containers-introduction) sensor [`v0.10`](https://learn.microsoft.com/azure/defender-for-cloud/defender-sensor-change-log#sensor-v010-deployed-by-helm-or-arc-for-k8s) is now available on AKS 1.36.
@@ -93,6 +93,8 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Ubuntu 24.04 - [202605.05.1](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.05.1.txt).
   * Ubuntu 24.04 - [202605.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.14.0.txt).
   * Ubuntu 24.04 - [202605.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.27.0.txt).
+
+---
 
 ## Release Notes - 2026-04-28
 
@@ -7789,4 +7791,3 @@ kubectl -n kube-system delete po -l k8s-app=kube-dns
 [8]: https://docs.microsoft.com/azure/aks/update-credentials
 
 [previews]: https://github.com/Azure/AKS/blob/master/previews.md
-
