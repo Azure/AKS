@@ -47,7 +47,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [LocalDNS](https://aka.ms/aks/localdns) is now automatically enabled on node pools running Kubernetes 1.36 or later. Node pools with preconfigured LocalDNS or upstream NodeLocal DNS, Cilium or Calico clusters with network policies enabled, and bring-your-own (BYO) CNI clusters are excluded. To disable it, see [aka.ms/aks/localdns](https://aka.ms/aks/localdns).
 * [Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision) Standard SKU clusters running Kubernetes 1.36 or later now default to LocalDNS mode `Preferred` on the default and system-surge `AKSNodeClass` resources, improving DNS resolution performance and resilience. Existing in-cluster `AKSNodeClass` specs are preserved. 
 * [Application routing](https://learn.microsoft.com/azure/aks/app-routing) gateways using the Gateway API now write access logs to stdout by default for the managed (meshless) Istio configuration. 
-* The [application routing](https://learn.microsoft.com/azure/aks/app-routing) operator now supports DNS and TLS integrations for the Gateway API. 
+* The [application routing](https://learn.microsoft.com/azure/aks/app-routing) operator now supports DNS and TLS integrations for the Gateway API, including the ability to configure TLS using Key Vault certificates via the CSI driver and publish DNS A records through ExternalDNS CRDs to map gateway hostnames to load balancer IPs in DNS zones.
 * AKS now allows migration from the `managedNATGatewayV2` outbound type to the `block` and `none` outbound types, supporting [network-isolated cluster](https://learn.microsoft.com/azure/aks/concepts-network-isolated) scenarios. Migration to other outbound types remains blocked.
 * AKS now validates pod CIDR ranges during cluster create and update for kubenet and [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/azure-cni-overlay) clusters. Clusters can no longer be created or updated with a pod CIDR that overlaps with reserved IP ranges (`172.30.0.0/16`, `172.31.0.0/16`), preventing potential in-cluster networking failures. Existing clusters with an overlapping pod CIDR are unaffected. See [CNI prerequisites](https://learn.microsoft.com/azure/aks/concepts-network-cni-overview#prerequisites).
 * AKS now rejects [Calico NPM and Azure NPM](https://learn.microsoft.com/azure/aks/use-network-policies) install and uninstall operations on clusters running Kubernetes versions earlier than 1.30. Requests are rejected at the API level with a descriptive error directing customers to upgrade to a newer supported Kubernetes version before retrying. Existing clusters already using Calico NPM or Azure NPM are unaffected.
@@ -93,7 +93,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
   * Ubuntu 24.04 - [202605.05.1](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.05.1.txt).
   * Ubuntu 24.04 - [202605.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.14.0.txt).
   * Ubuntu 24.04 - [202605.27.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202605.27.0.txt).
-
 ---
 
 ## Release Notes - 2026-04-28
