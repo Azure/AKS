@@ -242,7 +242,10 @@
 }
 [data-theme="dark"] .callStripSchedule,
 [data-theme="dark"] .calendarLink {
-  color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+}
+[data-theme="dark"] .callStripSchedule {
+  font-weight: 600;
 }
 
 /* ── Events container (side-by-side on desktop) ─────────────────────────── */
