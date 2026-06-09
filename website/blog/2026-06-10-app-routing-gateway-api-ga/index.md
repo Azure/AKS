@@ -1,5 +1,5 @@
 ---
-title: "App Routing Gateway API is generally available"
+title: "App Routing Gateway API is GA: Here's a Demo"
 date: "2026-06-08"
 description: "The AKS App Routing Gateway API implementation is now GA, with Azure DNS and Azure Key Vault TLS integration via the App Routing operator along with access logging on gateway proxies."
 authors: ["jaiveer-katariya"]
