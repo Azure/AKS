@@ -26,7 +26,7 @@ The rest of this post walks through both. We'll create a cluster, expose a sampl
 
 :::note Rollout
 
-App Routing Istio and the Managed Gateway API installation both went GA as part of the **AKS 20260428 release**, which has rolled out to all regions — those features are available everywhere today. The DNS/TLS operator integration and access-logging-by-default ship with the **AKS 20260529 release**; track region-by-region progress on the [AKS release tracker](https://releases.aks.azure.com/AKSRelease).
+App Routing Istio and the Managed Gateway API installation both went GA as part of the **AKS 20260428 release**, which has rolled out to all regions — those features are available everywhere today. The DNS/TLS operator integration and access-logging-by-default ship with the **AKS 20260529 release**; track region-by-region progress on the [AKS release tracker](https://releases.aks.azure.com/AKSRelease). Even following the release rolling out to your region, there may be some delays (on the order of a couple of days) that may prevent you from using it. In this case, it's best to use a region that AKS rolled out to earlier.
 
 :::
 
