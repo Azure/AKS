@@ -47,7 +47,7 @@ At preview, DNS and TLS automation was a major piece of the ingress-nginx experi
 
 ## Demo: from cluster create to HTTPS-with-DNS
 
-The rest of this post is a hands-on walkthrough that takes you through our newly-GA'd feautres along with the enhancements we're so excited about. To follow along you'll need:
+The rest of this post is a hands-on walkthrough that takes you through our newly-GA'd features along with the enhancements we're so excited about. To follow along you'll need:
 
 - `azure-cli` `2.86.0` or later (`az --version` to check, `az upgrade` to update).
 - An Azure subscription and resource group, plus permission to create resources in it.
