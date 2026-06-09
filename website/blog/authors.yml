@@ -560,3 +560,12 @@ ralph-squillace:
   image_url: https://github.com/squillace.png
   socials:
     github: squillace
+
+pradeep-gayam:
+  name: Pradeep Kumar Gayam
+  title: Software Engineer, AKS
+  url: https://github.com/msftpgayam
+  image_url: https://github.com/msftpgayam.png
+  page: true
+  socials:
+    github: msftpgayam
