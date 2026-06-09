@@ -25,7 +25,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - ganga1980
-              - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Azure Monitor
@@ -38,7 +37,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - vishiy
-              - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Policy
@@ -150,18 +148,6 @@ configuration:
               mentionees:
               - Azure/aks-portal
               - smsft
-              - aritraghosh
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True
-        - if:
-          - hasLabel:
-              label: client/portal
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - Azure/aks-portal
               - chandraneel
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -265,7 +251,6 @@ configuration:
               mentionees:
               - vishiy
               - saaror
-              - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Log Analytics
@@ -279,7 +264,6 @@ configuration:
               mentionees:
               - vishiy
               - saaror
-              - aritraghosh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Azure China
@@ -303,8 +287,6 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - therealmitchconnors
-              - Vyshnavi-MSFT
               - JackStromberg
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -318,8 +300,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - JackStromberg
-              - Vyshnavi-MSFT
-              - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # App Gateway
@@ -331,9 +311,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - therealmitchconnors
               - JackStromberg
-              - Vyshnavi-MSFT
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Upstream - Helm
@@ -359,7 +337,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - sozercan
-              - ritazh
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Service Mesh
@@ -470,9 +447,7 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - allyford
-              - wdarko1
-              - stl327
+              - djsly
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Service resiliency
