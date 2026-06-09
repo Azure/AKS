@@ -1,6 +1,6 @@
 ---
 title: "App Routing Gateway API is GA: Here's a Demo"
-date: "2026-06-08"
+date: "2026-06-10"
 description: "The AKS App Routing Gateway API implementation is now GA, with Azure DNS and Azure Key Vault TLS integration via the App Routing operator along with access logging on gateway proxies."
 authors: ["jaiveer-katariya"]
 tags:
@@ -11,7 +11,7 @@ tags:
   - dns
   - tls
 keywords: ["AKS", "Gateway API", "App Routing", "Istio", "ExternalDNS", "Azure DNS", "Azure Key Vault", "TLS", "Kubernetes"]
-image: ./Designer.png
+image: ./Designer.jpg
 ---
 
 The AKS App Routing add-on's Kubernetes Gateway API implementation — `approuting-istio` — is **generally available**. Together with that, the **Managed Gateway API installation** for AKS is also GA, so the CRDs, the controller stack, and the gateway data plane you need to run Gateway API on AKS are all now first-class, supported features.
