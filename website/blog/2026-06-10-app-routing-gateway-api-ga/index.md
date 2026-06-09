@@ -14,14 +14,14 @@ keywords: ["AKS", "Gateway API", "App Routing", "Istio", "ExternalDNS", "Azure D
 image: ./Designer.png
 ---
 
-The AKS application routing add-on's Kubernetes Gateway API implementation — `approuting-istio` — is **generally available**. Together with that, the **Managed Gateway API installation** for AKS is also GA, so the CRDs, the controller stack, and the gateway data plane you need to run Gateway API on AKS are all now first-class, supported features.
+The AKS App Routing add-on's Kubernetes Gateway API implementation — `approuting-istio` — is **generally available**. Together with that, the **Managed Gateway API installation** for AKS is also GA, so the CRDs, the controller stack, and the gateway data plane you need to run Gateway API on AKS are all now first-class, supported features.
 
 <!-- truncate -->
 
 Since [our March preview announcement](/blog/2026/03/18/app-routing-gateway-api), we've also shipped two of our most requested capabilities that gated a real production story for Gateway API on AKS:
 
 - **Azure DNS and Azure Key Vault, wired in for you.** No more manually deploying a `SecretProviderClass`, a sync pod, or a separate `external-dns` instance just to get a TLS-terminated, DNS-resolvable hostname. Drop two `tls.options` on a listener, apply an `ExternalDNS` CR, and you're done.
-- **Access logs, on out of the box.** Every gateway proxy writes a structured JSON access log line per request to stdout. `kubectl logs` the gateway deployment and you're already debugging — no `Telemetry` resource, no `EnvoyFilter`, no opt-in flag. This closes one of the last parity gaps with the nginx experience our users are accustomed to.
+- **Access logs, enabled out of the box.** Every gateway proxy writes a structured JSON access log line per request to stdout. `kubectl logs` the gateway deployment and you're already debugging — no `Telemetry` resource, no `EnvoyFilter`, no opt-in flag. This closes one of the last parity gaps with the nginx experience our users are accustomed to.
 
 The rest of this post walks through both. We'll create a cluster, expose a sample app over the Gateway API, see access logs land on stdout, and then layer on DNS + TLS using the `ClusterExternalDNS` and `ExternalDNS` CRDs plus listener TLS options. A working DNS zone and Key Vault are part of the demo, so by the end you'll have HTTPS records resolving in a zone you own.
 
@@ -337,7 +337,7 @@ EOF
 done
 ```
 
-The `azure.workload.identity/use: "true"` label is required — it's what tells the AKS Workload Identity webhook to inject the projected OIDC token volume and the `AZURE_*` env vars into pods that consume this SA. Without it, the operator's placeholder pod gets a default Kubernetes SA token instead of one signed by your cluster's OIDC issuer, and Entra rejects it with `AADSTS700211: No matching federated identity record`.
+The `azure.workload.identity/use: "true"` label is required; it's what tells the AKS Workload Identity webhook to inject the projected OIDC token volume and the `AZURE_*` env vars into pods that consume this SA. Without it, the operator's placeholder pod gets a default Kubernetes SA token instead of one signed by your cluster's OIDC issuer, and Entra rejects it with `AADSTS700211: No matching federated identity record`.
 
 The same ServiceAccount drives both the DNS controller and the listener's TLS sync. One identity, two roles in Azure, one SA per namespace.
 
@@ -561,7 +561,7 @@ echo "Resolved a.${ZONE_NAME} -> $GATEWAY_IP via $NS"
 curl -k -I --resolve "a.${ZONE_NAME}:443:${GATEWAY_IP}" "https://a.${ZONE_NAME}/get"
 ```
 
-You should see `HTTP/2 200`. The certificate Envoy presents is the one synced from Key Vault — and re-tail the gateway deployment's logs (`kubectl logs deploy/a-gateway-approuting-istio -n app-a`) to see the access log line for the request.
+You should see `HTTP/2 200`. The certificate Envoy presents is the one synced from Key Vault. You can re-tail the gateway deployment's logs (`kubectl logs deploy/a-gateway-approuting-istio -n app-a`) to see the access log line for the request.
 
 ## Next steps
 
