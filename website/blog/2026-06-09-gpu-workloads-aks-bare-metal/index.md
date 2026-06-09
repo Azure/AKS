@@ -3,10 +3,10 @@ title: "Deploying GPU workloads on AKS on bare metal"
 date: 2026-06-09
 description: "Run NVIDIA GPU workloads on AKS on bare metal using the NVIDIA GPU Operator, the preinstalled Azure Linux driver, and a sample CUDA workload."
 authors: [pradeep-gayam]
-tags: [aks-on-baremetal, gpu, ai, kubernetes]
+tags: [aks-on-baremetal, gpu, ai]
 ---
 
-AI and machine learning workloads are moving to the edge, and many customers already have NVIDIA GPU investments in their on-premises infrastructure that they want to put to work. With the recent [public preview of AKS on bare metal](/2026/06/02/aks-baremetal-public-preview), you can now run those GPU-accelerated applications on the same Kubernetes platform you use in Azure — right next to the data and applications they serve.
+AI and machine learning workloads are moving to the edge, and many customers already have NVIDIA GPU investments in their on-premises infrastructure that they want to put to work. With the recent [public preview of AKS on bare metal](../2026-06-02-aks-baremetal-public-preview/index.md), you can now run those GPU-accelerated applications on the same Kubernetes platform you use in Azure — right next to the data and applications they serve.
 
 This post walks through deploying NVIDIA GPU workloads on AKS on bare metal: verifying the bundled driver, installing the NVIDIA GPU Operator, validating the install, and running a sample CUDA workload.
 
@@ -28,7 +28,16 @@ If the command completes without errors and lists your GPU, you're ready to depl
 
 The [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html) automates the deployment and lifecycle management of the NVIDIA software stack required to provision GPUs on Kubernetes, including the driver, the NVIDIA container toolkit, the NVIDIA device plugin, and node feature discovery.
 
-Because the driver is already installed on the host, disable the Operator's automatic driver installation by setting `driver.enabled=false`. Deploy the Operator with Helm:
+Because the driver is already installed on the host, disable the Operator's automatic driver installation by setting `driver.enabled=false`. For detailed instructions, follow the [NVIDIA GPU Operator documentation](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html), and check the [release notes](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/release-notes.html) for the latest available version.
+
+Add the NVIDIA Helm repository:
+
+```bash
+helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
+helm repo update
+```
+
+Then deploy the Operator:
 
 ```bash
 helm install --wait --generate-name \
@@ -64,6 +73,6 @@ Successful completion of the sample workload confirms that the AKS on bare metal
 
 ## What's next
 
-The same managed Kubernetes platform you use in the cloud now extends to GPU-equipped edge hardware. From here, you can layer on the broader AKS AI ecosystem — for example, see our companion series on [AI inference on AKS Arc](/2026/04/07/ai-inference-on-aks-arc-part-1) — to bring richer inference and training workflows to the edge.
+The same managed Kubernetes platform you use in the cloud now extends to GPU-equipped edge hardware. From here, you can layer on the broader AKS AI ecosystem — for example, see our companion series on [AI inference on AKS Arc](../2026-04-07-ai-inference-on-aks-arc-part-1/index.md) — to bring richer inference and training workflows to the edge.
 
-To request access to AKS on bare metal, see the [public preview announcement](/2026/06/02/aks-baremetal-public-preview).
+To request access to AKS on bare metal, see the [public preview announcement](../2026-06-02-aks-baremetal-public-preview/index.md).
