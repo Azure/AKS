@@ -9,7 +9,6 @@ tags:
   - networking
   - istio
   - dns
-  - tls
 keywords: ["AKS", "Gateway API", "App Routing", "Istio", "ExternalDNS", "Azure DNS", "Azure Key Vault", "TLS", "Kubernetes"]
 image: ./Designer.jpg
 ---
