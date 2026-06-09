@@ -18,7 +18,7 @@ The AKS application routing add-on's Kubernetes Gateway API implementation — `
 
 <!-- truncate -->
 
-Since [our March preview announcement](/blog/2026/03/18/app-routing-gateway-api), we've also shipped tow of our most requested capabilities that gated a real production story for Gateway API on AKS:
+Since [our March preview announcement](/blog/2026/03/18/app-routing-gateway-api), we've also shipped two of our most requested capabilities that gated a real production story for Gateway API on AKS:
 
 - **Azure DNS and Azure Key Vault, wired in for you.** No more manually deploying a `SecretProviderClass`, a sync pod, or a separate `external-dns` instance just to get a TLS-terminated, DNS-resolvable hostname. Drop two `tls.options` on a listener, apply an `ExternalDNS` CR, and you're done.
 - **Access logs, on out of the box.** Every gateway proxy writes a structured JSON access log line per request to stdout. `kubectl logs` the gateway deployment and you're already debugging — no `Telemetry` resource, no `EnvoyFilter`, no opt-in flag. This closes one of the last parity gaps with the nginx experience our users are accustomed to.
