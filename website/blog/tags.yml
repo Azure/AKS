@@ -197,6 +197,11 @@ general:
   permalink: /general
   description: Broad AKS topics, announcements, conceptual overviews, and cross-cutting guidance.
 
+general-availability:
+  label: General Availability
+  permalink: /general-availability
+  description: Announcements of AKS features and integrations reaching general availability (GA).
+
 gpu:
   label: GPU
   permalink: /gpu
@@ -356,6 +361,11 @@ storage:
   label: Storage
   permalink: /storage
   description: Persistent storage, data performance, CSI drivers, and Azure storage integrations for AKS.
+
+tls:
+  label: TLS
+  permalink: /tls
+  description: Transport Layer Security — certificates, termination, and secure ingress/egress for AKS workloads.
 
 traffic-management:
   label: Traffic Management
