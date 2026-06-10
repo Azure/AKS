@@ -17,6 +17,8 @@ The AKS App Routing add-on's Kubernetes Gateway API implementation — `approuti
 
 <!-- truncate -->
 
+ ![Cartoon with Keyvault, Istio, and DNS](./Designer.jpg)
+
 Since [our March preview announcement](/blog/2026/03/18/app-routing-gateway-api), we've also shipped two of our most requested capabilities that gated a real production story for Gateway API on AKS:
 
 - **Azure DNS and Azure Key Vault, wired in for you.** No more manually deploying a `SecretProviderClass`, a sync pod, or a separate `external-dns` instance just to get a TLS-terminated, DNS-resolvable hostname. Drop two `tls.options` on a listener, apply an `ExternalDNS` CR, and you're done.
