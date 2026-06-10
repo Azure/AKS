@@ -19,7 +19,7 @@ The AKS App Routing add-on's Kubernetes Gateway API implementation — `approuti
 
  ![Cartoon with Keyvault, Istio, and DNS](./Designer.jpg)
 
-Since [our March preview announcement](/blog/2026/03/18/app-routing-gateway-api), we've also shipped two of our most requested capabilities that gated a real production story for Gateway API on AKS:
+Since [our March preview announcement](/2026/03/18/app-routing-gateway-api), we've also shipped two of our most requested capabilities that gated a real production story for Gateway API on AKS:
 
 - **Azure DNS and Azure Key Vault, wired in for you.** No more manually deploying a `SecretProviderClass`, a sync pod, or a separate `external-dns` instance just to get a TLS-terminated, DNS-resolvable hostname. Drop two `tls.options` on a listener, apply an `ExternalDNS` CR, and you're done.
 - **Access logs, enabled out of the box.** Every gateway proxy writes a structured JSON access log line per request to stdout. `kubectl logs` the gateway deployment and you're already debugging — no `Telemetry` resource, no `EnvoyFilter`, no opt-in flag. This closes one of the last parity gaps with the nginx experience our users are accustomed to.
@@ -128,7 +128,7 @@ You'll also see the `app-routing-system` namespace with NGINX still running:
 kubectl get pods -n app-routing-system
 ```
 
-You can ignore this for the rest of the demo. NGINX-by-default is on its way out as part of the [Ingress-NGINX retirement](/blog/2026/03/18/app-routing-gateway-api#why-now-the-ingress-nginx-retirement). Once we stop deploying it after November 2026, it won't appear for users by default.
+You can ignore this for the rest of the demo. NGINX-by-default is on its way out as part of the [Ingress-NGINX retirement](/2026/03/18/app-routing-gateway-api#why-now-the-ingress-nginx-retirement). Once we stop deploying it after November 2026, it won't appear for users by default.
 
 The `approuting-istio` `GatewayClass` is what you'll target with your `Gateway` resources:
 
