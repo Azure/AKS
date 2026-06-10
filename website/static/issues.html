@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AKS Bug SPA</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>/* BAKED_DATA_PLACEHOLDER */</script>
+
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 1000px; }
+    .chart { display: grid; gap: 10px; margin-bottom: 10px; }
+    .chart h2 { margin: 0; font-size: 20px; }
+    canvas { background: white; padding: 10px; border-radius: 8px; }
+  </style>
+</head>
+
+<body>
+
+<h1>AKS Bug Dashboard</h1>
+<p id="generatedAt" style="margin: 4px 0 16px; color: #666; font-size: 14px;"></p>
+
+<div class="grid">
+  <div class="chart">
+    <h2>Bugs by label</h2>
+    <canvas id="labelChart"></canvas>
+  </div>
+  <div class="chart">
+    <h2>Bugs by age bucket</h2>
+    <canvas id="ageChart"></canvas>
+  </div>
+  <div class="chart">
+    <h2>Bugs by assignee</h2>
+    <canvas id="authorChart"></canvas>
+  </div>
+</div>
+
+<script>
+
+let labelChartInstance;
+let ageChartInstance;
+let assigneeChartInstance;
+
+function saveToken() {
+  const val = document.getElementById("token").value;
+  localStorage.setItem("gh_token", val);
+  loadData();
+}
+
+async function fetchIssues() {
+  const token = localStorage.getItem("gh_token");
+
+  let page = 1;
+  let all = [];
+
+  while (true) {
+    const url = `https://api.github.com/repos/Azure/AKS/issues?labels=bug&per_page=100&page=${page}`;
+
+    const headers = token ? {
+      Authorization: `Bearer ${token}`
+    } : {};
+
+    const res = await fetch(url, { headers });
+    const data = await res.json();
+
+    if (data.length === 0) break;
+
+    all = all.concat(data);
+    page++;
+  }
+
+  return all.filter(i => !i.pull_request);
+}
+
+function daysOld(date) {
+  return Math.floor((new Date() - new Date(date)) / (1000*60*60*24));
+}
+
+function toISODate(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function daysAgoISO(days) {
+  const date = new Date();
+  date.setUTCDate(date.getUTCDate() - days);
+  return toISODate(date);
+}
+
+function buildAgeBucketSearchUrl(bucket) {
+  const d7 = daysAgoISO(7);
+  const d30 = daysAgoISO(30);
+  const d90 = daysAgoISO(90);
+  const queryParts = ["is:issue", "is:open", "label:bug"];
+
+  if (bucket === "0-7") {
+    queryParts.push(`created:>=${d7}`);
+  } else if (bucket === "8-30") {
+    queryParts.push(`created:>=${d30}`, `created:<${d7}`);
+  } else if (bucket === "31-90") {
+    queryParts.push(`created:>=${d90}`, `created:<${d30}`);
+  } else if (bucket === "90+") {
+    queryParts.push(`created:<${d90}`);
+  }
+
+  return `https://github.com/Azure/AKS/issues?q=${encodeURIComponent(queryParts.join(" "))}`;
+}
+
+function analyse(issues) {
+  const labels = {};
+  const assignees = {};
+  const ageBuckets = {"0-7":0,"8-30":0,"31-90":0,"90+":0};
+
+  issues.forEach(issue => {
+    const age = daysOld(issue.created_at);
+
+    if (age <= 7) ageBuckets["0-7"]++;
+    else if (age <= 30) ageBuckets["8-30"]++;
+    else if (age <= 90) ageBuckets["31-90"]++;
+    else ageBuckets["90+"]++;
+
+    issue.labels.forEach(l => {
+      if (l.name !== "bug") {
+        labels[l.name] = (labels[l.name] || 0) + 1;
+      }
+    });
+
+    if (!issue.assignees || issue.assignees.length === 0) {
+      assignees["unassigned"] = (assignees["unassigned"] || 0) + 1;
+    } else {
+      issue.assignees.forEach(a => {
+        const assignee = a.login || "unknown";
+        assignees[assignee] = (assignees[assignee] || 0) + 1;
+      });
+    }
+  });
+
+  return { labels, ageBuckets, assignees };
+}
+
+function render(data) {
+  const sortedLabels = Object.entries(data.labels)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 20);
+
+  const labelNames = sortedLabels.map(([name]) => name);
+  const labelCounts = sortedLabels.map(([, count]) => count);
+  const labelCanvas = document.getElementById("labelChart");
+  //labelCanvas.style.height = "560px";
+
+  if (labelChartInstance) labelChartInstance.destroy();
+  if (ageChartInstance) ageChartInstance.destroy();
+  if (assigneeChartInstance) assigneeChartInstance.destroy();
+
+  labelChartInstance = new Chart(labelCanvas, {
+    type: "bar",
+    data: {
+      labels: labelNames,
+      datasets: [{
+        label: "Bugs",
+        data: labelCounts
+      }]
+    }
+  });
+
+  ageChartInstance = new Chart(document.getElementById("ageChart"), {
+    type: "pie",
+    data: {
+      labels: Object.keys(data.ageBuckets),
+      datasets: [{
+        data: Object.values(data.ageBuckets),
+        backgroundColor: ["green","yellow","orange","red"]
+      }]
+    },
+    options: {
+      onClick: function(_event, elements) {
+        if (!elements || elements.length === 0) return;
+
+        const bucket = this.data.labels[elements[0].index];
+        const url = buildAgeBucketSearchUrl(bucket);
+        window.open(url, "_blank", "noopener");
+      }
+    }
+  });
+
+  const sortedAssignees = Object.entries(data.assignees)
+    .sort((a, b) => b[1] - a[1]);
+
+  assigneeChartInstance = new Chart(document.getElementById("authorChart"), {
+    type: "bar",
+    data: {
+      labels: sortedAssignees.map(([name]) => name),
+      datasets: [{
+        label: "Assigned bugs",
+        data: sortedAssignees.map(([, count]) => count)
+      }]
+    }
+  });
+}
+
+async function loadData() {
+  if (window.BAKED_DATA) {
+    const ts = window.BAKED_GENERATED_AT
+      ? new Date(window.BAKED_GENERATED_AT).toLocaleString()
+      : "unknown";
+    document.getElementById("generatedAt").textContent = `Data generated at ${ts} (static snapshot)`;
+    render(window.BAKED_DATA);
+    return;
+  }
+  document.getElementById("generatedAt").textContent = "Data loaded live from GitHub API";
+  const issues = await fetchIssues();
+  const data = analyse(issues);
+  render(data);
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
