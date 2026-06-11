@@ -45,7 +45,6 @@ At preview, DNS and TLS automation was a major piece of the ingress-nginx experi
 - **TLS** — A pair of listener `tls.options` keys (`kubernetes.azure.com/tls-cert-keyvault-uri` and `kubernetes.azure.com/tls-cert-service-account`) tell the operator to provision a `SecretProviderClass`, sync the certificate from Azure Key Vault as a `kubernetes.io/tls` Secret, and patch the listener's `certificateRefs` for you.
 - **DNS** — Two CRDs, `ClusterExternalDNS` (cluster-scoped) and `ExternalDNS` (namespace-scoped), let you stand up an `external-dns` instance scoped to one or more Azure DNS zones and tell it to watch `Gateway`/`HTTPRoute`/`GRPCRoute` resources. Records appear automatically based on the hostnames on your routes.
 
-
 ## Demo: from cluster create to HTTPS-with-DNS
 
 The rest of this post is a hands-on walkthrough that takes you through our newly-GA'd features along with the enhancements we're so excited about. To follow along you'll need:
@@ -399,6 +398,7 @@ done
 ```
 
 The TLS options tell the App Routing operator to:
+
 1. Resolve `$CERT_URI` against the Key Vault, using the workload identity bound to `$SA_NAME` in the listener's namespace.
 2. Provision a `SecretProviderClass` named `kv-gw-cert-<gateway>-<listener>`.
 3. Sync the certificate as a `kubernetes.io/tls` Secret of the same name in the listener's namespace.
