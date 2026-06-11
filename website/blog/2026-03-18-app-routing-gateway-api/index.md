@@ -14,6 +14,12 @@ keywords: ["AKS", "Gateway API", "app routing", "Istio", "ingress", "NGINX", "Ku
 
 ![Gateway API logo](https://gateway-api.sigs.k8s.io/images/logo/logo-text-horizontal.png)
 
+:::tip[Update — now generally available]
+
+As of **[AKS v20260428]**, both **managed Gateway API** (`--enable-gateway-api`) and the **app routing Istio** Gateway API implementation (`--enable-app-routing-istio`) are **generally available** on AKS. The preview feature flags and `aks-preview` extension are no longer required.
+
+:::
+
 We're announcing preview support for the **Kubernetes Gateway API** in the AKS application routing add-on. This brings a modern, role-oriented traffic management model to AKS — and establishes a clear migration path ahead of the [upcoming Ingress-NGINX retirement](#why-now-the-ingress-nginx-retirement).
 
 <!-- truncate -->
