@@ -43,6 +43,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * [Azure Linux 3.0 confidential VM (CVM)](https://learn.microsoft.com/azure/aks/use-azure-linux) is now available in preview in Fairfax (US Gov) regions. Register the `AzureLinuxCVMPreview` feature to enable it.
 * [In-place node pool resize](https://learn.microsoft.com/azure/aks/resize-node-pool) is now available in preview. Resize the VM size of an existing VMSS-based node pool in place via `az aks nodepool update --node-vm-size`, without manually creating and migrating to a new node pool.
+* [Mixed SKU autoscaling in Virtual Machine node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools#cluster-autoscaler-with-virtual-machines-node-pools-preview) is now available in preview. This allows users to select multiple VM sizes in the same node pool using cluster autoscaler with virtual machine node pools.  
 
 #### Behavioral changes
 
