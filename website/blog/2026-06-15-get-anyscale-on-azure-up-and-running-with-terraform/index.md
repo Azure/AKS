@@ -604,7 +604,7 @@ If validation passes, go ahead and apply:
 terraform apply
 ```
 
-Review the plan and type `yes` to proceed. The deployment takes about 7 minutes since it's creating an AKS cluster, installing the Anyscale operator extension, and registering the cloud resources.
+Review the plan and type `yes` to proceed. The deployment takes about 7-10 minutes since it's creating an AKS cluster, installing the Anyscale operator extension, and registering the cloud resources.
 
 Once it's done, grab the outputs and connect to the cluster:
 
