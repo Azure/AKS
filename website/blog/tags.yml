@@ -357,6 +357,11 @@ storage:
   permalink: /storage
   description: Persistent storage, data performance, CSI drivers, and Azure storage integrations for AKS.
 
+terraform:
+  label: Terraform
+  permalink: /terraform
+  description: Infrastructure as code examples and walkthroughs using HashiCorp Terraform with AKS.
+
 traffic-management:
   label: Traffic Management
   permalink: /traffic-management
