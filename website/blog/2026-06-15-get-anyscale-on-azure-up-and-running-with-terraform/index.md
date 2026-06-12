@@ -5,7 +5,7 @@ authors: [paul-yu]
 tags: [anyscale, ray, app-routing, terraform]
 ---
 
-A few weeks ago at Microsoft Build, the [public preview of Anyscale on Azure](https://www.anyscale.com/blog/anyscale-on-azure-public-preview-build-and-deploy-ai-scale) was announced. If you're not familiar, [Anyscale on Azure](https://learn.microsoft.com/azure/anyscale-on-azure/overview) is a managed platform for running distributed AI/ML workloads with [Ray](https://www.ray.io/) on AKS. It's an Azure Native integration, co-engineered with Microsoft, that deploys an operator onto your AKS cluster and integrates with Microsoft Entra ID for SSO.
+A few weeks ago at Microsoft Build, the [public preview of Anyscale on Azure](https://www.anyscale.com/blog/anyscale-on-azure-public-preview-build-and-deploy-ai-scale) was announced. If you're not familiar, [Anyscale on Azure](https://learn.microsoft.com/azure/anyscale-on-azure/overview) is a managed platform for running distributed AI/ML workloads with [Ray](https://www.ray.io/) on AKS. It's an Azure Native integration, a co-engineered effort between Anyscale and Microsoft, that deploys an operator onto your AKS cluster and integrates with Microsoft Entra ID for SSO.
 
 The official [quickstart](https://learn.microsoft.com/azure/anyscale-on-azure/quickstart-azure-cli-gateway-envoy) walks you through deploying Anyscale on Azure using the Azure CLI and Azure Portal with Envoy Gateway for ingress. That's a solid starting point, but if you're like me, you want everything in Terraform so your infrastructure is repeatable, version-controlled, and easy to tear down.
 
