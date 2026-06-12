@@ -3,7 +3,6 @@ title: "Deploy Anyscale on Azure with Terraform: a step-by-step guide"
 description: "Deploy Anyscale on Azure end-to-end with Terraform, AKS managed Gateway API, Istio-based app routing, and the AzAPI provider for newly released services."
 authors: [paul-yu]
 tags: [anyscale, ray, app-routing, terraform]
-draft: true
 ---
 
 A few weeks ago at Microsoft Build, the [public preview of Anyscale on Azure](https://www.anyscale.com/blog/anyscale-on-azure-public-preview-build-and-deploy-ai-scale) was announced. If you're not familiar, [Anyscale on Azure](https://learn.microsoft.com/azure/anyscale-on-azure/overview) is a managed platform for running distributed AI/ML workloads with [Ray](https://www.ray.io/) on AKS. It's an Azure Native integration, co-engineered with Microsoft, that deploys an operator onto your AKS cluster and integrates with Microsoft Entra ID for SSO.
