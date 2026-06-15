@@ -14,7 +14,7 @@ keywords: ["AKS", "Gateway API", "app routing", "Istio", "ingress", "NGINX", "Ku
 
 ![Gateway API logo](https://gateway-api.sigs.k8s.io/images/logo/logo-text-horizontal.png)
 
-:::tip[Update — now generally available]
+:::tip Update — now generally available
 
 As of **AKS release v20260428 (April 28, 2026)**, both **managed Gateway API** (`--enable-gateway-api`) and the **app routing Istio** Gateway API implementation (`--enable-app-routing-istio`) are **generally available** on AKS.
 
