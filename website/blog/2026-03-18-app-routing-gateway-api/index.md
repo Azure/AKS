@@ -16,7 +16,9 @@ keywords: ["AKS", "Gateway API", "app routing", "Istio", "ingress", "NGINX", "Ku
 
 :::tip[Update — now generally available]
 
-As of **[AKS v20260428]**, both **managed Gateway API** (`--enable-gateway-api`) and the **app routing Istio** Gateway API implementation (`--enable-app-routing-istio`) are **generally available** on AKS. The preview feature flags and `aks-preview` extension are no longer required.
+As of **AKS release v20260428 (April 28, 2026)**, both **managed Gateway API** (`--enable-gateway-api`) and the **app routing Istio** Gateway API implementation (`--enable-app-routing-istio`) are **generally available** on AKS.
+
+You no longer need preview feature flags or the `aks-preview` extension; the steps later in this post reflect the original preview experience.
 
 :::
 
