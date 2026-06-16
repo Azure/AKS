@@ -35,12 +35,13 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Windows Server 2025](https://aka.ms/aks/upgrade-windows-os-version) is now generally available. You no longer need to register a feature flag to create Windows Server 2025 node pools. Windows Server 2025 node pools can be created in Kubernetes version 1.32+ with a minimum GA CLI version of 2.87.0. 
 * [Azure Container Linux](https://learn.microsoft.com/azure/azure-linux/azure-container-linux-overview) is generally available (GA) as an OS option on AKS starting AKS v1.34. You can deploy ACL node pools in a new AKS cluster or add ACL node pools to your existing clusters. AKS also supports migrating existing node pools to ACL using in-place OS SKU migration or by creating new ACL node pools. For detailed migration steps, considerations, and rollback instructions, see [Migrate existing nodes to ACL](https://learn.microsoft.com/azure/azure-linux/tutorial-migrate-azure-container-linux-aks).
 * [Azure Policy add-on](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes) now generates ValidatingAdmissionPolicies (VAP) for all customers. This enforces CEL-based policies inside the API server process for minimal latency and enables fail-closed enforcement.
-
+* [AKS end of support notifications](https://learn.microsoft.com/en-us/azure/aks/aks-end-of-support-notifications) are now available. AKS automatically notifies you when your cluster's Kubernetes version is approaching or has passed its end of support date, with alerts sent at two weeks out, one week out, and weekly after the support date passes—no monitoring add-on or maintenance window configuration required. Notifications are published to Azure Resource Graph and can be surfaced via email alerts or real-time Event Grid webhooks.
 
 #### Preview features
 
 * [Azure Linux 3.0 confidential VM (CVM)](https://learn.microsoft.com/azure/aks/use-azure-linux) is now available in preview in Fairfax (US Gov) regions. Register the `AzureLinuxCVMPreview` feature to enable it.
 * [In-place node pool resize](https://learn.microsoft.com/azure/aks/resize-node-pool) is now available in preview. Resize the VM size of an existing VMSS-based node pool in place via `az aks nodepool update --node-vm-size`, without manually creating and migrating to a new node pool.
+* [Automatic Pod Disruption Budget management](https://learn.microsoft.com/en-us/azure/aks/automatic-pod-disruption-budget-management) is now available in preview. The AKS extension automatically creates PDBs for unprotected deployments and temporarily scales up replicas to unblock node drain when a PDB would prevent eviction, then scales back down—eliminating manual intervention during upgrade drain failures.
 
 #### Behavioral changes
 
