@@ -41,7 +41,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 * [Azure Linux 3.0 confidential VM (CVM)](https://learn.microsoft.com/azure/aks/use-azure-linux) is now available in preview in Fairfax (US Gov) regions. Register the `AzureLinuxCVMPreview` feature to enable it.
 * [In-place node pool resize](https://learn.microsoft.com/azure/aks/resize-node-pool) is now available in preview. Resize the VM size of an existing VMSS-based node pool in place via `az aks nodepool update --node-vm-size`, without manually creating and migrating to a new node pool.
-* [Automatic Pod Disruption Budget management](https://learn.microsoft.com/en-us/azure/aks/automatic-pod-disruption-budget-management) is now available in preview. The AKS extension automatically creates PDBs for deployments without PDBs and temporarily scales up replicas to unblock node drain when a PDB would prevent eviction, then scales back down—reducing the need for manual intervention during upgrade drain failures.
+* [Automatic Pod Disruption Budget management](https://learn.microsoft.com/azure/aks/automatic-pod-disruption-budget-management) is now available in preview. The AKS extension automatically creates PDBs for deployments without PDBs and temporarily scales up replicas to unblock node drain when a PDB would prevent eviction, then scales back down—reducing the need for manual intervention during upgrade drain failures.
 
 #### Behavioral changes
 
