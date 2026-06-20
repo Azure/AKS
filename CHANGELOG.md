@@ -10,17 +10,17 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * Windows Server 2019 retired on March 1, 2026 and its preview feature flag has been removed. You can expect the following impact: AKS no longer produces new node images or provides security patches. All existing node pools with Windows Server 2019 are unsupported. You will not be able to create new node pools in k8s 1.33+. Starting on April 1, 2027, AKS will remove all existing node images for Windows Server 2019, meaning that scaling operations will fail. For more information, see [aka.ms/aks/ws2019-retirement-github](https://aka.ms/aks/ws2019-retirement-github). 
 * Starting on June 8, 2026, AKS no longer supports Flatcar Container Linux for Azure Kubernetes Service (AKS) (preview). At that point, AKS will no longer produce new Flatcar Container Linux node images or provide security patches, and you'll be unable to create new node pools with Flatcar Container Linux. On September 8, 2026, AKS will remove all existing Flatcar Container Linux node images, causing scaling and remediation (reimage and redeploy) operations to fail. Migrate existing Flatcar Container Linux for AKS node pools to [Azure Container Linux for AKS](https://learn.microsoft.com/azure/azure-linux/tutorial-migrate-azure-container-linux-aks).
 
-#### Kubernetes versions
+### Kubernetes versions
 
 * [Kubernetes version 1.36](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md) is now generally available and supported as a [Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) version. You no longer need to enable a preview to create or upgrade clusters to 1.36.
 
-#### Features
+### Features
 
 * The [Application Gateway for Containers](https://learn.microsoft.com/azure/application-gateway/for-containers/overview) managed add-on is now generally available. You no longer need to register a preview feature flag to enable the ALB controller on your cluster.
 * FIPS is now supported on [Ubuntu 22.04 node pools with FIPS 140-3 compliance](https://aka.ms/aks/fips). Using FIPS with Ubuntu 22.04 requires registering the `Microsoft.Compute/OptInToFips1403Compliance` feature flag. You can also enable FIPS with Trusted Launch, and Kubernetes 1.35+ defaults to Ubuntu 22.04 when FIPS is enabled. To migrate existing Ubuntu 20.04 FIPS node pools, update the node pool OS SKU to `Ubuntu2204`.
 * AKS now supports the NVIDIA RTX PRO 6000 Blackwell Server Edition GPU VM sizes as [managed GPUs](https://learn.microsoft.com/azure/aks/gpu-cluster). These SKUs use the NVIDIA GRID driver and are supported on Ubuntu node pools.
 
-#### Behavioral changes
+### Behavioral changes
 
 * On [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) clusters running Kubernetes 1.36 or later, you can now disable the default [application routing add-on with Gateway API](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) to use the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) with Istio CNI, either at cluster create time or afterward.
 * [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards) in Enforce mode now [apply default resource requests](https://learn.microsoft.com/azure/aks/deployment-safeguards#resource-requests-mutator) to DaemonSets and Jobs when those requests are missing, in addition to Deployments and StatefulSets. This includes AKS Automatic clusters.
@@ -31,12 +31,12 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * AKS now rejects enabling FIPS (`--enable-fips-image`) on [Pod Sandboxing (Kata)](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) workload runtime node pools. The Kata node image doesn't carry FIPS compliance, so the request now fails at the API with a clear error instead of silently providing no FIPS enforcement.
 * You can now create [Pod Sandboxing (Kata)](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) node pools on `Standard_DadsV7`-series VM sizes, which were previously rejected by nested-virtualization validation.
 
-#### Bug fixes
+### Bug fixes
 
 * Fixed an issue where the `aks-istio-system` namespace was not exempted from the [Azure Policy add-on](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes) when using [application routing with the Gateway API](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) in Istio mode. The namespace is now exempted, so the two features can be used together in the same cluster.
 * Fixed a bug where [Multiple Standard Load Balancers](https://learn.microsoft.com/azure/aks/load-balancer-standard) rejected valid domain-prefixed label keys (for example, `kubernetes.io/os`) in node selectors. Label selector validation now follows standard Kubernetes semantics.
 
-#### Component updates
+### Component updates
 
 * The [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) revision `asm-1-29` has been upgraded to patch `1.29.4`, which addresses [CVE-2026-47774](https://nvd.nist.gov/vuln/detail/CVE-2026-47774). Restart your workload pods to trigger re-injection of the updated `istio-proxy` sidecar. For more information, see the [Istio add-on upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
 * Azure File CSI Driver has been upgraded to [`v1.35.4`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.4) on AKS 1.35 and 1.36.
