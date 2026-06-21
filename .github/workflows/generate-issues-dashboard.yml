@@ -1,0 +1,85 @@
+name: Generate issues dashboard
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # daily at 06:00 UTC
+  workflow_dispatch:       # manual trigger
+  push:
+    paths:
+      - 'website/static/issues.html'
+      - '.github/workflows/generate-issues-dashboard.yml'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch issues and generate dashboard
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // Fetch all open bug issues (auto-paginated)
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: 'Azure',
+              repo: 'AKS',
+              labels: 'bug',
+              state: 'open',
+              per_page: 100,
+            });
+
+            // Compute aggregations (mirrors the client-side analyse() logic)
+            const labels = {};
+            const assignees = {};
+            const ageBuckets = { "0-7": 0, "8-30": 0, "31-90": 0, "90+": 0 };
+
+            for (const issue of issues) {
+              if (issue.pull_request) continue;
+
+              const age = Math.floor((Date.now() - new Date(issue.created_at)) / (1000 * 60 * 60 * 24));
+              if (age <= 7)       ageBuckets["0-7"]++;
+              else if (age <= 30) ageBuckets["8-30"]++;
+              else if (age <= 90) ageBuckets["31-90"]++;
+              else                ageBuckets["90+"]++;
+
+              for (const l of issue.labels) {
+                if (l.name !== 'bug') {
+                  labels[l.name] = (labels[l.name] || 0) + 1;
+                }
+              }
+
+              if (!issue.assignees || issue.assignees.length === 0) {
+                assignees["unassigned"] = (assignees["unassigned"] || 0) + 1;
+              } else {
+                for (const a of issue.assignees) {
+                  assignees[a.login] = (assignees[a.login] || 0) + 1;
+                }
+              }
+            }
+
+            const bakedData = JSON.stringify({ labels, ageBuckets, assignees });
+            const generatedAt = new Date().toISOString();
+
+            const injection = [
+              `window.BAKED_DATA = ${bakedData};`,
+              `window.BAKED_GENERATED_AT = "${generatedAt}";`,
+            ].join('\n');
+
+            const template = fs.readFileSync('website/static/issues.html', 'utf8');
+            const output = template.replace('/* BAKED_DATA_PLACEHOLDER */', injection);
+
+            fs.writeFileSync('website/static/issues.generated.html', output);
+            core.info(`Generated dashboard with ${issues.length} issues`);
+
+      - name: Upload dashboard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: issues-dashboard
+          path: website/static/issues.generated.html
+          retention-days: 30
