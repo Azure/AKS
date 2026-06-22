@@ -1,5 +1,5 @@
 ---
-title: "Announcing Gateway API support for App Routing (preview)"
+title: "Announcing Gateway API support for App Routing"
 date: "2026-03-18"
 description: "The AKS app routing add-on now supports the Kubernetes Gateway API via a meshless Istio control plane — the recommended path to migrate from Ingress-NGINX."
 authors: ["jaiveer-katariya"]
