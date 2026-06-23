@@ -30,6 +30,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Windows gMSA](https://learn.microsoft.com/azure/aks/use-group-managed-service-accounts) now validates for CoreDNS conflicts. AKS rejects enabling gMSA, or changing its root domain name, when the cluster's `coredns-custom` ConfigMap already defines a server block for the same domain. This prevents a duplicate zone that would crash CoreDNS and disrupt cluster-wide DNS.
 * AKS now rejects enabling FIPS (`--enable-fips-image`) on [Pod Sandboxing (Kata)](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) workload runtime node pools. The Kata node image doesn't carry FIPS compliance, so the request now fails at the API with a clear error instead of silently providing no FIPS enforcement.
 * You can now create [Pod Sandboxing (Kata)](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) node pools on `Standard_DadsV7`-series VM sizes, which were previously rejected by nested-virtualization validation.
+* You can now migrate an [AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/overview) cluster that uses a [managed system node pool](https://aka.ms/aks/managedsystemnodepools) to the AKS Base SKU.
 
 ### Bug fixes
 
