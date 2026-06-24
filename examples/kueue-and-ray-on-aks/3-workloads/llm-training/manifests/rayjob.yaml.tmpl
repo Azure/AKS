@@ -1,0 +1,125 @@
+# LLM training RayJob manifest (Qwen2.5-7B LoRA via LLaMA-Factory).
+# Apply with:
+#   source env.example
+#   ./submit.sh
+apiVersion: ray.io/v1
+kind: RayJob
+metadata:
+  name: "${JOB_NAME}"
+  namespace: ray
+  labels:
+    kueue.x-k8s.io/queue-name: "${QUEUE_NAME}"
+spec:
+  suspend: true
+  shutdownAfterJobFinishes: true
+  ttlSecondsAfterFinished: 300
+
+  entrypoint: python3 /home/ray/scripts/llm_training.py
+
+  runtimeEnvYAML: |
+    pip:
+      - pynvml==12.0.0
+      - pyyaml>=6.0
+      - hf_transfer==0.1.9
+      - tensorboard==2.19.0
+      - llamafactory==0.9.4
+      - IPython==9.13.0
+      - adlfs==2024.7.0
+      - azure-storage-blob==12.25.1
+      - azure-identity==1.21.0
+    env_vars:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      RAY_TRAIN_V2_ENABLED: "0"
+      NUM_WORKERS: "${NUM_WORKERS}"
+      AZURE_STORAGE_ACCOUNT_NAME: "${AZURE_STORAGE_ACCOUNT_NAME}"
+      LLM_DATA_CONTAINER: "${LLM_DATA_CONTAINER}"
+      LLM_LORA_CONTAINER: "${LLM_LORA_CONTAINER}"
+      LLM_RUN_ID: "${JOB_NAME}"
+
+  submitterPodTemplate:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: ray-job-submitter
+          image: "${RAY_IMAGE}"
+          imagePullPolicy: Always
+
+  rayClusterSpec:
+    rayVersion: "${RAY_VERSION}"
+    enableInTreeAutoscaling: false
+
+    headGroupSpec:
+      rayStartParams:
+        num-cpus: "0"
+        dashboard-host: "0.0.0.0"
+        disable-usage-stats: "true"
+      template:
+        metadata:
+          labels:
+            azure.workload.identity/use: "true"
+        spec:
+          serviceAccountName: ray-workload
+          containers:
+            - name: ray-head
+              image: "${RAY_IMAGE}"
+              imagePullPolicy: Always
+              env:
+                - name: RAY_DISABLE_DOCKER_CPU_WARNING
+                  value: "1"
+                - name: RAY_SCHEDULER_EVENTS
+                  value: "0"
+              ports:
+                - containerPort: 6379
+                  name: gcs-server
+                - containerPort: 8265
+                  name: dashboard
+                - containerPort: 10001
+                  name: client
+              resources:
+                limits:
+                  cpu: "4"
+                  memory: "16Gi"
+                requests:
+                  cpu: "4"
+                  memory: "16Gi"
+              volumeMounts:
+                - name: scripts
+                  mountPath: /home/ray/scripts
+          volumes:
+            - name: scripts
+              configMap:
+                name: "${CONFIGMAP_NAME}"
+
+    workerGroupSpecs:
+      - groupName: gpu-workers
+        replicas: ${NUM_WORKERS}
+        minReplicas: ${NUM_WORKERS}
+        maxReplicas: ${NUM_WORKERS}
+        rayStartParams:
+          num-gpus: "1"
+        template:
+          metadata:
+            labels:
+              azure.workload.identity/use: "true"
+          spec:
+            serviceAccountName: ray-workload
+            containers:
+              - name: ray-worker
+                image: "${RAY_IMAGE}"
+                imagePullPolicy: Always
+                resources:
+                  limits:
+                    cpu: "16"
+                    memory: "128Gi"
+                    nvidia.com/gpu: "1"
+                  requests:
+                    cpu: "16"
+                    memory: "128Gi"
+                    nvidia.com/gpu: "1"
+                volumeMounts:
+                  - name: scripts
+                    mountPath: /home/ray/scripts
+            volumes:
+              - name: scripts
+                configMap:
+                  name: "${CONFIGMAP_NAME}"

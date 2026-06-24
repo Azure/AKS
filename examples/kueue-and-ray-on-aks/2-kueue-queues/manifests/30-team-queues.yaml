@@ -1,0 +1,117 @@
+# Team queues with cohort borrowing and preemption
+#
+# Two teams share a GPU pool via a Kueue cohort. Each team gets a
+# guaranteed slice (nominalQuota) but can borrow idle GPUs from the
+# other team up to borrowingLimit. When the lending team submits its
+# own work, Kueue reclaims the borrowed resources via preemption.
+#
+# Topology (default 8-GPU node — Standard_ND96amsr_A100_v4):
+#
+#   Team A: 4 GPUs guaranteed, can borrow 4 more from Team B
+#   Team B: 4 GPUs guaranteed, can borrow 4 more from Team A
+#
+# REQUIRES a multi-GPU node. On a single-GPU setup (e.g.
+# Standard_NC24ads_A100_v4 with gpu_count_per_node=1), the cohort
+# arithmetic does not yield a meaningful demo: each team's nominalQuota=4
+# already exceeds physical capacity (1 GPU), so Kueue will admit but the
+# k8s scheduler keeps the worker pod Pending. Use 20-single-queue.yaml
+# instead, or scale every nominalQuota/borrowingLimit down to fit your
+# hardware (e.g. team-a gpu nominalQuota=1, borrowingLimit=0).
+#
+# Apply after the namespace and resource flavors exist:
+#   kubectl apply -f 30-team-queues.yaml
+#
+# Verify:
+#   kubectl get clusterqueues
+#   kubectl -n ray get localqueues
+#
+# Demo: submit a RayJob to team-a, then a second to team-b.
+#       Watch Team B's job borrow Team A's idle GPUs, then get
+#       preempted when Team A submits its own job.
+#
+# NOTE: Apply either this file OR 20-single-queue.yaml — not both.
+#       They are independent configurations.
+---
+# Team A — guaranteed 4 GPUs, can borrow 4 more from Team B
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue
+metadata:
+  name: team-a-cq
+spec:
+  cohortName: shared-cohort
+  namespaceSelector: {}
+  preemption:
+    withinClusterQueue: LowerPriority
+    reclaimWithinCohort: Any
+  queueingStrategy: BestEffortFIFO
+  resourceGroups:
+    - coveredResources:
+        - cpu
+        - memory
+      flavors:
+        - name: default
+          resources:
+            - name: cpu
+              nominalQuota: "48"
+              borrowingLimit: "48"
+            - name: memory
+              nominalQuota: 768Gi
+              borrowingLimit: 768Gi
+    - coveredResources:
+        - nvidia.com/gpu
+      flavors:
+        - name: gpu
+          resources:
+            - name: nvidia.com/gpu
+              nominalQuota: "4"
+              borrowingLimit: "4"
+---
+# Team B — guaranteed 4 GPUs, can borrow 4 more from Team A
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue
+metadata:
+  name: team-b-cq
+spec:
+  cohortName: shared-cohort
+  namespaceSelector: {}
+  preemption:
+    withinClusterQueue: LowerPriority
+    reclaimWithinCohort: Any
+  queueingStrategy: BestEffortFIFO
+  resourceGroups:
+    - coveredResources:
+        - cpu
+        - memory
+      flavors:
+        - name: default
+          resources:
+            - name: cpu
+              nominalQuota: "48"
+              borrowingLimit: "48"
+            - name: memory
+              nominalQuota: 768Gi
+              borrowingLimit: 768Gi
+    - coveredResources:
+        - nvidia.com/gpu
+      flavors:
+        - name: gpu
+          resources:
+            - name: nvidia.com/gpu
+              nominalQuota: "4"
+              borrowingLimit: "4"
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: team-a
+  namespace: ray
+spec:
+  clusterQueue: team-a-cq
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: team-b
+  namespace: ray
+spec:
+  clusterQueue: team-b-cq

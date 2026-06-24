@@ -1,0 +1,26 @@
+# Kueue controller configuration.
+#
+# Enables the integrations required for the four workload examples:
+#   - ray.io/rayjob     — used by Examples 1, 2, 3
+#   - ray.io/raycluster — used when submitting bare RayClusters
+#   - batch/job         — useful for non-Ray batch jobs
+#   - pod               — enables Kueue to manage individual Pods
+managerConfig:
+  controllerManagerConfigYaml: |-
+    apiVersion: config.kueue.x-k8s.io/v1beta2
+    kind: Configuration
+    health:
+      healthProbeBindAddress: :8081
+    metrics:
+      bindAddress: :8443
+    webhook:
+      port: 9443
+    leaderElection:
+      leaderElect: true
+      resourceName: c1f6bfd2.kueue.x-k8s.io
+    integrations:
+      frameworks:
+        - "batch/job"
+        - "pod"
+        - "ray.io/rayjob"
+        - "ray.io/raycluster"
