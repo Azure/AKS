@@ -87,7 +87,7 @@ predictions to `llm-pipeline/inference/<run-id>/predictions.jsonl`.
 Deploys the fine-tuned Aurora model as a persistent HTTP endpoint using
 Ray Serve. Loads the LoRA adapter from blob storage on startup.
 
-- **1 GPU** (head node handles Serve controller + worker handles GPU inference)
+- **1 GPU** (single head node runs both Serve controller and GPU inference)
 - **Not Kueue-admitted** — persistent deployment
 - Requires: completed `aurora-finetune` run (`AURORA_RUN_ID`)
 - Access: `kubectl -n ray port-forward svc/aurora-serve-serve-svc 8000:8000`
