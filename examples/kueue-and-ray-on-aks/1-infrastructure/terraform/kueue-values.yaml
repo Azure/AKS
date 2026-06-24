@@ -2,9 +2,17 @@
 #
 # Enables the integrations required for the four workload examples:
 #   - ray.io/rayjob     — used by Examples 1, 2, 3
-#   - ray.io/raycluster — used when submitting bare RayClusters
 #   - batch/job         — useful for non-Ray batch jobs
 #   - pod               — enables Kueue to manage individual Pods
+#
+# Note: ray.io/raycluster is intentionally excluded.  When enabled alongside
+# a LocalQueue named 'default', Kueue auto-manages RayClusters created by
+# RayService.  This triggers a controller conflict: both the RayService
+# reconciler and Kueue attempt to mutate the same RayCluster object
+# concurrently, producing endless "object has been modified" errors and
+# preventing pods from ever being created — even after Kueue admits the
+# workload.  RayJob admission (the primary use case) works correctly
+# without the raycluster integration.
 managerConfig:
   controllerManagerConfigYaml: |-
     apiVersion: config.kueue.x-k8s.io/v1beta2
@@ -23,4 +31,3 @@ managerConfig:
         - "batch/job"
         - "pod"
         - "ray.io/rayjob"
-        - "ray.io/raycluster"
