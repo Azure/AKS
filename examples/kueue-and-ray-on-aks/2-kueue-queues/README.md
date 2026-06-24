@@ -20,7 +20,7 @@ the other, not both:
 - Module 1 infrastructure deployed (`terraform apply` completed successfully)
 - `kubectl` configured to talk to the cluster:
   ```bash
-  eval "$(terraform -chdir=1-infrastructure/terraform output -raw get_credentials_command)"
+  eval "$(terraform -chdir=../1-infrastructure/terraform output -raw get_credentials_command)"
   ```
 - Kueue controller running (deployed by Module 1 Helm release):
   ```bash
@@ -247,10 +247,10 @@ Module 3 workload resource requirements:
 
 | Example | Workers | CPU (head + workers) | Memory (head + workers) | GPUs |
 |---------|---------|---------------------|------------------------|------|
-| aurora-finetune | 1 | 24 | 176 Gi | 1 |
-| batch-inference | 1 | 24 | 176 Gi | 1 |
-| llm-training | 4 | 84 | 656 Gi | 4 |
-| online-serving | 1 | 24 | 176 Gi | 1 (not Kueue-admitted) |
+| aurora-finetune | 1 | 20 | 168 Gi | 1 |
+| batch-inference | 1 | 16 | 96 Gi | 1 |
+| llm-training | 4 | 68 | 528 Gi | 4 |
+| online-serving | 0 (head only) | 20 | 160 Gi | 1 (not Kueue-admitted) |
 
 > **Note:** Kueue charges **all** pod CPU and memory against the `default`
 > flavor quota — including GPU workers — because CPU/memory and

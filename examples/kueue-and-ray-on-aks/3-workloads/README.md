@@ -38,7 +38,7 @@ workload-specific pip packages, env vars, and resource counts.
 | `suspend: true` | required | Kueue gates admission |
 | `shutdownAfterJobFinishes: true` | required | Kueue tracks completion |
 | `ttlSecondsAfterFinished` | `300` | Consistent cleanup |
-| Head `num-cpus: "0"` | always | Tasks land on GPU workers only |
+| Head `num-cpus: "0"` | RayJob only | Tasks land on GPU workers only (RayService sets `"4"`) |
 | Code mount | ConfigMap → `/home/ray/scripts` | Scripts injected at runtime |
 | Workload deps | `runtimeEnvYAML.pip` | Never baked into image |
 | `serviceAccountName` | `ray-workload` | Workload identity from Module 1 |
