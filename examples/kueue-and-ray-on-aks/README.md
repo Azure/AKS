@@ -105,6 +105,11 @@ run. See [Module 1](1-infrastructure/) for details.
 The fast path: provision, point kubectl at the cluster, apply one queue, submit
 one RayJob, and watch it complete.
 
+> **CPU-only note:** If you deployed with `gpu_enabled=false`, the Module 3
+> workloads request `nvidia.com/gpu` and will stay Pending (no GPU nodes).
+> The CPU-only path is useful for validating infrastructure and queue
+> configuration (Modules 1–2); skip the workload submission step below.
+
 ```bash
 # 1. Provision infrastructure (Module 1)
 cd 1-infrastructure/terraform
@@ -140,6 +145,9 @@ examples and the team-queue borrowing demo, follow each module's README.
 Delete the workloads and queue objects, then tear down all Azure resources:
 
 ```bash
+# Return to the example root (Quick start leaves you in 3-workloads/aurora-finetune)
+cd ../../
+
 # Remove queues and namespace (optional — terraform destroy removes the cluster anyway)
 kubectl delete namespace ray
 

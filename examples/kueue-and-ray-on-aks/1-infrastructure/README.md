@@ -250,7 +250,7 @@ kubectl -n kueue-system get cm kueue-manager-config \
   -o jsonpath='{.data.controller_manager_config\.yaml}' | grep -A5 'frameworks:'
 ```
 
-Expected: `batch/job`, `pod`, `ray.io/rayjob`, `ray.io/raycluster`.
+Expected: `batch/job`, `pod`, `ray.io/rayjob`.
 
 ### 4. GPU monitoring (GPU mode only)
 
