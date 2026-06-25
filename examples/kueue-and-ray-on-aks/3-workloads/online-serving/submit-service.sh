@@ -20,7 +20,9 @@ kubectl create configmap "${CONFIGMAP_NAME}" \
   | kubectl apply ${DRY_RUN} -f -
 
 echo "→ Applying RayService ${SERVICE_NAME} ..."
-envsubst < "${SCRIPT_DIR}/manifests/rayservice.yaml.tmpl" | kubectl apply ${DRY_RUN} -f -
+# MSYS_NO_PATHCONV: Git Bash on Windows converts POSIX strings like "/aurora"
+# into Windows paths. No-op on Linux/macOS.
+MSYS_NO_PATHCONV=1 envsubst < "${SCRIPT_DIR}/manifests/rayservice.yaml.tmpl" | kubectl apply ${DRY_RUN} -f -
 
 if [[ -z "${DRY_RUN}" ]]; then
   echo "✓ Done. Watch: kubectl -n ray get rayservice ${SERVICE_NAME} -w"
