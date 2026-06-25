@@ -1,0 +1,22 @@
+# Resource flavors tell Kueue which nodes can satisfy each resource type.
+#
+# Two flavors:
+#   - default: matches any node (used for CPU-only pods like the Ray head)
+#   - gpu:     targets GPU nodes via the AKS-managed accelerator label
+#
+# Apply once:
+#   kubectl apply -f 10-resource-flavors.yaml
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ResourceFlavor
+metadata:
+  name: default
+spec: {}
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ResourceFlavor
+metadata:
+  name: gpu
+spec:
+  nodeLabels:
+    accelerator: nvidia
