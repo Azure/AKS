@@ -37,13 +37,14 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * [Azure Policy add-on](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes) now generates ValidatingAdmissionPolicies (VAP) for all customers. This enforces CEL-based policies inside the API server process for minimal latency and enables fail-closed enforcement.
 * Node Auto Provisioning (NAP) managed clusters can now enable custom OS settings for Linux. See our [AKSNodeClass documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) for more information.
 * Node Auto Provisioning (NAP) managed clusters can now support AMD GPU SKUs, Nvidia GPU Operator and custom driver installation via the AKSNodeClass. See our [AKSNodeClass documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-aksnodeclass) for more information.
-
+* [AKS end of support notifications](https://learn.microsoft.com/azure/aks/aks-end-of-support-notifications) are now available. AKS automatically notifies you when your cluster's Kubernetes version is approaching or has passed its end of support date. Alerts are sent two weeks before end of support, one week before end of support, and then weekly after the support date passes—no monitoring add-on or maintenance window configuration required. Notifications are published to Azure Resource Graph and can be surfaced via email alerts or real-time Event Grid webhooks.
 
 #### Preview features
 
 * [Azure Linux 3.0 confidential VM (CVM)](https://learn.microsoft.com/azure/aks/use-azure-linux) is now available in preview in Fairfax (US Gov) regions. Register the `AzureLinuxCVMPreview` feature to enable it.
 * [In-place node pool resize](https://learn.microsoft.com/azure/aks/resize-node-pool) is now available in preview. Resize the VM size of an existing VMSS-based node pool in place via `az aks nodepool update --node-vm-size`, without manually creating and migrating to a new node pool.
 * [Mixed SKU autoscaling in Virtual Machine node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools#cluster-autoscaler-with-virtual-machines-node-pools-preview) is now available in preview. This allows users to select multiple VM sizes in the same node pool using cluster autoscaler with virtual machine node pools.  
+* [Automatic Pod Disruption Budget management](https://learn.microsoft.com/azure/aks/automatic-pod-disruption-budget-management) is now available in preview. The AKS extension automatically creates PDBs for deployments without PDBs and temporarily scales up replicas to unblock node drain when a PDB would prevent eviction, then scales back down—reducing the need for manual intervention during upgrade drain failures.
 
 #### Behavioral changes
 
