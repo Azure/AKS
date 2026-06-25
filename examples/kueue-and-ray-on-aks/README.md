@@ -3,7 +3,7 @@
 A hands-on walkthrough for running Ray training, inference, and serving on
 Azure Kubernetes Service with Kueue admission control. It provisions the full
 stack from scratch (cluster, node pools, operators, storage, queues) and submits
-four real Ray workloads.
+real Ray workloads.
 
 ## Overview
 
@@ -74,13 +74,13 @@ keys in the manifests.
 |--------|-----------|----------------|
 | 1 — Infrastructure | [`1-infrastructure/`](1-infrastructure/) | Provision the AKS cluster, KubeRay + Kueue operators, Blob storage, workload identity, and pre-staged datasets with one `terraform apply` |
 | 2 — Kueue Queues | [`2-kueue-queues/`](2-kueue-queues/) | Apply ResourceFlavors and ClusterQueues — a single backpressure queue or two teams sharing a cohort with borrowing |
-| 3 — Workloads | [`3-workloads/`](3-workloads/) | Submit four Ray examples: Aurora fine-tune, LLM training, batch inference (all RayJob), and online serving (RayService) |
+| 3 — Workloads | [`3-workloads/`](3-workloads/) | Submit Ray examples: Aurora fine-tune, LLM training, batch inference (RayJob), and online serving (RayService) |
 
 Work through them in order — each module assumes the previous one is in place.
 
-The four workloads in Module 3:
+The workloads in Module 3:
 
-- **[Aurora fine-tune](3-workloads/aurora-finetune/)** — LoRA fine-tune of the Aurora weather model on regional ERA5 data (RayJob, multi-GPU)
+- **[Aurora fine-tune](3-workloads/aurora-finetune/)** — LoRA fine-tune of the Aurora weather model on regional ERA5 data (RayJob, 1×A100)
 - **[LLM training](3-workloads/llm-training/)** — Distributed Qwen2.5-7B LoRA fine-tune with Ray Train and LLaMA-Factory (RayJob)
 - **[Batch inference](3-workloads/batch-inference/)** — Parallel inference over a dataset using Ray Data and ActorPool (RayJob)
 - **[Online serving](3-workloads/online-serving/)** — Aurora model served behind a stable HTTP endpoint with Ray Serve (RayService)
@@ -100,7 +100,7 @@ You also need GPU quota in your target region. The default config provisions a
 `az vm list-usage` before deploying, or set `gpu_enabled=false` for a CPU-only
 run. See [Module 1](1-infrastructure/) for details.
 
-## Quick start
+## Quick start — Aurora fine-tune
 
 The fast path: provision, point kubectl at the cluster, apply one queue, submit
 one RayJob, and watch it complete.
@@ -137,8 +137,8 @@ kubectl -n ray get rayjob,pods -w
 ```
 
 The RayJob stays suspended until Kueue admits it from the `default` queue, then
-KubeRay brings up the Ray cluster and runs the workload. For the other three
-examples and the team-queue borrowing demo, follow each module's README.
+KubeRay brings up the Ray cluster and runs the workload. For other examples and
+the team-queue borrowing demo, follow each module's README.
 
 ## Cleanup
 

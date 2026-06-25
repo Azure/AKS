@@ -77,6 +77,7 @@ The `loss_history` array in `train-metrics.json` should contain finite values
 | `AURORA_MAX_STEPS` | `1` | Training steps |
 | `AURORA_LORA_RANK` | `8` | LoRA rank |
 | `AURORA_LEAD_HOURS` | `6` | Forecast lead time (must be 6h multiple) |
+| `AURORA_REQUIRE_GPU_NAME` | `A100` | GPU name substring guard (set `H100` or `H200` for other SKUs) |
 | `QUEUE_NAME` | `default` | Kueue LocalQueue name |
 
 ## Cleanup

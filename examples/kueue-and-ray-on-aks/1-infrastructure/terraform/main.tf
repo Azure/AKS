@@ -145,6 +145,21 @@ resource "helm_release" "kuberay_operator" {
     type  = "string"
   }
 
+  set {
+    name  = "tolerations[0].key"
+    value = "CriticalAddonsOnly"
+  }
+
+  set {
+    name  = "tolerations[0].operator"
+    value = "Exists"
+  }
+
+  set {
+    name  = "tolerations[0].effect"
+    value = "NoSchedule"
+  }
+
   depends_on = [azurerm_kubernetes_cluster_node_pool.workload]
 }
 
@@ -174,6 +189,21 @@ resource "helm_release" "kueue" {
   set {
     name  = "controllerManager.manager.image.tag"
     value = var.kueue_controller_image_tag
+  }
+
+  set {
+    name  = "controllerManager.tolerations[0].key"
+    value = "CriticalAddonsOnly"
+  }
+
+  set {
+    name  = "controllerManager.tolerations[0].operator"
+    value = "Exists"
+  }
+
+  set {
+    name  = "controllerManager.tolerations[0].effect"
+    value = "NoSchedule"
   }
 
   depends_on = [azurerm_kubernetes_cluster_node_pool.workload]
@@ -347,6 +377,25 @@ resource "azurerm_role_assignment" "storage_blob_data_contributor" {
   scope                = azurerm_storage_account.demo.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_user_assigned_identity.ray_workload.principal_id
+  principal_type       = "ServicePrincipal"
+}
+
+# Grant the Terraform runner (az login identity) data-plane access so the
+# upload provisioners can use --auth-mode login without falling back to
+# account keys.  Subscriptions that disable shared-key access would fail
+# without this.
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "uploader_blob_contributor" {
+  scope                = azurerm_storage_account.demo.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "time_sleep" "wait_for_rbac" {
+  depends_on      = [azurerm_role_assignment.uploader_blob_contributor]
+  create_duration = "60s"
 }
 
 # ---------------------------------------------------------------------------
@@ -409,6 +458,7 @@ resource "null_resource" "aurora_data_upload" {
   depends_on = [
     azurerm_storage_container.aurora,
     azurerm_role_assignment.storage_blob_data_contributor,
+    time_sleep.wait_for_rbac,
   ]
 }
 
@@ -446,5 +496,6 @@ resource "terraform_data" "viggo_dataset" {
   depends_on = [
     azurerm_storage_container.llm_pipeline,
     azurerm_role_assignment.storage_blob_data_contributor,
+    time_sleep.wait_for_rbac,
   ]
 }
