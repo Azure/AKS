@@ -2,7 +2,7 @@
 # Submit the llm-training RayJob to Kueue.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/env.example" 2>/dev/null || true
+source "${SCRIPT_DIR}/env.example"
 
 if [[ ! -f "${SCRIPT_DIR}/llm_training.py" ]]; then
   echo "llm_training.py not found in ${SCRIPT_DIR}."

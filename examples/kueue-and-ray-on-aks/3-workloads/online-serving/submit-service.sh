@@ -3,7 +3,7 @@
 # RayService is NOT admission-controlled by Kueue — no queue label is needed.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/env.example" 2>/dev/null || true
+source "${SCRIPT_DIR}/env.example"
 
 DRY_RUN=""
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN="--dry-run=client"

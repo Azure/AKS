@@ -2,7 +2,7 @@
 # Submit the batch-inference RayJob to Kueue.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/env.example" 2>/dev/null || true
+source "${SCRIPT_DIR}/env.example"
 
 # Check that the Python payload exists
 if [[ ! -f "${SCRIPT_DIR}/batch_inference.py" ]]; then
