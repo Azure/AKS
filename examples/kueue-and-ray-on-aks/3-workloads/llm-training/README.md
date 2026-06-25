@@ -61,5 +61,5 @@ az storage blob download -c llm-pipeline -n lora/latest.txt \
 
 ```bash
 kubectl -n ray delete rayjob ${JOB_NAME}
-kubectl -n ray delete configmap llm-training-scripts
+kubectl -n ray delete configmap ${CONFIGMAP_NAME}
 ```

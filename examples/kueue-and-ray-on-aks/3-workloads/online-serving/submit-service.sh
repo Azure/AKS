@@ -27,7 +27,7 @@ if [[ -z "${DRY_RUN}" ]]; then
   echo ""
   echo "Once Running, access the endpoint:"
   echo "  kubectl -n ray port-forward svc/${SERVICE_NAME}-serve-svc 8000:8000"
-  echo "  curl -X POST http://localhost:8000/aurora \\"
+  echo "  curl -X POST http://localhost:8000${ROUTE_PREFIX} \\"
   echo "    -H 'Content-Type: application/json' \\"
   echo "    -d '{\"init_file\": \"init-2021-01-01-00z.npz\", \"lead_hours\": 6}'"
 fi

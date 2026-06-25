@@ -72,5 +72,5 @@ head -1 /tmp/predictions.jsonl | python3 -m json.tool
 
 ```bash
 kubectl -n ray delete rayjob ${JOB_NAME}
-kubectl -n ray delete configmap batch-inference-scripts
+kubectl -n ray delete configmap ${CONFIGMAP_NAME}
 ```

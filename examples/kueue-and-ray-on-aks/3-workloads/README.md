@@ -90,7 +90,7 @@ Ray Serve. Loads the LoRA adapter from blob storage on startup.
 - **1 GPU** (single head node runs both Serve controller and GPU inference)
 - **Not Kueue-admitted** — persistent deployment
 - Requires: completed `aurora-finetune` run (`AURORA_RUN_ID`)
-- Access: `kubectl -n ray port-forward svc/aurora-serve-serve-svc 8000:8000`
+- Access: `kubectl -n ray port-forward svc/${SERVICE_NAME}-serve-svc 8000:8000`
 - See [online-serving/](online-serving/)
 
 ## Comparison

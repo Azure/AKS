@@ -84,5 +84,5 @@ The `loss_history` array in `train-metrics.json` should contain finite values
 
 ```bash
 kubectl -n ray delete rayjob ${JOB_NAME}
-kubectl -n ray delete configmap aurora-finetune-scripts
+kubectl -n ray delete configmap ${CONFIGMAP_NAME}
 ```

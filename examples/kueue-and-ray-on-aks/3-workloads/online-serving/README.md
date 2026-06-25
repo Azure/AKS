@@ -26,22 +26,22 @@ source env.example
 
 ```bash
 # Watch until the RayService reports Running
-kubectl -n ray get rayservice aurora-serve -w
+kubectl -n ray get rayservice ${SERVICE_NAME} -w
 
 # Once Running, port-forward and test
-kubectl -n ray port-forward svc/aurora-serve-serve-svc 8000:8000
+kubectl -n ray port-forward svc/${SERVICE_NAME}-serve-svc 8000:8000
 ```
 
 Health check (GET):
 
 ```bash
-curl http://localhost:8000/aurora
+curl http://localhost:8000${ROUTE_PREFIX}
 ```
 
 Forecast request (POST):
 
 ```bash
-curl -X POST http://localhost:8000/aurora \
+curl -X POST http://localhost:8000${ROUTE_PREFIX} \
   -H 'Content-Type: application/json' \
   -d '{"init_file": "init-2021-01-01-00z.npz", "lead_hours": 6}'
 ```
@@ -51,8 +51,8 @@ The response includes per-variable summary statistics (shape, mean, min, max) fo
 ## Clean up
 
 ```bash
-kubectl -n ray delete rayservice aurora-serve
-kubectl -n ray delete configmap aurora-serve-scripts
+kubectl -n ray delete rayservice ${SERVICE_NAME}
+kubectl -n ray delete configmap ${CONFIGMAP_NAME}
 ```
 
 ## Environment variables
