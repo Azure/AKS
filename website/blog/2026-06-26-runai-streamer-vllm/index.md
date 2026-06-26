@@ -8,9 +8,9 @@ tags: ["ai-inference", "gpu", "storage", "workload-identity"]
 
 When you autoscale LLM inference, cold-start time is dominated by one thing: getting tens of gigabytes of model weights off storage and into GPU memory. The naive path involves downloading the whole checkpoint to local disk, then loading it into the GPU. This serializes two slow copies back to back and leaves the network idle while the GPU waits.
 
-The [RunAI Model Streamer](https://github.com/run-ai/runai-model-streamer) collapses that into a single streaming step: it reads tensors concurrently from object storage and feeds them into GPU memory as they arrive, saturating the available bandwidth instead of staging everything on disk first. vLLM wires it in behind `--load-format runai_streamer`.
+The [RunAI Model Streamer](https://github.com/run-ai/runai-model-streamer) collapses that into a single streaming step: it reads tensors concurrently from object storage and feeds them into GPU memory as they arrive, saturating the available bandwidth instead of staging everything on disk first. vLLM wires it in behind `--load-format runai_streamer`
 
-Until recently the streamer spoke to AWS S3 and GCS natively, but the support for Azure Blob Storage was added recently. **Since vLLM v0.18.0 ([vllm-project/vllm#34614](https://github.com/vllm-project/vllm/pull/34614)) and runai-model-streamer v0.15.6 ([run-ai/runai-model-streamer#116](https://github.com/run-ai/runai-model-streamer/pull/116)), the `az://` scheme is supported out of the box.** A stock `vllm/vllm-openai` image can stream from Blob with nothing more than an environment variable and a workload-identity binding.
+The streamer has natively supported AWS S3 and GCS for a while, but Azure Blob Storage was just added to the mix. **Since vLLM v0.18.0 ([vllm-project/vllm#34614](https://github.com/vllm-project/vllm/pull/34614)) and runai-model-streamer v0.15.6 ([run-ai/runai-model-streamer#116](https://github.com/run-ai/runai-model-streamer/pull/116)), the `az://` scheme is supported out of the box.** A stock `vllm/vllm-openai` image can stream from Blob with nothing more than an environment variable and a workload-identity binding.
 
 <!-- truncate -->
 
@@ -55,7 +55,7 @@ Three things make the default path slow, and the streamer fixes each one:
 - **A wasted round-trip through disk.** Staging to disk writes tens of gigabytes and immediately reads them back — a second full pass over the data that exists only to bridge the two steps. Even on fast local NVMe that's pure overhead; on network-attached or smaller disks it's worse, and a big checkpoint can fill the disk outright. Streaming never touches disk.
 - **No concurrency.** A plain download and a plain disk read each tend to move data in a single stream, leaving bandwidth unused. The streamer issues many parallel reads against object storage and feeds the GPU concurrently, keeping the link saturated — which is exactly why the premium block-blob account in step 2 is worth it.
 
-The net effect: cold-start time drops from *download time + disk-load time* (added together) to roughly *the streaming time alone* (overlapped), with the disk write-and-read-back eliminated entirely. That's what makes this approach worthwhile when you're autoscaling replicas and every cold start is on the critical path.
+The net effect: cold-start time drops from *download time + disk-load time* (added together) to roughly *the streaming time alone* (overlapped), with the disk write-and-read-back eliminated entirely. That's what makes this approach worthwhile when you're autoscaling replicas and every cold start is on the critical path. With those bottlenecks removed, cold starts become significantly faster and cheaper. Let's build the infrastructure to prove it.
 
 ---
 
@@ -373,6 +373,8 @@ Wait for it to finish and check the logs:
 ```bash
 kubectl wait --for=condition=complete job/upload-model --timeout=1800s
 ```
+
+**A note on timeouts:** The 1800s (30 minute) timeout is plenty for a ~14GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, be sure to bump this timeout so the command doesn't fail while the Job is still happily uploading in the background.
 
 In a separate terminal you can follow the logs:
 
