@@ -560,3 +560,13 @@ ralph-squillace:
   image_url: https://github.com/squillace.png
   socials:
     github: squillace
+
+hariharan-sethuraman:
+  name: Hariharan Sethuraman
+  title: Principal Software Engineer
+  # TODO: replace the placeholder values below with real details before publishing.
+  url: https://www.linkedin.com/in/TODO/
+  image_url: https://github.com/hasethuraman.png
+  socials:
+    linkedin: TODO
+    github: hasethuraman
