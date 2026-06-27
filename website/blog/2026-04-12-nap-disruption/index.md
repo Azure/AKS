@@ -1,6 +1,6 @@
 ---
 title: "Managing disruption with AKS Node Auto-Provisioning"
-description: "Learn AKS best practices for managing node disruption when using node auto provisioning (NAP) with pod disruption budgets, node disruption budgets, consolidation policies, and maintenance windows in production. This blog will help users manage the guardrails to control NAP-managed cluster disruption."
+description: "Learn AKS best practices for managing node disruption when using node auto provisioning (NAP) with pod disruption budgets, node disruption budgets, consolidation policies, and maintenance windows in production."
 date: 2026-04-12
 authors: ["wilson-darko"]
 tags:
@@ -16,7 +16,7 @@ When you manage Kubernetes, a few disruption questions come up fast:
 - Why won’t NAP scale down my nodes, even with lots of underused capacity?
 - Why do upgrades get stuck on certain nodes?
 
-This post focuses on **NAP disruption best practices**, not workload scheduling tools such as topology spread constraints, node affinity, and taints. For scheduling best practices, see the [NAP scheduling fundamentals blog post](https://blog.aks.azure.com/2026/03/20/node-provisioning-best-practice).
+This post focuses on **NAP disruption best practices**, not workload scheduling tools such as topology spread constraints, node affinity, and taints. For scheduling best practices, see the [NAP scheduling fundamentals blog post](https://blog.aks.azure.com/2025/12/06/node-provisioning-best-practice).
 
 If you’re new to these features, start here. If you already use NAP disruption settings, use this post as a checklist for the behaviors AKS users most commonly ask about.
 
@@ -95,7 +95,7 @@ PDBs and Karpenter disruption budgets mainly help with **voluntary** disruptions
 
 NAP can provision [Azure Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms), which are spare capacity in Azure available at a discount, and can be evicted by Azure once this capacity is needed back. Spot VMs are prone to eviction, by design. We recommend you limit Spot VM use to workloads that can handle disruption, and use on-demand compute for stable capacity needs. Disruption controls detailed in this blog will not stop/control spot eviction, or involuntary disruption. You can use some of these tools like consolidation policies with spot to limit when these spot VMs are disrupted due to node utilization.
 
-When NAP receives a signal that a NAP-managed spot VM is scheduled to be evicted, [Node Problem Detector](https://learn.microsoft.com/azure/aks/node-problem-detector) flags the VM(s) as unhealthy, and NAP will begin provisioning a replacemnt VM.
+When NAP receives a signal that a NAP-managed spot VM is scheduled to be evicted, [Node Problem Detector](https://learn.microsoft.com/azure/aks/node-problem-detector) flags the VM(s) as unhealthy, and NAP will begin provisioning a replacement VM.
 
 ---
 
@@ -207,7 +207,7 @@ metadata:
 spec:
   disruption:
     budgets:
-    - nodes: 10
+    - nodes: 10%
 ```
 
 This is often the simplest way to prevent NAP from moving too many nodes at once.
@@ -237,6 +237,8 @@ budgets:
   schedule: "0 0 * * 6"    # Saturday midnight
   duration: 48h
 - nodes: "0"
+  schedule: "0 9 * * 1-5"  # 9 AM Monday-Friday
+  duration: 8h
 ```
 
 **Why this matters:** It aligns cost optimization, including consolidation, drift, and expiration, with the timeline that works for your workload needs.
