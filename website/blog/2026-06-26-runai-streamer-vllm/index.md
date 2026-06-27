@@ -8,7 +8,7 @@ tags: ["ai-inference", "gpu", "storage", "workload-identity"]
 
 When you autoscale LLM inference, cold-start time is dominated by one thing: getting tens of gigabytes of model weights off storage and into GPU memory. The naive path involves downloading the whole checkpoint to local disk, then loading it into the GPU. This serializes two slow copies back to back and leaves the network idle while the GPU waits.
 
-The [RunAI Model Streamer](https://github.com/run-ai/runai-model-streamer) collapses that into a single streaming step: it reads tensors concurrently from object storage and feeds them into GPU memory as they arrive, saturating the available bandwidth instead of staging everything on disk first. vLLM wires it in behind `--load-format runai_streamer`
+The [RunAI Model Streamer](https://github.com/run-ai/runai-model-streamer) collapses that into a single streaming step: it reads tensors concurrently from object storage and feeds them into GPU memory as they arrive, saturating the available bandwidth instead of staging everything on disk first. vLLM wires it in behind `--load-format runai_streamer`.
 
 The streamer has natively supported AWS S3 and GCS for a while, but Azure Blob Storage was just added to the mix. **Since vLLM v0.18.0 ([vllm-project/vllm#34614](https://github.com/vllm-project/vllm/pull/34614)) and runai-model-streamer v0.15.6 ([run-ai/runai-model-streamer#116](https://github.com/run-ai/runai-model-streamer/pull/116)), the `az://` scheme is supported out of the box.** A stock `vllm/vllm-openai` image can stream from Blob with nothing more than an environment variable and a workload-identity binding.
 
@@ -16,9 +16,9 @@ The streamer has natively supported AWS S3 and GCS for a while, but Azure Blob S
 
 This post walks the whole thing end to end on AKS:
 
-1. An AKS cluster with OIDC + workload identity, and a **fully managed** A100 GPU node pool (AKS installs and maintains the NVIDIA driver, device plugin, and DCGM exporter — no need to install the Nvidia GPU operator).
+1. An AKS cluster with OIDC + workload identity, and a **fully managed** A100 GPU node pool (AKS installs and maintains the NVIDIA driver, device plugin, and DCGM exporter — no need to install the NVIDIA GPU operator).
 2. A premium block-blob storage account to hold the weights.
-3. Workload identity so pods read and write Blob with an Azure AD token instead of a storage key.
+3. Workload identity so pods read and write Blob with a Microsoft Entra ID token instead of a storage key.
 4. An **in-cluster upload Job** that pulls `microsoft/phi-4` from HuggingFace and pushes it to Blob — running inside Azure, so it uses Azure's backbone bandwidth rather than your home uplink. Such jobs need to be run once per model.
 5. A vLLM Deployment that streams those weights straight from `az://` at startup.
 
@@ -63,7 +63,7 @@ The net effect: cold-start time drops from *download time + disk-load time* (add
 
 - The [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) (`az`), version 2.85.0 or later.
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/) and [`jq`](https://jqlang.github.io/jq/).
-- An Azure subscription with quota for an Nvidia GPU VM (For example: `Standard_NC24ads_A100_v4`) in your target region.
+- An Azure subscription with quota for an NVIDIA GPU VM (For example: `Standard_NC24ads_A100_v4`) in your target region.
 - Logged in: `az login` and `az account set --subscription <id>`.
 
 ---
@@ -105,7 +105,7 @@ export VLLM_IMAGE="vllm/vllm-openai:v0.23.0"
 
 ### 1a. Enable the managed GPU preview
 
-The fully managed GPU node-pool experience is a preview feature. Register it once per subscription. This is what lets us skip the NVIDIA GPU operator entirely — AKS takes over installing and maintaining the driver, the Nvidia GPU device plugin, and the Nvidia DCGM metrics exporter on every GPU node.
+The fully managed GPU node-pool experience is a preview feature. Register it once per subscription. This is what lets us skip the NVIDIA GPU operator entirely — AKS takes over installing and maintaining the driver, the NVIDIA GPU device plugin, and the NVIDIA DCGM metrics exporter on every GPU node.
 
 ```bash
 # The managed-GPU flag lives in the aks-preview extension (>= 19.0.0b29).
@@ -120,7 +120,7 @@ az feature register \
 
 ### 1b. Create the resource group and cluster
 
-The cluster needs three things switched on for workload identity to work later: `--enable-oidc-issuer` (so Kubernetes service-account tokens can be validated by Azure AD), `--enable-workload-identity` (installs the mutating webhook that injects federated-token env vars into labelled pods), and `--enable-managed-identity`.
+The cluster needs three things switched on for workload identity to work later: `--enable-oidc-issuer` (so Kubernetes service-account tokens can be validated by Microsoft Entra ID), `--enable-workload-identity` (installs the mutating webhook that injects federated-token env vars into labeled pods), and `--enable-managed-identity`.
 
 ```bash
 az group create \
@@ -150,7 +150,7 @@ components. GPU capacity comes from a dedicated pool in the next step.
 
 ### 1c. Add the managed A100 GPU node pool
 
-This single flag — `--enable-managed-gpu=true` — is the whole reason we don't need a GPU operator. AKS provisions the node with the NVIDIA driver already installed, deploys the Nvidia GPU device plugin so `nvidia.com/gpu` is advertised, and wires up the Nvidia DCGM exporter for metrics.
+This single flag — `--enable-managed-gpu=true` — is the whole reason we don't need a GPU operator. AKS provisions the node with the NVIDIA driver already installed, deploys the NVIDIA GPU device plugin so `nvidia.com/gpu` is advertised, and wires up the NVIDIA DCGM exporter for metrics.
 
 ```bash
 az aks nodepool add \
@@ -198,7 +198,7 @@ This is the part that lets pods talk to Blob with **zero secrets**. The chain lo
 
 ```mermaid
 flowchart TD
-    Pod["Pod<br/>(default SA, labelled)"]
+    Pod["Pod<br/>(default SA, labeled)"]
     FC["Federated credential<br/>(trusts the cluster's OIDC issuer for this SA)"]
     MI["User-assigned managed identity"]
     Role["Storage Blob Data Contributor"]
@@ -267,21 +267,24 @@ az identity federated-credential create \
     --audience api://AzureADTokenExchange
 
 # Tell the workload-identity webhook which identity this SA maps to,
-# and opt the SA into token injection.
+# and opt the SA into token injection. --overwrite keeps both commands
+# idempotent so re-running this section after a partial attempt succeeds.
 kubectl annotate serviceaccount "${SERVICE_ACCOUNT_NAME}" \
-    -n "${NAMESPACE}" \
+    -n "${NAMESPACE}" --overwrite \
     azure.workload.identity/client-id="${IDENTITY_CLIENT_ID}"
 
 kubectl label serviceaccount "${SERVICE_ACCOUNT_NAME}" \
-    -n "${NAMESPACE}" \
+    -n "${NAMESPACE}" --overwrite \
     azure.workload.identity/use="true"
 ```
 
-From here on, any pod that runs as the `default` service account **and** carries
-the `azure.workload.identity/use: "true"` label gets `AZURE_CLIENT_ID`,
-`AZURE_TENANT_ID`, and a projected federated token mounted automatically.
+These two commands play different roles, and it's worth being precise about which is which. The **annotation** on the service account tells the webhook *which* managed identity to mint tokens for. The **label** is what actually triggers injection — but the webhook keys off the label on the **pod**, not the service account. Labeling the service account here is just a convenience: it makes new pods inherit the label by default in some setups, but the authoritative switch is the `azure.workload.identity/use: "true"` label in each pod template (you'll see it on both the Job and the Deployment below). A pod that runs as this service account but is missing that label gets **no** token injected — and fails to authenticate to Blob with no obvious error. So from here on, every workload that needs Blob access carries `azure.workload.identity/use: "true"` on its **pod template**, which earns it `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and a projected federated token automatically.
 
-> **Give the role assignment a couple of minutes to propagate.** Azure RBAC role assignments are eventually consistent. If the upload Job in the next step starts too soon, it fails with `AuthorizationPermissionMismatch`. If you hit that, wait a couple of minutes (`sleep 120`) and let the Job's `backoffLimit` retry, or just re-run it.
+> **Give the role assignment a couple of minutes to propagate.** Azure RBAC role assignments are eventually consistent. If the upload Job in the next step starts too soon, it fails with `AuthorizationPermissionMismatch`. If you hit that, wait a couple of minutes (`sleep 120`) and let the Job's `backoffLimit` retry. To re-run the Job from scratch, delete it first — a `Job` is immutable, so a second `kubectl apply` fails with `AlreadyExists`:
+>
+> ```bash
+> kubectl delete job upload-model --ignore-not-found
+> ```
 
 ---
 
@@ -312,6 +315,14 @@ spec:
         azure.workload.identity/use: "true"
     spec:
       restartPolicy: Never
+      volumes:
+      # Scratch space for the downloaded checkpoint. Backing it with an
+      # emptyDir (plus the ephemeral-storage requests below) makes the
+      # scheduler reserve disk for the model up front, instead of letting a
+      # large download fill the node and trigger a DiskPressure eviction.
+      - name: model-scratch
+        emptyDir:
+          sizeLimit: 60Gi
       containers:
       - name: uploader
         image: python:3.12-slim
@@ -319,9 +330,12 @@ spec:
         - bash
         - -exc
         - |
-          # Install required dependencies.
-          # Install the huggingface-hub package.
-          pip install huggingface-hub
+          set -euo pipefail
+
+          # Install the HuggingFace CLI. Pin huggingface-hub so the `hf`
+          # command is guaranteed present (the CLI was renamed from
+          # `huggingface-cli` to `hf` in huggingface-hub v0.34).
+          pip install 'huggingface-hub>=0.34'
 
           # Install azcopy.
           apt-get update && apt-get install -y curl
@@ -360,11 +374,19 @@ spec:
           value: "${STORAGE_CONTAINER_NAME}"
         - name: MODEL_NAME
           value: "${MODEL_NAME}"
+        volumeMounts:
+        - name: model-scratch
+          mountPath: /tmp/model
         resources:
           requests:
             memory: "4Gi"
+            # Reserve disk for the checkpoint so the scheduler places the pod
+            # on a node with room. Size this above your largest model; phi-4
+            # is ~29 GB on disk, so 50 GB leaves headroom.
+            ephemeral-storage: "50Gi"
           limits:
             memory: "8Gi"
+            ephemeral-storage: "60Gi"
 JOBEOF
 ```
 
@@ -374,7 +396,7 @@ Wait for it to finish and check the logs:
 kubectl wait --for=condition=complete job/upload-model --timeout=1800s
 ```
 
-**A note on timeouts:** The 1800s (30 minute) timeout is plenty for a ~14GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, be sure to bump this timeout so the command doesn't fail while the Job is still happily uploading in the background.
+**A note on scaling to larger models:** The 1800s (30 minute) timeout is plenty for a ~14 GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, two limits need raising together: bump this `--timeout` so the command doesn't give up while the Job is still uploading, **and** raise the `ephemeral-storage` request/limit on the Job — a bigger checkpoint that overflows the reserved scratch space gets evicted with `DiskPressure` long before any timeout fires.
 
 In a separate terminal you can follow the logs:
 
@@ -514,10 +536,13 @@ kubectl logs -f deployment/phi-4
 
 ## 6. Verify and test
 
-Once it's serving, port-forward and send a chat completion:
+Once it's serving, port-forward and send a chat completion. The port-forward needs a moment to establish, so wait for `/health` to answer before firing the request:
 
 ```bash
 kubectl port-forward svc/phi-4 8000:8000 &
+
+# Wait for the tunnel to come up so the first request doesn't race it.
+until curl -sf http://localhost:8000/health >/dev/null; do sleep 1; done
 
 curl -s http://localhost:8000/v1/chat/completions \
     -H "Content-Type: application/json" \
