@@ -93,9 +93,9 @@ PDBs and Karpenter disruption budgets mainly help with **voluntary** disruptions
 
 ### How NAP handles spot nodes
 
-NAP can provision [Azure Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms), which are spare capacity in Azure available at a discount, and can be evicted by Azure once this capacity is needed back. Spot VMs are prone to eviction, by design. We recommend you limit Spot VM use to workloads that can handle disruption, and use on-demand compute for stable capacity needs. Disruption controls detailed in this blog will not stop/control spot eviction, or involuntary disruption. You can use some of these tools like consolidation policies with spot to limit when these spot VMs are disrupted due to node utilization. 
+NAP can provision [Azure Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms), which are spare capacity in Azure available at a discount, and can be evicted by Azure once this capacity is needed back. Spot VMs are prone to eviction, by design. We recommend you limit Spot VM use to workloads that can handle disruption, and use on-demand compute for stable capacity needs. Disruption controls detailed in this blog will not stop/control spot eviction, or involuntary disruption. You can use some of these tools like consolidation policies with spot to limit when these spot VMs are disrupted due to node utilization.
 
-When NAP receives a signal that a NAP-managed spot VM is scheduled to be evicted, [Node Problem Detector](https://learn.microsoft.com/azure/aks/node-problem-detector) flags the VM(s) as unhealthy, and NAP will begin provisioning a replacemnt VM. 
+When NAP receives a signal that a NAP-managed spot VM is scheduled to be evicted, [Node Problem Detector](https://learn.microsoft.com/azure/aks/node-problem-detector) flags the VM(s) as unhealthy, and NAP will begin provisioning a replacemnt VM.
 
 ---
 
@@ -304,7 +304,7 @@ Fix:
 - Add time-based budgets so disruption happens when you want it.
 
 :::note
-[Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms) by design are prone to evictions. For stable workloads that are not intended for frequent disruption, we recommend using on-demand virtual machines. 
+[Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms) by design are prone to evictions. For stable workloads that are not intended for frequent disruption, we recommend using on-demand virtual machines.
 :::
 
 ### Symptom: node disruption happens at the wrong time
