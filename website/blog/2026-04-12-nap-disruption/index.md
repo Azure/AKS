@@ -1,6 +1,6 @@
 ---
 title: "Managing disruption with AKS Node Auto-Provisioning"
-description: "Learn AKS best practices for managing NAP disruption with Pod Disruption Budgets, node pool budgets, consolidation, and maintenance windows in production."
+description: "Learn AKS best practices for managing node disruption when using node auto provisioning (NAP) with pod disruption budgets, node disruption budgets, consolidation policies, and maintenance windows in production. This blog will help users manage the guardrails to control NAP-managed cluster disruption."
 date: 2026-04-12
 authors: ["wilson-darko"]
 tags:
@@ -73,7 +73,7 @@ Node auto-provisioning (NAP) provisions, scales, and manages nodes. NAP bases it
 
 ### How NAP handles disruption
 
-NAP honors Kubernetes-native concepts such as PodDisruptionBudgets when making disruption decisions. NAP also includes Karpenter-based concepts such as consolidation, drift, and node disruption budgets.
+NAP honors Kubernetes-native concepts such as `PodDisruptionBudgets` when making disruption decisions. NAP also includes Karpenter-based concepts such as [consolidation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#consolidation), [drift](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#drift), and [node disruption budgets](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets).
 
 ### What disruption means in NAP
 
@@ -90,6 +90,12 @@ These actions differ from **involuntary** disruptions such as:
 - Host reboots outside your control
 
 PDBs and Karpenter disruption budgets mainly help with **voluntary** disruptions. These features do not regulate involuntary disruption, for example, spot VM evictions, node termination events, or node stopping events.
+
+### How NAP handles spot nodes
+
+NAP can provision [Azure Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms), which are spare capacity in Azure available at a discount, and can be evicted by Azure once this capacity is needed back. Spot VMs are prone to eviction, by design. We recommend you limit Spot VM use to workloads that can handle disruption, and use on-demand compute for stable capacity needs. Disruption controls detailed in this blog will not stop/control spot eviction, or involuntary disruption. You can use some of these tools like consolidation policies with spot to limit when these spot VMs are disrupted due to node utilization. 
+
+When NAP receives a signal that a NAP-managed spot VM is scheduled to be evicted, [Node Problem Detector](https://learn.microsoft.com/azure/aks/node-problem-detector) flags the VM(s) as unhealthy, and NAP will begin provisioning a replacemnt VM. 
 
 ---
 
@@ -155,7 +161,7 @@ Use these settings to control consolidation behavior:
 - `consolidateAfter: 1d`: controls the delay before NAP consolidates underutilized nodes, and works with the `consolidationPolicy` setting.
 - `expireAfter: 24h`: determines how long nodes in this NodePool CRD can exist. Older nodes are deleted regardless of consolidation policies.
 
-**Note:** Underutilized is not a value you can set. NAP determines it through its cost simulations.
+**Note:** Underutilized rate is not a value you can set. NAP determines it through its cost simulations.
 
 The following example shows these disruption tools in action:
 
@@ -189,6 +195,19 @@ spec:
   disruption:
     budgets:
     - nodes: "1"
+```
+
+The following example sets the node disruption budget to not disrupt more than 10% of nodes at a time.
+
+```yaml
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  disruption:
+    budgets:
+    - nodes: 10
 ```
 
 This is often the simplest way to prevent NAP from moving too many nodes at once.
@@ -269,7 +288,7 @@ Fix:
 - Relax PDBs, for example, `maxUnavailable: 1`, or increase replicas.
 - If a workload truly must not be disrupted, accept that nodes running it will not consolidate. This also increases the risk of update failure. A strict `100%` available PDB can cause scale down and update failures.
 
-### Symptom: NAP disrupts too often or too much at once
+### Symptom: NAP disrupts nodes too often or too much at once
 
 Behavior: NAP consolidates too often or voluntarily disrupts too many nodes at once.
 
@@ -288,7 +307,7 @@ Fix:
 [Spot VMs](https://learn.microsoft.com/azure/virtual-machines/spot-vms) by design are prone to evictions. For stable workloads that are not intended for frequent disruption, we recommend using on-demand virtual machines. 
 :::
 
-### Symptom: disruption happens at the wrong time
+### Symptom: node disruption happens at the wrong time
 
 Behavior: Disruption happens during inconvenient times, such as work hours or peak usage windows.
 
