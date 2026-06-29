@@ -6,7 +6,7 @@ authors: [suraj-deshmukh, hariharan-sethuraman]
 tags: ["ai-inference", "gpu", "storage", "workload-identity"]
 ---
 
-When you autoscale LLM inference, cold-start time is dominated by one thing: getting tens of gigabytes of model weights off storage and into GPU memory. The naive path involves downloading the whole checkpoint to local disk, then loading it into the GPU. This serializes two slow copies back to back and leaves the network idle while the GPU waits.
+When you autoscale LLM inference, cold-start time is dominated by one thing: getting tens of gigabytes of model weights off storage and into GPU memory. The naive path involves downloading all the model weights to local disk, then loading them into the GPU. This serializes two slow copies back to back and leaves the network idle while the GPU waits.
 
 The [RunAI Model Streamer](https://github.com/run-ai/runai-model-streamer) collapses that into a single streaming step: it reads tensors concurrently from object storage and feeds them into GPU memory as they arrive, saturating the available bandwidth instead of staging everything on disk first. vLLM wires it in behind `--load-format runai_streamer`.
 
@@ -18,17 +18,17 @@ This post walks the whole thing end to end on AKS:
 
 1. An AKS cluster with OIDC + workload identity, and a **fully managed** A100 GPU node pool (AKS installs and maintains the NVIDIA driver, device plugin, and DCGM exporter — no need to install the NVIDIA GPU operator).
 2. A premium block-blob storage account to hold the weights.
-3. Workload identity so pods read and write Blob with a Microsoft Entra ID token instead of a storage key.
+3. Workload identity that lets pods read and write Blob with a Microsoft Entra ID token instead of a storage key.
 4. An **in-cluster upload Job** that pulls `microsoft/phi-4` from HuggingFace and pushes it to Blob — running inside Azure, so it uses Azure's backbone bandwidth rather than your home uplink. Such jobs need to be run once per model.
 5. A vLLM Deployment that streams those weights straight from `az://` at startup.
 
-> **Why upload from a Job instead of your laptop?** A multi-gigabyte checkpoint uploaded from a workstation is gated by your upstream bandwidth and can take hours. A Job in the same region as the storage account moves the same bytes over Azure's network in minutes, and it authenticates with workload identity so there are no keys to copy around.
+> **Why upload from a Job instead of your laptop?** Multi-gigabyte model weights uploaded from a workstation are gated by your upstream bandwidth and can take hours. A Job in the same region as the storage account moves the same bytes over Azure's network in minutes, and it authenticates with workload identity so there are no keys to copy around.
 
 ---
 
 ## Why stream instead of download-then-load?
 
-The default way vLLM loads a model is a two-step relay: download the whole checkpoint from the source (HuggingFace Hub or object storage) onto the node's local disk, then read it back off disk to load it into GPU memory. The RunAI streamer replaces both halves with a single concurrent stream from object storage straight into GPU memory.
+The default way vLLM loads a model is a two-step relay: download all the model weights from the source (HuggingFace Hub or object storage) onto the node's local disk, then read them back off disk to load them into GPU memory. The RunAI streamer replaces both halves with a single concurrent stream from object storage straight into GPU memory.
 
 ```mermaid
 flowchart TB
@@ -37,7 +37,7 @@ flowchart TB
         ND["Local disk"]
         NG["GPU memory"]
 
-        NS -->|"1. copy whole checkpoint<br/>to disk (GPU idle)"| ND
+        NS -->|"1. copy all model weights<br/>to disk (GPU idle)"| ND
         ND -->|"2. read back from disk<br/>into GPU (network idle)"| NG
     end
 
@@ -52,7 +52,7 @@ flowchart TB
 Three things make the default path slow, and the streamer fixes each one:
 
 - **Two serial passes instead of one.** With download-then-load, *nothing* reaches the GPU until the last byte has landed on disk. The GPU sits idle through the entire download, and the network sits idle through the entire disk-to-GPU load — the two slow copies never overlap. The streamer pipelines them: a tensor is loading onto the GPU while the next ones are still in flight from storage.
-- **A wasted round-trip through disk.** Staging to disk writes tens of gigabytes and immediately reads them back — a second full pass over the data that exists only to bridge the two steps. Even on fast local NVMe that's pure overhead; on network-attached or smaller disks it's worse, and a big checkpoint can fill the disk outright. Streaming never touches disk.
+- **A wasted round-trip through disk.** Staging to disk writes tens of gigabytes and immediately reads them back — a second full pass over the data that exists only to bridge the two steps. Even on fast local NVMe that's pure overhead; on network-attached or smaller disks it's worse, and large model weights can fill the disk outright. Streaming never touches disk.
 - **No concurrency.** A plain download and a plain disk read each tend to move data in a single stream, leaving bandwidth unused. The streamer issues many parallel reads against object storage and feeds the GPU concurrently, keeping the link saturated — which is exactly why the premium block-blob account in step 2 is worth it.
 
 The net effect: cold-start time drops from *download time + disk-load time* (added together) to roughly *the streaming time alone* (overlapped), with the disk write-and-read-back eliminated entirely. That's what makes this approach worthwhile when you're autoscaling replicas and every cold start is on the critical path. With those bottlenecks removed, cold starts become significantly faster and cheaper. Let's build the infrastructure to prove it.
@@ -295,7 +295,7 @@ The Job does three things: pull `microsoft/phi-4` from HuggingFace, install `azc
 A few details worth calling out:
 
 - The pod template carries the `azure.workload.identity/use: "true"` label, so `azcopy` finds the federated token automatically.
-- `--overwrite=ifSourceNewer` makes retries cheap: a re-run skips blobs that already uploaded successfully instead of re-sending the whole checkpoint.
+- `--overwrite=ifSourceNewer` makes retries cheap: a re-run skips blobs that already uploaded successfully instead of re-sending all the model weights.
 - `--exclude-path '.cache'` skips HuggingFace's local cache directory.
 
 > **A subtlety worth understanding: scoped `envsubst`.** The manifest is rendered with `envsubst` so the apply-time config (namespace, account, container, model) gets baked in. But the container script *also* contains shell variables that must survive untouched until the container runs — `$AZURE_STORAGE_ACCOUNT_NAME` and `$AZURE_STORAGE_CONTAINER_NAME` (injected via the pod's `env:` block) and the retry-loop counters `$attempt` / `$max_retries`. A bare `envsubst` would happily blank all of those out (they aren't set in your shell), leaving a broken `https://.blob.core.windows.net//...` URL and a retry loop comparing empty strings. Passing `envsubst` an explicit allow-list — `envsubst '${NAMESPACE} ${STORAGE_ACCOUNT_NAME} ${STORAGE_CONTAINER_NAME} ${MODEL_NAME}'` — substitutes only those four and leaves the runtime variables alone.
@@ -316,7 +316,7 @@ spec:
     spec:
       restartPolicy: Never
       volumes:
-      # Scratch space for the downloaded checkpoint. Backing it with an
+      # Scratch space for the downloaded model weights. Backing it with an
       # emptyDir (plus the ephemeral-storage requests below) makes the
       # scheduler reserve disk for the model up front, instead of letting a
       # large download fill the node and trigger a DiskPressure eviction.
@@ -380,7 +380,7 @@ spec:
         resources:
           requests:
             memory: "4Gi"
-            # Reserve disk for the checkpoint so the scheduler places the pod
+            # Reserve disk for the model weights so the scheduler places the pod
             # on a node with room. Size this above your largest model; phi-4
             # is ~29 GB on disk, so 50 GB leaves headroom.
             ephemeral-storage: "50Gi"
@@ -396,7 +396,7 @@ Wait for it to finish and check the logs:
 kubectl wait --for=condition=complete job/upload-model --timeout=1800s
 ```
 
-**A note on scaling to larger models:** The 1800s (30 minute) timeout is plenty for a ~14 GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, two limits need raising together: bump this `--timeout` so the command doesn't give up while the Job is still uploading, **and** raise the `ephemeral-storage` request/limit on the Job — a bigger checkpoint that overflows the reserved scratch space gets evicted with `DiskPressure` long before any timeout fires.
+**A note on scaling to larger models:** The 1800s (30 minute) timeout is plenty for a ~14 GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, two limits need raising together: bump this `--timeout` so the command doesn't give up while the Job is still uploading, **and** raise the `ephemeral-storage` request/limit on the Job — larger model weights that overflow the reserved scratch space get evicted with `DiskPressure` long before any timeout fires.
 
 In a separate terminal you can follow the logs:
 
@@ -422,6 +422,19 @@ Now the payoff. Two things turn on Blob streaming:
 
 - `--load-format runai_streamer` selects the RunAI Model Streamer loader.
 - `--model az://${STORAGE_CONTAINER_NAME}/${MODEL_NAME}` points at the blobs using the native `az://` scheme. The `AZURE_STORAGE_ACCOUNT_NAME` env var tells the streamer which account to read from, and the pod's workload-identity label handles auth — no keys, no connection strings.
+
+> **Tuning the streamer.** The RunAI Model Streamer exposes [tunable parameters](https://docs.vllm.ai/en/latest/models/extensions/runai_model_streamer/#tunable-parameters) that you pass to vLLM as a JSON object via `--model-loader-extra-config`. A few worth knowing:
+>
+> - `'{"distributed":true}'` enables distributed streaming across tensor-parallel ranks (CUDA and ROCm only) — useful once you scale `--tensor-parallel-size` past 1.
+> - `'{"concurrency":16}'` sets how many OS threads read tensors from storage into the CPU buffer; raise it to push more bandwidth against a premium account.
+> - `'{"memory_limit":5368709120}'` caps the CPU staging buffer (in bytes).
+>
+> To set one, add the flag to the `args` list below, for example:
+>
+> ```yaml
+>         - --model-loader-extra-config
+>         - '{"concurrency":16}'
+> ```
 
 The pod mounts an in-memory `emptyDir` at `/dev/shm` because vLLM uses shared memory for inter-process communication.
 
