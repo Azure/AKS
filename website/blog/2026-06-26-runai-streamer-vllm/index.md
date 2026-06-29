@@ -10,7 +10,7 @@ When you autoscale LLM inference, cold-start time is dominated by one thing: get
 
 The [RunAI Model Streamer](https://github.com/run-ai/runai-model-streamer) collapses that into a single streaming step: it reads tensors concurrently from object storage and feeds them into GPU memory as they arrive, saturating the available bandwidth instead of staging everything on disk first. vLLM wires it in behind `--load-format runai_streamer`.
 
-The streamer has natively supported AWS S3 and GCS for a while, but Azure Blob Storage was just added to the mix. **Since vLLM v0.18.0 ([vllm-project/vllm#34614](https://github.com/vllm-project/vllm/pull/34614)) and runai-model-streamer v0.15.6 ([run-ai/runai-model-streamer#116](https://github.com/run-ai/runai-model-streamer/pull/116)), the `az://` scheme is supported out of the box.** A stock `vllm/vllm-openai` image can stream from Blob with nothing more than an environment variable and a workload-identity binding.
+The streamer has previously supported AWS S3 and GCS for a while, but Azure Blob Storage was recently added to the list. **Since vLLM v0.18.0 ([vllm-project/vllm#34614](https://github.com/vllm-project/vllm/pull/34614)) and runai-model-streamer v0.15.6 ([run-ai/runai-model-streamer#116](https://github.com/run-ai/runai-model-streamer/pull/116)), the `az://` scheme is supported out of the box.** A stock `vllm/vllm-openai` image can stream from Blob with nothing more than an environment variable and a workload-identity binding.
 
 <!-- truncate -->
 
@@ -22,7 +22,9 @@ This post walks the whole thing end to end on AKS:
 4. An **in-cluster upload Job** that pulls `microsoft/phi-4` from HuggingFace and pushes it to Blob — running inside Azure, so it uses Azure's backbone bandwidth rather than your home uplink. Such jobs need to be run once per model.
 5. A vLLM Deployment that streams those weights straight from `az://` at startup.
 
-> **Why upload from a Job instead of your laptop?** Multi-gigabyte model weights uploaded from a workstation are gated by your upstream bandwidth and can take hours. A Job in the same region as the storage account moves the same bytes over Azure's network in minutes, and it authenticates with workload identity so there are no keys to copy around.
+:::note Why upload from a Job instead of your laptop?
+Multi-gigabyte model weights uploaded from a workstation are gated by your upstream bandwidth and can take hours. A Job in the same region as the storage account moves the same bytes over Azure's network in minutes, and it authenticates with workload identity so there are no keys to copy around.
+:::
 
 ---
 
@@ -197,15 +199,17 @@ This is the part that lets pods talk to Blob with **zero secrets**. The chain lo
 
 We use **Storage Blob Data Contributor** (not just Reader) on purpose: the same identity is reused by both the upload Job (which needs to *write*) and the vLLM pod (which only *reads*).
 
-> **You need permission to create role assignments.** The `az role assignment create` step below writes to `Microsoft.Authorization/roleAssignments`, which requires an elevated role on the scope — **Owner**, **User Access Administrator**, or **Role Based Access Control Administrator**. Plain Contributor isn't enough. Without it you'll see:
->
-> ```text
-> (AuthorizationFailed) The client 'you@example.com' with object id '...' does not
-> have authorization to perform action 'Microsoft.Authorization/roleAssignments/write'
-> over scope '/subscriptions/.../storageAccounts/<account>/providers/Microsoft.Authorization/roleAssignments/...'
-> ```
->
-> If you hit this, ask a subscription/resource-group administrator to either grant you one of those roles or run the role-assignment command for you. The rest of the setup is unaffected.
+:::caution You need permission to create role assignments
+The `az role assignment create` step below writes to `Microsoft.Authorization/roleAssignments`, which requires an elevated role on the scope — **Owner**, **User Access Administrator**, or **Role Based Access Control Administrator**. Plain Contributor isn't enough. Without it you'll see:
+
+```text
+(AuthorizationFailed) The client 'you@example.com' with object id '...' does not
+have authorization to perform action 'Microsoft.Authorization/roleAssignments/write'
+over scope '/subscriptions/.../storageAccounts/<account>/providers/Microsoft.Authorization/roleAssignments/...'
+```
+
+If you hit this, ask a subscription/resource-group administrator to either grant you one of those roles or run the role-assignment command for you. The rest of the setup is unaffected.
+:::
 
 ```bash
 # The cluster's OIDC issuer URL — the trust anchor for federated credentials.
@@ -252,7 +256,7 @@ az identity federated-credential create \
     --audience api://AzureADTokenExchange
 ```
 
-These two commands play different roles, and it's worth being precise about which is which. The **annotation** on the service account tells the webhook *which* managed identity to mint tokens for. The **label** is what actually triggers injection — but the webhook keys off the label on the **pod**, not the service account. Labeling the service account here is just a convenience: it makes new pods inherit the label by default in some setups, but the authoritative switch is the `azure.workload.identity/use: "true"` label in each pod template (you'll see it on both the Job and the Deployment in later sections). A pod that runs as this service account but is missing that label gets **no** token injected — and fails to authenticate to Blob with no obvious error. So from here on, every workload that needs Blob access carries `azure.workload.identity/use: "true"` on its **pod template**, which earns it `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and a projected federated token automatically.
+The following two commands play different roles, and it's worth being precise about which is which. The **annotation** on the service account tells the webhook *which* managed identity to mint tokens for. The **label** is what actually triggers injection — but the webhook keys off the label on the **pod**, not the service account. Labeling the service account here is just a convenience: it makes new pods inherit the label by default in some setups, but the authoritative switch is the `azure.workload.identity/use: "true"` label in each pod template (you'll see it on both the Job and the Deployment in later sections). A pod that runs as this service account but is missing that label gets **no** token injected — and fails to authenticate to Blob with no obvious error. So from here on, every workload that needs Blob access carries `azure.workload.identity/use: "true"` on its **pod template**, which earns it `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and a projected federated token automatically.
 
 ```bash
 # Tell the workload-identity webhook which identity this SA maps to,
@@ -267,11 +271,14 @@ kubectl label serviceaccount "${SERVICE_ACCOUNT_NAME}" \
     azure.workload.identity/use="true"
 ```
 
-> **Give the role assignment a couple of minutes to propagate.** Azure RBAC role assignments are eventually consistent. If the upload Job in the next step starts too soon, it fails with `AuthorizationPermissionMismatch`. If you hit that, wait a couple of minutes (`sleep 120`) and let the Job's `backoffLimit` retry. To re-run the Job from scratch, delete it first — a `Job` is immutable, so a second `kubectl apply` fails with `AlreadyExists`:
->
-> ```bash
-> kubectl delete job upload-model --ignore-not-found
-> ```
+:::note Give the role assignment a couple of minutes to propagate
+Azure RBAC role assignments are eventually consistent. If the upload Job in the next step starts too soon, it fails with `AuthorizationPermissionMismatch`. If you hit that, wait a couple of minutes (`sleep 120`) and let the Job's `backoffLimit` retry. To re-run the Job from scratch, delete it first — a `Job` is immutable, so a second `kubectl apply` fails with `AlreadyExists`:
+
+```bash
+kubectl delete job upload-model --ignore-not-found
+```
+
+:::
 
 ---
 
@@ -381,7 +388,9 @@ Wait for it to finish and check the logs:
 kubectl wait --for=condition=complete job/upload-model --timeout=1800s
 ```
 
-**A note on scaling to larger models:** The 1800s (30 minute) timeout is plenty for a ~14 GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, two limits need raising together: bump this `--timeout` so the command doesn't give up while the Job is still uploading, **and** raise the `ephemeral-storage` request/limit on the Job — larger model weights that overflow the reserved scratch space get evicted with `DiskPressure` long before any timeout fires.
+:::note A note on scaling to larger models
+The 1800s (30 minute) timeout is plenty for a ~14 GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, two limits need raising together: bump this `--timeout` so the command doesn't give up while the Job is still uploading, **and** raise the `ephemeral-storage` request/limit on the Job — larger model weights that overflow the reserved scratch space get evicted with `DiskPressure` long before any timeout fires.
+:::
 
 In a separate terminal you can follow the logs:
 
@@ -408,22 +417,23 @@ Now the payoff. Two things turn on Blob streaming:
 - `--load-format runai_streamer` selects the RunAI Model Streamer loader.
 - `--model az://${STORAGE_CONTAINER_NAME}/${MODEL_NAME}` points at the blobs using the native `az://` scheme. The `AZURE_STORAGE_ACCOUNT_NAME` env var tells the streamer which account to read from, and the pod's workload-identity label handles auth — no keys, no connection strings.
 
-> **Tuning the streamer.** The RunAI Model Streamer exposes [tunable parameters](https://docs.vllm.ai/en/latest/models/extensions/runai_model_streamer/#tunable-parameters) that you pass to vLLM as a JSON object via `--model-loader-extra-config`. A few worth knowing:
->
-> - `'{"distributed":true}'` enables distributed streaming across tensor-parallel ranks — useful once you scale `--tensor-parallel-size` past 1.
-> - `'{"concurrency":16}'` sets how many OS threads read tensors from storage into the CPU buffer; raise it to push more bandwidth against a premium account.
-> - `'{"memory_limit":5368709120}'` caps the CPU staging buffer (in bytes).
->
-> To set one, add the flag to the `args` list below, for example:
->
-> ```yaml
->         - --model-loader-extra-config
->         - '{"concurrency":16}'
-> ```
+:::tip Tuning the streamer
+The RunAI Model Streamer exposes [tunable parameters](https://docs.vllm.ai/en/latest/models/extensions/runai_model_streamer/#tunable-parameters) that you pass to vLLM as a JSON object via `--model-loader-extra-config`. A few worth knowing:
+
+- `'{"distributed":true}'` enables distributed streaming across tensor-parallel ranks — useful once you scale `--tensor-parallel-size` past 1.
+- `'{"concurrency":16}'` sets how many OS threads read tensors from storage into the CPU buffer; raise it to push more bandwidth against a premium account.
+- `'{"memory_limit":5368709120}'` caps the CPU staging buffer (in bytes).
+
+To set one, add the flag to the `args` list below, for example:
+
+```yaml
+        - --model-loader-extra-config
+        - '{"concurrency":16}'
+```
+
+:::
 
 The pod mounts an in-memory `emptyDir` at `/dev/shm` because vLLM uses shared memory for inter-process communication.
-
-> This manifest uses an unquoted heredoc (`<<EOF`), so your shell expands the variables directly — every `${...}` here is set in your shell, and there are no runtime-only variables to protect, so the `envsubst` dance from step 4 isn't needed.
 
 ```yaml
 cat <<EOF | kubectl apply -f -
@@ -528,6 +538,20 @@ In a separate terminal you can follow the logs:
 kubectl logs -f deployment/phi-4
 ```
 
+How do you know the weights actually came from Blob through the RunAI streamer and not vLLM's default loader? Look for the streamer's own progress line, `Loading safetensors using Runai Model Streamer`. Its presence is the confirmation — the `runai_streamer` loader engaged and pulled the tensors from `az://` directly into GPU memory:
+
+```bash
+...
+(EngineCore pid=157) INFO 06-29 20:07:33 [gpu_model_runner.py:5092] Starting to load model /root/.cache/vllm/assets/model_streamer/4d80bd96...
+Loading safetensors using Runai Model Streamer:   0% Completed | 0/243 [00:00<?, ?it/s]
+Loading safetensors using Runai Model Streamer:  47% Completed | 114/243 [00:06<00:07, 17.13it/s]
+Loading safetensors using Runai Model Streamer: 100% Completed | 243/243 [00:08<00:00, 27.80it/s]
+(EngineCore pid=157) INFO 06-29 20:07:43 [gpu_model_runner.py:5187] Model loading took 27.39 GiB memory and 9.956121 seconds
+...
+```
+
+The closing `Model loading took ... seconds` line reports how long the stream-and-load took end to end — a handy number to compare against the default download-then-load path.
+
 ---
 
 ## 6. Verify and test
@@ -574,6 +598,16 @@ Streaming from Blob isn't the right fit for every model. Weigh these before adop
 - **One upload per model, up front.** Every new model — and every new *version* of a model — has to be pushed to Blob with the upload Job before it can be served. There's no way around this with this pattern: the streamer reads from Blob, so the weights have to land in Blob first.
 - **Safetensors only.** The RunAI Model Streamer loads weights in [Safetensors](https://github.com/huggingface/safetensors) format. A model distributed only as PyTorch pickle (`.bin` / `.pt`) or GGUF has to be converted first, or it won't load through `runai_streamer`. `microsoft/phi-4` ships as Safetensors, so the walkthrough above works as-is.
 - **You now own a second copy of the weights.** The model lives in your premium Blob account in addition to its upstream source on HuggingFace. That's an ongoing storage cost — premium block blob isn't cheap at tens of gigabytes per model — and it's on you to re-run the upload when the upstream model changes, or your served copy quietly goes stale.
+
+---
+
+## Conclusion
+
+Cold-start time is the tax you pay every time an inference replica scales up, and the default download-then-load path pays it twice — once to disk, once to the GPU. Streaming weights from Azure Blob with the RunAI Model Streamer collapses that into a single overlapped copy, and now that vLLM and runai-model-streamer speak `az://` natively, it takes nothing more than `--load-format runai_streamer`, one environment variable, and a workload-identity binding on a stock `vllm/vllm-openai` image.
+
+The pieces reinforce each other: a managed GPU node pool removes the operator toil, workload identity removes the secrets, and an in-cluster upload Job moves the weights over Azure's backbone instead of your uplink. The result is faster, cheaper cold starts when you're autoscaling — exactly when it matters most.
+
+If you're serving large models on AKS and every cold start sits on the critical path, this is worth adopting. If your model is small and already loads quickly from disk, measure both paths first — the simpler default may still win. Either way, the building blocks here are reusable: swap in your own model, point the Job at it once, and let the streamer do the rest.
 
 ---
 
