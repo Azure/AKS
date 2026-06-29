@@ -112,10 +112,24 @@ The fully managed GPU node-pool experience is a preview feature. Register it onc
 az extension add --name aks-preview
 az extension update --name aks-preview
 
-# Register the feature flag and wait for it to flip to "Registered".
+# Register the feature flag.
 az feature register \
     --namespace Microsoft.ContainerService \
     --name ManagedGPUExperiencePreview
+
+# Registration is asynchronous — poll until it flips to "Registered"
+# (this can take a few minutes). Skipping this wait makes the node-pool
+# command in step 1c fail while the feature is still "Registering".
+until [ "$(az feature show \
+    --namespace Microsoft.ContainerService \
+    --name ManagedGPUExperiencePreview \
+    --query properties.state -o tsv)" = "Registered" ]; do
+    echo "Waiting for ManagedGPUExperiencePreview to register..."
+    sleep 15
+done
+
+# Propagate the newly registered feature to the resource provider.
+az provider register --namespace Microsoft.ContainerService
 ```
 
 ### 1b. Create the resource group and cluster
