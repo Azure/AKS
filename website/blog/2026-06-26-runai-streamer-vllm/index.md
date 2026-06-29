@@ -1,7 +1,7 @@
 ---
 title: "Stream vLLM Model Weights from Azure Blob Storage on AKS"
 date: 2026-06-26
-description: "Streaming LLM weights from Azure Blob Storage with the RunAI Model Streamer and workload identity"
+description: "Stream LLM model weights to vLLM directly from Azure Blob Storage on AKS using the RunAI Model Streamer, fetched over the native az:// scheme at server startup."
 authors: [suraj-deshmukh, hariharan-sethuraman]
 tags: ["ai-inference", "gpu", "storage", "workload-identity"]
 ---
@@ -48,6 +48,7 @@ The net effect: cold-start time drops from *download time + disk-load time* (add
 
 - The [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) (`az`), version 2.85.0 or later.
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/) and [`jq`](https://jqlang.github.io/jq/).
+- `envsubst` (ships with GNU gettext) — used to render the Job manifest in step 4. On macOS, `brew install gettext`; on Debian/Ubuntu, `apt-get install gettext-base`.
 - An Azure subscription with quota for an NVIDIA GPU VM (For example: `Standard_NC24ads_A100_v4`) in your target region.
 - Logged in: `az login` and `az account set --subscription <id>`.
 
@@ -256,9 +257,16 @@ az identity federated-credential create \
     --audience api://AzureADTokenExchange
 ```
 
-The following two commands play different roles, and it's worth being precise about which is which. The **annotation** on the service account tells the webhook *which* managed identity to mint tokens for. The **label** is what actually triggers injection — but the webhook keys off the label on the **pod**, not the service account. Labeling the service account here is just a convenience: it makes new pods inherit the label by default in some setups, but the authoritative switch is the `azure.workload.identity/use: "true"` label in each pod template (you'll see it on both the Job and the Deployment in later sections). A pod that runs as this service account but is missing that label gets **no** token injected — and fails to authenticate to Blob with no obvious error. So from here on, every workload that needs Blob access carries `azure.workload.identity/use: "true"` on its **pod template**, which earns it `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and a projected federated token automatically.
+The following two commands play different roles, and it's worth being precise about which is which. The **annotation** on the service account tells the webhook *which* managed identity to mint tokens for. The **label** is what actually triggers injection — but the webhook keys off the label on the **pod**, not the service account. Labeling the service account here is a convenience for consistency; the authoritative switch is the `azure.workload.identity/use: "true"` label in each pod template (you'll see it on both the Job and the Deployment in later sections). A pod that runs as this service account but is missing that label gets **no** token injected — and fails to authenticate to Blob with no obvious error. So from here on, every workload that needs Blob access carries `azure.workload.identity/use: "true"` on its **pod template**, which earns it `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and a projected federated token automatically.
 
 ```bash
+# Create the service account that the workloads run as. The `default` SA
+# already exists in every namespace, so this is a no-op there; it matters if
+# you set SERVICE_ACCOUNT_NAME to something else. --dry-run | apply keeps it
+# idempotent.
+kubectl create serviceaccount "${SERVICE_ACCOUNT_NAME}" \
+    -n "${NAMESPACE}" --dry-run=client -o yaml | kubectl apply -f -
+
 # Tell the workload-identity webhook which identity this SA maps to,
 # and opt the SA into token injection. --overwrite keeps both commands
 # idempotent so re-running this section after a partial attempt succeeds.
@@ -293,7 +301,7 @@ A few details worth calling out:
 - `--exclude-path '.cache'` skips HuggingFace's local cache directory.
 
 ```yaml
-cat <<'JOBEOF' | envsubst '${NAMESPACE} ${STORAGE_ACCOUNT_NAME} ${STORAGE_CONTAINER_NAME} ${MODEL_NAME}' | kubectl apply -f -
+cat <<'JOBEOF' | envsubst '${NAMESPACE} ${SERVICE_ACCOUNT_NAME} ${STORAGE_ACCOUNT_NAME} ${STORAGE_CONTAINER_NAME} ${MODEL_NAME}' | kubectl apply -f -
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -306,6 +314,7 @@ spec:
       labels:
         azure.workload.identity/use: "true"
     spec:
+      serviceAccountName: ${SERVICE_ACCOUNT_NAME}
       restartPolicy: Never
       volumes:
       # Scratch space for the downloaded model weights. Backing it with an
@@ -389,7 +398,7 @@ kubectl wait --for=condition=complete job/upload-model --timeout=1800s
 ```
 
 :::note A note on scaling to larger models
-The 1800s (30 minute) timeout is plenty for a ~14 GB model like `microsoft/phi-4`. If you reuse this manifest for a 70B+ parameter model, two limits need raising together: bump this `--timeout` so the command doesn't give up while the Job is still uploading, **and** raise the `ephemeral-storage` request/limit on the Job — larger model weights that overflow the reserved scratch space get evicted with `DiskPressure` long before any timeout fires.
+The 1800s (30 minute) timeout is plenty for a model like `microsoft/phi-4` (a 14.7B-parameter model, ~29 GB on disk in bf16). If you reuse this manifest for a 70B+ parameter model, two limits need raising together: bump this `--timeout` so the command doesn't give up while the Job is still uploading, **and** raise the `ephemeral-storage` request/limit on the Job — larger model weights that overflow the reserved scratch space get evicted with `DiskPressure` long before any timeout fires.
 :::
 
 In a separate terminal you can follow the logs:
@@ -455,6 +464,7 @@ spec:
         app: phi-4
         azure.workload.identity/use: "true"
     spec:
+      serviceAccountName: ${SERVICE_ACCOUNT_NAME}
       volumes:
       - name: shm
         emptyDir:
