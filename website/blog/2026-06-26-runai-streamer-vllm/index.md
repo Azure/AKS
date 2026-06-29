@@ -30,24 +30,7 @@ This post walks the whole thing end to end on AKS:
 
 The default way vLLM loads a model is a two-step relay: download all the model weights from the source (HuggingFace Hub or object storage) onto the node's local disk, then read them back off disk to load them into GPU memory. The RunAI streamer replaces both halves with a single concurrent stream from object storage straight into GPU memory.
 
-```mermaid
-flowchart TB
-    subgraph naive["Default: download-then-load"]
-        NS["Object storage<br/>(HF Hub / Blob)"]
-        ND["Local disk"]
-        NG["GPU memory"]
-
-        NS -->|"1. copy all model weights<br/>to disk (GPU idle)"| ND
-        ND -->|"2. read back from disk<br/>into GPU (network idle)"| NG
-    end
-
-    subgraph stream["RunAI streamer: stream straight to GPU"]
-        SS["Object storage<br/>(Blob, az://)"]
-        SG["GPU memory"]
-
-        SS -->|"concurrent reads,<br/>no disk staging"| SG
-    end
-```
+![Two diagrams compared: the default download-then-load path copies the whole model from object storage to local disk while the GPU sits idle, then reads it back off disk into GPU memory while the network sits idle; the RunAI streamer path reads concurrently from Azure Blob straight into GPU memory with no disk staging.](./1-why-stream-vs-download.png)
 
 Three things make the default path slow, and the streamer fixes each one:
 
@@ -604,6 +587,17 @@ The pieces that make this clean:
 - **Workload identity end to end.** Neither the uploader nor the server ever sees a storage key — both authenticate with short-lived federated tokens, and the same managed identity does double duty (write for the Job, read for the server).
 - **Managed GPU node pool.** `--enable-managed-gpu=true` hands the driver, device plugin, and DCGM exporter lifecycle to AKS, so there's no GPU operator to install, reconcile, or debug.
 - **Upload from inside Azure.** Moving the HuggingFace → Blob copy into a Job trades your home uplink for Azure's backbone, turning an hours-long upload into a minutes-long one.
+
+---
+
+## Trade-offs and downsides
+
+Streaming from Blob isn't the right fit for every model. Weigh these before adopting it:
+
+- **Every cold start re-streams the full weights.** The streamer's advantage is overlapping the network and GPU copies, which pays off most for large models on the autoscaling critical path. For a small model that already loads quickly from local disk, that win is marginal — the simpler default download path (optionally with the weights baked into your image) may be the better trade. Measure cold-start time both ways for *your* model before committing.
+- **One upload per model, up front.** Every new model — and every new *version* of a model — has to be pushed to Blob with the upload Job before it can be served. There's no way around this with this pattern: the streamer reads from Blob, so the weights have to land in Blob first.
+- **Safetensors only.** The RunAI Model Streamer loads weights in [Safetensors](https://github.com/huggingface/safetensors) format. A model distributed only as PyTorch pickle (`.bin` / `.pt`) or GGUF has to be converted first, or it won't load through `runai_streamer`. `microsoft/phi-4` ships as Safetensors, so the walkthrough above works as-is.
+- **You now own a second copy of the weights.** The model lives in your premium Blob account in addition to its upstream source on HuggingFace. That's an ongoing storage cost — premium block blob isn't cheap at tens of gigabytes per model — and it's on you to re-run the upload when the upstream model changes, or your served copy quietly goes stale.
 
 ---
 
