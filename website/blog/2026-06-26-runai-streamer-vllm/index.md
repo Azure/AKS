@@ -55,23 +55,23 @@ The net effect: cold-start time drops from *download time + disk-load time* (add
 
 ## Configuration
 
-Everything below is driven by these variables. Export them once in your shell and the rest of the commands are copy-paste.
+Everything below is driven by these variables. Modify them to match your environment and export them once in your shell and the rest of the commands are copy-paste.
 
 ```bash
 # --- Azure / cluster ---
-export AZURE_RESOURCE_GROUP="runai-suraj"
-export AZURE_REGION="southcentralus"
+export AZURE_RESOURCE_GROUP="runai-demo"
+export AZURE_REGION="<location with GPU VM SKU support>"
 export CLUSTER_NAME="llm"
 export ADMIN_USERNAME="azuser"
 
 # --- GPU node pool ---
 export NODE_POOL_NAME="gpunodes"
-export NODE_POOL_VM_SIZE="Standard_NC24ads_A100_v4"
+export NODE_POOL_VM_SIZE="<Standard_NC24ads_A100_v4 or other GPU VM size>"
 export NODE_POOL_NODE_COUNT=1
 
 # --- Storage ---
 # Must be globally unique, 3-24 chars, lowercase letters and digits only.
-export STORAGE_ACCOUNT_NAME="llmmodelsrunaisuraj1"
+export STORAGE_ACCOUNT_NAME="<provide unique name>"
 export STORAGE_CONTAINER_NAME="models"
 
 # --- Workload identity ---
