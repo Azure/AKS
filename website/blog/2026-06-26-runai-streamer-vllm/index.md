@@ -193,19 +193,7 @@ az storage container create \
 
 This is the part that lets pods talk to Blob with **zero secrets**. The chain looks like this:
 
-```mermaid
-flowchart TD
-    Pod["Pod<br/>(default SA, labeled)"]
-    FC["Federated credential<br/>(trusts the cluster's OIDC issuer for this SA)"]
-    MI["User-assigned managed identity"]
-    Role["Storage Blob Data Contributor"]
-    Blob["Azure Blob Storage"]
-
-    Pod -->|projected SA token| FC
-    FC --> MI
-    MI -->|has role| Role
-    MI --> Blob
-```
+![Workload-identity trust chain: a labelled pod running as the default service account presents a projected token to a federated credential, which trusts the cluster's OIDC issuer and maps to a user-assigned managed identity; that identity holds the Storage Blob Data Contributor role, which grants access to Azure Blob Storage.](./2-identity.png)
 
 We use **Storage Blob Data Contributor** (not just Reader) on purpose: the same identity is reused by both the upload Job (which needs to *write*) and the vLLM pod (which only *reads*).
 
@@ -567,19 +555,7 @@ A JSON response with a `choices[0].message.content` field means the model loaded
 
 ## How it fits together
 
-```mermaid
-flowchart TB
-    HF["HuggingFace"]
-    Job["upload Job<br/>(in-cluster,<br/>workload identity)"]
-    Blob["Azure Blob<br/>az://models/microsoft/phi-4"]
-    Pod["vLLM pod<br/>(workload identity,<br/>az:// native)"]
-    GPU["A100 GPU memory"]
-
-    HF -->|download| Job
-    Job -->|azcopy upload| Blob
-    Blob -->|"RunAI Model Streamer<br/>(--load-format runai_streamer)"| Pod
-    Pod -->|load tensors| GPU
-```
+![End-to-end flow: HuggingFace weights are downloaded by an in-cluster upload Job using workload identity, which uploads them with azcopy to Azure Blob (az://models/microsoft/phi-4); the vLLM pod then streams them natively over az:// with the RunAI Model Streamer (--load-format runai_streamer) and loads the tensors into A100 GPU memory.](./3-end-to-end.png)
 
 The pieces that make this clean:
 
