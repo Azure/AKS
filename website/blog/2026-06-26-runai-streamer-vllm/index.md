@@ -279,7 +279,11 @@ az identity federated-credential create \
     --issuer "${AKS_OIDC_ISSUER}" \
     --subject "system:serviceaccount:${NAMESPACE}:${SERVICE_ACCOUNT_NAME}" \
     --audience api://AzureADTokenExchange
+```
 
+These two commands play different roles, and it's worth being precise about which is which. The **annotation** on the service account tells the webhook *which* managed identity to mint tokens for. The **label** is what actually triggers injection — but the webhook keys off the label on the **pod**, not the service account. Labeling the service account here is just a convenience: it makes new pods inherit the label by default in some setups, but the authoritative switch is the `azure.workload.identity/use: "true"` label in each pod template (you'll see it on both the Job and the Deployment in later sections). A pod that runs as this service account but is missing that label gets **no** token injected — and fails to authenticate to Blob with no obvious error. So from here on, every workload that needs Blob access carries `azure.workload.identity/use: "true"` on its **pod template**, which earns it `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and a projected federated token automatically.
+
+```bash
 # Tell the workload-identity webhook which identity this SA maps to,
 # and opt the SA into token injection. --overwrite keeps both commands
 # idempotent so re-running this section after a partial attempt succeeds.
@@ -291,8 +295,6 @@ kubectl label serviceaccount "${SERVICE_ACCOUNT_NAME}" \
     -n "${NAMESPACE}" --overwrite \
     azure.workload.identity/use="true"
 ```
-
-These two commands play different roles, and it's worth being precise about which is which. The **annotation** on the service account tells the webhook *which* managed identity to mint tokens for. The **label** is what actually triggers injection — but the webhook keys off the label on the **pod**, not the service account. Labeling the service account here is just a convenience: it makes new pods inherit the label by default in some setups, but the authoritative switch is the `azure.workload.identity/use: "true"` label in each pod template (you'll see it on both the Job and the Deployment below). A pod that runs as this service account but is missing that label gets **no** token injected — and fails to authenticate to Blob with no obvious error. So from here on, every workload that needs Blob access carries `azure.workload.identity/use: "true"` on its **pod template**, which earns it `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and a projected federated token automatically.
 
 > **Give the role assignment a couple of minutes to propagate.** Azure RBAC role assignments are eventually consistent. If the upload Job in the next step starts too soon, it fails with `AuthorizationPermissionMismatch`. If you hit that, wait a couple of minutes (`sleep 120`) and let the Job's `backoffLimit` retry. To re-run the Job from scratch, delete it first — a `Job` is immutable, so a second `kubectl apply` fails with `AlreadyExists`:
 >
@@ -311,8 +313,6 @@ A few details worth calling out:
 - The pod template carries the `azure.workload.identity/use: "true"` label, so `azcopy` finds the federated token automatically.
 - `--overwrite=ifSourceNewer` makes retries cheap: a re-run skips blobs that already uploaded successfully instead of re-sending all the model weights.
 - `--exclude-path '.cache'` skips HuggingFace's local cache directory.
-
-> **A subtlety worth understanding: scoped `envsubst`.** The manifest is rendered with `envsubst` so the apply-time config (namespace, account, container, model) gets baked in. But the container script *also* contains shell variables that must survive untouched until the container runs — `$AZURE_STORAGE_ACCOUNT_NAME` and `$AZURE_STORAGE_CONTAINER_NAME` (injected via the pod's `env:` block) and the retry-loop counters `$attempt` / `$max_retries`. A bare `envsubst` would happily blank all of those out (they aren't set in your shell), leaving a broken `https://.blob.core.windows.net//...` URL and a retry loop comparing empty strings. Passing `envsubst` an explicit allow-list — `envsubst '${NAMESPACE} ${STORAGE_ACCOUNT_NAME} ${STORAGE_CONTAINER_NAME} ${MODEL_NAME}'` — substitutes only those four and leaves the runtime variables alone.
 
 ```yaml
 cat <<'JOBEOF' | envsubst '${NAMESPACE} ${STORAGE_ACCOUNT_NAME} ${STORAGE_CONTAINER_NAME} ${MODEL_NAME}' | kubectl apply -f -
@@ -439,7 +439,7 @@ Now the payoff. Two things turn on Blob streaming:
 
 > **Tuning the streamer.** The RunAI Model Streamer exposes [tunable parameters](https://docs.vllm.ai/en/latest/models/extensions/runai_model_streamer/#tunable-parameters) that you pass to vLLM as a JSON object via `--model-loader-extra-config`. A few worth knowing:
 >
-> - `'{"distributed":true}'` enables distributed streaming across tensor-parallel ranks (CUDA and ROCm only) — useful once you scale `--tensor-parallel-size` past 1.
+> - `'{"distributed":true}'` enables distributed streaming across tensor-parallel ranks — useful once you scale `--tensor-parallel-size` past 1.
 > - `'{"concurrency":16}'` sets how many OS threads read tensors from storage into the CPU buffer; raise it to push more bandwidth against a premium account.
 > - `'{"memory_limit":5368709120}'` caps the CPU staging buffer (in bytes).
 >
@@ -451,8 +451,6 @@ Now the payoff. Two things turn on Blob streaming:
 > ```
 
 The pod mounts an in-memory `emptyDir` at `/dev/shm` because vLLM uses shared memory for inter-process communication.
-
-A `startupProbe` and `readinessProbe` against vLLM's `/health` endpoint keep the pod out of the Service's endpoints until the model has finished streaming from Blob and the server is actually answering requests. Without them the pod is marked ready the instant the container starts — minutes before it can serve — so a Service or rollout would route traffic to a model that isn't loaded yet.
 
 > This manifest uses an unquoted heredoc (`<<EOF`), so your shell expands the variables directly — every `${...}` here is set in your shell, and there are no runtime-only variables to protect, so the `envsubst` dance from step 4 isn't needed.
 
