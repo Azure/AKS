@@ -19,7 +19,7 @@ These files are the manifest-grade artifacts pulled out of the post. The `az`,
 ## Files
 
 | File | Layer | What it is |
-|---|---|---|
+| --- | --- | --- |
 | `kaito-workspace.yaml` | 3 — serving | A KAITO `Workspace` that provisions GPU nodes and serves `phi-4-mini-instruct` on vLLM. |
 | `inference-pool.yaml` | 3 — inference LB | The `InferencePool` (pods + Endpoint Picker reference) and an `InferenceObjective` (per-workload priority). |
 | `inference-gateway.yaml` | 3 — front door | A `Gateway` on the `approuting-istio` class and an `HTTPRoute` whose backend is the `InferencePool`. |

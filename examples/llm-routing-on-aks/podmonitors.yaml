@@ -20,8 +20,7 @@ spec:
   namespaceSelector:
     matchNames: [llm]
   podMetricsEndpoints:
-    - port: ""
-      targetPort: 5000
+    - targetPort: 5000
       path: /metrics
       interval: 15s
 ---
@@ -37,7 +36,6 @@ spec:
   namespaceSelector:
     matchNames: [llm]
   podMetricsEndpoints:
-    - port: ""
-      targetPort: 15020
+    - targetPort: 15020
       path: /metrics
       interval: 15s

@@ -29,7 +29,7 @@ This post wires up those three decisions on AKS as a single OpenAI-compatible en
 Each open-source slot has a managed Azure alternative, called out in the layer that earns it:
 
 | Layer | Decision | Featured component | Managed on AKS? |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 1 — Semantic | which *model* answers | RouteLLM | Open source on AKS |
 | 2 — AI gateway | auth, cost, guardrails, provider abstraction | agentgateway | Open source on AKS |
 | 2 — Gateway API | in-cluster HTTP routing | **Application routing** add-on | Managed add-on |
@@ -78,7 +78,6 @@ az aks update --resource-group $RG --name $CLUSTER --enable-gateway-api
 The first command deploys a **meshless Istio control plane**: an `istiod` in `aks-istio-system` that reconciles Kubernetes Gateway API resources only — no sidecar injection, no Istio CRDs, just managed Envoy gateways. The second installs the Gateway API CRDs and registers the GatewayClass **`approuting-istio`**. Confirm both flags against the [application routing Gateway API docs](https://learn.microsoft.com/azure/aks/app-routing-gateway-api); they're preview and they move.
 
 With the cluster up, start at the bottom: serving the weak model.
-
 
 ## Layer 3 — Serving, and the load-balancing trap
 
@@ -170,7 +169,6 @@ curl -s http://$GW_IP/v1/chat/completions \
 
 **What this layer decided:** only *which replica*, on GPU state. It has no idea what a "strong" model is, no budgets, no auth. Those are the next layer's job.
 
-
 ## Layer 2 — The gateway, and why agents need it most
 
 The tempting shortcut is to let the router call backends directly. Resist it — and with agents the reason is sharper than with chat. An agent loop can spend an unbounded number of tokens before it decides to stop; without a budget and a rate limit *somewhere on the path*, a single misbehaving agent can run up a frontier bill or saturate your GPU fleet. A gateway is where that policy lives, written once, so nothing else has to reinvent it.
@@ -228,7 +226,6 @@ Both return an OpenAI-shaped completion — the `strong` call comes back stamped
 
 **What this layer decided:** how to authenticate, meter, guardrail, and forward — on *policy*, never on content. It dispatches whatever model name it's handed. Choosing that name is Layer 1's job.
 
-
 ## Layer 1 — The semantic decision, and the threshold that is the whole ballgame
 
 Here's the only layer that reads the prompt — and the one decision that actually moves the bill. For an agent firing hundreds of calls per task, it's also the layer with the most leverage: every easy call it keeps off the frontier model is multiplied by the loop.
@@ -273,7 +270,6 @@ Then close the loop with the *real* numbers. Run live agent traffic and read the
 :::tip[Managed alternative for this layer]
 **Microsoft Foundry**'s model router is a single managed deployment that routes among models by query complexity and cost — the managed analogue to RouteLLM. We feature RouteLLM precisely because the explicit, calibratable threshold is the heart of this design and worth holding in your own hands. If you'd rather not operate a router, the Foundry model router fills the same slot.
 :::
-
 
 ## Observability with managed Azure monitoring
 
