@@ -12,6 +12,8 @@ The [RunAI Model Streamer](https://github.com/run-ai/runai-model-streamer) colla
 
 The streamer has previously supported AWS S3 and GCS for a while, but Azure Blob Storage was recently added to the list. **Since vLLM v0.18.0 ([vllm-project/vllm#34614](https://github.com/vllm-project/vllm/pull/34614)) and runai-model-streamer v0.15.6 ([run-ai/runai-model-streamer#116](https://github.com/run-ai/runai-model-streamer/pull/116)), the `az://` scheme is supported out of the box.** A stock `vllm/vllm-openai` image can stream from Blob with nothing more than an environment variable and a workload-identity binding.
 
+![Isometric illustration of model weights streaming from Azure Blob Storage directly into a GPU, with a continuous flow of data blocks bypassing local disk staging.](./hero.png)
+
 <!-- truncate -->
 
 This post walks the whole thing end to end on AKS:
