@@ -183,7 +183,11 @@ The outer shape is `binds → listeners → routes → backends`. The one thing 
 
 ```yaml
 backends:
-        azure: { resourceName: "<AOAI_RESOURCE>", resourceType: openAI, model: gpt-5.1, apiVersion: "2024-10-21" }
+  - ai:
+      name: aoai-strong
+      provider:
+        azure: { resourceName: "<your-aoai-resource>", resourceType: openAI, model: gpt-5.1, apiVersion: "2024-10-21" }
+```
 
 The full two-route config — `strong` to Azure OpenAI, `weak` to the Layer-3 inference gateway (a plain `host` backend with a path rewrite, since it already speaks OpenAI) — is in [`agentgateway-config.yaml`](https://github.com/Azure/AKS/blob/master/examples/llm-routing-on-aks/agentgateway-config.yaml). The credential never leaves the gateway, and the `weak` route neither knows nor cares that an Endpoint Picker sits behind it.
 

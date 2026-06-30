@@ -36,8 +36,10 @@ binds:
             policies:
               # auth attaches as a ROUTE policy; key is a plain string (or {file:}).
               # The azure provider sends it as the `api-key` header automatically.
+              # NOTE: agentgateway does NOT expand shell variables — substitute a
+              # real value (or use the {file: /path/to/key} form) at deploy time.
               backendAuth:
-                key: "$AZURE_OPENAI_API_KEY"
+                key: "<your-azure-openai-api-key>"
               # a token bucket — the backstop against an agent loop that won't
               # stop spending. 60k tokens/minute here; tune to your budget.
               localRateLimit:
@@ -49,7 +51,7 @@ binds:
                   name: aoai-strong
                   provider:
                     azure:
-                      resourceName: "$AOAI_RESOURCE"   # e.g. your-resource
+                      resourceName: "<your-aoai-resource>"   # the resource name, not a URL
                       resourceType: openAI
                       model: gpt-5.1                   # the Azure deployment name
                       apiVersion: "2024-10-21"
