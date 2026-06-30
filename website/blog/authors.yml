@@ -560,3 +560,13 @@ ralph-squillace:
   image_url: https://github.com/squillace.png
   socials:
     github: squillace
+
+fuyuan-bie:
+  name: Fuyuan Bie
+  title: Software Engineer, AKS
+  url: https://github.com/biefy
+  image_url: https://github.com/biefy.png
+  page: true
+  socials:
+    github: biefy
+    linkedin: biefy

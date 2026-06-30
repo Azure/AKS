@@ -1,0 +1,43 @@
+# Managed-Prometheus PodMonitors for the observability section.
+#
+# IMPORTANT: the AKS managed Prometheus add-on uses Azure's CRD group
+# `azmonitoring.coreos.com` — NOT the upstream `monitoring.coreos.com`.
+# A community manifest written for upstream will be silently ignored.
+#
+# Two scrape targets, because routing and serving live in different sources:
+#   - vLLM (port 5000)         → KV-cache, queue depth, token throughput  (Layer 3)
+#   - agentgateway (port 15020) → per-route request counts, the strong/weak split (Layers 1–2)
+---
+apiVersion: azmonitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: vllm-podmonitor
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      kaito.sh/workspace: workspace-phi-4-mini
+  namespaceSelector:
+    matchNames: [llm]
+  podMetricsEndpoints:
+    - port: ""
+      targetPort: 5000
+      path: /metrics
+      interval: 15s
+---
+apiVersion: azmonitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: agentgateway-podmonitor
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: agentgateway
+  namespaceSelector:
+    matchNames: [llm]
+  podMetricsEndpoints:
+    - port: ""
+      targetPort: 15020
+      path: /metrics
+      interval: 15s

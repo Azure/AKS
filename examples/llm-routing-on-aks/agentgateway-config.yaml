@@ -1,0 +1,65 @@
+# agentgateway-config.yaml
+#
+# This is agentgateway's APPLICATION CONFIG — NOT a Kubernetes manifest.
+# It has no apiVersion/kind (GVK) by design: it's read by the agentgateway
+# process, not `kubectl apply`. Deploy agentgateway as a Deployment + Service
+# and mount this file as its config (e.g. via a ConfigMap).
+#
+# This shape was validated against agentgateway v1.3.1. Pin to that release;
+# field names move between versions: https://agentgateway.dev/docs/
+binds:
+  - port: 4000
+    listeners:
+      - name: default
+        protocol: HTTP
+        routes:
+
+          # ---- "strong": frontier model on Azure OpenAI (managed) ----
+          # An AI backend is `ai: { name, provider: { <provider>: {...} } }`.
+          # The Azure provider REQUIRES resourceName + resourceType; `model` is
+          # the Azure *deployment* name. resourceType: openAI builds the host
+          # {resourceName}.openai.azure.com (use `foundry` for AI Foundry).
+          - name: strong
+            matches:
+              - path: { pathPrefix: /strong }
+            policies:
+              # auth attaches as a ROUTE policy; key is a plain string (or {file:}).
+              # The azure provider sends it as the `api-key` header automatically.
+              backendAuth:
+                key: "$AZURE_OPENAI_API_KEY"
+            backends:
+              - ai:
+                  name: aoai-strong
+                  provider:
+                    azure:
+                      resourceName: "$AOAI_RESOURCE"   # e.g. your-resource
+                      resourceType: openAI
+                      model: gpt-5.1                   # the Azure deployment name
+                      apiVersion: "2024-10-21"
+
+          # ---- "weak": self-hosted, via the Layer-3 inference gateway ----
+          # The inference gateway already speaks OpenAI, so a plain host backend
+          # with a path rewrite is simpler than wrapping it in an `ai:` provider.
+          - name: weak
+            matches:
+              - path: { pathPrefix: /weak }
+            policies:
+              urlRewrite:
+                path: { full: /v1/chat/completions }
+            backends:
+              # the Layer-3 gateway (managed App Routing, or the self-managed
+              # upstream-Istio gateway — see README)
+              - host: inference-gw.llm.svc.cluster.local:80
+
+# A model-cost catalog turns token counts into real $/request in logs, traces,
+# and metrics. NOTE: in agentgateway v1.3.1 `modelCatalog` is NOT a top-level
+# key — the loader rejects it there ("unknown field modelCatalog, expected one
+# of config, binds, llm, ..."). Place it under the documented section (e.g.
+# `config:` / `llm:`); confirm the exact path against the agentgateway docs for
+# your version. Shown here standalone to illustrate the rates only.
+#
+# modelCatalog:
+#   - model: gpt-5.1
+#     rates: { input: "2.50", output: "10.00" }   # USD per 1,000,000 tokens
+#   - model: phi-4-mini-instruct
+#     rates: { input: "0.00", output: "0.00" }    # your amortized GPU cost

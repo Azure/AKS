@@ -1,0 +1,17 @@
+apiVersion: kaito.sh/v1beta1
+kind: Workspace
+metadata:
+  name: workspace-phi-4-mini
+  namespace: llm
+resource:
+  instanceType: "Standard_NC24ads_A100_v4"   # KAITO provisions this node pool
+  count: 2
+  labelSelector:
+    matchLabels:
+      apps: phi-4-mini
+inference:
+  preset:
+    name: phi-4-mini-instruct                 # OpenAI-compatible, served via vLLM
+# KAITO publishes a Service `workspace-phi-4-mini` on port 80 that maps to the
+# vLLM container's port 5000. The InferencePool routes to pod IPs directly
+# (bypassing the Service), so its targetPort must be 5000 — see inference-pool.yaml.
