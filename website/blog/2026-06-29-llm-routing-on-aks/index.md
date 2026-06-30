@@ -3,7 +3,7 @@ title: "Routing agent traffic on AKS is three decisions"
 date: 2026-06-29
 description: "Agents make many LLM calls in loops, so routing each to the right model — cheap self-hosted or frontier — keeps them affordable. Three decisions on AKS."
 authors: [fuyuan-bie]
-tags: [ai-inference, agent, kaito, gateway-api, app-routing, gpu]
+tags: [ai-inference, agent, agentgateway, routellm, kaito, gateway-api, app-routing]
 ---
 
 A chat turn is one LLM call. An agent is hundreds — a reasoning loop that plans, calls a tool, reads the result, re-plans, and only sometimes stops. The cost and latency you signed up for in a demo get multiplied by that loop, and most of those calls are *easy* — a tool-argument fill, a yes/no gate, a short summary — that never needed a frontier model. So the question isn't "which model is best." It's "which model should answer *this specific call*, and how do I govern a flood of them?" That's not one decision; it's three, on different signals.
