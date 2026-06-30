@@ -1,5 +1,5 @@
 ---
-title: "Routing agent traffic on AKS is three decisions"
+title: "Routing agent traffic is really three decisions"
 date: 2026-06-29
 description: "Agents make many LLM calls in loops, so routing each to the right model — cheap self-hosted or frontier — keeps them affordable. Three decisions on AKS."
 authors: [fuyuan-bie]
@@ -191,7 +191,7 @@ backends:
 
 The full two-route config — `strong` to Azure OpenAI, `weak` to the Layer-3 inference gateway (a plain `host` backend with a path rewrite, since it already speaks OpenAI) — is in [`agentgateway-config.yaml`](https://github.com/Azure/AKS/blob/master/examples/llm-routing-on-aks/agentgateway-config.yaml). The credential never leaves the gateway, and the `weak` route neither knows nor cares that an Endpoint Picker sits behind it.
 
-The governance that makes this safe for agents lives there too: a per-million-token **cost catalog** (so every call carries a real dollar figure into your logs and metrics) and a token **rate limit**, both as route policies — the backstop against an agent loop that won't stop spending.
+The governance that makes this safe for agents lives there too: a token **rate limit** as a route policy, and a per-million-token **cost catalog** (under the top-level `config:`) so every call carries a real dollar figure into your logs and metrics — together, the backstop against an agent loop that won't stop spending.
 
 :::tip[MANAGED ALTERNATIVE FOR THIS LAYER]
 If you'd rather not run a gateway, **Azure API Management**'s AI gateway gives you token-based rate limiting (`azure-openai-token-limit` / `llm-token-limit`), token metrics to Application Insights, semantic caching, and load-balancing with circuit-breaker failover across Azure OpenAI backends — all managed. Pair it with **Azure AI Content Safety** for guardrails. The trade-off is concrete: APIM is a managed service you configure with policies, but agentgateway is an extra in-path component you run and own — one more failure domain on the critical path. APIM buys that back as Azure-managed surface; agentgateway gives you OpenAI-compatible, agent-native policy next to your pods.

@@ -7,6 +7,17 @@
 #
 # This shape was validated against agentgateway v1.3.1. Pin to that release;
 # field names move between versions: https://agentgateway.dev/docs/
+
+# A model-cost catalog turns token counts into real $/request in logs, traces,
+# and metrics. It lives under the top-level `config:` object (NOT at the document
+# root — the v1.3.1 loader rejects a root-level `modelCatalog`).
+config:
+  modelCatalog:
+    - model: gpt-5.1
+      rates: { input: "2.50", output: "10.00" }   # USD per 1,000,000 tokens
+    - model: phi-4-mini-instruct
+      rates: { input: "0.00", output: "0.00" }     # your amortized GPU cost
+
 binds:
   - port: 4000
     listeners:
@@ -27,6 +38,12 @@ binds:
               # The azure provider sends it as the `api-key` header automatically.
               backendAuth:
                 key: "$AZURE_OPENAI_API_KEY"
+              # a token bucket — the backstop against an agent loop that won't
+              # stop spending. 60k tokens/minute here; tune to your budget.
+              localRateLimit:
+                - maxTokens: 60000
+                  tokensPerFill: 60000
+                  fillInterval: 60s
             backends:
               - ai:
                   name: aoai-strong
@@ -50,16 +67,3 @@ binds:
               # the Layer-3 gateway (managed App Routing, or the self-managed
               # upstream-Istio gateway — see README)
               - host: inference-gw.llm.svc.cluster.local:80
-
-# A model-cost catalog turns token counts into real $/request in logs, traces,
-# and metrics. NOTE: in agentgateway v1.3.1 `modelCatalog` is NOT a top-level
-# key — the loader rejects it there ("unknown field modelCatalog, expected one
-# of config, binds, llm, ..."). Place it under the documented section (e.g.
-# `config:` / `llm:`); confirm the exact path against the agentgateway docs for
-# your version. Shown here standalone to illustrate the rates only.
-#
-# modelCatalog:
-#   - model: gpt-5.1
-#     rates: { input: "2.50", output: "10.00" }   # USD per 1,000,000 tokens
-#   - model: phi-4-mini-instruct
-#     rates: { input: "0.00", output: "0.00" }    # your amortized GPU cost

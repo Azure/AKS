@@ -1,6 +1,6 @@
 # LLM routing on AKS — example manifests
 
-Companion manifests for the blog post **[Routing agent traffic on AKS is three
+Companion manifests for the blog post **[Routing agent traffic is really three
 decisions](https://blog.aks.azure.com/2026/06/29/llm-routing-on-aks)**. Agentic
 workloads make many LLM calls in loops with tool use, so *where each call lands*
 — a cheap self-hosted model vs. a frontier model — drives both cost and latency.
