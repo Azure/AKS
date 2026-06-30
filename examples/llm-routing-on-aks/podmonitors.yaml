@@ -1,0 +1,43 @@
+# Managed-Prometheus PodMonitors for the observability section.
+#
+# IMPORTANT: the AKS managed Prometheus add-on uses Azure's CRD group
+# `azmonitoring.coreos.com` — NOT the upstream `monitoring.coreos.com`.
+# A community manifest written for upstream will be silently ignored.
+#
+# Two scrape targets, because routing and serving live in different sources:
+#   - vLLM (port 5000)         → KV-cache, queue depth, token throughput  (Layer 3)
+#   - agentgateway (port 15020) → per-route request counts, the strong/weak split (Layers 1–2)
+#
+# A PodMonitor is namespaced. Without a `namespaceSelector` it only discovers
+# pods in its OWN namespace, so we keep these in `llm` alongside the workload.
+# (Azure Managed Prometheus allows the PodMonitor in any namespace, but if you
+# move one, add a `namespaceSelector: { matchNames: [llm] }` or it stops
+# scraping.)
+---
+apiVersion: azmonitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: vllm-podmonitor
+  namespace: llm                 # same namespace as the pods it scrapes (no namespaceSelector needed)
+spec:
+  selector:
+    matchLabels:
+      kaito.sh/workspace: workspace-phi-4-mini
+  podMetricsEndpoints:
+    - targetPort: 5000
+      path: /metrics
+      interval: 15s
+---
+apiVersion: azmonitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: agentgateway-podmonitor
+  namespace: llm                 # same namespace as the pods it scrapes (no namespaceSelector needed)
+spec:
+  selector:
+    matchLabels:
+      app: agentgateway
+  podMetricsEndpoints:
+    - targetPort: 15020
+      path: /metrics
+      interval: 15s

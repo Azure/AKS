@@ -1,0 +1,149 @@
+<svg viewBox="0 0 940 850" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 z" fill="#5B6B7B"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", -apple-system, system-ui, "Helvetica Neue", sans-serif; }
+      .t { fill:#243A5E; font-weight:600; }
+      .s { fill:#5B6B7B; }
+      .rel { fill:#8A98A6; font-style:italic; }
+    </style>
+  </defs>
+
+  <rect x="2" y="2" width="936" height="846" rx="14" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <text x="36" y="40" font-size="21" class="t">Routing agent traffic on AKS · structure &amp; ownership</text>
+  <text x="36" y="62" font-size="12" class="s">how the layers compose and who owns each — managed Azure vs. open source on AKS</text>
+
+  <!-- Legend -->
+  <rect x="648" y="28" width="16" height="16" rx="3" fill="#0078D4"/>
+  <text x="670" y="41" font-size="11" class="t" font-weight="400">Managed Azure</text>
+  <rect x="648" y="50" width="16" height="16" rx="3" fill="#ffffff" stroke="#64748B" stroke-width="1.5"/>
+  <text x="670" y="63" font-size="11" class="t" font-weight="400">Open source on AKS</text>
+
+  <!-- Client -->
+  <rect x="340" y="84" width="200" height="46" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="352" y="97" width="18" height="18" rx="4" fill="#64748B"/>
+  <text x="378" y="105" font-size="13" class="t">Agent / app</text>
+  <text x="378" y="121" font-size="10" class="s">many calls per task · loop &amp; tools</text>
+
+  <!-- composition line: client sits above Layer 1 (no arrowhead — this map is not a flow) -->
+  <line x1="440" y1="130" x2="440" y2="200" stroke="#C2CCD6" stroke-width="1.5"/>
+
+  <!-- AKS cluster boundary -->
+  <rect x="40" y="150" width="620" height="656" rx="14" fill="#F5FAFE" stroke="#0078D4" stroke-width="1.4" stroke-dasharray="7 5"/>
+  <rect x="52" y="160" width="16" height="16" rx="4" fill="#0078D4"/>
+  <text x="76" y="173" font-size="12.5" class="t">Azure Kubernetes Service (AKS) cluster</text>
+
+  <!-- ============ Layer 1 ============ -->
+  <rect x="58" y="190" width="592" height="94" rx="10" fill="#EAF3FB"/>
+  <circle cx="96" cy="238" r="15" fill="#0078D4"/>
+  <text x="96" y="243" font-size="15" fill="#ffffff" font-weight="700" text-anchor="middle">1</text>
+  <text x="118" y="232" font-size="12" class="t">Layer 1 — Semantic decision</text>
+  <text x="118" y="250" font-size="10.5" class="s">owns: which model · signal: content</text>
+
+  <rect x="330" y="200" width="280" height="76" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="342" y="214" width="20" height="20" rx="4" fill="#64748B"/>
+  <text x="370" y="226" font-size="14" class="t">RouteLLM</text>
+  <text x="370" y="244" font-size="10.5" class="s">matrix-factorization router</text>
+  <text x="370" y="261" font-size="10" fill="#0078D4">picks the model class: strong | weak</text>
+  <rect x="558" y="208" width="44" height="17" rx="8" fill="#F1F4F7" stroke="#CBD5DF"/>
+  <text x="580" y="220" font-size="9.5" class="s" text-anchor="middle">OSS</text>
+
+  <!-- composition line L1↔L2 -->
+  <line x1="470" y1="276" x2="470" y2="308" stroke="#C2CCD6" stroke-width="1.5"/>
+
+  <!-- ============ Layer 2 ============ -->
+  <rect x="58" y="298" width="592" height="94" rx="10" fill="#EAF3FB"/>
+  <circle cx="96" cy="346" r="15" fill="#0078D4"/>
+  <text x="96" y="351" font-size="15" fill="#ffffff" font-weight="700" text-anchor="middle">2</text>
+  <text x="118" y="340" font-size="12" class="t">Layer 2 — AI gateway</text>
+  <text x="118" y="358" font-size="10.5" class="s">owns: auth · cost · guardrails · signal: policy</text>
+
+  <rect x="330" y="308" width="280" height="76" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="342" y="322" width="20" height="20" rx="4" fill="#64748B"/>
+  <text x="370" y="334" font-size="14" class="t">agentgateway</text>
+  <text x="370" y="352" font-size="10.5" class="s">OpenAI-compatible data plane</text>
+  <text x="370" y="369" font-size="10" fill="#0078D4">abstracts both backends behind one API</text>
+  <rect x="558" y="316" width="44" height="17" rx="8" fill="#F1F4F7" stroke="#CBD5DF"/>
+  <text x="580" y="328" font-size="9.5" class="s" text-anchor="middle">OSS</text>
+
+  <!-- structural link: gateway abstracts the frontier backend (managed, external) -->
+  <line x1="610" y1="346" x2="686" y2="352" stroke="#0078D4" stroke-width="1.4"/>
+  <text x="616" y="338" font-size="9.5" class="rel">frontier backend</text>
+
+  <!-- structural link: gateway abstracts the self-hosted backend (Layer 3) -->
+  <line x1="470" y1="384" x2="470" y2="412" stroke="#C2CCD6" stroke-width="1.5"/>
+  <text x="482" y="403" font-size="9.5" class="rel">calls (ext-proc)</text>
+
+  <!-- ============ Layer 3 ============ -->
+  <rect x="58" y="404" width="592" height="392" rx="10" fill="#EAF3FB"/>
+  <circle cx="96" cy="446" r="15" fill="#0078D4"/>
+  <text x="96" y="451" font-size="15" fill="#ffffff" font-weight="700" text-anchor="middle">3</text>
+  <text x="118" y="440" font-size="12" class="t">Layer 3 — Inference-aware serving</text>
+  <text x="118" y="458" font-size="10.5" class="s">owns: which replica · signal: GPU state</text>
+
+  <!-- Card A: Inference Extension / EPP (agentgateway calls it directly) -->
+  <rect x="330" y="416" width="280" height="74" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="342" y="430" width="20" height="20" rx="4" fill="#64748B"/>
+  <text x="370" y="442" font-size="13.5" class="t">Inference Extension</text>
+  <text x="370" y="460" font-size="10.5" class="s">Endpoint Picker — picks pod on:</text>
+  <text x="370" y="476" font-size="10" fill="#0067B8">KV-cache · queue depth · LoRA</text>
+  <rect x="558" y="424" width="44" height="17" rx="8" fill="#F1F4F7" stroke="#CBD5DF"/>
+  <text x="580" y="436" font-size="9.5" class="s" text-anchor="middle">OSS</text>
+
+  <!-- composition: the picker selects a replica from the KAITO pool -->
+  <line x1="470" y1="490" x2="470" y2="580" stroke="#C2CCD6" stroke-width="1.5"/>
+  <text x="482" y="538" font-size="9.5" class="rel">selects replica from</text>
+
+  <!-- Card C: KAITO -->
+  <rect x="330" y="580" width="280" height="66" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="342" y="594" width="20" height="20" rx="4" fill="#0078D4"/>
+  <text x="370" y="606" font-size="13.5" class="t">KAITO Workspace</text>
+  <text x="370" y="624" font-size="10.5" class="s">AI toolchain operator add-on · vLLM</text>
+  <rect x="540" y="588" width="62" height="17" rx="8" fill="#E6F2FB" stroke="#B8DCF5"/>
+  <text x="571" y="600" font-size="9.5" fill="#0067B8" text-anchor="middle">Managed</text>
+
+  <!-- composition: KAITO serves the pod fleet -->
+  <line x1="470" y1="646" x2="470" y2="664" stroke="#C2CCD6" stroke-width="1.5"/>
+  <text x="482" y="658" font-size="9.5" class="rel">serves</text>
+
+  <!-- vLLM pods -->
+  <g font-size="11.5">
+    <rect x="335" y="666" width="80" height="44" rx="8" fill="#E6F2FB" stroke="#0078D4" stroke-width="1.2"/>
+    <text x="375" y="692" fill="#0067B8" text-anchor="middle">vLLM</text>
+    <rect x="430" y="666" width="80" height="44" rx="8" fill="#E6F2FB" stroke="#0078D4" stroke-width="1.2"/>
+    <text x="470" y="692" fill="#0067B8" text-anchor="middle">vLLM</text>
+    <rect x="525" y="666" width="80" height="44" rx="8" fill="#E6F2FB" stroke="#0078D4" stroke-width="1.2"/>
+    <text x="565" y="692" fill="#0067B8" text-anchor="middle">vLLM</text>
+  </g>
+  <text x="335" y="730" font-size="10.5" class="s">the "weak" / self-hosted model · GPU node pool provisioned &amp; managed by KAITO</text>
+
+  <!-- ============ External managed services (right) ============ -->
+  <!-- Azure OpenAI -->
+  <rect x="688" y="318" width="212" height="74" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="700" y="332" width="20" height="20" rx="4" fill="#0078D4"/>
+  <text x="728" y="344" font-size="14" class="t">Azure OpenAI</text>
+  <text x="728" y="362" font-size="10.5" class="s">gpt-5.1 deployment</text>
+  <text x="728" y="379" font-size="10" fill="#0067B8">the "strong" / frontier model</text>
+  <rect x="836" y="326" width="56" height="17" rx="8" fill="#E6F2FB" stroke="#B8DCF5"/>
+  <text x="864" y="338" font-size="9.5" fill="#0067B8" text-anchor="middle">Managed</text>
+
+  <!-- Managed monitoring -->
+  <rect x="688" y="470" width="212" height="92" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="700" y="484" width="20" height="20" rx="4" fill="#0078D4"/>
+  <text x="728" y="496" font-size="13.5" class="t">Azure Monitor</text>
+  <text x="728" y="514" font-size="10.5" class="s">Managed Prometheus + Grafana</text>
+  <text x="728" y="531" font-size="10" fill="#0067B8">vLLM &amp; cost metrics</text>
+  <rect x="836" y="478" width="56" height="17" rx="8" fill="#E6F2FB" stroke="#B8DCF5"/>
+  <text x="864" y="490" font-size="9.5" fill="#0067B8" text-anchor="middle">Managed</text>
+
+  <!-- metrics side-channel: dashed + arrow, deliberately distinct from solid composition lines -->
+  <path d="M610,613 C660,613 672,528 686,512" fill="none" stroke="#9AA8B6" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+  <text x="628" y="560" font-size="10" class="s">scrapes</text>
+
+  <!-- footer -->
+  <text x="40" y="828" font-size="10.5" class="s">Solid lines show composition &amp; ownership, not request order — see the request-path diagram for the per-request trace. Dashed = telemetry.</text>
+</svg>
