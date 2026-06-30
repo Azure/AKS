@@ -40,7 +40,7 @@ Each open-source slot has a managed Azure alternative, called out in the layer t
 
 ![Per-request trace through the three layers, numbered in order: an agent call (step 1) enters RouteLLM, which reads the prompt and picks strong or weak (step 2); agentgateway dispatches the strong path straight to Azure OpenAI (step 3a, ends there) or the weak path onward (step 3b) through the Gateway API (step 4) to the Inference Extension Endpoint Picker (step 5), which selects one KAITO-served vLLM pod by GPU state (step 6). The strong path ends at step 3a; the weak path ends at step 6.](./llm-routing-on-aks-request-path.svg)
 
-:::note[A note on exactness]
+:::note[A NOTE ON EXACTNESS]
 Several pieces here are young, and field names drift between releases — the Inference Extension renamed and restructured CRDs on its way to v1, and the managed gateway's inference support is still rolling out. Everything below was validated end-to-end on AKS in mid-2026 against Inference Extension v1.0.0 and agentgateway v1.3.1. Treat the manifests as the *shape* of the solution, pin your versions, and confirm fields against the docs at the end. The decomposition is stable; specific flags and CRD fields move quickly.
 :::
 
@@ -145,7 +145,7 @@ The Endpoint Picker needs a gateway that speaks ext-proc to call it. [`inference
 kubectl apply -f inference-gateway.yaml
 ```
 
-:::warning[Managed gateway vs. what works today]
+:::warning[MANAGED GATEWAY VS. WHAT WORKS TODAY]
 Fronting an `InferencePool` with the **managed** Application routing gateway is the direction this is heading and the destination this post points at — one managed gateway, no Istio to operate. As of mid-2026 that pairing is **private preview**, gated server-side: the managed `istiod` ships with the inference extension turned off, so an `HTTPRoute → InferencePool` backend is rejected ("InferencePool is not enabled") until the capability reaches your subscription and region. To run the weak path **today**, front the pool with a self-managed upstream-Istio gateway that has the extension enabled, revision-isolated so the add-on can't revert it:
 
 ```bash
@@ -175,7 +175,7 @@ The tempting shortcut is to let the router call backends directly. Resist it —
 
 agentgateway is an open-source, OpenAI-compatible AI gateway built for exactly this traffic: provider abstraction, auth, token-based rate limiting, model-cost tracking, guardrails, and OpenTelemetry across backends — and, because it's agent-native, first-class MCP tool-serving and agent-to-agent routing when you grow into them. Here it does two jobs: hide the **strong** (Azure OpenAI) and **weak** (in-cluster) backends behind one endpoint, and enforce policy on every call.
 
-:::note[Config shape]
+:::note[CONFIG SHAPE]
 The snippets below were validated against agentgateway v1.3.1 and trimmed for the argument; pin field names to the [agentgateway docs](https://agentgateway.dev/docs/). The full file is in the [example manifests](https://github.com/Azure/AKS/tree/master/examples/llm-routing-on-aks).
 :::
 
@@ -193,7 +193,7 @@ The full two-route config — `strong` to Azure OpenAI, `weak` to the Layer-3 in
 
 The governance that makes this safe for agents lives there too: a per-million-token **cost catalog** (so every call carries a real dollar figure into your logs and metrics) and a token **rate limit**, both as route policies — the backstop against an agent loop that won't stop spending.
 
-:::tip[Managed alternative for this layer]
+:::tip[MANAGED ALTERNATIVE FOR THIS LAYER]
 If you'd rather not run a gateway, **Azure API Management**'s AI gateway gives you token-based rate limiting (`azure-openai-token-limit` / `llm-token-limit`), token metrics to Application Insights, semantic caching, and load-balancing with circuit-breaker failover across Azure OpenAI backends — all managed. Pair it with **Azure AI Content Safety** for guardrails. The trade-off is concrete: APIM is a managed service you configure with policies, but agentgateway is an extra in-path component you run and own — one more failure domain on the critical path. APIM buys that back as Azure-managed surface; agentgateway gives you OpenAI-compatible, agent-native policy next to your pods.
 :::
 
@@ -232,7 +232,7 @@ Here's the only layer that reads the prompt — and the one decision that actual
 
 RouteLLM is a set of routers trained on human-preference data to predict, per prompt, whether a cheap model can match a strong model's answer. On the paper's own model pair, the featured `mf` (matrix-factorization) router reaches **~95% of GPT-4's quality on MT-Bench while making just ~26% of the GPT-4 calls** — cutting cost by up to ~85% versus sending everything to GPT-4, by escalating only the genuinely hard prompts.
 
-:::warning[Where it strains]
+:::warning[WHERE IT STRAINS]
 Those figures are for the pair RouteLLM was trained on — not your strong/weak pair. The router's quality predictor is fit to a particular pairing, so whether ~26% escalation holds with phi-4-mini as your weak model is something you confirm against your own traffic. And the router isn't free: scoring every prompt is itself a paid `text-embedding-3-small` round-trip, so the cost win depends on the price gap between strong and weak dwarfing that per-call overhead. That's the reason for the calibrate-then-close-the-loop step below, not a footnote to it.
 :::
 
@@ -267,7 +267,7 @@ python -m routellm.calibrate_threshold --routers mf --strong-model-pct 0.5
 
 Then close the loop with the *real* numbers. Run live agent traffic and read the actual strong/weak split and dollar cost off **agentgateway's** metrics — not RouteLLM's estimate — and nudge the threshold until the cost/quality trade sits where you want it. The router proposes; your own cost data disposes.
 
-:::tip[Managed alternative for this layer]
+:::tip[MANAGED ALTERNATIVE FOR THIS LAYER]
 **Microsoft Foundry**'s model router is a single managed deployment that routes among models by query complexity and cost — the managed analogue to RouteLLM. We feature RouteLLM precisely because the explicit, calibratable threshold is the heart of this design and worth holding in your own hands. If you'd rather not operate a router, the Foundry model router fills the same slot.
 :::
 
