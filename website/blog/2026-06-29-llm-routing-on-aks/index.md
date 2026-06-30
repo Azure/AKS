@@ -102,7 +102,7 @@ KAITO publishes a Service named `workspace-phi-4-mini` on port 80 and labels its
 Pool membership — *which pods are the model server* — is a different concern from how a workload is weighted against that pool, so the Inference Extension splits them across two objects:
 
 - An **`InferencePool`** — the set of model-server pods plus a reference to the **Endpoint Picker (EPP)**, the extension that an ext-proc-capable proxy calls to choose an endpoint per request. In this design that proxy is agentgateway (Layer 2); the InferencePool and EPP don't care who calls them.
-- An **`InferenceObjective`** — the per-workload treatment: an integer `priority` against a pool. (It's a redesign of the earlier `InferenceModel`, which carried a `modelName` and a `criticality` enum; v1 dropped both, taking the served-model name from the request instead.)
+- An **`InferenceObjective`** — the per-workload treatment: an integer `priority` against a pool. It replaces the older `InferenceModel` object: where `InferenceModel` carried a `modelName` and a `criticality` enum, `InferenceObjective` keeps only an integer `priority` and takes the served-model name from the request instead.
 
 Install the CRDs and the Endpoint Picker (the project ships a Helm chart), pointing it at the KAITO pods. The EPP must serve **plaintext** gRPC to match agentgateway's ext-proc client — set `--secure-serving=false`, or the call to it resets before headers:
 
@@ -243,7 +243,7 @@ python -m routellm.openai_server --routers mf \
   --config routellm-config.yaml   # sets api_base per model → /strong and /weak
 ```
 
-One more gotcha from running this against current models: newer frontier models reject the `presence_penalty` / `frequency_penalty` parameters RouteLLM sends by default, so set `litellm.drop_params=True` to drop them rather than 400 the call.
+One more gotcha from running this against current models: RouteLLM sends `presence_penalty` / `frequency_penalty` by default, and **litellm** (which RouteLLM uses to reach each provider) raises `UnsupportedParamsError` when the target model doesn't accept them — newer frontier models like the gpt-5.x family don't. Set `litellm.drop_params=True` so litellm silently drops the unsupported params instead of failing the call.
 
 Clients call RouteLLM with a model string that encodes both the router and the cost threshold:
 
