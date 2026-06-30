@@ -10,7 +10,9 @@ spec:
   targetPorts:
     - number: 5000                               # the vLLM CONTAINER port, not the Service's 80
   endpointPickerRef:
-    name: phi-epp                                # the Endpoint Picker installed via Helm
+    name: phi-epp-epp                            # the EPP Service (Helm release phi-epp creates Service phi-epp-epp)
+    port:
+      number: 9002                               # required for a Service referent; the EPP Service port
 ---
 # NOTE: InferenceObjective lives in the inference.networking.x-k8s.io group
 # (NOT inference.networking.k8s.io, which is where InferencePool lives).
