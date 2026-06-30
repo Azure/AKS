@@ -1,3 +1,8 @@
+# KAITO's Workspace schema is version-sensitive: this manifest targets
+# kaito.sh/v1beta1 (top-level `resource:` and `inference:`). Validated against
+# the AKS AI toolchain operator add-on in mid-2026; if your add-on serves a
+# different Workspace API version, confirm the field layout with
+# `kubectl explain workspace.resource` before applying.
 apiVersion: kaito.sh/v1beta1
 kind: Workspace
 metadata:
