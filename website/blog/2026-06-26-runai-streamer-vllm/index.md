@@ -1,7 +1,7 @@
 ---
-title: "Stream vLLM Model Weights from Azure Blob Storage on AKS"
+title: "Stream Model Weights to NVIDIA GPU (vLLM) from Azure Blob"
 date: 2026-06-26
-description: "Stream LLM model weights to vLLM directly from Azure Blob Storage on AKS using the RunAI Model Streamer, fetched over the native az:// scheme at server startup."
+description: "Stream LLM Model Weights to NVIDIA GPU running vLLM directly from Azure Blob Storage on AKS using the RunAI Model Streamer"
 authors: [suraj-deshmukh, hariharan-sethuraman]
 tags: ["ai-inference", "gpu", "storage", "workload-identity"]
 ---
