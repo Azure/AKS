@@ -47,7 +47,10 @@ These cost real debugging time during validation:
   objective fail to apply.
 - **The Endpoint Picker must serve plaintext gRPC** to match agentgateway's
   ext-proc client: install/run it with `--secure-serving=false`. Otherwise the
-  call resets (TLS vs. plaintext mismatch).
+  call resets (TLS vs. plaintext mismatch). This disables TLS, so keep the EPP
+  cluster-internal (a `ClusterIP` Service, never exposed) and restrict who can
+  reach it — e.g. a `NetworkPolicy` admitting only the agentgateway pods, or a
+  service mesh that re-encrypts the hop.
 - **agentgateway's `inferenceRouting` is a *backend* policy, not a route policy**
   (the v1.3.1 loader rejects it at route level), the backing `service` ref is
   `namespace/HOSTNAME` (not the service name), and a top-level `services:` entry

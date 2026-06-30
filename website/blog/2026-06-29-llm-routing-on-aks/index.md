@@ -116,6 +116,10 @@ helm install phi-epp \
   --set inferenceExtension.extraArgs="{--secure-serving=false}"
 ```
 
+:::warning[KEEP THE PICKER CLUSTER-INTERNAL]
+`--secure-serving=false` disables TLS on the Endpoint Picker, so the ext-proc hop is plaintext gRPC. It's the simplest way to match agentgateway's client, but only safe because the EPP is reached cluster-internally over a `ClusterIP` Service. Don't expose it beyond the cluster, and restrict who can reach it — a `NetworkPolicy` that admits only the agentgateway pods, or a service mesh that re-encrypts the hop.
+:::
+
 The Helm chart creates its own `InferencePool` named after the release, so you don't strictly need to apply one. If you do, [`inference-pool.yaml`](https://github.com/Azure/AKS/blob/master/examples/llm-routing-on-aks/inference-pool.yaml) has the full `InferencePool` + `InferenceObjective` — with two fields that trip people up. The pool's selector needs a structured `matchLabels`, and its `targetPorts` must be the vLLM **container** port `5000` (the pool routes to pod IPs, bypassing the Service's port 80):
 
 ```yaml
