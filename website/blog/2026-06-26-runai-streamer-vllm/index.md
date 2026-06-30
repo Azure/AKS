@@ -198,7 +198,7 @@ az storage container create \
 
 This is the part that lets pods talk to Blob with **zero secrets**. The chain looks like this:
 
-![Workload-identity trust chain: a labelled pod running as the default service account presents a projected token to a federated credential, which trusts the cluster's OIDC issuer and maps to a user-assigned managed identity; that identity holds the Storage Blob Data Contributor role, which grants access to Azure Blob Storage.](./2-identity.png)
+![Workload-identity trust chain: a labeled pod running as the default service account presents a projected token to a federated credential, which trusts the cluster's OIDC issuer and maps to a user-assigned managed identity; that identity holds the Storage Blob Data Contributor role, which grants access to Azure Blob Storage.](./2-identity.png)
 
 We use **Storage Blob Data Contributor** (not just Reader) on purpose: the same identity is reused by both the upload Job (which needs to *write*) and the vLLM pod (which only *reads*).
 
