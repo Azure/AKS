@@ -12,6 +12,8 @@ This post wires up those three decisions on AKS as a single OpenAI-compatible en
 
 <!-- truncate -->
 
+![Title card: "Routing agent traffic is really three decisions." Three chips read content, then policy, then GPU state — the through-line of the post — over the stack RouteLLM, agentgateway, Gateway API Inference Extension, and KAITO + vLLM on AKS.](./llm-routing-on-aks-hero.svg)
+
 ## The three decisions
 
 "Route this request" hides three separate questions, each reading a different signal, each with a different owner. For an agent firing calls in a loop, the first two fire on every call and the third on every weak-path call:
