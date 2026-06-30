@@ -83,6 +83,7 @@ The fix isn't more pods — it's *placing each request on the pod best able to t
 The Endpoint Picker needs a homogeneous pool of model servers exporting the right signals, and KAITO produces exactly that: declare a `Workspace`, point it at a preset, and KAITO provisions the GPU SKU, runs vLLM, and exposes an OpenAI-compatible Service. Because the engine is vLLM, every pod emits the metrics the Endpoint Picker routes on (`vllm:num_requests_waiting`, `vllm:kv_cache_usage_perc`). Apply [`kaito-workspace.yaml`](https://github.com/Azure/AKS/blob/master/examples/llm-routing-on-aks/kaito-workspace.yaml) — it pins `instanceType: Standard_NC24ads_A100_v4`, `count: 2`, and `preset: phi-4-mini-instruct`:
 
 ```bash
+kubectl create namespace llm
 kubectl apply -f kaito-workspace.yaml
 kubectl get workspace workspace-phi-4-mini -n llm -w   # Ready can take ~10–20 min
 ```
