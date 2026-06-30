@@ -12,13 +12,11 @@ apiVersion: azmonitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: vllm-podmonitor
-  namespace: kube-system
+  namespace: llm                 # same namespace as the workload (Azure PodMonitors can live anywhere)
 spec:
   selector:
     matchLabels:
       kaito.sh/workspace: workspace-phi-4-mini
-  namespaceSelector:
-    matchNames: [llm]
   podMetricsEndpoints:
     - targetPort: 5000
       path: /metrics
@@ -28,13 +26,11 @@ apiVersion: azmonitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: agentgateway-podmonitor
-  namespace: kube-system
+  namespace: llm                 # same namespace as the workload (Azure PodMonitors can live anywhere)
 spec:
   selector:
     matchLabels:
       app: agentgateway
-  namespaceSelector:
-    matchNames: [llm]
   podMetricsEndpoints:
     - targetPort: 15020
       path: /metrics
