@@ -560,3 +560,12 @@ ralph-squillace:
   image_url: https://github.com/squillace.png
   socials:
     github: squillace
+
+hariharan-sethuraman:
+  name: Hariharan Sethuraman
+  title: Principal Software Engineer
+  url: https://www.linkedin.com/in/hariharansethuraman/
+  image_url: https://github.com/hasethuraman.png
+  socials:
+    linkedin: hariharansethuraman
+    github: hasethuraman
