@@ -76,7 +76,7 @@
 
   <!-- structural link: gateway abstracts the self-hosted backend (Layer 3) -->
   <line x1="470" y1="384" x2="470" y2="412" stroke="#C2CCD6" stroke-width="1.5"/>
-  <text x="482" y="403" font-size="9.5" class="rel">self-hosted backend</text>
+  <text x="482" y="403" font-size="9.5" class="rel">calls (ext-proc)</text>
 
   <!-- ============ Layer 3 ============ -->
   <rect x="58" y="404" width="592" height="392" rx="10" fill="#EAF3FB"/>
@@ -85,30 +85,18 @@
   <text x="118" y="440" font-size="12" class="t">Layer 3 — Inference-aware serving</text>
   <text x="118" y="458" font-size="10.5" class="s">owns: which replica · signal: GPU state</text>
 
-  <!-- Card A: App routing -->
-  <rect x="330" y="416" width="280" height="66" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
-  <rect x="342" y="430" width="20" height="20" rx="4" fill="#0078D4"/>
-  <text x="370" y="442" font-size="13.5" class="t">Application routing</text>
-  <text x="370" y="460" font-size="10.5" class="s">Gateway API · approuting-istio · Envoy</text>
-  <rect x="500" y="424" width="102" height="17" rx="8" fill="#FBF3E0" stroke="#E8C97A"/>
-  <text x="551" y="436" font-size="9" fill="#9A6B12" text-anchor="middle">Managed · GAIE preview</text>
-
-  <!-- composition: the managed gateway hosts the picker -->
-  <line x1="470" y1="482" x2="470" y2="498" stroke="#C2CCD6" stroke-width="1.5"/>
-  <text x="482" y="494" font-size="9.5" class="rel">hosts</text>
-
-  <!-- Card B: Inference Extension -->
-  <rect x="330" y="498" width="280" height="66" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
-  <rect x="342" y="512" width="20" height="20" rx="4" fill="#64748B"/>
-  <text x="370" y="524" font-size="13.5" class="t">Inference Extension</text>
-  <text x="370" y="542" font-size="10.5" class="s">Endpoint Picker — picks pod on:</text>
-  <text x="370" y="557" font-size="10" fill="#0067B8">KV-cache · queue depth · LoRA</text>
-  <rect x="558" y="506" width="44" height="17" rx="8" fill="#F1F4F7" stroke="#CBD5DF"/>
-  <text x="580" y="518" font-size="9.5" class="s" text-anchor="middle">OSS</text>
+  <!-- Card A: Inference Extension / EPP (agentgateway calls it directly) -->
+  <rect x="330" y="416" width="280" height="74" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>
+  <rect x="342" y="430" width="20" height="20" rx="4" fill="#64748B"/>
+  <text x="370" y="442" font-size="13.5" class="t">Inference Extension</text>
+  <text x="370" y="460" font-size="10.5" class="s">Endpoint Picker — picks pod on:</text>
+  <text x="370" y="476" font-size="10" fill="#0067B8">KV-cache · queue depth · LoRA</text>
+  <rect x="558" y="424" width="44" height="17" rx="8" fill="#F1F4F7" stroke="#CBD5DF"/>
+  <text x="580" y="436" font-size="9.5" class="s" text-anchor="middle">OSS</text>
 
   <!-- composition: the picker selects a replica from the KAITO pool -->
-  <line x1="470" y1="564" x2="470" y2="580" stroke="#C2CCD6" stroke-width="1.5"/>
-  <text x="482" y="576" font-size="9.5" class="rel">selects replica from</text>
+  <line x1="470" y1="490" x2="470" y2="580" stroke="#C2CCD6" stroke-width="1.5"/>
+  <text x="482" y="538" font-size="9.5" class="rel">selects replica from</text>
 
   <!-- Card C: KAITO -->
   <rect x="330" y="580" width="280" height="66" rx="10" fill="#ffffff" stroke="#C9D6E2" stroke-width="1.3"/>

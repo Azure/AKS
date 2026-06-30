@@ -3,18 +3,18 @@ title: "Routing agent traffic is really three decisions"
 date: 2026-06-29
 description: "Agents make many LLM calls in loops, so routing each to the right model — cheap self-hosted or frontier — keeps them affordable. Three decisions on AKS."
 authors: [fuyuan-bie]
-tags: [ai-inference, agent, agentgateway, routellm, kaito, gateway-api, app-routing]
+tags: [ai-inference, agent, agentgateway, routellm, kaito, gpu]
 ---
 
 A chat turn is one LLM call. An agent is hundreds — a reasoning loop that plans, calls a tool, reads the result, re-plans, and only sometimes stops. The cost and latency you signed up for in a demo get multiplied by that loop, and most of those calls are *easy* — a tool-argument fill, a yes/no gate, a short summary — that never needed a frontier model. So the question isn't "which model is best." It's "which model should answer *this specific call*, and how do I govern a flood of them?" That's not one decision; it's three, on different signals.
 
-This post wires up those three decisions on AKS as a single OpenAI-compatible endpoint: a trivial agent step lands on a cheap self-hosted model (KAITO + vLLM, placed by GPU state) while a hard step escalates to a frontier model on Azure OpenAI — every call authenticated, metered, and traced. We lean on managed Azure throughout (**KAITO** for serving, the **application routing** add-on for the Gateway API, **Azure OpenAI** for the frontier path, **Azure Managed Prometheus and Grafana** for observability); the two layers without a drop-in managed service — the semantic router and the AI gateway — run as open source on the cluster, and we name the managed alternative for each.
+This post wires up those three decisions on AKS as a single OpenAI-compatible endpoint: a trivial agent step lands on a cheap self-hosted model (KAITO + vLLM, placed by GPU state) while a hard step escalates to a frontier model on Azure OpenAI — every call authenticated, metered, and traced. We lean on managed Azure throughout (**KAITO** for serving, **Azure OpenAI** for the frontier path, **Azure Managed Prometheus and Grafana** for observability); the two layers without a drop-in managed service — the semantic router and the AI gateway — run as open source on the cluster.
 
 <!-- truncate -->
 
 ## The three decisions
 
-"Route this request" hides three separate questions, each reading a different signal, each with a different owner. For an agent firing calls in a loop, all three matter on every iteration:
+"Route this request" hides three separate questions, each reading a different signal, each with a different owner. For an agent firing calls in a loop, the first two fire on every call and the third on every weak-path call:
 
 1. **Which model should answer this call?** A multi-step reasoning hop deserves a frontier model; "extract the date from this string" does not. Answering means reading the request *content* and predicting answer quality. This is **semantic routing**, and we'll use **[RouteLLM](https://github.com/lm-sys/RouteLLM)**.
 2. **How do I expose, secure, govern, and forward this traffic?** Provider abstraction, auth, per-agent budgets, rate limits, guardrails, observability. None of that cares about prompt meaning — it's a *policy* job for a data plane. We'll use **[agentgateway](https://agentgateway.dev/docs/)**, an OpenAI-compatible, agent-native proxy, in the cluster.
@@ -22,26 +22,25 @@ This post wires up those three decisions on AKS as a single OpenAI-compatible en
 
 **Content → policy → GPU state.** That's the through-line, and the discipline is refusing to let any layer answer a question that belongs to another: the router never thinks about auth, the gateway never thinks about prompt difficulty, the Endpoint Picker never thinks about *which* model — only *which replica*.
 
-![Structure and ownership of the three-layer agent-traffic routing design on AKS: RouteLLM (Layer 1) and agentgateway (Layer 2) run as open source inside the AKS cluster, while the application routing Gateway API, Inference Extension Endpoint Picker, and KAITO-served vLLM pods make up Layer 3; the gateway abstracts a managed Azure OpenAI frontier backend and a self-hosted backend, and Azure Monitor scrapes vLLM and cost metrics. Solid lines show composition and ownership, not request order.](./llm-routing-on-aks-architecture.svg)
+![Structure and ownership of the three-layer agent-traffic routing design on AKS: RouteLLM (Layer 1) and agentgateway (Layer 2) run as open source inside the AKS cluster; agentgateway calls the Inference Extension Endpoint Picker directly and forwards to KAITO-served vLLM pods (Layer 3). The gateway abstracts a managed Azure OpenAI frontier backend and the self-hosted backend, and Azure Monitor scrapes vLLM and cost metrics. Solid lines show composition and ownership, not request order.](./llm-routing-on-aks-architecture.svg)
 
 ## The architecture on AKS
 
-Each open-source slot has a managed Azure alternative, called out in the layer that earns it:
+Most slots are managed Azure; where an open-source piece has a managed alternative, it's called out in the layer that earns it:
 
 | Layer | Decision | Featured component | Managed on AKS? |
 | --- | --- | --- | --- |
 | 1 — Semantic | which *model* answers | RouteLLM | Open source on AKS |
-| 2 — AI gateway | auth, cost, guardrails, provider abstraction | agentgateway | Open source on AKS |
-| 2 — Gateway API | in-cluster HTTP routing | **Application routing** add-on | Managed add-on |
-| 3 — Inference LB | which *replica* | Gateway API Inference Extension (Endpoint Picker) | Open source, runs on the gateway |
+| 2 — AI gateway | auth, cost, guardrails, provider abstraction, inference-aware front door | agentgateway | Open source on AKS |
+| 3 — Inference LB | which *replica* | Gateway API Inference Extension (Endpoint Picker) | Open source, called by agentgateway |
 | 3 — Serving | run the model on GPUs | **KAITO** add-on → vLLM | Managed add-on |
 | Frontier path | the "strong" model | **Azure OpenAI** | Managed |
 | Observability | metrics & dashboards | **Azure Managed Prometheus + Grafana** | Managed |
 
-![Per-request trace through the three layers, numbered in order: an agent call (step 1) enters RouteLLM, which reads the prompt and picks strong or weak (step 2); agentgateway dispatches the strong path straight to Azure OpenAI (step 3a, ends there) or the weak path onward (step 3b) through the Gateway API (step 4) to the Inference Extension Endpoint Picker (step 5), which selects one KAITO-served vLLM pod by GPU state (step 6). The strong path ends at step 3a; the weak path ends at step 6.](./llm-routing-on-aks-request-path.svg)
+![Per-request trace through the three layers, numbered in order: an agent call (step 1) enters RouteLLM, which reads the prompt and picks strong or weak (step 2); agentgateway dispatches the strong path straight to Azure OpenAI (step 3a, ends there) or, on the weak path (step 3b), calls the Inference Extension Endpoint Picker over ext-proc (step 4), which selects one KAITO-served vLLM pod by GPU state that agentgateway then forwards to (step 5). The strong path ends at step 3a; the weak path ends at step 5.](./llm-routing-on-aks-request-path.svg)
 
 :::note[A NOTE ON EXACTNESS]
-Several pieces here are young, and field names drift between releases — the Inference Extension renamed and restructured CRDs on its way to v1, and the managed gateway's inference support is still rolling out. Everything below was validated end-to-end on AKS in mid-2026 against Inference Extension v1.0.0 and agentgateway v1.3.1. Treat the manifests as the *shape* of the solution, pin your versions, and confirm fields against the docs at the end. The decomposition is stable; specific flags and CRD fields move quickly.
+Several pieces here are young, and field names drift between releases — the Inference Extension renamed and restructured CRDs on its way to v1. Everything below was validated end-to-end on AKS in mid-2026 against Inference Extension v1.0.0 and agentgateway v1.3.1. Treat the manifests as the *shape* of the solution, pin your versions, and confirm fields against the docs at the end. The decomposition is stable; specific flags and CRD fields move quickly.
 :::
 
 With the map in hand, the rest of this post builds it — bottom-up, serving first and the semantic decision last, because each layer needs the address of the one beneath it. First, the cluster everything runs on.
@@ -67,17 +66,7 @@ az aks create \
 az aks get-credentials --resource-group $RG --name $CLUSTER
 ```
 
-The Gateway API front door (Layer 3) needs two more enablements, and two things trip people up. The managed gateway and its Gateway API CRDs are **separate flags**; and AKS **serializes** cluster-control-plane updates, so firing these while KAITO provisions its GPU node pool gets them preempted — enable the gateway before applying the KAITO workspace, or wait for the pool.
-
-```bash
-# the meshless Istio gateway (preview), then the managed Gateway API CRDs
-az aks update --resource-group $RG --name $CLUSTER --enable-app-routing-istio
-az aks update --resource-group $RG --name $CLUSTER --enable-gateway-api
-```
-
-The first command deploys a **meshless Istio control plane**: an `istiod` in `aks-istio-system` that reconciles Kubernetes Gateway API resources only — no sidecar injection, no Istio CRDs, just managed Envoy gateways. The second installs the Gateway API CRDs and registers the GatewayClass **`approuting-istio`**. Confirm both flags against the [application routing Gateway API docs](https://learn.microsoft.com/azure/aks/app-routing-gateway-api); they're preview and they move.
-
-With the cluster up, start at the bottom: serving the weak model.
+That's the whole cluster — no gateway add-on, no extra CRDs, no Istio to bootstrap. agentgateway is the front door (more on that in Layer 2). With the cluster up, start at the bottom: serving the weak model.
 
 ## Layer 3 — Serving, and the load-balancing trap
 
@@ -107,12 +96,12 @@ KAITO publishes a Service named `workspace-phi-4-mini` on port 80 and labels its
 
 ### 3.2 The placement logic: the Inference Extension
 
-Pool membership — *which pods are the model server* — is a different concern from how a workload is weighted against that pool, so the Inference Extension splits them across two objects on top of Gateway API:
+Pool membership — *which pods are the model server* — is a different concern from how a workload is weighted against that pool, so the Inference Extension splits them across two objects:
 
-- An **`InferencePool`** — the set of model-server pods plus a reference to the **Endpoint Picker (EPP)**, the extension the gateway calls over Envoy ext-proc to choose an endpoint per request.
+- An **`InferencePool`** — the set of model-server pods plus a reference to the **Endpoint Picker (EPP)**, the extension that an ext-proc-capable proxy calls to choose an endpoint per request. In this design that proxy is agentgateway (Layer 2); the InferencePool and EPP don't care who calls them.
 - An **`InferenceObjective`** — the per-workload treatment: an integer `priority` against a pool. (It's a redesign of the earlier `InferenceModel`, which carried a `modelName` and a `criticality` enum; v1 dropped both, taking the served-model name from the request instead.)
 
-Install the CRDs and the Endpoint Picker (the project ships a Helm chart), pointing it at the KAITO pods. The EPP must serve **plaintext** gRPC to match the gateway's ext-proc cluster — set `--secure-serving=false`, or the gateway's call to it resets before headers:
+Install the CRDs and the Endpoint Picker (the project ships a Helm chart), pointing it at the KAITO pods. The EPP must serve **plaintext** gRPC to match agentgateway's ext-proc client — set `--secure-serving=false`, or the call to it resets before headers:
 
 ```bash
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api-inference-extension/releases/download/v1.0.0/manifests.yaml
@@ -137,35 +126,7 @@ spec:
 
 The other trap is the API group: `InferencePool` lives in `inference.networking.k8s.io`, but `InferenceObjective` lives in `inference.networking.x-k8s.io` — different groups, easy to miss.
 
-### 3.3 The front door: a Gateway API gateway
-
-The Endpoint Picker needs a gateway that speaks ext-proc to call it. [`inference-gateway.yaml`](https://github.com/Azure/AKS/blob/master/examples/llm-routing-on-aks/inference-gateway.yaml) defines a `Gateway` on the `approuting-istio` class and an `HTTPRoute` whose backend is the `InferencePool` — note the backend is the *pool*, not a Service:
-
-```bash
-kubectl apply -f inference-gateway.yaml
-```
-
-:::warning[MANAGED GATEWAY VS. WHAT WORKS TODAY]
-Fronting an `InferencePool` with the **managed** Application routing gateway is the direction this is heading and the destination this post points at — one managed gateway, no Istio to operate. As of mid-2026 that pairing is **private preview**, gated server-side: the managed `istiod` ships with the inference extension turned off, so an `HTTPRoute → InferencePool` backend is rejected ("InferencePool is not enabled") until the capability reaches your subscription and region. To run the weak path **today**, front the pool with a self-managed upstream-Istio gateway that has the extension enabled, revision-isolated so the add-on can't revert it:
-
-```bash
-istioctl install -y --set profile=minimal --set revision=gie \
-  --set values.pilot.env.ENABLE_GATEWAY_API_INFERENCE_EXTENSION=true \
-  --set values.pilot.env.PILOT_GATEWAY_API_CONTROLLER_NAME=istio.io/gie-gateway-controller \
-  --set values.pilot.env.PILOT_GATEWAY_API_DEFAULT_GATEWAYCLASS_NAME=istio-gie
-```
-
-Then set `gatewayClassName: istio-gie` on the `Gateway` above. When the managed gateway's inference support ships for you, switch the class back to `approuting-istio` and delete the self-managed install — nothing else changes.
-:::
-
-Fire a burst of differently-sized requests and watch them spread by load rather than position — that's the picker earning its keep:
-
-```bash
-GW_IP=$(kubectl get gateway inference-gw -n llm -o jsonpath='{.status.addresses[0].value}')
-curl -s http://$GW_IP/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{"model":"phi-4-mini-instruct","messages":[{"role":"user","content":"ping"}]}'
-```
+The Endpoint Picker is now running and watching the pool, but nothing calls it yet. It needs an ext-proc-capable proxy out front to consult it per request — and that proxy is the AI gateway in Layer 2, so we wire the call there rather than standing up a separate Gateway API gateway just to reach it.
 
 **What this layer decided:** only *which replica*, on GPU state. It has no idea what a "strong" model is, no budgets, no auth. Those are the next layer's job.
 
@@ -173,7 +134,7 @@ curl -s http://$GW_IP/v1/chat/completions \
 
 The tempting shortcut is to let the router call backends directly. Resist it — and with agents the reason is sharper than with chat. An agent loop can spend an unbounded number of tokens before it decides to stop; without a budget and a rate limit *somewhere on the path*, a single misbehaving agent can run up a frontier bill or saturate your GPU fleet. A gateway is where that policy lives, written once, so nothing else has to reinvent it.
 
-agentgateway is an open-source, OpenAI-compatible AI gateway built for exactly this traffic: provider abstraction, auth, token-based rate limiting, model-cost tracking, guardrails, and OpenTelemetry across backends — and, because it's agent-native, first-class MCP tool-serving and agent-to-agent routing when you grow into them. Here it does two jobs: hide the **strong** (Azure OpenAI) and **weak** (in-cluster) backends behind one endpoint, and enforce policy on every call.
+agentgateway is an open-source, OpenAI-compatible AI gateway built for exactly this traffic: provider abstraction, auth, token-based rate limiting, model-cost tracking, guardrails, and OpenTelemetry across backends — and, because it's agent-native, first-class MCP tool-serving and agent-to-agent routing when you grow into them. Here it does three jobs: hide the **strong** (Azure OpenAI) and **weak** (in-cluster) backends behind one endpoint, enforce policy on every call, and — because it speaks ext-proc itself — **call the Endpoint Picker directly** so the weak path gets GPU-state placement. That third job is what lets us drop the Gateway API gateway entirely: one data plane instead of two, and no dependency on the managed gateway's inference-extension support, which is still preview-gated on AKS today.
 
 :::note[CONFIG SHAPE]
 The snippets below were validated against agentgateway v1.3.1 and trimmed for the argument; pin field names to the [agentgateway docs](https://agentgateway.dev/docs/). The full file is in the [example manifests](https://github.com/Azure/AKS/tree/master/examples/llm-routing-on-aks).
@@ -194,12 +155,34 @@ backends:
           apiVersion: "2024-10-21"
 ```
 
-The full two-route config — `strong` to Azure OpenAI, `weak` to the Layer-3 inference gateway (a plain `host` backend with a path rewrite, since it already speaks OpenAI) — is in [`agentgateway-config.yaml`](https://github.com/Azure/AKS/blob/master/examples/llm-routing-on-aks/agentgateway-config.yaml). The credential never leaves the gateway, and the `weak` route neither knows nor cares that an Endpoint Picker sits behind it.
+The `strong` route is a single `ai` backend pointed at Azure OpenAI. The `weak` route is where the front-door magic lives: a `service` backend pointed at the KAITO pods, with an **`inferenceRouting`** policy that hands each request to the Endpoint Picker over ext-proc and forwards to the pod it returns. Three details earned during validation, because the loader is strict about each:
 
-The governance that makes this safe for agents lives there too: a token **rate limit** as a route policy, and a per-million-token **cost catalog** (under the top-level `config:`) so every call carries a real dollar figure into your logs and metrics — together, the backstop against an agent loop that won't stop spending.
+```yaml
+# top-level: declare the model-server pool the picker selects from
+services:
+  - name: phi-weak
+    namespace: llm
+    hostname: workspace-phi-4-mini.llm.svc.cluster.local
+    vips: []                       # required, even when empty
+    ports: { 5000: 5000 }          # the vLLM container port
 
-:::tip[MANAGED ALTERNATIVE FOR THIS LAYER]
-If you'd rather not run a gateway, **Azure API Management**'s AI gateway gives you token-based rate limiting (`azure-openai-token-limit` / `llm-token-limit`), token metrics to Application Insights, semantic caching, and load-balancing with circuit-breaker failover across Azure OpenAI backends — all managed. Pair it with **Azure AI Content Safety** for guardrails. The trade-off is concrete: APIM is a managed service you configure with policies, but agentgateway is an extra in-path component you run and own — one more failure domain on the critical path. APIM buys that back as Azure-managed surface; agentgateway gives you OpenAI-compatible, agent-native policy next to your pods.
+# ...the weak route's backend:
+backends:
+  - service:
+      name: llm/workspace-phi-4-mini.llm.svc.cluster.local   # namespace/HOSTNAME, not the service name
+      port: 5000
+    policies:
+      inferenceRouting:            # a BACKEND policy, not a route policy
+        endpointPicker: { host: phi-epp-epp.llm.svc.cluster.local:9002 }
+        destinationMode: passthrough   # trust the picker's choice
+```
+
+The full two-route config — including the `strong` `ai` backend and both routes' policies — is in [`agentgateway-config.yaml`](https://github.com/Azure/AKS/blob/master/examples/llm-routing-on-aks/agentgateway-config.yaml). The credential never leaves the gateway, and on the `weak` route agentgateway itself is the thing that consults the picker.
+
+The governance that makes this safe for agents lives there too: the `strong` route carries a token **rate limit** (a `localRateLimit` route policy) — the backstop against an agent loop that won't stop spending. agentgateway can also price every call in real dollars through a top-level `config.modelCatalog`, but its schema is nested and provider-scoped — the obvious flat form didn't load for us — so wire it from the [agentgateway docs](https://agentgateway.dev/docs/) for your release rather than copying a snippet.
+
+:::note[ONE PIECE STAYS YOURS TO RUN]
+You can swap agentgateway's governance for a managed AI gateway if you prefer, but that only covers the governance half — not the inference-aware front door. The ext-proc call to the Endpoint Picker, which places each weak-path request on the right GPU pod, has no managed equivalent today, so that piece stays yours to run whichever gateway fronts it.
 :::
 
 Smoke-test both paths before the router exists:
@@ -270,7 +253,7 @@ python -m routellm.calibrate_threshold --routers mf --strong-model-pct 0.5
 # → 0.11593: the threshold that sends ~50% of calls to "strong"
 ```
 
-Then close the loop with the *real* numbers. Run live agent traffic and read the actual strong/weak split and dollar cost off **agentgateway's** metrics — not RouteLLM's estimate — and nudge the threshold until the cost/quality trade sits where you want it. The router proposes; your own cost data disposes.
+Then close the loop with the *real* numbers. Run live agent traffic and read the actual strong/weak split off **agentgateway's** metrics — not RouteLLM's estimate — and, once you've wired the cost catalog, the dollars too; nudge the threshold until the cost/quality trade sits where you want it. The router proposes; your own traffic disposes.
 
 :::tip[MANAGED ALTERNATIVE FOR THIS LAYER]
 **Microsoft Foundry**'s model router is a single managed deployment that routes among models by query complexity and cost — the managed analogue to RouteLLM. We feature RouteLLM precisely because the explicit, calibratable threshold is the heart of this design and worth holding in your own hands. If you'd rather not operate a router, the Foundry model router fills the same slot.
@@ -278,7 +261,7 @@ Then close the loop with the *real* numbers. Run live agent traffic and read the
 
 ## Observability with managed Azure monitoring
 
-Layer 1 trades quality for cost, so this section closes one question: can you trust the cost number, and can you watch the same signals the Endpoint Picker routes on? The answer splits by source — **GPU and latency come from vLLM; dollars and the strong/weak split come from agentgateway** — so a complete view scrapes both.
+Layer 1 trades quality for cost, so this section closes one question: can you trust the routing numbers, and can you watch the same signals the Endpoint Picker routes on? The answer splits by source — **GPU and latency come from vLLM; the strong/weak split (and, once you wire the cost catalog, dollars) comes from agentgateway** — so a complete view scrapes both.
 
 To get there, add two `PodMonitor`s to the Managed Prometheus you enabled at cluster creation: one selecting the KAITO pods for vLLM's metrics on port 5000, one for agentgateway's on port 15020. Then link **Azure Managed Grafana** to the workspace. (One gotcha: the managed add-on uses Azure's CRDs under the **`azmonitoring.coreos.com`** API group, not upstream `monitoring.coreos.com`, so change a community manifest's `apiVersion` to `azmonitoring.coreos.com/v1` or the add-on won't scrape it.)
 
@@ -287,11 +270,11 @@ To get there, add two `PodMonitor`s to the Managed Prometheus you enabled at clu
 ## The full path, one call
 
 ```bash
-# trivial step → router picks weak → gateway → Endpoint Picker → KAITO pod
+# trivial step → router picks weak → agentgateway → Endpoint Picker → KAITO pod
 curl -s http://routellm.llm.svc.cluster.local:6060/v1/chat/completions \
   -d '{"model":"router-mf-0.11593","messages":[{"role":"user","content":"What is 2+2?"}]}'
 
-# hard step → router picks strong → gateway → Azure OpenAI
+# hard step → router picks strong → agentgateway → Azure OpenAI
 curl -s http://routellm.llm.svc.cluster.local:6060/v1/chat/completions \
   -d '{"model":"router-mf-0.11593",
        "messages":[{"role":"user","content":"Derive the EM algorithm and explain why each step cannot decrease the log-likelihood."}]}'
@@ -310,7 +293,7 @@ Both hit the *same* endpoint with the *same* model string. Three decisions — c
 
 You rarely need all of it on day one. Because the layers don't bleed into each other, you can adopt exactly the slice your problem demands:
 
-- **One hosted model, a few agents, no self-hosting?** **Layer 2 only** — agentgateway (or APIM) for auth, budgets, and guardrails over Azure OpenAI. There's nothing to route *to* and no GPUs to place on.
+- **One hosted model, a few agents, no self-hosting?** **Layer 2 only** — agentgateway for auth, budgets, and guardrails over Azure OpenAI. There's nothing to route *to* and no GPUs to place on.
 - **Self-hosting at scale but one model class?** **KAITO + the Inference Extension** give you managed serving and cache-aware placement. Skip semantic routing — there's only one model.
 - **A real cost problem from agents sending easy steps to expensive models?** Add **RouteLLM**. It earns its keep the moment you have a meaningful price gap and a meaningful fraction of easy traffic — which describes essentially every agent in a loop.
 
@@ -320,4 +303,4 @@ Routing agent traffic isn't one decision — it's three, each on its own signal:
 
 From here, the obvious next moves all reinforce the same shape: autoscale the weak fleet on `vllm:num_requests_waiting` with the managed **KEDA** add-on so the GPU pool breathes with bursty agent traffic; lean into agentgateway's agent-native side by serving tools over **MCP** and routing **agent-to-agent** traffic through the same governed data plane; and add per-agent budgets at the gateway so spend stays attributable as more agents share the cluster.
 
-The [example manifests](https://github.com/Azure/AKS/tree/master/examples/llm-routing-on-aks) have everything here ready to adapt. For the components themselves, see [KAITO on AKS](https://learn.microsoft.com/azure/aks/ai-toolchain-operator), the [application routing Gateway API add-on](https://learn.microsoft.com/azure/aks/app-routing-gateway-api), the [Gateway API Inference Extension](https://gateway-api-inference-extension.sigs.k8s.io/), [agentgateway](https://agentgateway.dev/docs/), [RouteLLM](https://github.com/lm-sys/RouteLLM) (and its [paper](https://arxiv.org/abs/2406.18665)), and [Managed Prometheus and Grafana for AKS](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable).
+The [example manifests](https://github.com/Azure/AKS/tree/master/examples/llm-routing-on-aks) have everything here ready to adapt. For the components themselves, see [KAITO on AKS](https://learn.microsoft.com/azure/aks/ai-toolchain-operator), the [Gateway API Inference Extension](https://gateway-api-inference-extension.sigs.k8s.io/), [agentgateway](https://agentgateway.dev/docs/), [RouteLLM](https://github.com/lm-sys/RouteLLM) (and its [paper](https://arxiv.org/abs/2406.18665)), and [Managed Prometheus and Grafana for AKS](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable).
