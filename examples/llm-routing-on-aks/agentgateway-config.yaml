@@ -45,6 +45,13 @@ binds:
               # auth attaches as a ROUTE policy; key is a plain string (or {file:}).
               # NOTE: agentgateway does NOT expand shell variables — substitute a
               # real value (or use the {file: /path/to/key} form) at deploy time.
+              # For production on AKS, prefer Azure workload identity over a static
+              # key — agentgateway supports it natively for the Azure provider:
+              #   backendAuth:
+              #     azure:
+              #       explicitConfig:
+              #         workloadIdentity: {}
+              #     backendTLS: {}
               backendAuth:
                 key: "<your-azure-openai-api-key>"
               # a token bucket — the backstop against an agent loop that won't

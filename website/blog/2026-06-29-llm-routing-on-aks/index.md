@@ -140,7 +140,7 @@ agentgateway is an open-source, OpenAI-compatible AI gateway built for exactly t
 The snippets below were validated against agentgateway v1.3.1 and trimmed for the argument; pin field names to the [agentgateway docs](https://agentgateway.dev/docs/). The full file is in the [example manifests](https://github.com/Azure/AKS/tree/master/examples/llm-routing-on-aks).
 :::
 
-The outer shape is `binds → listeners → routes → backends`. The one thing to internalize: an AI backend is `ai: { name, provider: { <provider>: {...} } }` — the provider nests under `provider:`, `name` is required, and the Azure provider needs `resourceName` **and** `resourceType` (its `model` is your Azure *deployment* name). Auth attaches as a route policy whose key the Azure provider sends as the `api-key` header:
+The outer shape is `binds → listeners → routes → backends`. The one thing to internalize: an AI backend is `ai: { name, provider: { <provider>: {...} } }` — the provider nests under `provider:`, `name` is required, and the Azure provider needs `resourceName` **and** `resourceType` (its `model` is your Azure *deployment* name). Auth attaches as a route policy whose key the Azure provider sends as the `api-key` header (a static key keeps the example self-contained; for production on AKS, prefer Azure **workload identity**, which agentgateway supports natively for the Azure provider):
 
 ```yaml
 # the strong route's backend (excerpt)
