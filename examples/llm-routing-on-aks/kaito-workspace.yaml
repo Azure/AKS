@@ -13,7 +13,7 @@ resource:
   count: 2
   labelSelector:
     matchLabels:
-      apps: phi-4-mini
+      apps: phi-4-mini                        # node placement — NOT the pod label; KAITO stamps its pods with kaito.sh/workspace, which is what inference-pool.yaml and podmonitors.yaml select on
 inference:
   preset:
     name: phi-4-mini-instruct                 # OpenAI-compatible, served via vLLM
