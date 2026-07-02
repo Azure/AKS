@@ -201,7 +201,8 @@ curl -s http://agentgateway.llm.svc.cluster.local:4000/strong/v1/chat/completion
   -d '{"model":"gpt-5.1","messages":[{"role":"user","content":"Say no in one word."}]}'
 
 # weak → KAITO via the Endpoint Picker
-curl -s http://agentgateway.llm.svc.cluster.local:4000/weak \
+# (same shape RouteLLM sends: it appends /v1/chat/completions to api_base)
+curl -s http://agentgateway.llm.svc.cluster.local:4000/weak/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model":"phi-4-mini-instruct","messages":[{"role":"user","content":"Say hi in one word."}]}'
 ```
