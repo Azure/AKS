@@ -36,7 +36,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: agentgateway
+      app: agentgateway           # you deploy agentgateway yourself (no manifest here) — make sure its pods carry this label, or change the selector to match the labels they do carry, or nothing gets scraped
   podMetricsEndpoints:
     - targetPort: 15020
       path: /metrics
