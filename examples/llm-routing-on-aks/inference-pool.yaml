@@ -22,6 +22,6 @@ metadata:
   name: phi-weak
   namespace: llm
 spec:
-  priority: 0                                    # integer priority; no modelName/criticality in v1
+  priority: 0                                    # integer priority (lower = higher); not consulted here — only one objective in the pool
   poolRef:
     name: phi-pool
