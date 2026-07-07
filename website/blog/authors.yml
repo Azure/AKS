@@ -1,3 +1,19 @@
+schumann-ge:
+  name: Schumann Ge
+  title: AKS Product Manager Lead
+  url: https://github.com/nnamuhcs/
+  image_url: https://avatars.githubusercontent.com/nnamuhcs
+  socials:
+    github: nnamuhcs
+
+summer-cefalu:
+  name: Summer Cefalu
+  title: AKS Product Manager
+  url: https://github.com/SummerSmith
+  image_url: https://avatars.githubusercontent.com/SummerSmith
+  socials:
+    github: SummerSmith
+
 andy-zhang:
   name: Andy Zhang
   title: Principal Software Engineer for the Azure Kubernetes Service
@@ -507,7 +523,7 @@ zhewei-hu:
   image_url: https://github.com/winbobob.png
   socials:
     linkedin: zhewei-hu
-    github: zheweihu
+    github: winbobob
 
 michael-zappa:
   name: Michael Zappa
@@ -536,3 +552,11 @@ simon-waight:
   socials:
     linkedin: simon-waight
     github: sjwaight
+
+ralph-squillace:
+  name: Ralph Squillace
+  title: Principal Product Manager for Azure Upstream
+  url: https://opensource.microsoft.com/blog/author/ralph-squillace/
+  image_url: https://github.com/squillace.png
+  socials:
+    github: squillace

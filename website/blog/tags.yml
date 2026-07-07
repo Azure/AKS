@@ -17,6 +17,11 @@ agent:
   permalink: /agent
   description: AI agents and agent frameworks running on AKS.
 
+aks-on-baremetal:
+  label: AKS on bare metal
+  permalink: /aks-on-baremetal
+  description: Azure Kubernetes Service running on bare metal platforms.
+
 ai:
   label: AI
   permalink: /ai
@@ -351,6 +356,11 @@ storage:
   label: Storage
   permalink: /storage
   description: Persistent storage, data performance, CSI drivers, and Azure storage integrations for AKS.
+
+terraform:
+  label: Terraform
+  permalink: /terraform
+  description: Infrastructure as code examples and walkthroughs using HashiCorp Terraform with AKS.
 
 traffic-management:
   label: Traffic Management

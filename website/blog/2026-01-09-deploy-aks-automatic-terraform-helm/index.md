@@ -3,7 +3,7 @@ title: "Deploy Apps to AKS Automatic with Terraform and the Helm Provider"
 date: 2026-01-09
 description: "Learn how to deploy AKS Automatic with the AzApi provider for Terraform and configure the Helm provider for Azure RBAC token-based authentication."
 authors: [paul-yu]
-tags: [aks-automatic, developer, best-practices]
+tags: [aks-automatic, developer, best-practices, terraform]
 ---
 
 Deploying applications to AKS Automatic with Terraform requires a different authentication approach than traditional AKS clusters. AKS Automatic uses Azure RBAC exclusively, which means you can't download a kubeconfig file with static credentials. This post explores options for configuring the Helm provider to work with AKS Automatic—or any AKS cluster using Azure RBAC—using Azure CLI, service principals, or managed identities.
