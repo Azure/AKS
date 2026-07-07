@@ -140,6 +140,17 @@
   color: #fff !important;
 }
 
+.cancelledBadge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ifm-color-warning-darkest, #7a5900);
+  background: var(--ifm-color-warning-lightest, #fff3cd);
+  border: 1px solid var(--ifm-color-warning-dark, #d4a017);
+  border-radius: 4px;
+  padding: 0.35rem 0.9rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .joinBtn {
     transition: none;

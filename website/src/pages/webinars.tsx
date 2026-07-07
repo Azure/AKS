@@ -35,6 +35,7 @@ interface MonthlyAgendaResult {
   month?: string;
   items: AgendaItem[];
   loading: boolean;
+  cancelled?: boolean;
 }
 
 interface EventType {
@@ -46,7 +47,7 @@ interface EventType {
   joinHref: string;
   agendaBasePath: string;
   agendaMode: "monthly" | "static";
-  getNextDate: () => Date;
+  getNextDate: (after?: Date) => Date;
   pastRecordingsHref?: string;
 }
 
@@ -85,14 +86,15 @@ const eventTypes: EventType[] = [
 // --- Date Helpers ----------------------------------------------------------
 
 // Returns the upcoming 3rd Wednesday (or today if today is the 3rd Wednesday).
-function getNextThirdWednesday(): Date {
+// Pass `after` to find the next occurrence strictly after that date.
+function getNextThirdWednesday(after?: Date): Date {
   const PST_OFFSET_MS = 8 * 60 * 60 * 1000;
   const nowUTC = Date.now();
   const nowPST = new Date(nowUTC - PST_OFFSET_MS);
 
-  const year = nowPST.getUTCFullYear();
-  const month = nowPST.getUTCMonth();
-  const today = nowPST.getUTCDate();
+  const year = after ? after.getFullYear() : nowPST.getUTCFullYear();
+  const month = after ? after.getMonth() : nowPST.getUTCMonth();
+  const today = after ? after.getDate() : nowPST.getUTCDate();
 
   const thirdWed = (y: number, m: number): Date => {
     const first = new Date(Date.UTC(y, m, 1));
@@ -112,13 +114,16 @@ function getNextThirdWednesday(): Date {
   return new Date(result.getUTCFullYear(), result.getUTCMonth(), result.getUTCDate());
 }
 
-// Returns the next Architecture Review Hour date.
+// Returns the next Kube & Tell date.
 // Known upcoming dates: June 11, 2026. After that, assume 2nd Thursday monthly.
-function getNextKubeAndTellDate(): Date {
+// Pass `after` to find the next occurrence strictly after that date.
+function getNextKubeAndTellDate(after?: Date): Date {
   const PST_OFFSET_MS = 8 * 60 * 60 * 1000;
   const nowUTC = Date.now();
   const nowPST = new Date(nowUTC - PST_OFFSET_MS);
-  const todayMs = Date.UTC(nowPST.getUTCFullYear(), nowPST.getUTCMonth(), nowPST.getUTCDate());
+  const todayMs = after
+    ? Date.UTC(after.getFullYear(), after.getMonth(), after.getDate())
+    : Date.UTC(nowPST.getUTCFullYear(), nowPST.getUTCMonth(), nowPST.getUTCDate());
 
   // Known fixed date
   const knownMs = Date.UTC(2026, 5, 11); // June 11, 2026
@@ -127,9 +132,9 @@ function getNextKubeAndTellDate(): Date {
   }
 
   // Fallback: 2nd Thursday of each month
-  const year = nowPST.getUTCFullYear();
-  const month = nowPST.getUTCMonth();
-  const today = nowPST.getUTCDate();
+  const year = after ? after.getFullYear() : nowPST.getUTCFullYear();
+  const month = after ? after.getMonth() : nowPST.getUTCMonth();
+  const today = after ? after.getDate() : nowPST.getUTCDate();
 
   const secondThursday = (y: number, m: number): Date => {
     const first = new Date(Date.UTC(y, m, 1));
@@ -162,8 +167,10 @@ function formatDate(d: Date): string {
 function parseAgendaMarkdown(raw: string): {
   month?: string;
   items: AgendaItem[];
+  cancelled?: boolean;
 } {
   let month: string | undefined;
+  let cancelled: boolean | undefined;
   let content = raw.trim();
   if (content.startsWith("---")) {
     const end = content.indexOf("\n---", 3);
@@ -173,6 +180,8 @@ function parseAgendaMarkdown(raw: string): {
       front.split(/\r?\n/).forEach((line) => {
         const m = line.match(/^month:\s*(.+)$/i);
         if (m) month = m[1].trim();
+        const c = line.match(/^cancelled:\s*(.+)$/i);
+        if (c) cancelled = /true/i.test(c[1].trim());
       });
     }
   }
@@ -217,7 +226,7 @@ function parseAgendaMarkdown(raw: string): {
     if (featured) item.featured = true;
     return item;
   });
-  return { month, items: finalized };
+  return { month, items: finalized, cancelled };
 }
 
 // Hook to load agenda markdown for current month, falling back to latest prior month.
@@ -258,6 +267,7 @@ function useMonthlyAgenda(basePath: string): MonthlyAgendaResult {
           setState({
             items: parsed.items,
             month: parsed.month,
+            cancelled: parsed.cancelled,
             loading: false,
           });
         })
@@ -309,7 +319,7 @@ function useStaticAgenda(filePath: string): MonthlyAgendaResult {
       .then((text) => {
         if (cancelled) return;
         const parsed = parseAgendaMarkdown(text);
-        setState({ items: parsed.items, month: parsed.month, loading: false });
+        setState({ items: parsed.items, month: parsed.month, cancelled: parsed.cancelled, loading: false });
       })
       .catch(() => {
         if (!cancelled) setState({ items: [], loading: false });
@@ -343,10 +353,14 @@ function Hero(): ReactNode {
 function EventSection({ event }: { event: EventType }): ReactNode {
   const monthlyResult = useMonthlyAgenda(event.agendaMode === "monthly" ? event.agendaBasePath : "");
   const staticResult = useStaticAgenda(event.agendaMode === "static" ? event.agendaBasePath : "");
-  const { month, items, loading } = event.agendaMode === "monthly" ? monthlyResult : staticResult;
+  const { month, items, loading, cancelled } = event.agendaMode === "monthly" ? monthlyResult : staticResult;
   const label = month || "Latest";
   const empty = !loading && items.length === 0;
-  const nextDate = event.getNextDate();
+  // When cancelled, advance to the next month's occurrence using the same date logic.
+  const rawNextDate = event.getNextDate();
+  const nextDate = cancelled
+    ? event.getNextDate(new Date(rawNextDate.getFullYear(), rawNextDate.getMonth() + 1, 1))
+    : rawNextDate;
 
   return (
     <section className={styles.agendaSection}>
@@ -372,29 +386,38 @@ function EventSection({ event }: { event: EventType }): ReactNode {
           <a href={event.icsHref} className={styles.calendarLink}>
             Add to calendar
           </a>
-          <Link
-            className={`button button--primary button--sm ${styles.joinBtn}`}
-            to={event.joinHref}
-          >
-            Join Now
-          </Link>
+          {cancelled ? (
+            <span className={styles.cancelledBadge}>No call this month</span>
+          ) : (
+            <Link
+              className={`button button--primary button--sm ${styles.joinBtn}`}
+              to={event.joinHref}
+            >
+              Join Now
+            </Link>
+          )}
         </div>
       </div>
       <div className={styles.sectionHeader}>
         <Heading as="h2">
           Agenda - {label}
         </Heading>
-        {loading && (
+        {!cancelled && loading && (
           <span className={styles.loadingBadge}>loading&hellip;</span>
         )}
       </div>
-      {empty && (
+      {cancelled && (
+        <p className={styles.emptyState}>
+          There is no {event.label} call this month. The next session is listed above.
+        </p>
+      )}
+      {!cancelled && empty && (
         <p className={styles.emptyState}>
           No agenda has been published yet. Once an agenda file is added it
           appears here automatically.
         </p>
       )}
-      {!empty && (
+      {!cancelled && !empty && (
         <ul className={styles.agendaList}>
           {items.map((item, idx) => (
             <li key={idx} className={styles.agendaListItem}>
