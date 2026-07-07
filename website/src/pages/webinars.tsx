@@ -86,15 +86,13 @@ const eventTypes: EventType[] = [
 // --- Date Helpers ----------------------------------------------------------
 
 // Returns the upcoming 3rd Wednesday (or today if today is the 3rd Wednesday).
-// Pass `after` to find the next occurrence strictly after that date.
+// Pass `after` to find the next occurrence on or after that date.
 function getNextThirdWednesday(after?: Date): Date {
   const PST_OFFSET_MS = 8 * 60 * 60 * 1000;
-  const nowUTC = Date.now();
-  const nowPST = new Date(nowUTC - PST_OFFSET_MS);
-
-  const year = after ? after.getFullYear() : nowPST.getUTCFullYear();
-  const month = after ? after.getMonth() : nowPST.getUTCMonth();
-  const today = after ? after.getDate() : nowPST.getUTCDate();
+  const referencePST = new Date((after?.getTime() ?? Date.now()) - PST_OFFSET_MS);
+  const year = referencePST.getUTCFullYear();
+  const month = referencePST.getUTCMonth();
+  const day = referencePST.getUTCDate();
 
   const thirdWed = (y: number, m: number): Date => {
     const first = new Date(Date.UTC(y, m, 1));
@@ -103,7 +101,7 @@ function getNextThirdWednesday(after?: Date): Date {
   };
 
   const candidate = thirdWed(year, month);
-  if (candidate.getUTCDate() >= today && candidate.getUTCMonth() === month) {
+  if (candidate.getUTCDate() >= day && candidate.getUTCMonth() === month) {
     return new Date(candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate());
   }
   const nextMonth = month + 1;
@@ -116,26 +114,22 @@ function getNextThirdWednesday(after?: Date): Date {
 
 // Returns the next Kube & Tell date.
 // Known upcoming dates: June 11, 2026. After that, assume 2nd Thursday monthly.
-// Pass `after` to find the next occurrence strictly after that date.
+// Pass `after` to find the next occurrence on or after that date.
 function getNextKubeAndTellDate(after?: Date): Date {
   const PST_OFFSET_MS = 8 * 60 * 60 * 1000;
-  const nowUTC = Date.now();
-  const nowPST = new Date(nowUTC - PST_OFFSET_MS);
-  const todayMs = after
-    ? Date.UTC(after.getFullYear(), after.getMonth(), after.getDate())
-    : Date.UTC(nowPST.getUTCFullYear(), nowPST.getUTCMonth(), nowPST.getUTCDate());
+  const referencePST = new Date((after?.getTime() ?? Date.now()) - PST_OFFSET_MS);
+  const year = referencePST.getUTCFullYear();
+  const month = referencePST.getUTCMonth();
+  const day = referencePST.getUTCDate();
+  const referenceDayMs = Date.UTC(year, month, day);
 
   // Known fixed date
   const knownMs = Date.UTC(2026, 5, 11); // June 11, 2026
-  if (knownMs >= todayMs) {
+  if (knownMs >= referenceDayMs) {
     return new Date(2026, 5, 11);
   }
 
   // Fallback: 2nd Thursday of each month
-  const year = after ? after.getFullYear() : nowPST.getUTCFullYear();
-  const month = after ? after.getMonth() : nowPST.getUTCMonth();
-  const today = after ? after.getDate() : nowPST.getUTCDate();
-
   const secondThursday = (y: number, m: number): Date => {
     const first = new Date(Date.UTC(y, m, 1));
     const offset = (4 - first.getUTCDay() + 7) % 7;
@@ -143,7 +137,9 @@ function getNextKubeAndTellDate(after?: Date): Date {
   };
 
   const candidate = secondThursday(year, month);
-  if (candidate.getUTCDate() >= today && candidate.getUTCMonth() === month) {
+  const isCurrentMonthCandidate = candidate.getUTCMonth() === month;
+  const isUpcomingCandidate = candidate.getUTCDate() >= day;
+  if (isCurrentMonthCandidate && isUpcomingCandidate) {
     return new Date(candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate());
   }
   const nextMonth = month + 1;
