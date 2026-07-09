@@ -17,6 +17,11 @@ agent:
   permalink: /agent
   description: AI agents and agent frameworks running on AKS.
 
+agentgateway:
+  label: agentgateway
+  permalink: /agentgateway
+  description: agentgateway AI gateway usage on AKS — provider abstraction, auth, cost, and guardrails for LLM and agent traffic.
+
 aks-on-baremetal:
   label: AKS on bare metal
   permalink: /aks-on-baremetal
@@ -326,6 +331,11 @@ ray:
   label: Ray
   permalink: /ray
   description: KubeRay operator usage for distributed AI/ML workloads on AKS.
+
+routellm:
+  label: RouteLLM
+  permalink: /routellm
+  description: RouteLLM semantic routing on AKS — calibrated cost/quality routing between cheap and frontier LLMs.
 
 scaling:
   label: Scaling

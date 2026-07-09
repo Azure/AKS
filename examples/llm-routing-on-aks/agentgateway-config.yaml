@@ -1,0 +1,92 @@
+# agentgateway-config.yaml
+#
+# This is agentgateway's APPLICATION CONFIG — NOT a Kubernetes manifest.
+# It has no apiVersion/kind (GVK) by design: it's read by the agentgateway
+# process, not `kubectl apply`. Deploy agentgateway as a Deployment + Service
+# and mount this file as its config (e.g. via a ConfigMap).
+#
+# This shape was validated end-to-end against agentgateway v1.3.1. Pin to that
+# release; field names move between versions: https://agentgateway.dev/docs/
+
+# agentgateway can also surface real $/request via a top-level `config.modelCatalog`
+# (a list of catalog sources — `file:` or `inline:`). The exact catalog schema is
+# version-sensitive and provider-scoped, so configure it from the agentgateway
+# docs for your release (https://agentgateway.dev/docs/) rather than copying a
+# snippet here.
+
+# The model-server pool the Endpoint Picker selects endpoints from. A backend
+# that uses a `service:` ref must be declared here; `vips` is required even when
+# empty, and `ports` maps to the vLLM CONTAINER port (the picker routes to pod
+# IPs, bypassing the KAITO Service's port 80).
+services:
+  - name: phi-weak
+    namespace: llm
+    hostname: workspace-phi-4-mini.llm.svc.cluster.local
+    vips: []
+    ports:
+      5000: 5000
+
+binds:
+  - port: 4000
+    listeners:
+      - name: default
+        protocol: HTTP
+        routes:
+
+          # ---- "strong": frontier model on Azure OpenAI (managed) ----
+          # An AI backend is `ai: { name, provider: { <provider>: {...} } }`.
+          # The Azure provider REQUIRES resourceName + resourceType; `model` is
+          # the Azure *deployment* name. resourceType: openAI builds the host
+          # {resourceName}.openai.azure.com (use `foundry` for AI Foundry).
+          - name: strong
+            matches:
+              - path: { pathPrefix: /strong }
+            policies:
+              # auth attaches as a ROUTE policy; key is a plain string (or {file:}).
+              # NOTE: agentgateway does NOT expand shell variables — substitute a
+              # real value (or use the {file: /path/to/key} form) at deploy time.
+              # For production on AKS, prefer Azure workload identity over a static
+              # key — agentgateway supports it natively for the Azure provider:
+              #   backendAuth:
+              #     azure:
+              #       explicitConfig:
+              #         workloadIdentity: {}
+              #     backendTLS: {}
+              backendAuth:
+                key: "<your-azure-openai-api-key>"
+              # a token bucket — the backstop against an agent loop that won't
+              # stop spending. 60k tokens/minute here; tune to your budget.
+              localRateLimit:
+                - maxTokens: 60000
+                  tokensPerFill: 60000
+                  fillInterval: 60s
+            backends:
+              - ai:
+                  name: aoai-strong
+                  provider:
+                    azure:
+                      resourceName: "<your-aoai-resource>"   # the resource name, not a URL
+                      resourceType: openAI
+                      model: gpt-5.1                          # the Azure deployment name
+                      apiVersion: "2024-10-21"
+
+          # ---- "weak": self-hosted — agentgateway calls the Endpoint Picker ----
+          # No Gateway API gateway: the `inferenceRouting` BACKEND policy makes
+          # agentgateway speak ext-proc to the EPP, then forward to the pod it
+          # returns. The service ref is `namespace/HOSTNAME` (not the service
+          # name). The EPP must run with --secure-serving=false (plaintext gRPC).
+          - name: weak
+            matches:
+              - path: { pathPrefix: /weak }
+            policies:
+              urlRewrite:
+                path: { full: /v1/chat/completions }
+            backends:
+              - service:
+                  name: llm/workspace-phi-4-mini.llm.svc.cluster.local
+                  port: 5000
+                policies:
+                  inferenceRouting:
+                    endpointPicker:
+                      host: phi-epp-epp.llm.svc.cluster.local:9002
+                    destinationMode: passthrough
