@@ -17,7 +17,6 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 
 ### Features
 
-* The [Application Gateway for Containers](https://learn.microsoft.com/azure/application-gateway/for-containers/overview) managed add-on is now generally available. You no longer need to register a preview feature flag to enable the ALB controller on your cluster.
 * FIPS is now supported on [Ubuntu 22.04 node pools with FIPS 140-3 compliance](https://aka.ms/aks/fips) in the 2026-05-29 release. You can [migrate to Ubuntu 22.04 FIPS](https://aka.ms/aks/upgrade-os-version) by upgrading existing FIPS node pools to k8s 1.35+ with 'Ubuntu' OS SKU, or by updating existing FIPS node pools in k8s 1.25+ to 'Ubuntu2204' os sku. You can now enable FIPS and [Trusted Launch](https://aka.ms/aks/trusted-launch) in the same node pools when using Ubuntu on AKS.
 * AKS now supports the NVIDIA RTX PRO 6000 Blackwell Server Edition GPU VM sizes as [managed GPUs](https://learn.microsoft.com/azure/aks/gpu-cluster). These SKUs use the NVIDIA GRID driver and are supported on Ubuntu node pools.
 * [Confidential VMs (CVM)](https://aka.ms/aks/cvm) with Azure Linux is now generally available.
