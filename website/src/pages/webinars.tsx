@@ -25,9 +25,9 @@ import styles from "./webinars.module.css";
 // --- Data Types ------------------------------------------------------------
 interface AgendaItem {
   title: string;
-  presenter?: string;
+  presenters?: string[];
   bullets?: string[];
-  description?: string;
+  descriptions?: string[];
   featured?: boolean;
 }
 
@@ -204,20 +204,20 @@ function parseAgendaMarkdown(raw: string): {
 
   const finalized: AgendaItem[] = items.map((w) => {
     const bullets: string[] = [];
-    let presenter: string | undefined;
-    let description: string | undefined;
+    const presenters: string[] = [];
+    const descriptions: string[] = [];
     let featured = false;
     w._lines.forEach((l) => {
       if (/^Presenter:/i.test(l))
-        presenter = l.replace(/^Presenter:/i, "").trim();
+        presenters.push(l.replace(/^Presenter:/i, "").trim());
       else if (/^Description:/i.test(l))
-        description = l.replace(/^Description:/i, "").trim();
+        descriptions.push(l.replace(/^Description:/i, "").trim());
       else if (/^Featured:/i.test(l)) featured = /true/i.test(l.split(":")[1]);
       else if (/^-\s+/.test(l)) bullets.push(l.replace(/^-\s+/, ""));
     });
     const item: AgendaItem = { title: w.title };
-    if (presenter) item.presenter = presenter;
-    if (description) item.description = description;
+    if (presenters.length) item.presenters = presenters;
+    if (descriptions.length) item.descriptions = descriptions;
     if (bullets.length) item.bullets = bullets;
     if (featured) item.featured = true;
     return item;
@@ -420,13 +420,26 @@ function EventSection({ event }: { event: EventType }): ReactNode {
               <span className={`${styles.agendaItemTitle} ${item.featured ? styles.featured : ""}`.trim()}>
                 {item.title}
               </span>
-              {item.description && (
-                <span className={`${styles.agendaItemMeta} ${styles.agendaItemDescription}`}>
-                  {item.description}
-                </span>
+              {item.descriptions && item.descriptions.length > 0 && (
+                <div className={styles.agendaItemMetaGroup}>
+                  {item.descriptions.map((description, descriptionIdx) => (
+                    <span
+                      key={descriptionIdx}
+                      className={`${styles.agendaItemMeta} ${styles.agendaItemDescription}`}
+                    >
+                      {description}
+                    </span>
+                  ))}
+                </div>
               )}
-              {item.presenter && (
-                <span className={styles.agendaItemMeta}>Presenter: {item.presenter}</span>
+              {item.presenters && item.presenters.length > 0 && (
+                <div className={styles.agendaItemMetaGroup}>
+                  {item.presenters.map((presenter, presenterIdx) => (
+                    <span key={presenterIdx} className={styles.agendaItemMeta}>
+                      Presenter: {presenter}
+                    </span>
+                  ))}
+                </div>
               )}
               {item.bullets && item.bullets.length > 0 && (
                 <ul className={styles.agendaBulletList}>

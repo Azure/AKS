@@ -215,9 +215,13 @@
   color: var(--ifm-color-primary);
 }
 .agendaItemMeta {
+  display: block;
   font-size: 0.74rem;
   color: var(--ifm-color-emphasis-600);
   font-style: italic;
+}
+.agendaItemMetaGroup {
+  margin-top: 0.15rem;
 }
 .agendaItemDescription {
   display: block;
