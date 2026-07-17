@@ -1,0 +1,71 @@
+# Kueue queues + ProvisioningRequest AdmissionCheck driving Cluster Autoscaler.
+#
+# This is the heart of the example. Two pieces work together:
+#
+#   1. A ProvisioningRequestConfig + AdmissionCheck delegate capacity
+#      provisioning to the AKS cluster autoscaler (CAS). When Kueue needs
+#      capacity for a workload, the AdmissionCheck asks CAS — via a
+#      ProvisioningRequest — to atomically scale up the pool BEFORE the workload
+#      is admitted. The workload only starts once the nodes exist.
+#
+#   2. A ClusterQueue references that AdmissionCheck, so every workload routed
+#      through the queue goes through the provisioning gate.
+#
+# provisioningClassName `best-effort-atomic-scale-up.autoscaling.x-k8s.io` tells
+# CAS to add all the requested capacity as a single atomic increase (all-or-
+# nothing), which is what batch/gang workloads want.
+#
+# Apply after the namespace and resource flavor exist:
+#   kubectl apply -f 20-provisioning.yaml
+#
+# Verify:
+#   kubectl get admissioncheck cas-provisioning
+#   kubectl get clusterqueue cluster-queue
+#   kubectl -n cas-demo get localqueue user-queue
+---
+# AdmissionCheck that delegates capacity provisioning to CAS via ProvisioningRequest.
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: AdmissionCheck
+metadata:
+  name: cas-provisioning
+spec:
+  controllerName: kueue.x-k8s.io/provisioning-request
+  parameters:
+    apiGroup: kueue.x-k8s.io
+    kind: ProvisioningRequestConfig
+    name: cas-provreq-config
+---
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ProvisioningRequestConfig
+metadata:
+  name: cas-provreq-config
+spec:
+  provisioningClassName: best-effort-atomic-scale-up.autoscaling.x-k8s.io
+  managedResources:
+    - cpu
+---
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ClusterQueue
+metadata:
+  name: cluster-queue
+spec:
+  namespaceSelector: {}
+  resourceGroups:
+    - coveredResources: ["cpu", "memory"]
+      flavors:
+        - name: scalepool-flavor
+          resources:
+            - name: cpu
+              nominalQuota: "100"
+            - name: memory
+              nominalQuota: 200Gi
+  admissionChecks:
+    - cas-provisioning
+---
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: LocalQueue
+metadata:
+  name: user-queue
+  namespace: cas-demo
+spec:
+  clusterQueue: cluster-queue

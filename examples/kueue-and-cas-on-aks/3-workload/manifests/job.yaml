@@ -1,0 +1,44 @@
+# A suspended batch Job routed through Kueue.
+#
+# The Job requests more CPU than a single starting node can satisfy, so Kueue's
+# ProvisioningRequest AdmissionCheck asks the cluster autoscaler to add nodes
+# before admitting it. The flow:
+#
+#   suspend: true          -> Job created but no pods yet
+#   queue-name label       -> Kueue picks it up, creates a Workload
+#   AdmissionCheck         -> Kueue creates a ProvisioningRequest for CAS
+#   CAS atomic scale-up    -> pool grows to fit the 3 pods
+#   suspend flipped false  -> pods schedule onto the new nodes, Job runs
+#
+# 3 pods x 1800m CPU on 4-core nodes forces a scale-up beyond the single
+# starting node (~2 schedulable pods/node).
+#
+# Submit:
+#   kubectl apply -f job.yaml
+#
+# Watch the ProvisioningRequest and scale-up:
+#   kubectl -n cas-demo get provisioningrequest
+#   kubectl get nodes -l agentpool=scalepool -w
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kueue-cas-job
+  namespace: cas-demo
+  labels:
+    kueue.x-k8s.io/queue-name: user-queue
+spec:
+  parallelism: 3
+  completions: 3
+  suspend: true
+  template:
+    spec:
+      nodeSelector:
+        agentpool: scalepool
+      containers:
+        - name: worker
+          image: mcr.microsoft.com/oss/v2/kubernetes/pause:3.6
+          resources:
+            requests:
+              cpu: "1800m"
+              memory: "256Mi"
+      restartPolicy: Never
