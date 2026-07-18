@@ -1,8 +1,0 @@
-# Namespace for the Kueue + Cluster Autoscaler workload.
-#
-# Apply once after Module 1 infrastructure is provisioned:
-#   kubectl apply -f 00-namespace.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cas-demo

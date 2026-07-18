@@ -1,0 +1,96 @@
+# Autoscale queue — ProvisioningRequest AdmissionCheck driving the AKS cluster autoscaler.
+#
+# The single-queue and team-queue configs (20-/30-) admit workloads against a
+# FIXED quota that assumes the GPU node already exists. This configuration is
+# different: it pairs Kueue with the AKS cluster autoscaler (CAS) so capacity is
+# provisioned ON DEMAND, before the workload is admitted.
+#
+# How it fits together:
+#
+#   1. ProvisioningRequestConfig + AdmissionCheck delegate capacity provisioning
+#      to CAS. When Kueue needs capacity for a workload, the AdmissionCheck asks
+#      CAS — via a ProvisioningRequest — to atomically scale up the pool BEFORE
+#      the workload is admitted. The workload only starts once the nodes exist.
+#
+#   2. A ClusterQueue references that AdmissionCheck, so every workload routed
+#      through the queue goes through the provisioning gate first.
+#
+# provisioningClassName `best-effort-atomic-scale-up.autoscaling.x-k8s.io` tells
+# CAS to add all the requested capacity as a single atomic increase (all-or-
+# nothing), which is what batch/gang workloads want.
+#
+# This targets an AUTOSCALING CPU pool named `scalepool` (see the README for how
+# to add it with `az aks nodepool add --enable-cluster-autoscaler`). It is an
+# independent configuration — apply it INSTEAD OF 20-/30-, not alongside them.
+#
+# Prerequisite: the cluster autoscaler must run with `--enable-provisioning-requests`.
+#
+# Apply after the namespace and (this file's own) resource flavor exist:
+#   kubectl apply -f 40-autoscale-queue.yaml
+#
+# Verify:
+#   kubectl get admissioncheck cas-provisioning
+#   kubectl get clusterqueue autoscale-queue
+#   kubectl -n ray get localqueue autoscale
+---
+# ResourceFlavor pinned to the autoscaling CPU pool. AKS stamps every node in a
+# pool with `agentpool: <pool-name>`, so this flavor only admits onto scalepool.
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ResourceFlavor
+metadata:
+  name: scalepool
+spec:
+  nodeLabels:
+    agentpool: scalepool
+---
+# AdmissionCheck that delegates capacity provisioning to CAS via ProvisioningRequest.
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: AdmissionCheck
+metadata:
+  name: cas-provisioning
+spec:
+  controllerName: kueue.x-k8s.io/provisioning-request
+  parameters:
+    apiGroup: kueue.x-k8s.io
+    kind: ProvisioningRequestConfig
+    name: cas-provreq-config
+---
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ProvisioningRequestConfig
+metadata:
+  name: cas-provreq-config
+spec:
+  provisioningClassName: best-effort-atomic-scale-up.autoscaling.x-k8s.io
+  managedResources:
+    - cpu
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue
+metadata:
+  name: autoscale-queue
+spec:
+  namespaceSelector: {}
+  queueingStrategy: BestEffortFIFO
+  resourceGroups:
+    - coveredResources:
+        - cpu
+        - memory
+      flavors:
+        - name: scalepool
+          resources:
+            - name: cpu
+              # Upper bound Kueue will admit before asking CAS to grow the pool.
+              # Size to the pool's max-count × per-node cores (e.g. 5 × 4 = 20).
+              nominalQuota: "100"
+            - name: memory
+              nominalQuota: 200Gi
+  admissionChecks:
+    - cas-provisioning
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: autoscale
+  namespace: ray
+spec:
+  clusterQueue: autoscale-queue
