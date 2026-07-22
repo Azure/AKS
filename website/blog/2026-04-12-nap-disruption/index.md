@@ -1,7 +1,7 @@
 ---
 title: "Managing disruption with AKS Node Auto-Provisioning"
 description: "Learn AKS best practices for managing node disruption when using node auto provisioning (NAP) with pod disruption budgets, node disruption budgets, consolidation policies, and maintenance windows in production."
-date: 2026-04-12
+date: 2026-07-12
 authors: ["wilson-darko"]
 tags:
   - node-auto-provisioning
@@ -246,7 +246,7 @@ budgets:
 To learn more about node disruption budgets, see the [NAP disruption documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets).
 
 :::note
-NAP disruption budget-based maintenance windows offer nodepool level control of consolidation. For cluster-level control of upgrades, see our documentation for [Auto-upgrade planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?pivots=azure-cli).
+NAP disruption budget-based maintenance windows offer node pool-level control of consolidation. For cluster-level control of upgrades, see our documentation for [Auto-upgrade planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?pivots=azure-cli).
 :::
 
 ---
