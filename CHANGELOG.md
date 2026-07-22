@@ -6,39 +6,42 @@
 
 ### Announcements of upcoming changes and retirements
 
+* On 14 September 2026, [the preview property enableCustomCATrust will retire](https://github.com/Azure/AKS/issues/5826). After that date, the `enableCustomCATrust=true` node pool level field will no longer enable [Custom Certificate Authority (CA)](https://aka.ms/aks/custom-certificate-authority). To avoid failures during scaling and certificate updates, update the impacted clusters and node pools and remove the preview property (`--disable-custom-ca-trust`).
 * AKS no longer supports creating node pools with Windows Server Annual Channel for Containers. Existing WSAnnual agent pools are unaffected. For more information, see [Windows Annual Channel retirement](https://aka.ms/aks/windows-annual-channel-retirement).
-* Customers can no longer create new Flatcar node pools or clusters because Flatcar is retired. For more information, see [Flatcar preview retirement](https://aka.ms/aks/flatcar-preview-retirement).
+* AKS no longer supports creating node pools or clusters with Flatcar Container Linux for AKS. Existing node pools are unaffected. For more information, see [Flatcar preview retirement](https://aka.ms/aks/flatcar-preview-retirement).
 
 ### Release notes
 
 #### Kubernetes versions
 
 * Kubernetes patch versions 1.36.2, 1.35.6, 1.34.9, and 1.33.13 are now available.
-* AKS version 1.30 is now deprecated.
-* AKS version 1.33 is now available only under long-term support.
+* Kubernetes version 1.30 is now deprecated. Upgrade to a [supported Kubernetes version](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions), or opt into [long-term support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) to continue receiving updates.
+* Kubernetes version 1.33 is now available only under [long-term support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support).
 
 #### Features
 
 * Azure Monitor OTLP and Container Insights are now generally available.
-* NAT Gateway V2 is now available through the GA API shape in `2026-06-01`, using `outboundType: managedNATGateway` with `natGatewayProfile.sku: standardV2`.
+* [Artifact Streaming](https://aka.ms/aks/artifact-streaming) is now generally available. The feature allows you to stream container images from Azure Container Registry (ACR) to Azure Kubernetes Service (AKS). AKS only pulls the necessary layers for initial pod startup, reducing the time it takes to deploy your workloads.
 * AKS Automatic clusters with a Managed System Node Pool can now be migrated to the AKS Base SKU.
-* Istio revision `asm-1-30` is now available with the Istio-based service mesh add-on.
-* Secure TLS bootstrapping is now enabled by default in `westcentralus` and `eastasia`.
+* Istio revision `asm-1-30` is now available with the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about). See [supported Istio revisions](https://learn.microsoft.com/azure/aks/istio-upgrade) for details.
+* [Secure TLS bootstrapping](https://aka.ms/aks/secure-tls-bootstrapping) is now enabled by default in `westcentralus` and `eastasia`. See regional updates on [AKS GitHub Issues](https://github.com/Azure/AKS/issues/5694).
 
 #### Preview features
 
 * [Node Disruption Policy](https://aka.ms/aks/nodedisruptionpolicy) is now available in public preview. Node Disruption Policy lets you control when reimage-triggering operations are allowed so disruptive changes happen during windows you define.
+* NAT Gateway V2 is now available in public preview using `outboundType: managedNATGateway` with `natGatewayProfile.sku: standardV2` (API version `2026-06-01`).
 
 #### Behavioral changes
 
 * Agent pool auto-rollback is now enabled globally. AKS can automatically roll back the VMSS model when surge nodes fail to become ready during agent pool upgrades.
-* Starting with Kubernetes 1.37, Windows Server 2025 is the default and recommended OS SKU for new Windows node pools when no OS SKU is specified. Existing node pools are unaffected.
-* Secondary network interfaces on a node pool are now immutable after creation. To change secondary network interfaces, create a new node pool.
+* [Secure Boot](https://aka.ms/aks/trusted-launch) is now supported when using GPUs with Azure Linux OS.
+* [Trusted Launch (vTPM and Secure Boot)](https://aka.ms/aks/trusted-launch) can now be enabled and disabled on existing Linux node pools.
+* Starting with Kubernetes 1.37 (expected to be available in October 2026), Windows Server 2025 is the default and recommended OS SKU for new Windows node pools when no OS SKU is specified. For more information, see [Windows best practices](https://aka.ms/aks/windows-best-practices).
 * For Node Auto Provisioning enabled clusters, AKS now sets `kubernetes.azure.com/mode: user` on the default NodePool to help prevent pending system workloads from causing user node scale-up.
 * AKS now rejects kube-proxy `nftables` mode at request time on clusters running Kubernetes versions older than 1.33, instead of accepting the request and silently falling back to `iptables`.
 * AKS now accepts mixed-case `networkPlugin` values for supported network plugin options during cluster creation.
 * The `until` field in upgrade override settings can now be set to any future date; AKS no longer rejects values more than 30 days in the future.
-* CNI Overlay Dual-Stack on Windows no longer requires the AFEC flag gate.
+* CNI Overlay Dual-Stack on Windows no longer requires the Azure Feature Exposure Control (AFEC) flag gate.
 
 #### Bug fixes
 
@@ -51,10 +54,15 @@
 * Re-enabled Cilium source IP verification on Cilium v1.17+ to restore dataplane anti-spoofing protection.
 * Fixed AKS support for Istio 1.30 mutating webhook configuration updates on Automatic clusters.
 
+#### Security updates
+
+* Istio-based service mesh add-on revisions `asm-1-28`, `asm-1-29`, and `asm-1-30` include security fixes for [ISTIO-SECURITY-2026-005](https://istio.io/latest/news/security/ISTIO-SECURITY-2026-005/). **Action required:** restart your Istio workload pods to trigger re-injection of the newer `istio-proxy` patch version.
+* containerd has been updated from `1.7.32` to `1.7.33`, including security fixes for CVE-2026-53488, CVE-2026-47262, and CVE-2026-34986.
+
 #### Component updates
 
 * Docker Provider has been updated to [`3.4.0`](https://github.com/microsoft/Docker-Provider/releases/tag/3.4.0).
-* Karpenter Provider Azure has been updated to `v1.13.0`.
+* Azure Karpenter Provider has been updated to [`v1.14.0`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.14.0).
 * Azure File CSI driver images have been updated to `v1.35.5` on AKS 1.35 and 1.36.
 * App Routing operator has been updated to `v0.2.26`.
 * Istio-based service mesh add-on revisions have been updated:
@@ -62,26 +70,22 @@
   * `asm-1-28` to `v1.28.9-2`
   * `asm-1-29` to `v1.29.5-2`
   * `asm-1-30` to `v1.30.2-2`
-* Istio-based service mesh add-on revisions `asm-1-28`, `asm-1-29`, and `asm-1-30` include security fixes for ISTIO-SECURITY-2026-005. Restart workload pods to trigger re-injection of the newer `istio-proxy` patch version.
 * Cilium, Hubble, and ACNS security agent images have been updated:
   * Kubernetes 1.32 images to `v1.17.17-260701`
   * Kubernetes 1.34 images to `v1.18.11-260622`
   * Kubernetes 1.36 images to `v1.19.5-260714`
-* Azure cloud-controller-manager and cloud-node-manager images have been updated for Kubernetes 1.30 through 1.36.
-* Cluster Autoscaler has new versions for Kubernetes 1.33 through 1.35, including support for `AtomicIncreaseSize` for VMs and VMSS and fixes for deallocated-node handling.
 * Updated Cluster Autoscaler images from v1.33.4 to [v1.33.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.5), v1.34.3 to [v1.34.4](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.4), and v1.35.0 to [v1.35.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.35.1) for Kubernetes versions 1.33, 1.34, and 1.35, respectively.
 * kube-proxy image `mcr.microsoft.com/oss/v2/kubernetes/kube-proxy` has been updated:
   * `v1.36.2-4` to `v1.36.2-5`
   * `v1.33.7-14` to `v1.33.7-15`
 * kube-scheduler image `mcr.microsoft.com/oss/v2/kubernetes/kube-scheduler` has been updated across Kubernetes 1.34, 1.35, and 1.36 patch tags.
-* CoreDNS images have been updated:
+* CoreDNS images have been updated (see [CoreDNS upstream releases](https://github.com/coredns/coredns/releases)):
   * `v1.11.3-30` to `v1.11.3-32`
   * `v1.12.1-23` to `v1.12.1-25`
   * `v1.13.1-17` to `v1.13.1-20`
   * `v1.14.3-8` to `v1.14.3-11`
 * cluster-proportional-autoscaler has been updated from `v1.9.0-19` to `v1.9.0-21`.
 * trust-manager has been updated from `v0.20.3-8` to `v0.20.3-10`.
-* containerd has been updated from `1.7.32` to `1.7.33`, including security fixes for CVE-2026-53488, CVE-2026-47262, and CVE-2026-34986.
 * AKS Windows images:
   * Windows Server 2022 - TO ADD
   * Windows Server 2025 - TO ADD
