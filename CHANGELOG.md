@@ -69,7 +69,7 @@
   * Kubernetes 1.36 images to `v1.19.5-260714`
 * Azure cloud-controller-manager and cloud-node-manager images have been updated for Kubernetes 1.30 through 1.36.
 * Cluster Autoscaler has new versions for Kubernetes 1.33 through 1.35, including support for `AtomicIncreaseSize` for VMs and VMSS and fixes for deallocated-node handling.
-* cluster-autoscaler image `mcr.microsoft.com/oss/v2/kubernetes/autoscaler/cluster-autoscaler` has been updated from `v1.32.7-aks-7` to `v1.32.7-aks-8`.
+* Updated Cluster Autoscaler images from v1.33.4 to [v1.33.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.5), v1.34.3 to [v1.34.4](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.4), and v1.35.0 to [v1.35.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.35.1) for Kubernetes versions 1.33, 1.34, and 1.35, respectively.
 * kube-proxy image `mcr.microsoft.com/oss/v2/kubernetes/kube-proxy` has been updated:
   * `v1.36.2-4` to `v1.36.2-5`
   * `v1.33.7-14` to `v1.33.7-15`
