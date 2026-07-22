@@ -161,7 +161,7 @@ Use these settings to control consolidation behavior:
 - `consolidateAfter: 1d`: controls the delay before NAP consolidates underutilized nodes, and works with the `consolidationPolicy` setting.
 - `expireAfter: 24h`: determines how long nodes in this NodePool CRD can exist. Older nodes are deleted regardless of consolidation policies.
 
-**Note:** Underutilized rate is not a value you can set. NAP determines it through its cost simulations.
+**Note:** Underutilized rate is not a value you can set. NAP determines it through internal cost simulations.
 
 The following example shows these disruption tools in action:
 
@@ -214,7 +214,7 @@ This is often the simplest way to prevent NAP from moving too many nodes at once
 
 ---
 
-## Maintenance windows
+### Maintenance windows
 
 A good practice is to allow some consolidation, but only during a specific time window.
 
@@ -245,6 +245,10 @@ budgets:
 
 To learn more about node disruption budgets, see the [NAP disruption documentation](https://learn.microsoft.com/azure/aks/node-auto-provisioning-disruption#disruption-budgets).
 
+:::note
+NAP disruption budget-based maintenance windows offer nodepool level control of consolidation. For cluster-level control of upgrades, see our documentation for [Auto-upgrade planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?pivots=azure-cli).
+:::
+
 ---
 
 ## Keep node images current
@@ -253,7 +257,7 @@ NAP nodes are regularly updated as images change. The node image updates documen
 
 Operational takeaway:
 
-- Set up maintenance windows and budgets, but also make sure you do not drift long enough to hit a forced update scenario.
+- Set up maintenance windows and disruption budgets, but also make sure you do not drift long enough to hit a forced update scenario.
 - Treat keeping nodes reasonably fresh as part of disruption planning.
 
 ---
@@ -263,7 +267,7 @@ Operational takeaway:
 Before you change policies, confirm what NAP *thinks* it's doing:
 
 - View events:
-  - `kubectl get events --field-selector source=karpenter-events`
+  - run command `kubectl get events --field-selector source=karpenter-events`
 - Or use AKS control plane logs in Log Analytics, filtered for `karpenter-events`
 
 This helps you distinguish between these cases:
@@ -271,6 +275,8 @@ This helps you distinguish between these cases:
 - NAP wants to disrupt nodes, but PDBs or disruption budgets block it.
 - NAP is not trying to disrupt nodes because the consolidation policy does not allow it.
 - NAP can't replace nodes because provisioning is failing.
+
+For more on monitoring NAP logs and metrics, see the [NAP observability documentation](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning?pivots=azure-cli#monitoring-node-auto-provisioning).
 
 ---
 
