@@ -57,43 +57,51 @@
 #### Security updates
 
 * Istio-based service mesh add-on revisions `asm-1-28`, `asm-1-29`, and `asm-1-30` include security fixes for [ISTIO-SECURITY-2026-005](https://istio.io/latest/news/security/ISTIO-SECURITY-2026-005/). **Action required:** restart your Istio workload pods to trigger re-injection of the newer `istio-proxy` patch version.
-* containerd has been updated from `1.7.32` to `1.7.33`, including security fixes for CVE-2026-53488, CVE-2026-47262, and CVE-2026-34986.
+* containerd has been updated from `1.7.32` to [`1.7.33`](https://github.com/containerd/containerd/releases/tag/v1.7.33), including security fixes for CVE-2026-53488, CVE-2026-47262, and CVE-2026-34986.
 
 #### Component updates
 
 * Docker Provider has been updated to [`3.4.0`](https://github.com/microsoft/Docker-Provider/releases/tag/3.4.0).
 * Azure Karpenter Provider has been updated to [`v1.14.0`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.14.0).
-* Azure File CSI driver images have been updated to `v1.35.5` on AKS 1.35 and 1.36.
-* App Routing operator has been updated to `v0.2.26`.
+* Azure File CSI driver images have been updated to [`v1.35.5`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.5) on AKS 1.35 and 1.36.
+* App Routing operator has been updated to [`v0.2.26`](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.26).
 * Istio-based service mesh add-on revisions have been updated:
-  * `asm-1-27` to `v1.27.9-6`
-  * `asm-1-28` to `v1.28.9-2`
-  * `asm-1-29` to `v1.29.5-2`
-  * `asm-1-30` to `v1.30.2-2`
+  * `asm-1-27` to [`v1.27.9-6`](https://github.com/istio/istio/releases/tag/1.27.9)
+  * `asm-1-28` to [`v1.28.9-2`](https://github.com/istio/istio/releases/tag/1.28.9)
+  * `asm-1-29` to [`v1.29.5-2`](https://github.com/istio/istio/releases/tag/1.29.5)
+  * `asm-1-30` to [`v1.30.2-2`](https://github.com/istio/istio/releases/tag/1.30.2)
 * Cilium, Hubble, and ACNS security agent images have been updated:
-  * Kubernetes 1.32 images to `v1.17.17-260701`
-  * Kubernetes 1.34 images to `v1.18.11-260622`
-  * Kubernetes 1.36 images to `v1.19.5-260714`
+  * Kubernetes 1.32 images to [`v1.17.17-260701`](https://github.com/cilium/cilium/releases/tag/v1.17.17)
+  * Kubernetes 1.34 images to [`v1.18.11-260622`](https://github.com/cilium/cilium/releases/tag/v1.18.11)
+  * Kubernetes 1.36 images to [`v1.19.5-260714`](https://github.com/cilium/cilium/releases/tag/v1.19.5)
 * Updated Cluster Autoscaler images from v1.33.4 to [v1.33.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.5), v1.34.3 to [v1.34.4](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.4), and v1.35.0 to [v1.35.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.35.1) for Kubernetes versions 1.33, 1.34, and 1.35, respectively.
 * kube-proxy image `mcr.microsoft.com/oss/v2/kubernetes/kube-proxy` has been updated:
-  * `v1.36.2-4` to `v1.36.2-5`
-  * `v1.33.7-14` to `v1.33.7-15`
+  * `v1.36.2-4` to [`v1.36.2-5`](https://github.com/kubernetes/kubernetes/releases/tag/v1.36.2)
+  * `v1.33.7-14` to [`v1.33.7-15`](https://github.com/kubernetes/kubernetes/releases/tag/v1.33.7)
 * kube-scheduler image `mcr.microsoft.com/oss/v2/kubernetes/kube-scheduler` has been updated across Kubernetes 1.34, 1.35, and 1.36 patch tags.
 * CoreDNS images have been updated (see [CoreDNS upstream releases](https://github.com/coredns/coredns/releases)):
   * `v1.11.3-30` to `v1.11.3-32`
   * `v1.12.1-23` to `v1.12.1-25`
   * `v1.13.1-17` to `v1.13.1-20`
   * `v1.14.3-8` to `v1.14.3-11`
-* cluster-proportional-autoscaler has been updated from `v1.9.0-19` to `v1.9.0-21`.
-* trust-manager has been updated from `v0.20.3-8` to `v0.20.3-10`.
+* cluster-proportional-autoscaler has been updated from `v1.9.0-19` to [`v1.9.0-21`](https://github.com/kubernetes-sigs/cluster-proportional-autoscaler/releases/tag/v1.9.0).
+* trust-manager has been updated from `v0.20.3-8` to [`v0.20.3-10`](https://github.com/cert-manager/trust-manager/releases/tag/v0.20.3).
 * AKS Windows images:
-  * Windows Server 2022 - TO ADD
-  * Windows Server 2025 - TO ADD
+  * Windows Server 2022 - [20348.5386.260715](vhd-notes/AKSWindows/2022/20348.5386.260715.txt).
+  * Windows Server 2025 - [26100.33158.260715](vhd-notes/AKSWindows/2025/26100.33158.260715.txt).
 * AKS Azure Linux images:
-  * v3.0 - TO ADD
+  * v3.0 - [202606.19.0](vhd-notes/AzureLinuxv3/202606.19.0.txt).
+  * v3.0 - [202607.02.0](vhd-notes/AzureLinuxv3/202607.02.0.txt).
+  * v3.0 - [202607.09.0](vhd-notes/AzureLinuxv3/202607.09.0.txt).
 * AKS Ubuntu images:
-  * Ubuntu 22.04 - TO ADD
-  * Ubuntu 24.04 - TO ADD
+  * Ubuntu 22.04 - [202606.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202606.19.0.txt).
+  * Ubuntu 22.04 - [202607.02.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.02.0.txt).
+  * Ubuntu 22.04 - [202607.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.09.0.txt).
+  * Ubuntu 24.04 - [202606.19.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202606.19.0.txt).
+  * Ubuntu 24.04 - [202607.02.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202607.02.0.txt).
+  * Ubuntu 24.04 - [202607.09.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202607.09.0.txt).
+
+===
 
 ## Release Notes - 2026-06-19
 
