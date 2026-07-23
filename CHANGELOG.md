@@ -20,7 +20,6 @@
 
 #### Features
 
-* Azure Monitor OTLP and Container Insights are now generally available.
 * [Artifact Streaming](https://aka.ms/aks/artifact-streaming) is now generally available. The feature allows you to stream container images from Azure Container Registry (ACR) to Azure Kubernetes Service (AKS). AKS only pulls the necessary layers for initial pod startup, reducing the time it takes to deploy your workloads.
 * AKS Automatic clusters with a Managed System Node Pool can now be migrated to the AKS Base SKU.
 * Istio revision `asm-1-30` is now available with the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about). See [supported Istio revisions](https://learn.microsoft.com/azure/aks/istio-upgrade) for details.
@@ -50,7 +49,6 @@
 * Fixed an issue where clusters with an existing kube-proxy configuration object could not be updated unless `KubeProxyConfigurationPreview` was registered, even when the update did not change kube-proxy configuration.
 * Fixed App Routing Istio manifest values so resource requests and limits are populated correctly.
 * Fixed Static Egress Gateway VMSS model reconciliation so secondary egress IP configurations are preserved.
-* Increased the Container Insights `ama-logs` DaemonSet memory limit.
 * Re-enabled Cilium source IP verification on Cilium v1.17+ to restore dataplane anti-spoofing protection.
 * Fixed AKS support for Istio 1.30 mutating webhook configuration updates on Automatic clusters.
 
