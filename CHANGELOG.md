@@ -52,7 +52,7 @@
 * Fixed Static Egress Gateway VMSS model reconciliation so secondary egress IP configurations are preserved.
 * Re-enabled Cilium source IP verification on Cilium v1.17+ to restore dataplane anti-spoofing protection.
 * Fixed AKS support for Istio 1.30 mutating webhook configuration updates on Automatic clusters.
-* Fixed Node Auto Provisioning issue where loadbalancer deletion could block node provisioning.
+* Fixed Node Auto Provisioning issue where load balancer deletion could block node provisioning.
 * Fixed Node Auto Provisioning to normalize CSI empty-zone topology value to regional zone "0".
 
 #### Security updates
