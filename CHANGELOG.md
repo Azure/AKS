@@ -58,7 +58,7 @@ Monitor the release status by regions at [AKS-Release-Tracker](https://releases.
 * On Node Auto Provisioning (NAP) clusters, setting certain node labels is now restricted, including `agentpool`, `storageprofile`, `storagetier`, `accelerator`, and labels with a prefix of `kubernetes.azure.com/` that aren't among the well-known labels. New subscriptions using NAP can no longer set these labels, and existing subscriptions will be restricted on September 30, 2026. For more information, see [Azure Karpenter Provider Issue #1707](https://github.com/Azure/karpenter-provider-azure/issues/1707).
 * The cluster identity of Node Auto Provisioning (NAP) enabled clusters will now be granted the `AKS Nodepool Machine Manager` role.
 * Custom subnets are no longer permitted on Node Auto Provisioning (NAP) managed clusters using system-assigned identities. For custom subnets with NAP managed clusters, use user-assigned identities. To set up a user-assigned identity, see our [documentation](https://learn.microsoft.com/azure/aks/user-assigned-managed-identity).
-* The naming convention for Node Auto Provisioning (NAP) managed nodes will change from `nodepool-name-hash` to `aks-aksmanagedap-nodepool-name-########-vm`.
+* The naming convention for Node Auto Provisioning (NAP) managed nodes is now `aks-aksmanagedap-nodepool-name-########-vm` instead of `nodepool-name-hash`.
 
 #### Bug fixes
 
