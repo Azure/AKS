@@ -33,7 +33,6 @@
 
 #### Behavioral changes
 
-* Agent pool auto-rollback is now enabled globally. AKS can automatically roll back the VMSS model when surge nodes fail to become ready during agent pool upgrades.
 * [Secure Boot](https://aka.ms/aks/trusted-launch) is now supported when using GPUs with Azure Linux OS.
 * [Trusted Launch (vTPM and Secure Boot)](https://aka.ms/aks/trusted-launch) can now be enabled and disabled on existing Linux node pools.
 * Starting with Kubernetes 1.37 (expected to be available in October 2026), Windows Server 2025 is the default and recommended OS SKU for new Windows node pools when no OS SKU is specified. For more information, see [Windows best practices](https://aka.ms/aks/windows-best-practices).
