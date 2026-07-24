@@ -22,7 +22,6 @@
 #### Features
 
 * [Artifact Streaming](https://aka.ms/aks/artifact-streaming) is now generally available. The feature allows you to stream container images from Azure Container Registry (ACR) to Azure Kubernetes Service (AKS). AKS only pulls the necessary layers for initial pod startup, reducing the time it takes to deploy your workloads.
-* AKS Automatic clusters with a Managed System Node Pool can now be migrated to the AKS Base SKU.
 * [Secure TLS bootstrapping](https://aka.ms/aks/secure-tls-bootstrapping) is now enabled by default in `westcentralus` and `eastasia`. See regional updates on [AKS GitHub Issues](https://github.com/Azure/AKS/issues/5694).
 * [Secure Boot](https://aka.ms/aks/trusted-launch) is now supported when using GPUs with Azure Linux OS.
 * [Trusted Launch (vTPM and Secure Boot)](https://aka.ms/aks/trusted-launch) can now be enabled and disabled on existing Linux node pools.
@@ -83,7 +82,6 @@
   * `v1.13.1-17` to `v1.13.1-20`
   * `v1.14.3-8` to `v1.14.3-11`
 * cluster-proportional-autoscaler has been updated from `v1.9.0-19` to [`v1.9.0-21`](https://github.com/kubernetes-sigs/cluster-proportional-autoscaler/releases/tag/v1.9.0).
-* trust-manager has been updated from `v0.20.3-8` to [`v0.20.3-10`](https://github.com/cert-manager/trust-manager/releases/tag/v0.20.3).
 * AKS Windows images:
   * Windows Server 2022 - [20348.5386.260715](vhd-notes/AKSWindows/2022/20348.5386.260715.txt).
   * Windows Server 2025 - [26100.33158.260715](vhd-notes/AKSWindows/2025/26100.33158.260715.txt).
