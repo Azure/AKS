@@ -9,6 +9,7 @@
 * On September 14, 2026, [the preview property enableCustomCATrust will retire](https://github.com/Azure/AKS/issues/5826). After that date, the `enableCustomCATrust=true` node pool level field will no longer enable [Custom Certificate Authority (CA)](https://aka.ms/aks/custom-certificate-authority). To avoid failures during scaling and certificate updates, update the impacted clusters and node pools and remove the preview property (`--disable-custom-ca-trust`).
 * AKS no longer supports creating node pools with Windows Server Annual Channel for Containers. Existing WSAnnual agent pools are unaffected. For more information, see [Windows Annual Channel retirement](https://aka.ms/aks/windows-annual-channel-retirement).
 * AKS no longer supports creating node pools or clusters with Flatcar Container Linux for AKS. Existing node pools are unaffected. For more information, see [Flatcar preview retirement](https://aka.ms/aks/flatcar-preview-retirement).
+* Customers using NVadsA10v5 or NCadsA10v4 node pools should verify they are running AKS node image version 202606.08.1 or later to maintain compatibility with updated NVIDIA v18.x host drivers. Clusters running older node images may encounter host/guest GPU driver compatibility issues and move into an unsupported configuration. For upgrade guidance, see the [AKS node image upgrade documentation](https://aka.ms/aks/node-image-upgrade). See [Github issue](https://github.com/Azure/AKS/issues/5875) for more information.
 
 ### Release notes
 
