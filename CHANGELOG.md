@@ -37,6 +37,7 @@
 * [Trusted Launch (vTPM and Secure Boot)](https://aka.ms/aks/trusted-launch) can now be enabled and disabled on existing Linux node pools.
 * Starting with Kubernetes 1.37 (expected to be available in October 2026), Windows Server 2025 is the default and recommended OS SKU for new Windows node pools when no OS SKU is specified. For more information, see [Windows best practices](https://aka.ms/aks/windows-best-practices).
 * For Node Auto Provisioning enabled clusters, AKS now sets `kubernetes.azure.com/mode: user` on the default NodePool to help prevent pending system workloads from causing user node scale-up.
+* Node Auto-Provisioning enabled clusters now use an In-VM spot rebalancing signal, which allows for an improved spot eviction notification and proactive spot replacement. 
 * AKS now rejects kube-proxy `nftables` mode at request time on clusters running Kubernetes versions older than 1.33, instead of accepting the request and silently falling back to `iptables`.
 * AKS now accepts mixed-case `networkPlugin` values for supported network plugin options during cluster creation.
 * The `until` field in upgrade override settings can now be set to any future date; AKS no longer rejects values more than 30 days in the future.
@@ -51,6 +52,8 @@
 * Fixed Static Egress Gateway VMSS model reconciliation so secondary egress IP configurations are preserved.
 * Re-enabled Cilium source IP verification on Cilium v1.17+ to restore dataplane anti-spoofing protection.
 * Fixed AKS support for Istio 1.30 mutating webhook configuration updates on Automatic clusters.
+* Fixed Node Auto Provisioning issue where loadbalancer deletion could block node provisioning.
+* Fixed Node Auto Provisioning to normalize CSI empty-zone topology value to regional zone "0".
 
 #### Security updates
 
