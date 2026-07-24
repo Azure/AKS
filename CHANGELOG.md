@@ -22,25 +22,23 @@
 
 * [Artifact Streaming](https://aka.ms/aks/artifact-streaming) is now generally available. The feature allows you to stream container images from Azure Container Registry (ACR) to Azure Kubernetes Service (AKS). AKS only pulls the necessary layers for initial pod startup, reducing the time it takes to deploy your workloads.
 * AKS Automatic clusters with a Managed System Node Pool can now be migrated to the AKS Base SKU.
-* Istio revision `asm-1-30` is now available with the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about). See [supported Istio revisions](https://learn.microsoft.com/azure/aks/istio-upgrade) for details.
 * [Secure TLS bootstrapping](https://aka.ms/aks/secure-tls-bootstrapping) is now enabled by default in `westcentralus` and `eastasia`. See regional updates on [AKS GitHub Issues](https://github.com/Azure/AKS/issues/5694).
+* [Secure Boot](https://aka.ms/aks/trusted-launch) is now supported when using GPUs with Azure Linux OS.
+* [Trusted Launch (vTPM and Secure Boot)](https://aka.ms/aks/trusted-launch) can now be enabled and disabled on existing Linux node pools.
 
 #### Preview features
 
 * [Node Disruption Policy](https://aka.ms/aks/nodedisruptionpolicy) is now available in public preview. Node Disruption Policy lets you control when reimage-triggering operations are allowed so disruptive changes happen during windows you define.
-* NAT Gateway V2 is now available in public preview using `outboundType: managedNATGateway` with `natGatewayProfile.sku: standardV2` (API version `2026-06-01`).
+* [NAT Gateway V2](https://learn.microsoft.com/azure/aks/nat-gateway#create-an-aks-cluster-with-a-managed-standardv2-nat-gateway-managednatgatewayv2) is now available in public preview using `outboundType: managedNATGateway` with `natGatewayProfile.sku: standardV2` (API version `2026-06-01`).
 
 #### Behavioral changes
 
-* Agent pool auto-rollback is now enabled globally. AKS can automatically roll back the VMSS model when surge nodes fail to become ready during agent pool upgrades.
-* [Secure Boot](https://aka.ms/aks/trusted-launch) is now supported when using GPUs with Azure Linux OS.
-* [Trusted Launch (vTPM and Secure Boot)](https://aka.ms/aks/trusted-launch) can now be enabled and disabled on existing Linux node pools.
 * Starting with Kubernetes 1.37 (expected to be available in October 2026), Windows Server 2025 is the default and recommended OS SKU for new Windows node pools when no OS SKU is specified. For more information, see [Windows best practices](https://aka.ms/aks/windows-best-practices).
 * For Node Auto Provisioning enabled clusters, AKS now sets `kubernetes.azure.com/mode: user` on the default NodePool to help prevent pending system workloads from causing user node scale-up.
 * AKS now rejects kube-proxy `nftables` mode at request time on clusters running Kubernetes versions older than 1.33, instead of accepting the request and silently falling back to `iptables`.
 * AKS now accepts mixed-case `networkPlugin` values for supported network plugin options during cluster creation.
 * The `until` field in upgrade override settings can now be set to any future date; AKS no longer rejects values more than 30 days in the future.
-* CNI Overlay Dual-Stack on Windows no longer requires the Azure Feature Exposure Control (AFEC) flag gate.
+* CNI Overlay Dual-Stack on Windows no longer requires a preview feature registration.
 
 #### Bug fixes
 
@@ -52,17 +50,10 @@
 * Re-enabled Cilium source IP verification on Cilium v1.17+ to restore dataplane anti-spoofing protection.
 * Fixed AKS support for Istio 1.30 mutating webhook configuration updates on Automatic clusters.
 
-#### Security updates
-
-* Istio-based service mesh add-on revisions `asm-1-28`, `asm-1-29`, and `asm-1-30` include security fixes for [ISTIO-SECURITY-2026-005](https://istio.io/latest/news/security/ISTIO-SECURITY-2026-005/). **Action required:** restart your Istio workload pods to trigger re-injection of the newer `istio-proxy` patch version.
-* containerd has been updated from `1.7.32` to [`1.7.33`](https://github.com/containerd/containerd/releases/tag/v1.7.33), including security fixes for CVE-2026-53488, CVE-2026-47262, and CVE-2026-34986.
-
 #### Component updates
 
-* Docker Provider has been updated to [`3.4.0`](https://github.com/microsoft/Docker-Provider/releases/tag/3.4.0).
-* Azure Karpenter Provider has been updated to [`v1.14.0`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.14.0).
-* Azure File CSI driver images have been updated to [`v1.35.5`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.5) on AKS 1.35 and 1.36.
-* App Routing operator has been updated to [`v0.2.26`](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.26).
+* Istio revision `asm-1-30` is now available with the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about). See [supported Istio revisions](https://learn.microsoft.com/azure/aks/istio-upgrade) for details.
+* Istio-based service mesh add-on revisions `asm-1-28`, `asm-1-29`, and `asm-1-30` include security fixes for [ISTIO-SECURITY-2026-005](https://istio.io/latest/news/security/ISTIO-SECURITY-2026-005/). **Action required:** restart your Istio workload pods to trigger re-injection of the newer `istio-proxy` patch version.
 * Istio-based service mesh add-on revisions have been updated:
   * `asm-1-27` to [`v1.27.9-6`](https://github.com/istio/istio/releases/tag/1.27.9)
   * `asm-1-28` to [`v1.28.9-2`](https://github.com/istio/istio/releases/tag/1.28.9)
@@ -72,6 +63,11 @@
   * Kubernetes 1.32 images to [`v1.17.17-260701`](https://github.com/cilium/cilium/releases/tag/v1.17.17)
   * Kubernetes 1.34 images to [`v1.18.11-260622`](https://github.com/cilium/cilium/releases/tag/v1.18.11)
   * Kubernetes 1.36 images to [`v1.19.5-260714`](https://github.com/cilium/cilium/releases/tag/v1.19.5)
+* containerd has been updated from `1.7.32` to [`1.7.33`](https://github.com/containerd/containerd/releases/tag/v1.7.33), including security fixes for CVE-2026-53488, CVE-2026-47262, and CVE-2026-34986.
+* Azure Monitor for Containers has been updated to [`3.4.0`](https://github.com/microsoft/Docker-Provider/releases/tag/3.4.0).
+* Azure Karpenter Provider has been updated to [`v1.14.0`](https://github.com/Azure/karpenter-provider-azure/releases/tag/v1.14.0).
+* Azure File CSI driver images have been updated to [`v1.35.5`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.5) on AKS 1.35 and 1.36.
+* App Routing operator has been updated to [`v0.2.26`](https://github.com/Azure/aks-app-routing-operator/releases/tag/v0.2.26).
 * Updated Cluster Autoscaler images from v1.33.4 to [v1.33.5](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.33.5), v1.34.3 to [v1.34.4](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.34.4), and v1.35.0 to [v1.35.1](https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.35.1) for Kubernetes versions 1.33, 1.34, and 1.35, respectively.
 * kube-proxy image `mcr.microsoft.com/oss/v2/kubernetes/kube-proxy` has been updated:
   * `v1.36.2-4` to [`v1.36.2-5`](https://github.com/kubernetes/kubernetes/releases/tag/v1.36.2)
