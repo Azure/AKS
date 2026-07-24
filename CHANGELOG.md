@@ -7,8 +7,9 @@
 ### Announcements of upcoming changes and retirements
 
 * On September 14, 2026, [the preview property enableCustomCATrust will retire](https://github.com/Azure/AKS/issues/5826). After that date, the `enableCustomCATrust=true` node pool level field will no longer enable [Custom Certificate Authority (CA)](https://aka.ms/aks/custom-certificate-authority). To avoid failures during scaling and certificate updates, update the impacted clusters and node pools and remove the preview property (`--disable-custom-ca-trust`).
-* AKS no longer supports creating node pools with Windows Server Annual Channel for Containers. Existing WSAnnual agent pools are unaffected. For more information, see [Windows Annual Channel retirement](https://aka.ms/aks/windows-annual-channel-retirement).
+* AKS no longer supports creating node pools with Windows Server Annual Channel for Containers. Existing WSAnnual node pools are unaffected. For more information, see [Windows Annual Channel retirement](https://aka.ms/aks/windows-annual-channel-retirement).
 * AKS no longer supports creating node pools or clusters with Flatcar Container Linux for AKS. Existing node pools are unaffected. For more information, see [Flatcar preview retirement](https://aka.ms/aks/flatcar-preview-retirement).
+* Customers using NVadsA10v5 or NCadsA10v4 node pools should verify they are running AKS node image version 202606.08.1 or later to maintain compatibility with updated NVIDIA v18.x host drivers. Clusters running older node images may encounter host/guest GPU driver compatibility issues and move into an unsupported configuration. For upgrade guidance, see the [AKS node image upgrade documentation](https://aka.ms/aks/node-image-upgrade). See [Github issue](https://github.com/Azure/AKS/issues/5875) for more information.
 
 ### Release notes
 
@@ -35,6 +36,7 @@
 
 * Starting with Kubernetes 1.37 (expected to be available in October 2026), Windows Server 2025 is the default and recommended OS SKU for new Windows node pools when no OS SKU is specified. For more information, see [Windows best practices](https://aka.ms/aks/windows-best-practices).
 * For Node Auto Provisioning enabled clusters, AKS now sets `kubernetes.azure.com/mode: user` on the default NodePool to help prevent pending system workloads from causing user node scale-up.
+* Node Auto-Provisioning enabled clusters now use an In-VM spot rebalancing signal, which allows for an improved spot eviction notification and proactive spot replacement. 
 * AKS now rejects kube-proxy `nftables` mode at request time on clusters running Kubernetes versions older than 1.33, instead of accepting the request and silently falling back to `iptables`.
 * AKS now accepts mixed-case `networkPlugin` values for supported network plugin options during cluster creation.
 * The `until` field in upgrade override settings can now be set to any future date; AKS no longer rejects values more than 30 days in the future.
@@ -49,6 +51,8 @@
 * Fixed Static Egress Gateway VMSS model reconciliation so secondary egress IP configurations are preserved.
 * Re-enabled Cilium source IP verification on Cilium v1.17+ to restore dataplane anti-spoofing protection.
 * Fixed AKS support for Istio 1.30 mutating webhook configuration updates on Automatic clusters.
+* Fixed Node Auto Provisioning issue where load balancer deletion could block node provisioning.
+* Fixed Node Auto Provisioning to normalize CSI empty-zone topology value to regional zone "0".
 
 #### Component updates
 
