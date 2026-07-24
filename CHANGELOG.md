@@ -31,6 +31,7 @@
 
 * [Node Disruption Policy](https://aka.ms/aks/nodedisruptionpolicy) is now available in public preview. Node Disruption Policy lets you control when reimage-triggering operations are allowed so disruptive changes happen during windows you define.
 * [NAT Gateway V2](https://learn.microsoft.com/azure/aks/nat-gateway#create-an-aks-cluster-with-a-managed-standardv2-nat-gateway-managednatgatewayv2) is now available in public preview using `outboundType: managedNATGateway` with `natGatewayProfile.sku: standardV2` (API version `2026-06-01`).
+* [Automatic zone placement](https://aka.ms/aks/automatic-zonal-placement) is now available in public preview. Automatic zone placement in AKS dynamically selects the best set of [availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview) for a node pool. You don't need to specify the zones manually for each region and VM SKU combination.
 
 #### Behavioral changes
 
