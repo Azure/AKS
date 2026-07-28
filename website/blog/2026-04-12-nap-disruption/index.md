@@ -16,7 +16,7 @@ When you manage Kubernetes, a few disruption questions come up fast:
 - Why won’t NAP scale down my nodes, even with lots of underused capacity?
 - Why do upgrades get stuck on certain nodes?
 
-This post focuses on **NAP disruption best practices**, not workload scheduling tools such as topology spread constraints, node affinity, and taints. For scheduling best practices, see the [NAP scheduling fundamentals blog post](https://blog.aks.azure.com/2025/12/06/node-provisioning-best-practice).
+This post focuses on **NAP disruption best practices**, not workload scheduling tools such as topology spread constraints, node affinity, and taints. For scheduling best practices, see the [NAP scheduling fundamentals blog post](https://blog.aks.azure.com/2026/03/20/node-provisioning-best-practice).
 
 If you’re new to these features, start here. If you already use NAP disruption settings, use this post as a checklist for the behaviors AKS users most commonly ask about.
 
@@ -140,13 +140,16 @@ This common misconfiguration can cause scenarios such as:
 - Migration fails.
 - NAP consolidation never happens.
 
-This can be intentional for extremely sensitive workloads, but it has a cost. If a node has one of these pods, draining that node can become impossible without changing the PDB or taking an outage. Set some tolerance in these PDB settings, and use disruption budgets or maintenance windows to control disruption.
+This can be intentional for extremely sensitive workloads, but it has a cost. If a node has one of these pods, draining that node can become impossible without changing the PDB or taking an outage. Set some tolerance in these PDB settings and use disruption budgets or maintenance windows to control disruption.
 
 **Practical guidance:**
 
+- Choose `maxUnavailable` or `maxUnavailable` based on your replica count and required service capacity. 
 - For critical workloads that you do not want to disrupt, zero eviction may be intentional. Be deliberate. When you're ready to allow disruption to these workloads, you may need to change the PDBs in the workload deployment file.
-- For general workloads that can tolerate minor disruption, prefer a small `maxUnavailable` value, such as `1`, instead of zero evictions.
+- For multi-replica workloads that can tolerate minor disruption, prefer a small `maxUnavailable` value, such as `1`, instead of zero voluntary disruption.
 - Be clear on the tradeoff. Zero tolerance can block upgrades, NAP consolidation, and scale down.
+
+The following example allows one replica to be unavailable during voluntary disruption. It is appropriate only when the workload has enough replicas to preserve its availability target. Choose `maxUnavailable` or `minAvailable` based on your replica count and required service capacity.
 
 ## Controlling consolidation: when vs. how fast
 
@@ -248,17 +251,6 @@ To learn more about node disruption budgets, see the [NAP disruption documentati
 :::note
 NAP disruption budget-based maintenance windows offer node pool-level control of consolidation. For cluster-level control of upgrades, see our documentation for [Auto-upgrade planned maintenance](https://learn.microsoft.com/azure/aks/planned-maintenance?pivots=azure-cli).
 :::
-
----
-
-## Keep node images current
-
-NAP nodes are regularly updated as images change. The node image updates documentation calls out a key behavior: **if a node image version is older than 90 days, NAP forces pickup of the latest image version and bypasses any existing maintenance window**.
-
-Operational takeaway:
-
-- Set up maintenance windows and disruption budgets, but also make sure you do not drift long enough to hit a forced update scenario.
-- Treat keeping nodes reasonably fresh as part of disruption planning.
 
 ---
 
