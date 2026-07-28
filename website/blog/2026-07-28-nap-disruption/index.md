@@ -1,7 +1,7 @@
 ---
 title: "Managing disruption with AKS Node Auto-Provisioning"
 description: "Learn AKS best practices for managing node disruption when using node auto provisioning (NAP) with pod disruption budgets, node disruption budgets, consolidation policies, and maintenance windows in production."
-date: 2026-07-12
+date: 2026-07-28
 authors: ["wilson-darko"]
 tags:
   - node-auto-provisioning
@@ -326,5 +326,6 @@ Fix:
 
 1. **Try NAP today:** Check out the [Enable Node Auto Provisioning steps](https://learn.microsoft.com/azure/aks/use-node-auto-provisioning).
 2. **Learn more:** Visit the AKS [operator best-practices guidance](https://learn.microsoft.com/azure/aks/operator-best-practices-advanced-scheduler).
-3. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
-4. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
+3. Troubleshoot NAP: For more common issues visit our [NAP troubleshooting guide](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/extensions/troubleshoot-node-auto-provision)
+4. **Share feedback:** Open issues or ideas in [AKS GitHub Issues](https://github.com/Azure/AKS/issues).
+5. **Join the community:** Subscribe to the [AKS Community YouTube](https://www.youtube.com/@theakscommunity) and follow [@theakscommunity](https://x.com/theakscommunity) on X.
