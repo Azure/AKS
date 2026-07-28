@@ -144,7 +144,7 @@ This can be intentional for extremely sensitive workloads, but it has a cost. If
 
 **Practical guidance:**
 
-- Choose `maxUnavailable` or `maxUnavailable` based on your replica count and required service capacity. 
+- Choose `maxUnavailable` or `maxUnavailable` based on your replica count and required service capacity.
 - For critical workloads that you do not want to disrupt, zero eviction may be intentional. Be deliberate. When you're ready to allow disruption to these workloads, you may need to change the PDBs in the workload deployment file.
 - For multi-replica workloads that can tolerate minor disruption, prefer a small `maxUnavailable` value, such as `1`, instead of zero voluntary disruption.
 - Be clear on the tradeoff. Zero tolerance can block upgrades, NAP consolidation, and scale down.
