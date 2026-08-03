@@ -533,7 +533,9 @@ configuration:
           then:
           - mentionUsers:
               mentionees:
-              - wangyira
+              - swgriffith
+              - sjwaight
+              - olaseniadeniji
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
 onFailure:
