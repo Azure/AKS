@@ -1,7 +1,6 @@
 // Maintenance overview:
 // Agenda content and its month label are sourced exclusively from markdown files:
 //   Community Calls: /website/static/webinars/agenda/YYYY-MM.md (monthly files)
-//   Architecture Review Hour: /website/static/webinars/agenda/kube-and-tell.md (single file, updated in-place)
 // Frontmatter must include: month: Month YYYY (or a label for the session)
 // Each agenda section uses a second-level heading (##) followed by optional lines:
 //   Presenter: Name and title
@@ -10,8 +9,6 @@
 //   - bullet point text (repeatable for bullets)
 // Community Calls: If the current month file is missing, the code steps backwards
 //   (up to 6 prior months) and uses the most recent available file.
-// Architecture Review Hour: Uses a single static file that is updated whenever
-//   a new session is scheduled.
 // Event data is defined in the constant `eventTypes` below.
 
 import type { ReactNode } from "react";
@@ -68,19 +65,6 @@ const eventTypes: EventType[] = [
     getNextDate: getNextThirdWednesday,
     pastRecordingsHref: "https://www.youtube.com/playlist?list=PLc3Ep462vVYu0eMSiORonzj3utqYu285z",
   },
-  {
-    id: "kube&tell-podcast",
-    label: "Kube & Tell",
-    description:
-      "Live, community-driven podcast for Kubernetes practitioners",
-    schedule:
-      "8 AM Pacific / 11 AM Eastern / 4 PM GMT / 8:30 PM IST",
-    icsHref: "/webinars/calendar/Kube & Tell _ Real Clusters, Real Conversations.ics",
-    joinHref: "https://aka.ms/aks/kubeandtell/joinnow",
-    agendaBasePath: "/webinars/agenda/kube-and-tell.md",
-    agendaMode: "static",
-    getNextDate: getNextKubeAndTellDate,
-  },
 ];
 
 // --- Date Helpers ----------------------------------------------------------
@@ -106,44 +90,6 @@ function getNextThirdWednesday(after?: Date): Date {
   }
   const nextMonth = month + 1;
   const result = thirdWed(
-    nextMonth > 11 ? year + 1 : year,
-    nextMonth % 12,
-  );
-  return new Date(result.getUTCFullYear(), result.getUTCMonth(), result.getUTCDate());
-}
-
-// Returns the next Kube & Tell date.
-// Known upcoming dates: June 11, 2026. After that, assume 2nd Thursday monthly.
-// Pass `after` to find the next occurrence on or after that date.
-function getNextKubeAndTellDate(after?: Date): Date {
-  const PST_OFFSET_MS = 8 * 60 * 60 * 1000;
-  const referencePST = new Date((after?.getTime() ?? Date.now()) - PST_OFFSET_MS);
-  const year = referencePST.getUTCFullYear();
-  const month = referencePST.getUTCMonth();
-  const day = referencePST.getUTCDate();
-  const referenceDayMs = Date.UTC(year, month, day);
-
-  // Known fixed date
-  const knownMs = Date.UTC(2026, 5, 11); // June 11, 2026
-  if (knownMs >= referenceDayMs) {
-    return new Date(2026, 5, 11);
-  }
-
-  // Fallback: 2nd Thursday of each month
-  const secondThursday = (y: number, m: number): Date => {
-    const first = new Date(Date.UTC(y, m, 1));
-    const offset = (4 - first.getUTCDay() + 7) % 7;
-    return new Date(Date.UTC(y, m, 1 + offset + 7));
-  };
-
-  const candidate = secondThursday(year, month);
-  const isCurrentMonthCandidate = candidate.getUTCMonth() === month;
-  const isUpcomingCandidate = candidate.getUTCDate() >= day;
-  if (isCurrentMonthCandidate && isUpcomingCandidate) {
-    return new Date(candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate());
-  }
-  const nextMonth = month + 1;
-  const result = secondThursday(
     nextMonth > 11 ? year + 1 : year,
     nextMonth % 12,
   );
@@ -394,66 +340,68 @@ function EventSection({ event }: { event: EventType }): ReactNode {
           )}
         </div>
       </div>
-      <div className={styles.sectionHeader}>
-        <Heading as="h2">
-          Agenda - {label}
-        </Heading>
-        {!cancelled && loading && (
-          <span className={styles.loadingBadge}>loading&hellip;</span>
+      <div className={styles.agendaContent}>
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">
+            Agenda - {label}
+          </Heading>
+          {!cancelled && loading && (
+            <span className={styles.loadingBadge}>loading&hellip;</span>
+          )}
+        </div>
+        {cancelled && (
+          <p className={styles.emptyState}>
+            There is no {event.label} call this month. The next session is listed above.
+          </p>
+        )}
+        {!cancelled && empty && (
+          <p className={styles.emptyState}>
+            No agenda has been published yet. Once an agenda file is added it
+            appears here automatically.
+          </p>
+        )}
+        {!cancelled && !empty && (
+          <ul className={styles.agendaList}>
+            {items.map((item, idx) => (
+              <li key={idx} className={styles.agendaListItem}>
+                <span className={`${styles.agendaItemTitle} ${item.featured ? styles.featured : ""}`.trim()}>
+                  {item.title}
+                </span>
+                {item.descriptions && item.descriptions.length > 0 && (
+                  <div className={styles.agendaItemMetaGroup}>
+                    {item.descriptions.map((description, descriptionIdx) => (
+                      <span
+                        key={descriptionIdx}
+                        className={`${styles.agendaItemMeta} ${styles.agendaItemDescription}`}
+                      >
+                        {description}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {item.presenters && item.presenters.length > 0 && (
+                  <div className={styles.agendaItemMetaGroup}>
+                    {item.presenters.map((presenter, presenterIdx) => (
+                      <span key={presenterIdx} className={styles.agendaItemMeta}>
+                        Presenter: {presenter}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {item.bullets && item.bullets.length > 0 && (
+                  <ul className={styles.agendaBulletList}>
+                    {item.bullets.map((bullet, bulletIdx) => (
+                      <li key={bulletIdx} className={styles.agendaBulletItem}>
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
-      {cancelled && (
-        <p className={styles.emptyState}>
-          There is no {event.label} call this month. The next session is listed above.
-        </p>
-      )}
-      {!cancelled && empty && (
-        <p className={styles.emptyState}>
-          No agenda has been published yet. Once an agenda file is added it
-          appears here automatically.
-        </p>
-      )}
-      {!cancelled && !empty && (
-        <ul className={styles.agendaList}>
-          {items.map((item, idx) => (
-            <li key={idx} className={styles.agendaListItem}>
-              <span className={`${styles.agendaItemTitle} ${item.featured ? styles.featured : ""}`.trim()}>
-                {item.title}
-              </span>
-              {item.descriptions && item.descriptions.length > 0 && (
-                <div className={styles.agendaItemMetaGroup}>
-                  {item.descriptions.map((description, descriptionIdx) => (
-                    <span
-                      key={descriptionIdx}
-                      className={`${styles.agendaItemMeta} ${styles.agendaItemDescription}`}
-                    >
-                      {description}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {item.presenters && item.presenters.length > 0 && (
-                <div className={styles.agendaItemMetaGroup}>
-                  {item.presenters.map((presenter, presenterIdx) => (
-                    <span key={presenterIdx} className={styles.agendaItemMeta}>
-                      Presenter: {presenter}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {item.bullets && item.bullets.length > 0 && (
-                <ul className={styles.agendaBulletList}>
-                  {item.bullets.map((bullet, bulletIdx) => (
-                    <li key={bulletIdx} className={styles.agendaBulletItem}>
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
     </section>
   );
 }
@@ -465,6 +413,9 @@ export default function Webinars(): ReactNode {
       description="AKS Community Events: monthly roadmap calls, architecture review hours, deep dives, and Q&A sessions with the Azure Kubernetes Service team"
     >
       <Hero />
+      <p className={styles.heroAnnouncement} role="status">
+        The Kube &amp; Tell call for August 2026 is cancelled. The Community Calls will continue as scheduled below.
+      </p>
       <main className={styles.eventsContainer}>
         {eventTypes.map((evt) => (
           <div
