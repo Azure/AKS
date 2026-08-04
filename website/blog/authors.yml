@@ -579,3 +579,19 @@ hariharan-sethuraman:
   socials:
     linkedin: hariharansethuraman
     github: hasethuraman
+
+reshmi-mangalore:
+  name: Reshmi Mangalore
+  title: Principal Product Manager for Azure Kubernetes Service
+  url: https://github.com/mangalorereshmi
+  image_url: https://github.com/mangalorereshmi.png
+  socials:
+    github: mangalorereshmi
+
+david-kydd:
+  name: David Kydd
+  title: Senior Software Engineer on Azure Kubernetes Service
+  url: https://github.com/davidkydd
+  image_url: https://github.com/davidkydd.png
+  socials:
+    github: davidkydd
