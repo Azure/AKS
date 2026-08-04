@@ -10,7 +10,7 @@ tags:
   - observability
 ---
 
-We're excited to announce that **control plane metrics collection for Azure Kubernetes Service (AKS)**, powered by **Azure Monitor managed service for Prometheus**, is now **generally available**.
+We're excited to announce that **control plane metrics collection for Azure Kubernetes Service (AKS)**, powered by **Azure Monitor managed service for Prometheus**, is now **generally available**. AKS clusters that were previously enabled for control plane metrics during preview are automatically enabled and continue to collect control plane metrics after general availability, so no action is required from existing preview customers.
 
 <!-- truncate -->
 
@@ -21,12 +21,6 @@ AKS manages the control plane on behalf of customers, including patching, high a
 With control plane metrics now generally available, customers can collect this data through Azure Monitor managed service for Prometheus and visualize it in Grafana without deploying or managing additional control plane monitoring infrastructure.
 
 This post explains how to enable control plane metrics collection and highlights **five high-signal metrics** every AKS customer should monitor first.
-
-:::note Upgrading from preview
-
-AKS clusters that were previously enabled for control plane metrics during preview are automatically enabled and continue to collect control plane metrics after general availability. No action is required from existing preview customers.
-
-:::
 
 ## Why start with the API server and etcd?
 
@@ -202,7 +196,7 @@ or
 2. Turn on AKS control plane metrics collection.
 3. Start with API server and etcd metrics.
 4. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
-5. Build a Grafana dashboard using the five queries above, or start from the built-in control plane dashboard available in Azure Managed Grafana.
+5. Build a Grafana dashboard using the five queries above, or start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics.
 
    <!-- TODO(authors): attach the out-of-box control plane dashboard screenshot as ./dashboard.png and reference it here, e.g.:
    ![AKS control plane out-of-box Grafana dashboard](./dashboard.png) -->
