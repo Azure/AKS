@@ -10,7 +10,7 @@
   * AppNet 1.0 ([Istio 1.25](https://istio.io/latest/news/releases/1.25.x/))
   * AppNet 1.1 ([Istio 1.26](https://istio.io/latest/news/releases/1.26.x/))
   * AppNet 1.2 ([Istio 1.27](https://istio.io/latest/news/releases/1.27.x/))
-* AppNet is now available in public preview in additional Azure regions, including East US, Japan East, South India, North Central US, West Central US, South Central US, Sweden Central, Canada Central, and Central India.
+* AppNet is now available in public preview in additional Azure regions, including Central US, East US, East US 2, Japan East, North Central US, North Europe, South India, Southeast Asia, West Central US, West US 2, and West US 3.
 
 ### Features
 
