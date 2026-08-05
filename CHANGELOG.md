@@ -14,8 +14,6 @@
 
 ### Features
 
-* **Single-network multicluster mesh.** Member clusters can now share a single Istio network, so cross-cluster traffic flows directly via pod IPs without requiring an east-west gateway, simplifying multicluster connectivity.
-* **Private cluster support.** AppNet members can now be joined on private AKS clusters; the mesh control plane connects over the cluster's private FQDN when the public FQDN is disabled.
 * **Overlapping CIDR support for private gateways.** A new pod-route init container removes the previous restriction that member and gateway pod CIDRs could not overlap, so private multicluster egress works across clusters with overlapping address space.
 
 ### Behavioral changes
