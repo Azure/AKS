@@ -11,9 +11,6 @@
 #
 name: "Website CodeQL Scan"
 
-paths:
-  - website/**
-
 on:
   push:
     branches: [ "master" ]
