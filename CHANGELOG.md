@@ -6,7 +6,7 @@
 
 ### Announcements and retirements
 
-* The following AppNet (Istio service mesh add-on) versions have been retired and are no longer supported. If using self-managed upgrade mode, upgrade to a currently supported version (see [Component updates](#component-updates)) following the [AppNet upgrade guide](https://learn.microsoft.com/en-us/azure/application-network/upgrades).
+* The following AppNet (Istio service mesh add-on) versions have been retired and are no longer supported. If using self-managed upgrade mode, upgrade to a currently supported version (see [Component updates](#component-updates)) following the [AppNet upgrade guide](https://learn.microsoft.com/en-us/azure/application-network/upgrades#initiate-an-upgrade).
   * AppNet 1.0 ([Istio 1.25](https://istio.io/latest/news/releases/1.25.x/))
   * AppNet 1.1 ([Istio 1.26](https://istio.io/latest/news/releases/1.26.x/))
   * AppNet 1.2 ([Istio 1.27](https://istio.io/latest/news/releases/1.27.x/))
@@ -40,7 +40,7 @@
 * AppNet 1.4 has been updated to [Istio 1.29.4](https://istio.io/latest/news/releases/1.29.x/announcing-1.29.4/).
 * AppNet 1.5 (Istio 1.30) is now available. See [Istio 1.30](https://istio.io/latest/news/releases/1.30.x/announcing-1.30.0/).
 
-===
+---
 
 ## Release Notes - 2026-07-17
 
