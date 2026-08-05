@@ -40,6 +40,28 @@
   color: #fff;
   margin: 0 0 0.5rem;
 }
+.heroAnnouncement {
+  box-sizing: border-box;
+  width: calc(100% - 3rem);
+  margin: 1rem auto 0;
+  padding: 0.55rem 0.85rem;
+  color: var(--ifm-color-primary-darkest);
+  background: rgba(159, 98, 235, 0.12);
+  background: color-mix(in srgb, var(--ifm-color-primary) 12%, var(--ifm-background-surface-color) 88%);
+  border: 1px solid rgba(159, 98, 235, 0.35);
+  border-left: 4px solid var(--ifm-color-primary);
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.4;
+}
+[data-theme="dark"] .heroAnnouncement {
+  color: #eadcff;
+  background: rgba(159, 98, 235, 0.24);
+  border-color: rgba(201, 167, 245, 0.58);
+  border-left-color: #c9a7f5;
+}
 .heroSubtitle {
   font-size: 0.88rem;
   line-height: 1.45;
@@ -59,6 +81,7 @@
 
 @media screen and (max-width: 640px) {
   .heroOverlay { text-align: center; padding: 2rem 0 1.5rem; }
+  .heroAnnouncement { width: calc(100% - 2rem); text-align: center; }
   .heroSubtitle { margin-left: auto; margin-right: auto; }
   .heroButtons { justify-content: center; }
 }
@@ -168,6 +191,11 @@
   margin: 0;
   padding: 0;
 }
+.agendaContent {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 5px;
+  padding: 0.75rem;
+}
 .sectionHeader {
   display: flex;
   align-items: baseline;
@@ -239,6 +267,9 @@
 /* ── Dark-mode tweaks ────────────────────────────────────────────────────── */
 [data-theme="dark"] .eventBlock {
   border-color: var(--ifm-color-emphasis-400);
+}
+[data-theme="dark"] .agendaContent {
+  border-color: var(--ifm-color-emphasis-300);
 }
 [data-theme="dark"] .agendaListItem {
   border-bottom-color: var(--ifm-color-emphasis-300);
