@@ -193,8 +193,10 @@ spec:
               tmp="$(mktemp)"
               patch_corefile "$file" "$tmp"
               if ! cmp -s "$file" "$tmp"; then
-                  # Keep a one-file backup for manual rollback/inspection.
-                  cp "$file" "${file}.pre-localdns-hotfix"
+                  # Keep the first pre-hotfix backup for rollback; never overwrite it on later reconciles.
+                  if [ ! -f "${file}.pre-localdns-hotfix" ]; then
+                      cp "$file" "${file}.pre-localdns-hotfix"
+                  fi
                   # Replace the file content without changing the path.
                   cat "$tmp" > "$file"
                   # Match localdns.sh-created Corefile permissions.
@@ -244,8 +246,10 @@ spec:
                       index($0, prefix) == 1 { $0 = prefix val }
                       { print }
                   ' "$ENV_FILE" > "$env_tmp"
-                  # Keep a backup of the previous environment file.
-                  cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-hotfix"
+                  # Keep the first pre-hotfix environment backup for rollback; never overwrite it on later reconciles.
+                  if [ ! -f "${ENV_FILE}.pre-localdns-hotfix" ]; then
+                      cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-hotfix"
+                  fi
                   # Write the patched environment file atomically enough for this node-local hotfix.
                   cat "$env_tmp" > "$ENV_FILE"
                   # Keep permissions compatible with localdns.service EnvironmentFile usage.
@@ -370,7 +374,9 @@ spec:
               ' "$file" > "$tmp"
 
               if ! cmp -s "$file" "$tmp"; then
-                  cp "$file" "${file}.pre-localdns-hotfix"
+                  if [ ! -f "${file}.pre-localdns-hotfix" ]; then
+                      cp "$file" "${file}.pre-localdns-hotfix"
+                  fi
                   cat "$tmp" > "$file"
                   chmod 0644 "$file"
                   CHANGED=1
