@@ -39,6 +39,9 @@ spec:
         # identified by bind 169.254.10.10.
         - name: ADD_VNET_FAILFAST
           value: "true"
+        # Keep reconciling so a later localdns restart/regeneration cannot revert the hotfix.
+        - name: RECONCILE_INTERVAL_SECONDS
+          value: "60"
         command:
         - nsenter
         - --target
@@ -267,21 +270,27 @@ spec:
               rm -f "$template_list"
           }
 
-          patch_template_files
-          patch_env_corefile_var LOCALDNS_COREFILE_BASE
-          patch_env_corefile_var LOCALDNS_COREFILE_WITH_HOSTS
-          patch_env_corefile_var LOCALDNS_BASE64_ENCODED_COREFILE
-          patch_file_if_present "$LOCALDNS_CORE_FILE"
-          patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
+          reconcile_once() {
+              CHANGED=0
+              patch_template_files
+              patch_env_corefile_var LOCALDNS_COREFILE_BASE
+              patch_env_corefile_var LOCALDNS_COREFILE_WITH_HOSTS
+              patch_env_corefile_var LOCALDNS_BASE64_ENCODED_COREFILE
+              patch_file_if_present "$LOCALDNS_CORE_FILE"
+              patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
-          if [ "$CHANGED" -eq 1 ]; then
-              echo "Restarting localdns so CoreDNS reads the patched updated.localdns.corefile"
-              systemctl restart localdns
-          else
-              echo "LocalDNS Corefile already contains requested directives"
-          fi
+              if [ "$CHANGED" -eq 1 ]; then
+                  echo "Restarting localdns so CoreDNS reads the patched updated.localdns.corefile"
+                  systemctl restart localdns
+              else
+                  echo "LocalDNS Corefile already contains requested directives"
+              fi
+          }
 
-          while true; do sleep 86400; done
+          while true; do
+              reconcile_once
+              sleep "${RECONCILE_INTERVAL_SECONDS:-60}"
+          done
         resources:
           requests:
             cpu: 10m
