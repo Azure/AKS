@@ -1,5 +1,45 @@
 # Azure Kubernetes Service Changelog
 
+## AppNet Release Notes - 2026-08-05
+
+> Azure Kubernetes Application Network (AppNet) — initial release notes covering changes since March 2026. AppNet is in public preview.
+
+### Announcements and retirements
+
+* The following AppNet (Istio service mesh add-on) versions have been retired and are no longer supported. If using self-managed upgrade mode, upgrade to a currently supported version (see [Component updates](#component-updates)) following the [AppNet upgrade guide](https://learn.microsoft.com/en-us/azure/application-network/upgrades#initiate-an-upgrade).
+  * AppNet 1.0 ([Istio 1.25](https://istio.io/latest/news/releases/1.25.x/))
+  * AppNet 1.1 ([Istio 1.26](https://istio.io/latest/news/releases/1.26.x/))
+  * AppNet 1.2 ([Istio 1.27](https://istio.io/latest/news/releases/1.27.x/))
+* AppNet is now available in public preview in additional Azure regions, including Central US, East US, East US 2, Japan East, North Central US, North Europe, South India, Southeast Asia, West Central US, West US 2, and West US 3.
+
+### Features
+
+* **Overlapping CIDR support for private gateways.** A new pod-route init container removes the previous restriction that member and gateway pod CIDRs could not overlap, so private multicluster egress works across clusters with overlapping address space.
+
+### Behavioral changes
+
+* Deleting an AppNet resource now cascade-deletes its child members instead of failing when members still exist, so cleanup no longer requires manually removing members first.
+* AppNet now validates cluster prerequisites at member-join time and returns a clear, actionable error when a cluster is missing a required add-on (Microsoft Entra / AAD or the Gateway API add-on) or is running an AKS Kubernetes version below the minimum supported version, instead of failing opaquely later.
+* Clusters using the AKS managed Gateway API add-on no longer hit a CRD ownership conflict when joining a mesh; AppNet defers to the add-on-provided Gateway API CRDs.
+* Moving AppNet resources across resource groups or subscriptions is now blocked, as these move operations are not supported for AppNet.
+
+### Bug fixes
+
+* Fixed an issue where `istiod` could fail to start after an intermediate certificate authority rotation, which could disrupt the entire mesh. Certificate rotation is now handled reliably.
+* Fixed multicluster east-west gateways missing a required network label, which caused `istiod` to silently skip cross-cluster endpoints so cross-cluster traffic did not flow.
+* Fixed member clusters using Microsoft Entra (managed identity) authentication being rejected on update (HTTP 400), which had blocked member updates and version upgrades.
+* Fixed leftover mesh resources (Helm releases and overlay configuration) being orphaned on a member cluster after it left the mesh; these are now cleaned up.
+* Fixed member deletion being stuck in a retry loop when the underlying infrastructure had already been removed; already-deleted resources are now treated as success.
+* Fixed empty mesh control-plane (`istiod`) diagnostic logs in customer Log Analytics workspaces caused by an incorrect resource-ID annotation.
+
+### Component updates
+
+* AppNet 1.3 has been updated to [Istio 1.28.8](https://istio.io/latest/news/releases/1.28.x/announcing-1.28.8/).
+* AppNet 1.4 has been updated to [Istio 1.29.4](https://istio.io/latest/news/releases/1.29.x/announcing-1.29.4/).
+* AppNet 1.5 (Istio 1.30) is now available. See [Istio 1.30](https://istio.io/latest/news/releases/1.30.x/announcing-1.30.0/).
+
+---
+
 ## Release Notes - 2026-07-17
 
 > Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20260717`.
