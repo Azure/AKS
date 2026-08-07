@@ -280,8 +280,7 @@ spec:
               patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
               if [ "$CHANGED" -eq 1 ]; then
-                  echo "Restarting localdns so CoreDNS reads the patched updated.localdns.corefile"
-                  systemctl restart localdns
+                  echo "Patched LocalDNS files; not restarting localdns"
               else
                   echo "LocalDNS Corefile already contains requested directives"
               fi
