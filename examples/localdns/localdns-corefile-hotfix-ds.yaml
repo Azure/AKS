@@ -108,6 +108,7 @@ spec:
                   server_index++
                   is_vnetdns_server = 0
                   has_reload = 0
+                  server_is_cluster_local = ($1 ~ /(^|\.)cluster[.]local:53$/)
               }
               # Remember if the top-level reload plugin already exists in the first server block.
               in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
@@ -127,6 +128,7 @@ spec:
                   has_force_tcp = 0
                   has_failfast = 0
                   has_health_check = 0
+                  forward_is_external = !server_is_cluster_local
                   print
                   next
               }
@@ -140,6 +142,10 @@ spec:
                   }
                   if ($0 ~ /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/) {
                       has_failfast = 1
+                      if (forward_is_external && !has_force_tcp) {
+                          print
+                      }
+                      next
                   }
                   if ($0 ~ /^[[:space:]]*health_check([[:space:]]|$)/) {
                       has_health_check = 1
@@ -153,7 +159,7 @@ spec:
                       if (add_health == "true" && forward_is_vnetdns && !has_health_check && !has_force_tcp) {
                           print indent "health_check " health_interval
                       }
-                      if (add_failfast == "true" && forward_is_vnetdns && !has_failfast) {
+                      if (add_failfast == "true" && forward_is_external && !has_failfast && !has_force_tcp) {
                           print indent "failfast_all_unhealthy_upstreams"
                       }
                       in_forward = 0
@@ -169,6 +175,7 @@ spec:
                   in_server = 0
                   is_vnetdns_server = 0
                   has_reload = 0
+                  server_is_cluster_local = 0
               }
               # Print all non-special lines unchanged.
               { print }
@@ -270,9 +277,6 @@ spec:
               if grep -q 'health_check 5s' "$file"; then
                   add_health_template="false"
               fi
-              if grep -q 'failfast_all_unhealthy_upstreams' "$file"; then
-                  add_failfast_template="false"
-              fi
               if [ "$add_prefer_template" != "true" ] && [ "$add_health_template" != "true" ] && [ "$add_failfast_template" != "true" ] && [ "$add_reload_template" != "true" ]; then
                   echo "No change needed for template $file"
                   return 0
@@ -313,6 +317,10 @@ spec:
               in_forward && /if eq \$override.Protocol "ForceTCP"/ {
                   in_force_tcp_condition = 1
               }
+              # Drop any older unguarded failfast inserted by a previous hotfix version.
+              in_forward && /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/ {
+                  next
+              }
               # Add reload before the first server block closes.
               /^}[[:space:]]*$/ && in_server && !in_forward {
                   if (add_reload == "true" && server_index == 1 && !has_reload) {
@@ -332,9 +340,12 @@ spec:
                       print indent "health_check " health_interval
                       print indent "{{- end}}"
                   }
-                  if (in_forward && add_failfast == "true" && forward_section == "vnet" && /^[[:space:]]*policy[[:space:]]/) {
+                  if (in_forward && add_failfast == "true" && /^[[:space:]]*policy[[:space:]]/) {
                       match($0, /^[[:space:]]*/)
-                      print substr($0, RSTART, RLENGTH) "failfast_all_unhealthy_upstreams"
+                      indent = substr($0, RSTART, RLENGTH)
+                      print indent "{{- if not $fwdToClusterCoreDNS}}"
+                      print indent "failfast_all_unhealthy_upstreams"
+                      print indent "{{- end}}"
                   }
                   print
               }

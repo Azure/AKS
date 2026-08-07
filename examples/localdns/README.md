@@ -112,7 +112,7 @@ health_check 5s
 {{- end}}
 ```
 
-`failfast_all_unhealthy_upstreams` is added to VnetDNS forward blocks.
+`failfast_all_unhealthy_upstreams` is added to external/upstream DNS forward blocks in both VnetDNS and KubeDNS paths. It is intentionally not added to `cluster.local` / CoreDNS-forwarded blocks.
 
 ## Restart behavior
 
