@@ -18,7 +18,7 @@ AgentBaker service template
   -> node writes /etc/localdns/environment
   -> localdns restart decodes env into localdns.corefile
   -> localdns.sh copies/updates it into updated.localdns.corefile
-  -> CoreDNS starts with updated.localdns.corefile
+  -> LocalDNS (the CoreDNS binary run by the node's localdns systemd unit) starts with updated.localdns.corefile
 ```
 
 Because existing nodes do not call the underlay AgentBaker service again when
@@ -55,7 +55,8 @@ These are the materialized Corefile files on the node:
 
 `localdns.corefile` is the decoded base Corefile.
 
-`updated.localdns.corefile` is the file passed to CoreDNS:
+`updated.localdns.corefile` is the file passed to LocalDNS, which is the
+CoreDNS binary run by the node's `localdns` systemd unit:
 
 ```text
 coredns -conf /opt/azure/containers/localdns/updated.localdns.corefile
