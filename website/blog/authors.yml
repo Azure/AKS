@@ -473,6 +473,15 @@ johnson-shi:
     linkedin: johnsonshi
     github: johnsonshi
 
+ashna-mehrotra:
+  name: Ashna Mehrotra
+  title: Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/ashna-mehrotra/
+  image_url: https://github.com/ashnamehrotra.png
+  socials:
+    linkedin: ashna-mehrotra
+    github: ashnamehrotra
+
 devi-vasudevan:
   name: Devi Vasudevan
   title: Principal Engineering Manager for Azure Upstream
