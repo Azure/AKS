@@ -1,0 +1,292 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: localdns-corefile-hotfix
+  namespace: kube-system
+  labels:
+    app: localdns-corefile-hotfix
+spec:
+  selector:
+    matchLabels:
+      app: localdns-corefile-hotfix
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: localdns-corefile-hotfix
+    spec:
+      hostPID: true
+      # Uncomment to target one node pool first.
+      # nodeSelector:
+      #   agentpool: default
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
+      containers:
+      - name: localdns-corefile-hotfix
+        image: alpine:3.20
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        # Set this to "false" if this cluster did not request LocalDNS PreferUDP.
+        - name: ADD_PREFER_UDP
+          value: "true"
+        # Adds failfast_all_unhealthy_upstreams only to VnetDNS override forward blocks
+        # identified by bind 169.254.10.10.
+        - name: ADD_VNET_FAILFAST
+          value: "true"
+        command:
+        - nsenter
+        - --target
+        - "1"
+        - --mount
+        - --uts
+        - --ipc
+        - --net
+        - --pid
+        - --
+        - sh
+        - -c
+        - |
+          set -eu
+
+          ENV_FILE="/etc/localdns/environment"
+          LOCALDNS_DIR="/opt/azure/containers/localdns"
+          LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
+          UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
+          LOCALDNS_TEMPLATE_FILE="${LOCALDNS_DIR}/localdns.toml.gtpl"
+          VNETDNS_BIND_IP="169.254.10.10"
+          CHANGED=0
+
+          patch_corefile() {
+              in="$1"
+              out="$2"
+              awk -v add_prefer="${ADD_PREFER_UDP:-true}" \
+                  -v add_failfast="${ADD_VNET_FAILFAST:-true}" \
+                  -v vnet_bind_ip="${VNETDNS_BIND_IP}" '
+              function directive_indent(line) {
+                  match(line, /^[[:space:]]*/)
+                  return substr(line, RSTART, RLENGTH) "    "
+              }
+              /^[^[:space:]#].*:53[[:space:]]*\{/ {
+                  in_server = 1
+                  is_vnetdns_server = 0
+              }
+              in_server && /^[[:space:]]*bind([[:space:]]|$)/ {
+                  if (index($0, vnet_bind_ip) > 0) {
+                      is_vnetdns_server = 1
+                  }
+              }
+              /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
+                  in_forward = 1
+                  forward_is_vnetdns = is_vnetdns_server
+                  has_prefer_udp = 0
+                  has_force_tcp = 0
+                  has_failfast = 0
+                  print
+                  next
+              }
+              in_forward {
+                  if ($0 ~ /^[[:space:]]*prefer_udp([[:space:]]|$)/) {
+                      has_prefer_udp = 1
+                  }
+                  if ($0 ~ /^[[:space:]]*force_tcp([[:space:]]|$)/) {
+                      has_force_tcp = 1
+                  }
+                  if ($0 ~ /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/) {
+                      has_failfast = 1
+                  }
+                  if ($0 ~ /^[[:space:]]*}[[:space:]]*$/) {
+                      indent = directive_indent($0)
+                      if (add_prefer == "true" && !has_prefer_udp && !has_force_tcp) {
+                          print indent "prefer_udp"
+                      }
+                      if (add_failfast == "true" && forward_is_vnetdns && !has_failfast) {
+                          print indent "failfast_all_unhealthy_upstreams"
+                      }
+                      in_forward = 0
+                  }
+                  print
+                  next
+              }
+              /^}[[:space:]]*$/ && in_server {
+                  in_server = 0
+                  is_vnetdns_server = 0
+              }
+              { print }
+              ' "$in" > "$out"
+          }
+
+          patch_file_if_present() {
+              file="$1"
+              [ -s "$file" ] || return 0
+
+              tmp="$(mktemp)"
+              patch_corefile "$file" "$tmp"
+              if ! cmp -s "$file" "$tmp"; then
+                  cp "$file" "${file}.pre-localdns-hotfix"
+                  cat "$tmp" > "$file"
+                  chmod 0644 "$file"
+                  CHANGED=1
+                  echo "Patched $file"
+              else
+                  echo "No change needed for $file"
+              fi
+              rm -f "$tmp"
+          }
+
+          patch_env_corefile_var() {
+              var="$1"
+              [ -s "$ENV_FILE" ] || return 0
+              grep -q "^${var}=" "$ENV_FILE" || return 0
+
+              encoded="$(sed -n "s/^${var}=//p" "$ENV_FILE" | tail -n 1)"
+              encoded="${encoded%\"}"
+              encoded="${encoded#\"}"
+              encoded="${encoded%\'}"
+              encoded="${encoded#\'}"
+
+              decoded="$(mktemp)"
+              patched="$(mktemp)"
+              if ! printf "%s" "$encoded" | base64 -d > "$decoded" 2>/dev/null; then
+                  echo "Skipping $var because it is not valid base64"
+                  rm -f "$decoded" "$patched"
+                  return 0
+              fi
+
+              patch_corefile "$decoded" "$patched"
+              if ! cmp -s "$decoded" "$patched"; then
+                  new_encoded="$(base64 "$patched" | tr -d "\n")"
+                  env_tmp="$(mktemp)"
+                  awk -v var="$var" -v val="$new_encoded" '
+                      BEGIN { prefix = var "=" }
+                      index($0, prefix) == 1 { $0 = prefix val }
+                      { print }
+                  ' "$ENV_FILE" > "$env_tmp"
+                  cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-hotfix"
+                  cat "$env_tmp" > "$ENV_FILE"
+                  chmod 0644 "$ENV_FILE"
+                  rm -f "$env_tmp"
+                  CHANGED=1
+                  echo "Patched $ENV_FILE:$var"
+              else
+                  echo "No change needed for $ENV_FILE:$var"
+              fi
+              rm -f "$decoded" "$patched"
+          }
+
+          patch_template_file_if_present() {
+              file="$1"
+              [ -s "$file" ] || return 0
+
+              add_prefer_template="${ADD_PREFER_UDP:-true}"
+              add_failfast_template="${ADD_VNET_FAILFAST:-true}"
+              if grep -q 'Protocol "PreferUDP"' "$file"; then
+                  add_prefer_template="false"
+              fi
+              if grep -q 'failfast_all_unhealthy_upstreams' "$file"; then
+                  add_failfast_template="false"
+              fi
+              if [ "$add_prefer_template" != "true" ] && [ "$add_failfast_template" != "true" ]; then
+                  echo "No change needed for template $file"
+                  return 0
+              fi
+
+              tmp="$(mktemp)"
+              awk -v add_prefer="$add_prefer_template" \
+                  -v add_failfast="$add_failfast_template" '
+              /# VnetDNS overrides/ {
+                  section = "vnet"
+              }
+              /# KubeDNS overrides/ {
+                  section = "kube"
+              }
+              /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
+                  in_forward = 1
+                  forward_section = section
+                  in_force_tcp_condition = 0
+              }
+              in_forward && /if eq \$override.Protocol "ForceTCP"/ {
+                  in_force_tcp_condition = 1
+              }
+              {
+                  if (in_forward && add_failfast == "true" && forward_section == "vnet" && /^[[:space:]]*policy[[:space:]]/) {
+                      match($0, /^[[:space:]]*/)
+                      print substr($0, RSTART, RLENGTH) "failfast_all_unhealthy_upstreams"
+                  }
+                  print
+              }
+              in_forward && in_force_tcp_condition && /\{\{- end\}\}/ {
+                  if (add_prefer == "true") {
+                      match($0, /^[[:space:]]*/)
+                      indent = substr($0, RSTART, RLENGTH)
+                      print indent "{{- if eq $override.Protocol \"PreferUDP\"}}"
+                      print indent "prefer_udp"
+                      print indent "{{- end}}"
+                  }
+                  in_force_tcp_condition = 0
+                  next
+              }
+              in_forward && /^[[:space:]]*}[[:space:]]*$/ {
+                  in_forward = 0
+                  forward_section = ""
+                  in_force_tcp_condition = 0
+              }
+              ' "$file" > "$tmp"
+
+              if ! cmp -s "$file" "$tmp"; then
+                  cp "$file" "${file}.pre-localdns-hotfix"
+                  cat "$tmp" > "$file"
+                  chmod 0644 "$file"
+                  CHANGED=1
+                  echo "Patched template $file"
+              else
+                  echo "No change needed for template $file"
+              fi
+              rm -f "$tmp"
+          }
+
+          patch_template_files() {
+              patch_template_file_if_present "$LOCALDNS_TEMPLATE_FILE"
+
+              # Some images or hotfix workflows keep the LocalDNS generation template
+              # outside LOCALDNS_DIR. Patch those sources too when present so future
+              # regenerated localdns.corefile content keeps the same directives.
+              template_list="$(mktemp)"
+              find /opt/azure/containers /etc/localdns -maxdepth 6 -type f \
+                  \( -name 'localdns.toml.gtpl' -o -name '*localdns*.gtpl' -o -name '*localdns*.tmpl' -o -name '*localdns*.template' \) \
+                  2>/dev/null > "$template_list" || true
+              while IFS= read -r template_file; do
+                      [ "$template_file" = "$LOCALDNS_TEMPLATE_FILE" ] && continue
+                      patch_template_file_if_present "$template_file"
+              done < "$template_list"
+              rm -f "$template_list"
+          }
+
+          patch_template_files
+          patch_env_corefile_var LOCALDNS_COREFILE_BASE
+          patch_env_corefile_var LOCALDNS_COREFILE_WITH_HOSTS
+          patch_env_corefile_var LOCALDNS_BASE64_ENCODED_COREFILE
+          patch_file_if_present "$LOCALDNS_CORE_FILE"
+          patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
+
+          if [ "$CHANGED" -eq 1 ]; then
+              echo "Restarting localdns so CoreDNS reads the patched updated.localdns.corefile"
+              systemctl restart localdns
+          else
+              echo "LocalDNS Corefile already contains requested directives"
+          fi
+
+          while true; do sleep 86400; done
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
