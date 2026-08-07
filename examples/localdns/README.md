@@ -62,8 +62,10 @@ CoreDNS binary run by the node's `localdns` systemd unit:
 coredns -conf /opt/azure/containers/localdns/updated.localdns.corefile
 ```
 
-The DaemonSet patches these files so the node-local files are correct
-immediately and so the next CoreDNS start uses the fixed content.
+The DaemonSet patches these files so the node-local files on disk are correct
+immediately and so the next LocalDNS/CoreDNS start uses the fixed content. This
+does not by itself guarantee that an already-running CoreDNS process has loaded
+the new content; see [Restart behavior](#restart-behavior).
 
 ### 3. Node-local template files, if present
 
@@ -99,8 +101,10 @@ future Corefile changes.
 `prefer_udp` is added to forward plugin blocks unless `force_tcp` is already
 configured.
 
-`health_check 5s` is added to VnetDNS external forward blocks. Template patching
-guards this with:
+`health_check 5s` is added to VnetDNS external forward blocks. For already
+rendered Corefiles, the DaemonSet approximates this by adding `health_check 5s`
+only to VnetDNS forward blocks that do not have `force_tcp`. For template files,
+the DaemonSet can use the template variable and guards this with:
 
 ```gotemplate
 {{- if not $fwdToClusterCoreDNS}}
