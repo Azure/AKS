@@ -39,6 +39,11 @@ spec:
         # identified by bind 169.254.10.10.
         - name: ADD_VNET_FAILFAST
           value: "true"
+        # Adds forward-plugin health checks to VnetDNS external forward blocks.
+        - name: ADD_VNET_HEALTH_CHECK
+          value: "true"
+        - name: VNET_HEALTH_CHECK_INTERVAL
+          value: "5s"
         # Adds the CoreDNS reload plugin so edits to updated.localdns.corefile are picked up.
         - name: ADD_RELOAD_PLUGIN
           value: "true"
@@ -60,51 +65,72 @@ spec:
         - sh
         - -c
         - |
+          # Exit on unset variables and failed commands so partial patches do not look successful.
           set -eu
 
+          # localdns.service reads persisted Corefile payloads from this environment file.
           ENV_FILE="/etc/localdns/environment"
+          # AgentBaker installs the LocalDNS CoreDNS binary, script, and Corefiles under this directory.
           LOCALDNS_DIR="/opt/azure/containers/localdns"
+          # localdns.sh regenerates this base Corefile from /etc/localdns/environment on startup.
           LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
+          # localdns.sh starts CoreDNS with this post-processed Corefile.
           UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
+          # Some images/hotfix flows may also keep the LocalDNS generation template on the node.
           LOCALDNS_TEMPLATE_FILE="${LOCALDNS_DIR}/localdns.toml.gtpl"
+          # VnetDNS server blocks bind to the node-local listener IP.
           VNETDNS_BIND_IP="169.254.10.10"
+          # Reconcile functions set this when they mutate any file.
           CHANGED=0
 
+          # Patch a rendered CoreDNS Corefile.
           patch_corefile() {
+              # Input Corefile path.
               in="$1"
+              # Output path for the patched Corefile.
               out="$2"
+              # Use awk to track server blocks and forward plugin blocks without requiring extra packages.
               awk -v add_prefer="${ADD_PREFER_UDP:-true}" \
                   -v add_failfast="${ADD_VNET_FAILFAST:-true}" \
+                  -v add_health="${ADD_VNET_HEALTH_CHECK:-true}" \
+                  -v health_interval="${VNET_HEALTH_CHECK_INTERVAL:-5s}" \
                   -v add_reload="${ADD_RELOAD_PLUGIN:-true}" \
                   -v reload_interval="${COREDNS_RELOAD_INTERVAL:-10s}" \
                   -v vnet_bind_ip="${VNETDNS_BIND_IP}" '
+              # Return the directive indentation used inside a plugin block.
               function directive_indent(line) {
                   match(line, /^[[:space:]]*/)
                   return substr(line, RSTART, RLENGTH) "    "
               }
+              # Detect a new CoreDNS server block, such as ".:53 {".
               /^[^[:space:]#].*:53[[:space:]]*\{/ {
                   in_server = 1
                   server_index++
                   is_vnetdns_server = 0
                   has_reload = 0
               }
+              # Remember if the top-level reload plugin already exists in the first server block.
               in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
                   has_reload = 1
               }
+              # Mark this server block as VnetDNS when it binds to the node-local listener.
               in_server && /^[[:space:]]*bind([[:space:]]|$)/ {
                   if (index($0, vnet_bind_ip) > 0) {
                       is_vnetdns_server = 1
                   }
               }
+              # Enter a forward plugin block.
               /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
                   in_forward = 1
                   forward_is_vnetdns = is_vnetdns_server
                   has_prefer_udp = 0
                   has_force_tcp = 0
                   has_failfast = 0
+                  has_health_check = 0
                   print
                   next
               }
+              # Track existing directives inside the forward plugin block.
               in_forward {
                   if ($0 ~ /^[[:space:]]*prefer_udp([[:space:]]|$)/) {
                       has_prefer_udp = 1
@@ -115,10 +141,17 @@ spec:
                   if ($0 ~ /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/) {
                       has_failfast = 1
                   }
+                  if ($0 ~ /^[[:space:]]*health_check([[:space:]]|$)/) {
+                      has_health_check = 1
+                  }
+                  # Before closing a forward block, add missing hotfix directives.
                   if ($0 ~ /^[[:space:]]*}[[:space:]]*$/) {
                       indent = directive_indent($0)
                       if (add_prefer == "true" && !has_prefer_udp && !has_force_tcp) {
                           print indent "prefer_udp"
+                      }
+                      if (add_health == "true" && forward_is_vnetdns && !has_health_check && !has_force_tcp) {
+                          print indent "health_check " health_interval
                       }
                       if (add_failfast == "true" && forward_is_vnetdns && !has_failfast) {
                           print indent "failfast_all_unhealthy_upstreams"
@@ -128,6 +161,7 @@ spec:
                   print
                   next
               }
+              # Before closing the first server block, add the CoreDNS reload plugin if missing.
               /^}[[:space:]]*$/ && in_server {
                   if (add_reload == "true" && server_index == 1 && !has_reload) {
                       print "    reload " reload_interval
@@ -136,20 +170,29 @@ spec:
                   is_vnetdns_server = 0
                   has_reload = 0
               }
+              # Print all non-special lines unchanged.
               { print }
               ' "$in" > "$out"
           }
 
+          # Patch a regular file if it exists and the transformed output differs.
           patch_file_if_present() {
+              # File to patch.
               file="$1"
+              # Missing files are expected on non-LocalDNS pools.
               [ -s "$file" ] || return 0
 
+              # Write to a temporary file first so comparison and replacement are safe.
               tmp="$(mktemp)"
               patch_corefile "$file" "$tmp"
               if ! cmp -s "$file" "$tmp"; then
+                  # Keep a one-file backup for manual rollback/inspection.
                   cp "$file" "${file}.pre-localdns-hotfix"
+                  # Replace the file content without changing the path.
                   cat "$tmp" > "$file"
+                  # Match localdns.sh-created Corefile permissions.
                   chmod 0644 "$file"
+                  # Tell the caller that this reconcile pass changed node state.
                   CHANGED=1
                   echo "Patched $file"
               else
@@ -158,17 +201,23 @@ spec:
               rm -f "$tmp"
           }
 
+          # Patch a base64-encoded Corefile variable inside /etc/localdns/environment.
           patch_env_corefile_var() {
+              # Environment variable name to patch.
               var="$1"
+              # Non-LocalDNS nodes may not have an environment file.
               [ -s "$ENV_FILE" ] || return 0
+              # Older/newer images may not contain every compatibility variable.
               grep -q "^${var}=" "$ENV_FILE" || return 0
 
+              # Extract and unquote the base64 value.
               encoded="$(sed -n "s/^${var}=//p" "$ENV_FILE" | tail -n 1)"
               encoded="${encoded%\"}"
               encoded="${encoded#\"}"
               encoded="${encoded%\'}"
               encoded="${encoded#\'}"
 
+              # Decode the Corefile payload, then patch the decoded Corefile text.
               decoded="$(mktemp)"
               patched="$(mktemp)"
               if ! printf "%s" "$encoded" | base64 -d > "$decoded" 2>/dev/null; then
@@ -179,15 +228,20 @@ spec:
 
               patch_corefile "$decoded" "$patched"
               if ! cmp -s "$decoded" "$patched"; then
+                  # Re-encode the patched Corefile as a single-line base64 value.
                   new_encoded="$(base64 "$patched" | tr -d "\n")"
                   env_tmp="$(mktemp)"
+                  # Replace only the requested variable, preserving the rest of the environment file.
                   awk -v var="$var" -v val="$new_encoded" '
                       BEGIN { prefix = var "=" }
                       index($0, prefix) == 1 { $0 = prefix val }
                       { print }
                   ' "$ENV_FILE" > "$env_tmp"
+                  # Keep a backup of the previous environment file.
                   cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-hotfix"
+                  # Write the patched environment file atomically enough for this node-local hotfix.
                   cat "$env_tmp" > "$ENV_FILE"
+                  # Keep permissions compatible with localdns.service EnvironmentFile usage.
                   chmod 0644 "$ENV_FILE"
                   rm -f "$env_tmp"
                   CHANGED=1
@@ -198,51 +252,68 @@ spec:
               rm -f "$decoded" "$patched"
           }
 
+          # Patch a LocalDNS Corefile template if one exists on the node.
           patch_template_file_if_present() {
+              # Template path to patch.
               file="$1"
+              # Missing template files are expected on many nodes because the env payloads are the runtime source.
               [ -s "$file" ] || return 0
 
+              # Determine which template insertions are still needed.
               add_prefer_template="${ADD_PREFER_UDP:-true}"
               add_failfast_template="${ADD_VNET_FAILFAST:-true}"
+              add_health_template="${ADD_VNET_HEALTH_CHECK:-true}"
               add_reload_template="${ADD_RELOAD_PLUGIN:-true}"
               if grep -q 'Protocol "PreferUDP"' "$file"; then
                   add_prefer_template="false"
               fi
+              if grep -q 'health_check 5s' "$file"; then
+                  add_health_template="false"
+              fi
               if grep -q 'failfast_all_unhealthy_upstreams' "$file"; then
                   add_failfast_template="false"
               fi
-              if [ "$add_prefer_template" != "true" ] && [ "$add_failfast_template" != "true" ] && [ "$add_reload_template" != "true" ]; then
+              if [ "$add_prefer_template" != "true" ] && [ "$add_health_template" != "true" ] && [ "$add_failfast_template" != "true" ] && [ "$add_reload_template" != "true" ]; then
                   echo "No change needed for template $file"
                   return 0
               fi
 
+              # Patch template text into a temporary file first.
               tmp="$(mktemp)"
               awk -v add_prefer="$add_prefer_template" \
                   -v add_failfast="$add_failfast_template" \
+                  -v add_health="$add_health_template" \
+                  -v health_interval="${VNET_HEALTH_CHECK_INTERVAL:-5s}" \
                   -v add_reload="$add_reload_template" \
                   -v reload_interval="${COREDNS_RELOAD_INTERVAL:-10s}" '
+              # Track whether we are patching the VnetDNS or KubeDNS template range.
               /# VnetDNS overrides/ {
                   section = "vnet"
               }
               /# KubeDNS overrides/ {
                   section = "kube"
               }
+              # Track server blocks so reload can be inserted once at top level.
               /^[^[:space:]#].*:53[[:space:]]*\{/ {
                   in_server = 1
                   server_index++
                   has_reload = 0
               }
+              # Detect an existing top-level reload plugin in the first server block.
               in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
                   has_reload = 1
               }
+              # Enter a forward plugin block in the template.
               /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
                   in_forward = 1
                   forward_section = section
                   in_force_tcp_condition = 0
               }
+              # Remember when the template has just emitted the ForceTCP conditional.
               in_forward && /if eq \$override.Protocol "ForceTCP"/ {
                   in_force_tcp_condition = 1
               }
+              # Add reload before the first server block closes.
               /^}[[:space:]]*$/ && in_server && !in_forward {
                   if (add_reload == "true" && server_index == 1 && !has_reload) {
                       print "    reload " reload_interval
@@ -252,13 +323,22 @@ spec:
                   has_reload = 0
                   next
               }
+              # Print each line, inserting VnetDNS forward options before policy.
               {
+                  if (in_forward && add_health == "true" && forward_section == "vnet" && /^[[:space:]]*policy[[:space:]]/) {
+                      match($0, /^[[:space:]]*/)
+                      indent = substr($0, RSTART, RLENGTH)
+                      print indent "{{- if not $fwdToClusterCoreDNS}}"
+                      print indent "health_check " health_interval
+                      print indent "{{- end}}"
+                  }
                   if (in_forward && add_failfast == "true" && forward_section == "vnet" && /^[[:space:]]*policy[[:space:]]/) {
                       match($0, /^[[:space:]]*/)
                       print substr($0, RSTART, RLENGTH) "failfast_all_unhealthy_upstreams"
                   }
                   print
               }
+              # Add the PreferUDP template conditional after the ForceTCP conditional.
               in_forward && in_force_tcp_condition && /\{\{- end\}\}/ {
                   if (add_prefer == "true") {
                       match($0, /^[[:space:]]*/)
@@ -270,6 +350,7 @@ spec:
                   in_force_tcp_condition = 0
                   next
               }
+              # Leave the forward plugin block.
               in_forward && /^[[:space:]]*}[[:space:]]*$/ {
                   in_forward = 0
                   forward_section = ""
@@ -289,32 +370,42 @@ spec:
               rm -f "$tmp"
           }
 
+          # Patch all LocalDNS templates that may exist on a node.
           patch_template_files() {
+              # Try the expected template path first.
               patch_template_file_if_present "$LOCALDNS_TEMPLATE_FILE"
 
               # Some images or hotfix workflows keep the LocalDNS generation template
               # outside LOCALDNS_DIR. Patch those sources too when present so future
               # regenerated localdns.corefile content keeps the same directives.
+              # Store find results in a temp file to avoid losing CHANGED updates in a pipeline subshell.
               template_list="$(mktemp)"
               find /opt/azure/containers /etc/localdns -maxdepth 6 -type f \
                   \( -name 'localdns.toml.gtpl' -o -name '*localdns*.gtpl' -o -name '*localdns*.tmpl' -o -name '*localdns*.template' \) \
                   2>/dev/null > "$template_list" || true
               while IFS= read -r template_file; do
+                      # Skip the path that was already patched explicitly.
                       [ "$template_file" = "$LOCALDNS_TEMPLATE_FILE" ] && continue
                       patch_template_file_if_present "$template_file"
               done < "$template_list"
               rm -f "$template_list"
           }
 
+          # Run one idempotent reconciliation pass.
           reconcile_once() {
+              # Reset the change flag for this pass.
               CHANGED=0
+              # Patch any template files before patching rendered/persisted Corefiles.
               patch_template_files
+              # Patch persisted Corefile payloads used by localdns.sh on service start.
               patch_env_corefile_var LOCALDNS_COREFILE_BASE
               patch_env_corefile_var LOCALDNS_COREFILE_WITH_HOSTS
               patch_env_corefile_var LOCALDNS_BASE64_ENCODED_COREFILE
+              # Patch currently materialized Corefile files as well.
               patch_file_if_present "$LOCALDNS_CORE_FILE"
               patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
+              # Report whether this pass changed files; intentionally do not restart localdns.
               if [ "$CHANGED" -eq 1 ]; then
                   echo "Patched LocalDNS files; not restarting localdns"
               else
@@ -322,6 +413,7 @@ spec:
               fi
           }
 
+          # Keep the DaemonSet alive and continue healing files after node lifecycle events.
           while true; do
               reconcile_once
               sleep "${RECONCILE_INTERVAL_SECONDS:-60}"
