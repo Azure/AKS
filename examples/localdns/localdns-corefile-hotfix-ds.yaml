@@ -39,6 +39,11 @@ spec:
         # identified by bind 169.254.10.10.
         - name: ADD_VNET_FAILFAST
           value: "true"
+        # Adds the CoreDNS reload plugin so edits to updated.localdns.corefile are picked up.
+        - name: ADD_RELOAD_PLUGIN
+          value: "true"
+        - name: COREDNS_RELOAD_INTERVAL
+          value: "10s"
         # Keep reconciling so a later localdns restart/regeneration cannot revert the hotfix.
         - name: RECONCILE_INTERVAL_SECONDS
           value: "60"
@@ -70,6 +75,8 @@ spec:
               out="$2"
               awk -v add_prefer="${ADD_PREFER_UDP:-true}" \
                   -v add_failfast="${ADD_VNET_FAILFAST:-true}" \
+                  -v add_reload="${ADD_RELOAD_PLUGIN:-true}" \
+                  -v reload_interval="${COREDNS_RELOAD_INTERVAL:-10s}" \
                   -v vnet_bind_ip="${VNETDNS_BIND_IP}" '
               function directive_indent(line) {
                   match(line, /^[[:space:]]*/)
@@ -77,7 +84,12 @@ spec:
               }
               /^[^[:space:]#].*:53[[:space:]]*\{/ {
                   in_server = 1
+                  server_index++
                   is_vnetdns_server = 0
+                  has_reload = 0
+              }
+              in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
+                  has_reload = 1
               }
               in_server && /^[[:space:]]*bind([[:space:]]|$)/ {
                   if (index($0, vnet_bind_ip) > 0) {
@@ -117,8 +129,12 @@ spec:
                   next
               }
               /^}[[:space:]]*$/ && in_server {
+                  if (add_reload == "true" && server_index == 1 && !has_reload) {
+                      print "    reload " reload_interval
+                  }
                   in_server = 0
                   is_vnetdns_server = 0
+                  has_reload = 0
               }
               { print }
               ' "$in" > "$out"
@@ -188,25 +204,36 @@ spec:
 
               add_prefer_template="${ADD_PREFER_UDP:-true}"
               add_failfast_template="${ADD_VNET_FAILFAST:-true}"
+              add_reload_template="${ADD_RELOAD_PLUGIN:-true}"
               if grep -q 'Protocol "PreferUDP"' "$file"; then
                   add_prefer_template="false"
               fi
               if grep -q 'failfast_all_unhealthy_upstreams' "$file"; then
                   add_failfast_template="false"
               fi
-              if [ "$add_prefer_template" != "true" ] && [ "$add_failfast_template" != "true" ]; then
+              if [ "$add_prefer_template" != "true" ] && [ "$add_failfast_template" != "true" ] && [ "$add_reload_template" != "true" ]; then
                   echo "No change needed for template $file"
                   return 0
               fi
 
               tmp="$(mktemp)"
               awk -v add_prefer="$add_prefer_template" \
-                  -v add_failfast="$add_failfast_template" '
+                  -v add_failfast="$add_failfast_template" \
+                  -v add_reload="$add_reload_template" \
+                  -v reload_interval="${COREDNS_RELOAD_INTERVAL:-10s}" '
               /# VnetDNS overrides/ {
                   section = "vnet"
               }
               /# KubeDNS overrides/ {
                   section = "kube"
+              }
+              /^[^[:space:]#].*:53[[:space:]]*\{/ {
+                  in_server = 1
+                  server_index++
+                  has_reload = 0
+              }
+              in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
+                  has_reload = 1
               }
               /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
                   in_forward = 1
@@ -215,6 +242,15 @@ spec:
               }
               in_forward && /if eq \$override.Protocol "ForceTCP"/ {
                   in_force_tcp_condition = 1
+              }
+              /^}[[:space:]]*$/ && in_server && !in_forward {
+                  if (add_reload == "true" && server_index == 1 && !has_reload) {
+                      print "    reload " reload_interval
+                  }
+                  print
+                  in_server = 0
+                  has_reload = 0
+                  next
               }
               {
                   if (in_forward && add_failfast == "true" && forward_section == "vnet" && /^[[:space:]]*policy[[:space:]]/) {
