@@ -1,0 +1,306 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: localdns-corefile-patch
+  namespace: kube-system
+  labels:
+    app: localdns-corefile-patch
+spec:
+  selector:
+    matchLabels:
+      app: localdns-corefile-patch
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: localdns-corefile-patch
+    spec:
+      hostPID: true
+      # Uncomment to target one node pool first.
+      # nodeSelector:
+      #   agentpool: default
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
+      containers:
+      - name: localdns-corefile-patch
+        image: alpine:3.20
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        # Set this to "true" only if the customer requested Protocol: PreferUDP
+        # for the default .:53 LocalDNS overrides.
+        - name: ADD_DEFAULT_SERVER_PREFER_UDP
+          value: "true"
+        # Adds failfast_all_unhealthy_upstreams to forward plugins in default .:53 server blocks.
+        - name: ADD_DEFAULT_SERVER_FAILFAST
+          value: "true"
+        # Adds forward-plugin health checks to forward plugins in default .:53 server blocks.
+        - name: ADD_DEFAULT_SERVER_HEALTH_CHECK
+          value: "true"
+        - name: DEFAULT_SERVER_HEALTH_CHECK_INTERVAL
+          value: "5s"
+        # Adds the CoreDNS reload plugin to default .:53 server blocks so future Corefile edits are picked up.
+        - name: ADD_RELOAD_PLUGIN
+          value: "true"
+        - name: COREDNS_RELOAD_INTERVAL
+          value: "10s"
+        # Keep reconciling so regenerated LocalDNS files are repaired after the one-time restart.
+        - name: RECONCILE_INTERVAL_SECONDS
+          value: "60"
+        command:
+        - nsenter
+        - --target
+        - "1"
+        - --mount
+        - --uts
+        - --ipc
+        - --net
+        - --pid
+        - --
+        - sh
+        - -c
+        - |
+          # Exit on unset variables and failed commands so partial patches do not look successful.
+          set -eu
+
+          # localdns.service reads persisted Corefile payloads from this environment file.
+          ENV_FILE="/etc/localdns/environment"
+          # AgentBaker installs the LocalDNS CoreDNS binary, script, and Corefiles under this directory.
+          LOCALDNS_DIR="/opt/azure/containers/localdns"
+          # localdns.sh regenerates this base Corefile from /etc/localdns/environment on startup.
+          LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
+          # localdns.sh starts CoreDNS with this post-processed Corefile.
+          UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
+          # Marker showing this DaemonSet already restarted localdns once after patching this node.
+          LOCALDNS_RESTART_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-restarted"
+          # Reconcile functions set this when they mutate any file.
+          CHANGED=0
+
+          # Patch a rendered CoreDNS Corefile.
+          patch_corefile() {
+              # Input Corefile path.
+              in="$1"
+              # Output path for the patched Corefile.
+              out="$2"
+              # Use awk to track server blocks and forward plugin blocks without requiring extra packages.
+              awk -v customer_requested_prefer_udp="${ADD_DEFAULT_SERVER_PREFER_UDP:-false}" \
+                  -v add_failfast="${ADD_DEFAULT_SERVER_FAILFAST:-true}" \
+                  -v add_health="${ADD_DEFAULT_SERVER_HEALTH_CHECK:-true}" \
+                  -v health_interval="${DEFAULT_SERVER_HEALTH_CHECK_INTERVAL:-5s}" \
+                  -v add_reload="${ADD_RELOAD_PLUGIN:-true}" \
+                  -v reload_interval="${COREDNS_RELOAD_INTERVAL:-10s}" '
+              # Return the directive indentation used inside a plugin block.
+              function directive_indent(line) {
+                  match(line, /^[[:space:]]*/)
+                  return substr(line, RSTART, RLENGTH) "    "
+              }
+              # Detect a new CoreDNS server block, such as ".:53 {" or "cluster.local:53 {".
+              /^[^[:space:]#].*:53[[:space:]]*\{/ {
+                  in_server = 1
+                  server_index++
+                  has_reload = 0
+                  # Only the default ".:53" server blocks should receive this patch.
+                  # This excludes "cluster.local:53", "wmt:53", and any other custom suffix blocks.
+                  server_is_default = ($1 == ".:53")
+              }
+              # Remember if the top-level reload plugin already exists in this default ".:53" server block.
+              in_server && server_is_default && /^[[:space:]]*reload([[:space:]]|$)/ {
+                  has_reload = 1
+              }
+              # Enter a forward plugin block and remember whether it belongs to a default ".:53" server.
+              # Later, when this forward block closes, use this captured value to decide whether to
+              # insert forward-plugin directives. The reload plugin is handled when the server block closes.
+              /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
+                  in_forward = 1
+                  forward_is_default_server = server_is_default
+                  has_prefer_udp = 0
+                  has_force_tcp = 0
+                  has_failfast = 0
+                  has_health_check = 0
+                  print
+                  next
+              }
+              # Track existing directives inside the forward plugin block so the patch is idempotent.
+              # These flags prevent duplicate lines from being added on later reconcile loops.
+              in_forward {
+                  if ($0 ~ /^[[:space:]]*prefer_udp([[:space:]]|$)/) {
+                      has_prefer_udp = 1
+                  }
+                  if ($0 ~ /^[[:space:]]*force_tcp([[:space:]]|$)/) {
+                      has_force_tcp = 1
+                  }
+                  if ($0 ~ /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/) {
+                      has_failfast = 1
+                  }
+                  if ($0 ~ /^[[:space:]]*health_check([[:space:]]|$)/) {
+                      has_health_check = 1
+                  }
+                  # Before closing a forward block, add missing patch directives.
+                  if ($0 ~ /^[[:space:]]*}[[:space:]]*$/) {
+                      indent = directive_indent($0)
+                      # Only patch forward plugins inside default ".:53" server blocks.
+                      # Non-default blocks, such as "cluster.local:53" and "wmt:53", are preserved.
+                      if (forward_is_default_server) {
+                          # Add prefer_udp only when the customer originally requested Protocol: PreferUDP.
+                          # Do not add it if the forward block already has prefer_udp, or if it uses force_tcp.
+                          if (customer_requested_prefer_udp == "true" && !has_prefer_udp && !has_force_tcp) {
+                              print indent "prefer_udp"
+                          }
+                          # Add the 5-second forward-plugin health check interval if it is not already present.
+                          if (add_health == "true" && !has_health_check) {
+                              print indent "health_check " health_interval
+                          }
+                          # Add failfast behavior if it is not already present.
+                          if (add_failfast == "true" && !has_failfast) {
+                              print indent "failfast_all_unhealthy_upstreams"
+                          }
+                      }
+                      in_forward = 0
+                  }
+                  print
+                  next
+              }
+              # Before closing a default ".:53" server block, add the CoreDNS reload plugin if missing.
+              /^}[[:space:]]*$/ && in_server {
+                  if (add_reload == "true" && server_is_default && !has_reload) {
+                      print "    reload " reload_interval
+                  }
+                  in_server = 0
+                  has_reload = 0
+                  server_is_default = 0
+              }
+              # Print all non-special lines unchanged.
+              { print }
+              ' "$in" > "$out"
+          }
+
+          # Patch a regular file if it exists and the transformed output differs.
+          patch_file_if_present() {
+              # File to patch.
+              file="$1"
+              # Missing files are expected on non-LocalDNS pools.
+              [ -s "$file" ] || return 0
+
+              # Write to a temporary file first so comparison and replacement are safe.
+              tmp="$(mktemp)"
+              patch_corefile "$file" "$tmp"
+              if ! cmp -s "$file" "$tmp"; then
+                  # Keep the first pre-patch backup for rollback; never overwrite it on later reconciles.
+                  if [ ! -f "${file}.pre-localdns-patch" ]; then
+                      cp "$file" "${file}.pre-localdns-patch"
+                  fi
+                  # Replace the file content without changing the path.
+                  cat "$tmp" > "$file"
+                  # Match localdns.sh-created Corefile permissions.
+                  chmod 0644 "$file"
+                  # Tell the caller that this reconcile pass changed node state.
+                  CHANGED=1
+                  echo "Patched $file"
+              else
+                  echo "No change needed for $file"
+              fi
+              rm -f "$tmp"
+          }
+
+          # Patch a base64-encoded Corefile variable inside /etc/localdns/environment.
+          patch_env_corefile_var() {
+              # Environment variable name to patch.
+              var="$1"
+              # Non-LocalDNS nodes may not have an environment file.
+              [ -s "$ENV_FILE" ] || return 0
+              # Older/newer images may not contain every compatibility variable.
+              grep -q "^${var}=" "$ENV_FILE" || return 0
+
+              # Extract and unquote the base64 value.
+              encoded="$(sed -n "s/^${var}=//p" "$ENV_FILE" | tail -n 1)"
+              encoded="${encoded%\"}"
+              encoded="${encoded#\"}"
+              encoded="${encoded%\'}"
+              encoded="${encoded#\'}"
+
+              # Decode the Corefile payload, then patch the decoded Corefile text.
+              decoded="$(mktemp)"
+              patched="$(mktemp)"
+              if ! printf "%s" "$encoded" | base64 -d > "$decoded" 2>/dev/null; then
+                  echo "Skipping $var because it is not valid base64"
+                  rm -f "$decoded" "$patched"
+                  return 0
+              fi
+
+              patch_corefile "$decoded" "$patched"
+              if ! cmp -s "$decoded" "$patched"; then
+                  # Re-encode the patched Corefile as a single-line base64 value.
+                  new_encoded="$(base64 "$patched" | tr -d "\n")"
+                  env_tmp="$(mktemp)"
+                  # Replace only the requested variable, preserving the rest of the environment file.
+                  awk -v var="$var" -v val="$new_encoded" '
+                      BEGIN { prefix = var "=" }
+                      index($0, prefix) == 1 { $0 = prefix val }
+                      { print }
+                  ' "$ENV_FILE" > "$env_tmp"
+                  # Keep the first pre-patch environment backup for rollback; never overwrite it on later reconciles.
+                  if [ ! -f "${ENV_FILE}.pre-localdns-patch" ]; then
+                      cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-patch"
+                  fi
+                  # Write the patched environment file atomically enough for this node-local patch.
+                  cat "$env_tmp" > "$ENV_FILE"
+                  # Keep permissions compatible with localdns.service EnvironmentFile usage.
+                  chmod 0644 "$ENV_FILE"
+                  rm -f "$env_tmp"
+                  CHANGED=1
+                  echo "Patched $ENV_FILE:$var"
+              else
+                  echo "No change needed for $ENV_FILE:$var"
+              fi
+              rm -f "$decoded" "$patched"
+          }
+
+          # Run one idempotent reconciliation pass.
+          reconcile_once() {
+              # Reset the change flag for this pass.
+              CHANGED=0
+              # Patch persisted Corefile payloads used by localdns.sh on service start.
+              patch_env_corefile_var LOCALDNS_COREFILE_BASE
+              patch_env_corefile_var LOCALDNS_COREFILE_WITH_HOSTS
+              patch_env_corefile_var LOCALDNS_BASE64_ENCODED_COREFILE
+              # Patch currently materialized Corefile files as well.
+              patch_file_if_present "$LOCALDNS_CORE_FILE"
+              patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
+
+              # If this pass changed files, restart localdns only if this node has not already
+              # been restarted by this DaemonSet. The first restart loads the patched Corefile,
+              # including reload 10s; later repairs rely on the reload plugin instead of
+              # repeatedly restarting the systemd service.
+              if [ "$CHANGED" -eq 1 ]; then
+                  if [ ! -f "$LOCALDNS_RESTART_MARKER" ]; then
+                      echo "Patched LocalDNS files; restarting localdns once"
+                      systemctl restart localdns
+                      systemctl is-active localdns
+                      date -u +"%Y-%m-%dT%H:%M:%SZ" > "$LOCALDNS_RESTART_MARKER"
+                  else
+                      echo "Patched LocalDNS files; localdns was already restarted once, relying on reload plugin"
+                  fi
+              else
+                  echo "LocalDNS Corefile already contains requested directives"
+              fi
+          }
+
+          # Keep the DaemonSet alive and repair regenerated files on this node.
+          # New nodes get their own DaemonSet pod and restart marker.
+          while true; do
+              reconcile_once
+              sleep "${RECONCILE_INTERVAL_SECONDS:-60}"
+          done
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
