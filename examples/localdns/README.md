@@ -25,6 +25,31 @@ call AgentBaker again. Instead, `localdns.sh` reads the Corefile payload already
 stored on that node. Because of that, this DaemonSet patches the node-local files
 that `localdns.sh` actually uses at runtime.
 
+More specifically, `/etc/localdns/environment` contains environment variables
+whose values are base64-encoded Corefile text. On `localdns` service start,
+`localdns.sh` selects one of those payloads, decodes it, and writes:
+
+```text
+/opt/azure/containers/localdns/localdns.corefile
+```
+
+Then `localdns.sh` copies/processes that file into:
+
+```text
+/opt/azure/containers/localdns/updated.localdns.corefile
+```
+
+Finally, the node's `localdns` systemd unit starts the CoreDNS binary with:
+
+```text
+coredns -conf /opt/azure/containers/localdns/updated.localdns.corefile
+```
+
+This is why patching `/etc/localdns/environment` is required for restart
+persistence. If only `updated.localdns.corefile` is patched, a later
+`systemctl restart localdns` can recreate it from an older base64 value in the
+environment file.
+
 ## Files patched by the DaemonSet
 
 ### 1. `/etc/localdns/environment`
