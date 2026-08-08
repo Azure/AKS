@@ -129,7 +129,8 @@ The DaemonSet runs:
 systemctl restart localdns
 ```
 
-only when a reconcile pass actually changes LocalDNS files.
+only once on a node after the first reconcile pass that actually changes
+LocalDNS files.
 
 Patching `updated.localdns.corefile` alone is not enough for an already-running
 CoreDNS process to pick up changes unless that process was already started with
@@ -139,7 +140,9 @@ Therefore:
 
 - The first successful patch pass restarts `localdns` once so the running
   CoreDNS process immediately loads the patched Corefile.
-- Later reconcile loops do not restart `localdns` unless files changed again.
+- The DaemonSet writes a node-local restart marker after that successful restart.
+- Later reconcile loops do not restart `localdns` again on that node, even if
+  they repair regenerated files.
 - After the restart, `reload 10s` can pick up future Corefile edits without
   another restart.
 

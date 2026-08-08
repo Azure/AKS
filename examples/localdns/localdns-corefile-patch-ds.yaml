@@ -76,6 +76,8 @@ spec:
           LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
           # localdns.sh starts CoreDNS with this post-processed Corefile.
           UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
+          # Marker showing this DaemonSet already restarted localdns once after patching this node.
+          LOCALDNS_RESTART_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-restarted"
           # Reconcile functions set this when they mutate any file.
           CHANGED=0
 
@@ -271,12 +273,17 @@ spec:
               patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
               # If this pass changed files, restart localdns once so the running CoreDNS process
-              # immediately loads the patched Corefile, including the reload plugin. Later
-              # reconcile loops do not restart unless files changed again.
+              # immediately loads the patched Corefile, including the reload plugin. After that,
+              # rely on reload 10s instead of repeatedly restarting the systemd service.
               if [ "$CHANGED" -eq 1 ]; then
-                  echo "Patched LocalDNS files; restarting localdns"
-                  systemctl restart localdns
-                  systemctl is-active localdns
+                  if [ ! -f "$LOCALDNS_RESTART_MARKER" ]; then
+                      echo "Patched LocalDNS files; restarting localdns once"
+                      systemctl restart localdns
+                      systemctl is-active localdns
+                      date -u +"%Y-%m-%dT%H:%M:%SZ" > "$LOCALDNS_RESTART_MARKER"
+                  else
+                      echo "Patched LocalDNS files; localdns was already restarted once, relying on reload plugin"
+                  fi
               else
                   echo "LocalDNS Corefile already contains requested directives"
               fi
