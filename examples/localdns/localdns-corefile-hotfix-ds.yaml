@@ -49,7 +49,7 @@ spec:
           value: "true"
         - name: COREDNS_RELOAD_INTERVAL
           value: "10s"
-        # Keep reconciling so a later localdns restart/regeneration cannot revert the hotfix.
+        # Keep reconciling so a later localdns restart/regeneration cannot revert the patch.
         - name: RECONCILE_INTERVAL_SECONDS
           value: "60"
         command:
@@ -76,7 +76,7 @@ spec:
           LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
           # localdns.sh starts CoreDNS with this post-processed Corefile.
           UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
-          # Some images/hotfix flows may also keep the LocalDNS generation template on the node.
+          # Some image or patch flows may also keep the LocalDNS generation template on the node.
           LOCALDNS_TEMPLATE_FILE="${LOCALDNS_DIR}/localdns.toml.gtpl"
           # VnetDNS server blocks bind to the node-local listener IP.
           VNETDNS_BIND_IP="169.254.10.10"
@@ -150,7 +150,7 @@ spec:
                   if ($0 ~ /^[[:space:]]*health_check([[:space:]]|$)/) {
                       has_health_check = 1
                   }
-                  # Before closing a forward block, add missing hotfix directives.
+                  # Before closing a forward block, add missing patch directives.
                   if ($0 ~ /^[[:space:]]*}[[:space:]]*$/) {
                       indent = directive_indent($0)
                       if (add_prefer == "true" && !has_prefer_udp && !has_force_tcp) {
@@ -250,7 +250,7 @@ spec:
                   if [ ! -f "${ENV_FILE}.pre-localdns-hotfix" ]; then
                       cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-hotfix"
                   fi
-                  # Write the patched environment file atomically enough for this node-local hotfix.
+                  # Write the patched environment file atomically enough for this node-local patch.
                   cat "$env_tmp" > "$ENV_FILE"
                   # Keep permissions compatible with localdns.service EnvironmentFile usage.
                   chmod 0644 "$ENV_FILE"
@@ -321,7 +321,7 @@ spec:
               in_forward && /if eq \$override.Protocol "ForceTCP"/ {
                   in_force_tcp_condition = 1
               }
-              # Drop any older unguarded failfast inserted by a previous hotfix version.
+              # Drop any older unguarded failfast inserted by a previous patch version.
               in_forward && /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/ {
                   next
               }
@@ -392,7 +392,7 @@ spec:
               # Try the expected template path first.
               patch_template_file_if_present "$LOCALDNS_TEMPLATE_FILE"
 
-              # Some images or hotfix workflows keep the LocalDNS generation template
+              # Some image or patch workflows keep the LocalDNS generation template
               # outside LOCALDNS_DIR. Patch those sources too when present so future
               # regenerated localdns.corefile content keeps the same directives.
               # Store find results in a temp file to avoid losing CHANGED updates in a pipeline subshell.
