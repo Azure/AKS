@@ -92,23 +92,6 @@ immediately and so the next LocalDNS/CoreDNS start uses the fixed content. This
 does not by itself guarantee that an already-running CoreDNS process has loaded
 the new content; see [Restart behavior](#restart-behavior).
 
-### 3. Node-local template files, if present
-
-The DaemonSet also patches node-local LocalDNS template files if it finds them,
-for example:
-
-```text
-/opt/azure/containers/localdns/localdns.toml.gtpl
-```
-
-This is best-effort coverage. Normal node bootstrap gets the template from the
-AgentBaker service, so patching a template on an already-created node is not the
-main persistence mechanism. The important runtime persistence point is
-`/etc/localdns/environment`.
-
-Template patching is included only to protect any local patch or regeneration
-flow that may reuse a template file on the node.
-
 ## Directives added
 
 The DaemonSet adds the following CoreDNS directives where needed:
@@ -126,16 +109,8 @@ future Corefile changes.
 `prefer_udp` is added to forward plugin blocks unless `force_tcp` is already
 configured.
 
-`health_check 5s` is added to VnetDNS external forward blocks. For already
-rendered Corefiles, the DaemonSet approximates this by adding `health_check 5s`
-only to VnetDNS forward blocks that do not have `force_tcp`. For template files,
-the DaemonSet can use the template variable and guards this with:
-
-```gotemplate
-{{- if not $fwdToClusterCoreDNS}}
-health_check 5s
-{{- end}}
-```
+`health_check 5s` is added to VnetDNS external forward blocks. The DaemonSet
+adds it only to VnetDNS forward blocks that do not have `force_tcp`.
 
 `failfast_all_unhealthy_upstreams` is added to external/upstream DNS forward blocks in both VnetDNS and KubeDNS paths. It is intentionally not added to `cluster.local` / CoreDNS-forwarded blocks.
 

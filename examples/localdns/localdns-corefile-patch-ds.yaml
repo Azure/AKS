@@ -76,8 +76,6 @@ spec:
           LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
           # localdns.sh starts CoreDNS with this post-processed Corefile.
           UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
-          # Some image or patch flows may also keep the LocalDNS generation template on the node.
-          LOCALDNS_TEMPLATE_FILE="${LOCALDNS_DIR}/localdns.toml.gtpl"
           # VnetDNS server blocks bind to the node-local listener IP.
           VNETDNS_BIND_IP="169.254.10.10"
           # Reconcile functions set this when they mutate any file.
@@ -263,157 +261,10 @@ spec:
               rm -f "$decoded" "$patched"
           }
 
-          # Patch a LocalDNS Corefile template if one exists on the node.
-          patch_template_file_if_present() {
-              # Template path to patch.
-              file="$1"
-              # Missing template files are expected on many nodes because the env payloads are the runtime source.
-              [ -s "$file" ] || return 0
-
-              # Determine which template insertions are still needed.
-              add_prefer_template="${ADD_PREFER_UDP:-true}"
-              add_failfast_template="${ADD_VNET_FAILFAST:-true}"
-              add_health_template="${ADD_VNET_HEALTH_CHECK:-true}"
-              add_reload_template="${ADD_RELOAD_PLUGIN:-true}"
-              if grep -q 'Protocol "PreferUDP"' "$file"; then
-                  add_prefer_template="false"
-              fi
-              if grep -q 'health_check 5s' "$file"; then
-                  add_health_template="false"
-              fi
-              if [ "$add_prefer_template" != "true" ] && [ "$add_health_template" != "true" ] && [ "$add_failfast_template" != "true" ] && [ "$add_reload_template" != "true" ]; then
-                  echo "No change needed for template $file"
-                  return 0
-              fi
-
-              # Patch template text into a temporary file first.
-              tmp="$(mktemp)"
-              awk -v add_prefer="$add_prefer_template" \
-                  -v add_failfast="$add_failfast_template" \
-                  -v add_health="$add_health_template" \
-                  -v health_interval="${VNET_HEALTH_CHECK_INTERVAL:-5s}" \
-                  -v add_reload="$add_reload_template" \
-                  -v reload_interval="${COREDNS_RELOAD_INTERVAL:-10s}" '
-              # Track whether we are patching the VnetDNS or KubeDNS template range.
-              /# VnetDNS overrides/ {
-                  section = "vnet"
-              }
-              /# KubeDNS overrides/ {
-                  section = "kube"
-              }
-              # Track server blocks so reload can be inserted once at top level.
-              /^[^[:space:]#].*:53[[:space:]]*\{/ {
-                  in_server = 1
-                  server_index++
-                  has_reload = 0
-              }
-              # Detect an existing top-level reload plugin in the first server block.
-              in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
-                  has_reload = 1
-              }
-              # Enter a forward plugin block in the template.
-              /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
-                  in_forward = 1
-                  forward_section = section
-                  in_force_tcp_condition = 0
-              }
-              # Remember when the template has just emitted the ForceTCP conditional.
-              in_forward && /if eq \$override.Protocol "ForceTCP"/ {
-                  in_force_tcp_condition = 1
-              }
-              # Drop any older unguarded failfast inserted by a previous patch version.
-              in_forward && /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/ {
-                  next
-              }
-              # Add reload before the first server block closes.
-              /^}[[:space:]]*$/ && in_server && !in_forward {
-                  if (add_reload == "true" && server_index == 1 && !has_reload) {
-                      print "    reload " reload_interval
-                  }
-                  print
-                  in_server = 0
-                  has_reload = 0
-                  next
-              }
-              # Print each line, inserting VnetDNS forward options before policy.
-              {
-                  if (in_forward && add_health == "true" && forward_section == "vnet" && /^[[:space:]]*policy[[:space:]]/) {
-                      match($0, /^[[:space:]]*/)
-                      indent = substr($0, RSTART, RLENGTH)
-                      print indent "{{- if not $fwdToClusterCoreDNS}}"
-                      print indent "health_check " health_interval
-                      print indent "{{- end}}"
-                  }
-                  if (in_forward && add_failfast == "true" && /^[[:space:]]*policy[[:space:]]/) {
-                      match($0, /^[[:space:]]*/)
-                      indent = substr($0, RSTART, RLENGTH)
-                      print indent "{{- if not $fwdToClusterCoreDNS}}"
-                      print indent "failfast_all_unhealthy_upstreams"
-                      print indent "{{- end}}"
-                  }
-                  print
-              }
-              # Add the PreferUDP template conditional after the ForceTCP conditional.
-              in_forward && in_force_tcp_condition && /\{\{- end\}\}/ {
-                  if (add_prefer == "true") {
-                      match($0, /^[[:space:]]*/)
-                      indent = substr($0, RSTART, RLENGTH)
-                      print indent "{{- if eq $override.Protocol \"PreferUDP\"}}"
-                      print indent "prefer_udp"
-                      print indent "{{- end}}"
-                  }
-                  in_force_tcp_condition = 0
-                  next
-              }
-              # Leave the forward plugin block.
-              in_forward && /^[[:space:]]*}[[:space:]]*$/ {
-                  in_forward = 0
-                  forward_section = ""
-                  in_force_tcp_condition = 0
-              }
-              ' "$file" > "$tmp"
-
-              if ! cmp -s "$file" "$tmp"; then
-                  if [ ! -f "${file}.pre-localdns-patch" ]; then
-                      cp "$file" "${file}.pre-localdns-patch"
-                  fi
-                  cat "$tmp" > "$file"
-                  chmod 0644 "$file"
-                  CHANGED=1
-                  echo "Patched template $file"
-              else
-                  echo "No change needed for template $file"
-              fi
-              rm -f "$tmp"
-          }
-
-          # Patch all LocalDNS templates that may exist on a node.
-          patch_template_files() {
-              # Try the expected template path first.
-              patch_template_file_if_present "$LOCALDNS_TEMPLATE_FILE"
-
-              # Some image or patch workflows keep the LocalDNS generation template
-              # outside LOCALDNS_DIR. Patch those sources too when present so future
-              # regenerated localdns.corefile content keeps the same directives.
-              # Store find results in a temp file to avoid losing CHANGED updates in a pipeline subshell.
-              template_list="$(mktemp)"
-              find /opt/azure/containers /etc/localdns -maxdepth 6 -type f \
-                  \( -name 'localdns.toml.gtpl' -o -name '*localdns*.gtpl' -o -name '*localdns*.tmpl' -o -name '*localdns*.template' \) \
-                  2>/dev/null > "$template_list" || true
-              while IFS= read -r template_file; do
-                      # Skip the path that was already patched explicitly.
-                      [ "$template_file" = "$LOCALDNS_TEMPLATE_FILE" ] && continue
-                      patch_template_file_if_present "$template_file"
-              done < "$template_list"
-              rm -f "$template_list"
-          }
-
           # Run one idempotent reconciliation pass.
           reconcile_once() {
               # Reset the change flag for this pass.
               CHANGED=0
-              # Patch any template files before patching rendered/persisted Corefiles.
-              patch_template_files
               # Patch persisted Corefile payloads used by localdns.sh on service start.
               patch_env_corefile_var LOCALDNS_COREFILE_BASE
               patch_env_corefile_var LOCALDNS_COREFILE_WITH_HOSTS
