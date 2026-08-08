@@ -106,14 +106,20 @@ failfast_all_unhealthy_upstreams
 `reload 10s` is added once to the Corefile so CoreDNS can automatically reload
 future Corefile changes.
 
-`prefer_udp` is added to forward plugin blocks unless `force_tcp` is already
-configured.
+`prefer_udp` is added inside the `forward` plugin for each default `.:53` server
+block when `ADD_DEFAULT_SERVER_PREFER_UDP` is set to `"true"`. Set that variable
+to `"true"` only when the customer requested `Protocol: PreferUDP` for the
+default LocalDNS overrides. The DaemonSet does not add it to blocks that already
+use `force_tcp`.
 
-`health_check 5s` is added to external/upstream DNS forward blocks in both
-VnetDNS and KubeDNS paths. The DaemonSet does not add it to `cluster.local` /
-ClusterCoreDNS-forwarded blocks or blocks that already use `force_tcp`.
+`health_check 5s` is added inside the `forward` plugin for each default `.:53`
+server block. The DaemonSet does not add it to `cluster.local` /
+ClusterCoreDNS-forwarded blocks, custom suffix blocks such as `wmt:53`, or
+blocks that already use `force_tcp`.
 
-`failfast_all_unhealthy_upstreams` is added to external/upstream DNS forward blocks in both VnetDNS and KubeDNS paths. It is intentionally not added to `cluster.local` / CoreDNS-forwarded blocks.
+`failfast_all_unhealthy_upstreams` is added inside the `forward` plugin for each
+default `.:53` server block. It is intentionally not added to `cluster.local` /
+CoreDNS-forwarded blocks or custom suffix blocks such as `wmt:53`.
 
 ## Restart behavior
 
