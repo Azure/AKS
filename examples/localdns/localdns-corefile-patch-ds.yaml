@@ -44,12 +44,12 @@ spec:
           value: "true"
         - name: DEFAULT_SERVER_HEALTH_CHECK_INTERVAL
           value: "5s"
-        # Adds the CoreDNS reload plugin so edits to updated.localdns.corefile are picked up.
+        # Adds the CoreDNS reload plugin to default .:53 server blocks so future Corefile edits are picked up.
         - name: ADD_RELOAD_PLUGIN
           value: "true"
         - name: COREDNS_RELOAD_INTERVAL
           value: "10s"
-        # Keep reconciling so a later localdns restart/regeneration cannot revert the patch.
+        # Keep reconciling so regenerated LocalDNS files are repaired after the one-time restart.
         - name: RECONCILE_INTERVAL_SECONDS
           value: "60"
         command:
@@ -113,8 +113,8 @@ spec:
                   has_reload = 1
               }
               # Enter a forward plugin block and remember whether it belongs to a default ".:53" server.
-              # Later, when this forward block closes, we use this captured value to decide whether
-              # to insert prefer_udp, health_check, and failfast_all_unhealthy_upstreams.
+              # Later, when this forward block closes, use this captured value to decide whether to
+              # insert forward-plugin directives. The reload plugin is handled when the server block closes.
               /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
                   in_forward = 1
                   forward_is_default_server = server_is_default
@@ -151,7 +151,7 @@ spec:
                           if (customer_requested_prefer_udp == "true" && !has_prefer_udp && !has_force_tcp) {
                               print indent "prefer_udp"
                           }
-                          # Add the shorter forward-plugin health check interval if it is not already present.
+                          # Add the 5-second forward-plugin health check interval if it is not already present.
                           if (add_health == "true" && !has_health_check) {
                               print indent "health_check " health_interval
                           }
@@ -272,9 +272,10 @@ spec:
               patch_file_if_present "$LOCALDNS_CORE_FILE"
               patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
-              # If this pass changed files, restart localdns once so the running CoreDNS process
-              # immediately loads the patched Corefile, including the reload plugin. After that,
-              # rely on reload 10s instead of repeatedly restarting the systemd service.
+              # If this pass changed files, restart localdns only if this node has not already
+              # been restarted by this DaemonSet. The first restart loads the patched Corefile,
+              # including reload 10s; later repairs rely on the reload plugin instead of
+              # repeatedly restarting the systemd service.
               if [ "$CHANGED" -eq 1 ]; then
                   if [ ! -f "$LOCALDNS_RESTART_MARKER" ]; then
                       echo "Patched LocalDNS files; restarting localdns once"
@@ -289,7 +290,8 @@ spec:
               fi
           }
 
-          # Keep the DaemonSet alive and continue healing files after node lifecycle events.
+          # Keep the DaemonSet alive and repair regenerated files on this node.
+          # New nodes get their own DaemonSet pod and restart marker.
           while true; do
               reconcile_once
               sleep "${RECONCILE_INTERVAL_SECONDS:-60}"
