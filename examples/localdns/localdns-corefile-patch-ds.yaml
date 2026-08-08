@@ -129,10 +129,6 @@ spec:
                   }
                   if ($0 ~ /^[[:space:]]*failfast_all_unhealthy_upstreams([[:space:]]|$)/) {
                       has_failfast = 1
-                      if (forward_is_default_server && !has_force_tcp) {
-                          print
-                      }
-                      next
                   }
                   if ($0 ~ /^[[:space:]]*health_check([[:space:]]|$)/) {
                       has_health_check = 1
