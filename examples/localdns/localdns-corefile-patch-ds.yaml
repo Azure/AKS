@@ -86,7 +86,7 @@ spec:
               # Output path for the patched Corefile.
               out="$2"
               # Use awk to track server blocks and forward plugin blocks without requiring extra packages.
-              awk -v add_prefer="${ADD_DEFAULT_SERVER_PREFER_UDP:-false}" \
+              awk -v customer_requested_prefer_udp="${ADD_DEFAULT_SERVER_PREFER_UDP:-false}" \
                   -v add_failfast="${ADD_DEFAULT_SERVER_FAILFAST:-true}" \
                   -v add_health="${ADD_DEFAULT_SERVER_HEALTH_CHECK:-true}" \
                   -v health_interval="${DEFAULT_SERVER_HEALTH_CHECK_INTERVAL:-5s}" \
@@ -97,18 +97,22 @@ spec:
                   match(line, /^[[:space:]]*/)
                   return substr(line, RSTART, RLENGTH) "    "
               }
-              # Detect a new CoreDNS server block, such as ".:53 {".
+              # Detect a new CoreDNS server block, such as ".:53 {" or "cluster.local:53 {".
               /^[^[:space:]#].*:53[[:space:]]*\{/ {
                   in_server = 1
                   server_index++
                   has_reload = 0
+                  # Only the default ".:53" server blocks should receive this patch.
+                  # This excludes "cluster.local:53", "wmt:53", and any other custom suffix blocks.
                   server_is_default = ($1 == ".:53")
               }
               # Remember if the top-level reload plugin already exists in the first server block.
               in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
                   has_reload = 1
               }
-              # Enter a forward plugin block.
+              # Enter a forward plugin block and remember whether it belongs to a default ".:53" server.
+              # Later, when this forward block closes, we use this captured value to decide whether
+              # to insert prefer_udp, health_check, and failfast_all_unhealthy_upstreams.
               /^[[:space:]]*forward[[:space:]]+\.[[:space:]]/ && /\{[[:space:]]*$/ {
                   in_forward = 1
                   forward_is_default_server = server_is_default
@@ -119,7 +123,8 @@ spec:
                   print
                   next
               }
-              # Track existing directives inside the forward plugin block.
+              # Track existing directives inside the forward plugin block so the patch is idempotent.
+              # These flags prevent duplicate lines from being added on later reconcile loops.
               in_forward {
                   if ($0 ~ /^[[:space:]]*prefer_udp([[:space:]]|$)/) {
                       has_prefer_udp = 1
@@ -136,13 +141,19 @@ spec:
                   # Before closing a forward block, add missing patch directives.
                   if ($0 ~ /^[[:space:]]*}[[:space:]]*$/) {
                       indent = directive_indent($0)
+                      # Only patch forward plugins inside default ".:53" server blocks.
+                      # Non-default blocks, such as "cluster.local:53" and "wmt:53", are preserved.
                       if (forward_is_default_server) {
-                          if (add_prefer == "true" && !has_prefer_udp && !has_force_tcp) {
+                          # Add prefer_udp only when the customer originally requested Protocol: PreferUDP.
+                          # Do not add it if the forward block already has prefer_udp, or if it uses force_tcp.
+                          if (customer_requested_prefer_udp == "true" && !has_prefer_udp && !has_force_tcp) {
                               print indent "prefer_udp"
                           }
+                          # Add the shorter forward-plugin health check interval if it is not already present.
                           if (add_health == "true" && !has_health_check) {
                               print indent "health_check " health_interval
                           }
+                          # Add failfast behavior if it is not already present.
                           if (add_failfast == "true" && !has_failfast) {
                               print indent "failfast_all_unhealthy_upstreams"
                           }
