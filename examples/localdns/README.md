@@ -103,8 +103,8 @@ health_check 5s
 failfast_all_unhealthy_upstreams
 ```
 
-`reload 10s` is added once to the Corefile so CoreDNS can automatically reload
-future Corefile changes.
+`reload 10s` is added to each default `.:53` server block so CoreDNS can
+automatically reload future Corefile changes.
 
 `prefer_udp` is added inside the `forward` plugin for each default `.:53` server
 block when `ADD_DEFAULT_SERVER_PREFER_UDP` is set to `"true"`. Set that variable
@@ -123,24 +123,27 @@ CoreDNS-forwarded blocks or custom suffix blocks such as `wmt:53`.
 
 ## Restart behavior
 
-The DaemonSet intentionally does **not** run:
+The DaemonSet runs:
 
 ```text
 systemctl restart localdns
 ```
 
+only when a reconcile pass actually changes LocalDNS files.
+
 Patching `updated.localdns.corefile` alone is not enough for an already-running
-CoreDNS process to pick up changes unless that process was started with the
-CoreDNS `reload` plugin already present in its Corefile.
+CoreDNS process to pick up changes unless that process was already started with
+the CoreDNS `reload` plugin present in its Corefile.
 
 Therefore:
 
-- If CoreDNS was already started with `reload`, future changes to the Corefile
-  can be picked up automatically.
-- If CoreDNS was started without `reload`, one `localdns` restart is still
-  required before automatic Corefile reload behavior is active.
+- The first successful patch pass restarts `localdns` once so the running
+  CoreDNS process immediately loads the patched Corefile.
+- Later reconcile loops do not restart `localdns` unless files changed again.
+- After the restart, `reload 10s` can pick up future Corefile edits without
+  another restart.
 
-The DaemonSet only patches files and keeps reconciling them every 60 seconds.
+The DaemonSet keeps reconciling files every 60 seconds.
 
 ## Idempotency
 

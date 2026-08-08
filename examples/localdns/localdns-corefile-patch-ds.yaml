@@ -106,8 +106,8 @@ spec:
                   # This excludes "cluster.local:53", "wmt:53", and any other custom suffix blocks.
                   server_is_default = ($1 == ".:53")
               }
-              # Remember if the top-level reload plugin already exists in the first server block.
-              in_server && server_index == 1 && /^[[:space:]]*reload([[:space:]]|$)/ {
+              # Remember if the top-level reload plugin already exists in this default ".:53" server block.
+              in_server && server_is_default && /^[[:space:]]*reload([[:space:]]|$)/ {
                   has_reload = 1
               }
               # Enter a forward plugin block and remember whether it belongs to a default ".:53" server.
@@ -163,9 +163,9 @@ spec:
                   print
                   next
               }
-              # Before closing the first server block, add the CoreDNS reload plugin if missing.
+              # Before closing a default ".:53" server block, add the CoreDNS reload plugin if missing.
               /^}[[:space:]]*$/ && in_server {
-                  if (add_reload == "true" && server_index == 1 && !has_reload) {
+                  if (add_reload == "true" && server_is_default && !has_reload) {
                       print "    reload " reload_interval
                   }
                   in_server = 0
@@ -270,9 +270,13 @@ spec:
               patch_file_if_present "$LOCALDNS_CORE_FILE"
               patch_file_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
-              # Report whether this pass changed files; intentionally do not restart localdns.
+              # If this pass changed files, restart localdns once so the running CoreDNS process
+              # immediately loads the patched Corefile, including the reload plugin. Later
+              # reconcile loops do not restart unless files changed again.
               if [ "$CHANGED" -eq 1 ]; then
-                  echo "Patched LocalDNS files; not restarting localdns"
+                  echo "Patched LocalDNS files; restarting localdns"
+                  systemctl restart localdns
+                  systemctl is-active localdns
               else
                   echo "LocalDNS Corefile already contains requested directives"
               fi
