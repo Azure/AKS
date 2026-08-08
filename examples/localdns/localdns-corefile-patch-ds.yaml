@@ -136,14 +136,16 @@ spec:
                   # Before closing a forward block, add missing patch directives.
                   if ($0 ~ /^[[:space:]]*}[[:space:]]*$/) {
                       indent = directive_indent($0)
-                      if (add_prefer == "true" && forward_is_default_server && !has_prefer_udp && !has_force_tcp) {
-                          print indent "prefer_udp"
-                      }
-                      if (add_health == "true" && forward_is_default_server && !has_health_check && !has_force_tcp) {
-                          print indent "health_check " health_interval
-                      }
-                      if (add_failfast == "true" && forward_is_default_server && !has_failfast && !has_force_tcp) {
-                          print indent "failfast_all_unhealthy_upstreams"
+                      if (forward_is_default_server) {
+                          if (add_prefer == "true" && !has_prefer_udp && !has_force_tcp) {
+                              print indent "prefer_udp"
+                          }
+                          if (add_health == "true" && !has_health_check) {
+                              print indent "health_check " health_interval
+                          }
+                          if (add_failfast == "true" && !has_failfast) {
+                              print indent "failfast_all_unhealthy_upstreams"
+                          }
                       }
                       in_forward = 0
                   }
