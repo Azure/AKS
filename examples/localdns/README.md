@@ -109,8 +109,9 @@ future Corefile changes.
 `prefer_udp` is added to forward plugin blocks unless `force_tcp` is already
 configured.
 
-`health_check 5s` is added to VnetDNS external forward blocks. The DaemonSet
-adds it only to VnetDNS forward blocks that do not have `force_tcp`.
+`health_check 5s` is added to external/upstream DNS forward blocks in both
+VnetDNS and KubeDNS paths. The DaemonSet does not add it to `cluster.local` /
+ClusterCoreDNS-forwarded blocks or blocks that already use `force_tcp`.
 
 `failfast_all_unhealthy_upstreams` is added to external/upstream DNS forward blocks in both VnetDNS and KubeDNS paths. It is intentionally not added to `cluster.local` / CoreDNS-forwarded blocks.
 

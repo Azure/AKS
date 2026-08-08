@@ -39,7 +39,7 @@ spec:
         # identified by bind 169.254.10.10.
         - name: ADD_VNET_FAILFAST
           value: "true"
-        # Adds forward-plugin health checks to VnetDNS external forward blocks.
+        # Adds forward-plugin health checks to external/upstream DNS forward blocks.
         - name: ADD_VNET_HEALTH_CHECK
           value: "true"
         - name: VNET_HEALTH_CHECK_INTERVAL
@@ -154,7 +154,7 @@ spec:
                       if (add_prefer == "true" && !has_prefer_udp && !has_force_tcp) {
                           print indent "prefer_udp"
                       }
-                      if (add_health == "true" && forward_is_vnetdns && !has_health_check && !has_force_tcp) {
+                      if (add_health == "true" && forward_is_external && !has_health_check && !has_force_tcp) {
                           print indent "health_check " health_interval
                       }
                       if (add_failfast == "true" && forward_is_external && !has_failfast && !has_force_tcp) {
