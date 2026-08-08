@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: localdns-corefile-hotfix
+  name: localdns-corefile-patch
   namespace: kube-system
   labels:
-    app: localdns-corefile-hotfix
+    app: localdns-corefile-patch
 spec:
   selector:
     matchLabels:
-      app: localdns-corefile-hotfix
+      app: localdns-corefile-patch
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: localdns-corefile-hotfix
+        app: localdns-corefile-patch
     spec:
       hostPID: true
       # Uncomment to target one node pool first.
@@ -26,7 +26,7 @@ spec:
       - operator: Exists
         effect: NoExecute
       containers:
-      - name: localdns-corefile-hotfix
+      - name: localdns-corefile-patch
         image: alpine:3.20
         imagePullPolicy: IfNotPresent
         securityContext:
@@ -193,9 +193,9 @@ spec:
               tmp="$(mktemp)"
               patch_corefile "$file" "$tmp"
               if ! cmp -s "$file" "$tmp"; then
-                  # Keep the first pre-hotfix backup for rollback; never overwrite it on later reconciles.
-                  if [ ! -f "${file}.pre-localdns-hotfix" ]; then
-                      cp "$file" "${file}.pre-localdns-hotfix"
+                  # Keep the first pre-patch backup for rollback; never overwrite it on later reconciles.
+                  if [ ! -f "${file}.pre-localdns-patch" ]; then
+                      cp "$file" "${file}.pre-localdns-patch"
                   fi
                   # Replace the file content without changing the path.
                   cat "$tmp" > "$file"
@@ -246,9 +246,9 @@ spec:
                       index($0, prefix) == 1 { $0 = prefix val }
                       { print }
                   ' "$ENV_FILE" > "$env_tmp"
-                  # Keep the first pre-hotfix environment backup for rollback; never overwrite it on later reconciles.
-                  if [ ! -f "${ENV_FILE}.pre-localdns-hotfix" ]; then
-                      cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-hotfix"
+                  # Keep the first pre-patch environment backup for rollback; never overwrite it on later reconciles.
+                  if [ ! -f "${ENV_FILE}.pre-localdns-patch" ]; then
+                      cp "$ENV_FILE" "${ENV_FILE}.pre-localdns-patch"
                   fi
                   # Write the patched environment file atomically enough for this node-local patch.
                   cat "$env_tmp" > "$ENV_FILE"
@@ -374,8 +374,8 @@ spec:
               ' "$file" > "$tmp"
 
               if ! cmp -s "$file" "$tmp"; then
-                  if [ ! -f "${file}.pre-localdns-hotfix" ]; then
-                      cp "$file" "${file}.pre-localdns-hotfix"
+                  if [ ! -f "${file}.pre-localdns-patch" ]; then
+                      cp "$file" "${file}.pre-localdns-patch"
                   fi
                   cat "$tmp" > "$file"
                   chmod 0644 "$file"

@@ -166,4 +166,4 @@ Each reconcile pass writes patched output to a temporary file and compares it
 with the existing file. It only writes when content differs.
 
 When a file is changed, the previous content is backed up with a
-`.pre-localdns-hotfix` suffix.
+`.pre-localdns-patch` suffix.
