@@ -10,7 +10,7 @@
 
 #### Features
 
-* [Node Auto Provisioning](https://aka.ms/aks/nap) can now be enabled on clusters with restricted `publicNetworkAccess`, including private API server VNet-integrated clusters using UDR, as long as the existing AKS-wide networking guardrails pass.
+* [Node Auto Provisioning](https://aka.ms/aks/nap) can now be enabled on clusters with restricted `publicNetworkAccess`, including private [API server VNet-integrated clusters](https://aka.ms/aks/api-server-vnet-integration) using UDR, as long as the existing AKS-wide networking guardrails pass.
 * [Automatic availability zone placement](https://aka.ms/aks/automatic-zonal-placement) is now enabled globally. Customers can create new VMSS or VirtualMachines node pools with `availabilityZones=["auto"]`, and existing VMSS node pools can be updated to `availabilityZones=["auto"]` after rollout completes.
 * [Long Term Support (LTS)](https://aka.ms/aks/lts) upgrade and enablement validation now allows existing agent pools on known but unsupported Kubernetes versions when they remain within the target control plane version-skew policy. [PR#16515988](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16515988) (PM: @stgriffi)
 
@@ -18,7 +18,6 @@
 
 * [Prepared Image Specification (PIS)](https://aka.ms/aks/prepared-image-spec) is now available in public preview. PIS allows you to create preconfigured node images with your required container images and node customizations already applied, helping to reduce node startup times.
 * Customers using preview API version `2026-01-02-preview` or later can associate a Capacity Reservation Group with an existing node pool. Zonal node pools perform a rolling cordon, drain, and reboot; non-zero regional pools must still be scaled to zero first. [PR#16584899](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16584899) (PM: @stgriffi)
-* `Microsoft.ContainerService/AlertConfigurationPreview` registration is now auto-approved in public cloud. Customers must still explicitly register the preview feature before using alert configuration operations. [PR#16601729](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16601729) (PM: @mamortat)
 
 #### Behavioral changes
 
