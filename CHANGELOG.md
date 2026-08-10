@@ -57,6 +57,11 @@
 * AKS Azure Linux images:
   * v3.0 - [202607.20.0](vhd-notes/AzureLinuxv3/202607.20.0.txt).
   * v3.0 - [202607.29.0](vhd-notes/AzureLinuxv3/202607.29.0.txt).
+* AKS Azure Container Linux images:
+  * Gen2 Trusted Launch - [202607.20.0](vhd-notes/AzureContainerLinux/gen2tl/202607.20.0.txt).
+  * Gen2 Trusted Launch - [202607.29.0](vhd-notes/AzureContainerLinux/gen2tl/202607.29.0.txt).
+  * Arm64 Gen2 Trusted Launch - [202607.20.0](vhd-notes/AzureContainerLinux/arm64gen2tl/202607.20.0.txt).
+  * Arm64 Gen2 Trusted Launch - [202607.29.0](vhd-notes/AzureContainerLinux/arm64gen2tl/202607.29.0.txt).
 * AKS Ubuntu images:
   * Ubuntu 22.04 - [202607.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.20.0.txt).
   * Ubuntu 22.04 - [202607.29.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.29.0.txt).
