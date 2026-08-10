@@ -174,8 +174,8 @@ kubectl apply -f localdns-corefile-rollback-ds.yaml
 Do not run the patch DaemonSet and rollback DaemonSet at the same time. If both
 are running, they can fight over the same LocalDNS files.
 
-The rollback DaemonSet restores these files from their `.pre-localdns-patch`
-backups when the backups exist:
+The rollback DaemonSet requires all three `.pre-localdns-patch` backups before
+it restores anything, so it does not partially roll back a node:
 
 ```text
 /etc/localdns/environment
@@ -186,16 +186,15 @@ backups when the backups exist:
 This restores the original pre-patch content exactly, including removing
 `reload 10s` if it was introduced by the patch DaemonSet.
 
-If it restores any file, it restarts `localdns` once on that node so the running
-CoreDNS process loads the restored Corefile. It writes this marker after the
-successful restart:
+If it restores any file, it restarts `localdns` so the running CoreDNS process
+loads the restored Corefile. Rollback does not use a one-time restart marker:
+because rollback restores the original Corefile and may remove `reload 10s`,
+each later repair must restart `localdns` again to ensure the running process
+loads the restored file.
 
-```text
-/opt/azure/containers/localdns/.localdns-corefile-rollback-restarted
-```
-
-Each reconcile pass also verifies rollback by checking that the restored
-`updated.localdns.corefile` does not contain patch directives:
+Each reconcile pass also verifies rollback by checking that all three files
+match their backups exactly and that the restored `updated.localdns.corefile`
+does not contain patch directives:
 
 ```text
 reload 10s
