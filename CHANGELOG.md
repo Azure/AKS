@@ -12,8 +12,8 @@
 
 * [Node Auto Provisioning](https://aka.ms/aks/nap) can now be enabled on clusters with restricted `publicNetworkAccess`, including private [API server VNet-integrated clusters](https://aka.ms/aks/api-server-vnet-integration) using UDR, as long as the existing AKS-wide networking guardrails pass.
 * [Automatic availability zone placement](https://aka.ms/aks/automatic-zonal-placement) is now enabled globally. Customers can create new VMSS or VirtualMachines node pools with `availabilityZones=["auto"]`, and existing VMSS node pools can be updated to `availabilityZones=["auto"]` after rollout completes.
-* [Long Term Support (LTS)](https://aka.ms/aks/lts) upgrade and enablement validation now allows existing agent pools on known but unsupported Kubernetes versions when they remain within the target control plane version-skew policy. [PR#16515988](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16515988) (PM: @stgriffi)
-
+* AKS now allows control-plane only upgrades to AKS [Long Term Support (LTS)](https://aka.ms/aks/lts) as long as the [version skew policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#what-is-the-allowed-difference-in-versions-between-the-control-plane-and-node-pools) is satisfied. This allows user to more safely upgrade into LTS by first upgrading the conrol plane, validating functionality, and then upgrading node pools.
+* [AKS Agent Pool Rollback](https://learn.microsoft.com/azure/aks/roll-back-node-pool-version) is now generally available. AKS agent pool version rollback lets you restore a node pool to its previous Kubernetes version and node image after an upgrade issue, minimizing downtime and maintaining business continuity.
 #### Preview features
 
 * [Prepared Image Specification (PIS)](https://aka.ms/aks/prepared-image-spec) is now available in public preview. PIS allows you to create preconfigured node images with your required container images and node customizations already applied, helping to reduce node startup times.
@@ -35,7 +35,6 @@
 #### Bug fixes
 
 * Fixed an [AKS Automatic](https://aka.ms/aks/automatic-networking) issue where App Routing on Kubernetes 1.36+ clusters could incorrectly default to NGINX instead of Istio/Gateway API mode during cluster creation. 
-* [Prepared Image Specification](https://aka.ms/aks/prepared-image-spec) node pool failures now identify the specific container image that couldn't be cached, making image pull failures directly actionable without exposing command output. 
 * Fixed quota validation for agent pool VM size changes to use the observed VMSS SKU when available, reducing missed quota failures caused by stale VM-size data. [PR#16686692](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16686692) (AI-flagged: bug-fix)
 
 #### Component updates
