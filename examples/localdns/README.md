@@ -174,6 +174,17 @@ kubectl apply -f localdns-corefile-rollback-ds.yaml
 Do not run the patch DaemonSet and rollback DaemonSet at the same time. If both
 are running, they can fight over the same LocalDNS files.
 
+Both DaemonSets also write node-local active markers and refuse to reconcile if
+the opposite DaemonSet is active on the same node:
+
+```text
+/opt/azure/containers/localdns/.localdns-corefile-patch-active
+/opt/azure/containers/localdns/.localdns-corefile-rollback-active
+```
+
+The markers contain the host PID of the active DaemonSet shell. If a marker is
+stale because that process exited, the next reconcile pass removes it.
+
 The rollback DaemonSet requires all three `.pre-localdns-patch` backups before
 it restores anything, so it does not partially roll back a node:
 

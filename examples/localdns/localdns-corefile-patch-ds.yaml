@@ -78,8 +78,47 @@ spec:
           UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
           # Marker showing this DaemonSet already restarted localdns once after patching this node.
           LOCALDNS_RESTART_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-restarted"
+          # Active markers prevent the patch and rollback DaemonSets from fighting over the same files.
+          LOCALDNS_PATCH_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-active"
+          LOCALDNS_ROLLBACK_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-rollback-active"
           # Reconcile functions set this when they mutate any file.
           CHANGED=0
+
+          marker_is_active() {
+              marker="$1"
+              [ -f "$marker" ] || return 1
+
+              pid="$(cat "$marker" 2>/dev/null || true)"
+              case "$pid" in
+                  ""|*[!0-9]*)
+                      echo "Removing stale active marker with invalid pid: $marker"
+                      rm -f "$marker"
+                      return 1
+                      ;;
+              esac
+
+              if kill -0 "$pid" 2>/dev/null; then
+                  return 0
+              fi
+
+              echo "Removing stale active marker for exited pid $pid: $marker"
+              rm -f "$marker"
+              return 1
+          }
+
+          cleanup_patch_active_marker() {
+              if [ -f "$LOCALDNS_PATCH_ACTIVE_MARKER" ] && [ "$(cat "$LOCALDNS_PATCH_ACTIVE_MARKER" 2>/dev/null || true)" = "$$" ]; then
+                  rm -f "$LOCALDNS_PATCH_ACTIVE_MARKER"
+              fi
+          }
+
+          if [ -d "$LOCALDNS_DIR" ]; then
+              echo "$$" > "$LOCALDNS_PATCH_ACTIVE_MARKER"
+              trap cleanup_patch_active_marker EXIT
+              trap 'cleanup_patch_active_marker; exit 0' INT TERM
+          else
+              echo "LocalDNS directory $LOCALDNS_DIR is missing; active marker was not written"
+          fi
 
           # Patch a rendered CoreDNS Corefile.
           patch_corefile() {
@@ -262,6 +301,11 @@ spec:
 
           # Run one idempotent reconciliation pass.
           reconcile_once() {
+              if marker_is_active "$LOCALDNS_ROLLBACK_ACTIVE_MARKER"; then
+                  echo "Refusing to patch: localdns-corefile-rollback is active on this node. Delete the rollback DaemonSet before applying the patch DaemonSet."
+                  return 0
+              fi
+
               # Reset the change flag for this pass.
               CHANGED=0
               # Patch persisted Corefile payloads used by localdns.sh on service start.
