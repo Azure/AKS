@@ -49,7 +49,6 @@
 * Azure Disk CSI Driver has been upgraded to [`v1.33.11`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.11) on AKS 1.34 and [`v1.34.5`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.5) on AKS 1.35 and 1.36.
 * Azure Monitor managed service for Prometheus add-on was updated to the [07-27-2026 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-27-2026), including collector image updates and kube-state-metrics `v2.19.1-2`. 
 * Container Insights has been upgraded to [`3.6.0`](https://github.com/microsoft/Docker-Provider/releases/tag/3.6.0).
-* [AgentBaker](https://github.com/Azure/AgentBaker/releases) was updated to `v0.20260806.1`, refreshing the AKS node image build inputs for this release. 
 * AKS Azure Linux images:
   * v3.0 - [202607.20.0](vhd-notes/AzureLinuxv3/202607.20.0.txt).
   * v3.0 - [202607.29.0](vhd-notes/AzureLinuxv3/202607.29.0.txt).
