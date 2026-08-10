@@ -16,6 +16,8 @@ spec:
       labels:
         app: localdns-corefile-patch
     spec:
+      # The container uses hostPID plus nsenter so file edits and systemctl commands
+      # run in the node's namespaces, not only inside the container.
       hostPID: true
       # Uncomment to target one node pool first.
       # nodeSelector:
@@ -79,11 +81,14 @@ spec:
           # Marker showing this DaemonSet already restarted localdns once after patching this node.
           LOCALDNS_RESTART_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-restarted"
           # Active markers prevent the patch and rollback DaemonSets from fighting over the same files.
+          # Each marker contains the host PID of the DaemonSet shell that owns it.
           LOCALDNS_PATCH_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-active"
           LOCALDNS_ROLLBACK_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-rollback-active"
           # Reconcile functions set this when they mutate any file.
           CHANGED=0
 
+          # Return success only when a marker points at a still-running process.
+          # Invalid or dead-PID markers are treated as stale and removed.
           marker_is_active() {
               marker="$1"
               [ -f "$marker" ] || return 1
@@ -106,12 +111,16 @@ spec:
               return 1
           }
 
+          # Remove only this process's active marker. If another patch pod replaced
+          # the marker, do not delete the other process's marker.
           cleanup_patch_active_marker() {
               if [ -f "$LOCALDNS_PATCH_ACTIVE_MARKER" ] && [ "$(cat "$LOCALDNS_PATCH_ACTIVE_MARKER" 2>/dev/null || true)" = "$$" ]; then
                   rm -f "$LOCALDNS_PATCH_ACTIVE_MARKER"
               fi
           }
 
+          # Publish this pod's active marker before reconciling so a rollback pod on
+          # the same node can refuse to run instead of racing this patcher.
           if [ -d "$LOCALDNS_DIR" ]; then
               echo "$$" > "$LOCALDNS_PATCH_ACTIVE_MARKER"
               trap cleanup_patch_active_marker EXIT
@@ -301,6 +310,8 @@ spec:
 
           # Run one idempotent reconciliation pass.
           reconcile_once() {
+              # Rollback and patch must not run on the same node at the same time.
+              # If rollback is active, leave files unchanged and make the reason visible in logs.
               if marker_is_active "$LOCALDNS_ROLLBACK_ACTIVE_MARKER"; then
                   echo "Refusing to patch: localdns-corefile-rollback is active on this node. Delete the rollback DaemonSet before applying the patch DaemonSet."
                   return 0
