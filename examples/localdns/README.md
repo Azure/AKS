@@ -194,6 +194,16 @@ successful restart:
 /opt/azure/containers/localdns/.localdns-corefile-rollback-restarted
 ```
 
+Each reconcile pass also verifies rollback by checking that the restored
+`updated.localdns.corefile` does not contain patch directives:
+
+```text
+reload 10s
+prefer_udp
+health_check 5s
+failfast_all_unhealthy_upstreams
+```
+
 After rollback is verified, delete the rollback DaemonSet:
 
 ```bash

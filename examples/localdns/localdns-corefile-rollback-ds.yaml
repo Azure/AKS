@@ -84,24 +84,36 @@ spec:
               echo "Restored $file from $backup"
           }
 
+          verify_rollback() {
+              if grep -nE "reload 10s|prefer_udp|health_check 5s|failfast_all_unhealthy_upstreams" "$UPDATED_LOCALDNS_CORE_FILE"; then
+                  echo "Rollback verification failed: patch directives still exist in $UPDATED_LOCALDNS_CORE_FILE"
+                  return 1
+              fi
+
+              echo "Rollback verification passed: patch directives are absent from $UPDATED_LOCALDNS_CORE_FILE"
+          }
+
           reconcile_once() {
               CHANGED=0
 
               restore_backup_if_present "$ENV_FILE"
               restore_backup_if_present "$LOCALDNS_CORE_FILE"
               restore_backup_if_present "$UPDATED_LOCALDNS_CORE_FILE"
-              if [ "$CHANGED" -eq 1 ]; then
+
               if [ "$CHANGED" -eq 1 ]; then
                   if [ ! -f "$LOCALDNS_ROLLBACK_RESTART_MARKER" ]; then
                       echo "Restored LocalDNS files; restarting localdns once"
                       systemctl restart localdns
                       systemctl is-active localdns
+                      verify_rollback
                       date -u +"%Y-%m-%dT%H:%M:%SZ" > "$LOCALDNS_ROLLBACK_RESTART_MARKER"
                   else
                       echo "Restored LocalDNS files; localdns was already restarted once by rollback"
+                      verify_rollback
                   fi
               else
                   echo "LocalDNS files already match rollback backups"
+                  verify_rollback
               fi
           }
 
