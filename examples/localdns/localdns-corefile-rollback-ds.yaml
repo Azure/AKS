@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: localdns-corefile-rollback
+  namespace: kube-system
+  labels:
+    app: localdns-corefile-rollback
+spec:
+  selector:
+    matchLabels:
+      app: localdns-corefile-rollback
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: localdns-corefile-rollback
+    spec:
+      hostPID: true
+      # Uncomment to target one node pool first.
+      # nodeSelector:
+      #   agentpool: default
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
+      containers:
+      - name: localdns-corefile-rollback
+        image: alpine:3.20
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        # Keep reconciling so regenerated files are restored while the rollback DaemonSet is present.
+        - name: RECONCILE_INTERVAL_SECONDS
+          value: "60"
+        command:
+        - nsenter
+        - --target
+        - "1"
+        - --mount
+        - --uts
+        - --ipc
+        - --net
+        - --pid
+        - --
+        - sh
+        - -c
+        - |
+          # Exit on unset variables and failed commands so partial rollback does not look successful.
+          set -eu
+
+          # localdns.service reads persisted Corefile payloads from this environment file.
+          ENV_FILE="/etc/localdns/environment"
+          # AgentBaker installs the LocalDNS CoreDNS binary, script, and Corefiles under this directory.
+          LOCALDNS_DIR="/opt/azure/containers/localdns"
+          # localdns.sh regenerates this base Corefile from /etc/localdns/environment on startup.
+          LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
+          # localdns.sh starts CoreDNS with this post-processed Corefile.
+          UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
+          # Marker showing this DaemonSet already restarted localdns once after restoring this node.
+          LOCALDNS_ROLLBACK_RESTART_MARKER="${LOCALDNS_DIR}/.localdns-corefile-rollback-restarted"
+          # Reconcile functions set this when they restore any file.
+          CHANGED=0
+
+          restore_backup_if_present() {
+              file="$1"
+              backup="${file}.pre-localdns-patch"
+
+              if [ ! -f "$backup" ]; then
+                  echo "No rollback backup for $file"
+                  return 0
+              fi
+
+              if cmp -s "$file" "$backup"; then
+                  echo "$file already matches rollback backup"
+                  return 0
+              fi
+
+              cp "$backup" "$file"
+              chmod 0644 "$file"
+              CHANGED=1
+              echo "Restored $file from $backup"
+          }
+
+          reconcile_once() {
+              CHANGED=0
+
+              restore_backup_if_present "$ENV_FILE"
+              restore_backup_if_present "$LOCALDNS_CORE_FILE"
+              restore_backup_if_present "$UPDATED_LOCALDNS_CORE_FILE"
+              if [ "$CHANGED" -eq 1 ]; then
+              if [ "$CHANGED" -eq 1 ]; then
+                  if [ ! -f "$LOCALDNS_ROLLBACK_RESTART_MARKER" ]; then
+                      echo "Restored LocalDNS files; restarting localdns once"
+                      systemctl restart localdns
+                      systemctl is-active localdns
+                      date -u +"%Y-%m-%dT%H:%M:%SZ" > "$LOCALDNS_ROLLBACK_RESTART_MARKER"
+                  else
+                      echo "Restored LocalDNS files; localdns was already restarted once by rollback"
+                  fi
+              else
+                  echo "LocalDNS files already match rollback backups"
+              fi
+          }
+
+          # Keep the rollback DaemonSet alive and restore files if something rewrites them.
+          # Delete this DaemonSet after rollback is verified.
+          while true; do
+              reconcile_once
+              sleep "${RECONCILE_INTERVAL_SECONDS:-60}"
+          done
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
