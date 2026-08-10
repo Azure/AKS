@@ -203,6 +203,15 @@ because rollback restores the original Corefile and may remove `reload 10s`,
 each later repair must restart `localdns` again to ensure the running process
 loads the restored file.
 
+Rollback also removes the patch DaemonSet's one-time restart marker:
+
+```text
+/opt/azure/containers/localdns/.localdns-corefile-patch-restarted
+```
+
+This ensures a later patch reapply on the same node performs its required
+one-time `localdns` restart.
+
 Each reconcile pass also verifies rollback by checking that all three files
 match their backups exactly and that the restored `updated.localdns.corefile`
 does not contain patch directives:

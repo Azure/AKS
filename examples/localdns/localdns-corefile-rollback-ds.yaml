@@ -68,6 +68,9 @@ spec:
           # Each marker contains the host PID of the DaemonSet shell that owns it.
           LOCALDNS_PATCH_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-active"
           LOCALDNS_ROLLBACK_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-rollback-active"
+          # Remove the patch restart marker after rollback restores files so a later patch reapply
+          # gets its required one-time restart on this node.
+          LOCALDNS_PATCH_RESTART_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-restarted"
           # Reconcile functions set this when they restore any file.
           CHANGED=0
 
@@ -191,6 +194,9 @@ spec:
               restore_backup_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
               if [ "$CHANGED" -eq 1 ]; then
+                  # Rollback restored the original Corefile, which may remove reload 10s.
+                  # Clear the patch restart marker so a future patch reapply restarts localdns once.
+                  rm -f "$LOCALDNS_PATCH_RESTART_MARKER"
                   # Restart whenever rollback restored files because the restored Corefile may not contain reload 10s.
                   echo "Restored LocalDNS files; restarting localdns"
                   systemctl restart localdns
