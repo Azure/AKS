@@ -86,6 +86,7 @@ spec:
           LOCALDNS_ROLLBACK_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-rollback-active"
           # Reconcile functions set this when they mutate any file.
           CHANGED=0
+          ACTIVE_MARKER_PID=""
 
           # Return success only when a marker points at a still-running process.
           # Invalid or dead-PID markers are treated as stale and removed.
@@ -114,7 +115,11 @@ spec:
           # Remove only this process's active marker. If another patch pod replaced
           # the marker, do not delete the other process's marker.
           cleanup_patch_active_marker() {
-              if [ -f "$LOCALDNS_PATCH_ACTIVE_MARKER" ] && [ "$(cat "$LOCALDNS_PATCH_ACTIVE_MARKER" 2>/dev/null || true)" = "$$" ]; then
+              if [ -n "$ACTIVE_MARKER_PID" ]; then
+                  kill "$ACTIVE_MARKER_PID" 2>/dev/null || true
+              fi
+
+              if [ -f "$LOCALDNS_PATCH_ACTIVE_MARKER" ] && [ "$(cat "$LOCALDNS_PATCH_ACTIVE_MARKER" 2>/dev/null || true)" = "$ACTIVE_MARKER_PID" ]; then
                   rm -f "$LOCALDNS_PATCH_ACTIVE_MARKER"
               fi
           }
@@ -122,7 +127,11 @@ spec:
           # Publish this pod's active marker before reconciling so a rollback pod on
           # the same node can refuse to run instead of racing this patcher.
           if [ -d "$LOCALDNS_DIR" ]; then
-              echo "$$" > "$LOCALDNS_PATCH_ACTIVE_MARKER"
+              # Kubernetes command-arg expansion treats $$ specially, so use a background
+              # sleep process as the active marker's live PID instead of the shell's $$.
+              sleep infinity &
+              ACTIVE_MARKER_PID="$!"
+              echo "$ACTIVE_MARKER_PID" > "$LOCALDNS_PATCH_ACTIVE_MARKER"
               trap cleanup_patch_active_marker EXIT
               trap 'cleanup_patch_active_marker; exit 0' INT TERM
           else
