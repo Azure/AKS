@@ -39,7 +39,6 @@
 
 #### Component updates
 
-* The Application Gateway for Containers ALB add-on is now aligned with AKS minor versions. AKS automatically selects the compatible ALB controller image during cluster upgrades, reducing controller and feature-flag incompatibilities. [PR#16404281](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16404281) (PM: @jstrom)
 * [Node Auto Provisioning](https://aka.ms/aks/nap) has been updated to Karpenter provider Azure [`v1.14.0`](https://github.com/Azure/karpenter-provider-azure/releases#release-v1.14.0), adding support for the `Balanced` consolidation policy to reduce node churn during consolidation. 
 * Azure Policy add-on components were updated: Gatekeeper was bumped to [`3.23.0`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#gatekeeper-3230), and Azure Policy add-on was bumped to [`1.17.0`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1170). 
 * Azure File CSI Driver has been upgraded to [`v1.34.7`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.7) on AKS 1.34 and [`v1.35.6`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.6) on AKS 1.35 and 1.36. 
