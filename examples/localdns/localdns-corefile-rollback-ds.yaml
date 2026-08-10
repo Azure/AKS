@@ -16,6 +16,8 @@ spec:
       labels:
         app: localdns-corefile-rollback
     spec:
+      # The container needs hostPID plus nsenter so systemctl commands run in the node's namespaces,
+      # not only inside the container.
       hostPID: true
       # Uncomment to target one node pool first.
       # nodeSelector:
@@ -51,6 +53,9 @@ spec:
           # Exit on unset variables and failed commands so partial rollback does not look successful.
           set -eu
 
+          # Rollback restores the same node-local files that the patch DaemonSet changed.
+          # These paths are on the host because the container is running through nsenter.
+
           # localdns.service reads persisted Corefile payloads from this environment file.
           ENV_FILE="/etc/localdns/environment"
           # AgentBaker installs the LocalDNS CoreDNS binary, script, and Corefiles under this directory.
@@ -64,26 +69,33 @@ spec:
           # Reconcile functions set this when they restore any file.
           CHANGED=0
 
+          # Restore one file from the backup created by the patch DaemonSet.
+          # Missing backups are allowed so the rollback DaemonSet can run on nodes that were never patched.
           restore_backup_if_present() {
               file="$1"
               backup="${file}.pre-localdns-patch"
 
+              # If no backup exists, there is nothing for rollback to restore on this node/file.
               if [ ! -f "$backup" ]; then
                   echo "No rollback backup for $file"
                   return 0
               fi
 
+              # If the current file already equals the backup, keep the pass idempotent.
               if cmp -s "$file" "$backup"; then
                   echo "$file already matches rollback backup"
                   return 0
               fi
 
+              # Restore the exact pre-patch content, including removing reload 10s if the patch added it.
               cp "$backup" "$file"
               chmod 0644 "$file"
               CHANGED=1
               echo "Restored $file from $backup"
           }
 
+          # Verify the running rollback target file no longer contains any directives added by the patch.
+          # This intentionally checks updated.localdns.corefile because localdns runs CoreDNS with this file.
           verify_rollback() {
               if grep -nE "reload 10s|prefer_udp|health_check 5s|failfast_all_unhealthy_upstreams" "$UPDATED_LOCALDNS_CORE_FILE"; then
                   echo "Rollback verification failed: patch directives still exist in $UPDATED_LOCALDNS_CORE_FILE"
@@ -93,21 +105,30 @@ spec:
               echo "Rollback verification passed: patch directives are absent from $UPDATED_LOCALDNS_CORE_FILE"
           }
 
+          # Run one rollback reconciliation pass:
+          # 1. Restore the three backup files.
+          # 2. Restart localdns once if anything was restored and this node has not already been restarted.
+          # 3. Verify patch directives are absent from updated.localdns.corefile.
           reconcile_once() {
               CHANGED=0
 
+              # Restore persisted payloads first so future localdns restarts do not regenerate patched Corefiles.
               restore_backup_if_present "$ENV_FILE"
+              # Restore the decoded Corefile and the Corefile currently used by the running service.
               restore_backup_if_present "$LOCALDNS_CORE_FILE"
               restore_backup_if_present "$UPDATED_LOCALDNS_CORE_FILE"
 
               if [ "$CHANGED" -eq 1 ]; then
                   if [ ! -f "$LOCALDNS_ROLLBACK_RESTART_MARKER" ]; then
+                      # Restart once so the running CoreDNS process loads the restored Corefile.
                       echo "Restored LocalDNS files; restarting localdns once"
                       systemctl restart localdns
                       systemctl is-active localdns
                       verify_rollback
+                      # Marker prevents this rollback DaemonSet from restarting localdns every 60 seconds.
                       date -u +"%Y-%m-%dT%H:%M:%SZ" > "$LOCALDNS_ROLLBACK_RESTART_MARKER"
                   else
+                      # Files were repaired again, but localdns already had the one rollback restart.
                       echo "Restored LocalDNS files; localdns was already restarted once by rollback"
                       verify_rollback
                   fi
