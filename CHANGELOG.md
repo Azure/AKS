@@ -38,7 +38,6 @@
 
 * Fixed an AKS Automatic issue where App Routing on Kubernetes 1.36+ clusters could incorrectly default to NGINX instead of Istio/Gateway API mode during cluster creation. [PR#16583955](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16583955) (AI-flagged: bug-fix)
 * [Prepared Image Specification](https://aka.ms/aks/prepared-image-spec) node pool failures now identify the specific container image that couldn't be cached, making image pull failures directly actionable without exposing command output. 
-* Fixed an issue where AKS could incorrectly reject valid VMSS automatic zone placement requests by validating Microsoft.Compute preview feature registration from a stale AKS subscription feature snapshot. [PR#16670466](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16670466) (AI-flagged: bug-fix)
 * Fixed quota validation for agent pool VM size changes to use the observed VMSS SKU when available, reducing missed quota failures caused by stale VM-size data. [PR#16686692](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16686692) (AI-flagged: bug-fix)
 
 #### Component updates
