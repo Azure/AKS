@@ -14,6 +14,7 @@
 * [Automatic availability zone placement](https://aka.ms/aks/automatic-zonal-placement) is now enabled globally. Customers can create new VMSS or VirtualMachines node pools with `availabilityZones=["auto"]`, and existing VMSS node pools can be updated to `availabilityZones=["auto"]` after rollout completes.
 * AKS now allows control-plane only upgrades to AKS [Long Term Support (LTS)](https://aka.ms/aks/lts) as long as the [version skew policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#what-is-the-allowed-difference-in-versions-between-the-control-plane-and-node-pools) is satisfied. This allows user to more safely upgrade into LTS by first upgrading the control plane, validating functionality, and then upgrading node pools.
 * [AKS Agent Pool Rollback](https://learn.microsoft.com/azure/aks/roll-back-node-pool-version) is now generally available. AKS agent pool version rollback lets you restore a node pool to its previous Kubernetes version and node image after an upgrade issue, minimizing downtime and maintaining business continuity.
+
 #### Preview features
 
 * [Prepared Image Specification (PIS)](https://aka.ms/aks/prepared-image-spec) is now available in public preview. PIS allows you to create preconfigured node images with your required container images and node customizations already applied, helping to reduce node startup times.
@@ -34,7 +35,6 @@
 #### Bug fixes
 
 * Fixed an [AKS Automatic](https://aka.ms/aks/automatic-networking) issue where App Routing on Kubernetes 1.36+ clusters could incorrectly default to NGINX instead of Istio/Gateway API mode during cluster creation. 
-* Fixed quota validation for agent pool VM size changes to use the observed VMSS SKU when available, reducing missed quota failures caused by stale VM-size data. [PR#16686692](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16686692) (AI-flagged: bug-fix)
 
 #### Component updates
 
@@ -49,8 +49,8 @@
   * v3.0 - [202607.20.0](vhd-notes/AzureLinuxv3/202607.20.0.txt).
   * v3.0 - [202607.29.0](vhd-notes/AzureLinuxv3/202607.29.0.txt).
 * AKS Azure Container Linux images:
-  * Gen2 Trusted Launch - [202607.20.0](vhd-notes/AzureContainerLinuxv3/202607.20.0.txt).
-  * Gen2 Trusted Launch - [202607.29.0](vhd-notes/AzureContainerLinuxv3/202607.29.0.txt).
+  * ACLv3 - [202607.20.0](vhd-notes/AzureContainerLinuxv3/202607.20.0.txt).
+  * ACLv3 - [202607.29.0](vhd-notes/AzureContainerLinuxv3/202607.29.0.txt).
 * AKS Ubuntu images:
   * Ubuntu 22.04 - [202607.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.20.0.txt).
   * Ubuntu 22.04 - [202607.29.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.29.0.txt).
