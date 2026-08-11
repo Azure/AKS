@@ -12,10 +12,6 @@
   * AppNet 1.2 ([Istio 1.27](https://istio.io/latest/news/releases/1.27.x/))
 * AppNet is now available in public preview in additional Azure regions, including Central US, East US, East US 2, Japan East, North Central US, North Europe, South India, Southeast Asia, West Central US, West US 2, and West US 3.
 
-### Features
-
-* **Overlapping CIDR support for private gateways.** A new pod-route init container removes the previous restriction that member and gateway pod CIDRs could not overlap, so private multicluster egress works across clusters with overlapping address space.
-
 ### Behavioral changes
 
 * Deleting an AppNet resource now cascade-deletes its child members instead of failing when members still exist, so cleanup no longer requires manually removing members first.
