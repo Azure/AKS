@@ -29,7 +29,7 @@
 * [Istio Gateway API](https://learn.microsoft.com/azure/aks/istio-gateway-api) deployments now set `automountServiceAccountToken` to `false`, improving the default security posture and unblocking environments with Azure Policies that require pods to disable service account token auto-mounting.
 * AKS now validates [GPU MIG](https://aka.ms/aks/migs) instance profile slice width against VM SKU capacity, preventing unsupported MIG profiles from being accepted on lower-capacity GPU SKUs.
 * The [Application Gateway for Containers ALB add-on](https://learn.microsoft.com/azure/application-gateway/for-containers/application-gateway-for-containers-components#:~:text=Application%20Gateway%20for%20Containers%20AKS%20managed%20add%2Don) is now aligned with AKS minor versions. AKS automatically selects the compatible ALB controller image during cluster upgrades, reducing controller and feature-flag incompatibilities. 
-* AKS now rejects Entra ID SSH configuration on AzureContainerLinux agent pools because the extension is incompatible with immutable OS nodes and can make nodes unreachable. [PR#16691090](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16691090) (AI-flagged: validation-change)
+* AKS now rejects [Entra ID SSH](https://aka.ms/aks/ssh) configuration on AzureContainerLinux agent pools because the extension is incompatible with immutable OS nodes and can make nodes unreachable.
 
 #### Bug fixes
 
