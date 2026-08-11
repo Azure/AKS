@@ -4,8 +4,6 @@
 
 > Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20260807`.
 
-### Announcements
-
 ### Release notes
 
 #### Features
