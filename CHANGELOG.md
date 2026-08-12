@@ -27,12 +27,14 @@
 * Fixed leftover mesh resources (Helm releases and overlay configuration) being orphaned on a member cluster after it left the mesh; these are now cleaned up.
 * Fixed member deletion being stuck in a retry loop when the underlying infrastructure had already been removed; already-deleted resources are now treated as success.
 * Fixed empty mesh control-plane (`istiod`) diagnostic logs in customer Log Analytics workspaces caused by an incorrect resource-ID annotation.
+* Fixed member join retrying when the AKS cluster had a customer-fixable configuration error; member join now fails fast and returns the validation error so it can be corrected.
+* Fixed failed AppLink and member operations returning a generic `UnknownError` instead of the specific reason; actionable errors, such as joining a cluster already connected to another AppLink, now explain what went wrong and how to resolve it.
 
 ### Component updates
 
-* AppNet 1.3 has been updated to [Istio 1.28.8](https://istio.io/latest/news/releases/1.28.x/announcing-1.28.8/).
-* AppNet 1.4 has been updated to [Istio 1.29.4](https://istio.io/latest/news/releases/1.29.x/announcing-1.29.4/).
-* AppNet 1.5 (Istio 1.30) is now available. See [Istio 1.30](https://istio.io/latest/news/releases/1.30.x/announcing-1.30.0/).
+* AppNet 1.3 has been updated to [Istio 1.28.10](https://istio.io/latest/news/releases/1.28.x/announcing-1.28.10/).
+* AppNet 1.4 has been updated to [Istio 1.29.6](https://istio.io/latest/news/releases/1.29.x/announcing-1.29.6/).
+* AppNet 1.5 (Istio 1.30) is now available, updated to [Istio 1.30.3](https://istio.io/latest/news/releases/1.30.x/announcing-1.30.3/).
 
 ---
 
