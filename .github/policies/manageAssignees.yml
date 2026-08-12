@@ -387,7 +387,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - robbiezhang
-              - kthakar1990
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
         # Documentation
