@@ -147,7 +147,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - Azure/aks-portal
-              - smsft
               - chandraneel
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
@@ -483,7 +482,6 @@ configuration:
           - mentionUsers:
               mentionees:
               - dipti-pai
-              - bavneetsingh16
               - ponatara
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
