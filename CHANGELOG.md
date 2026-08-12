@@ -14,7 +14,6 @@
 
 ### Behavioral changes
 
-* Deleting an AppNet resource now cascade-deletes its child members instead of failing when members still exist, so cleanup no longer requires manually removing members first.
 * AppNet now validates cluster prerequisites at member-join time and returns a clear, actionable error when a cluster is missing a required add-on (Microsoft Entra / AAD or the Gateway API add-on) or is running an AKS Kubernetes version below the minimum supported version, instead of failing opaquely later.
 * Clusters using the AKS managed Gateway API add-on no longer hit a CRD ownership conflict when joining a mesh; AppNet defers to the add-on-provided Gateway API CRDs.
 * Moving AppNet resources across resource groups or subscriptions is now blocked, as these move operations are not supported for AppNet.
