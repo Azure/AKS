@@ -73,8 +73,8 @@ keys in the manifests.
 | Module | Directory | What you'll do |
 |--------|-----------|----------------|
 | 1 — Infrastructure | [`1-infrastructure/`](1-infrastructure/) | Provision the AKS cluster, KubeRay + Kueue operators, Blob storage, workload identity, and pre-staged datasets with one `terraform apply` |
-| 2 — Kueue Queues | [`2-kueue-queues/`](2-kueue-queues/) | Apply ResourceFlavors and ClusterQueues — a single backpressure queue or two teams sharing a cohort with borrowing |
-| 3 — Workloads | [`3-workloads/`](3-workloads/) | Submit Ray examples: Aurora fine-tune, LLM training, batch inference (RayJob), and online serving (RayService) |
+| 2 — Kueue Queues | [`2-kueue-queues/`](2-kueue-queues/) | Apply ResourceFlavors and ClusterQueues — a single backpressure queue, two teams sharing a cohort with borrowing, or an autoscale queue that drives the cluster autoscaler on demand |
+| 3 — Workloads | [`3-workloads/`](3-workloads/) | Submit Ray examples: Aurora fine-tune, LLM training, batch inference (RayJob), online serving (RayService), and a cluster-autoscaler batch Job |
 
 Work through them in order — each module assumes the previous one is in place.
 
@@ -84,6 +84,7 @@ The workloads in Module 3:
 - **[LLM training](3-workloads/llm-training/)** — Distributed Qwen2.5-7B LoRA fine-tune with Ray Train and LLaMA-Factory (RayJob)
 - **[Batch inference](3-workloads/batch-inference/)** — Parallel inference over a dataset using Ray Data and ActorPool (RayJob)
 - **[Online serving](3-workloads/online-serving/)** — Aurora model served behind a stable HTTP endpoint with Ray Serve (RayService)
+- **[CAS batch job](3-workloads/cas-batch-job/)** — a plain batch Job that provisions capacity on demand via a Kueue ProvisioningRequest driving the AKS cluster autoscaler
 
 ## Prerequisites
 
