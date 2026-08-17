@@ -6,7 +6,7 @@
 
 ### Announcements and retirements
 
-* The following AppNet (Istio service mesh add-on) versions have been retired and are no longer supported. If using self-managed upgrade mode, upgrade to a currently supported version (see [Component updates](#component-updates)) following the [AppNet upgrade guide](https://learn.microsoft.com/en-us/azure/application-network/upgrades#initiate-an-upgrade).
+* The following AppNet versions have been retired and are no longer supported. If using self-managed upgrade mode, upgrade to a currently supported version (see [Component updates](#component-updates)) following the [AppNet upgrade guide](https://learn.microsoft.com/en-us/azure/application-network/upgrades#initiate-an-upgrade).
   * AppNet 1.0 ([Istio 1.25](https://istio.io/latest/news/releases/1.25.x/))
   * AppNet 1.1 ([Istio 1.26](https://istio.io/latest/news/releases/1.26.x/))
   * AppNet 1.2 ([Istio 1.27](https://istio.io/latest/news/releases/1.27.x/))
@@ -14,18 +14,18 @@
 
 ### Behavioral changes
 
-* AppNet now validates cluster prerequisites at member-join time and returns a clear, actionable error when a cluster is missing a required add-on (Microsoft Entra / AAD or the Gateway API add-on) or is running an AKS Kubernetes version below the minimum supported version, instead of failing opaquely later.
-* Clusters using the AKS managed Gateway API add-on no longer hit a CRD ownership conflict when joining a mesh; AppNet defers to the add-on-provided Gateway API CRDs.
+* AppNet now validates cluster prerequisites at member-join time and returns a clear, actionable error when a cluster is missing a required add-on (Microsoft Entra / AAD or the Managed Gateway API) or is running an AKS Kubernetes version below the minimum supported version, instead of failing opaquely later.
+* Clusters using AKS managed Gateway API no longer hit a CRD ownership conflict when joining a mesh; AppNet defers to the add-on-provided Gateway API CRDs.
 * Moving AppNet resources across resource groups or subscriptions is now blocked, as these move operations are not supported for AppNet.
 
 ### Bug fixes
 
-* Fixed an issue where `istiod` could fail to start after an intermediate certificate authority rotation, which could disrupt the entire mesh. Certificate rotation is now handled reliably.
-* Fixed multicluster east-west gateways missing a required network label, which caused `istiod` to silently skip cross-cluster endpoints so cross-cluster traffic did not flow.
+* Fixed an issue where the AppNet Managed Control Plane could fail to start after an intermediate certificate authority rotation, which could disrupt the entire mesh. Certificate rotation is now handled reliably.
+* Fixed multicluster east-west gateways missing a required network label, which caused cross-cluster traffic to fail.
 * Fixed member clusters using Microsoft Entra (managed identity) authentication being rejected on update (HTTP 400), which had blocked member updates and version upgrades.
-* Fixed leftover mesh resources (Helm releases and overlay configuration) being orphaned on a member cluster after it left the mesh; these are now cleaned up.
-* Fixed member deletion being stuck in a retry loop when the underlying infrastructure had already been removed; already-deleted resources are now treated as success.
-* Fixed empty mesh control-plane (`istiod`) diagnostic logs in customer Log Analytics workspaces caused by an incorrect resource-ID annotation.
+* Fixed leftover mesh resources being orphaned on a member cluster after it left the mesh; these are now cleaned up.
+* Fixed member deletion being stuck in a retry loop when the underlying cluster had already been removed; already-deleted resources are now treated as success.
+* Fixed empty AppNet Managed Control Plane diagnostic logs in customer Log Analytics workspaces caused by an incorrect resource-ID annotation.
 * Fixed member join retrying when the AKS cluster had a customer-fixable configuration error; member join now fails fast and returns the validation error so it can be corrected.
 * Fixed failed AppLink and member operations returning a generic `UnknownError` instead of the specific reason; actionable errors, such as joining a cluster already connected to another AppLink, now explain what went wrong and how to resolve it.
 
@@ -33,7 +33,7 @@
 
 * AppNet 1.3 has been updated to [Istio 1.28.10](https://istio.io/latest/news/releases/1.28.x/announcing-1.28.10/).
 * AppNet 1.4 has been updated to [Istio 1.29.6](https://istio.io/latest/news/releases/1.29.x/announcing-1.29.6/).
-* AppNet 1.5 (Istio 1.30) is now available, updated to [Istio 1.30.3](https://istio.io/latest/news/releases/1.30.x/announcing-1.30.3/).
+* AppNet 1.5 (Istio 1.30) is now available, using [Istio 1.30.3](https://istio.io/latest/news/releases/1.30.x/announcing-1.30.3/).
 
 ---
 
