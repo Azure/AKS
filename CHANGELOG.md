@@ -12,14 +12,11 @@
   * AppNet 1.2 ([Istio 1.27](https://istio.io/latest/news/releases/1.27.x/))
 * AppNet is now available in public preview in additional Azure regions, including Central US, East US, East US 2, Japan East, North Central US, North Europe, South India, Southeast Asia, West Central US, West US 2, and West US 3.
 
-### Behavioral changes
+### Bug fixes
 
 * AppNet now validates cluster prerequisites at member-join time and returns a clear, actionable error when a cluster is missing a required add-on (Microsoft Entra / AAD or the Managed Gateway API) or is running an AKS Kubernetes version below the minimum supported version, instead of failing opaquely later.
 * Clusters using AKS managed Gateway API no longer hit a CRD ownership conflict when joining a mesh; AppNet defers to the add-on-provided Gateway API CRDs.
 * Moving AppNet resources across resource groups or subscriptions is now blocked, as these move operations are not supported for AppNet.
-
-### Bug fixes
-
 * Fixed an issue where the AppNet Managed Control Plane could fail to start after an intermediate certificate authority rotation, which could disrupt the entire mesh. Certificate rotation is now handled reliably.
 * Fixed multicluster east-west gateways missing a required network label, which caused cross-cluster traffic to fail.
 * Fixed member clusters using Microsoft Entra (managed identity) authentication being rejected on update (HTTP 400), which had blocked member updates and version upgrades.
