@@ -5,6 +5,8 @@ description: "Learn how NVIDIA Grove scheduler works with Dynamo to schedule, st
 authors:
 - sachi-desai
 - ralph-squillace
+- ashna-mehrotra
+- devi-vasudevan
 tags: ["dynamo-series", "ai", "performance", "open-source"]
 ---
 

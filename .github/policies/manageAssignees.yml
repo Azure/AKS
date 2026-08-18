@@ -115,7 +115,7 @@ configuration:
         # Security
         - if:
           - hasLabel:
-              label: Security
+              label: security
           - not:
               isAssignedToSomeone
           then:
@@ -128,7 +128,7 @@ configuration:
         # Confidential Computing
         - if:
           - hasLabel:
-              label: azure/confidentialCompute
+              label: ConfidentialCompute
           - not:
               isAssignedToSomeone
           then:
@@ -352,18 +352,6 @@ configuration:
               - therealmitchconnors
               replyTemplate: ${mentionees} would you be able to assist?
               assignMentionees: True
-        # Mesh networking
-        - if:
-          - hasLabel:
-              label: mesh
-          - not:
-              isAssignedToSomeone
-          then:
-          - mentionUsers:
-              mentionees:
-              - therealmitchconnors
-              replyTemplate: ${mentionees} would you be able to assist?
-              assignMentionees: True
         # Copilot
         - if:
           - hasLabel:
@@ -417,7 +405,7 @@ configuration:
         # Azure Kubernetes Fleet Manager
         - if:
           - hasLabel:
-              label: fleet
+              label: fleet-manager
           - not:
               isAssignedToSomeone
           then:
