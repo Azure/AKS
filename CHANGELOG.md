@@ -21,7 +21,7 @@
 * Fixed an issue where multicluster east-west gateways were missing a required network label, causing cross-cluster traffic to fail.
 * Fixed an issue where member clusters using Microsoft Entra (managed identity) authentication were rejected on update, which had blocked member updates and version upgrades.
 * Fixed leftover mesh resources being orphaned on a member cluster after it left the mesh; these are now cleaned up.
-* Fixed member deletion being stuck in a retry loop when the underlying cluster had already been removed; already-deleted resources are now treated as success.
+* Fixed member deletion being stuck in a retry loop when the underlying cluster had already been removed; already-deleted resources are now treated as a success.
 * Fixed an issue where AppNet Managed Control Plane diagnostic logs were missing from customer Log Analytics workspaces.
 * Fixed an issue where member join would retry when the cluster had a customer-fixable configuration error; it now fails fast and returns the validation error so it can be corrected.
 * Fixed an issue where failed AppLink and member operations returned a generic error instead of the specific reason; actionable failures, such as joining a cluster already connected to another AppLink, now explain what went wrong and how to resolve it.
