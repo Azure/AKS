@@ -8,7 +8,9 @@ tags: ["automatic", "github-actions", "arc", "devops"]
 
 GitHub Actions Runner Controller (ARC), also known as GitHub Actions Runner Controller runner scale sets or GARC, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. It lets teams keep CI jobs close to the workloads they build, test, and deploy while still using the GitHub Actions experience developers already know.
 
-AKS Automatic is a great fit for this pattern because it removes much of the operational work around node management, scaling, and cluster defaults. But there is one important difference from a traditional bring-your-own-node-pool AKS cluster: AKS Automatic ships with production-oriented safeguards turned on. Those safeguards are helpful, but they also mean the default public ARC Helm values need a few adjustments before runner scale sets work cleanly.
+ARC runner scale sets work on AKS Automatic, and the combination is compelling: GitHub-native CI jobs, Kubernetes-native ephemeral runners, and an AKS mode that handles much of the cluster and node management for you. Running GARC on AKS also lets your runners live inside your Azure network, including private virtual networks, so CI jobs can reach private endpoints, internal services, and locked-down build dependencies without exposing them to the public internet.
+
+There is one important difference from a traditional bring-your-own-node-pool AKS cluster: AKS Automatic ships with production-oriented safeguards turned on. Those safeguards are helpful, but they also mean the default public ARC Helm values need a few adjustments before runner scale sets work cleanly. For third-party controllers and workload pods, be explicit about resource requests and image tags.
 
 This post walks through creating an AKS Automatic cluster, installing ARC, creating a repository-scoped runner scale set, and validating that a GitHub Actions workflow runs on an ephemeral runner pod.
 
@@ -422,8 +424,4 @@ az group delete \
 
 If any offline repository runners remain in GitHub after failed experiments, remove them from the repository's Actions runner settings.
 
-## Closing thoughts
-
-ARC runner scale sets work on AKS Automatic, and the combination is compelling: GitHub-native CI jobs, Kubernetes-native ephemeral runners, and an AKS mode that handles much of the cluster and node management for you.
-
-The main lesson is that AKS Automatic's defaults are intentionally production-minded. For third-party controllers and workload pods, be explicit about resource requests and image tags. Once those settings are in place, ARC can scale an ephemeral runner, pick up a queued GitHub Actions job, and run it successfully on AKS Automatic.
+Once those settings are in place, ARC can scale an ephemeral runner, pick up a queued GitHub Actions job, and run it successfully on AKS Automatic.
