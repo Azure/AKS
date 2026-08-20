@@ -6,11 +6,13 @@ authors: ["steve-griffith"]
 tags: ["automatic", "github-actions", "arc", "devops"]
 ---
 
-GitHub Actions Runner Controller, also known as GitHub ARC or ARC for short, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. In this walk through we'll set up ARC on AKS Automatic and run a real GitHub Actions job on an ephemeral runner pod.
+GitHub Actions Runner Controller, also known as GitHub ARC or ARC for short, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. In this walk through we'll set up ARC on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) and run a real GitHub Actions job on an ephemeral runner pod.
 
-The short version is that ARC runner scale sets work well on AKS Automatic once you add a few values that line up with the Automatic defaults. You get GitHub-native CI jobs, Kubernetes-native ephemeral runners, and an AKS mode that takes care of a lot of the cluster and node management for you. You also get a nice networking benefit: the runners can live inside your Azure network, including private virtual networks, so build jobs can reach private endpoints, internal services, and locked-down dependencies without putting those things on the public internet.
+The short version is that ARC runner scale sets work well on AKS Automatic once you add a few values that line up with the Automatic defaults. I like this combination because Automatic makes the cluster side really straightforward. It creates a production-ready AKS cluster with managed node pools, built-in monitoring, scaling, security settings, and other defaults that follow [AKS well-architected recommendations](https://learn.microsoft.com/azure/well-architected/aks/). For runner workloads specifically, the [pod readiness SLA](https://learn.microsoft.com/azure/aks/intro-aks-automatic#pod-readiness-sla) is also a nice fit because CI/CD jobs care a lot about predictable pod startup.
 
-The one thing to know up front is that AKS Automatic has production-minded safeguards enabled by default. That's a good thing, but it means the public ARC Helm chart defaults need a little tuning. In particular, we need to be explicit about resource requests and image tags.
+You still get the normal ARC benefits: GitHub-native CI jobs, Kubernetes-native ephemeral runners, and runners that can live inside your Azure network, including private virtual networks. That means build jobs can reach private endpoints, internal services, and locked-down dependencies without putting those things on the public internet.
+
+The one thing to know up front is that AKS Automatic is secure by default and has production-minded safeguards enabled. That's a good thing, but it means the public ARC Helm chart defaults need a little tuning. In particular, we need to be explicit about resource requests and image tags.
 
 Let's walk through the full setup.
 
