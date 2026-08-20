@@ -8,15 +8,17 @@ tags: ["automatic", "github-actions", "arc", "devops"]
 
 GitHub Actions Runner Controller, also known as GitHub ARC or ARC for short, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. In this walkthrough, we’ll set up ARC on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) and run a real GitHub Actions job on an ephemeral runner pod.
 
-The combination of ARC and AKS Automatic gives you the power of ARC on a production-ready AKS cluster with managed node pools, built-in monitoring, scaling, security settings, and other defaults that follow [AKS well-architected recommendations](https://learn.microsoft.com/azure/well-architected/aks/). For runner workloads specifically, the [pod readiness SLA](https://learn.microsoft.com/azure/aks/intro-aks-automatic#pod-readiness-sla) is also a strong fit because CI/CD jobs depend on predictable pod startup.
+The combination of ARC and AKS Automatic gives you the power of ARC on a production-ready AKS cluster with managed node pools, built-in monitoring, scaling, security settings, and other defaults that follow [AKS best practices](https://learn.microsoft.com/en-us/azure/well-architected/service-guides/azure-kubernetes-service). For runner workloads specifically, the [pod readiness SLA](https://learn.microsoft.com/azure/aks/intro-aks-automatic#pod-readiness-sla) is also a strong fit because CI/CD jobs depend on predictable pod startup.
 
 ARC runner scale sets work extremely well on AKS Automatic, and the secure-by-default posture of AKS Automatic helps ensure your configuration is optimized and secure. You get the core ARC benefits: GitHub-native CI jobs, Kubernetes-native ephemeral runners, and runners that can live inside your Azure network, including private virtual networks. That means build jobs can reach private endpoints, internal services, and locked-down dependencies without exposing those resources to the public internet.
 
-The main thing to know up front is that AKS Automatic is secure by default and has production-minded safeguards enabled. That is a good thing, but it also means the default public ARC Helm chart values need a little tuning. In particular, we need to be explicit about resource requests and image tags.
+AKS Automatic is secure by default and has production-minded safeguards enabled. That's a good thing, but it also means the default public ARC Helm chart values need a little tuning. In particular, we need to be explicit about resource requests and image tags.
+
+<!-- truncate --> 
 
 Let’s walk through the full setup.
 
-<!-- truncate -->
+
 
 ## What we'll build
 
@@ -101,30 +103,8 @@ az aks get-credentials \
   --resource-group "${RG}" \
   --name "${CLUSTER}" \
   --overwrite-existing
-```
 
-Depending on how the cluster is configured, you may hit Azure Kubernetes RBAC when you first try to use `kubectl`. If `kubectl get nodes` fails with an Azure RBAC authorization error, grant your signed-in user access to the cluster:
-
-```bash
-CLUSTER_ID=$(az aks show \
-  --resource-group "${RG}" \
-  --name "${CLUSTER}" \
-  --query id \
-  --output tsv)
-
-USER_ID=$(az ad signed-in-user show \
-  --query id \
-  --output tsv)
-
-az role assignment create \
-  --assignee "${USER_ID}" \
-  --role "Azure Kubernetes Service RBAC Cluster Admin" \
-  --scope "${CLUSTER_ID}"
-```
-
-RBAC propagation can take a few minutes. Wait until this works:
-
-```bash
+# check connectivity
 kubectl get nodes
 ```
 
