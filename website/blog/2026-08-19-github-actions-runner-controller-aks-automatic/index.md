@@ -1,35 +1,35 @@
 ---
 title: "Running GitHub Actions Runner Controller on AKS Automatic"
 date: "2026-08-19"
-description: "A practical walkthrough for creating an AKS Automatic cluster and running GitHub Actions Runner Controller runner scale sets on it."
+description: "A hands-on walk through for creating an AKS Automatic cluster and running GitHub Actions Runner Controller runner scale sets on it."
 authors: ["steve-griffith"]
 tags: ["automatic", "github-actions", "arc", "devops"]
 ---
 
-GitHub Actions Runner Controller (ARC), also known as GitHub Actions Runner Controller runner scale sets or GARC, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. It lets teams keep CI jobs close to the workloads they build, test, and deploy while still using the GitHub Actions experience developers already know.
+GitHub Actions Runner Controller, also known as GitHub ARC or ARC for short, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. In this walk through we'll set up ARC on AKS Automatic and run a real GitHub Actions job on an ephemeral runner pod.
 
-ARC runner scale sets work on AKS Automatic, and the combination is compelling: GitHub-native CI jobs, Kubernetes-native ephemeral runners, and an AKS mode that handles much of the cluster and node management for you. Running GARC on AKS also lets your runners live inside your Azure network, including private virtual networks, so CI jobs can reach private endpoints, internal services, and locked-down build dependencies without exposing them to the public internet.
+The short version is that ARC runner scale sets work well on AKS Automatic once you add a few values that line up with the Automatic defaults. You get GitHub-native CI jobs, Kubernetes-native ephemeral runners, and an AKS mode that takes care of a lot of the cluster and node management for you. You also get a nice networking benefit: the runners can live inside your Azure network, including private virtual networks, so build jobs can reach private endpoints, internal services, and locked-down dependencies without putting those things on the public internet.
 
-There is one important difference from a traditional bring-your-own-node-pool AKS cluster: AKS Automatic ships with production-oriented safeguards turned on. Those safeguards are helpful, but they also mean the default public ARC Helm values need a few adjustments before runner scale sets work cleanly. For third-party controllers and workload pods, be explicit about resource requests and image tags.
+The one thing to know up front is that AKS Automatic has production-minded safeguards enabled by default. That's a good thing, but it means the public ARC Helm chart defaults need a little tuning. In particular, we need to be explicit about resource requests and image tags.
 
-This post walks through creating an AKS Automatic cluster, installing ARC, creating a repository-scoped runner scale set, and validating that a GitHub Actions workflow runs on an ephemeral runner pod.
+Let's walk through the full setup.
 
 <!-- truncate -->
 
-## What we are building
+## What we'll build
 
-The lab deploys:
+In this lab we'll deploy:
 
 - An AKS Automatic cluster.
 - The ARC runner scale set controller.
 - A repository-scoped runner scale set.
 - A sample GitHub Actions workflow that targets the runner scale set.
 
-The key outcome is a workflow job whose `runs-on` value maps to an ARC runner scale set. When the job queues, ARC creates an ephemeral runner pod on AKS Automatic, the runner connects to GitHub, the job runs, and the runner is cleaned up.
+The goal is pretty simple. We'll create a workflow where `runs-on` maps to the ARC runner scale set. When the job queues, ARC creates an ephemeral runner pod on AKS Automatic, the runner connects to GitHub, the job runs, and then the runner goes away.
 
 ## Prerequisites
 
-You need the Azure CLI, GitHub CLI, `kubectl`, and Helm:
+First, make sure you have the Azure CLI, GitHub CLI, `kubectl`, and Helm installed and authenticated:
 
 ```bash
 az login
@@ -42,9 +42,9 @@ helm version
 gh auth status
 ```
 
-You also need a GitHub token with permission to manage Actions runners for the target repository. For a simple repository-scoped lab, a classic PAT with `repo` scope is enough for a private repository. For production, prefer a GitHub App so you can narrow permissions and rotate credentials more cleanly.
+You'll also need a GitHub token with permission to manage Actions runners for the target repository. For a quick repo-scoped lab, a classic PAT with `repo` scope is enough for a private repo. For anything production-ish, I'd use a GitHub App instead so the permissions and rotation story are cleaner.
 
-Read the token interactively so it does not land in your shell history:
+Read the token interactively so it doesn't end up in your shell history:
 
 ```bash
 read -rsp "GitHub token: " GITHUB_TOKEN
@@ -53,7 +53,7 @@ echo
 
 ## Set environment variables
 
-Update these values for your subscription and GitHub repository:
+Now set up a few variables. Update these for your subscription and GitHub repo:
 
 ```bash
 export LOCATION=eastus
@@ -69,11 +69,11 @@ export ARC_SYSTEMS_NAMESPACE=arc-systems
 export ARC_RUNNERS_NAMESPACE=arc-runners
 ```
 
-`RUNNER_SET_NAME` matters because it is the value your workflow uses in `runs-on`.
+The `RUNNER_SET_NAME` value is important. This is also the value we'll use in the workflow `runs-on`.
 
 ## Create the AKS Automatic cluster
 
-Create a resource group:
+First, create a resource group:
 
 ```bash
 az group create \
@@ -81,7 +81,7 @@ az group create \
   --location "${LOCATION}"
 ```
 
-Create the cluster:
+Now create the Automatic cluster:
 
 ```bash
 az aks create \
@@ -92,7 +92,7 @@ az aks create \
   --no-ssh-key
 ```
 
-Get credentials:
+Once the cluster is ready, get credentials:
 
 ```bash
 az aks get-credentials \
@@ -101,7 +101,7 @@ az aks get-credentials \
   --overwrite-existing
 ```
 
-Some Automatic clusters use Azure Kubernetes RBAC with local admin credentials disabled. If `kubectl get nodes` fails with an Azure RBAC authorization error, grant your signed-in user access to the cluster:
+Depending on how the cluster is configured, you may hit Azure Kubernetes RBAC when you first try to use `kubectl`. If `kubectl get nodes` fails with an Azure RBAC authorization error, grant your signed-in user access to the cluster:
 
 ```bash
 CLUSTER_ID=$(az aks show \
@@ -120,7 +120,7 @@ az role assignment create \
   --scope "${CLUSTER_ID}"
 ```
 
-RBAC propagation can take a few minutes. Wait until this succeeds:
+RBAC propagation can take a few minutes. Wait until this works:
 
 ```bash
 kubectl get nodes
@@ -128,7 +128,7 @@ kubectl get nodes
 
 ## Install the ARC controller
 
-The first AKS Automatic-specific adjustment is resource requests for the ARC controller. Create a values file:
+First up is the ARC controller. For AKS Automatic, we'll give the controller explicit resource requests and limits. Create a values file:
 
 ```bash
 cat > arc-controller-values.yaml <<'EOF'
@@ -142,7 +142,7 @@ resources:
 EOF
 ```
 
-Install the controller:
+Now install the controller:
 
 ```bash
 helm upgrade --install arc \
@@ -161,7 +161,7 @@ kubectl rollout status \
 
 ## Store the GitHub token in Kubernetes
 
-Create a namespace for runner resources and store the GitHub token in a secret:
+Now let's create a namespace for the runner resources and store the GitHub token in a Kubernetes secret:
 
 ```bash
 kubectl create namespace "${ARC_RUNNERS_NAMESPACE}" \
@@ -173,11 +173,11 @@ kubectl create secret generic github-pat \
   --from-literal=github_token="${GITHUB_TOKEN}"
 ```
 
-For production, store and rotate this credential through your standard secret-management process. Do not hard-code it into Helm values or source control.
+For production, wire this into your normal secret-management process. Don't hard-code this token into Helm values or source control.
 
 ## Install the runner scale set
 
-This is the most important part of the walkthrough. The default runner scale set values are close, but AKS Automatic safeguards require a few changes:
+This is the most important part of the setup. The default runner scale set values are close, but AKS Automatic expects a few things to be explicit:
 
 1. Resource requests and limits for the listener pod.
 2. Resource requests and limits for the runner pod.
@@ -220,9 +220,9 @@ template:
 EOF
 ```
 
-This example pins `ghcr.io/actions/actions-runner:2.336.0`, which was the current GitHub runner release at the time this walkthrough was validated. Runner versions age out, so check [the GitHub runner releases](https://github.com/actions/runner/releases) and update the tag when needed.
+This example pins `ghcr.io/actions/actions-runner:2.336.0`, which was the current GitHub runner release when I validated the walkthrough. Runner versions do age out, so check [the GitHub runner releases](https://github.com/actions/runner/releases) and update the tag when needed.
 
-Install the runner scale set:
+Now install the runner scale set:
 
 ```bash
 helm upgrade --install "${RUNNER_SET_NAME}" \
@@ -234,7 +234,7 @@ helm upgrade --install "${RUNNER_SET_NAME}" \
   -f arc-runner-set-values.yaml
 ```
 
-Check the installation:
+Check the install:
 
 ```bash
 kubectl get pods --namespace "${ARC_SYSTEMS_NAMESPACE}" --output wide
@@ -243,11 +243,11 @@ kubectl get autoscalingrunnersets,ephemeralrunnersets,ephemeralrunners \
   --namespace "${ARC_RUNNERS_NAMESPACE}"
 ```
 
-Before any jobs run, expect the controller and listener pods to be running and the `AutoscalingRunnerSet` to exist. You should not expect runner pods yet. Runner pods are created only when jobs queue.
+Before any jobs run, the controller and listener pods should be running and the `AutoscalingRunnerSet` should exist. You should not see runner pods yet. ARC creates those only when jobs queue.
 
 ## Add a validation workflow
 
-In the target GitHub repository, add `.github/workflows/arc-automatic-validation.yml`:
+Now add a simple workflow to the target GitHub repo. Create `.github/workflows/arc-automatic-validation.yml`:
 
 ```yaml
 name: ARC AKS Automatic validation
@@ -272,7 +272,7 @@ jobs:
           echo "Validation complete"
 ```
 
-If you changed `RUNNER_SET_NAME`, update `runs-on` to match it. Commit and push the workflow to the repository:
+If you changed `RUNNER_SET_NAME`, update `runs-on` to match it. Then commit and push the workflow:
 
 ```bash
 git add .github/workflows/arc-automatic-validation.yml
@@ -313,16 +313,16 @@ kubectl get autoscalingrunnersets,ephemeralrunnersets,ephemeralrunners \
   --watch
 ```
 
-When everything is working, you will see:
+When everything is working, you should see:
 
 - The GitHub Actions job move from `queued` to `in_progress` to `completed`.
 - An ephemeral runner object and pod appear in `arc-runners`.
 - The runner pod use your pinned `ghcr.io/actions/actions-runner` image.
 - The workflow log print `ARC runner reached workflow execution`.
 
-In the validation run for this walkthrough, the job ran on a pod named like `arc-auto-runners-<id>-runner-<id>`, reported runner version `2.336.0`, and completed successfully.
+In my validation run, the job ran on a pod named like `arc-auto-runners-<id>-runner-<id>`, reported runner version `2.336.0`, and completed successfully.
 
-## Troubleshooting the AKS Automatic-specific issues
+## Troubleshooting the AKS Automatic-specific bits
 
 Here are the issues I hit while validating this setup and what they mean.
 
@@ -362,7 +362,7 @@ template:
 
 ### The pinned runner version is too old
 
-Pinning is necessary, but the pinned version still needs to be current. If the runner logs show:
+Pinning is required, but the pinned version still needs to be current. If the runner logs show:
 
 ```text
 Runner version vX.Y.Z is deprecated and cannot receive messages.
@@ -424,4 +424,4 @@ az group delete \
 
 If any offline repository runners remain in GitHub after failed experiments, remove them from the repository's Actions runner settings.
 
-Once those settings are in place, ARC can scale an ephemeral runner, pick up a queued GitHub Actions job, and run it successfully on AKS Automatic.
+That's it. Once the Automatic-friendly values are in place, ARC can scale an ephemeral runner, pick up a queued GitHub Actions job, and run it successfully on AKS Automatic.
