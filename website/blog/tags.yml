@@ -37,6 +37,11 @@ aks-mcp:
   permalink: /aks-mcp
   description: Model Context Protocol (MCP) server and client usage on AKS.
 
+arc:
+  label: Actions Runner Controller
+  permalink: /arc
+  description: Running GitHub Actions Runner Controller on AKS.
+
 anyscale:
   label: Anyscale
   permalink: /anyscale
@@ -107,6 +112,11 @@ developer:
   permalink: /developer
   description: Developer-focused guidance, productivity patterns, and application development on AKS.
 
+devops:
+  label: DevOps
+  permalink: /devops
+  description: DevOps practices, automation, and continuous delivery workflows for AKS.
+
 dns:
   label: DNS
   permalink: /dns
@@ -156,6 +166,11 @@ grafana:
   label: Grafana
   permalink: /grafana
   description: Integrating Grafana for visualization and dashboards with AKS metrics and logs.
+
+github-actions:
+  label: GitHub Actions
+  permalink: /github-actions
+  description: Automating AKS build, test, and deployment workflows with GitHub Actions.
 
 huggingface:
   label: Hugging Face

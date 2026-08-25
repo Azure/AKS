@@ -3,7 +3,7 @@ title: "Running GitHub Actions Runner Controller on AKS Automatic"
 date: "2026-08-19"
 description: "A hands-on walkthrough for creating an AKS Automatic cluster and running GitHub Actions Runner Controller runner scale sets on it."
 authors: ["steve-griffith"]
-tags: ["automatic", "github-actions", "arc", "devops"]
+tags: ["aks-automatic", "github-actions", "arc", "devops"]
 ---
 
 GitHub Actions Runner Controller, also known as GitHub ARC or ARC for short, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. In this walkthrough, we’ll set up ARC on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) and run a real GitHub Actions job on an ephemeral runner pod.
@@ -17,8 +17,6 @@ AKS Automatic is secure by default and has production-minded safeguards enabled.
 <!-- truncate --> 
 
 Let’s walk through the full setup.
-
-
 
 ## What we'll build
 
@@ -194,8 +192,8 @@ template:
         command: ["/home/runner/run.sh"]
         resources:
           requests:
-            cpu: 500m
-            memory: 1Gi
+            cpu: "2"
+            memory: 4Gi
           limits:
             cpu: "2"
             memory: 4Gi
