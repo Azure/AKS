@@ -27,7 +27,6 @@ const config: Config = {
   projectName: 'aks-blog', // Usually your repo name.
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -73,6 +72,19 @@ const config: Config = {
     require.resolve('./src/js/consentModule.ts'),
   ],
 
+  markdown: {
+    mermaid: true,
+    // future.v4 disables mdx1Compat by default, which stops converting HTML
+    // comments (e.g. `<!-- truncate -->`) and breaks MDX compilation. Keep
+    // comment compatibility on so existing blog posts render unchanged.
+    mdx1Compat: {
+      comments: true,
+    },
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   themeConfig: {
     // Replace with your project's social card
     image: 'img/logo.png',
@@ -105,6 +117,10 @@ const config: Config = {
             {
               label: 'Troubleshooting Guides',
               href: 'https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/welcome-azure-kubernetes',
+            },
+            {
+              label: 'AKS Community Calls',
+              to: '/webinars',
             },
             {
               label: 'FAQ',

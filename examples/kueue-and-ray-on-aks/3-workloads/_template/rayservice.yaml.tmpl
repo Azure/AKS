@@ -1,0 +1,123 @@
+# Standardized RayService template for long-running serving workloads.
+#
+# RayService is NOT Kueue-admitted — it is a persistent deployment, not a batch job.
+# Do NOT add kueue.x-k8s.io/queue-name to RayService manifests.
+#
+# Render with envsubst before applying:
+#   envsubst < rayservice.yaml.tmpl | kubectl apply -f -
+#
+# Required variables:
+#   RAY_IMAGE          - Full MCR image ref, e.g. mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0
+#   RAY_VERSION        - Ray version string, e.g. 2.55.1
+#   SERVICE_NAME       - Unique name for this RayService, e.g. aurora-serve
+#   APP_NAME           - Ray Serve application name, e.g. aurora
+#   ROUTE_PREFIX       - HTTP route prefix, e.g. /aurora
+#   IMPORT_PATH        - Ray Serve import path, e.g. aurora_serve:app
+#   CONFIGMAP_NAME     - Name of the ConfigMap that holds the Python script(s)
+#   AZURE_STORAGE_ACCOUNT_NAME - Storage account from Module 1 terraform output
+#
+# Optional variables:
+#   WORKLOAD_ENV       - Extra env_vars lines (indented 10 spaces), or leave empty
+
+apiVersion: ray.io/v1
+kind: RayService
+metadata:
+  name: "${SERVICE_NAME}"
+  namespace: ray
+spec:
+  serveConfigV2: |
+    http_options:
+      host: "0.0.0.0"
+      port: 8000
+    applications:
+      - name: ${APP_NAME}
+        route_prefix: ${ROUTE_PREFIX}
+        import_path: ${IMPORT_PATH}
+        runtime_env:
+          pip:
+${PIP_PACKAGES}
+          env_vars:
+            PYTHONPATH: "/home/ray/scripts"
+            AZURE_STORAGE_ACCOUNT_NAME: "${AZURE_STORAGE_ACCOUNT_NAME}"
+${WORKLOAD_ENV}
+
+  rayClusterConfig:
+    rayVersion: "${RAY_VERSION}"
+    enableInTreeAutoscaling: false
+
+    headGroupSpec:
+      rayStartParams:
+        # Head node runs the Serve controller; GPU tasks land on workers.
+        num-cpus: "0"
+        dashboard-host: "0.0.0.0"
+        disable-usage-stats: "true"
+      template:
+        metadata:
+          labels:
+            azure.workload.identity/use: "true"
+        spec:
+          serviceAccountName: ray-workload
+          containers:
+            - name: ray-head
+              image: "${RAY_IMAGE}"
+              imagePullPolicy: Always
+              env:
+                - name: RAY_DISABLE_DOCKER_CPU_WARNING
+                  value: "1"
+              ports:
+                - containerPort: 6379
+                  name: gcs-server
+                - containerPort: 8265
+                  name: dashboard
+                - containerPort: 8000
+                  name: serve
+                - containerPort: 10001
+                  name: client
+              resources:
+                limits:
+                  cpu: "4"
+                  memory: "16Gi"
+                requests:
+                  cpu: "4"
+                  memory: "16Gi"
+              volumeMounts:
+                - name: scripts
+                  mountPath: /home/ray/scripts
+          volumes:
+            - name: scripts
+              configMap:
+                name: "${CONFIGMAP_NAME}"
+
+    workerGroupSpecs:
+      - groupName: gpu-workers
+        replicas: 1
+        minReplicas: 1
+        maxReplicas: 1
+        rayStartParams:
+          num-gpus: "1"
+        template:
+          metadata:
+            labels:
+              azure.workload.identity/use: "true"
+          spec:
+            serviceAccountName: ray-workload
+            containers:
+              - name: ray-worker
+                image: "${RAY_IMAGE}"
+                imagePullPolicy: Always
+                resources:
+                  limits:
+                    cpu: "20"
+                    memory: "160Gi"
+                    nvidia.com/gpu: "1"
+                  requests:
+                    cpu: "20"
+                    memory: "160Gi"
+                    nvidia.com/gpu: "1"
+                volumeMounts:
+                  - name: scripts
+                    mountPath: /home/ray/scripts
+            volumes:
+              - name: scripts
+                configMap:
+                  name: "${CONFIGMAP_NAME}"

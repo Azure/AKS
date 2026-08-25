@@ -1,0 +1,130 @@
+# Standardized RayJob template for Kueue + Ray on AKS examples.
+#
+# Render with envsubst before applying:
+#   envsubst < rayjob.yaml.tmpl | kubectl apply -f -
+#
+# Required variables:
+#   RAY_IMAGE          - Full MCR image ref, e.g. mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0
+#   RAY_VERSION        - Ray version string, e.g. 2.55.1
+#   JOB_NAME           - Unique name for this RayJob, e.g. aurora-finetune-$(date +%s)
+#   QUEUE_NAME         - Kueue LocalQueue name, e.g. default, team-a, team-b
+#   NUM_WORKERS        - Number of GPU worker replicas
+#   GPUS_PER_WORKER    - GPUs per worker, e.g. 1 or 4
+#   ENTRYPOINT         - Python command, e.g. python3 /home/ray/scripts/aurora_finetune.py
+#   CONFIGMAP_NAME     - Name of the ConfigMap that holds the Python script(s)
+#   AZURE_STORAGE_ACCOUNT_NAME - Storage account from Module 1 terraform output
+#
+# Optional variables (workload-specific env vars injected into runtimeEnvYAML):
+#   WORKLOAD_ENV       - Extra env_vars block lines (indented 6 spaces), or leave empty
+
+apiVersion: ray.io/v1
+kind: RayJob
+metadata:
+  name: "${JOB_NAME}"
+  namespace: ray
+  labels:
+    kueue.x-k8s.io/queue-name: "${QUEUE_NAME}"
+spec:
+  # suspend: true is required for Kueue to control admission.
+  suspend: true
+  shutdownAfterJobFinishes: true
+  ttlSecondsAfterFinished: 300
+
+  entrypoint: ${ENTRYPOINT}
+
+  runtimeEnvYAML: |
+    pip:
+${PIP_PACKAGES}
+    env_vars:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      AZURE_STORAGE_ACCOUNT_NAME: "${AZURE_STORAGE_ACCOUNT_NAME}"
+${WORKLOAD_ENV}
+
+  submitterPodTemplate:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: ray-job-submitter
+          image: "${RAY_IMAGE}"
+          imagePullPolicy: Always
+
+  rayClusterSpec:
+    rayVersion: "${RAY_VERSION}"
+    enableInTreeAutoscaling: false
+
+    headGroupSpec:
+      rayStartParams:
+        # Head node schedules no tasks — all work lands on GPU workers.
+        num-cpus: "0"
+        dashboard-host: "0.0.0.0"
+        disable-usage-stats: "true"
+      template:
+        metadata:
+          labels:
+            azure.workload.identity/use: "true"
+        spec:
+          serviceAccountName: ray-workload
+          containers:
+            - name: ray-head
+              image: "${RAY_IMAGE}"
+              imagePullPolicy: Always
+              env:
+                - name: RAY_DISABLE_DOCKER_CPU_WARNING
+                  value: "1"
+                - name: RAY_SCHEDULER_EVENTS
+                  value: "0"
+              ports:
+                - containerPort: 6379
+                  name: gcs-server
+                - containerPort: 8265
+                  name: dashboard
+                - containerPort: 10001
+                  name: client
+              resources:
+                limits:
+                  cpu: "4"
+                  memory: "16Gi"
+                requests:
+                  cpu: "4"
+                  memory: "16Gi"
+              volumeMounts:
+                - name: scripts
+                  mountPath: /home/ray/scripts
+          volumes:
+            - name: scripts
+              configMap:
+                name: "${CONFIGMAP_NAME}"
+
+    workerGroupSpecs:
+      - groupName: gpu-workers
+        replicas: ${NUM_WORKERS}
+        minReplicas: ${NUM_WORKERS}
+        maxReplicas: ${NUM_WORKERS}
+        rayStartParams:
+          num-gpus: "${GPUS_PER_WORKER}"
+        template:
+          metadata:
+            labels:
+              azure.workload.identity/use: "true"
+          spec:
+            serviceAccountName: ray-workload
+            containers:
+              - name: ray-worker
+                image: "${RAY_IMAGE}"
+                imagePullPolicy: Always
+                resources:
+                  limits:
+                    cpu: "20"
+                    memory: "160Gi"
+                    nvidia.com/gpu: "${GPUS_PER_WORKER}"
+                  requests:
+                    cpu: "20"
+                    memory: "160Gi"
+                    nvidia.com/gpu: "${GPUS_PER_WORKER}"
+                volumeMounts:
+                  - name: scripts
+                    mountPath: /home/ray/scripts
+            volumes:
+              - name: scripts
+                configMap:
+                  name: "${CONFIGMAP_NAME}"

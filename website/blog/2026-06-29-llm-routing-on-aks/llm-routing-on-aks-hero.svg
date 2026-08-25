@@ -1,0 +1,76 @@
+<svg viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The three routing decisions for agent traffic: content, then policy, then GPU state, over the stack RouteLLM, agentgateway, Gateway API Inference Extension, and KAITO with vLLM on AKS.">
+  <defs>
+    <marker id="hx" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 z" fill="#9FB4CC"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B1F3A"/>
+      <stop offset="0.55" stop-color="#0E2C52"/>
+      <stop offset="1" stop-color="#10396B"/>
+    </linearGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EAF2FB"/>
+    </linearGradient>
+    <style>
+      text { font-family: "Segoe UI", -apple-system, system-ui, "Helvetica Neue", sans-serif; }
+      .eyebrow { fill:#7FB0E6; font-weight:600; letter-spacing:3px; }
+      .ct  { fill:#243A5E; font-weight:700; }
+      .cs  { fill:#5B6B7B; font-weight:500; }
+      .num { fill:#0078D4; font-weight:700; }
+      .sig { fill:#4FC3F7; font-weight:600; }
+    </style>
+  </defs>
+
+  <!-- Backdrop -->
+  <rect width="1200" height="480" fill="url(#bg)"/>
+  <!-- subtle GPU-grid texture, right -->
+  <g opacity="0.10" stroke="#9FD0FF" stroke-width="1.4">
+    <line x1="980" y1="-40" x2="1300" y2="280"/>
+    <line x1="1050" y1="-40" x2="1370" y2="280"/>
+    <line x1="1120" y1="-40" x2="1440" y2="280"/>
+    <line x1="900" y1="40"  x2="1300" y2="40"/>
+    <line x1="900" y1="100" x2="1320" y2="100"/>
+  </g>
+
+  <!-- Eyebrow + through-line caption -->
+  <text x="600" y="78" font-size="20" class="eyebrow" text-anchor="middle">AGENT TRAFFIC ON AKS</text>
+  <text x="600" y="126" font-size="30" text-anchor="middle" fill="#FFFFFF" font-weight="700">Content <tspan fill="#5E7BA0">&#8594;</tspan> Policy <tspan fill="#5E7BA0">&#8594;</tspan> GPU state</text>
+
+  <!-- Three chips -->
+  <!-- chip 1 -->
+  <g>
+    <rect x="80" y="186" width="320" height="150" rx="18" fill="url(#chip)" stroke="#CFE0F2" stroke-width="1.5"/>
+    <circle cx="120" cy="224" r="17" fill="#E6F1FC"/>
+    <text x="120" y="230" font-size="18" text-anchor="middle" class="num">1</text>
+    <text x="152" y="230" font-size="22" class="ct">Content</text>
+    <text x="106" y="270" font-size="15" class="cs">Which model should</text>
+    <text x="106" y="292" font-size="15" class="cs">answer this call?</text>
+    <text x="106" y="318" font-size="13" fill="#0078D4" font-weight="600">semantic router</text>
+  </g>
+  <line x1="412" y1="261" x2="456" y2="261" stroke="#9FB4CC" stroke-width="2.4" marker-end="url(#hx)"/>
+  <!-- chip 2 -->
+  <g>
+    <rect x="470" y="186" width="320" height="150" rx="18" fill="url(#chip)" stroke="#CFE0F2" stroke-width="1.5"/>
+    <circle cx="510" cy="224" r="17" fill="#E6F1FC"/>
+    <text x="510" y="230" font-size="18" text-anchor="middle" class="num">2</text>
+    <text x="542" y="230" font-size="22" class="ct">Policy</text>
+    <text x="496" y="270" font-size="15" class="cs">Auth, budgets, limits,</text>
+    <text x="496" y="292" font-size="15" class="cs">guardrails, tracing.</text>
+    <text x="496" y="318" font-size="13" fill="#0078D4" font-weight="600">AI gateway</text>
+  </g>
+  <line x1="802" y1="261" x2="846" y2="261" stroke="#9FB4CC" stroke-width="2.4" marker-end="url(#hx)"/>
+  <!-- chip 3 -->
+  <g>
+    <rect x="860" y="186" width="320" height="150" rx="18" fill="url(#chip)" stroke="#CFE0F2" stroke-width="1.5"/>
+    <circle cx="900" cy="224" r="17" fill="#E6F1FC"/>
+    <text x="900" y="230" font-size="18" text-anchor="middle" class="num">3</text>
+    <text x="932" y="230" font-size="22" class="ct">GPU state</text>
+    <text x="886" y="270" font-size="15" class="cs">Which replica takes it,</text>
+    <text x="886" y="292" font-size="15" class="cs">by live load?</text>
+    <text x="886" y="318" font-size="13" fill="#0078D4" font-weight="600">inference LB</text>
+  </g>
+
+  <!-- footer wordmark -->
+  <text x="600" y="404" font-size="15" fill="#7E99BB" font-weight="500" text-anchor="middle">RouteLLM &#183; agentgateway &#183; Gateway API Inference Extension &#183; KAITO + vLLM</text>
+</svg>

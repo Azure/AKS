@@ -1,0 +1,40 @@
+graph TB
+    subgraph AKS["AKS Cluster"]
+        subgraph RayWorkers["Ray Worker Pods"]
+            PreTrain["Pre-training Pod"]
+            FineTune["Fine-tuning Pod"]
+            Inference["Inferencing Pod"]
+        end
+
+        subgraph Storage["Persistent Storage Layer"]
+            PVC["PersistentVolumeClaim<br/>blob-fuse2<br/>(ReadWriteMany)"]
+            PV["PersistentVolume<br/>(BlobFuse2 Driver)"]
+        end
+
+        PreTrain -->|mount| PVC
+        FineTune -->|mount| PVC
+        Inference -->|mount| PVC
+        PVC --> PV
+    end
+
+    subgraph Azure["Azure Blob Storage"]
+        Datasets["Datasets<br/>Container"]
+        Checkpoints["Checkpoints<br/>Container"]
+        Models["Models<br/>Container"]
+    end
+
+    PV -->|BlobFuse2 CSI Driver| Azure
+
+    PreTrain -.->|read| Datasets
+    PreTrain -.->|write| Checkpoints
+
+    FineTune -.->|read| Datasets
+    FineTune -.->|read/write| Checkpoints
+    FineTune -.->|write| Models
+
+    Inference -.->|read| Models
+
+    style AKS fill:#e1f5ff,stroke:#0078d4
+    style RayWorkers fill:#fff,stroke:#0078d4
+    style Storage fill:#fff,stroke:#0078d4
+    style Azure fill:#d4f1f4,stroke:#008272

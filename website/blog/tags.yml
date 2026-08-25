@@ -17,15 +17,35 @@ agent:
   permalink: /agent
   description: AI agents and agent frameworks running on AKS.
 
+agentgateway:
+  label: agentgateway
+  permalink: /agentgateway
+  description: agentgateway AI gateway usage on AKS — provider abstraction, auth, cost, and guardrails for LLM and agent traffic.
+
+aks-on-baremetal:
+  label: AKS on bare metal
+  permalink: /aks-on-baremetal
+  description: Azure Kubernetes Service running on bare metal platforms.
+
 ai:
   label: AI
   permalink: /ai
   description: Artificial intelligence workloads, patterns, model deployment, and orchestration on AKS.
 
+ai-inference:
+  label: AI Inference
+  permalink: /ai-inference
+  description: AI inference is the process of using a trained AI model to make predictions, generate content, or make decisions on new, unseen data.
+
 airflow:
   label: Airflow
   permalink: /airflow
   description: Using Apache Airflow for orchestrating data and machine learning workflows on AKS.
+
+aks-arc:
+  label: AKS Arc
+  permalink: /aks-arc
+  description: Azure Kubernetes Service enabled by Azure Arc.
 
 aks-automatic:
   label: AKS Automatic
@@ -41,16 +61,31 @@ arc:
   label: Actions Runner Controller
   permalink: /arc
   description: Running GitHub Actions Runner Controller on AKS.
+  
+argo-cd:
+  label: Argo CD
+  permalink: /argo-cd
+  description: Argo CD GitOps continuous delivery tool deployment and configuration on AKS.
 
 anyscale:
   label: Anyscale
   permalink: /anyscale
   description: Using Anyscale and Ray for distributed AI/ML workloads on AKS.
 
+application-network:
+  label: Application Network
+  permalink: /application-network
+  description: Azure Kubernetes Application Network for secure, zero-trust connectivity between AKS workloads and clusters.
+
 app-routing:
   label: App Routing
   permalink: /app-routing
   description: AKS Application Routing add-on usage, ingress, certificates, and traffic management.
+
+azure-container-registry:
+  label: Azure Container Registry
+  permalink: /azure-container-registry
+  description: Building, distributing, and deploying container images with ACR and AKS.
 
 azure-front-door:
   label: Azure Front Door
@@ -127,6 +162,16 @@ dns-performance:
   permalink: /dns-performance
   description: Improving and accelerating DNS query performance within AKS clusters.
 
+dynamo-series:
+  label: Dynamo on AKS series
+  permalink: /dynamo-series
+  description: Series highlighting LLM inference in production using OSS Dynamo project on an AKS cluster.
+
+entra:
+  label: Entra
+  permalink: /entra
+  description: Microsoft Entra identity and access management for AKS clusters and workloads.
+
 extensions:
   label: Extensions
   permalink: /extensions
@@ -141,6 +186,11 @@ flatcar-container-linux:
   label: Flatcar Container Linux
   permalink: /flatcar-container-linux
   description: Flatcar Container Linux distribution available on AKS.
+
+fleet-manager:
+  label: Azure Kubernetes Fleet Manager
+  permalink: /fleet-manager
+  description: Azure Kubernetes Fleet Manager for multi-cluster management and governance.
 
 flux:
   label: Flux
@@ -161,6 +211,11 @@ general:
   label: General
   permalink: /general
   description: Broad AKS topics, announcements, conceptual overviews, and cross-cutting guidance.
+
+gpu:
+  label: GPU
+  permalink: /gpu
+  description: Configuration and optimization of GPU-accelerated workloads on AKS.
 
 grafana:
   label: Grafana
@@ -198,14 +253,19 @@ kaito:
   description: KAITO project usage for model fine-tuning, inference, and RAG on AKS.
 
 kube-fleet:
-  label: Kube-Fleet
+  label: KubeFleet
   permalink: /kube-fleet
-  description: Using Kube-Fleet for multi-cluster application deployment and management with AKS.
+  description: Using KubeFleet for multi-cluster application deployment and management with AKS.
+
+kubevirt:
+  label: KubeVirt
+  permalink: /kubevirt
+  description: Using KubeVirt to run VMs with Kubernetes and AKS.
 
 kueue:
   label: Kueue
   permalink: /kueue
-  description: Kueue workload queueing and scheduling for batch AI/ML jobs on AK
+  description: Kueue workload queueing and scheduling for batch AI/ML jobs on AKS.
 
 kro:
   label: KRO
@@ -252,6 +312,11 @@ networking:
   permalink: /networking
   description: Cluster and application networking, eBPF, traffic management, and connectivity patterns.
 
+node-auto-provisioning:
+  label: Node Auto Provisioning
+  permalink: /node-auto-provisioning
+  description: Managed Karpenter project for node provisioning and compute management on AKS.
+
 observability:
   label: Observability
   permalink: /observability
@@ -282,15 +347,30 @@ ray:
   permalink: /ray
   description: KubeRay operator usage for distributed AI/ML workloads on AKS.
 
+routellm:
+  label: RouteLLM
+  permalink: /routellm
+  description: RouteLLM semantic routing on AKS — calibrated cost/quality routing between cheap and frontier LLMs.
+
 scaling:
   label: Scaling
   permalink: /scaling
   description: Horizontal and vertical scaling strategies, autoscaler tuning, and capacity planning.
 
+scheduler:
+  label: Scheduler
+  permalink: /scheduler
+  description: Scheduling workloads and managing scheduling constraints on AKS.
+
 security:
   label: Security
   permalink: /security
   description: Securing clusters, workloads, supply chain, identities, and network boundaries in AKS.
+
+skills:
+  label: Skills
+  permalink: /skills
+  description: Reusable agent skills, guided workflows, and domain-specific expertise for AKS tasks.
 
 spot:
   label: Spot
@@ -302,6 +382,11 @@ storage:
   permalink: /storage
   description: Persistent storage, data performance, CSI drivers, and Azure storage integrations for AKS.
 
+terraform:
+  label: Terraform
+  permalink: /terraform
+  description: Infrastructure as code examples and walkthroughs using HashiCorp Terraform with AKS.
+
 traffic-management:
   label: Traffic Management
   permalink: /traffic-management
@@ -311,6 +396,11 @@ troubleshooting:
   label: Troubleshooting
   permalink: /troubleshooting
   description: Systematic diagnosis of cluster, networking, performance, and application issues.
+
+virtual-machine-node-pools:
+  label: Virtual Machine Node Pools
+  permalink: /virtual-machine-node-pools
+  description: Node pools that support multiple VM SKUs in a single pool for flexible capacity management and improved resilience in AKS clusters.
 
 workload-identity:
   label: Workload Identity

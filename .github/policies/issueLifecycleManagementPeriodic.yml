@@ -32,7 +32,7 @@ configuration:
           label: 'Needs Attention :wave:'
       actions:
       - addReply:
-          reply: Action required from @aritraghosh, @julia-yin, @AllenWen-at-Azure
+          reply: Action required from @sjwaight, @AllenWen-at-Azure
       - addLabel:
           label: 'Needs Attention :wave:'
     - description: Mark as 'action required' any open item without certain labels - 30 days inactivity - runs every 6 hours

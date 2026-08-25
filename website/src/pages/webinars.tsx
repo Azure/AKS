@@ -1,16 +1,15 @@
 // Maintenance overview:
 // Agenda content and its month label are sourced exclusively from markdown files:
-//   /website/static/webinars/agenda/YYYY-MM.md
-// Frontmatter must include: month: Month YYYY
+//   Community Calls: /website/static/webinars/agenda/YYYY-MM.md (monthly files)
+// Frontmatter must include: month: Month YYYY (or a label for the session)
 // Each agenda section uses a second-level heading (##) followed by optional lines:
 //   Presenter: Name and title
 //   Description: Text
 //   Featured: true
 //   - bullet point text (repeatable for bullets)
-// If the current month file is missing, the code steps backwards (up to a
-// configurable number of prior months) and uses the most recent available file.
-// This ensures an agenda is always displayed, even before a new month’s file is added.
-// Timezone call card data is defined in the constant `timezoneCalls` below.
+// Community Calls: If the current month file is missing, the code steps backwards
+//   (up to 6 prior months) and uses the most recent available file.
+// Event data is defined in the constant `eventTypes` below.
 
 import type { ReactNode } from "react";
 import React, { useEffect, useState } from "react";
@@ -23,9 +22,9 @@ import styles from "./webinars.module.css";
 // --- Data Types ------------------------------------------------------------
 interface AgendaItem {
   title: string;
-  presenter?: string;
+  presenters?: string[];
   bullets?: string[];
-  description?: string;
+  descriptions?: string[];
   featured?: boolean;
 }
 
@@ -33,50 +32,88 @@ interface MonthlyAgendaResult {
   month?: string;
   items: AgendaItem[];
   loading: boolean;
+  cancelled?: boolean;
 }
 
-interface TimezoneCall {
-  region: string;
-  schedule: string; // contains <br/>
+interface EventType {
+  id: string;
+  label: string;
+  description: string;
+  schedule: string;
   icsHref: string;
   joinHref: string;
+  agendaBasePath: string;
+  agendaMode: "monthly" | "static";
+  getNextDate: (after?: Date) => Date;
+  pastRecordingsHref?: string;
 }
 
-// Static timezone call info (edit here if schedules/links change)
-const timezoneCalls: TimezoneCall[] = [
+// --- Event Definitions -----------------------------------------------------
+
+const eventTypes: EventType[] = [
   {
-    region: "Americas, Europe",
+    id: "community-calls",
+    label: "Community Calls",
+    description:
+      "Roadmap updates, product demos, and open Q&A with the AKS team.",
     schedule:
-      "3rd Wednesday<br/>every month<br/><br/>8 AM PST<br/>11 AM EST<br/>3 PM GMT",
+      "8 AM Pacific / 11 AM Eastern / 4 PM GMT / 8:30 PM IST",
     icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
     joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
-  },
-  {
-    region: "India, APAC, ANZ",
-    schedule:
-      "4th Wednesday<br/>every month<br/><br/>10:30 AM IST<br/>1 PM SST<br/>4 PM AEDT",
-    icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-APAC.ics",
-    joinHref: "https://aka.ms/aks/communitycalls-apac/roadmap/joinnow",
+    agendaBasePath: "/webinars/agenda",
+    agendaMode: "monthly",
+    getNextDate: getNextThirdWednesday,
+    pastRecordingsHref: "https://www.youtube.com/playlist?list=PLc3Ep462vVYu0eMSiORonzj3utqYu285z",
   },
 ];
 
+// --- Date Helpers ----------------------------------------------------------
+
+// Returns the upcoming 3rd Wednesday (or today if today is the 3rd Wednesday).
+// Pass `after` to find the next occurrence on or after that date.
+function getNextThirdWednesday(after?: Date): Date {
+  const PST_OFFSET_MS = 8 * 60 * 60 * 1000;
+  const referencePST = new Date((after?.getTime() ?? Date.now()) - PST_OFFSET_MS);
+  const year = referencePST.getUTCFullYear();
+  const month = referencePST.getUTCMonth();
+  const day = referencePST.getUTCDate();
+
+  const thirdWed = (y: number, m: number): Date => {
+    const first = new Date(Date.UTC(y, m, 1));
+    const offset = (3 - first.getUTCDay() + 7) % 7;
+    return new Date(Date.UTC(y, m, 1 + offset + 14));
+  };
+
+  const candidate = thirdWed(year, month);
+  if (candidate.getUTCDate() >= day && candidate.getUTCMonth() === month) {
+    return new Date(candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate());
+  }
+  const nextMonth = month + 1;
+  const result = thirdWed(
+    nextMonth > 11 ? year + 1 : year,
+    nextMonth % 12,
+  );
+  return new Date(result.getUTCFullYear(), result.getUTCMonth(), result.getUTCDate());
+}
+
+function formatDate(d: Date): string {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
 // --- Markdown Parsing Logic -----------------------------------------------
-// The markdown file structure (static/webinars/agenda/YYYY-MM.md) is expected to have:
-// Frontmatter: ---\nmonth: Month YYYY\n--- then sections introduced by `## Heading`.
-// Within each section optional lines:
-//   Presenter: Name
-//   Description: Text
-//   Featured: true
-//   - bullet point
-// Blank lines are ignored.
 
 function parseAgendaMarkdown(raw: string): {
   month?: string;
   items: AgendaItem[];
+  cancelled?: boolean;
 } {
   let month: string | undefined;
+  let cancelled: boolean | undefined;
   let content = raw.trim();
-  // Extract frontmatter
   if (content.startsWith("---")) {
     const end = content.indexOf("\n---", 3);
     if (end !== -1) {
@@ -85,6 +122,8 @@ function parseAgendaMarkdown(raw: string): {
       front.split(/\r?\n/).forEach((line) => {
         const m = line.match(/^month:\s*(.+)$/i);
         if (m) month = m[1].trim();
+        const c = line.match(/^cancelled:\s*(.+)$/i);
+        if (c) cancelled = /true/i.test(c[1].trim());
       });
     }
   }
@@ -100,61 +139,64 @@ function parseAgendaMarkdown(raw: string): {
     if (!line) continue;
     const headingMatch = line.match(/^##\s+(.+)$/);
     if (headingMatch) {
-      // push previous
       if (current) items.push(current);
       current = { title: headingMatch[1].trim(), _lines: [] };
       continue;
     }
-    if (!current) continue; // ignore content before first heading
+    if (!current) continue;
     current._lines.push(line);
   }
   if (current) items.push(current);
 
   const finalized: AgendaItem[] = items.map((w) => {
     const bullets: string[] = [];
-    let presenter: string | undefined;
-    let description: string | undefined;
+    const presenters: string[] = [];
+    const descriptions: string[] = [];
     let featured = false;
     w._lines.forEach((l) => {
       if (/^Presenter:/i.test(l))
-        presenter = l.replace(/^Presenter:/i, "").trim();
+        presenters.push(l.replace(/^Presenter:/i, "").trim());
       else if (/^Description:/i.test(l))
-        description = l.replace(/^Description:/i, "").trim();
+        descriptions.push(l.replace(/^Description:/i, "").trim());
       else if (/^Featured:/i.test(l)) featured = /true/i.test(l.split(":")[1]);
       else if (/^-\s+/.test(l)) bullets.push(l.replace(/^-\s+/, ""));
     });
     const item: AgendaItem = { title: w.title };
-    if (presenter) item.presenter = presenter;
-    if (description) item.description = description;
+    if (presenters.length) item.presenters = presenters;
+    if (descriptions.length) item.descriptions = descriptions;
     if (bullets.length) item.bullets = bullets;
     if (featured) item.featured = true;
     return item;
   });
-  return { month, items: finalized };
+  return { month, items: finalized, cancelled };
 }
 
 // Hook to load agenda markdown for current month, falling back to latest prior month.
-function useMonthlyAgenda(): MonthlyAgendaResult {
+function useMonthlyAgenda(basePath: string): MonthlyAgendaResult {
   const [state, setState] = useState<MonthlyAgendaResult>({
     items: [],
     loading: true,
   });
 
   useEffect(() => {
+    if (!basePath) {
+      setState({ items: [], loading: false });
+      return;
+    }
     if (!ExecutionEnvironment.canUseDOM) {
       setState({ items: [], loading: false });
       return;
     }
     const now = new Date();
     let attempts = 0;
-    const maxLookback = 6; // months
+    const maxLookback = 6;
     let year = now.getFullYear();
-    let monthIndex = now.getMonth(); // 0-based
+    let monthIndex = now.getMonth();
     let cancelled = false;
 
     const tryFetch = () => {
       const monthStr = `${year}-${String(monthIndex + 1).padStart(2, "0")}`;
-      const url = `/webinars/agenda/${monthStr}.md`;
+      const url = `${basePath}/${monthStr}.md`;
       fetch(url, { cache: "no-cache" })
         .then(async (res) => {
           if (!res.ok)
@@ -167,6 +209,7 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
           setState({
             items: parsed.items,
             month: parsed.month,
+            cancelled: parsed.cancelled,
             loading: false,
           });
         })
@@ -174,11 +217,9 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
           if (cancelled) return;
           attempts++;
           if (attempts > maxLookback) {
-            // Give up: show empty state.
             setState({ items: [], loading: false });
             return;
           }
-          // Move back one month
           monthIndex -= 1;
           if (monthIndex < 0) {
             monthIndex = 11;
@@ -191,9 +232,46 @@ function useMonthlyAgenda(): MonthlyAgendaResult {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [basePath]);
   return state;
 }
+
+// Hook to load a single static agenda markdown file.
+function useStaticAgenda(filePath: string): MonthlyAgendaResult {
+  const [state, setState] = useState<MonthlyAgendaResult>({
+    items: [],
+    loading: true,
+  });
+
+  useEffect(() => {
+    if (!filePath) {
+      setState({ items: [], loading: false });
+      return;
+    }
+    if (!ExecutionEnvironment.canUseDOM) {
+      setState({ items: [], loading: false });
+      return;
+    }
+    let cancelled = false;
+    fetch(filePath, { cache: "no-cache" })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Agenda not found (${res.status})`);
+        return res.text();
+      })
+      .then((text) => {
+        if (cancelled) return;
+        const parsed = parseAgendaMarkdown(text);
+        setState({ items: parsed.items, month: parsed.month, cancelled: parsed.cancelled, loading: false });
+      })
+      .catch(() => {
+        if (!cancelled) setState({ items: [], loading: false });
+      });
+    return () => { cancelled = true; };
+  }, [filePath]);
+  return state;
+}
+
+// --- Components ------------------------------------------------------------
 
 function Hero(): ReactNode {
   const bannerUrl = "/webinars/AKS-CommunityCalls-Banner.png";
@@ -202,84 +280,120 @@ function Hero(): ReactNode {
       className={styles.heroOverlay}
       style={{ backgroundImage: `url(${bannerUrl})` }}
       role="img"
-      aria-label="AKS Community Calls Banner"
+      aria-label="AKS Community Events Banner"
     >
       <div className={styles.heroOverlayInner}>
-        <Heading as="h1">AKS - Community Calls</Heading>
-        <div className={styles.heroButtons}>
-          <Link
-            className="button button--primary button--lg"
-            to="https://www.youtube.com/playlist?list=PLc3Ep462vVYu0eMSiORonzj3utqYu285z"
-          >
-            Past Call Recordings
-          </Link>
-        </div>
+        <Heading as="h1">AKS Community Events</Heading>
+        <p className={styles.heroSubtitle}>
+          Monthly public sessions with the AKS Product Team.
+        </p>
       </div>
     </div>
   );
 }
 
-function Intro(): ReactNode {
-  return (
-    <div className={styles.introBox}>
-      <p className="margin--none">
-        Welcome to the AKS Community Calls! These sessions foster direct
-        interaction between our product teams and the AKS community. Engage with
-        our teams, hear the latest updates, and gain insights into the product’s
-        development. Join our monthly public calls to discuss the product
-        roadmap, provide feedback, and learn from others’ experiences with AKS.
-        Check out the{" "}
-        <Link to="https://github.com/orgs/Azure/projects/685/views/1">
-          public feature roadmap
-        </Link>{" "}
-        for details on features in development, public preview, and general
-        availability.
-      </p>
-    </div>
-  );
-}
-
-function AgendaPanel(): ReactNode {
-  const { month, items, loading } = useMonthlyAgenda();
+function EventSection({ event }: { event: EventType }): ReactNode {
+  const monthlyResult = useMonthlyAgenda(event.agendaMode === "monthly" ? event.agendaBasePath : "");
+  const staticResult = useStaticAgenda(event.agendaMode === "static" ? event.agendaBasePath : "");
+  const { month, items, loading, cancelled } = event.agendaMode === "monthly" ? monthlyResult : staticResult;
   const label = month || "Latest";
   const empty = !loading && items.length === 0;
+  // When cancelled, advance to the next month's occurrence using the same date logic.
+  const rawNextDate = event.getNextDate();
+  const nextDate = cancelled
+    ? event.getNextDate(new Date(rawNextDate.getFullYear(), rawNextDate.getMonth() + 1, 1))
+    : rawNextDate;
+
   return (
-    <div className={styles.panel}>
-      <div className={`${styles.panelHeader} ${styles.calendar}`}>
-        Agenda ({label}){" "}
-        {loading && (
-          <span style={{ fontSize: "0.65rem", fontWeight: 400 }}>loading…</span>
-        )}
+    <section className={styles.agendaSection}>
+      <div className={styles.callStrip}>
+        <div className={styles.callStripInfo}>
+          <span className={styles.callStripLabel}>Next session</span>
+          <span className={styles.callStripSchedule}>
+            {formatDate(nextDate)}
+            {event.id === "community-calls" && " (Every 3rd Wednesday)"}
+            <br />
+            {event.schedule}
+          </span>
+        </div>
+        <div className={styles.callStripActions}>
+          {event.pastRecordingsHref && (
+            <>
+              <a href={event.pastRecordingsHref} className={styles.calendarLink}>
+                Past recordings
+              </a>
+              <span className={styles.linkDivider}>|</span>
+            </>
+          )}
+          <a href={event.icsHref} className={styles.calendarLink}>
+            Add to calendar
+          </a>
+          {cancelled ? (
+            <span className={styles.cancelledBadge}>No call this month</span>
+          ) : (
+            <Link
+              className={`button button--primary button--sm ${styles.joinBtn}`}
+              to={event.joinHref}
+            >
+              Join Now
+            </Link>
+          )}
+        </div>
       </div>
-      <div className={styles.panelBody}>
-        {empty && (
-          <div style={{ fontSize: "0.85rem", opacity: 0.8 }}>
-            No agenda has been published yet. Once an agenda markdown file is
-            added it will appear here automatically.
-          </div>
+      <div className={styles.agendaContent}>
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">
+            Agenda - {label}
+          </Heading>
+          {!cancelled && loading && (
+            <span className={styles.loadingBadge}>loading&hellip;</span>
+          )}
+        </div>
+        {cancelled && (
+          <p className={styles.emptyState}>
+            There is no {event.label} call this month. The next session is listed above.
+          </p>
         )}
-        {!empty && (
+        {!cancelled && empty && (
+          <p className={styles.emptyState}>
+            No agenda has been published yet. Once an agenda file is added it
+            appears here automatically.
+          </p>
+        )}
+        {!cancelled && !empty && (
           <ul className={styles.agendaList}>
             {items.map((item, idx) => (
-              <li
-                key={idx}
-                className={`${styles.agendaItem} ${
-                  item.featured ? styles.featured : ""
-                }`.trim()}
-              >
-                <h4>{item.title}</h4>
-                {item.presenter && (
-                  <p><i>
-                    {item.presenter}</i>
-                  </p>
+              <li key={idx} className={styles.agendaListItem}>
+                <span className={`${styles.agendaItemTitle} ${item.featured ? styles.featured : ""}`.trim()}>
+                  {item.title}
+                </span>
+                {item.descriptions && item.descriptions.length > 0 && (
+                  <div className={styles.agendaItemMetaGroup}>
+                    {item.descriptions.map((description, descriptionIdx) => (
+                      <span
+                        key={descriptionIdx}
+                        className={`${styles.agendaItemMeta} ${styles.agendaItemDescription}`}
+                      >
+                        {description}
+                      </span>
+                    ))}
+                  </div>
                 )}
-                {item.description && (
-                  <p className={styles.agendaDescription}>{item.description}</p>
+                {item.presenters && item.presenters.length > 0 && (
+                  <div className={styles.agendaItemMetaGroup}>
+                    {item.presenters.map((presenter, presenterIdx) => (
+                      <span key={presenterIdx} className={styles.agendaItemMeta}>
+                        Presenter: {presenter}
+                      </span>
+                    ))}
+                  </div>
                 )}
-                {item.bullets && (
-                  <ul>
-                    {item.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
+                {item.bullets && item.bullets.length > 0 && (
+                  <ul className={styles.agendaBulletList}>
+                    {item.bullets.map((bullet, bulletIdx) => (
+                      <li key={bulletIdx} className={styles.agendaBulletItem}>
+                        {bullet}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -288,62 +402,33 @@ function AgendaPanel(): ReactNode {
           </ul>
         )}
       </div>
-    </div>
-  );
-}
-
-function TimezonePanel(): ReactNode {
-  return (
-    <div className={styles.panel}>
-      <div className={styles.panelHeader}>Join An Upcoming Call</div>
-      <div className={styles.panelBody}>
-        <div className={styles.timezoneCards}>
-          {timezoneCalls.map((tz) => (
-            <div key={tz.region} className={styles.timezoneCard}>
-              <div className={styles.timezoneCardHeader}>
-                <h4>{tz.region}</h4>
-              </div>
-              <div className={styles.timezoneCardBody}>
-                <p dangerouslySetInnerHTML={{ __html: tz.schedule }} />
-                <div>
-                  <a href={tz.icsHref} className={styles.calendarLink}>
-                    Add to my calendar
-                  </a>
-                </div>
-                <div className={styles.timezoneButtons}>
-                  <Link
-                    className="button button--primary button--sm"
-                    to={tz.joinHref}
-                  >
-                    Join
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }
 
 export default function Webinars(): ReactNode {
   return (
     <Layout
-      title="Community Calls"
-      description="AKS Community Calls: monthly roadmap, deep dives, and Q&A sessions with the Azure Kubernetes Service team"
+      title="Community Events"
+      description="AKS Community Events: monthly roadmap calls, architecture review hours, deep dives, and Q&A sessions with the Azure Kubernetes Service team"
     >
       <Hero />
-      <main>
-        <Intro />
-        <div className={styles.gridColumns}>
-          <div className={styles.agendaColumn}>
-            <AgendaPanel />
+      <p className={styles.heroAnnouncement} role="status">
+        The Kube &amp; Tell call for August 2026 is cancelled. The Community Calls will continue as scheduled below.
+      </p>
+      <main className={styles.eventsContainer}>
+        {eventTypes.map((evt) => (
+          <div
+            key={evt.id}
+            className={`${styles.eventBlock} ${evt.id === "community-calls" ? styles.communityBlock : styles.reviewBlock}`}
+          >
+            <div className={styles.eventBlockTitle}>
+            {evt.label}
+            </div>
+            <p className={styles.eventBlockSummary}>{evt.description}</p>
+            <EventSection event={evt} />
           </div>
-          <div className={styles.timezoneColumn}>
-            <TimezonePanel />
-          </div>
-        </div>
+        ))}
       </main>
     </Layout>
   );

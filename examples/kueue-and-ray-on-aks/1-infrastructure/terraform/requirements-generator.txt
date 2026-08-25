@@ -1,0 +1,11 @@
+# Python dependencies for the WeatherBench2 data generator (W1.4).
+# Install before running terraform apply with upload_aurora_inputs=true:
+#
+#   python3 -m pip install -r requirements-generator.txt
+#
+# The generator also requires numpy, which is typically already installed.
+xarray>=2024.1
+zarr>=2.16
+gcsfs>=2024.2
+dask>=2024.1
+numpy>=1.26

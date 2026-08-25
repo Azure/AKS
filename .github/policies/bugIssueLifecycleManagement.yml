@@ -138,20 +138,6 @@ configuration:
                 Please check back shortly to see if any additional information or actions are needed from you.
 
 
-                Thank you!                
-      - description: If a new comment containing 'Released/Shipped/Fixed on release' is added to a bug, add the resolution labels. 
-        if:
-          - payloadType: Issue_Comment
-          - isOpen
-          - hasLabel:
-              label: bug
-          - commentContains:
-              pattern: Released/Shipped/Fixed on release
-              isRegex: False
-        then:
-          - addLabel:
-              label: resolution/fix-released
-          - addLabel:
-              label: resolution/shipped
+                Thank you!
 onFailure: 
 onSuccess:

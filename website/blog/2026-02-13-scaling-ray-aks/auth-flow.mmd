@@ -1,0 +1,20 @@
+graph LR
+    subgraph Customer["User Tenant"]
+        AO["Anyscale Operator<br/>(AKS Pod)"]
+        WID["Workload ID<br/>(user-assigned managed identity)"]
+    end
+
+    subgraph AzureAD["Azure Active Directory"]
+        SP1["Service Principal<br/>Anyscale Kubernetes<br/>Operator Auth<br/>appId: 086bc..."]
+    end
+
+    subgraph Anyscale["Anyscale Tenant"]
+        APP["Application<br/>Anyscale Kubernetes<br/>Operator Auth<br/>appId: 086bc...<br/>identifierUris: api://086bc..."]
+    end
+
+    AO -->|"authenticate as"| WID
+    WID -->|"requests token for<br/>scope=api://086bc.../.default"| SP1
+    SP1 -.->|"instance of"| APP
+
+    style Customer fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style Anyscale fill:#f9f9f9,stroke:#333,stroke-width:2px

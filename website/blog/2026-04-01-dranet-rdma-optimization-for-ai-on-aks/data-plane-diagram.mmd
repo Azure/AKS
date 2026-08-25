@@ -1,0 +1,44 @@
+flowchart TB
+    Kubelet["Kubelet"]
+    CRI["containerd"]
+    NRI["NRI Plugin<br/>(DRANET)"]
+
+    subgraph NUMA0["NUMA Node 0"]
+        GPU0["GPU 0<br/>NVIDIA GB300"]
+        GPU1["GPU 1<br/>NVIDIA GB300"]
+        NIC0["NIC 0<br/>NVIDIA ConnectX-8"]
+        NIC1["NIC 1<br/>NVIDIA ConnectX-8"]
+    end
+
+    subgraph NUMA1["NUMA Node 1"]
+        GPU2["GPU 2<br/>NVIDIA GB300"]
+        GPU3["GPU 3<br/>NVIDIA GB300"]
+        NIC2["NIC 2<br/>NVIDIA ConnectX-8"]
+        NIC3["NIC 3<br/>NVIDIA ConnectX-8"]
+    end
+
+    subgraph Pod["Scheduled Pod"]
+        Container["Container<br/>/dev/infiniband/uverbs*"]
+    end
+
+    %% Runtime flow
+    Kubelet -->|"1. Receive device allocation<br/>result from API Server"| CRI
+    CRI -->|"2. Execute OCI CreateContainer<br/>hook"| NRI
+    NRI -->|"3. Inject allocated<br/>/dev/infiniband/* devices"| Pod
+
+    %% NUMA-aligned GDR paths
+    GPU0 <-.->|"PCIe · GDR ✓"| NIC0
+    GPU1 <-.->|"PCIe · GDR ✓"| NIC1
+    GPU2 <-.->|"PCIe · GDR ✓"| NIC2
+    GPU3 <-.->|"PCIe · GDR ✓"| NIC3
+
+    %% Cross-NUMA penalty
+    GPU0 <-.->|"QPI/UPI · No GDR ✗"| NIC3
+
+    %% Pod uses aligned devices
+    Container -.->|"4. NCCL uses<br/>GPU * + mlx5_*"| GPU0
+
+    %% Styling
+    style NUMA0 fill:#e6f4ea,stroke:#34a853
+    style NUMA1 fill:#fce8e6,stroke:#ea4335
+    style Pod fill:#fef7e0,stroke:#fbbc04

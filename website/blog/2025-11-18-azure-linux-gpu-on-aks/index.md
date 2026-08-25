@@ -14,6 +14,8 @@ tags:
 
 Running GPU workloads on AKS enables scalable, automated data processing and AI applications across Windows, Ubuntu, or Azure Linux nodes. [Azure Linux](https://learn.microsoft.com/azure/aks/use-azure-linux), Microsoft’s minimal and secure OS, simplifies GPU setup with validated drivers and seamless integration, reducing operational efforts. This blog covers how AKS supports GPU nodes on various OS platforms and highlights the security and performance benefits of Azure Linux for GPU workloads.
 
+<!-- truncate -->
+
 ### Unique challenges of GPU nodes
 
 Deploying a GPU workload isn’t just about picking the right VM size. There is also significant operational overhead that developers and platform engineers need to manage.

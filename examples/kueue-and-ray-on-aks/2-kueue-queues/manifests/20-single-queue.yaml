@@ -1,0 +1,62 @@
+# Single ClusterQueue + LocalQueue — admission backpressure demo
+#
+# This configuration creates one queue that covers both GPU and CPU resources.
+# Quotas are sized to admit one Module 3 workload at a time; a second
+# submission stays Pending until the first completes or is deleted.
+#
+# Quotas below are sized for the DEFAULT Module 1 GPU node
+# (Standard_ND96amsr_A100_v4: 96 vCPU / 1.8 TiB / 8 GPU). If you provisioned
+# a smaller GPU SKU (e.g. Standard_NC24ads_A100_v4: 24 vCPU / 220 GiB / 1 GPU),
+# scale nominalQuota down to match — see the inline comments on each resource.
+# Kueue admits based on declared quota, NOT actual node capacity, so an
+# over-declared quota silently lets workloads admit and then stay Pending at
+# the k8s scheduler level (no node has the requested capacity).
+#
+# Apply after the namespace and resource flavors exist:
+#   kubectl apply -f 20-single-queue.yaml
+#
+# Verify:
+#   kubectl get clusterqueue cluster-queue
+#   kubectl -n ray get localqueue default
+#
+# NOTE: Apply either this file OR 30-team-queues.yaml — not both.
+#       They are independent configurations.
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue
+metadata:
+  name: cluster-queue
+spec:
+  namespaceSelector: {}
+  queueingStrategy: BestEffortFIFO
+  resourceGroups:
+    # CPU + memory quota (for Ray head and CPU-only workloads)
+    - coveredResources:
+        - cpu
+        - memory
+      flavors:
+        - name: default
+          resources:
+            - name: cpu
+              # ND96amsr_A100_v4: 96. NC24ads_A100_v4: 24.
+              nominalQuota: "96"
+            - name: memory
+              # ND96amsr_A100_v4: 768Gi. NC24ads_A100_v4: 200Gi.
+              nominalQuota: 768Gi
+    # GPU quota (for Ray workers requesting nvidia.com/gpu)
+    - coveredResources:
+        - nvidia.com/gpu
+      flavors:
+        - name: gpu
+          resources:
+            - name: nvidia.com/gpu
+              # ND96amsr_A100_v4: 8. NC24ads_A100_v4: 1.
+              nominalQuota: "8"
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: default
+  namespace: ray
+spec:
+  clusterQueue: cluster-queue

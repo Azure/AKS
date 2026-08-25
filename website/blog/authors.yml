@@ -1,3 +1,28 @@
+schumann-ge:
+  name: Schumann Ge
+  title: AKS Product Manager Lead
+  url: https://github.com/nnamuhcs/
+  image_url: https://avatars.githubusercontent.com/nnamuhcs
+  socials:
+    github: nnamuhcs
+
+summer-cefalu:
+  name: Summer Cefalu
+  title: AKS Product Manager
+  url: https://github.com/SummerSmith
+  image_url: https://avatars.githubusercontent.com/SummerSmith
+  socials:
+    github: SummerSmith
+
+andy-zhang:
+  name: Andy Zhang
+  title: Principal Software Engineer for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/andy-zhang-a7bb9676/
+  image_url: https://avatars.githubusercontent.com/andyzhangx
+  socials:
+    linkedin: andy-zhang-a7bb9676
+    github: andyzhangx
+
 ahmed-sabbour:
   name: Ahmed Sabbour
   title: Principal PM Lead for the Azure Kubernetes Service
@@ -230,6 +255,16 @@ ally-ford:
     linkedin: allison-ford-pm
     github: allyford
 
+wilson-darko:
+  name: Wilson Darko
+  title: Product Manager at Microsoft
+  url: https://www.linkedin.com/in/wilsondarko/
+  image_url: https://github.com/wdarko1.png
+  page: true
+  socials:
+    linkedin: wilsondarko
+    github: wdarko1
+
 sarah-zhou:
   name: Sarah Zhou
   title: Product Manager at Microsoft
@@ -278,7 +313,7 @@ francis-yu:
 
 anson-qian:
   name: Anson Qian
-  title: Software Engineer at Microsoft
+  title: Software Engineer at Azure Kubernetes Service
   url: https://www.linkedin.com/in/aqian/
   image_url: https://github.com/anson627.png
   page: true
@@ -370,7 +405,7 @@ diego-casati:
   socials:
     linkedin: diegocasati
     github: dcasati
-    
+
 sertac-ozercan:
   name: Sertaç Özercan
   title: Principal Engineering Manager for Azure Upstream
@@ -395,7 +430,7 @@ jack-ma:
   name: Jack Ma
   title: Principal Software Engineer at Microsoft
   url: https://www.linkedin.com/in/jack4it
-  image_url: https://media.licdn.com/dms/image/v2/D5603AQHWwAMPN6xj4w/profile-displayphoto-scale_200_200/B56ZlTcSj3G4AY-/0/1758041549408?e=1765411200&v=beta&t=cdJXzpnYartjuhqMlvhay18El6rlGu2VfNK4xGdviss
+  image_url: https://avatars.githubusercontent.com/u/3120462?s=400&u=19b5d6c8c8c536874771373ed92ba73f404e8ca1&v=4
   socials:
     x: jack4it
     linkedin: jack4it
@@ -418,3 +453,138 @@ thilo-fromm:
   socials:
     linkedin: thilo-fromm-b6832a56
     github: t-lo
+
+harshit-gupta:
+  name: Harshit Gupta
+  title: Senior Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/hagupta/
+  socials:
+    linkedin: hagupta
+    github: harshitgupta1337
+
+johnson-shi:
+  name: Johnson Shi
+  title: Senior Product Manager at Microsoft
+  url: https://johnsonshi.com
+  image_url: https://github.com/johnsonshi.png
+  page: true
+  socials:
+    x: johnsonshi86
+    linkedin: johnsonshi
+    github: johnsonshi
+
+ashna-mehrotra:
+  name: Ashna Mehrotra
+  title: Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/ashna-mehrotra/
+  image_url: https://github.com/ashnamehrotra.png
+  socials:
+    linkedin: ashna-mehrotra
+    github: ashnamehrotra
+
+devi-vasudevan:
+  name: Devi Vasudevan
+  title: Principal Engineering Manager for Azure Upstream
+  url: https://www.linkedin.com/in/devi-vasudevan/
+  image_url: https://github.com/devivasudevan.png
+  socials:
+    linkedin: devi-Vasudevan
+    github: devivasudevan
+
+jaiveer-katariya:
+  name: Jaiveer Katariya
+  title: Software Engineer for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/jaiveer-k-900865166/
+  image_url: https://github.com/jaiveerk.png
+  page: true
+  socials:
+    github: jaiveerk
+
+mitch-connors:
+  name: Mitch Connors
+  title: Principal Product Manager for the Azure Kubernetes Service
+  url: https://www.linkedin.com/in/mitchconnors
+  image_url: https://github.com/therealmitchconnors.png
+  socials:
+    linkedin: mitchconnors
+    github: therealmitchconnors
+
+john-howard:
+  name: John Howard
+  title: Senior Architect at Solo.io
+  url: https://www.linkedin.com/in/-johnhoward/
+  image_url: https://github.com/howardjohn.png
+
+datta-rajpure:
+  name: Datta Rajpure
+  title: Principal Group Eng Manager at Microsoft Azure Core
+  url: https://www.linkedin.com/in/dattarajpure/
+  image_url: https://github.com/drajpure.png
+  page: true
+  socials:
+    linkedin: dattarajpure
+    github: drajpure
+
+zhewei-hu:
+  name: Zhewei Hu
+  title: Senior Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/zhewei-hu/
+  image_url: https://github.com/winbobob.png
+  socials:
+    linkedin: zhewei-hu
+    github: winbobob
+
+michael-zappa:
+  name: Michael Zappa
+  title: Software Engineer for Azure Container Networking
+  url: https://www.linkedin.com/in/michaelzappa/
+  image_url: https://github.com/MikeZappa87.png
+  socials:
+    linkedin: michaelzappa
+
+kevin-thomas:
+  name: Kevin Thomas
+  title: Product Manager for Azure Kubernetes Service
+  url: https://www.linkedin.com/in/kevin-krupa-thomas/
+  image_url: https://github.com/kevinkrp93.png
+  page: true
+  socials:
+    linkedin: kevin-krupa-thomas
+    github: kevinkrp93
+
+simon-waight:
+  name: Simon Waight
+  title: Product Manager for Azure Kubernetes Fleet Manager
+  url: https://www.linkedin.com/in/simon-waight/
+  image_url: https://github.com/sjwaight.png
+  page: true
+  socials:
+    linkedin: simon-waight
+    github: sjwaight
+
+ralph-squillace:
+  name: Ralph Squillace
+  title: Principal Product Manager for Azure Upstream
+  url: https://opensource.microsoft.com/blog/author/ralph-squillace/
+  image_url: https://github.com/squillace.png
+  socials:
+    github: squillace
+
+fuyuan-bie:
+  name: Fuyuan Bie
+  title: Software Engineer, AKS
+  url: https://github.com/biefy
+  image_url: https://github.com/biefy.png
+  page: true
+  socials:
+    github: biefy
+    linkedin: biefy
+
+hariharan-sethuraman:
+  name: Hariharan Sethuraman
+  title: Principal Software Engineer
+  url: https://www.linkedin.com/in/hariharansethuraman/
+  image_url: https://github.com/hasethuraman.png
+  socials:
+    linkedin: hariharansethuraman
+    github: hasethuraman

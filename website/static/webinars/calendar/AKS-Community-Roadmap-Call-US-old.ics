@@ -1,0 +1,77 @@
+BEGIN:VCALENDAR
+PRODID:-//Microsoft Corporation//Outlook 16.0 MIMEDIR//EN
+VERSION:2.0
+METHOD:PUBLISH
+X-MS-OLK-FORCEINSPECTOROPEN:TRUE
+BEGIN:VTIMEZONE
+TZID:Pacific Standard Time
+BEGIN:STANDARD
+DTSTART:16011104T020000
+RRULE:FREQ=YEARLY;BYDAY=1SU;BYMONTH=11
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:16010311T020000
+RRULE:FREQ=YEARLY;BYDAY=2SU;BYMONTH=3
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+CLASS:PUBLIC
+CREATED:20241216T170337Z
+DESCRIPTION:Join our monthly public community calls for Azure Kubernetes Se
+	rvice to discuss product roadmap\, see demos of new features\, provide fee
+	dback\, and learn from others’ experience with AKS. \n\n\nGet join link 
+	here: aka.ms/AKS/CommunityCalls <https://aka.ms/AKS/CommunityCalls> \n\n \
+	n\n \n\nCommunity calls run on the third Wednesday of every month.\n\n
+DTEND;TZID="Pacific Standard Time":20250115T090000
+DTSTAMP:20241216T170337Z
+DTSTART;TZID="Pacific Standard Time":20250115T080000
+LAST-MODIFIED:20241216T170337Z
+LOCATION:https://aka.ms/AKS/CommunityCalls
+PRIORITY:5
+RRULE:FREQ=MONTHLY;COUNT=12;BYDAY=WE;BYSETPOS=3
+SEQUENCE:0
+SUMMARY:AKS Community Roadmap Call
+TRANSP:OPAQUE
+UID:Fd6To/04xEG8GbtfILp+AQ==
+X-ALT-DESC;FMTTYPE=text/html:<html xmlns:v="urn:schemas-microsoft-com:vml" 
+	xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-mic
+	rosoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/
+	12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=Generato
+	r content="Microsoft Word 15 (filtered medium)"><style><!--\n/* Font Defin
+	itions */\n@font-face\n	{font-family:"Cambria Math"\;\n	panose-1:2 4 5 3 5
+	 4 6 3 2 4\;}\n@font-face\n	{font-family:Aptos\;}\n/* Style Definitions */
+	\np.MsoNormal\, li.MsoNormal\, div.MsoNormal\n	{margin:0cm\;\n	font-size:1
+	1.0pt\;\n	font-family:"Aptos"\,sans-serif\;\n	mso-ligatures:standardcontex
+	tual\;\n	mso-fareast-language:EN-US\;}\na:link\, span.MsoHyperlink\n	{mso-
+	style-priority:99\;\n	color:#467886\;\n	text-decoration:underline\;}\nspan
+	.EmailStyle17\n	{mso-style-type:personal-compose\;\n	font-family:"Aptos"\,
+	sans-serif\;\n	color:windowtext\;}\n.MsoChpDefault\n	{mso-style-type:expor
+	t-only\;\n	font-size:11.0pt\;\n	mso-fareast-language:EN-US\;}\n@page WordS
+	ection1\n	{size:612.0pt 792.0pt\;\n	margin:72.0pt 72.0pt 72.0pt 72.0pt\;}\
+	ndiv.WordSection1\n	{page:WordSection1\;}\n--></style><!--[if gte mso 9]><
+	xml>\n<o:shapedefaults v:ext="edit" spidmax="1026" />\n</xml><![endif]--><
+	!--[if gte mso 9]><xml>\n<o:shapelayout v:ext="edit">\n<o:idmap v:ext="edi
+	t" data="1" />\n</o:shapelayout></xml><![endif]--></head><body lang=EN-CA 
+	link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=Wor
+	dSection1><p class=MsoNormal>Join our monthly public community calls for A
+	zure Kubernetes Service to discuss product roadmap\, see demos of new feat
+	ures\, provide feedback\, and learn from others&#8217\; experience with AK
+	S. <o:p></o:p></p><p class=MsoNormal><br><b>Get join link here:</b> <a hre
+	f="https://aka.ms/AKS/CommunityCalls">aka.ms/AKS/CommunityCalls</a><b><o:p
+	></o:p></b></p><p class=MsoNormal><o:p>&nbsp\;</o:p></p><p class=MsoNormal
+	><o:p>&nbsp\;</o:p></p><p class=MsoNormal>Community calls run on the third
+	 Wednesday of every month.<o:p></o:p></p></div></body></html>
+X-MICROSOFT-CDO-BUSYSTATUS:BUSY
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR

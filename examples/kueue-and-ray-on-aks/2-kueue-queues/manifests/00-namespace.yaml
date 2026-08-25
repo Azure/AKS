@@ -1,0 +1,9 @@
+# Namespace for all Ray workloads.
+#
+# Apply once after Module 1 infrastructure is provisioned:
+#   kubectl apply -f 00-namespace.yaml
+#   kubectl apply -f <(terraform -chdir=../1-infrastructure/terraform output -raw ray_workload_sa_yaml)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ray
