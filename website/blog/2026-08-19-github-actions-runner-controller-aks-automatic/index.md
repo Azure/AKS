@@ -1,7 +1,7 @@
 ---
 title: "Running GitHub Actions Runner Controller on AKS Automatic"
 date: "2026-08-19"
-description: "A hands-on walk through for creating an AKS Automatic cluster and running GitHub Actions Runner Controller runner scale sets on it."
+description: "A hands-on walkthrough for creating an AKS Automatic cluster and running GitHub Actions Runner Controller runner scale sets on it."
 authors: ["steve-griffith"]
 tags: ["automatic", "github-actions", "arc", "devops"]
 ---
