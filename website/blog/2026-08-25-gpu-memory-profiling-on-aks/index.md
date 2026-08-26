@@ -1,7 +1,7 @@
 ---
 title: "GPU Profiling on AKS: Find and Fix Costly Memory Blind Spots"
 date: 2026-08-25
-description: "Use GPU memory profiling on Azure Kubernetes Service to trace allocations to the functions responsible, right-size AI workloads, and validate fixes."
+description: "Use GPU memory profiling on Azure Kubernetes Service to trace allocations to the functions responsible, right-size AI workloads, and validate fixes at scale."
 authors: [brian-benz]
 tags: [ai, gpu, inspektor-gadget, monitoring, observability, performance]
 keywords: ["AKS", "GPU memory profiling", "AI workloads", "Inspektor Gadget", "Pyroscope", "Grafana"]
