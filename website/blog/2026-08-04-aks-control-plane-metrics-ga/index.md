@@ -58,14 +58,6 @@ Supported control plane scrape targets include:
 
 We recommend starting with the default API server and etcd metrics, then enabling additional targets based on the scenarios you need to diagnose, such as scheduling latency or autoscaler behavior.
 
-## Limitations
-
-A few things to keep in mind before enabling control plane metrics collection:
-
-- **Private Link clusters:** Control plane metric scraping is not yet supported on AKS clusters that use Azure Private Link for API server access. Support is planned for a future release.
-- **Ingestion cost:** Enabling all scrape targets without the minimal ingestion profile can significantly increase Prometheus metric volume and cost. Start with the minimal ingestion profile and expand only as needed.
-- **Regional availability:** Control plane metrics collection follows the same regional rollout as Azure Monitor managed service for Prometheus. Confirm availability in your cluster's region before enabling.
-
 ## The 5 metrics to monitor first
 
 The following five metrics provide a practical starting point for AKS control plane monitoring. They help identify API server throttling, expensive requests, server-side failures, etcd storage pressure, and etcd disk latency.
