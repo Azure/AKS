@@ -18,9 +18,17 @@ We're excited to announce that **control plane metrics collection for Azure Kube
 
 This capability gives AKS customers native observability into key managed control plane components, including the **API server**, **etcd**, **kube-scheduler**, **kube-controller-manager**, **Cluster Autoscaler**, and **node auto-provisioning**. With these metrics, platform teams can better understand how workloads, controllers, automation, and scaling activity interact with the AKS control plane over time.
 
-AKS manages the control plane on behalf of customers, including patching, high availability, and infrastructure-level health. However, customers still need visibility into how their own usage patterns affect control plane behavior: request volume, expensive API calls, scheduling throughput, object growth, and scale events all influence cluster responsiveness.
+AKS manages the control plane's patching, high availability, and infrastructure-level health on your behalf. But a slow API server or an etcd database nearing its storage quota still shows up to *you* as stalled deployments, timeouts, or delayed autoscaling. Without visibility into control plane behavior, teams typically only discover these issues after workloads are already impacted, and diagnosing them usually means opening a support case and waiting on backend telemetry. Control plane metrics close that gap by giving you the same signals directly, in near real time.
 
 With control plane metrics now generally available, customers can collect this data through Azure Monitor managed service for Prometheus and visualize it in Grafana without deploying or managing additional control plane monitoring infrastructure.
+
+**Key Benefits:**
+
+- **Faster root-cause analysis** — quickly tell whether slow deployments or timeouts stem from client-side behavior, API server load, or etcd health, instead of guessing.
+- **Proactive incident prevention** — get alerted on throttling, latency, or etcd quota pressure before they cascade into cluster-wide outages.
+- **Reduced reliance on support escalations** — self-serve diagnostics using Grafana dashboards and PromQL instead of opening a case for every slowdown.
+- **Better capacity planning** — understand real API traffic patterns from controllers, CI/CD, and automation to right-size retries, polling, and webhooks.
+- **No new infrastructure to manage** — built on Azure Monitor managed Prometheus you may already have enabled; no separate exporters or scrape configs to maintain.
 
 This post explains how to enable control plane metrics collection and highlights **five high-signal metrics** every AKS customer should monitor first.
 
@@ -197,7 +205,7 @@ or
 3. Start with API server and etcd metrics.
 4. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
 5. Build a Grafana dashboard using the five queries above, or start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics, as shown in the example dashboard above.
-6. Configure alerts for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency.
+6. Configure alerts for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency — so you can catch these issues before they affect production.
 7. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
 
 If you consistently observe throttling, high LIST latency, or elevated request volume during normal operations, review the clients and controllers generating API traffic. Common improvements include adding client-side rate limiting, reducing polling frequency, using watches instead of repeated LIST calls, enabling pagination, and cleaning up high-cardinality objects such as completed Jobs and Events.
