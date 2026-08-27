@@ -198,8 +198,7 @@ or
 4. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
 5. Build a Grafana dashboard using the five queries above, or start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics.
 
-   <!-- TODO(authors): attach the out-of-box control plane dashboard screenshot as ./dashboard.png and reference it here, e.g.:
-   ![AKS control plane out-of-box Grafana dashboard](./dashboard.png) -->
+   ![AKS control plane out-of-box Grafana dashboard](./ControlPlaneMetrics.png)
 
 6. Configure alerts for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency.
 7. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
