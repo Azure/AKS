@@ -37,7 +37,7 @@ The feature creates a practical trade: pay a reusable preparation cost when a PI
 | Reduce warm-capacity pressure | A faster, more predictable scale-out path may let a team hold fewer idle nodes solely as a cold-start buffer. |
 | Make bootstrap repeatable | Versioned preparation replaces repeated best-effort downloads and installation on every new node. |
 | Improve rollout control | A node pool references an exact PIS version, making prepared state explicit and testable. |
-| Protect private dependencies | Managed identity and data-plane RBAC can retrieve private artifacts without embedding keys or SAS tokens in scripts. |
+| Protect private dependencies | Managed identity and data-plane role-based access control (RBAC) can retrieve private artifacts without embedding keys or SAS tokens in scripts. |
 
 PIS does not remove VM allocation, node registration, networking, scheduling, driver initialization, or application startup. Its value depends on how much of the customer-visible delay comes from work that can be prepared ahead of time.
 
