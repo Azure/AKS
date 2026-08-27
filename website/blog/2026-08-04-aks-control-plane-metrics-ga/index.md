@@ -1,7 +1,7 @@
 ---
 title: "AKS Control Plane Metrics Now GA with Managed Prometheus"
 date: "2026-08-04"
-description: "Control plane metrics for AKS components like the API server and etcd are now GA via Azure Monitor managed Prometheus. Here are five metrics to monitor first."
+description: "AKS control plane metrics for the API server and etcd are now GA via Azure Monitor managed service for Prometheus. Start with five metrics to monitor first."
 authors: ["reshmi-mangalore", "david-kydd", "sunayana-singh"]
 tags:
   - metrics
