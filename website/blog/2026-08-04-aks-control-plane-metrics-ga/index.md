@@ -1,7 +1,7 @@
 ---
 title: "AKS Control Plane Metrics Now GA with Managed Prometheus"
 date: "2026-08-04"
-description: "AKS control plane metrics for the API server and etcd are now GA via Azure Monitor managed service for Prometheus. Start with five metrics to monitor first."
+description: "Control plane metrics for AKS components like the API server and etcd are now GA via Azure Monitor managed Prometheus. Here are five metrics to monitor first."
 authors: ["reshmi-mangalore", "david-kydd", "sunayana-singh"]
 tags:
   - metrics
@@ -197,7 +197,6 @@ or
 3. Start with API server and etcd metrics.
 4. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
 5. Build a Grafana dashboard using the five queries above, or start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics, as shown in the example dashboard above.
-
 6. Configure alerts for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency.
 7. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
 
@@ -209,3 +208,9 @@ If you consistently observe throttling, high LIST latency, or elevated request v
 - [Minimal ingestion profile for control plane metrics](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration-minimal)
 
 If you have configured these alerts and continue to experience unresolved control plane issues, open an Azure support case and attach the relevant Grafana dashboards or PromQL query results. This helps accelerate investigation by providing the API server and etcd signals needed to identify the likely bottleneck.
+
+## Looking ahead
+
+Control plane observability is an ongoing investment for AKS, and general availability of these metrics is just one step. We'll continue expanding the set of high-signal metrics, refining default alert guidance, and improving the out-of-the-box Grafana dashboards based on what we learn from customers running at scale.
+
+We would love to hear from you. If you have feedback, run into issues, or want to request additional control plane metrics or dashboards, please share it by opening an issue on our [GitHub project](https://github.com/Azure/AKS).
