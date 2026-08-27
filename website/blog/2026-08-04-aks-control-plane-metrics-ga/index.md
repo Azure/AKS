@@ -1,8 +1,8 @@
 ---
-title: "Control Plane Metrics for AKS with Managed Prometheus Are Generally Available"
+title: "AKS Control Plane Metrics Now GA with Managed Prometheus"
 date: "2026-08-04"
-description: "AKS control plane metrics for the API server, etcd, kube-scheduler, kube-controller-manager, Cluster Autoscaler, and node auto-provisioning are now generally available via Azure Monitor managed service for Prometheus. Here are the five metrics to monitor first."
-authors: ["reshmi-mangalore", "david-kydd"]
+description: "Control plane metrics for AKS components like the API server and etcd are now GA via Azure Monitor managed Prometheus. Here are five metrics to monitor first."
+authors: ["reshmi-mangalore", "david-kydd", "sunayana-singh"]
 tags:
   - metrics
   - monitoring
@@ -13,6 +13,8 @@ tags:
 We're excited to announce that **control plane metrics collection for Azure Kubernetes Service (AKS)**, powered by **Azure Monitor managed service for Prometheus**, is now **generally available**. AKS clusters that were previously enabled for control plane metrics during preview are automatically enabled and continue to collect control plane metrics after general availability, so no action is required from existing preview customers.
 
 <!-- truncate -->
+
+![Example AKS control plane metrics dashboard in Grafana](./ControlPlaneMetrics.png)
 
 This capability gives AKS customers native observability into key managed control plane components, including the **API server**, **etcd**, **kube-scheduler**, **kube-controller-manager**, **Cluster Autoscaler**, and **node auto-provisioning**. With these metrics, platform teams can better understand how workloads, controllers, automation, and scaling activity interact with the AKS control plane over time.
 
@@ -56,7 +58,13 @@ Supported control plane scrape targets include:
 
 We recommend starting with the default API server and etcd metrics, then enabling additional targets based on the scenarios you need to diagnose, such as scheduling latency or autoscaler behavior.
 
-<!-- TODO(authors): consider calling out current limitations here (e.g. Private Link support) before publishing. -->
+## Limitations
+
+A few things to keep in mind before enabling control plane metrics collection:
+
+- **Private Link clusters:** Control plane metric scraping is not yet supported on AKS clusters that use Azure Private Link for API server access. Support is planned for a future release.
+- **Ingestion cost:** Enabling all scrape targets without the minimal ingestion profile can significantly increase Prometheus metric volume and cost. Start with the minimal ingestion profile and expand only as needed.
+- **Regional availability:** Control plane metrics collection follows the same regional rollout as Azure Monitor managed service for Prometheus. Confirm availability in your cluster's region before enabling.
 
 ## The 5 metrics to monitor first
 
@@ -196,9 +204,7 @@ or
 2. Turn on AKS control plane metrics collection.
 3. Start with API server and etcd metrics.
 4. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
-5. Build a Grafana dashboard using the five queries above, or start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics.
-
-   ![AKS control plane out-of-box Grafana dashboard](./ControlPlaneMetrics.png)
+5. Build a Grafana dashboard using the five queries above, or start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics, as shown in the example dashboard above.
 
 6. Configure alerts for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency.
 7. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
