@@ -588,3 +588,12 @@ hariharan-sethuraman:
   socials:
     linkedin: hariharansethuraman
     github: hasethuraman
+
+spencer-libbing:
+  name: Spencer Libbing
+  title: Product Manager at Microsoft
+  url: https://github.com/stl327
+  image_url: https://avatars.githubusercontent.com/u/40648373?v=4
+  page: true
+  socials:
+    github: stl327
