@@ -1,6 +1,6 @@
 ---
 title: "Reducing AKS Cold Starts with Prepared Image Specification"
-description: "Learn how Prepared Image Specification can reduce AKS scale-out latency by preparing container images and host customizations ahead of time."
+description: "Learn how Prepared Image Specification can reduce AKS scale-out latency by preparing container images, models, and host customizations before nodes start."
 date: 2026-08-27
 authors: ["spencer-libbing"]
 tags:
@@ -18,6 +18,8 @@ That delay has a customer cost. Teams often keep extra nodes running to absorb b
 Prepared Image Specification (PIS) moves stable, repeated preparation into an AKS-managed node image. Container images and host customizations are prepared once, versioned, and reused by a node pool. New nodes still have to be created and join the cluster, but they can avoid repeating much of the work between node creation and workload readiness.
 
 <!-- truncate -->
+
+![Prepared Image Specification reuses prepared container images, host setup, and model assets across new AKS nodes](./hero-image.png)
 
 In our controlled comparisons, the strongest end-to-end result was a Windows burst that added three nodes: PIS reduced median time to start all three workloads by **74%**. PIS also reduced the median slowest image pull by **92% on Linux** and **98% on Windows**. For a T4 GPU model-serving pool, median model-ready and first-token latency improved by about **3%**, while p95 latency improved by about **14%** and **13%**, respectively.
 
