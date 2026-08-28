@@ -1,6 +1,6 @@
 ---
 title: "Open-sourcing TauGrid: cloud-native AI infrastructure for GPU workloads on Kubernetes"
-description: "TauGrid is an open-source platform that brings managed-AI-platform capabilities—job submission, GPU sharing, queueing, and observability—to self-hosted Kubernetes clusters."
+description: "TauGrid combines the tau CLI, Kueue, KubeRay, GPU health monitoring, and observability into one Kubernetes-native stack for AI workloads."
 date: 2026-08-28
 authors: ["pengfei-ni", "june-liu", "kevin-cho", "guoxun-wei"]
 tags:
@@ -11,19 +11,21 @@ tags:
   - open-source
 ---
 
-We are delighted to announce the open-source release of [TauGrid](https://github.com/Azure/taugrid). TauGrid brings the `tau` CLI, [Kueue](https://kueue.sigs.k8s.io/) queueing, [KubeRay](https://ray-project.github.io/kuberay/) orchestration, GPU-node health monitoring, and observability into one Kubernetes-native stack, spanning data preparation, distributed training, fine-tuning, and inference.
+Running AI workloads on Kubernetes often requires platform teams to assemble and maintain multiple open-source projects, custom scripts, and operational tools. This includes the glue between those components: submission scripts, queue wrappers, health checks, and result retrieval. TauGrid brings these pieces together into a single platform, so platform teams operate one stack instead of many, and researchers submit workloads without learning Kubernetes.
 
-Running GPU workloads on Kubernetes today means assembling and maintaining each of these components separately, and building the glue between them: submission scripts, queue wrappers, health checks, and result retrieval. TauGrid replaces that glue. Platform teams get a single Helm install with clear ownership boundaries; researchers get one CLI to submit, observe, recover, and retrieve results without touching Kubernetes directly.
+We are delighted to announce the open-source release of [TauGrid](https://github.com/Azure/taugrid). TauGrid combines the `tau` CLI, [Kueue](https://kueue.sigs.k8s.io/) queueing, [KubeRay](https://ray-project.github.io/kuberay/) orchestration, GPU-node health monitoring, and observability in a single Kubernetes-native stack. It supports workflows spanning data preparation, distributed training, fine-tuning, and inference.
 
-The project is MIT-licensed and published at [github.com/Azure/taugrid](https://github.com/Azure/taugrid), with container images and Helm charts on [Microsoft Container Registry](https://mcr.microsoft.com). Full documentation is available at [azure.github.io/taugrid](https://azure.github.io/taugrid).
+Instead of building and maintaining these components and the integration between them separately, TauGrid provides a single Helm install with clear ownership boundaries. Platform teams get a unified way to operate the stack, while researchers get one CLI to submit workloads, observe their progress, recover from failures, and retrieve results without interacting with Kubernetes directly.
+
+The project is MIT-licensed and available at [github.com/Azure/taugrid](https://github.com/Azure/taugrid), with container images and Helm charts published to [Microsoft Container Registry](https://mcr.microsoft.com). Full documentation is available at [azure.github.io/taugrid](https://azure.github.io/taugrid).
 
 <!-- truncate -->
 
 ## What is TauGrid?
 
-TauGrid is an open-source, self-hosted platform for running AI workloads on Kubernetes. It gives teams the key benefits of a managed AI platform—easy job submission, scalable distributed computing, shared GPU resources, experiment tracking, and operational controls—while running on infrastructure they manage in their own cloud or data center.
+TauGrid is an open-source, self-hosted platform for running AI workloads on Kubernetes. It gives teams the key benefits of a managed AI platform (job submission, scalable distributed computing, shared GPU resources, experiment tracking, and operational controls) while running on infrastructure they manage in their own cloud or data center.
 
-Researchers work from a repository and the Tau CLI. Platform teams provide governed workspaces, queues, compute profiles, storage, identity, and observability. TauGrid connects those two experiences across training, fine-tuning, batch inference, and serving.
+Researchers work from a repository and the Tau CLI. Platform teams provide governed workspaces, queues, compute profiles, storage, identity, and observability. TauGrid connects those two experiences across training, fine-tuning, batch inference, and serving. The result is reduced operational complexity for platform teams, faster onboarding for researchers, better GPU utilization through shared queueing, and consistent experiment reproducibility through evidence records.
 
 ![TauGrid architecture: from researcher intent through the TauGrid workflow layer to Kubernetes execution and evidence](./architecture.png)
 
@@ -48,11 +50,22 @@ runtime:
     - torch>=2.4.0
 ```
 
-Once submitted with `tau run`, TauGrid resolves platform policy, renders a KubeRay RayJob, and submits it through Kueue. Status, logs, checkpoints, and experiment evidence are tracked throughout the run.
+Once submitted with `tau run`, TauGrid resolves platform policy, renders a KubeRay RayJob, and submits it through Kueue. Status, logs, checkpoints, and experiment evidence are tracked throughout the run. Evidence records capture workload metadata, configuration, logs, metrics, checkpoints, and execution history, helping teams reproduce results, troubleshoot failures, and maintain an audit trail.
 
 The same stack covers the full GPU workload lifecycle. This animation shows a workload moving from data preparation through distributed training, fine-tuning, and into a ready inference endpoint, all with one continuous evidence record:
 
 ![A single workload moves through data preparation, distributed training, fine-tuning, and a ready inference endpoint, with one continuous evidence record](./taugrid-workload-lifecycle.gif)
+
+Here is what TauGrid handles at each stage:
+
+| Stage | What TauGrid does |
+| --- | --- |
+| Submission | Validates configuration and renders a Kubernetes Job or KubeRay RayJob |
+| Queueing | Uses Kueue to govern quota admission and priority |
+| Execution | Launches and manages distributed Ray workloads on Kubernetes |
+| Monitoring | Tracks status, logs, and GPU health metrics throughout the run |
+| Recovery | Supports retry, resume from checkpoints, and failure diagnosis |
+| Evidence | Preserves workload history, metrics, and artifacts for reproducibility |
 
 When multiple teams share the same cluster, their workloads enter a shared Kueue ClusterQueue. Kueue admits each job based on quota and priority, and Kubernetes places it on healthy GPUs.
 
@@ -114,13 +127,17 @@ For more examples and detailed walkthroughs, see the [examples documentation](ht
 
 ## Looking ahead
 
-TauGrid is actively developed. The full [roadmap](https://github.com/Azure/taugrid/blob/main/ROADMAP.md) is maintained in the repository.
+TauGrid is under active development. The full [roadmap](https://github.com/Azure/taugrid/blob/main/ROADMAP.md) is maintained in the repository.
 
-Near term: multi-workspace isolation with scoped identity and quotas, an interactive Portal for workload submission, a complete dataset lifecycle, validated distributed training examples (PyTorch DDP, FSDP, DeepSpeed, Hugging Face LoRA/QLoRA), and provider-agnostic observability and cost attribution.
+**Multi-tenant platform capabilities:** Support for multiple workspaces with scoped identity, RBAC, and quotas, along with an interactive portal for submitting and managing workloads.
 
-Further out: inference examples for vLLM, SGLang, and TensorRT-LLM, cross-cloud execution with portable checkpoints, reinforcement learning with Verl and OpenRLHF, and agent-driven research loops.
+**Distributed training workflows:** End-to-end examples for PyTorch DDP, FSDP, DeepSpeed, and Hugging Face LoRA/QLoRA, plus a complete dataset lifecycle covering fetch, staging, validation, tokenization, and registration.
 
-TauGrid stays a workflow and lifecycle layer. It does not own cluster provisioning, pod scheduling, quota decisions that belong to Kubernetes and Kueue, framework internals, or model code.
+**Inference workflows:** Production-oriented serving examples for vLLM, SGLang, and TensorRT-LLM.
+
+**Multi-cluster and multi-cloud execution:** Cross-cloud workload execution with portable data, checkpoints, and artifacts, supported by provider-agnostic observability and cost attribution.
+
+TauGrid will continue to focus on the workflow and workload lifecycle layer. Cluster provisioning, pod scheduling, quota enforcement handled by Kubernetes and Kueue, framework internals, and model code remain outside its scope.
 
 ## What's next?
 
