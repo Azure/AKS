@@ -110,11 +110,11 @@ The customer metric should be time to serve traffic, not merely time until a nod
 After registering the preview and configuring registry access and RBAC, create a version with pinned images, get its resource ID, and reference it from a node pool. See the [PIS how-to](https://learn.microsoft.com/azure/aks/prepared-image-specification) for current prerequisites and feature-registration steps.
 
 ```bash
-RESOURCE_GROUP=<your-resource-group>
-LOCATION=<azure-region>
-PIS_NAME=<your-pis-name>
-PIS_VERSION=v1
-CLUSTER_NAME=<your-aks-cluster-name>
+RESOURCE_GROUP="my-resource-group"
+LOCATION="eastus2"
+PIS_NAME="my-pis"
+PIS_VERSION="v1"
+CLUSTER_NAME="my-aks-cluster"
 
 cat >scripts.json <<'JSON'
 [
