@@ -1,6 +1,6 @@
 ---
 title: "Open-sourcing TauGrid: cloud-native AI infrastructure for GPU workloads on Kubernetes"
-description: "TauGrid brings the tau CLI, Kueue queueing, KubeRay orchestration, GPU-node health monitoring, and observability into one stack, spanning data preparation, distributed training, fine-tuning, and inference."
+description: "TauGrid is an open-source platform that brings managed-AI-platform capabilities—job submission, GPU sharing, queueing, and observability—to self-hosted Kubernetes clusters."
 date: 2026-08-28
 authors: ["pengfei-ni", "june-liu", "kevin-cho", "guoxun-wei"]
 tags:
@@ -21,7 +21,7 @@ The project is MIT-licensed and published at [github.com/Azure/taugrid](https://
 
 ## What is TauGrid?
 
-TauGrid brings the experience teams expect from a managed AI platform (simple submission, elastic distributed compute, shared GPU capacity, experiment visibility, and operational controls) to Kubernetes clusters they operate in their own cloud or datacenter.
+TauGrid is an open-source, self-hosted platform for running AI workloads on Kubernetes. It gives teams the key benefits of a managed AI platform—easy job submission, scalable distributed computing, shared GPU resources, experiment tracking, and operational controls—while running on infrastructure they manage in their own cloud or data center.
 
 Researchers work from a repository and the Tau CLI. Platform teams provide governed workspaces, queues, compute profiles, storage, identity, and observability. TauGrid connects those two experiences across training, fine-tuning, batch inference, and serving.
 
