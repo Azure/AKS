@@ -1,0 +1,233 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: localdns-corefile-rollback
+  namespace: kube-system
+  labels:
+    app: localdns-corefile-rollback
+spec:
+  selector:
+    matchLabels:
+      app: localdns-corefile-rollback
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: localdns-corefile-rollback
+    spec:
+      # The container uses hostPID plus nsenter so file restores and systemctl commands
+      # run in the node's namespaces, not only inside the container.
+      hostPID: true
+      # Uncomment to target one node pool first.
+      # nodeSelector:
+      #   agentpool: default
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
+      containers:
+      - name: localdns-corefile-rollback
+        image: alpine:3.20
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        # Keep reconciling so regenerated files are restored while the rollback DaemonSet is present.
+        - name: RECONCILE_INTERVAL_SECONDS
+          value: "60"
+        command:
+        - nsenter
+        - --target
+        - "1"
+        - --mount
+        - --uts
+        - --ipc
+        - --net
+        - --pid
+        - --
+        - sh
+        - -c
+        - |
+          # Exit on unset variables and failed commands so partial rollback does not look successful.
+          set -eu
+
+          # Rollback restores the same node-local files that the patch DaemonSet changed.
+          # These paths are on the host because the container is running through nsenter.
+
+          # localdns.service reads persisted Corefile payloads from this environment file.
+          ENV_FILE="/etc/localdns/environment"
+          # AgentBaker installs the LocalDNS CoreDNS binary, script, and Corefiles under this directory.
+          LOCALDNS_DIR="/opt/azure/containers/localdns"
+          # localdns.sh regenerates this base Corefile from /etc/localdns/environment on startup.
+          LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/localdns.corefile"
+          # localdns.sh starts CoreDNS with this post-processed Corefile.
+          UPDATED_LOCALDNS_CORE_FILE="${LOCALDNS_DIR}/updated.localdns.corefile"
+          # Active markers prevent the patch and rollback DaemonSets from fighting over the same files.
+          # Each marker contains the host PID of the DaemonSet shell that owns it.
+          LOCALDNS_PATCH_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-active"
+          LOCALDNS_ROLLBACK_ACTIVE_MARKER="${LOCALDNS_DIR}/.localdns-corefile-rollback-active"
+          # Remove the patch restart marker after rollback restores files so a later patch reapply
+          # gets its required one-time restart on this node.
+          LOCALDNS_PATCH_RESTART_MARKER="${LOCALDNS_DIR}/.localdns-corefile-patch-restarted"
+          # Reconcile functions set this when they restore any file.
+          CHANGED=0
+          ACTIVE_MARKER_PID=""
+
+          # Return success only when a marker points at a still-running process.
+          # Invalid or dead-PID markers are treated as stale and removed.
+          marker_is_active() {
+              marker="$1"
+              [ -f "$marker" ] || return 1
+
+              pid="$(cat "$marker" 2>/dev/null || true)"
+              case "$pid" in
+                  ""|*[!0-9]*)
+                      echo "Removing stale active marker with invalid pid: $marker"
+                      rm -f "$marker"
+                      return 1
+                      ;;
+              esac
+
+              if kill -0 "$pid" 2>/dev/null; then
+                  return 0
+              fi
+
+              echo "Removing stale active marker for exited pid $pid: $marker"
+              rm -f "$marker"
+              return 1
+          }
+
+          # Remove only this process's active marker. If another rollback pod replaced
+          # the marker, do not delete the other process's marker.
+          cleanup_rollback_active_marker() {
+              if [ -n "$ACTIVE_MARKER_PID" ]; then
+                  kill "$ACTIVE_MARKER_PID" 2>/dev/null || true
+              fi
+
+              if [ -f "$LOCALDNS_ROLLBACK_ACTIVE_MARKER" ] && [ "$(cat "$LOCALDNS_ROLLBACK_ACTIVE_MARKER" 2>/dev/null || true)" = "$ACTIVE_MARKER_PID" ]; then
+                  rm -f "$LOCALDNS_ROLLBACK_ACTIVE_MARKER"
+              fi
+          }
+
+          # Publish this pod's active marker before reconciling so a patch pod on
+          # the same node can refuse to run instead of racing this rollback.
+          if [ -d "$LOCALDNS_DIR" ]; then
+              # Kubernetes command-arg expansion treats $$ specially, so use a background
+              # sleep process as the active marker's live PID instead of the shell's $$.
+              sleep infinity &
+              ACTIVE_MARKER_PID="$!"
+              echo "$ACTIVE_MARKER_PID" > "$LOCALDNS_ROLLBACK_ACTIVE_MARKER"
+              trap cleanup_rollback_active_marker EXIT
+              trap 'cleanup_rollback_active_marker; exit 0' INT TERM
+          else
+              echo "LocalDNS directory $LOCALDNS_DIR is missing; active marker was not written"
+          fi
+
+          require_backup() {
+              file="$1"
+              backup="${file}.pre-localdns-patch"
+
+              if [ ! -f "$backup" ]; then
+                  echo "Rollback backup is missing: $backup"
+                  return 1
+              fi
+          }
+
+          # Restore one file from the backup created by the patch DaemonSet.
+          # All expected backups are required before rollback starts, so rollback cannot partially restore a node.
+          restore_backup_if_present() {
+              file="$1"
+              backup="${file}.pre-localdns-patch"
+
+              # If the current file already equals the backup, keep the pass idempotent.
+              if cmp -s "$file" "$backup"; then
+                  echo "$file already matches rollback backup"
+                  return 0
+              fi
+
+              # Restore the exact pre-patch content, including removing reload 10s if the patch added it.
+              cp "$backup" "$file"
+              chmod 0644 "$file"
+              CHANGED=1
+              echo "Restored $file from $backup"
+          }
+
+          # Verify the running rollback target file no longer contains any directives added by the patch.
+          # First require exact file equality with the backups; then grep updated.localdns.corefile
+          # as extra customer-readable evidence that the patch directives are gone.
+          verify_rollback() {
+              for file in "$ENV_FILE" "$LOCALDNS_CORE_FILE" "$UPDATED_LOCALDNS_CORE_FILE"; do
+                  if [ ! -f "$file" ]; then
+                      echo "Rollback verification failed: $file is missing"
+                      return 1
+                  fi
+                  if ! cmp -s "$file" "${file}.pre-localdns-patch"; then
+                      echo "Rollback verification failed: $file does not match ${file}.pre-localdns-patch"
+                      return 1
+                  fi
+              done
+
+              if grep -nE "reload 10s|prefer_udp|health_check 5s|failfast_all_unhealthy_upstreams" "$UPDATED_LOCALDNS_CORE_FILE"; then
+                  echo "Rollback verification failed: patch directives still exist in $UPDATED_LOCALDNS_CORE_FILE"
+                  return 1
+              fi
+
+              echo "Rollback verification passed: files match backups and patch directives are absent from $UPDATED_LOCALDNS_CORE_FILE"
+          }
+
+          # Run one rollback reconciliation pass:
+          # 0. Require all three backups to avoid partial rollback.
+          # 1. Restore the three backup files.
+          # 2. Restart localdns whenever files were restored.
+          # 3. Verify all restored files match their backups and patch directives are absent.
+          reconcile_once() {
+              # Patch and rollback must not run on the same node at the same time.
+              # If patch is active, leave files unchanged and make the reason visible in logs.
+              if marker_is_active "$LOCALDNS_PATCH_ACTIVE_MARKER"; then
+                  echo "Refusing rollback: localdns-corefile-patch is active on this node. Delete the patch DaemonSet before applying the rollback DaemonSet."
+                  return 0
+              fi
+
+              CHANGED=0
+
+              require_backup "$ENV_FILE"
+              require_backup "$LOCALDNS_CORE_FILE"
+              require_backup "$UPDATED_LOCALDNS_CORE_FILE"
+
+              # Restore persisted payloads first so future localdns restarts do not regenerate patched Corefiles.
+              restore_backup_if_present "$ENV_FILE"
+              # Restore the decoded Corefile and the Corefile currently used by the running service.
+              restore_backup_if_present "$LOCALDNS_CORE_FILE"
+              restore_backup_if_present "$UPDATED_LOCALDNS_CORE_FILE"
+
+              if [ "$CHANGED" -eq 1 ]; then
+                  # Rollback restored the original Corefile, which may remove reload 10s.
+                  # Clear the patch restart marker so a future patch reapply restarts localdns once.
+                  rm -f "$LOCALDNS_PATCH_RESTART_MARKER"
+                  # Restart whenever rollback restored files because the restored Corefile may not contain reload 10s.
+                  echo "Restored LocalDNS files; restarting localdns"
+                  systemctl restart localdns
+                  systemctl is-active localdns
+                  verify_rollback
+              else
+                  echo "LocalDNS files already match rollback backups"
+                  verify_rollback
+              fi
+          }
+
+          # Keep the rollback DaemonSet alive and restore files if something rewrites them.
+          # Delete this DaemonSet after rollback is verified.
+          while true; do
+              reconcile_once
+              sleep "${RECONCILE_INTERVAL_SECONDS:-60}"
+          done
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
