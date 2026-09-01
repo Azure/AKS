@@ -15,6 +15,7 @@ not several:
 | **Single queue** | `manifests/20-single-queue.yaml` | One ClusterQueue with admission backpressure — one workload runs, the next waits |
 | **Team queues** | `manifests/30-team-queues.yaml` | Two ClusterQueues in a shared cohort with borrowing and preemption |
 | **Autoscale queue** | `manifests/40-autoscale-queue.yaml` | A ProvisioningRequest AdmissionCheck that drives the AKS cluster autoscaler to provision capacity *before* admission |
+| **GPU autoscale queue** | `manifests/50-gpu-autoscale-queue.yaml` | The same provisioning gate applied to GPUs — atomic scale-up of a GPU pool, with GPU-aware quota |
 
 > The single and team queues admit against a **fixed** quota on the
 > already-provisioned GPU node. The autoscale queue is different: it pairs Kueue
@@ -48,6 +49,7 @@ not several:
 | `manifests/20-single-queue.yaml` | `cluster-queue` ClusterQueue + `default` LocalQueue |
 | `manifests/30-team-queues.yaml` | `team-a-cq` / `team-b-cq` ClusterQueues in `shared-cohort` + `team-a` / `team-b` LocalQueues |
 | `manifests/40-autoscale-queue.yaml` | `scalepool` ResourceFlavor + `cas-provisioning` AdmissionCheck + `cas-provreq-config` ProvisioningRequestConfig + `cas-cluster-queue` ClusterQueue + `cas-local-queue` LocalQueue (in its own `cas-kueue-demo` namespace) |
+| `manifests/50-gpu-autoscale-queue.yaml` | `gpu-a100` ResourceFlavor + `gpu-provisioning` AdmissionCheck + `gpu-provreq-config` ProvisioningRequestConfig + `gpu-cluster-queue` ClusterQueue + `gpu-local-queue` LocalQueue (in its own `gpu-lab` namespace) |
 
 ## Apply
 
@@ -74,6 +76,10 @@ kubectl apply -f manifests/30-team-queues.yaml
 #   Option C — Autoscale queue (provision capacity on demand via CAS)
 #   Requires an autoscaling `scalepool` pool — see the section below.
 kubectl apply -f manifests/40-autoscale-queue.yaml
+
+#   Option D — GPU autoscale queue (provision GPU capacity on demand via CAS)
+#   Requires an autoscaling GPU pool — see ../3-workloads/gpu-lab/.
+kubectl apply -f manifests/50-gpu-autoscale-queue.yaml
 ```
 
 > **⚠️ Choose one.** `20-single-queue.yaml` and `30-team-queues.yaml` are
@@ -286,6 +292,24 @@ Three objects wire the gate together (all in `40-autoscale-queue.yaml`):
 
 The [cas-batch-job](../3-workloads/cas-batch-job/) workload in Module 3 submits
 a suspended Job through this queue and walks through the scale-up end to end.
+
+### GPU variant
+
+`manifests/50-gpu-autoscale-queue.yaml` applies the same gate to GPU capacity.
+Two things change: `managedResources` is `nvidia.com/gpu` rather than `cpu`, so
+only GPU-requesting podsets drive provisioning, and the ResourceFlavor carries
+a toleration for the `nvidia.com/gpu=present:NoSchedule` taint that AKS puts on
+GPU pools.
+
+The stakes are also higher. Atomic scale-up matters more when a half-placed
+gang holds A100s instead of vCPUs — see the
+[GPU labs](../3-workloads/gpu-lab/) for the full walkthrough, including
+multi-node training and queue contention.
+
+**Requirements:**
+
+- An autoscaling GPU pool named `gpupool`
+  (`az aks nodepool add ... --enable-cluster-autoscaler --min-count 0 --max-count 2`).
 
 ### Quota sizing
 
