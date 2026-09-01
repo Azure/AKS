@@ -99,10 +99,15 @@ After registering the preview and configuring registry access and role-based acc
 
 ```bash
 RESOURCE_GROUP="my-resource-group"
-LOCATION="eastus2"
 PIS_NAME="my-pis"
 PIS_VERSION="v1"
 CLUSTER_NAME="my-aks-cluster"
+
+LOCATION=$(az aks show \
+  --resource-group "$RESOURCE_GROUP" \
+  --name "$CLUSTER_NAME" \
+  --query location \
+  --output tsv)
 
 cat >scripts.json <<'JSON'
 [
@@ -121,7 +126,7 @@ az aks prepared-image-specification create \
   --name "$PIS_NAME" \
   --version "$PIS_VERSION" \
   --location "$LOCATION" \
-  --container-images myacr.azurecr.io/model-server@sha256:<digest> \
+  --container-images "myacr.azurecr.io/model-server@sha256:<digest>" \
   --customization-scripts @scripts.json
 
 PIS_VERSION_ID=$(az aks prepared-image-specification version show \
