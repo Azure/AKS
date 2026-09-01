@@ -199,36 +199,59 @@ kubectl -n gpu-lab logs -f job/multinode-training \
   --selector=batch.kubernetes.io/job-completion-index=0
 ```
 
-Expected tail (this run is the single-node 8-GPU baseline, measured on
-`ND96amsr_A100_v4`; the 16-rank two-node run reports the same shape):
+Expected tail. Measured on two `ND96amsr_A100_v4` nodes, 4 GPUs each:
 
 ```
 process group up: 8 ranks
-  step   0  loss 0.7122
-  step  10  loss 0.1163
-  step  20  loss 0.0311
+  step   0  loss 0.7103
+  step  10  loss 0.1153
+  step  20  loss 0.0310
   step  30  loss 0.0108
-  step  40  loss 0.0037
-50 steps in 0.7s
-throughput: 17568.3 samples/s across 8 ranks
-per-GPU:    2196.0 samples/s
+  step  40  loss 0.0039
+50 steps in 80.8s
+throughput: 158.3 samples/s across 8 ranks
+per-GPU:    19.8 samples/s
 peak GPU memory: 3.4 GB
 ```
 
-Record `per-GPU samples/s` and treat the single-node figure as your baseline.
-It is the number to watch as you change GPU count: scaling from 8 to 16 GPUs
-should roughly double aggregate throughput while per-GPU throughput stays
-flat. Expect *some* per-GPU drop when you cross a node boundary, because
-gradients then travel over the network rather than NVLink. A large drop means
-the job is communication-bound, and Lab 1's busbw is the first thing to check.
+Record `per-GPU samples/s`. It is the number that exposes communication cost,
+and comparing it against a single-node run is the most useful thing this lab
+does. The same 8 ranks on **one** node report:
+
+```
+50 steps in 0.7s
+throughput: 17568.3 samples/s across 8 ranks
+per-GPU:    2196.0 samples/s
+```
+
+That is a ~110x difference for identical work, and it is not a mistake — it is
+the lesson. Within a node the gradient all-reduce crosses NVLink at ~225 GB/s
+(Lab 1). Across nodes it crosses whatever network NCCL can find, and on a
+cluster without RDMA configured that is TCP over the pod network:
+
+```bash
+kubectl -n gpu-lab logs job/multinode-training | grep -E "NET/IB|Using network"
+```
+
+```
+NCCL INFO NET/IB : No device found.
+NCCL INFO NET/Socket : Using [0]eth0
+NCCL INFO Using network Socket
+```
+
+`Using network Socket` is the finding. On an InfiniBand-enabled SKU with the
+RDMA plugin installed you would instead see `NET/IB` with an active device, and
+the cross-node penalty largely disappears. **Check this line before blaming
+your model for poor multi-node scaling** — it is the difference between a
+communication-bound job and a compute-bound one.
 
 > **On this synthetic benchmark specifically:** the model is small and the data
-> is generated on-device, so 50 steps complete in under a second and there is
-> no input pipeline. That makes it a clean test of the distributed machinery,
-> but it also makes it unusually communication-heavy relative to real training.
-> Do not read these absolute numbers as a throughput expectation for your own
-> model — use them to confirm the ranks rendezvous, the collective completes,
-> and scaling behaves sensibly.
+> is generated on-device, so each step is almost pure communication with very
+> little compute to overlap it against. That makes the socket-fallback penalty
+> look far more dramatic here than it would on a real training job, where
+> larger batches and real compute hide much of the transfer. Use these numbers
+> to confirm the ranks rendezvous and to compare transports — not as a
+> throughput expectation for your own model.
 
 ### Seeing the gang guarantee directly
 
@@ -455,6 +478,9 @@ az aks nodepool delete -g <rg> --cluster-name <cluster> -n gpupool
 | ProvisioningRequest stuck `Pending` | No regional capacity for the SKU, or pool `--max-count` too low |
 | NCCL hangs at startup | `/dev/shm` too small — the manifests mount 16 Gi for this reason |
 | Low busbw in Lab 1 | GPUs on PCIe rather than NVLink; check the VM SKU |
+| Lab 2 much slower than single-node | NCCL fell back to TCP; check for `Using network Socket` in the logs and whether RDMA/IB is available on the SKU |
+| Rank 1 Pending, rank 0 Running | Not enough free GPUs for a whole rank — another workload may hold GPUs on the node; `kubectl describe node <n> \| grep nvidia.com/gpu` |
+| `AllocationFailed` when scaling the pool | The region is out of capacity for that GPU SKU; try another region or SKU |
 
 ## What has been validated
 
@@ -462,21 +488,28 @@ Sample outputs in this README are real, not illustrative. Specifically:
 
 - **Lab 1** was run end to end on `Standard_ND96amsr_A100_v4` (8×A100 80 GB,
   driver 580.159.04). All three checks pass; the NCCL figures are that run.
-- **Lab 2's** training script was validated on a single 8-GPU node
-  (`torchrun` rendezvous, DDP all-reduce, throughput reporting). The output
-  shown is that 8-rank run.
+- **Lab 2** was run both single-node (8 ranks, one node) and **cross-node**
+  (8 ranks over two `ND96amsr_A100_v4` nodes, 4 GPUs each). The Job completed
+  2/2, the DNS wait loop retried four times before rank 0 resolved, and both
+  throughput figures are from those runs.
 - **Lab 3's** admission behaviour was validated against a live Kueue v0.18.2
   install: quota gating, zero pods for queued workloads, and the sequential
   handoff. The timestamps shown are from that run.
 
 Two caveats worth stating plainly:
 
-- The **2-node** path in Lab 2 exercises the same code as the validated
-  single-node run, but the cross-node rendezvous itself was not run on a
-  multi-node GPU pool. If you hit an issue, the Service DNS
-  (`publishNotReadyAddresses`) is the first thing to check.
+- The cross-node run used **4 GPUs per node rather than 8**, because another
+  tenant held a GPU on one of the shared test nodes. The manifest as written
+  requests 8; adjust to match your pool.
 - Lab 3 was validated on **quota gating**. The full
   ProvisioningRequest→CAS scale-up path additionally requires the
   `ProvisioningRequest` CRD, which is installed on clusters where the feature
   is enabled; without it Kueue's AdmissionCheck stays pending. Confirm with
   `kubectl get crd provisioningrequests.autoscaling.x-k8s.io`.
+
+One more note from testing, since it is the kind of thing these labs exist to
+surface: scaling the A100 pool in `centraluseuap` failed with
+`AllocationFailed` — the region had no capacity for the SKU. That is not a
+configuration error, and it is precisely why the provisioning gate matters. A
+ProvisioningRequest that stays `Pending` is reporting a real constraint on
+supply rather than misbehaving.
