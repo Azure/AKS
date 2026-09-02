@@ -135,10 +135,14 @@ az aks nodepool add \
   --resource-group "$RESOURCE_GROUP" \
   --cluster-name "$CLUSTER_NAME" \
   --name userpool \
-  --pis-id "$PIS_VERSION_ID"
+  --prepared-image-specification-id "$PIS_VERSION_ID"
 ```
 
 For Windows, use PowerShell and set `scriptType` to `PowerShell`. Keep secrets out of scripts and use managed identity with data-plane RBAC for private registries and artifacts.
+
+## Conclusion
+
+PIS is most useful when new nodes repeatedly pull large images, fetch models, or run stable host setup before workloads can serve. It shifts that work to a versioned image build so later scale-outs can be faster and more predictable. Because PIS is in preview, validate it in matched nonproduction pools before adoption.
 
 ## Resources
 
