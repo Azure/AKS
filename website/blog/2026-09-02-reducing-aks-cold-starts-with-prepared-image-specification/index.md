@@ -1,5 +1,5 @@
 ---
-title: "Reducing AKS Cold Starts with Prepared Image Specification"
+title: "Reducing AKS cold starts with Prepared Image Specification"
 description: "Learn how Prepared Image Specification can reduce AKS scale-out latency by preparing container images, models, and host customizations before nodes start."
 date: 2026-09-02
 authors: ["spencer-libbing"]
