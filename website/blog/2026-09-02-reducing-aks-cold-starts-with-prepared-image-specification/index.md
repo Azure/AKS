@@ -1,7 +1,7 @@
 ---
 title: "Reducing AKS Cold Starts with Prepared Image Specification"
 description: "Learn how Prepared Image Specification can reduce AKS scale-out latency by preparing container images, models, and host customizations before nodes start."
-date: 2026-08-27
+date: 2026-09-02
 authors: ["spencer-libbing"]
 tags:
   - performance
@@ -21,13 +21,13 @@ Prepared Image Specification (PIS) moves stable, repeated preparation into an AK
 
 ![Prepared Image Specification reuses prepared container images, host setup, and model assets across new AKS nodes](./hero-image.png)
 
-The percentages below compare otherwise-equivalent standard and PIS-backed pools; a positive value means the PIS-backed path reached the measured outcome sooner. Median represents the middle run, while p90 and p95 show the 90th- and 95th-percentile tail.
+The results below compare otherwise-equivalent standard and PIS-backed pools. A reduction means the PIS-backed path reached the measured outcome sooner. Mean saved is the average same-round difference, while p90 and p95 show tail latency. Times are rounded to whole seconds.
 
-In our controlled comparisons, the strongest end-to-end result was a Windows burst that added three nodes: PIS reduced median time to start all three workloads by **74%**. PIS also reduced the median slowest image pull by **92% on Linux** and **98% on Windows**. For a T4 graphics processing unit (GPU) model-serving pool, median model-ready and first-token latency improved by about **3%**, while p95 latency improved by about **14%** and **13%**, respectively.
+In our controlled comparisons, the strongest end-to-end result was a Windows burst that added three nodes: PIS reduced median time to start all three workloads by **74%**. PIS also reduced the median slowest image pull by **92% on Linux** and **98% on Windows**. For a T4 graphics processing unit (GPU) model-serving pool, PIS reached model readiness and returned the first token **14 seconds sooner on average** across 46 paired scale-outs. At p95, model readiness was **503 seconds with PIS versus 510 seconds without it**, and first token was **537 versus 543 seconds**. Once the GPU was allocatable, PIS returned the first token **27 seconds sooner on average**.
 
 > **Preview notice:** PIS is currently an AKS preview feature. Preview features are opt-in, provided as-is and as-available, and not intended for production use. Review the current prerequisites, regions, limitations, and support policy before testing it.
 
-## What PIS changes for customers
+## What Prepared Image Specification changes for customers
 
 A PIS is an AKS-managed, versioned Azure resource that describes container images and Bash or PowerShell customizations to include in a prepared AKS node image. AKS builds on a supported AKS node image; this is not a bring-your-own-image workflow.
 
@@ -53,23 +53,26 @@ The table separates the customer-visible outcomes. Reductions mean the PIS-backe
 | Large image pulls during a three-node burst | Slowest new-node pull completed | **92% at Linux median; 98% at Windows median** |
 | Install a pinned portable runtime | Runtime verified and workload started | **10% at Linux median; 34% at Windows median** |
 | Prepare a large dependency bundle | Dependencies verified and workload started | **20% at Linux median; 5% at Windows median** |
-| Serve a model on a T4 GPU node | Model healthy and first token returned | **3% median for both; p95 was 14% lower for model readiness and 13% lower for first token** |
+| Serve a model on a T4 GPU node | Model healthy and first token returned | **14 seconds sooner on average for both; at p95, 503 vs. 510 seconds to model ready and 537 vs. 543 seconds to first token (PIS vs. non-PIS)** |
+| Reuse prepared assets after the GPU is allocatable | First token returned; container started after preparation checks | **27 seconds sooner to first token on average; container start was 86 seconds sooner on average** |
 | Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | **14% slower at median; tail latency favored PIS** |
 
 ### How to read these results
 
-We compared standard and PIS-backed pools with the same VM size, AKS node image, networking, pinned artifacts, and workload. Image-caching tests used 100 rounds per arm. Customization and GPU scenarios used 10 same-round pairs per reported cell. Pilots and failed attempts were excluded from measured denominators.
+We compared standard and PIS-backed pools with the same VM size, AKS node image, networking, pinned artifacts, and workload. Image-caching tests used 100 rounds per arm, customization scenarios used 10 same-round pairs per reported cell, and the GPU scenario used 46 same-round pairs. Pilots and failed attempts were excluded from measured denominators.
 
-Each timer started with the scale request and stopped at the customer-visible outcome in the table. PIS creation and initial prepared-pool setup were separate release-time work and were not included. The GPU timers therefore cover the full path to model health and first token, not image pull alone.
+Each timer started with the scale request and stopped at the customer-visible outcome in the table. PIS creation and initial prepared-pool setup were separate release-time work and were not included.
 
-The image and customization tests ran in East US 2, and the GPU test ran in West US 3. All used AKS 1.35.7. The scenarios used one VM size per operating system and one T4 GPU size with one quantized model, so treat tail results from the 10-pair tests as directional rather than production service-level objectives.
+For the GPU A/B test, each pair concurrently scaled matched standard and PIS pools from one to two nodes. The end-to-end timer covered GPU VM provisioning, node bootstrapping and registration, managed driver readiness, image availability, model download or prepared-asset verification, model loading, health, and first token. The standard node downloaded and hash-verified the model and pulled the pinned image if absent; the PIS-backed node verified the same preloaded model and used the preloaded pinned image.
+
+The image and customization tests ran in East US 2, and the GPU test ran in West US 3. All used AKS 1.35.7. The scenarios used one VM size per operating system and one T4 GPU size with one quantized model. Treat tail results from the 10-pair customization tests as directional, and treat all benchmark results as observations rather than production service-level objectives.
 
 These tests did not measure bill savings, production traffic, autoscaler decision time, cross-region variation, steady-state inference throughput, GPU node upgrades, or long-lived node drift.
 
 Three details help put the numbers in context:
 
-- The image-pull and GPU rows are not directly comparable. One isolates the slowest image pull; the other includes every stage from a scale request to serving inference.
-- Tail latency can tell a different story from the median. In several scenarios, the slowest runs changed more than the typical run.
+- The image-pull and GPU rows are not directly comparable. One isolates the slowest image pull; the other includes every stage from VM provisioning to serving inference. In the GPU run, the PIS arm reached GPU allocatable 13 seconds later on average, which offset part of its downstream gain.
+- After the GPU was allocatable, PIS returned the first token 27 seconds sooner on average. After preparation checks finished, the preloaded image started its container 86 seconds sooner on average: 11 seconds with PIS versus 97 seconds without it.
 - Preparation needs to remove material work. The small Linux CA-and-policy setup shows that baking a task is not automatically faster.
 
 ## When to use PIS
