@@ -47,33 +47,25 @@ The table separates the customer-visible outcomes. Reductions mean the PIS-backe
 
 | Scenario | Customer-visible outcome | Observed result |
 | --- | --- | ---: |
-| Add three Windows nodes | All three workloads started on distinct new nodes | **74% at median; 78% at p90** |
-| Add one Windows node | Workload started on the new node | **27% at median; 77% at p90** |
-| Add three Linux nodes | All three workloads started on distinct new nodes | **4% at median; 24% at p90** |
-| Large image pulls during a three-node burst | Slowest new-node pull completed | **92% at Linux median; 98% at Windows median** |
-| Install a pinned portable runtime | Runtime verified and workload started | **10% at Linux median; 34% at Windows median** |
-| Prepare a large dependency bundle | Dependencies verified and workload started | **20% at Linux median; 5% at Windows median** |
-| Serve a model on a T4 GPU node | Model healthy and first token returned | **14 seconds sooner on average for both; at p95, 503 vs. 510 seconds to model ready and 537 vs. 543 seconds to first token (PIS vs. non-PIS)** |
-| Reuse prepared assets after the GPU is allocatable | First token returned; container started after preparation checks | **27 seconds sooner to first token on average; container start was 86 seconds sooner on average** |
-| Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | **14% slower at median; tail latency favored PIS** |
+| Add three Windows nodes | All three workloads started on distinct new nodes | **74% at median**<br />**78% at p90** |
+| Add one Windows node | Workload started on the new node | **27% at median**<br />**77% at p90** |
+| Add three Linux nodes | All three workloads started on distinct new nodes | **4% at median**<br />**24% at p90** |
+| Large image pulls during a three-node burst | Slowest new-node pull completed | **92% at Linux median**<br />**98% at Windows median** |
+| Install a pinned portable runtime | Runtime verified and workload started | **10% at Linux median**<br />**34% at Windows median** |
+| Prepare a large dependency bundle | Dependencies verified and workload started | **20% at Linux median**<br />**5% at Windows median** |
+| Serve a model on a T4 GPU node | Model healthy and first token returned | **14 seconds sooner on average to model ready and first token**<br />**At p95: 503 vs. 510 seconds to model ready**<br />**At p95: 537 vs. 543 seconds to first token**<br />(PIS vs. non-PIS) |
+| Reuse prepared assets after the GPU is allocatable | First token returned<br />Container started after preparation checks | **27 seconds sooner to first token on average**<br />**86 seconds sooner to container start on average** |
+| Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | **14% slower at median**<br />**Tail latency favored PIS** |
 
 ### How to read these results
 
-We compared standard and PIS-backed pools with the same VM size, AKS node image, networking, pinned artifacts, and workload. Image-caching tests used 100 rounds per arm, customization scenarios used 10 same-round pairs per reported cell, and the GPU scenario used 46 same-round pairs. Pilots and failed attempts were excluded from measured denominators.
+Each result compares matched standard and PIS-backed pools. The timer starts with the scale request and stops at the outcome in the table; PIS creation and initial pool setup are not included.
 
-Each timer started with the scale request and stopped at the customer-visible outcome in the table. PIS creation and initial prepared-pool setup were separate release-time work and were not included.
+Image tests used 100 rounds per arm, customization tests used 10 same-round pairs per cell, and the GPU test used 46 pairs that concurrently scaled matched pools from one to two nodes. VM size, AKS node image, networking, artifacts, and workload were held constant.
 
-For the GPU A/B test, each pair concurrently scaled matched standard and PIS pools from one to two nodes. The end-to-end timer covered GPU VM provisioning, node bootstrapping and registration, managed driver readiness, image availability, model download or prepared-asset verification, model loading, health, and first token. The standard node downloaded and hash-verified the model and pulled the pinned image if absent; the PIS-backed node verified the same preloaded model and used the preloaded pinned image.
+The GPU timer includes VM provisioning, node registration, managed driver readiness, model loading, health, and first token. PIS reached GPU allocatable 13 seconds later on average, but then returned the first token 27 seconds sooner. Once preparation checks finished, its preloaded image started the container 86 seconds sooner: 11 seconds with PIS versus 97 seconds without it.
 
-The image and customization tests ran in East US 2, and the GPU test ran in West US 3. All used AKS 1.35.7. The scenarios used one VM size per operating system and one T4 GPU size with one quantized model. Treat tail results from the 10-pair customization tests as directional, and treat all benchmark results as observations rather than production service-level objectives.
-
-These tests did not measure bill savings, production traffic, autoscaler decision time, cross-region variation, steady-state inference throughput, GPU node upgrades, or long-lived node drift.
-
-Three details help put the numbers in context:
-
-- The image-pull and GPU rows are not directly comparable. One isolates the slowest image pull; the other includes every stage from VM provisioning to serving inference. In the GPU run, the PIS arm reached GPU allocatable 13 seconds later on average, which offset part of its downstream gain.
-- After the GPU was allocatable, PIS returned the first token 27 seconds sooner on average. After preparation checks finished, the preloaded image started its container 86 seconds sooner on average: 11 seconds with PIS versus 97 seconds without it.
-- Preparation needs to remove material work. The small Linux CA-and-policy setup shows that baking a task is not automatically faster.
+These are controlled observations, not service-level objectives. The 10-pair tail results are directional, and the tests did not measure cost savings, production traffic, autoscaler decisions, cross-region variation, throughput, upgrades, or long-lived drift. PIS helps when the prepared work is material; the small Linux setup shows that baking a task is not automatically faster.
 
 ## When to use PIS
 
