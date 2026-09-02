@@ -45,6 +45,8 @@ PIS does not remove VM allocation, node registration, networking, scheduling, dr
 
 The table separates the customer-visible outcomes. Reductions mean the PIS-backed path completed sooner; the final row shows the one median regression.
 
+<!-- markdownlint-disable MD033 -->
+
 | Scenario | Customer-visible outcome | Observed result |
 | --- | --- | ---: |
 | Add three Windows nodes | All three workloads started on distinct new nodes | **74% at median**<br />**78% at p90** |
@@ -56,6 +58,8 @@ The table separates the customer-visible outcomes. Reductions mean the PIS-backe
 | Serve a model on a T4 GPU node | Model healthy and first token returned | **14 seconds sooner on average to model ready and first token**<br />**At p95: 503 vs. 510 seconds to model ready**<br />**At p95: 537 vs. 543 seconds to first token**<br />(PIS vs. non-PIS) |
 | Reuse prepared assets after the GPU is allocatable | First token returned<br />Container started after preparation checks | **27 seconds sooner to first token on average**<br />**86 seconds sooner to container start on average** |
 | Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | **14% slower at median**<br />**Tail latency favored PIS** |
+
+<!-- markdownlint-enable MD033 -->
 
 ### How to read these results
 
