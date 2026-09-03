@@ -264,7 +264,7 @@ We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI 
 
 Table 4 shows the guardrail processing overhead measured by a deterministic unit-level benchmark that isolates scanner execution from model inference and network variance.
 
-*Table 4. Isolated guardrail processing overhead (deterministic unit benchmark, 512 tokens, 100 iterations).*
+*Table 4. Isolated guardrail processing overhead (deterministic unit benchmark, 512-token response sample, 100 iterations).*
 
 | Policy | Guardrail overhead P50 | Guardrail overhead P99 |
 | ------ | --------------------- | --------------------- |
