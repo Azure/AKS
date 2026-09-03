@@ -1,7 +1,7 @@
 ---
 title: "Building Safer RAG Applications on AKS with KAITO RAGEngine Guardrails"
-date: "2026-09-03"
-description: "Configure and evaluate deterministic output guardrails for KAITO RAGEngine on AKS, including streaming-safe cross-chunk protection, hot-reload policy management, and benchmark results."
+date: 2026-09-03
+description: "Deterministic output guardrails for KAITO RAGEngine on AKS: streaming-safe cross-chunk protection, hot-reload policy, and benchmark results."
 authors: ["yiqi-wang"]
 tags: ["ai", "kaito", "rag", "security"]
 ---
@@ -111,9 +111,9 @@ data:
         case_sensitive: false
 ```
 
-Table 1 lists each scanner type and its availability across non-streaming and streaming response paths. Scanners marked "No" for streaming require the complete response to produce a result and are therefore incompatible with incremental delivery.
+Table 1 lists each scanner type and its availability across non-streaming and streaming response paths. Scanners marked "No" are currently supported only on the complete non-streaming response path and are not available for incremental streaming enforcement.
 
-*Table 1 — Scanner availability by response path.*
+*Table 1. Scanner availability by response path.*
 
 | Scanner | Non-streaming | Streaming |
 | --- | --- | --- |
@@ -201,7 +201,7 @@ Upstream chunk 2: "567890ABCDEF"
 
 With the policy shown above and `redact_mode: all`, the holdback window combines and scans pending text before release. Table 2 traces how the upstream chunks, the pending window, and the client-visible output relate: the holdback window accumulates the full key before any text is released, so the client sees only the redacted placeholder.
 
-*Table 2 — Cross-chunk secret redaction example.*
+*Table 2. Cross-chunk secret redaction example.*
 
 | Upstream | Pending window | Client-visible output |
 | --- | --- | --- |
@@ -237,9 +237,9 @@ KAITO does not currently expose these scanners. Adding them requires context plu
 
 ## Evaluate Safety and Performance
 
-We evaluated four profiles rather than reporting configuration alone. Table 3 summarizes each configuration and the aspect of guardrail behavior it is designed to measure.
+Across the benchmark suite, we evaluated four profiles covering both non-streaming and streaming guardrail paths. Table 3 summarizes each configuration and the aspect of guardrail behavior it is designed to measure.
 
-*Table 3 — Benchmark configurations and their purposes.*
+*Table 3. Benchmark configurations and their purposes.*
 
 | Configuration | Purpose |
 | --- | --- |
@@ -262,30 +262,31 @@ We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI 
 
 #### Isolated guardrail processing adds millisecond-scale overhead
 
-For Phi-4-mini and mistral-small, median end-to-end latency remained within normal run-to-run variation after enabling RAGEngine guardrails. As shown in Table 4, the P50 latency differences across the three configurations are within tens of milliseconds, indicating that the guardrail overhead is negligible relative to model inference time.
+As shown in Table 4, Phi-4-mini and mistral-small show no consistent increase in median end-to-end latency after enabling guardrails. Mistral-Large-3 exhibits a different E2E pattern, discussed below.
 
-*Table 4 — Median end-to-end latency (P50) by guardrail configuration.*
+*Table 4. Median end-to-end latency (P50) by guardrail configuration.*
 
 | Model | Baseline P50 | Block only P50 | Redact + block P50 |
 | ----- | ------------ | -------------- | ------------------ |
 | Phi-4-mini | 3.67 s | 3.60 s | 3.51 s |
 | mistral-small | 2.84 s | 2.83 s | 2.82 s |
+| Mistral-Large-3* | 5.58 s | 7.19 s | 8.23 s |
 
-A deterministic unit-level benchmark isolates the guardrail runtime from model and network variance. Block-only processing added 0.48 ms P50, while the three-scanner redact-and-block policy added 3.24 ms P50. Sequential throughput was also materially unchanged for both models.
+A deterministic unit-level benchmark isolates the guardrail runtime from model and network variance. Block-only processing added 0.48 ms P50, while the three-scanner redact-and-block policy added 3.24 ms P50. Sequential throughput was also materially unchanged for Phi-4-mini and mistral-small.
 
-Mistral-Large-3 showed higher and more variable end-to-end latency in guarded runs. Because the isolated guardrail benchmark measured only millisecond-scale processing overhead, the full E2E difference cannot be attributed to guardrail execution alone and is also consistent with serverless endpoint variability.
+\*Mistral-Large-3 exhibited substantially higher endpoint variability. The isolated deterministic benchmark measured only millisecond-scale guardrail processing cost, so the full E2E difference cannot be attributed to guardrail execution alone and is also consistent with serverless endpoint variability.
 
 #### RAGEngine complements Azure Content Safety
 
-Azure Content Safety and RAGEngine guardrails address different classes of risk. Table 5 compares the number of blocked or sanitized outcomes with Azure Content Safety alone versus Azure Content Safety combined with RAGEngine. The relative increase column shows that RAGEngine contributed 60–78% more enforced outcomes across the three models, primarily by redacting PII categories that Azure Content Safety does not handle.
+Azure Content Safety and RAGEngine guardrails address different classes of risk. Table 5 compares the number of blocked or sanitized outcomes with Azure Content Safety alone versus Azure Content Safety combined with RAGEngine. The combined configuration produced 60–78% more blocked or sanitized outcomes across the three models, with RAGEngine contributing both additional blocking and PII redaction capabilities beyond the baseline.
 
-*Table 5 — Blocked or sanitized outcomes: Azure Content Safety alone vs. combined with RAGEngine.*
+*Table 5. Blocked or sanitized outcomes: Azure Content Safety alone vs. combined with RAGEngine.*
 
 | Model | Azure Content Safety only | Azure Content Safety + RAGEngine | Relative increase |
 | ----- | ------------------------- | -------------------------------- | ----------------- |
 | Phi-4-mini | 14 | 24 | +71% |
 | mistral-small | 15 | 24 | +60% |
-| Mistral-Large | 18 | 32 | +78% |
+| Mistral-Large-3 | 18 | 32 | +78% |
 
 RAGEngine additionally redacted detected email addresses, phone numbers, credit-card numbers, and other configured sensitive values that Azure Content Safety does not handle as PII redaction.
 
