@@ -111,7 +111,9 @@ data:
         case_sensitive: false
 ```
 
-Some checks require the complete response:
+Table 1 lists each scanner type and its availability across non-streaming and streaming response paths. Scanners marked "No" for streaming require the complete response to produce a result and are therefore incompatible with incremental delivery.
+
+*Table 1 — Scanner availability by response path.*
 
 | Scanner | Non-streaming | Streaming |
 | --- | --- | --- |
@@ -197,7 +199,9 @@ Upstream chunk 1: "AWS key: AKIA1234"
 Upstream chunk 2: "567890ABCDEF"
 ```
 
-With the policy shown above and `redact_mode: all`, the holdback window combines and scans pending text before release:
+With the policy shown above and `redact_mode: all`, the holdback window combines and scans pending text before release. Table 2 traces how the upstream chunks, the pending window, and the client-visible output relate: the holdback window accumulates the full key before any text is released, so the client sees only the redacted placeholder.
+
+*Table 2 — Cross-chunk secret redaction example.*
 
 | Upstream | Pending window | Client-visible output |
 | --- | --- | --- |
@@ -233,7 +237,9 @@ KAITO does not currently expose these scanners. Adding them requires context plu
 
 ## Evaluate Safety and Performance
 
-We evaluated four profiles rather than reporting configuration alone:
+We evaluated four profiles rather than reporting configuration alone. Table 3 summarizes each configuration and the aspect of guardrail behavior it is designed to measure.
+
+*Table 3 — Benchmark configurations and their purposes.*
 
 | Configuration | Purpose |
 | --- | --- |
@@ -256,7 +262,9 @@ We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI 
 
 #### Isolated guardrail processing adds millisecond-scale overhead
 
-For Phi-4-mini and mistral-small, median end-to-end latency remained within normal run-to-run variation after enabling RAGEngine guardrails:
+For Phi-4-mini and mistral-small, median end-to-end latency remained within normal run-to-run variation after enabling RAGEngine guardrails. As shown in Table 4, the P50 latency differences across the three configurations are within tens of milliseconds, indicating that the guardrail overhead is negligible relative to model inference time.
+
+*Table 4 — Median end-to-end latency (P50) by guardrail configuration.*
 
 | Model | Baseline P50 | Block only P50 | Redact + block P50 |
 | ----- | ------------ | -------------- | ------------------ |
@@ -269,7 +277,9 @@ Mistral-Large-3 showed higher and more variable end-to-end latency in guarded ru
 
 #### RAGEngine complements Azure Content Safety
 
-Azure Content Safety and RAGEngine guardrails address different classes of risk. Across the benchmark, Azure Content Safety + RAGEngine produced more blocked or sanitized outcomes than Azure Content Safety alone:
+Azure Content Safety and RAGEngine guardrails address different classes of risk. Table 5 compares the number of blocked or sanitized outcomes with Azure Content Safety alone versus Azure Content Safety combined with RAGEngine. The relative increase column shows that RAGEngine contributed 60–78% more enforced outcomes across the three models, primarily by redacting PII categories that Azure Content Safety does not handle.
+
+*Table 5 — Blocked or sanitized outcomes: Azure Content Safety alone vs. combined with RAGEngine.*
 
 | Model | Azure Content Safety only | Azure Content Safety + RAGEngine | Relative increase |
 | ----- | ------------------------- | -------------------------------- | ----------------- |
