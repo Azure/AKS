@@ -266,15 +266,15 @@ A deterministic microbenchmark isolates scanner execution from model inference a
 
 ![Figure 1. Guardrail processing overhead scales linearly with output length.](guardrail-overhead.svg)
 
-*Table 4. Guardrail processing rate by configuration (linear fit across 1,024–16,384 output tokens, 100 iterations per point).*
+*Table 4. Guardrail processing overhead rate by configuration (deterministic microbenchmark).*
 
-| Configuration | Rate (μs / token) |
-| ------------- | ------------------ |
-| Block only (1 scanner) | 3.95 |
-| Redact + block (3 scanners) | 24.95 |
-| All scanners (8 scanners) | 87.39 |
+| Configuration | Rate (μs per output token) | Example: 2K tokens | Example: 8K tokens |
+| ------------- | -------------------------- | ------------------- | ------------------- |
+| Block only (1 scanner) | 3.95 | 8 ms | 32 ms |
+| Redact + block (3 scanners) | 24.95 | 52 ms | 213 ms |
+| All scanners (8 scanners) | 87.39 | 177 ms | 711 ms |
 
-For a typical 512-token response, the block-only policy adds under 1 ms and the three-scanner policy adds approximately 3 ms. Even the worst case with all eight scanners enabled stays under 1.5 s at 16,384 tokens. In live runs against Phi-4-mini (3.67 s baseline) and mistral-small (2.84 s baseline), enabling guardrails produced no observable change in median end-to-end latency, consistent with microsecond-per-token processing overhead relative to multi-second model inference.
+For a typical 512-token response, the block-only policy adds under 1 ms and the three-scanner policy adds approximately 3 ms. Even the worst case with all eight scanners enabled stays under 1.5 s at 16,384 tokens. In live runs against Phi-4-mini (3.67 s baseline) and mistral-small (2.84 s baseline), enabling guardrails produced no observable change in median end-to-end latency, consistent with sub-millisecond to millisecond-scale processing overhead relative to multi-second model inference.
 
 #### RAGEngine complements Azure Content Safety
 
