@@ -199,7 +199,7 @@ Upstream chunk 1: "AWS key: AKIA1234"
 Upstream chunk 2: "567890ABCDEF"
 ```
 
-With the policy shown above and `redact_mode: all`, the holdback window combines and scans pending text before release. Table 2 traces how the upstream chunks, the pending window, and the client-visible output relate: the holdback window accumulates the full key before any text is released, so the client sees only the redacted placeholder.
+With the policy shown above and `redact_mode: all`, the holdback window combines and scans pending text before release. Table 2 traces how the upstream chunks, the pending window, and the client-visible output relate: the holdback window accumulates the full key before any part of the key is released, so the client receives only the sanitized form.
 
 *Table 2. Cross-chunk secret redaction example.*
 
@@ -274,7 +274,7 @@ As shown in Table 4, Phi-4-mini and mistral-small show no consistent increase in
 
 A deterministic unit-level benchmark isolates the guardrail runtime from model and network variance. Block-only processing added 0.48 ms P50, while the three-scanner redact-and-block policy added 3.24 ms P50. Sequential throughput was also materially unchanged for Phi-4-mini and mistral-small.
 
-\*Mistral-Large-3 exhibited substantially higher endpoint variability. The isolated deterministic benchmark measured only millisecond-scale guardrail processing cost, so the full E2E difference cannot be attributed to guardrail execution alone and is also consistent with serverless endpoint variability.
+\*Mistral-Large-3 exhibited substantially higher endpoint variability. The isolated deterministic benchmark measured only millisecond-scale guardrail processing cost, so the full E2E difference cannot be attributed to guardrail execution alone; serverless endpoint variability is one possible contributor.
 
 #### RAGEngine complements Azure Content Safety
 
