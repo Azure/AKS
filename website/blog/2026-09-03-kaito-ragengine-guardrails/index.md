@@ -248,11 +248,11 @@ The benchmark used positive, negative, boundary, and malformed samples. We measu
 Leakage bytes = bytes from detected policy-violating content delivered before enforcement
 ```
 
-We targeted zero leakage for detected policy violations and verified valid SSE framing. Model TTFT was separated from guardrail-induced first-visible-token delay; we reported P50, P95, and P99 latency, throughput, resource use, and reload time across allow, redact, and block paths.
+We verified valid SSE framing and used zero leakage as the acceptance criterion for detected policy violations. Model TTFT was separated from guardrail-induced first-visible-token delay. The benchmark collected P50, P95, and P99 latency, throughput, resource use, and reload-time measurements across allow, redact, and block paths.
 
 ### Benchmark Results
 
-We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI Foundry models: Phi-4-mini-instruct (3.8B), mistral-small-2503 (~24B), and Mistral-Large-3 (123B). The prompt set combines public safety datasets (63%) and custom prompts (37%), covering PII, toxicity, refusal boundaries, secrets, and clean baselines. The benchmark compared Azure Content Safety alone with a block-only RAGEngine policy and a combined redaction-and-blocking policy.
+We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI Foundry models: Phi-4-mini-instruct (3.8B), mistral-small-2503 (~24B), and Mistral-Large-3 (123B). The prompt set combines public safety datasets (63%) and custom prompts (37%), covering PII, toxicity, refusal boundaries, secrets, and clean baselines. Azure Content Safety remained enabled across all live runs. We compared the baseline with no RAGEngine guardrails against a block-only RAGEngine policy and a combined redaction-and-blocking policy.
 
 #### Isolated guardrail processing adds millisecond-scale overhead
 
@@ -265,13 +265,13 @@ For Phi-4-mini and mistral-small, median end-to-end latency remained within norm
 
 A deterministic unit-level benchmark isolates the guardrail runtime from model and network variance. Block-only processing added 0.48 ms P50, while the three-scanner redact-and-block policy added 3.24 ms P50. Sequential throughput was also materially unchanged for both models.
 
-Mistral-Large-3 showed higher and more variable end-to-end latency in guarded runs. Because the isolated guardrail benchmark measured only millisecond-scale processing overhead, the full E2E difference cannot be attributed to guardrail execution alone and may reflect serverless endpoint variability.
+Mistral-Large-3 showed higher and more variable end-to-end latency in guarded runs. Because the isolated guardrail benchmark measured only millisecond-scale processing overhead, the full E2E difference cannot be attributed to guardrail execution alone and is also consistent with serverless endpoint variability.
 
 #### RAGEngine complements Azure Content Safety
 
-Azure Content Safety and RAGEngine guardrails address different classes of risk. Across the benchmark, the guarded configuration produced more blocked or sanitized outcomes than the baseline:
+Azure Content Safety and RAGEngine guardrails address different classes of risk. Across the benchmark, Azure Content Safety + RAGEngine produced more blocked or sanitized outcomes than Azure Content Safety alone:
 
-| Model | Azure Content Safety baseline | Guarded: redact + block | Increase in blocked/sanitized outcomes |
+| Model | Azure Content Safety only | Azure Content Safety + RAGEngine | Relative increase |
 |-------|------------------------------|------------------------|----------|
 | Phi-4-mini | 14 | 24 | +71% |
 | mistral-small | 15 | 24 | +60% |
