@@ -52,18 +52,18 @@ RAGEngine integrates and adapts scanners from [Protect AI's LLM Guard](https://g
 
 ```mermaid
 flowchart LR
-	subgraph CP[Control plane]
-		CR[RAGEngine CR] --> C[KAITO controller]
-		CM[Policy ConfigMap] --> C
-		C -->|mount policy and inject settings| W[RAGEngine workload]
-	end
+  subgraph CP[Control plane]
+    CR[RAGEngine CR] --> C[KAITO controller]
+    CM[Policy ConfigMap] --> C
+    C -->|mount policy and inject settings| W[RAGEngine workload]
+  end
 
-	subgraph DP[Data plane]
-		A[Application] -->|OpenAI-compatible request| W
-		W --> M[Model endpoint]
-		M --> G[Guardrail runtime]
-		G -->|allow, redact, or block| A
-	end
+  subgraph DP[Data plane]
+    A[Application] -->|OpenAI-compatible request| W
+    W --> M[Model endpoint]
+    M --> G[Guardrail runtime]
+    G -->|allow, redact, or block| A
+  end
 ```
 
 Users enable the feature with `spec.guardrails.enabled` and optionally select a policy ConfigMap through `configMapRef`. The controller resolves and mounts the policy and injects the enabled state and path. Applications continue calling the same OpenAI-compatible endpoint without loading scanners or adding filtering code.
@@ -259,7 +259,7 @@ We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI 
 For Phi-4-mini and mistral-small, median end-to-end latency remained within normal run-to-run variation after enabling RAGEngine guardrails:
 
 | Model | Baseline P50 | Block only P50 | Redact + block P50 |
-|-------|-------------|---------------|-------------------|
+| ----- | ------------ | -------------- | ------------------ |
 | Phi-4-mini | 3.67 s | 3.60 s | 3.51 s |
 | mistral-small | 2.84 s | 2.83 s | 2.82 s |
 
@@ -272,7 +272,7 @@ Mistral-Large-3 showed higher and more variable end-to-end latency in guarded ru
 Azure Content Safety and RAGEngine guardrails address different classes of risk. Across the benchmark, Azure Content Safety + RAGEngine produced more blocked or sanitized outcomes than Azure Content Safety alone:
 
 | Model | Azure Content Safety only | Azure Content Safety + RAGEngine | Relative increase |
-|-------|------------------------------|------------------------|----------|
+| ----- | ------------------------- | -------------------------------- | ----------------- |
 | Phi-4-mini | 14 | 24 | +71% |
 | mistral-small | 15 | 24 | +60% |
 | Mistral-Large | 18 | 32 | +78% |
