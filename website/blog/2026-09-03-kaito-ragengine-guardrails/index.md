@@ -262,16 +262,19 @@ We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI 
 
 #### Isolated guardrail processing adds millisecond-scale overhead
 
-Table 4 shows the guardrail processing overhead measured by a deterministic microbenchmark that isolates scanner execution from model inference and network variance.
+A deterministic microbenchmark isolates scanner execution from model inference and network variance. Figure 1 shows that guardrail processing overhead scales linearly with output length across all three configurations, from a single blocking scanner to all eight scanners enabled.
 
-*Table 4. Isolated guardrail processing overhead (deterministic microbenchmark, 512-token response sample, 100 iterations).*
+![Figure 1. Guardrail processing overhead scales linearly with output length.](guardrail-overhead.svg)
 
-| Policy | Guardrail overhead P50 | Guardrail overhead P99 |
-| ------ | --------------------- | --------------------- |
-| Block only (1 scanner) | 0.48 ms | 0.94 ms |
-| Redact + block (3 scanners) | 3.24 ms | 5.07 ms |
+*Table 4. Guardrail processing rate by configuration (linear fit across 1,024–16,384 output tokens, 100 iterations per point).*
 
-In live runs against Phi-4-mini (3.67 s baseline) and mistral-small (2.84 s baseline), enabling guardrails produced no observable change in median end-to-end latency, consistent with sub-millisecond processing overhead relative to multi-second model inference. Sequential throughput was also materially unchanged for both models.
+| Configuration | Rate (μs / token) |
+| ------------- | ------------------ |
+| Block only (1 scanner) | 3.95 |
+| Redact + block (3 scanners) | 24.95 |
+| All scanners (8 scanners) | 87.39 |
+
+For a typical 512-token response, the block-only policy adds under 1 ms and the three-scanner policy adds approximately 3 ms. Even the worst case with all eight scanners enabled stays under 1.5 s at 16,384 tokens. In live runs against Phi-4-mini (3.67 s baseline) and mistral-small (2.84 s baseline), enabling guardrails produced no observable change in median end-to-end latency, consistent with microsecond-per-token processing overhead relative to multi-second model inference.
 
 #### RAGEngine complements Azure Content Safety
 
