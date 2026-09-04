@@ -211,6 +211,7 @@ If you consistently observe throttling, high LIST latency, or elevated request v
 
 - [Monitor AKS control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor)
 - [Minimal ingestion profile for control plane metrics](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration-minimal)
+- [Troubleshoot common issues with API server and etcd](https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd?tabs=resource-specific)
 - [Best practices for performance and scaling for large workloads in Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/best-practices-performance-scale-large#aks-and-kubernetes-control-plane-scalability)
 
 If you have configured these alerts and continue to experience unresolved control plane issues, open an Azure support case and attach the relevant Grafana dashboards or PromQL query results. This helps accelerate investigation by providing the API server and etcd signals needed to identify the likely bottleneck.
