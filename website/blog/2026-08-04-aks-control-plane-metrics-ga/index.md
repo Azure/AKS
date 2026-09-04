@@ -24,23 +24,21 @@ With control plane metrics now generally available, customers can collect this d
 
 **Key Benefits:**
 
-- **Faster root-cause analysis** — quickly tell whether slow deployments or timeouts stem from client-side behavior, API server load, or etcd health, instead of guessing.
-- **Proactive incident prevention** — get alerted on throttling, latency, or etcd quota pressure before they cascade into cluster-wide outages.
-- **Reduced reliance on support escalations** — self-serve diagnostics using Grafana dashboards and PromQL instead of opening a case for every slowdown.
-- **Better capacity planning** — understand real API traffic patterns from controllers, CI/CD, and automation to right-size retries, polling, and webhooks.
-- **No new infrastructure to manage** — built on Azure Monitor managed Prometheus you may already have enabled; no separate exporters or scrape configs to maintain.
+- **Faster root-cause analysis**: With control plane metrics flowing into Azure Monitor managed service for Prometheus, you can quickly determine whether slow deployments or request timeouts originate from client-side behavior, API server load, or etcd health—so your team spends less time hypothesizing and more time resolving
+- **Proactive incident prevention**: Set alerts on API Priority and Fairness throttling, request latency, watch-cache lag, and etcd quota pressure to catch emerging issues early—before they cascade into cluster-wide impact.
+- **Self-serve diagnostics**: Investigate performance concerns directly in Azure Managed Grafana using out-of-the-box dashboards and PromQL, reducing the need to open a support case for every slowdown and giving your platform teams a clear, shared view of cluster health.
+- **Inform architectural decisions**:  Gain visibility into real-world API traffic patterns from your controllers, CI/CD pipelines, and automation. Use those insights to right-size retries, polling intervals, and admission webhooks as your workloads grow.
+- **Zero infrastructure to manage**:  Azure Monitor managed service for Prometheus is built into AKS, so there are no separate exporters to deploy, scrape configurations to maintain, or additional monitoring stacks to operate. Enable it once and start monitoring right away.
 
 This post explains how to enable control plane metrics collection and highlights **five high-signal metrics** every AKS customer should monitor first.
 
 ## Why start with the API server and etcd?
 
-The **API server** and **etcd** are the two most important components for understanding cluster responsiveness.
+When it comes to understanding the health and responsiveness of your AKS cluster, the API server and etcd are the two components that matter most.
 
-The API server handles every Kubernetes API request: `kubectl` commands, controllers, CI/CD systems, operators, admission webhooks, autoscalers, and workload automation. etcd stores the cluster's state and serves as the durable backing store for the API server.
+The API server is the front door to Kubernetes. Every interaction whether from kubectl, your controllers and operators, CI/CD pipelines, autoscalers, admission webhooks, or in-cluster automation flows through it. etcd serves as the highly consistent, distributed key-value store that persists the state of every object in your cluster.
 
-When either component is unhealthy or overloaded, the impact is cluster-wide. Deployments may stall, pod scheduling can slow down, controllers may fall behind, and client tooling can become unresponsive.
-
-For this reason, API server and etcd metrics are the best starting point for AKS control plane observability.
+If either component is under pressure, the impact is felt across the entire cluster. Deployments can stall, pod scheduling slows, controllers fall behind on reconciliation, and everyday operations begin to feel sluggish. That's why API server and etcd metrics are the right foundation for AKS control plane observability and the best place to begin as you build out a monitoring strategy for your platform.
 
 ## Enable control plane metrics collection
 
@@ -64,7 +62,7 @@ Supported control plane scrape targets include:
 - `cluster-autoscaler`
 - `node-auto-provisioning`
 
-We recommend starting with the default API server and etcd metrics, then enabling additional targets based on the scenarios you need to diagnose, such as scheduling latency or autoscaler behavior.
+We recommend starting with the default API server and etcd metrics, then enabling additional targets based on the scenarios you need to diagnose, such as scheduling latency or autoscaler behavior. You can set [controlplane-metrics.minimal-ingestion-profile to false](https://learn.microsoft.com/en-us/azure/aks/control-plane-metrics-monitor#ingest-all-metrics-from-all-targets) to ingest all metrics from all targets.
 
 ## The 5 metrics to monitor first
 
@@ -201,12 +199,11 @@ or
 ## Recommended next steps
 
 1. Enable Azure Monitor managed service for Prometheus for your AKS cluster.
-2. Turn on AKS control plane metrics collection.
-3. Start with API server and etcd metrics.
-4. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
-5. Build a Grafana dashboard using the five queries above, or start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics, as shown in the example dashboard above.
-6. Configure alerts for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency — so you can catch these issues before they affect production.
-7. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
+2. Turn on AKS control plane metrics collection and start with API server and etcd metrics.
+3. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
+4. Start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics, as shown in the example dashboard above or build a custom Grafana dashboard. 
+5. [Configure alerts](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/kubernetes-metric-alerts?tabs=portal) for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency — so you can catch these issues before they affect production.
+6. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
 
 If you consistently observe throttling, high LIST latency, or elevated request volume during normal operations, review the clients and controllers generating API traffic. Common improvements include adding client-side rate limiting, reducing polling frequency, using watches instead of repeated LIST calls, enabling pagination, and cleaning up high-cardinality objects such as completed Jobs and Events.
 
