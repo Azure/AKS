@@ -262,7 +262,7 @@ We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI 
 
 #### Isolated guardrail processing adds millisecond-scale overhead
 
-A deterministic microbenchmark isolates scanner execution from model inference and network variance. Figure 1 shows that guardrail processing overhead scales linearly with output length across all three configurations, from a single blocking scanner to all eight scanners enabled.
+A deterministic microbenchmark isolates scanner execution from model inference and network variance. The microbenchmark ran on an AMD Ryzen 9 8945HS (8 cores, 16 threads), 24 GB RAM, WSL2 Linux 5.15, Python 3.12. Figure 1 shows that guardrail processing overhead scales linearly with output length across all three configurations, from a single blocking scanner to all eight scanners enabled.
 
 ![Figure 1. Guardrail processing overhead scales linearly with output length.](guardrail-overhead.svg)
 
