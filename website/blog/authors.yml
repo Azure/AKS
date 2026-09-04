@@ -473,6 +473,15 @@ johnson-shi:
     linkedin: johnsonshi
     github: johnsonshi
 
+ashna-mehrotra:
+  name: Ashna Mehrotra
+  title: Software Engineer at Microsoft
+  url: https://www.linkedin.com/in/ashna-mehrotra/
+  image_url: https://github.com/ashnamehrotra.png
+  socials:
+    linkedin: ashna-mehrotra
+    github: ashnamehrotra
+
 devi-vasudevan:
   name: Devi Vasudevan
   title: Principal Engineering Manager for Azure Upstream
@@ -570,6 +579,38 @@ fuyuan-bie:
   socials:
     github: biefy
     linkedin: biefy
+
+pengfei-ni:
+  name: Pengfei Ni
+  title: Principal Software Engineer at Microsoft
+  url: https://github.com/feiskyer
+  image_url: https://github.com/feiskyer.png
+  socials:
+    github: feiskyer
+
+june-liu:
+  name: June Liu
+  title: Principal Software Engineer at Microsoft
+  url: https://github.com/yliu382
+  image_url: https://github.com/yliu382.png
+  socials:
+    github: yliu382
+
+kevin-cho:
+  name: Kevin Cho
+  title: Senior Software Engineer at Microsoft
+  url: https://github.com/chokevin
+  image_url: https://github.com/chokevin.png
+  socials:
+    github: chokevin
+
+guoxun-wei:
+  name: Guoxun Wei
+  title: Senior Software Engineer at Microsoft
+  url: https://github.com/gossion
+  image_url: https://github.com/gossion.png
+  socials:
+    github: gossion
 
 hariharan-sethuraman:
   name: Hariharan Sethuraman

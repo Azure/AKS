@@ -1,5 +1,63 @@
 # Azure Kubernetes Service Changelog
 
+## Release Notes - 2026-08-07
+
+> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20260807`.
+
+### Release notes
+
+#### Features
+
+* [Node Auto Provisioning](https://aka.ms/aks/nap) can now be enabled on clusters with restricted `publicNetworkAccess`, including private [API server VNet-integrated clusters](https://aka.ms/aks/api-server-vnet-integration) using UDR, as long as the existing AKS-wide networking guardrails pass.
+* [Automatic availability zone placement](https://aka.ms/aks/automatic-zonal-placement) is now enabled globally. Customers can create new VMSS or VirtualMachines node pools with `availabilityZones=["auto"]`, and existing VMSS node pools can be updated to `availabilityZones=["auto"]` after rollout completes.
+* AKS now allows control-plane only upgrades to AKS [Long Term Support (LTS)](https://aka.ms/aks/lts) as long as the [version skew policy](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#what-is-the-allowed-difference-in-versions-between-the-control-plane-and-node-pools) is satisfied. This allows user to more safely upgrade into LTS by first upgrading the control plane, validating functionality, and then upgrading node pools.
+* [AKS Node pool Rollback](https://learn.microsoft.com/azure/aks/roll-back-node-pool-version) is now generally available. AKS node pool version rollback lets you restore a node pool to its previous Kubernetes version and node image after an upgrade issue, minimizing downtime and maintaining business continuity.
+
+#### Preview features
+
+* [Prepared Image Specification (PIS)](https://aka.ms/aks/prepared-image-spec) is now available in public preview. PIS allows you to create preconfigured node images with your required container images and node customizations already applied, helping to reduce node startup times.
+* Customers using preview API version `2026-01-02-preview` or later can associate a [Capacity Reservation Group with an existing node pool](https://learn.microsoft.com/azure/aks/use-capacity-reservation-groups#associate-an-existing-capacity-reservation-group-with-an-existing-node-pool-preview). Zonal node pools perform a rolling cordon, drain, and reboot; non-zero regional pools must still be scaled to zero first. 
+
+#### Behavioral changes
+
+* For AKS clusters running Kubernetes 1.37 or later, [SSH node access](https://learn.microsoft.com/azure/aks/manage-ssh-node-access) configuration changes now trigger an immediate node reimage. Use [Node Disruption Policy](https://aka.ms/aks/nodedisruptionpolicy) to block the reimage or schedule it during a maintenance window.
+* For AKS clusters running Kubernetes 1.37 or later, changes to [IMDS restriction](https://aka.ms/aks/imds-restriction), [network-isolated bootstrap profile](https://aka.ms/aks/networkisolatedclusters), or [cluster outbound type](https://aka.ms/aks/outboundtype) now trigger an immediate node reimage. Use [Node Disruption Policy](https://aka.ms/aks/nodedisruptionpolicy) to control when the reimage is allowed.
+* VMSS rolling upgrade concurrency for percentage-based `maxSurge`, `maxUnavailable`, and `maxBlockedNodes` is now calculated from current VMSS capacity and capped to the remaining VMs to upgrade, making partial upgrades match the remaining upgrade work. For more details see the documentation on [rolling upgrade behaviors](https://learn.microsoft.com/azure/aks/upgrade-aks-node-pools-rolling#customize-unavailable-nodes).
+* Updating a cluster from service principal authentication to [managed identity](https://aka.ms/aks/managed-identity-update) now triggers node reimages across node pools. Configure [Node Disruption Policy](https://aka.ms/aks/nodedisruptionpolicy) to control when reimages that can disrupt workloads are allowed.
+* AKS upgrade validation now rejects node pool upgrades where current pool size plus effective surge would exceed the VMSS 1,000-instance limit, preventing mid-upgrade Azure Compute failures. See ['Configure rolling upgrade settings'](https://learn.microsoft.com/azure/aks/upgrade-aks-node-pools-rolling#configure-rolling-upgrade-settings) for more details.
+* [Istio Gateway API](https://learn.microsoft.com/azure/aks/istio-gateway-api) deployments now set `automountServiceAccountToken` to `false`, improving the default security posture and unblocking environments with Azure Policies that require pods to disable service account token auto-mounting.
+* AKS now validates [GPU MIG](https://aka.ms/aks/migs) instance profile slice width against VM SKU capacity, preventing unsupported MIG profiles from being accepted on lower-capacity GPU SKUs.
+* The [Application Gateway for Containers ALB add-on](https://learn.microsoft.com/azure/application-gateway/for-containers/application-gateway-for-containers-components#application-gateway-for-containers-aks-managed-add-on) is now aligned with AKS minor versions. AKS automatically selects the compatible ALB controller image during cluster upgrades, reducing controller and feature-flag incompatibilities. 
+* AKS now rejects [Entra ID SSH](https://aka.ms/aks/ssh) configuration on AzureContainerLinux node pools because the extension is incompatible with immutable OS nodes and can make nodes unreachable.
+
+#### Bug fixes
+
+* Fixed an [AKS Automatic](https://aka.ms/aks/automatic-networking) issue where App Routing on Kubernetes 1.36+ clusters could incorrectly default to NGINX instead of Istio/Gateway API mode during cluster creation. 
+
+#### Component updates
+
+* [Node Auto Provisioning](https://aka.ms/aks/nap) has been updated to Karpenter provider Azure [`v1.14.0`](https://github.com/Azure/karpenter-provider-azure/releases#release-v1.14.0), adding support for the `Balanced` consolidation policy to reduce node churn during consolidation. 
+* Azure Policy add-on components were updated: Gatekeeper was bumped to [`3.23.0`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#gatekeeper-3230), and Azure Policy add-on was bumped to [`1.17.0`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#1170). 
+* Azure File CSI Driver has been upgraded to [`v1.34.7`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.7) on AKS 1.34 and [`v1.35.6`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.6) on AKS 1.35 and 1.36. 
+* Azure Blob CSI Driver has been upgraded to [`v1.26.16`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.26.16) on AKS 1.33 and [`v1.27.9`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.9) on AKS 1.34 and later. 
+* Azure Disk CSI Driver has been upgraded to [`v1.33.11`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.11) on AKS 1.34 and [`v1.34.5`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.5) on AKS 1.35 and 1.36.
+* Azure Monitor managed service for Prometheus add-on was updated to the [07-27-2026 release](https://github.com/Azure/prometheus-collector/blob/main/RELEASENOTES.md#release-07-27-2026), including collector image updates and kube-state-metrics `v2.19.1-2`. 
+* Container Insights has been upgraded to [`3.6.0`](https://github.com/microsoft/Docker-Provider/releases/tag/3.6.0).
+* AKS Azure Linux images:
+  * v3.0 - [202607.20.0](vhd-notes/AzureLinuxv3/202607.20.0.txt).
+  * v3.0 - [202607.29.0](vhd-notes/AzureLinuxv3/202607.29.0.txt).
+* AKS Azure Container Linux images:
+  * ACLv3 - [202607.20.0](vhd-notes/AzureContainerLinuxv3/202607.20.0.txt).
+  * ACLv3 - [202607.29.0](vhd-notes/AzureContainerLinuxv3/202607.29.0.txt).
+* AKS Ubuntu images:
+  * Ubuntu 22.04 - [202607.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.20.0.txt).
+  * Ubuntu 22.04 - [202607.29.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202607.29.0.txt).
+  * Ubuntu 24.04 - [202607.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202607.20.0.txt).
+  * Ubuntu 24.04 - [202607.29.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202607.29.0.txt).
+
+---
+
+
 ## Release Notes - 2026-07-17
 
 > Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20260717`.

@@ -74,6 +74,12 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    // future.v4 disables mdx1Compat by default, which stops converting HTML
+    // comments (e.g. `<!-- truncate -->`) and breaks MDX compilation. Keep
+    // comment compatibility on so existing blog posts render unchanged.
+    mdx1Compat: {
+      comments: true,
+    },
     hooks: {
       onBrokenMarkdownLinks: 'warn',
     },
