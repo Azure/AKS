@@ -405,13 +405,18 @@ not match any node — a common and confusing misconfiguration.
 # Did CAS act on the ProvisioningRequest?
 kubectl get provisioningrequests -A
 
-# Full decision log
+# Current autoscaler health and per-pool state
 kubectl -n kube-system describe configmap cluster-autoscaler-status
 ```
 
 A `ProvisioningRequest` stuck in `Pending` usually means the region genuinely
 has no capacity for the requested SKU — the request is working correctly and
 telling you something real about supply.
+
+For the full admission path — Workload conditions, AdmissionCheck state,
+ProvisioningRequest events, Kueue controller logs, and how to get the managed
+autoscaler's actual logs — see
+[Observability: logs and events for the admission path](#observability-logs-and-events-for-the-admission-path).
 
 ### End-to-end timing
 
@@ -438,6 +443,156 @@ running on your own cluster:
 If cold start dominates your job time, that is the argument for `--min-count 1`
 (keep one node warm) or for pre-pulling images — a real trade-off between
 idle cost and queue latency, and worth measuring before deciding.
+
+---
+
+## Observability: logs and events for the admission path
+
+The section above covers whether a job ran *well*. This one covers **why a job
+is not running at all** — the admission path from Workload to node.
+
+Work down this list in order. Each stage hands off to the next, so the first
+stage that looks wrong is where the problem is; everything below it is just
+waiting.
+
+### 1. Workload conditions
+
+The Workload is Kueue's record of your job and the single best starting point —
+its conditions say whether it is quota-blocked, check-blocked, or admitted.
+
+```bash
+# All workloads and their admission state
+kubectl -n gpu-lab get workloads
+
+# Why this one is not admitted (QuotaReserved, Admitted, Finished)
+kubectl -n gpu-lab describe workload <name> | grep -A20 Conditions
+
+# Just the message, scriptable
+kubectl -n gpu-lab get workload <name> \
+  -o jsonpath='{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.message}{"\n"}{end}'
+```
+
+| What you see | Meaning |
+|--------------|---------|
+| No `QuotaReserved` | ClusterQueue has no room, or no flavor fits — quota problem, not capacity |
+| `QuotaReserved=True`, not `Admitted` | Quota is fine; an AdmissionCheck is holding it — go to step 2 |
+| `Admitted=True` but pods Pending | Admission succeeded; this is now a scheduling problem (taints, labels) |
+
+### 2. AdmissionCheck status
+
+If quota is reserved but the Workload is not admitted, the provisioning check is
+the gate. Its per-workload state lives on the Workload:
+
+```bash
+# State of each check for this workload: Pending / Ready / Retry / Rejected
+kubectl -n gpu-lab get workload <name> \
+  -o jsonpath='{range .status.admissionChecks[*]}{.name}{"\t"}{.state}{"\t"}{.message}{"\n"}{end}'
+
+# The check definition itself — is the controller even active?
+kubectl describe admissioncheck gpu-provisioning
+```
+
+`Pending` means Kueue is waiting on CAS (step 3). `Retry` or `Rejected` means
+provisioning failed and the message names the reason.
+
+### 3. ProvisioningRequest events
+
+This is the handoff to the autoscaler. Conditions tell you the verdict; events
+tell you the story.
+
+```bash
+kubectl -n gpu-lab get provisioningrequest
+
+# Conditions: Provisioned, CapacityAvailable, BookingExpired, Failed
+kubectl -n gpu-lab describe provisioningrequest <name>
+
+# Events only — the most useful single command here
+kubectl -n gpu-lab get events \
+  --field-selector involvedObject.kind=ProvisioningRequest \
+  --sort-by=.lastTimestamp
+```
+
+| Condition | Meaning |
+|-----------|---------|
+| `Provisioned=True` | Nodes exist; Kueue admits the Workload next |
+| `Provisioned=False`, `CapacityIsNotFound` | Region has no capacity for the SKU, or pool `--max-count` is too low |
+| `BookingExpired=True` | Capacity was provisioned but the workload did not consume it in time |
+| `Failed=True` | Terminal — the message gives the reason |
+
+### 4. Kueue controller logs
+
+When the objects above do not explain themselves, the controller says why. The
+provisioning-request reconciler is the relevant one:
+
+```bash
+kubectl -n kueue-system logs deploy/kueue-controller-manager --tail=200
+
+# Provisioning-request failures specifically
+kubectl -n kueue-system logs deploy/kueue-controller-manager \
+  | grep -i "provisioning"
+
+# Follow while you resubmit
+kubectl -n kueue-system logs deploy/kueue-controller-manager -f \
+  | grep -iE "provisioning|admissioncheck|workload"
+```
+
+A common finding here: the `ProvisioningRequest` CRD is absent, so the
+AdmissionCheck can never move off `Pending`. Confirm with
+`kubectl get crd provisioningrequests.autoscaling.x-k8s.io`.
+
+### 5. Cluster autoscaler logs and events
+
+**On AKS the cluster autoscaler runs in the managed control plane, so there is
+no pod to get logs from.** Its decisions surface three ways.
+
+In-cluster, with no setup:
+
+```bash
+# Health and per-pool state
+kubectl -n kube-system get configmap cluster-autoscaler-status -o yaml
+
+# Why a scale-up did not happen
+kubectl get events --field-selector source=cluster-autoscaler,reason=NotTriggerScaleUp
+
+# All autoscaler warnings
+kubectl get events --field-selector source=cluster-autoscaler,type=Warning
+```
+
+For the actual logs, enable the `cluster-autoscaler` category in a diagnostic
+setting ([docs](https://learn.microsoft.com/azure/aks/cluster-autoscaler#retrieve-cluster-autoscaler-logs-and-status)):
+
+```bash
+az monitor diagnostic-settings create \
+  --name aks-cas-logs \
+  --resource $(az aks show -g <rg> -n <cluster> --query id -o tsv) \
+  --workspace <log-analytics-workspace-id> \
+  --logs '[{"category":"cluster-autoscaler","enabled":true}]'
+```
+
+Then query in Log Analytics — resource-specific mode:
+
+```kusto
+AKSControlPlane
+| where Category == "cluster-autoscaler"
+| where TimeGenerated > ago(1h)
+| project TimeGenerated, Level, Message
+| order by TimeGenerated desc
+```
+
+or Azure diagnostics mode:
+
+```kusto
+AzureDiagnostics
+| where Category == "cluster-autoscaler"
+| project TimeGenerated, log_s
+```
+
+The Azure portal also surfaces **Autoscale events**, **Autoscale warnings**, and
+**Scale-up not triggered** as tiles under the cluster's **Node pools** blade.
+
+> Enable this category *before* reproducing a scale-up problem — diagnostic
+> settings are not retroactive, and a failed provisioning attempt is exactly the
+> event you will want the logs for.
 
 ---
 
