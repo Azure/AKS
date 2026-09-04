@@ -205,12 +205,13 @@ or
 5. [Configure alerts](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/kubernetes-metric-alerts?tabs=portal) for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency — so you can catch these issues before they affect production.
 6. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
 
-If you consistently observe throttling, high LIST latency, or elevated request volume during normal operations, review the clients and controllers generating API traffic. Common improvements include adding client-side rate limiting, reducing polling frequency, using watches instead of repeated LIST calls, enabling pagination, and cleaning up high-cardinality objects such as completed Jobs and Events.
+If you consistently observe throttling, high LIST latency, or elevated request volume during normal operations, review the clients and controllers generating API traffic. Common improvements include adding client-side rate limiting, reducing polling frequency, using watches instead of repeated LIST calls, enabling pagination, and cleaning up high-cardinality objects such as completed Jobs and Events. 
 
 ## Learn more
 
 - [Monitor AKS control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor)
 - [Minimal ingestion profile for control plane metrics](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration-minimal)
+- [Best practices for performance and scaling for large workloads in Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/best-practices-performance-scale-large#aks-and-kubernetes-control-plane-scalability)
 
 If you have configured these alerts and continue to experience unresolved control plane issues, open an Azure support case and attach the relevant Grafana dashboards or PromQL query results. This helps accelerate investigation by providing the API server and etcd signals needed to identify the likely bottleneck.
 
