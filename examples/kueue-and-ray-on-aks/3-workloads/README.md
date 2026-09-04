@@ -31,6 +31,12 @@ The shared base templates in [`_template/`](_template/) define the standard
 fields used by every workload. Per-example templates extend these with
 workload-specific pip packages, env vars, and resource counts.
 
+> **Exception:** [`cas-batch-job/`](cas-batch-job/) and [`gpu-lab/`](gpu-lab/)
+> are plain Kubernetes Jobs (no Ray, no `envsubst`) applied directly with
+> `kubectl apply -f`. They demonstrate the cluster-autoscaler
+> ProvisioningRequest path rather than a Ray runtime, so they don't use the
+> template system described here.
+
 ### Standard fields (all workloads)
 
 | Field | Value | Reason |
@@ -93,17 +99,41 @@ Ray Serve. Loads the LoRA adapter from blob storage on startup.
 - Access: `kubectl -n ray port-forward svc/${SERVICE_NAME}-serve-svc 8000:8000`
 - See [online-serving/](online-serving/)
 
+### 5. cas-batch-job/ — provision capacity on demand (cluster autoscaler)
+A plain Kubernetes batch Job (no Ray) that demonstrates the **ProvisioningRequest
+→ cluster autoscaler** path. Where the examples above admit against a fixed quota
+on an existing GPU node, this one drives the AKS cluster autoscaler to grow an
+autoscaling CPU pool *before* the Job is admitted — capacity provisioned
+just-in-time.
+
+- **CPU only** — 3 pods × 1800m on an autoscaling `scalepool`
+- Queue: `cas-local-queue` in the `cas-kueue-demo` namespace (the ProvisioningRequest-gated queue from Module 2)
+- Requires: an autoscaling `scalepool` pool
+- See [cas-batch-job/](cas-batch-job/)
+
+### 6. gpu-lab/ — GPU labs, end to end (cluster autoscaler)
+A three-part lab sequence applying the same ProvisioningRequest → cluster
+autoscaler path to **GPUs**, where atomic provisioning stops being a
+convenience and becomes what keeps an expensive cluster from deadlocking.
+Covers pool provisioning, hardware verification, distributed training, queue
+contention, and the DCGM/Kueue/CAS metrics to check afterwards.
+
+- **8–16 GPUs** on an autoscaling `gpupool` (scale-to-zero)
+- Queue: `gpu-local-queue` in the `gpu-lab` namespace (Module 2, `50-gpu-autoscale-queue.yaml`)
+- Requires: an autoscaling GPU pool and regional GPU quota
+- See [gpu-lab/](gpu-lab/)
+
 ## Comparison
 
-| | aurora-finetune | llm-training | batch-inference | online-serving |
-|--|--|--|--|--|
-| Kind | RayJob | RayJob | RayJob | RayService |
-| Kueue-admitted | ✓ | ✓ | ✓ | ✗ |
-| GPUs | 1 | 4 | 1 | 1 |
-| Queue label | `default` | `default` | `default` | — |
-| Deps | Aurora, torch, azure-storage-blob | LLaMA-Factory, azure-storage-blob | vLLM, azure-storage-blob | Aurora, azure-storage-blob |
-| Reads from blob | `aurora/data/` (init/truth) | `llm-pipeline/data/` (train.jsonl) | `llm-pipeline/data/` + `lora/` | `aurora/checkpoints/` (adapter) |
-| Writes to blob | `aurora/checkpoints/` | `llm-pipeline/lora/` | `llm-pipeline/inference/` | — |
+| | aurora-finetune | llm-training | batch-inference | online-serving | cas-batch-job | gpu-lab |
+|--|--|--|--|--|--|--|
+| Kind | RayJob | RayJob | RayJob | RayService | Job | Job |
+| Kueue-admitted | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ |
+| GPUs | 1 | 4 | 1 | 1 | 0 (CPU) | 8–16 |
+| Queue label | `default` | `default` | `default` | — | `cas-local-queue` | `gpu-local-queue` |
+| Deps | Aurora, torch, azure-storage-blob | LLaMA-Factory, azure-storage-blob | vLLM, azure-storage-blob | Aurora, azure-storage-blob | none (busybox) | NGC PyTorch |
+| Reads from blob | `aurora/data/` (init/truth) | `llm-pipeline/data/` (train.jsonl) | `llm-pipeline/data/` + `lora/` | `aurora/checkpoints/` (adapter) | — | — |
+| Writes to blob | `aurora/checkpoints/` | `llm-pipeline/lora/` | `llm-pipeline/inference/` | — | — | — |
 
 ## Quick start
 

@@ -7,13 +7,22 @@ resource management for the Ray workloads. This module sets up:
 - ResourceFlavors that map to CPU and GPU node pools
 - Queue configurations that control how workloads are admitted to the cluster
 
-Two queue configurations are provided as **independent demos** — apply one or
-the other, not both:
+Three queue configurations are provided as **independent demos** — apply one,
+not several:
 
 | Configuration | File | What it demonstrates |
 |---------------|------|----------------------|
 | **Single queue** | `manifests/20-single-queue.yaml` | One ClusterQueue with admission backpressure — one workload runs, the next waits |
 | **Team queues** | `manifests/30-team-queues.yaml` | Two ClusterQueues in a shared cohort with borrowing and preemption |
+| **Autoscale queue** | `manifests/40-autoscale-queue.yaml` | A ProvisioningRequest AdmissionCheck that drives the AKS cluster autoscaler to provision capacity *before* admission |
+| **GPU autoscale queue** | `manifests/50-gpu-autoscale-queue.yaml` | The same provisioning gate applied to GPUs — atomic scale-up of a GPU pool, with GPU-aware quota |
+
+> The single and team queues admit against a **fixed** quota on the
+> already-provisioned GPU node. The autoscale queue is different: it pairs Kueue
+> with the cluster autoscaler so capacity is provisioned **on demand**. See
+> [Autoscale queue — provision on demand](#autoscale-queue--provision-on-demand)
+> below, and the [cas-batch-job](../3-workloads/cas-batch-job/) workload that
+> uses it.
 
 ## Prerequisites
 
@@ -39,6 +48,8 @@ the other, not both:
 | `manifests/10-resource-flavors.yaml` | `default` (any node) and `gpu` (NVIDIA accelerator nodes) ResourceFlavors |
 | `manifests/20-single-queue.yaml` | `cluster-queue` ClusterQueue + `default` LocalQueue |
 | `manifests/30-team-queues.yaml` | `team-a-cq` / `team-b-cq` ClusterQueues in `shared-cohort` + `team-a` / `team-b` LocalQueues |
+| `manifests/40-autoscale-queue.yaml` | `scalepool` ResourceFlavor + `cas-provisioning` AdmissionCheck + `cas-provreq-config` ProvisioningRequestConfig + `cas-cluster-queue` ClusterQueue + `cas-local-queue` LocalQueue (in its own `cas-kueue-demo` namespace) |
+| `manifests/50-gpu-autoscale-queue.yaml` | `gpu-a100` ResourceFlavor + `gpu-provisioning` AdmissionCheck + `gpu-provreq-config` ProvisioningRequestConfig + `gpu-cluster-queue` ClusterQueue + `gpu-local-queue` LocalQueue (in its own `gpu-lab` namespace) |
 
 ## Apply
 
@@ -61,6 +72,14 @@ kubectl apply -f manifests/20-single-queue.yaml
 
 #   Option B — Team queues (multi-tenant borrowing + preemption demo)
 kubectl apply -f manifests/30-team-queues.yaml
+
+#   Option C — Autoscale queue (provision capacity on demand via CAS)
+#   Requires an autoscaling `scalepool` pool — see the section below.
+kubectl apply -f manifests/40-autoscale-queue.yaml
+
+#   Option D — GPU autoscale queue (provision GPU capacity on demand via CAS)
+#   Requires an autoscaling GPU pool — see ../3-workloads/gpu-lab/.
+kubectl apply -f manifests/50-gpu-autoscale-queue.yaml
 ```
 
 > **⚠️ Choose one.** `20-single-queue.yaml` and `30-team-queues.yaml` are
@@ -236,6 +255,61 @@ Preemption policy:
 **Demo idea:** Submit an 8-GPU RayJob to `team-a`, watch it consume all GPUs.
 Then submit a 4-GPU RayJob to `team-b` — Kueue will preempt Team A down to 4
 GPUs and admit Team B's job. See Module 3 for ready-to-run workload examples.
+
+### Autoscale queue — provision on demand
+
+The single- and team-queue configs admit workloads against a **fixed** quota
+that assumes the GPU node already exists. The autoscale queue instead pairs
+Kueue with the AKS **cluster autoscaler (CAS)** so nodes are provisioned *before*
+a workload is admitted:
+
+```
+Workload (suspend: true, queue-name: cas-local-queue)
+   │
+   ▼
+Kueue ──► AdmissionCheck cas-provisioning ──► ProvisioningRequest ──► CAS
+   │                                                                    │
+   └──────── admitted once nodes exist ◄──── Provisioned=True ◄─────────┘
+```
+
+Three objects wire the gate together (all in `40-autoscale-queue.yaml`):
+
+- **ProvisioningRequestConfig** `cas-provreq-config` selects the
+  `best-effort-atomic-scale-up.autoscaling.x-k8s.io` provisioning class — CAS
+  adds the requested capacity as a single atomic increase (all-or-nothing),
+  which is what batch/gang workloads want.
+- **AdmissionCheck** `cas-provisioning` uses the
+  `kueue.x-k8s.io/provisioning-request` controller and points at that config.
+- **ClusterQueue** `cas-cluster-queue` gates admission on `cas-provisioning` via
+  `admissionChecksStrategy`, so every workload it admits first goes through the
+  provisioning gate. It admits onto the `scalepool` ResourceFlavor
+  (`agentpool: scalepool`).
+
+**Requirements:**
+
+- An autoscaling CPU pool named `scalepool`
+  (`az aks nodepool add ... --enable-cluster-autoscaler --min-count 1 --max-count 5`).
+
+The [cas-batch-job](../3-workloads/cas-batch-job/) workload in Module 3 submits
+a suspended Job through this queue and walks through the scale-up end to end.
+
+### GPU variant
+
+`manifests/50-gpu-autoscale-queue.yaml` applies the same gate to GPU capacity.
+Two things change: `managedResources` is `nvidia.com/gpu` rather than `cpu`, so
+only GPU-requesting podsets drive provisioning, and the ResourceFlavor carries
+a toleration for the `nvidia.com/gpu=present:NoSchedule` taint that AKS puts on
+GPU pools.
+
+The stakes are also higher. Atomic scale-up matters more when a half-placed
+gang holds A100s instead of vCPUs — see the
+[GPU labs](../3-workloads/gpu-lab/) for the full walkthrough, including
+multi-node training and queue contention.
+
+**Requirements:**
+
+- An autoscaling GPU pool named `gpupool`
+  (`az aks nodepool add ... --enable-cluster-autoscaler --min-count 0 --max-count 2`).
 
 ### Quota sizing
 
