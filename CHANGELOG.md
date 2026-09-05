@@ -6,70 +6,73 @@
 
 ### Announcements of upcoming changes and retirements
 
-* Istio-based service mesh add-on revision `asm-1-28` is no longer supported. Upgrade to revision 1.29 or later. [PR#16973218](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16973218) (PM: @mitchconnors)
-* Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`. [PR#16640124](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16640124) (PM: @wilsondarko)
-* AKS releases no longer produce Windows Server 2019 or Windows Server 23H2 VHDs, and Windows Server 2025 VHDs are now available. [PR#16827433](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16827433) (PM: @allyford)
+
+* Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`.
+
 
 ### Release notes
 
 #### Kubernetes versions
 
-* Kubernetes patch versions [1.36.3](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md), [1.35.7](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md), and [1.34.10](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md) are now available. [PR#16683627](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16683627) (PM: @kaarthis)
+* Kubernetes patch versions 1.36.3, 1.35.7, and 1.34.10 are now available and supported as a [Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) version.
 
 #### Features
 
-* Autoscaling for [Virtual Machines node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) is now generally available, including multi-SKU autoscaling. [PR#16937006](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16937006) (PM: @wilsondarko)
-* Managed Gateway API on Kubernetes 1.37 now uses the Gateway API v1.6.1 standard-channel CRD bundle, adding the graduated `TCPRoute` and `UDPRoute` resources. [PR#16864722](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16864722) (PM: @mitchconnors)
-* Agent pools with an in-progress blue-green upgrade can now switch safely to the rolling upgrade strategy. [PR#16622394](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16622394) (PM: @stgriffi)
-* Existing clusters can now be converted to use a hosted system profile in supported regions after registering the required preview feature. [PR#16755305](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16755305) (PM: @STGRIFFI)
+* Autoscaling for [Virtual Machines node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) is now generally available, including multi-SKU autoscaling.
+
+
 
 #### Preview features
 
-* Azure subscriptions can now request access to the AKS-managed Agent Sandbox preview. Enrollment requires manual approval. [PR#16966733](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16966733) (PM: @wangamanda)
+* Existing clusters can now be converted to use a hosted system profile in supported regions after registering the required preview feature.
+* Agent pools with an in-progress blue-green upgrade can now switch safely to the rolling upgrade strategy.
+* Azure subscriptions can now request access to the AKS-managed Agent Sandbox preview. Enrollment requires manual approval.
 
 #### Behavioral changes
 
-* Starting with Kubernetes 1.37, [LocalDNS](https://aka.ms/aks/localdns) is enabled automatically when the cluster networking configuration supports it. Clusters using bring-your-own CNI, network policy configurations that aren't supported, or an existing custom DNS configuration aren't changed. [PR#17024262](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/17024262) (PM: @rhulrai)
-* AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported; create a new IPv4-only cluster instead. [PR#16534881](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16534881) (PM: @rhulrai)
-* New clusters using an HTTP proxy or custom certificate authority now reject CA certificate content larger than 35 KB, preventing node bootstrap data from exceeding platform limits. Existing clusters aren't affected. [PR#16755346](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16755346) (PM: @allyford)
-* Managed namespace creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. [PR#16839233](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16839233) (PM: @kaarthis)
-* Azure Policy's Kubernetes-native validation path is now enabled by default consistently across regions. [PR#16812707](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16812707) (PM: @colinmixon)
-* AI Manager now provisions the managed storage account and managed identity required by ModelMirror by default. [PR#16993348](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16993348) (PM: @rasquill)
-* Static Egress Gateway nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic. [PR#16629973](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16629973) (PM: @rhulrai)
-* Cilium CPU parallelism was increased for selected high-scale deployments after staged validation. [PR#16853112](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16853112), [PR#16997335](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16997335) (PM: @samfoo)
-* High-availability DNS proxy support was enabled for a selected staging control plane as part of the Advanced Container Networking Services rollout. [PR#16865567](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16865567) (PM: @samfoo)
-* VM and VM extension operation timeouts were increased to 15 minutes for selected legacy VMAS clusters to reduce failures caused by slow operations. [PR#16936971](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16936971) (AI-flagged: behavioral-change)
-* The [AKS release status site](https://releases.aks.azure.com/) now shows only the default VHD for each Windows version. [PR#16837560](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16837560) (PM: @allyford)
-* Azure Monitor services are transitioning to an extension-based backend in US Gov Virginia, China East 2, and China North 2. The transition doesn't change monitoring functionality and requires no customer action. [PR#16918629](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16918629), [PR#16947519](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16947519) (PM: @colinmixon)
+* Add WS2025 to the AKS releases page and drop WS2019 and WS23H2 as we're not producing VHDs for those anymore.
+* Istio-based service mesh add-on revision `asm-1-28` is no longer supported. New clusters can no longer select asm-1-28; existing clusters remain on their revision and are expected to upgrade to a still-supported revision (asm-1-29, asm-1-30)
+* Starting with Kubernetes 1.37, [LocalDNS](https://aka.ms/aks/localdns) is enabled automatically when the cluster networking configuration supports it. Clusters using bring-your-own CNI, network policy configurations that aren't supported, or an existing custom DNS configuration aren't changed.
+* Managed Gateway API on Kubernetes 1.37 now uses the Gateway API v1.6.1 standard-channel CRD bundle, adding the graduated `TCPRoute` and `UDPRoute` resources.
+* AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported; create a new IPv4-only cluster instead.
+* New clusters using an HTTP proxy or custom certificate authority now reject CA certificate content larger than 35 KB, preventing node bootstrap data from exceeding platform limits. Existing clusters aren't affected.
+* Managed namespace creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes.
+* Azure Policy's Kubernetes-native validation path is now enabled by default consistently across regions.
+* AI Manager now provisions the managed storage account and managed identity required by ModelMirror by default.
+* Static Egress Gateway nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
+* Cilium CPU parallelism was increased for selected high-scale deployments after staged validation.
+* High-availability DNS proxy support was enabled for a selected staging control plane as part of the Advanced Container Networking Services rollout.
+* VM and VM extension operation timeouts were increased to 15 minutes for selected legacy VMAS clusters to reduce failures caused by slow operations.
+* The [AKS release status site](https://releases.aks.azure.com/) now shows only the default VHD for each Windows version.
+* Azure Monitor services are transitioning to an extension-based backend in US Gov Virginia, China East 2, and China North 2. The transition doesn't change monitoring functionality and requires no customer action.
 
 #### Bug fixes
 
-* Fixed an issue where the Microsoft Defender for Containers collector could prevent CSI volumes from detaching, leaving volumes terminating and blocking dependent pods from scheduling. [PR#16983345](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16983345) (PM: @shasb)
-* Fixed missing Windows node metrics caused by an incorrect exporter port configuration. [PR#16884185](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16884185) (PM: @riychoudhary)
-* Gatekeeper has been updated to `v3.23.1`, fixing excessive Validating Admission Policy reconciliation requests. [PR#16978957](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16978957) (PM: @colinmixon)
+* Fixed an issue where the Microsoft Defender for Containers collector could prevent CSI volumes from detaching, leaving volumes terminating and blocking dependent pods from scheduling.
+* Fixed missing Windows node metrics caused by an incorrect exporter port configuration.
+
 
 #### Component updates
 
+* Gatekeeper has been updated to `v3.23.1`, fixing excessive Validating Admission Policy reconciliation requests.
 * Istio-based service mesh add-on revisions have been updated with security patches for ISTIO-SECURITY-2026-006:
   * `asm-1-29` to [`v1.29.7`](https://github.com/istio/istio/releases/tag/1.29.7)
   * `asm-1-30` to [`v1.30.4`](https://github.com/istio/istio/releases/tag/1.30.4)
-  * Restart workload pods to trigger reinjection of the updated `istio-proxy` sidecar. For more information, see the [Istio add-on upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade). [PR#17033947](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/17033947) (PM: @mitchconnors)
+  * Restart workload pods to trigger reinjection of the updated `istio-proxy` sidecar. For more information, see the [Istio add-on upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
 * Azure CSI drivers have been updated:
   * Azure File CSI driver to [`v1.33.10`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.33.10) on AKS 1.33, [`v1.34.9`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.9) on AKS 1.34, and [`v1.35.8`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.8) on AKS 1.35 and later.
   * Azure Disk CSI driver to [`v1.33.11`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.11) on AKS 1.33, [`v1.33.12`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.12) on AKS 1.34, and [`v1.34.6`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.6) on AKS 1.35 and later.
-  * Azure Blob CSI driver to [`v1.27.10`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.10) on AKS 1.34 and later. [PR#16724960](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16724960), [PR#17041269](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/17041269) (PM: @allenwen)
-* Cloud Provider Azure components have been updated to `v1.33.17-2` and `v1.36.5-2`, including `cloud-controller-manager`, `cloud-node-manager`, and `health-probe-proxy`. The Kubernetes 1.36 cloud controller manager also includes Service Gateway support. [PR#16711275](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16711275), [PR#16967691](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16967691) (PM: @rhulrai)
+  * Azure Blob CSI driver to [`v1.27.10`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.10) on AKS 1.34 and later.
+* Cloud Provider Azure components have been updated to `v1.33.17-2` and `v1.36.5-2`, including `cloud-controller-manager`, `cloud-node-manager`, and `health-probe-proxy`. The Kubernetes 1.36 cloud controller manager also includes Service Gateway support.
 * Cilium, Hubble Relay, and Advanced Container Networking Services FQDN policy images have been updated:
   * Kubernetes 1.31 images to [`v1.16.19`](https://github.com/cilium/cilium/releases/tag/v1.16.19)
   * Kubernetes 1.32 images to [`v1.17.18`](https://github.com/cilium/cilium/releases/tag/v1.17.18)
   * Kubernetes 1.34 images to [`v1.18.12`](https://github.com/cilium/cilium/releases/tag/v1.18.12)
   * Kubernetes 1.36 images to [`v1.19.6`](https://github.com/cilium/cilium/releases/tag/v1.19.6)
-  * [PR#16800883](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16800883), [PR#16800886](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16800886), [PR#16800887](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16800887) (PM: @samfoo)
-* The App Routing ingress NGINX controller has been updated to `v1.13.10-10` with additional validation for custom log formats. Invalid values now fall back to the default log format. [PR#16963098](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16963098) (PM: @mitchconnors)
-* AgentBaker was updated through `v0.20260826.1` for the latest AKS node images. [PR#16817917](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16817917), [PR#16941836](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16941836), [PR#17036266](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/17036266) (PM: @allyford)
+* The App Routing ingress NGINX controller has been updated to `v1.13.10-10` with additional validation for custom log formats. Invalid values now fall back to the default log format.
 * AKS Windows images:
   * Windows Server 2022 - [20348.5499.260812](vhd-notes/AKSWindows/2022/20348.5499.260812.txt).
-  * Windows Server 2025 - [26100.33296.260812](vhd-notes/AKSWindows/2025/26100.33296.260812.txt). [PR#16791120](https://dev.azure.com/msazure/CloudNativeCompute/_git/aks-rp/pullrequest/16791120) (PM: @allyford)
+  * Windows Server 2025 - [26100.33296.260812](vhd-notes/AKSWindows/2025/26100.33296.260812.txt).
 * AKS Azure Linux images:
   * v3.0 - [202608.06.1](vhd-notes/AzureLinuxv3/202608.06.1.txt).
   * v3.0 - [202608.14.0](vhd-notes/AzureLinuxv3/202608.14.0.txt).
