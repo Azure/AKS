@@ -31,6 +31,36 @@ The atomic `best-effort-atomic-scale-up.autoscaling.x-k8s.io` provisioning class
 adds the whole capacity block at once, avoiding the half-scheduled gang problem
 where some pods land and others sit Pending.
 
+### Why this matters: no wasted spend on partial capacity
+
+Because pods stay gated until the *entire* capacity block is provisioned, the
+cluster autoscaler can quickly clean up partially provisioned nodes — no pods
+have been scheduled on them, so nothing blocks scale-down. This is especially
+valuable when a scale-up is cut short by capacity or quota limits: instead of
+paying for a handful of nodes that sit half-used while the gang waits, the
+autoscaler reclaims them and the Job simply stays suspended until the full
+block can be satisfied. For gang-scheduled batch and AI training jobs, this
+significantly reduces wasteful compute spend.
+
+If you are cost sensitive and want those partially provisioned nodes released
+as fast as possible, run an aggressive scale-down
+[cluster autoscaler profile](https://learn.microsoft.com/azure/aks/cluster-autoscaler?tabs=azure-cli#cluster-autoscaler-profile-settings)
+on the cluster, for example:
+
+```bash
+az aks update \
+  --resource-group <rg> --name <cluster> \
+  --cluster-autoscaler-profile \
+      scale-down-unneeded-time=1m \
+      scale-down-delay-after-add=1m \
+      scale-down-unready-time=5m \
+      max-graceful-termination-sec=60
+```
+
+These profile settings are cluster-wide and apply to the scale-up and
+scale-down that this ProvisioningRequest integration triggers, so tune them
+alongside the queue configuration rather than in isolation.
+
 ### State transitions
 
 A successful run passes through these states in order. If a run stalls, the last
@@ -54,6 +84,9 @@ new nodes to join.
 
 ## Prerequisites
 
+- An AKS cluster running Kubernetes 1.30+ with the cluster autoscaler enabled
+  (ProvisioningRequest support), and Kueue v0.7.0 or later. The companion
+  AKS how-to guide lists the supported version matrix in detail.
 - Module 1 cluster deployed and Kueue running.
 - An **autoscaling** CPU pool named `scalepool`. If your Module 1 cluster
   doesn't have one, add it:
@@ -64,6 +97,10 @@ new nodes to join.
     --node-vm-size Standard_D4s_v3 \
     --enable-cluster-autoscaler --min-count 1 --max-count 5
   ```
+  `--min-count 0` also works — the pool can scale from zero, and the
+  ProvisioningRequest simply provisions the whole block from empty. `--max-count`
+  is the real ceiling: a request larger than it fails with
+  `Provisioned=False` / `CapacityIsNotFound` rather than partially scheduling.
 - The autoscale queue applied from Module 2:
   ```bash
   kubectl apply -f ../../2-kueue-queues/manifests/40-autoscale-queue.yaml
@@ -101,6 +138,30 @@ Expected end state:
 ```output
 NAME            STATUS     COMPLETIONS   DURATION   AGE
 kueue-cas-job   Complete   3/3           45s        6m
+```
+
+## Observability
+
+If a run stalls, these are the logs and events that explain why, in the order
+the request flows through the system:
+
+```bash
+# Workload conditions (QuotaReserved, Admitted) and admission-check state
+kubectl -n cas-kueue-demo get workloads -o yaml
+
+# AdmissionCheck status
+kubectl get admissioncheck cas-provisioning -o yaml
+
+# ProvisioningRequest conditions and events (Provisioned / CapacityIsNotFound)
+kubectl -n cas-kueue-demo describe provisioningrequest
+
+# Kueue controller logs — provisioning-request creation and failures
+kubectl -n kueue-system logs deploy/kueue-controller-manager -c manager --tail=200
+
+# Cluster autoscaler decisions (AKS surfaces these as cluster events)
+kubectl get events -A --field-selector source=cluster-autoscaler \
+  --sort-by=.lastTimestamp
+kubectl -n kube-system describe configmap cluster-autoscaler-status
 ```
 
 ## Troubleshooting
