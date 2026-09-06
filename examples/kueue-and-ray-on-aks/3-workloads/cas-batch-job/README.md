@@ -84,7 +84,7 @@ new nodes to join.
 
 ## Prerequisites
 
-- An AKS cluster running Kubernetes 1.30+ with the cluster autoscaler enabled
+- An AKS cluster running Kubernetes 1.33+ with the cluster autoscaler enabled
   (ProvisioningRequest support), and Kueue v0.7.0 or later. The companion
   AKS how-to guide lists the supported version matrix in detail.
 - Module 1 cluster deployed and Kueue running.
