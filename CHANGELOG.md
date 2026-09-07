@@ -25,8 +25,8 @@
 #### Preview features
 
 * Existing clusters can now be converted to use a hosted system profile in supported regions after registering the required preview feature.
-* Agent pools with an in-progress blue-green upgrade can now switch safely to the rolling upgrade strategy.
-* Azure subscriptions can now request access to the AKS-managed Agent Sandbox preview. Enrollment requires manual approval.
+* Node pools with an in-progress [blue-green upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) can now switch safely to the rolling upgrade strategy.
+
 
 #### Behavioral changes
 
@@ -36,7 +36,7 @@
 * [Managed Gateway API](https://aka.ms/managed-gateway-api) on Kubernetes 1.37 now uses the Gateway API v1.6.1 standard-channel CRD bundle, adding the graduated `TCPRoute` and `UDPRoute` resources.
 * AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported; create a new IPv4-only cluster instead.
 * New clusters using an [HTTP proxy](https://aka.ms/aks/http-proxy) or [Custom Certificate Authority](https://aka.ms/aks/custom-certificate-authority) now reject CA certificate content larger than 35 KB, preventing node bootstrap data from exceeding platform limits. Existing clusters aren't affected.
-* Managed namespace creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes.
+* Managed namespace creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. This prevents naming conflicts with system-reserved namespaces and reduces the risk of customers accidentally interfering with Kubernetes or AKS-managed components.
 * Azure Policy's Kubernetes-native validation path is now enabled by default consistently across regions.
 * AI Manager now provisions the managed storage account and managed identity required by ModelMirror by default.
 * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
@@ -54,7 +54,7 @@
 #### Component updates
 
 * Gatekeeper has been updated to [`v3.23.1`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#gatekeeper-3231), fixing excessive Validating Admission Policy reconciliation requests.
-* Istio-based service mesh add-on revisions have been updated with security patches for ISTIO-SECURITY-2026-006:
+* Istio-based service mesh add-on revisions have been updated with security patches for [ISTIO-SECURITY-2026-006](https://istio.io/latest/news/security/istio-security-2026-006/):
   * `asm-1-29` to [`v1.29.7`](https://github.com/istio/istio/releases/tag/1.29.7)
   * `asm-1-30` to [`v1.30.4`](https://github.com/istio/istio/releases/tag/1.30.4)
   * Restart workload pods to trigger reinjection of the updated `istio-proxy` sidecar. For more information, see the [Istio add-on upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
