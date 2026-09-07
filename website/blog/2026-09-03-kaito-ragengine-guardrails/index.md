@@ -258,7 +258,22 @@ We verified valid SSE framing and used zero leakage as the acceptance criterion 
 
 ### Benchmark Results
 
-We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI Foundry models: Phi-4-mini-instruct (3.8B), mistral-small-2503 (~24B), and Mistral-Large-3 (123B). The prompt set combines public safety datasets (63%) and custom prompts (37%), covering PII, toxicity, refusal boundaries, secrets, and clean baselines. Azure Content Safety remained enabled across all live runs. We compared the baseline with no RAGEngine guardrails against a block-only RAGEngine policy and a combined redaction-and-blocking policy.
+We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI Foundry models: Phi-4-mini-instruct (3.8B), mistral-small-2503 (~24B), and Mistral-Large-3 (123B). The prompt set combines public safety datasets (63%) and custom prompts (37%), covering PII, toxicity, refusal boundaries, secrets, and clean baselines. Table 4 summarizes the dataset composition and generation method for each category.
+
+*Table 4. Benchmark prompt dataset composition.*
+
+| Category | Count | Source | How generated |
+| -------- | ----- | ------ | ------------- |
+| pii | 100 | ai4privacy/pii-masking-400k | Reservoir sampled English entries, wrapped in rewrite prompts |
+| toxicity | 80 | Babelscape/ALERT | Random sampled from 14,763 test split |
+| refusal | 60 | LibrAI/do-not-answer | Random sampled from 939 entries |
+| clean | 60 | Custom | Technical Q&A prompts on common CS topics |
+| secrets | 40 | Custom | Prompts requesting config files with inline credentials |
+| json | 15 | Custom | Prompts requesting structured JSON output |
+| reading_time | 15 | Custom | Prompts requesting long-form articles |
+| scanner-targeted | 10 | Custom | Boundary cases for specific scanner behaviors |
+
+Azure Content Safety remained enabled across all live runs. We compared the baseline with no RAGEngine guardrails against a block-only RAGEngine policy and a combined redaction-and-blocking policy.
 
 #### Isolated guardrail processing adds millisecond-scale overhead
 
@@ -266,7 +281,7 @@ A deterministic microbenchmark isolates scanner execution from model inference a
 
 ![Figure 1. Guardrail processing overhead scales linearly with output length.](guardrail-overhead.svg)
 
-*Table 4. Guardrail processing overhead rate by configuration (deterministic microbenchmark).*
+*Table 5. Guardrail processing overhead rate by configuration (deterministic microbenchmark).*
 
 | Configuration | Rate (μs per output token) | Example: 2K tokens | Example: 8K tokens |
 | ------------- | -------------------------- | ------------------- | ------------------- |
@@ -280,9 +295,9 @@ For a typical 512-token response, the block-only policy adds under 1 ms and the 
 
 Azure Content Safety and RAGEngine guardrails address different classes of risk. Azure Content Safety targets general harmful content categories such as hate speech, violence, sexual content, and self-harm. RAGEngine adds application-specific checks including PII redaction, secret detection, and custom prohibited terms. The two layers are complementary: Azure Content Safety provides a broad safety baseline, while RAGEngine enforces domain-specific policies that fall outside general content moderation.
 
-Table 5 compares enforcement outcomes with Azure Content Safety alone versus the additional enforcement contributed by RAGEngine, broken down by action type.
+Table 6 compares enforcement outcomes with Azure Content Safety alone versus the additional enforcement contributed by RAGEngine, broken down by action type.
 
-*Table 5. Enforcement outcomes: Azure Content Safety alone vs. additional RAGEngine contribution.*
+*Table 6. Enforcement outcomes: Azure Content Safety alone vs. additional RAGEngine contribution.*
 
 | Model | Azure Content Safety only | Extra by RAGEngine | Improvement |
 | ----- | ------------------------- | ------------------ | ----------- |
