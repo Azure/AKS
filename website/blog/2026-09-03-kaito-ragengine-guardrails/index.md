@@ -264,9 +264,9 @@ We evaluated RAGEngine output guardrails with 380 prompts across three Azure AI 
 
 | Category | Count | Source | How generated |
 | -------- | ----- | ------ | ------------- |
-| pii | 100 | ai4privacy/pii-masking-400k | Reservoir sampled English entries, wrapped in rewrite prompts |
-| toxicity | 80 | Babelscape/ALERT | Random sampled from 14,763 test split |
-| refusal | 60 | LibrAI/do-not-answer | Random sampled from 939 entries |
+| pii | 100 | [ai4privacy/pii-masking-400k](https://huggingface.co/datasets/ai4privacy/pii-masking-400k) | Reservoir sampled English entries, wrapped in rewrite prompts |
+| toxicity | 80 | [Babelscape/ALERT](https://huggingface.co/datasets/Babelscape/ALERT) | Random sampled from 14,763 test split |
+| refusal | 60 | [LibrAI/do-not-answer](https://huggingface.co/datasets/LibrAI/do-not-answer) | Random sampled from 939 entries |
 | clean | 60 | Custom | Technical Q&A prompts on common CS topics |
 | secrets | 40 | Custom | Prompts requesting config files with inline credentials |
 | json | 15 | Custom | Prompts requesting structured JSON output |
