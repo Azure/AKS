@@ -31,7 +31,7 @@
 #### Behavioral changes
 
 * Add WS2025 to the AKS releases page and drop WS2019 and WS23H2 as we're not producing VHDs for those anymore. The [AKS release status site](https://releases.aks.azure.com/) now shows only the default VHD for each Windows version.
-* [Istio-based service mesh](https://learn.microsoft.com/azure/aks/istio-about) add-on revision `asm-1-28` is no longer supported. New clusters can no longer select asm-1-28; existing clusters remain on their revision and are expected to upgrade to a still-supported revision (asm-1-29, asm-1-30)
+* [Istio-based service mesh](https://learn.microsoft.com/azure/aks/istio-about) add-on revision `asm-1-28` is no longer supported. New clusters can no longer select `asm-1-28`; existing clusters remain on their revision and are expected to upgrade to a still-supported revision (`asm-1-29`, `asm-1-30`).
 * Starting with Kubernetes 1.37, [LocalDNS](https://aka.ms/aks/localdns) is enabled automatically when the cluster networking configuration supports it. Clusters using bring-your-own CNI, network policy configurations that aren't supported, or an existing custom DNS configuration aren't changed.
 * [Managed Gateway API](https://aka.ms/managed-gateway-api) on Kubernetes 1.37 now uses the Gateway API v1.6.1 standard-channel CRD bundle, adding the graduated `TCPRoute` and `UDPRoute` resources.
 * AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported; create a new IPv4-only cluster instead.
