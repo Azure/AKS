@@ -14,8 +14,6 @@ We're excited to announce that **control plane metrics collection for Azure Kube
 
 <!-- truncate -->
 
-![Example AKS control plane metrics dashboard in Grafana](./ControlPlaneMetrics.png)
-
 This capability gives AKS customers native observability into key managed control plane components, including the **API server**, **etcd**, **kube-scheduler**, **kube-controller-manager**, **Cluster Autoscaler**, and **node auto-provisioning**. With these metrics, platform teams can better understand how workloads, controllers, automation, and scaling activity interact with the AKS control plane over time.
 
 AKS manages the control plane's patching, high availability, and infrastructure-level health on your behalf. But a slow API server or an etcd database nearing its storage quota still shows up to *you* as stalled deployments, timeouts, or delayed autoscaling. Without visibility into control plane behavior, teams typically only discover these issues after workloads are already impacted, and diagnosing them usually means opening a support case and waiting on backend telemetry. Control plane metrics close that gap by giving you the same signals directly, in near real time.
