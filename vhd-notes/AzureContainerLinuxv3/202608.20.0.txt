@@ -38,7 +38,6 @@ Components downloaded in this VHD build (some of the below components might get 
   - azure-acr-credential-provider version v1.35.8-1-azlinux3
   - azure-acr-credential-provider version v1.36.5-3-azlinux3
   - azure-acr-credential-provider version v1.36.5-1-azlinux3
-  - 
 images pre-pulled:
   - mcr.microsoft.com/oss/v2/kubernetes/autoscaler/addon-resizer:v1.8.23-29
   - mcr.microsoft.com/oss/v2/kubernetes/pause:3.10.2
