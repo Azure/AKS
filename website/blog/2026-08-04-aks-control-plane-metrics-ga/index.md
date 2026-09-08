@@ -68,6 +68,8 @@ We recommend starting with the default API server and etcd metrics, then enablin
 
 The following five metrics provide a practical starting point for AKS control plane monitoring. They help identify API server throttling, expensive requests, server-side failures, etcd storage pressure, and etcd disk latency.
 
+![Example Grafana dashboard showing AKS API server health status, inflight requests, request rates by code and verb, LIST and non-LIST query latency, and storage list operations](./ControlPlaneMetrics-APIServer.png)
+
 ### 1. API server request throttling: 429 responses
 
 A 429 response means the API server rejected or delayed a request due to throttling or fairness controls. This is often the earliest signal that a client, controller, script, or CI/CD pipeline is generating excessive API load.
