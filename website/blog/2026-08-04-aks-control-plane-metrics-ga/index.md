@@ -66,7 +66,9 @@ We recommend starting with the default API server and etcd metrics, then enablin
 
 The following five metrics provide a practical starting point for AKS control plane monitoring. They help identify API server throttling, expensive requests, server-side failures, etcd storage pressure, and etcd disk latency.
 
-![Figure 1: Grafana dashboard showing AKS API server health and request metrics](./ControlPlaneMetrics-APIServer.png)
+![Grafana dashboard showing AKS API server health and request metrics](./ControlPlaneMetrics-APIServer.png)
+
+*Figure 1: Grafana dashboard showing AKS API server health and request metrics*
 
 ### 1. API server request throttling: 429 responses
 
