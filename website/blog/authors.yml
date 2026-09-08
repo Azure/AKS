@@ -595,3 +595,11 @@ david-kydd:
   image_url: https://github.com/davidkydd.png
   socials:
     github: davidkydd
+
+sunayana-singh:
+  name: Sunayana Singh
+  title: Senior Program Manager for Azure Kubernetes Service
+  url: https://github.com/sunasing_microsoft
+  image_url: https://github.com/sunasing_microsoft.png
+  socials:
+    github: sunasing_microsoft
