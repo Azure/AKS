@@ -31,18 +31,12 @@
 #### Behavioral changes
 
 * Add WS2025 to the AKS releases page and drop WS2019 and WS23H2 as we're not producing VHDs for those anymore. The [AKS release status site](https://releases.aks.azure.com/) now shows only the default VHD for each Windows version.
-* [Istio-based service mesh](https://learn.microsoft.com/azure/aks/istio-about) add-on revision `asm-1-28` is no longer supported. New clusters can no longer select `asm-1-28`; existing clusters remain on their revision and are expected to upgrade to a still-supported revision (`asm-1-29`, `asm-1-30`).
 * Starting with Kubernetes 1.37, [LocalDNS](https://aka.ms/aks/localdns) is enabled automatically when the cluster networking configuration supports it. Clusters using bring-your-own CNI, network policy configurations that aren't supported, or an existing custom DNS configuration aren't changed.
-* [Managed Gateway API](https://aka.ms/managed-gateway-api) on Kubernetes 1.37 now uses the Gateway API v1.6.1 standard-channel CRD bundle, adding the graduated `TCPRoute` and `UDPRoute` resources.
 * AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported; create a new IPv4-only cluster instead.
 * New clusters using an [HTTP proxy](https://aka.ms/aks/http-proxy) or [Custom Certificate Authority](https://aka.ms/aks/custom-certificate-authority) now reject CA certificate content larger than 35 KB, preventing node bootstrap data from exceeding platform limits. Existing clusters aren't affected.
 * Managed namespace creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. This prevents naming conflicts with system-reserved namespaces and reduces the risk of customers accidentally interfering with Kubernetes or AKS-managed components.
 * Azure Policy's Kubernetes-native validation path is now enabled by default consistently across regions.
-* AI Manager now provisions the managed storage account and managed identity required by ModelMirror by default.
 * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
-* Cilium CPU parallelism was increased for selected high-scale deployments after staged validation.
-* High-availability DNS proxy support was enabled for a selected staging control plane as part of the Advanced Container Networking Services rollout.
-* VM and VM extension operation timeouts were increased to 15 minutes for selected legacy VMAS clusters to reduce failures caused by slow operations.
 * Azure Monitor services are transitioning to an extension-based backend in US Gov Virginia, China East 2, and China North 2. The transition doesn't change monitoring functionality and requires no customer action.
 
 #### Bug fixes
@@ -54,6 +48,7 @@
 #### Component updates
 
 * Gatekeeper has been updated to [`v3.23.1`](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes#gatekeeper-3231), fixing excessive Validating Admission Policy reconciliation requests.
+* [Managed Gateway API](https://aka.ms/managed-gateway-api) on Kubernetes 1.37 now uses the [Gateway API v1.6.1](https://github.com/kubernetes-sigs/gateway-api/releases#release-v1.6.1) standard-channel CRD bundle, adding the graduated `TCPRoute` and `UDPRoute` resources.
 * Istio-based service mesh add-on revisions have been updated with security patches for [ISTIO-SECURITY-2026-006](https://istio.io/latest/news/security/istio-security-2026-006/):
   * `asm-1-29` to [`v1.29.7`](https://github.com/istio/istio/releases/tag/1.29.7)
   * `asm-1-30` to [`v1.30.4`](https://github.com/istio/istio/releases/tag/1.30.4)
