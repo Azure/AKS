@@ -1,4 +1,4 @@
-Starting build on  Thu Aug 20 00:43:01 UTC 2026
+Starting build on  Wed Aug 26 00:44:59 UTC 2026
 Components downloaded in this VHD build (some of the below components might get deleted during cluster provisioning if they are not needed):
   - oras version 1.3.3
   - aks-secure-tls-bootstrap-client version v1.1.4-2-azlinux3
@@ -67,8 +67,8 @@ images pre-pulled:
   - mcr.microsoft.com/containernetworking/cilium/cilium-distroless-init:v1.19.6-260811
   - mcr.microsoft.com/containernetworking/cilium/cilium-distroless-init:v1.19.5-260714
   - mcr.microsoft.com/oss/v2/kubernetes/apiserver-network-proxy/agent:v0.32.1-11
-  - mcr.microsoft.com/oss/v2/kubernetes-csi/secrets-store/driver:v1.6.0-6
-  - mcr.microsoft.com/oss/v2/azure/secrets-store/provider-azure:v1.7.2
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/secrets-store/driver:v1.6.0-7
+  - mcr.microsoft.com/oss/v2/azure/secrets-store/provider-azure:v1.8.2-6
   - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:3.6.0
   - mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:7.2.0-main-07-27-2026-2169504d
   - mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:7.2.0-main-07-27-2026-2169504d-targetallocator
@@ -103,7 +103,7 @@ images pre-pulled:
   - mcr.microsoft.com/oss/v2/kubernetes-csi/csi-node-driver-registrar:v2.17.0
   - mcr.microsoft.com/oss/v2/kubernetes-csi/csi-node-driver-registrar:v2.16.0
   - mcr.microsoft.com/aks/aks-node-ca-watcher:master.241021.1
-  - mcr.microsoft.com/oss/v2/kubernetes/windows-gmsa-webhook:v0.12.1-17
+  - mcr.microsoft.com/oss/v2/kubernetes/windows-gmsa-webhook:v0.12.1-18
   - mcr.microsoft.com/oss/v2/kubernetes/kube-proxy:v1.33.7-16
   - mcr.microsoft.com/oss/v2/kubernetes/kube-proxy:v1.34.10-1
   - mcr.microsoft.com/oss/v2/kubernetes/kube-proxy:v1.35.7-1
@@ -145,9 +145,9 @@ listInstalledPackages stub
 === Installed Packages End
 Disk usage:
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda5        55G   18G   35G  34% /
+/dev/sda5        55G   20G   33G  38% /
 sysext           32G   12K   32G   1% /usr
-overlay          55G   18G   35G  34% /etc
+overlay          55G   20G   33G  38% /etc
 /dev/sda4       128M   26M   99M  21% /oem
 devtmpfs        4.0M     0  4.0M   0% /dev
 tmpfs            32G     0   32G   0% /dev/shm
@@ -177,10 +177,10 @@ CPE_NAME="cpe:2.3:o:microsoft:azure_container_linux:3.0.20260809:*:*:*:*:*:*:*"
 === os-release End
 Using kernel:
 Linux version 6.6.150.1-1.azl3 (root@CBL-Mariner) (gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP PREEMPT_DYNAMIC Mon Aug 10 11:36:52 UTC 2026
-Install completed successfully on  Thu Aug 20 00:47:42 UTC 2026
-VSTS Build NUMBER: 20260820.1_main_177398420
-VSTS Build ID: 177398420
-Commit: 14ae9d554127e29ffd2eef3864e1455818e41ac0
+Install completed successfully on  Wed Aug 26 00:48:53 UTC 2026
+VSTS Build NUMBER: 20260826.1_main_178227308
+VSTS Build ID: 178227308
+Commit: 1fcb7f57754214d0950340abe1f78a59e94ceb65
 Ubuntu version: 
 Hyperv generation: V2
 Feature flags: None

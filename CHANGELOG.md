@@ -14,7 +14,8 @@ Azure Linux with OS Guard for Azure Kubernetes Service (AKS) (preview) will be r
 
 #### Kubernetes versions
 
-* Kubernetes patch versions 1.36.3, 1.35.7, and 1.34.10 are now available and supported as a [Long Term Support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) version.
+* Kubernetes Version [1.37 Preview](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md) is being rolled out.
+* Kubernetes patch versions `1.36.3`, `1.35.7`, and `1.34.10` are now available.
 
 #### Features
 
