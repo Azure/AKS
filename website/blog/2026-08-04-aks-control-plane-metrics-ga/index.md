@@ -68,7 +68,7 @@ The following five metrics provide a practical starting point for AKS control pl
 
 ![Grafana dashboard showing AKS API server health and request metrics](./ControlPlaneMetrics-APIServer.png)
 
-*Figure 1: Grafana dashboard showing AKS API server health and request metrics*
+<small>*Figure 1: Grafana dashboard showing AKS API server health and request metrics*</small>
 
 ### 1. API server request throttling: 429 responses
 
