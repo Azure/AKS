@@ -72,6 +72,11 @@ Azure Linux with OS Guard for Azure Kubernetes Service (AKS) (preview) will be r
   * v3.0 - [202608.14.0](vhd-notes/AzureLinuxv3/202608.14.0.txt).
   * v3.0 - [202608.20.0](vhd-notes/AzureLinuxv3/202608.20.0.txt).
   * v3.0 - [202608.26.0](vhd-notes/AzureLinuxv3/202608.26.0.txt).
+* AKS Azure Container Linux images:
+  * ACLv3 - [202608.06.1](vhd-notes/AzureContainerLinuxv3/202608.06.1.txt).
+  * ACLv3 - [202608.14.0](vhd-notes/AzureContainerLinuxv3/202608.14.0.txt).
+  * ACLv3 - [202608.20.0](vhd-notes/AzureContainerLinuxv3/202608.20.0.txt).
+  * ACLv3 - [202608.26.0](vhd-notes/AzureContainerLinuxv3/202608.26.0.txt).
 * AKS Ubuntu images:
   * Ubuntu 22.04 - [202608.06.1](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202608.06.1.txt).
   * Ubuntu 22.04 - [202608.14.0](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202608.14.0.txt).
