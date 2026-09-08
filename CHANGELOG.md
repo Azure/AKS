@@ -27,7 +27,7 @@
 
 * Existing clusters can now be converted to use a hosted system profile in supported regions after registering the required preview feature.
 * Node pools with an in-progress [blue-green upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) can now switch safely to the rolling upgrade strategy.
-
+* On-Demand Monitor, a new [Cluster Health Monitor](https://learn.microsoft.com/azure/aks/cluster-health-monitor) capability for node health checks and remediation, is available in Preview
 
 #### Behavioral changes
 
