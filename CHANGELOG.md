@@ -42,7 +42,7 @@ Azure Linux with OS Guard for Azure Kubernetes Service (AKS) (preview) will be r
 #### Bug fixes
 
 * Fixed an issue where the Microsoft Defender for Containers collector could prevent CSI volumes from detaching, leaving volumes terminating and blocking dependent pods from scheduling.
-* Fixed missing Windows node metrics caused by an incorrect exporter port configuration.
+* Fixed missing [Windows node metrics](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable) caused by an incorrect exporter port configuration.
 
 
 #### Component updates
