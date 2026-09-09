@@ -1,6 +1,6 @@
 module github.com/Azure/aks-cost-analysis-export
 
-go 1.25.0
+go 1.25.14
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.10.1
