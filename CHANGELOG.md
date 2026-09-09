@@ -22,7 +22,7 @@
 
 #### Preview features
 
-* Existing clusters can now be converted to use a hosted system profile in supported regions after registering the required preview feature.
+* Existing clusters can now be [converted to use a managed system node pool](https://aka.ms/aks/hobo-conversion) in supported regions after registering the required preview feature.
 * Node pools with an in-progress [blue-green upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) can now switch safely to the rolling upgrade strategy.
 * On-Demand Monitor, a new [Cluster Health Monitor](https://learn.microsoft.com/azure/aks/cluster-health-monitor) capability for node health checks and remediation, is available in preview.
 
@@ -35,7 +35,6 @@
 * [Managed namespace](https://learn.microsoft.com/azure/aks/managed-namespaces) creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. This prevents naming conflicts with system-reserved namespaces and reduces the risk of customers accidentally interfering with Kubernetes or AKS-managed components.
 * When the Azure Policy addon is enabled in AKS, Azure Policy's Kubernetes-native validation path is now enabled by default across regions.
 * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
-* Azure Monitor services are transitioning to an extension-based backend in US Gov Virginia, China East 2, and China North 2. The transition doesn't change monitoring functionality and requires no customer action.
 * AKS will return a validation error if you try to create a [KMS/CMK-enabled AKS](https://learn.microsoft.com/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key) 1.37 cluster with versioned Key Vault key IDs:
   ```text
   KMS customer-managed keys (CMK) is enabled, which requires a versionless Key Vault key ID (of the form 'https://<vault>.<dns-suffix>/keys/<key-name>' without a key version)
