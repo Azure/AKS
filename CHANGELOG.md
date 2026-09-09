@@ -36,7 +36,7 @@
 * When the Azure Policy addon is enabled in AKS, Azure Policy's Kubernetes-native validation path is now enabled by default across regions.
 * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
 * Azure Monitor services are transitioning to an extension-based backend in US Gov Virginia, China East 2, and China North 2. The transition doesn't change monitoring functionality and requires no customer action.
-* AKS will return a validation error if you try to create a [KMS/CMK-enabled AKS](https://learn.microsoft.com/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key) 1.37 cluster with versioned Key Vault key IDs: 
+* AKS will return a validation error if you try to create a [KMS/CMK-enabled AKS](https://learn.microsoft.com/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key) 1.37 cluster with versioned Key Vault key IDs:
   ```text
   KMS customer-managed keys (CMK) is enabled, which requires a versionless Key Vault key ID (of the form 'https://<vault>.<dns-suffix>/keys/<key-name>' without a key version)
   ```
