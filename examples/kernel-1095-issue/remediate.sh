@@ -31,6 +31,10 @@ do
     fi
     nodeList=$(kubectl get nodes -l "kubernetes.azure.com/agentpool=${np}" -o wide --no-headers | awk '/5.4.0-1095-azure/ {print $1}')
     echo "node list: $nodeList"
+    if [ -z "$nodeList" ]; then
+        echo "No kernel-1095 nodes in node pool $np, skipping"
+        continue
+    fi
 
     autoScalerEnabled=$(az aks nodepool show --cluster-name "$cn" --resource-group "$rg" --name "$np" --query "enableAutoScaling" -o tsv)
     echo "auto-scaler enabled: $autoScalerEnabled"
