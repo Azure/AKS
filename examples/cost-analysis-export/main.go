@@ -357,11 +357,9 @@ func (a *App) importAKSData(ctx context.Context) error {
 	}
 
 	if filesProcessed == 0 {
-		slog.Error("no AKS export files found", "prefix", a.Config.AzureStorageAKSDataPrefix, "expected_pattern", a.Config.AzureStorageAKSDataPrefix+"export-*.csv")
-	} else {
-		slog.Info("processed AKS export files", "count", filesProcessed)
+		return fmt.Errorf("no AKS export files found under prefix %q (expected %sexport-*.csv)", a.Config.AzureStorageAKSDataPrefix, a.Config.AzureStorageAKSDataPrefix)
 	}
-
+	slog.Info("processed AKS export files", "count", filesProcessed)
 	return nil
 }
 
@@ -403,11 +401,9 @@ func (a *App) importCostManagementData(ctx context.Context) error {
 	}
 
 	if filesProcessed == 0 {
-		slog.Error("no cost management files found to process", "prefix", a.Config.AzureStorageCostExportPrefix)
-	} else {
-		slog.Info("processed cost management files", "count", filesProcessed)
+		return fmt.Errorf("no cost management files found under prefix %q", a.Config.AzureStorageCostExportPrefix)
 	}
-
+	slog.Info("processed cost management files", "count", filesProcessed)
 	return nil
 }
 
@@ -511,7 +507,7 @@ func (a *App) ImportCSV(ctx context.Context, data io.Reader, tableName string) e
 				standardHeader := []string{"SubscriptionGuid", "ResourceGroup", "ResourceLocation", "UsageDateTime", "MeterCategory", "MeterSubCategory", "MeterId", "MeterName", "MeterRegion", "UsageQuantity", "ResourceRate", "PreTaxCost", "ConsumedService", "ResourceType", "InstanceId", "Tags", "OfferId", "AdditionalInfo", "ServiceInfo1", "ServiceInfo2", "ServiceName", "ServiceTier", "Currency", "UnitOfMeasure"}
 				return a.createTableFromHeader(ctx, tableName, standardHeader)
 			}
-			return nil
+			return fmt.Errorf("empty CSV for table %s", tableName)
 		}
 		return fmt.Errorf("reading header: %w", err)
 	}
