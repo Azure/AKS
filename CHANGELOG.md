@@ -30,7 +30,7 @@
 
 * The AKS release status site now includes Windows Server 2025 and no longer lists Windows Server 2019 or Windows Server, version 23H2 because AKS no longer produces VHDs for those versions. The [AKS release status site](https://releases.aks.azure.com/) now shows only the default VHD for each Windows version.
 * Starting with Kubernetes 1.37, [LocalDNS](https://aka.ms/aks/localdns) is enabled automatically when the cluster networking configuration supports it. Clusters using bring-your-own CNI, network policy configurations that aren't supported, or an existing custom DNS configuration aren't changed.
-* AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported; create a new IPv4-only cluster instead.
+* AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported.
 * New clusters using an [HTTP proxy](https://aka.ms/aks/http-proxy) or [Custom Certificate Authority](https://aka.ms/aks/custom-certificate-authority) now reject CA certificate content larger than 35 KB, preventing node bootstrap data from exceeding platform limits. Existing clusters aren't affected.
 * [Managed namespace](https://learn.microsoft.com/azure/aks/managed-namespaces) creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. This prevents naming conflicts with system-reserved namespaces and reduces the risk of customers accidentally interfering with Kubernetes or AKS-managed components.
 * When the Azure Policy addon is enabled in AKS, Azure Policy's Kubernetes-native validation path is now enabled by default across regions.
