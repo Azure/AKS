@@ -6,7 +6,6 @@
 
 ### Announcements of upcoming changes and retirements
 
-
 * Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`.
 * Azure Linux with OS Guard for Azure Kubernetes Service (AKS) (preview) will be retired on December 10, 2026. Please transition to [Azure Container Linux](https://learn.microsoft.com/en-us/azure/azure-linux/azure-container-linux-overview) by that date. From now to December 9, 2026, you can continue to use Azure Linux with OS Guard (preview) without disruption. On December 10, 2026, AKS will no longer produce new Azure Linux with OS Guard node images or provide security patches, and you will not be able to create new node pools with Azure Linux with OS Guard. On March 10, 2027, AKS will remove all existing Azure Linux with OS Guard node images, which will cause scaling and remediation (reimage and redeploy) operations to fail.
 
@@ -21,13 +20,10 @@
 
 * Autoscaling for [Virtual Machines node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) is now generally available, including multi-SKU autoscaling.
 
-
-
 #### Preview features
 
 * Existing clusters can now be converted to use a hosted system profile in supported regions after registering the required preview feature.
 * Node pools with an in-progress [blue-green upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) can now switch safely to the rolling upgrade strategy.
-
 
 #### Behavioral changes
 
@@ -35,16 +31,19 @@
 * Starting with Kubernetes 1.37, [LocalDNS](https://aka.ms/aks/localdns) is enabled automatically when the cluster networking configuration supports it. Clusters using bring-your-own CNI, network policy configurations that aren't supported, or an existing custom DNS configuration aren't changed.
 * AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported; create a new IPv4-only cluster instead.
 * New clusters using an [HTTP proxy](https://aka.ms/aks/http-proxy) or [Custom Certificate Authority](https://aka.ms/aks/custom-certificate-authority) now reject CA certificate content larger than 35 KB, preventing node bootstrap data from exceeding platform limits. Existing clusters aren't affected.
-* Managed namespace creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. This prevents naming conflicts with system-reserved namespaces and reduces the risk of customers accidentally interfering with Kubernetes or AKS-managed components.
-* Azure Policy's Kubernetes-native validation path is now enabled by default consistently across regions.
+* [Managed namespace](https://learn.microsoft.com/azure/aks/managed-namespaces) creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. This prevents naming conflicts with system-reserved namespaces and reduces the risk of customers accidentally interfering with Kubernetes or AKS-managed components.
+* When the Azure Policy addon enabled in AKS, Azure Policy's Kubernetes-native validation path is now enabled by default across regions.
 * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
 * Azure Monitor services are transitioning to an extension-based backend in US Gov Virginia, China East 2, and China North 2. The transition doesn't change monitoring functionality and requires no customer action.
+* AKS will return a validation error if you try to create a [KMS/CMK-enabled AKS](https://learn.microsoft.com/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key) 1.37 cluster with versioned Key Vault key IDs: 
+  ```text
+  KMS customer-managed keys (CMK) is enabled, which requires a versionless Key Vault key ID (of the form 'https://<vault>.<dns-suffix>/keys/<key-name>' without a key version)
+  ```
 
 #### Bug fixes
 
 * Fixed an issue where the Microsoft Defender for Containers collector could prevent CSI volumes from detaching, leaving volumes terminating and blocking dependent pods from scheduling.
 * Fixed missing [Windows node metrics](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable) caused by an incorrect exporter port configuration.
-
 
 #### Component updates
 
