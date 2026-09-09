@@ -21,8 +21,8 @@ echo "MC RG $mcrg"
 for np in $(az aks nodepool list --cluster-name "$cn" --resource-group "$rg" --query "[].name" -o tsv)
 do
     echo "Going to cleanup for node pool $np"
-    # Count Ready/NotReady nodes without grep|wc so a missed grep cannot
-    # become totalNodes=0 and scale the pool to 1.
+    # Count nodes with wc only. A missed grep cannot become totalNodes=0
+    # and scale the pool to 1. kubectl failure still fails the pipeline.
     totalNodes=$(kubectl get nodes -l "kubernetes.azure.com/agentpool=${np}" --no-headers | wc -l | tr -d ' ')
     echo "Total nodes of node pool $np is $totalNodes"
     if [ "$totalNodes" -eq 0 ]; then
@@ -47,6 +47,8 @@ do
 
         echo "Cordoning $ns"
         kubectl cordon "$ns"
+        # Drain timeout or reimage failure must not leave the node unschedulable.
+        trap 'kubectl uncordon "$ns" || true' EXIT
 
         echo "Draining $ns"
         kubectl drain "$ns" --ignore-daemonsets --delete-emptydir-data --timeout=5m
@@ -59,6 +61,7 @@ do
 
         echo "Uncordoning $ns"
         kubectl uncordon "$ns"
+        trap - EXIT
 
         echo "Cleanup for $ns ($vmssName/$instanceId) done"
     done
