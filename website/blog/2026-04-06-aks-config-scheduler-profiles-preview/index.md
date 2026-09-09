@@ -1,5 +1,5 @@
 ---
-title: "AKS Configurable Scheduler Profiles (preview)"
+title: "AKS Configurable Scheduler Profiles"
 description: "Improve GPU and CPU utilization, align pod placement to critical workloads, and reduce node costs at scale with Configurable Scheduler Profiles on AKS."
 date: 2026-04-06
 authors: [colin-mixon]
@@ -8,7 +8,7 @@ tags: [ai, performance, scheduler, best-practices, cost]
 
 Your clusters are likely running well below capacity and underutilized resources materially contribute to increased infrastructure cost. In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023, Weights and Biases found that nearly a third of GPU users [averaged less than 15% utilization][wb-gpu-utilization]. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler plays a critical role in node utilization.
 
-[Configurable Scheduler Profiles][concepts-scheduler-configuration] on Azure Kubernetes Service (AKS) let you configure your own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. **The result: higher node density, better GPU utilization, and lower infrastructure costs.**
+[Configurable Scheduler Profiles][concepts-scheduler-configuration] on Azure Kubernetes Service (AKS) let you configure your own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. **The result: higher node density, better CPU and GPU utilization, and lower infrastructure costs.**
 
 You'll learn how the default Kubernetes scheduler places pods, where the defaults fall short, and how to increase node utilization with Configurable Scheduler Profiles on AKS.
 
