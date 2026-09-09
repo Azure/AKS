@@ -84,12 +84,12 @@ This change in distribution shape enables downstream efficiencies: improved cont
 
 ### Increase AKS CPU utilization
 
-Using `RequestedToCapacityRatio`, this bin packing profile is configured to favor nodes within a utilization band of 50-85%, avoiding empty nodes, and severely deprioritizing nearly full nodes at 90% utilization or more, to limit oversaturated nodes. [Configure node bin-packing][configure-requested-to-capacity] using the `RequestedToCapacityRatio` strategy to improve utilization and reduce infrastructure costs.
+Using `RequestedToCapacityRatio`, this bin packing profile is configured to favor nodes within a utilization band of 50—85%, avoiding empty nodes, and severely deprioritizing nearly full nodes at 90% utilization or more, to limit oversaturated nodes. [Configure node bin-packing][configure-requested-to-capacity] using the `RequestedToCapacityRatio` strategy to improve utilization and reduce infrastructure costs.
 
 1. `RequestedToCapacityRatio` scores nodes based on the ratio of requested resources to total node capacity after the pod is _hypothetically_ placed. This strategy enables more fine-grained bin‑packing by allowing operators to define an ideal utilization curve for their nodes rather than simply preferring the most or least utilized nodes.
 2. `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals and the scheduling logic may prioritize pod spreading. If you need both high utilization _and_ zone resilience, define a new profile to achieve both goals.
 
-By shaping the scoring curve to target a range of 50-85% CPU utilization, users can increase pod density on provisioned nodes while preserving headroom for bursts, background processes, and system components in CPU-bound workloads.
+By shaping the scoring curve to target a range of 50—85% CPU utilization, users can increase pod density on provisioned nodes while preserving headroom for bursts, background processes, and system components in CPU-bound workloads.
 
 **Given this level of configuration detail, `RequestedToCapacityRatio` is the recommended scoring strategy for node bin‑packing on AKS for production clusters.**
 
