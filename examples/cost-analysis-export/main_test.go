@@ -453,7 +453,8 @@ func TestApp_Merge_NoAKSExportFiles(t *testing.T) {
 	require.NoError(t, err)
 	err = app.Merge(context.Background())
 	require.Error(t, err)
-	assert.Contains(t, err.Error(), "no AKS export files")
+	assert.Contains(t, err.Error(), "no AKS export files found")
+	assert.Contains(t, err.Error(), ".csv.gz")
 }
 
 func TestApp_Merge_EmptyAKSExport(t *testing.T) {
@@ -475,7 +476,8 @@ func TestApp_Merge_EmptyAKSExport(t *testing.T) {
 	require.NoError(t, err)
 	err = app.Merge(context.Background())
 	require.Error(t, err)
-	assert.Contains(t, err.Error(), "no AKS export files")
+	assert.Contains(t, err.Error(), "no AKS export files imported")
+	assert.Contains(t, err.Error(), "1 matching blob")
 }
 
 func TestApp_Merge_NoCostManagementFiles(t *testing.T) {
@@ -496,7 +498,8 @@ func TestApp_Merge_NoCostManagementFiles(t *testing.T) {
 	require.NoError(t, err)
 	err = app.Merge(context.Background())
 	require.Error(t, err)
-	assert.Contains(t, err.Error(), "no cost management files")
+	assert.Contains(t, err.Error(), "no cost management files found")
+	assert.Contains(t, err.Error(), ".csv.gz")
 }
 
 func openTestDB(t *testing.T) *sql.DB {

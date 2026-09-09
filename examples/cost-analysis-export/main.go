@@ -330,6 +330,7 @@ func (a *App) importAKSData(ctx context.Context) error {
 		Prefix: &a.Config.AzureStorageAKSDataPrefix,
 	})
 
+	matched := 0
 	filesProcessed := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -348,6 +349,7 @@ func (a *App) importAKSData(ctx context.Context) error {
 				continue
 			}
 
+			matched++
 			if err := a.processAKSBlob(ctx, *blob.Name); err != nil {
 				slog.Error("failed to process AKS blob", "name", *blob.Name, "error", err)
 				continue
@@ -357,7 +359,11 @@ func (a *App) importAKSData(ctx context.Context) error {
 	}
 
 	if filesProcessed == 0 {
-		return fmt.Errorf("no AKS export files found under prefix %q (expected %sexport-*.csv)", a.Config.AzureStorageAKSDataPrefix, a.Config.AzureStorageAKSDataPrefix)
+		prefix := a.Config.AzureStorageAKSDataPrefix
+		if matched == 0 {
+			return fmt.Errorf("no AKS export files found under prefix %q (expected %sexport-*.csv or %sexport-*.csv.gz)", prefix, prefix, prefix)
+		}
+		return fmt.Errorf("no AKS export files imported under prefix %q (%d matching blob(s) failed)", prefix, matched)
 	}
 	slog.Info("processed AKS export files", "count", filesProcessed)
 	return nil
@@ -373,6 +379,7 @@ func (a *App) importCostManagementData(ctx context.Context) error {
 		Prefix: &a.Config.AzureStorageCostExportPrefix,
 	})
 
+	matched := 0
 	filesProcessed := 0
 
 	for pager.More() {
@@ -392,6 +399,7 @@ func (a *App) importCostManagementData(ctx context.Context) error {
 				continue
 			}
 
+			matched++
 			if err := a.processCostManagementBlob(ctx, *blob.Name); err != nil {
 				slog.Error("failed to process cost management blob", "name", *blob.Name, "error", err)
 				continue
@@ -401,7 +409,11 @@ func (a *App) importCostManagementData(ctx context.Context) error {
 	}
 
 	if filesProcessed == 0 {
-		return fmt.Errorf("no cost management files found under prefix %q", a.Config.AzureStorageCostExportPrefix)
+		prefix := a.Config.AzureStorageCostExportPrefix
+		if matched == 0 {
+			return fmt.Errorf("no cost management files found under prefix %q (expected *.csv or *.csv.gz)", prefix)
+		}
+		return fmt.Errorf("no cost management files imported under prefix %q (%d matching blob(s) failed)", prefix, matched)
 	}
 	slog.Info("processed cost management files", "count", filesProcessed)
 	return nil
