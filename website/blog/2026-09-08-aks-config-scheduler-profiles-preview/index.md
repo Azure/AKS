@@ -1,7 +1,7 @@
 ---
 title: "AKS Configurable Scheduler Profiles"
 description: "Improve GPU and CPU utilization, align pod placement to critical workloads, and reduce node costs at scale with Configurable Scheduler Profiles on AKS."
-date: 2026-04-06
+date: 2026-09-08
 authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
@@ -80,7 +80,7 @@ This change in distribution shape enables downstream efficiencies: improved cont
 | ------------------------------ | -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | Default scheduler              | NodeResourcesFit: LeastAllocated       | Balance and hotspot reduction        | No tuning                                                                                                          |
 | Configurable Scheduler Profile | NodeResourcesFit: MostAllocated        | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential                                                         |
-| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated` |
+| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy:** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated` |
 
 ### Increase AKS CPU utilization
 
@@ -144,10 +144,10 @@ spec:
 
 ### Increase AKS GPU utilization
 
-When `MostAllocated` and  `NodeResourcesBalancedAllocation` are combined, the scheduler favors GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This approach reduces fragmented GPU capacity and results in fewer underutilized secondary resources. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
+When `MostAllocated` and `NodeResourcesBalancedAllocation` are combined, the scheduler favors GPU‑bound nodes with balanced CPU and memory usage over nodes with large amounts of unused memory or fragmented resources. This approach reduces fragmented GPU capacity and results in fewer underutilized secondary resources. [Configure node bin-packing][configure-most-allocated] using the MostAllocated strategy to improve utilization and reduce infrastructure costs.
 
 1. `MostAllocated` scores nodes based on its current resource utilization, favoring nodes that are already heavily used for the specified resources.
-2. `RequestedToCapacityRatio`, lets you define a scoring curve so you can explicitly control preferred utilization ranges and scores nodes based on resource requests relative to the remaining node capacity. This makes `MostAllocated` more aggressive for consolidation but gives you less explicit control over headroom.
+2. `RequestedToCapacityRatio` lets you define a scoring curve so you can explicitly control preferred utilization ranges and scores nodes based on resource requests relative to the remaining node capacity. This makes `MostAllocated` more aggressive for consolidation but gives you less explicit control over headroom.
 3. `PodTopologySpread` is disabled in this profile because bin-packing and zone-spreading are opposing goals. Enabling both can result in spreading over consolidation, weakening the intended packing behavior.
 
 `NodeResourcesBalancedAllocation` complements `MostAllocated` because it prefers nodes whose CPU and memory utilization stay proportionally balanced, helping reduce bottlenecks caused by asymmetric resource pressure.
