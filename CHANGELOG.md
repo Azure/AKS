@@ -33,7 +33,7 @@
 * AKS now rejects updates that attempt to remove IPv6 from an existing dual-stack cluster. Dual-stack to single-stack migration isn't supported.
 * New clusters using an [HTTP proxy](https://aka.ms/aks/http-proxy) or [Custom Certificate Authority](https://aka.ms/aks/custom-certificate-authority) now reject CA certificate content larger than 35 KB, preventing node bootstrap data from exceeding platform limits. Existing clusters aren't affected.
 * [Managed namespace](https://learn.microsoft.com/azure/aks/managed-namespaces) creation now rejects names beginning with the reserved `kube-` or `aks-istio-` prefixes. This prevents naming conflicts with system-reserved namespaces and reduces the risk of customers accidentally interfering with Kubernetes or AKS-managed components.
-* When the Azure Policy addon is enabled in AKS, Azure Policy's Kubernetes-native validation path is now enabled by default across regions.
+* When the Azure Policy add-on is enabled in AKS, Azure Policy's Kubernetes-native validation path is now enabled by default across regions.
 * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
 * AKS will return a validation error if you try to enable [KMS encryption-at-rest for Kubernetes secrets handled by K8s API with customer managed key](https://learn.microsoft.com/en-us/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key) on 1.37 cluster with versioned Key Vault key IDs. This feature requires specification of versionless Azure Key Vault key ID.
 
@@ -84,7 +84,7 @@
   * Ubuntu 24.04 - [202608.20.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202608.20.0.txt).
   * Ubuntu 24.04 - [202608.26.0](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202608.26.0.txt).
 
-  ---
+---
 
 ## Release Notes - 2026-08-07
 
