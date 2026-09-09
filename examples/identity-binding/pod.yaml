@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-first-ib-pod
+  namespace: default
+  labels:
+    azure.workload.identity/use: "true"
+  annotations:
+    azure.workload.identity/use-identity-binding: "true"
+spec:
+  serviceAccount: default
+  containers:
+    - name: azure-sdk
+      # source code: https://github.com/Azure/azure-workload-identity/blob/feature/custom-token-endpoint/examples/identitybinding-msal-go/main.go
+      image: ghcr.io/bahe-msft/azure-workload-identity/identitybinding-msal-go@sha256:d8a262e2aed015790335650f1d1221cbf9270ee209993337e4c6055b39dd00ae
+      env:
+        - name: KEYVAULT_URL
+          # Replace YOUR_KEYVAULT_NAME with your actual Azure Key Vault name
+          value: https://YOUR_KEYVAULT_NAME.vault.azure.net/
+        - name: SECRET_NAME
+          # Replace with the name of your Key Vault secret
+          value: REPLACE_WITH_SECRET_NAME
+  restartPolicy: Never
