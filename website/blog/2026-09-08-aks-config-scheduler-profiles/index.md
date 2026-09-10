@@ -6,7 +6,7 @@ authors: [colin-mixon]
 tags: [ai, performance, scheduler, best-practices, cost]
 ---
 
-Your clusters are likely running well below capacity and underutilized resources materially contribute to increased infrastructure cost. In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023, Weights and Biases found that nearly a third of GPU users [averaged less than 15% utilization][wb-gpu-utilization]. While there are many factors that impact node utilization, as a core component of the Kubernetes control plane, the kube-scheduler plays a critical role in node utilization.
+Your Kubernetes clusters are likely running well below capacity and underutilized resources materially contribute to increased infrastructure cost. In 2025, Datadog found most Kubernetes containers use less than [25% of their requested CPU][datadog-state-of-containers], and in 2023, Weights and Biases found that nearly a third of GPU users [averaged less than 15% utilization][wb-gpu-utilization]. Although node utilization is influenced by multiple factors, the kube-scheduler is a key Kubernetes control plane component that plays a critical role in how efficiently workloads are placed across nodes.
 
 [Configurable Scheduler Profiles][concepts-scheduler-configuration] on Azure Kubernetes Service (AKS) let you configure your own scheduling logic: enable specific plugins, adjust plugin priorities, and tune parameter weights. **The result: higher node density, better CPU and GPU utilization, and lower infrastructure costs.**
 
@@ -26,10 +26,10 @@ You'll learn how the default Kubernetes scheduler places pods, where the default
 
 The Kubernetes scheduler operates in two cycles: a synchronous scheduling cycle and an asynchronous binding cycle. The scheduling cycle has two sub-phases, filtering and scoring, and only manages one pod at a time.
 
-1. **Filtering** phase removes unsuitable nodes based on hard and soft constraints.
-2. **Scoring** phase calculates a score for the remaining nodes; ultimately, the most suitable node has the highest score.
+1. **Filtering** phase removes nodes that do not satisfy the pod's scheduling requirements, based on hard and soft constraints.
+2. **Scoring** phase assigns a score for the remaining nodes, based on scheduler plugins and their configured weights, with the highest-scoring node selected as the scheduling target.
 
-Once a node is selected, the binding cycle can process multiple pods in parallel. During this phase, the scheduler attempts to bind the pod to the chosen node. If binding a pod to a node fails, the scheduler tries the node with the next highest score. When filtering and scoring nodes, the default scheduler considers several hard and soft constraints with predefined weights, including (but not limited to):
+After a node is selected, the scheduler enters the binding cycle, which can process multiple pods concurrently. During this phase, the scheduler attempts to bind the pod to the chosen node. If the bind operation fails, the pod is typically re-queued and retried in a subsequent scheduling cycle rather than immediately falling back to the next-highest-scoring node. When filtering and scoring nodes, the default scheduler considers several hard and soft constraints with predefined weights, including (but not limited to):
 
 1. Resource requirements (CPU, memory)
 2. Node affinity/anti-affinity
@@ -80,7 +80,7 @@ This change in distribution shape enables downstream efficiencies: improved cont
 | ------------------------------ | -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | Default scheduler              | NodeResourcesFit: LeastAllocated       | Balance and hotspot reduction        | No tuning                                                                                                          |
 | Configurable Scheduler Profile | NodeResourcesFit: MostAllocated        | Maximize consolidation / bin‑packing | Maximum node utilization, highest cost reduction potential                                                         |
-| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **Recommended strategy:** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated` |
+| Configurable Scheduler Profile | NodeResourcesFit: RequestedToCapacityRatio | Targeted utilization with headroom | ✅ **(Recommended strategy)** Increased utilization with stronger control over consolidation and burst headroom than `MostAllocated` |
 
 ### Increase AKS CPU utilization
 
