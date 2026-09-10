@@ -1,7 +1,7 @@
 ---
 title: "Running GitHub Actions Runner Controller on AKS Automatic"
 date: "2026-08-19"
-description: "Create an AKS Automatic cluster, install Actions Runner Controller, and run an end-to-end GitHub Actions workflow on ephemeral runner pods in your Azure network."
+description: "Create an AKS Automatic cluster, install Actions Runner Controller, and run a GitHub Actions workflow on ephemeral runner pods in your Azure network."
 authors: ["steve-griffith"]
 tags: ["aks-automatic", "github-actions", "arc", "devops"]
 ---
