@@ -330,6 +330,7 @@ func (a *App) importAKSData(ctx context.Context) error {
 		Prefix: &a.Config.AzureStorageAKSDataPrefix,
 	})
 
+	matched := 0
 	filesProcessed := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -348,6 +349,7 @@ func (a *App) importAKSData(ctx context.Context) error {
 				continue
 			}
 
+			matched++
 			if err := a.processAKSBlob(ctx, *blob.Name); err != nil {
 				slog.Error("failed to process AKS blob", "name", *blob.Name, "error", err)
 				continue
@@ -357,11 +359,13 @@ func (a *App) importAKSData(ctx context.Context) error {
 	}
 
 	if filesProcessed == 0 {
-		slog.Error("no AKS export files found", "prefix", a.Config.AzureStorageAKSDataPrefix, "expected_pattern", a.Config.AzureStorageAKSDataPrefix+"export-*.csv")
-	} else {
-		slog.Info("processed AKS export files", "count", filesProcessed)
+		prefix := a.Config.AzureStorageAKSDataPrefix
+		if matched == 0 {
+			return fmt.Errorf("no AKS export files found under prefix %q (expected %sexport-*.csv or %sexport-*.csv.gz)", prefix, prefix, prefix)
+		}
+		return fmt.Errorf("no AKS export files imported under prefix %q (%d matching blob(s) failed)", prefix, matched)
 	}
-
+	slog.Info("processed AKS export files", "count", filesProcessed)
 	return nil
 }
 
@@ -375,6 +379,7 @@ func (a *App) importCostManagementData(ctx context.Context) error {
 		Prefix: &a.Config.AzureStorageCostExportPrefix,
 	})
 
+	matched := 0
 	filesProcessed := 0
 
 	for pager.More() {
@@ -394,6 +399,7 @@ func (a *App) importCostManagementData(ctx context.Context) error {
 				continue
 			}
 
+			matched++
 			if err := a.processCostManagementBlob(ctx, *blob.Name); err != nil {
 				slog.Error("failed to process cost management blob", "name", *blob.Name, "error", err)
 				continue
@@ -403,11 +409,13 @@ func (a *App) importCostManagementData(ctx context.Context) error {
 	}
 
 	if filesProcessed == 0 {
-		slog.Error("no cost management files found to process", "prefix", a.Config.AzureStorageCostExportPrefix)
-	} else {
-		slog.Info("processed cost management files", "count", filesProcessed)
+		prefix := a.Config.AzureStorageCostExportPrefix
+		if matched == 0 {
+			return fmt.Errorf("no cost management files found under prefix %q (expected *.csv or *.csv.gz)", prefix)
+		}
+		return fmt.Errorf("no cost management files imported under prefix %q (%d matching blob(s) failed)", prefix, matched)
 	}
-
+	slog.Info("processed cost management files", "count", filesProcessed)
 	return nil
 }
 
@@ -511,7 +519,7 @@ func (a *App) ImportCSV(ctx context.Context, data io.Reader, tableName string) e
 				standardHeader := []string{"SubscriptionGuid", "ResourceGroup", "ResourceLocation", "UsageDateTime", "MeterCategory", "MeterSubCategory", "MeterId", "MeterName", "MeterRegion", "UsageQuantity", "ResourceRate", "PreTaxCost", "ConsumedService", "ResourceType", "InstanceId", "Tags", "OfferId", "AdditionalInfo", "ServiceInfo1", "ServiceInfo2", "ServiceName", "ServiceTier", "Currency", "UnitOfMeasure"}
 				return a.createTableFromHeader(ctx, tableName, standardHeader)
 			}
-			return nil
+			return fmt.Errorf("empty CSV for table %s", tableName)
 		}
 		return fmt.Errorf("reading header: %w", err)
 	}

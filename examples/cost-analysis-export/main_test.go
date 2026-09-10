@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"context"
+	"database/sql"
 	"fmt"
 	"io"
 	"net/http"
@@ -416,6 +417,99 @@ test-guid,rg,westus,2025-06-18,Virtual Machines,Standard,meter-id,VM,westus,1,10
 			}
 		})
 	}
+}
+
+func TestImportCSV_EmptyAKSSplitsReturnsError(t *testing.T) {
+	app := &App{DB: openTestDB(t)}
+	err := app.ImportCSV(context.Background(), strings.NewReader(""), "aks_splits")
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "aks_splits")
+}
+
+func TestImportCSV_EmptyCostManagementCreatesTable(t *testing.T) {
+	app := &App{DB: openTestDB(t)}
+	err := app.ImportCSV(context.Background(), strings.NewReader(""), "cost_management")
+	require.NoError(t, err)
+	cols, err := app.getTableColumns(context.Background(), "cost_management")
+	require.NoError(t, err)
+	assert.Contains(t, cols, "SubscriptionGuid")
+}
+
+func TestApp_Merge_NoAKSExportFiles(t *testing.T) {
+	date := time.Date(2025, 6, 18, 0, 0, 0, 0, time.UTC)
+	cfg := Config{
+		AzureStorageConnectionString: SetupAzuriteContainer(t, "test-no-aks", map[string][]byte{
+			"cost-management/file1.csv": []byte("SubscriptionGuid,ResourceGroup,ResourceLocation,UsageDateTime,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,UsageQuantity,ResourceRate,PreTaxCost,ConsumedService,ResourceType,InstanceId,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure\n"),
+		}),
+		AzureStorageContainerName:    "test-no-aks",
+		AzureStorageAKSDataPrefix:    "cost-analysis/",
+		AzureStorageCostExportPrefix: "cost-management/",
+		AzureStorageResultFile:       "cost-analysis/result.csv",
+		SQLiteFilePath:               t.TempDir() + "/test.sqlite",
+		ExportDate:                   &date,
+		Timeout:                      time.Minute,
+	}
+	app, err := NewApp(cfg)
+	require.NoError(t, err)
+	err = app.Merge(context.Background())
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "no AKS export files found")
+	assert.Contains(t, err.Error(), ".csv.gz")
+}
+
+func TestApp_Merge_EmptyAKSExport(t *testing.T) {
+	date := time.Date(2025, 6, 18, 0, 0, 0, 0, time.UTC)
+	cfg := Config{
+		AzureStorageConnectionString: SetupAzuriteContainer(t, "test-empty-aks", map[string][]byte{
+			"cost-analysis/export-2025-06-18.csv": []byte(""),
+			"cost-management/file1.csv":           []byte("SubscriptionGuid,ResourceGroup,ResourceLocation,UsageDateTime,MeterCategory,MeterSubCategory,MeterId,MeterName,MeterRegion,UsageQuantity,ResourceRate,PreTaxCost,ConsumedService,ResourceType,InstanceId,Tags,OfferId,AdditionalInfo,ServiceInfo1,ServiceInfo2,ServiceName,ServiceTier,Currency,UnitOfMeasure\n"),
+		}),
+		AzureStorageContainerName:    "test-empty-aks",
+		AzureStorageAKSDataPrefix:    "cost-analysis/",
+		AzureStorageCostExportPrefix: "cost-management/",
+		AzureStorageResultFile:       "cost-analysis/result.csv",
+		SQLiteFilePath:               t.TempDir() + "/test.sqlite",
+		ExportDate:                   &date,
+		Timeout:                      time.Minute,
+	}
+	app, err := NewApp(cfg)
+	require.NoError(t, err)
+	err = app.Merge(context.Background())
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "no AKS export files imported")
+	assert.Contains(t, err.Error(), "1 matching blob")
+}
+
+func TestApp_Merge_NoCostManagementFiles(t *testing.T) {
+	date := time.Date(2025, 6, 18, 0, 0, 0, 0, time.UTC)
+	cfg := Config{
+		AzureStorageConnectionString: SetupAzuriteContainer(t, "test-no-cost", map[string][]byte{
+			"cost-analysis/export-2025-06-18.csv": []byte("Date,ID,Name,Kind,Fraction,SplitBucket,SplitKey\n2025-06-18,/subscriptions/test/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss,vmss,compute,1,usage,{}\n"),
+		}),
+		AzureStorageContainerName:    "test-no-cost",
+		AzureStorageAKSDataPrefix:    "cost-analysis/",
+		AzureStorageCostExportPrefix: "cost-management/",
+		AzureStorageResultFile:       "cost-analysis/result.csv",
+		SQLiteFilePath:               t.TempDir() + "/test.sqlite",
+		ExportDate:                   &date,
+		Timeout:                      time.Minute,
+	}
+	app, err := NewApp(cfg)
+	require.NoError(t, err)
+	err = app.Merge(context.Background())
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "no cost management files found")
+	assert.Contains(t, err.Error(), ".csv.gz")
+}
+
+func openTestDB(t *testing.T) *sql.DB {
+	t.Helper()
+	path := t.TempDir() + "/importcsv.db"
+	db, err := sql.Open("sqlite3", path)
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = db.Close() })
+	require.NoError(t, db.Ping())
+	return db
 }
 
 func TestConfig_Validate(t *testing.T) {
