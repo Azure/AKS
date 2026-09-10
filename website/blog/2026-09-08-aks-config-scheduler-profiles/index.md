@@ -228,7 +228,7 @@ spec:
 
    Monitor these signals to confirm that the scheduler is behaving correctly. Over time, you should see higher average node utilization, reduced variance between nodes, and fewer lightly utilized nodes.
 
-   - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor Container Insights, the AKS [node viewer tool][aks-node-viewer], or `kubectl top nodes` for quick validation.
+   - Track node‑level utilization metrics, including CPU and memory utilization per node and distribution of pods across nodes, using Azure Monitor for containers, the AKS [node viewer tool][aks-node-viewer], or `kubectl top nodes` for quick validation.
    - Review autoscaler outcomes, looking for fewer scale‑ups during normal load and more decisive scale‑downs after demand drops.
    - Measure cost metrics, such as reduced idle costs when you use the [Cost Analysis add-on][aks-cost-analysis-add-on].
 
