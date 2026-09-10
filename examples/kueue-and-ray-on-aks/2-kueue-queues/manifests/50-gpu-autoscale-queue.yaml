@@ -1,0 +1,120 @@
+# GPU autoscale queue — ProvisioningRequest AdmissionCheck driving the AKS
+# cluster autoscaler for GPU capacity.
+#
+# This is the GPU counterpart to 40-autoscale-queue.yaml. The mechanism is the
+# same (Kueue asks CAS for capacity via a ProvisioningRequest before admitting
+# the workload); what changes is what is scarce.
+#
+# With CPU, over-provisioning is cheap and a half-scheduled job is merely
+# wasteful. With GPUs it is neither. A100/H100 nodes are expensive and often
+# capacity-constrained, so two properties matter:
+#
+#   1. ATOMIC scale-up. A distributed training job that gets 6 of the 8 GPUs it
+#      asked for makes no progress, but still holds those 6 GPUs. The
+#      `best-effort-atomic-scale-up` class makes CAS add the whole increment or
+#      none of it, so a gang is never half-placed.
+#
+#   2. GPU-AWARE quota. `managedResources: [nvidia.com/gpu]` tells Kueue that
+#      the GPU is the resource CAS is being asked to provision. Workloads whose
+#      podsets request no GPU skip the provisioning gate entirely rather than
+#      waiting behind it.
+#
+# Apply:
+#   kubectl apply -f 50-gpu-autoscale-queue.yaml
+#
+# Verify:
+#   kubectl get admissioncheck gpu-provisioning
+#   kubectl get clusterqueue gpu-cluster-queue
+#   kubectl -n gpu-lab get localqueue gpu-local-queue
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gpu-lab
+---
+# ResourceFlavor pinned to the autoscaling GPU pool.
+#
+# AKS stamps every node with `agentpool: <pool-name>`, which is the most precise
+# selector — it distinguishes an A100 pool from an H100 pool in the same cluster.
+#
+# The tolerations below are applied by Kueue to admitted pods. AKS taints GPU
+# pools created with `--node-taints nvidia.com/gpu=present:NoSchedule` so that
+# CPU work cannot land on expensive GPU nodes; the flavor has to tolerate that
+# taint or nothing will ever schedule.
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ResourceFlavor
+metadata:
+  name: gpu-a100
+spec:
+  nodeLabels:
+    agentpool: gpupool
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Equal
+      value: present
+      effect: NoSchedule
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ProvisioningRequestConfig
+metadata:
+  name: gpu-provreq-config
+spec:
+  # All-or-nothing scale-up: CAS either provisions the entire gang's worth of
+  # GPU nodes or reports failure. This is what makes multi-node training safe.
+  provisioningClassName: best-effort-atomic-scale-up.autoscaling.x-k8s.io
+  # Only GPU requests drive provisioning. A podset that asks for CPU/memory but
+  # no GPU is considered ready immediately instead of blocking on CAS.
+  managedResources:
+    - nvidia.com/gpu
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: AdmissionCheck
+metadata:
+  name: gpu-provisioning
+spec:
+  controllerName: kueue.x-k8s.io/provisioning-request
+  parameters:
+    apiGroup: kueue.x-k8s.io
+    kind: ProvisioningRequestConfig
+    name: gpu-provreq-config
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue
+metadata:
+  name: gpu-cluster-queue
+spec:
+  namespaceSelector: {}
+  queueingStrategy: BestEffortFIFO
+  resourceGroups:
+    - coveredResources:
+        - nvidia.com/gpu
+        - cpu
+        - memory
+      flavors:
+        - name: gpu-a100
+          resources:
+            # The GPU quota is the meaningful ceiling. Size it to
+            #   max-count x GPUs-per-node
+            # e.g. a 2-node pool of Standard_ND96amsr_A100_v4 (8 GPUs each)
+            # = 16. Kueue will not admit past this even if CAS could scale
+            # further, which is your guardrail against a runaway spend.
+            - name: nvidia.com/gpu
+              nominalQuota: "16"
+            # CPU and memory are sized generously: they are along for the ride
+            # and should not be what blocks admission.
+            - name: cpu
+              nominalQuota: "200"
+            - name: memory
+              nominalQuota: 3000Gi
+  admissionChecksStrategy:
+    admissionChecks:
+      - name: gpu-provisioning
+        onFlavors: [gpu-a100]
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: gpu-local-queue
+  namespace: gpu-lab
+spec:
+  clusterQueue: gpu-cluster-queue

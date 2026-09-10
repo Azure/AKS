@@ -1,0 +1,131 @@
+# Lab 3 — Queue contention and GPU sharing.
+#
+# The first two labs each ran alone. Real shared clusters do not work that way,
+# and this lab shows what Kueue does when demand exceeds supply.
+#
+# It submits three jobs at once, together asking for more GPUs than the quota
+# allows. You should see them admitted in sequence rather than all at once, and
+# -- the important part -- you should NOT see three half-started jobs each
+# holding a fraction of what it needs.
+#
+# This is the behaviour that makes a shared GPU cluster usable. Without
+# admission control, three simultaneous submissions race for the same GPUs and
+# can all end up stuck. With it, jobs queue and drain in order.
+#
+# Submit all three:
+#   kubectl apply -f 30-queue-contention.yaml
+#
+# Watch admission order:
+#   kubectl -n gpu-lab get workloads -w
+#
+# See who is admitted vs pending, and why:
+#   kubectl -n gpu-lab get workloads -o custom-columns=\
+#   NAME:.metadata.name,ADMITTED:.status.conditions[?(@.type=="Admitted")].status,QUEUE:.spec.queueName
+#
+# Inspect the queue's own accounting:
+#   kubectl get clusterqueue gpu-cluster-queue -o yaml | yq '.status'
+---
+# Job A — 8 GPUs. Submitted first, expected to be admitted first.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: contention-a
+  namespace: gpu-lab
+  labels:
+    kueue.x-k8s.io/queue-name: gpu-local-queue
+spec:
+  suspend: true
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: work
+          image: nvcr.io/nvidia/pytorch:24.12-py3
+          command:
+            - bash
+            - -lc
+            - |
+              echo "[A] admitted at $(date -Is) on $(hostname)"
+              nvidia-smi --query-gpu=index,name --format=csv,noheader
+              # Occupy the GPUs briefly so the queue has something to serialise.
+              python -c "
+              import torch, time
+              n = torch.cuda.device_count()
+              print(f'[A] holding {n} GPU(s) for 120s')
+              bufs = [torch.randn(4096, 4096, device=f'cuda:{i}') for i in range(n)]
+              t = time.time()
+              while time.time() - t < 120:
+                  for b in bufs: b @ b
+              print('[A] done')
+              "
+          resources:
+            limits:
+              nvidia.com/gpu: 8
+---
+# Job B — 8 GPUs. Together with A this exactly consumes a 16-GPU quota.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: contention-b
+  namespace: gpu-lab
+  labels:
+    kueue.x-k8s.io/queue-name: gpu-local-queue
+spec:
+  suspend: true
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: work
+          image: nvcr.io/nvidia/pytorch:24.12-py3
+          command:
+            - bash
+            - -lc
+            - |
+              echo "[B] admitted at $(date -Is) on $(hostname)"
+              nvidia-smi --query-gpu=index,name --format=csv,noheader
+              python -c "
+              import torch, time
+              n = torch.cuda.device_count()
+              print(f'[B] holding {n} GPU(s) for 120s')
+              bufs = [torch.randn(4096, 4096, device=f'cuda:{i}') for i in range(n)]
+              t = time.time()
+              while time.time() - t < 120:
+                  for b in bufs: b @ b
+              print('[B] done')
+              "
+          resources:
+            limits:
+              nvidia.com/gpu: 8
+---
+# Job C — 8 GPUs. Exceeds the remaining quota, so it MUST wait for A or B to
+# finish. This is the one to watch: it should stay suspended with zero pods,
+# not start partially.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: contention-c
+  namespace: gpu-lab
+  labels:
+    kueue.x-k8s.io/queue-name: gpu-local-queue
+spec:
+  suspend: true
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: work
+          image: nvcr.io/nvidia/pytorch:24.12-py3
+          command:
+            - bash
+            - -lc
+            - |
+              echo "[C] admitted at $(date -Is) -- note how much later than A/B"
+              nvidia-smi --query-gpu=index,name --format=csv,noheader
+              echo "[C] done"
+          resources:
+            limits:
+              nvidia.com/gpu: 8
