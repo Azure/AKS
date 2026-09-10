@@ -36,6 +36,7 @@
 * When the Azure Policy add-on is enabled in AKS, Azure Policy's Kubernetes-native validation path is now enabled by default across regions.
 * [Static Egress Gateway](https://learn.microsoft.com/azure/aks/configure-static-egress-gateway) nodes now deregister from the load balancer before a node-image upgrade reimages them, reducing the risk of interrupted egress traffic.
 * AKS will return a validation error if you try to enable [KMS encryption-at-rest for Kubernetes secrets handled by K8s API with customer managed key](https://learn.microsoft.com/en-us/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key) on 1.37 cluster with versioned Key Vault key IDs. This feature requires specification of versionless Azure Key Vault key ID.
+* On Kubernetes 1.37 and later, [Azure Managed Prometheus](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-crd#basic-authentication-and-bearer-tokens) (or ama-metrics) uses namespace-scoped access to Kubernetes secrets for PodMonitor and ServiceMonitor configurations. If your ServiceMonitor or PodMonitor uses basicAuth, you must configure namespace-scoped secrets access before updating to Kubernetes 1.37.
 
 #### Bug fixes
 
