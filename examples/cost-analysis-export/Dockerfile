@@ -1,4 +1,4 @@
-FROM golang:1.24 AS builder
+FROM golang:1.25.14-bookworm AS builder
 
 # Install necessary build dependencies for SQLite
 RUN apt-get update && apt-get install -y gcc libc6-dev && rm -rf /var/lib/apt/lists/*
