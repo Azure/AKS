@@ -127,7 +127,7 @@ topk(5,
 
 ### 3. API server 5xx error rate
 
-A 429 response indicates throttling or backpressure. A 5xx response indicates that the API server attempted to process a request and failed.
+A 5xx response indicates a server-side failure, while a 429 response indicates throttling or backpressure.
 
 **PromQL**
 
