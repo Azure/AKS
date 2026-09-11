@@ -26,6 +26,13 @@ with AKS. For other tools, products and services see the [Upstream Azure Compute
   [AKS feed in Azure Updates](https://azure.microsoft.com/updates/?product=kubernetes-service)
 * AKS hybrid deployment options: <https://aka.ms/aks-hybrid>
 
+## AI-Powered AKS Tools
+
+* **AKS Model Context Protocol (MCP) Server**: Enable AI assistants like GitHub Copilot, Claude, and Cursor to interact intelligently with your AKS clusters
+  * Repository: [Azure/aks-mcp](https://github.com/Azure/aks-mcp)
+  * Blog announcement: [Announcing the AKS-MCP Server](https://blog.aks.azure.com/2025/08/06/aks-mcp-server)
+  * Features: Real-time cluster context, secure AI-powered diagnostics, VS Code extension integration
+
 ## Code of conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
