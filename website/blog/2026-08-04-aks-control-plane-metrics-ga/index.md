@@ -77,7 +77,7 @@ A 429 response means the API server rejected or delayed a request due to throttl
 **PromQL**
 
 ```promql
-sum by (client, verb, resource) (
+sum by (verb, resource) (
   rate(apiserver_request_total{code="429"}[5m])
 )
 ```
@@ -86,12 +86,14 @@ sum by (client, verb, resource) (
 
 **Why it matters:** Frequent 429s usually indicate that a client needs rate limiting, pagination, reduced polling, or retry-with-backoff behavior.
 
-**Find the top offending clients**
+**Find the throttled flow schemas**
+
+`apiserver_request_total` doesn't expose a per-client label, so it can't identify which caller is generating 429s. Use the API Priority and Fairness flow control metrics instead — they record rejections by `flowSchema`, which you can map back to the subjects (users, groups, or service accounts) configured on that `FlowSchema` object to find the offending client.
 
 ```promql
 topk(5,
-  sum by (client) (
-    rate(apiserver_request_total{code="429"}[15m])
+  sum by (flowSchema) (
+    rate(apiserver_flowcontrol_rejected_requests_total{reason="concurrency-limit"}[15m])
   )
 )
 ```
@@ -115,11 +117,13 @@ histogram_quantile(
 
 **Why it matters:** High LIST latency often points to controllers or jobs issuing expensive unpaginated queries. This can create broad API server pressure and affect unrelated workloads.
 
-**Find clients issuing LIST calls**
+**Find the resources generating the most LIST traffic**
+
+`apiserver_request_total` also doesn't carry a per-client label, so this can narrow down the affected resource type but not the specific caller. Cross-reference the API server audit logs (the `user.username` and `userAgent` fields) for the same time window to identify the client.
 
 ```promql
 topk(5,
-  sum by (client, resource) (
+  sum by (resource) (
     rate(apiserver_request_total{verb="LIST"}[15m])
   )
 )
@@ -167,8 +171,10 @@ max(etcd_server_quota_backend_bytes)
 
 **Track growth rate**
 
+`etcd_mvcc_db_total_size_in_bytes` is a gauge, not a counter, so `rate()` isn't the right function here — compaction can decrease the value and produce a misleading result. Use `deriv()` to estimate the per-second growth trend instead.
+
 ```promql
-rate(etcd_mvcc_db_total_size_in_bytes[1h])
+deriv(etcd_mvcc_db_total_size_in_bytes[1h])
 ```
 
 ### 5. etcd disk WAL fsync latency
@@ -204,7 +210,7 @@ or
 2. Turn on AKS control plane metrics collection and start with API server and etcd metrics.
 3. Keep the minimal ingestion profile enabled unless you need additional diagnostic coverage.
 4. Start from the out-of-the-box Grafana dashboards available for monitoring AKS etcd and API server metrics, as shown in the example dashboard above or build a custom Grafana dashboard. 
-5. [Configure alerts](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/kubernetes-metric-alerts?tabs=portal) for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency — so you can catch these issues before they affect production.
+5. [Configure alerts](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-metric-alerts?tabs=portal) for throttling, LIST latency, 5xx rate, etcd quota usage, and etcd WAL fsync latency — so you can catch these issues before they affect production.
 6. Review trends after 30 days to understand your normal control plane behavior and identify recurring pressure patterns.
 
 If you consistently observe throttling, high LIST latency, or elevated request volume during normal operations, review the clients and controllers generating API traffic. Common improvements include adding client-side rate limiting, reducing polling frequency, using watches instead of repeated LIST calls, enabling pagination, and cleaning up high-cardinality objects such as completed Jobs and Events. 
