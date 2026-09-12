@@ -82,7 +82,7 @@ sum by (verb, resource) (
 )
 ```
 
-**Recommended alert:** Alert when the 429 rate for a client is sustained above zero for 5 minutes.
+**Recommended alert:** Alert when the aggregate 429 rate is above zero for 5 minutes; use the flow-schema query below to identify the source.
 
 **Why it matters:** Frequent 429s usually indicate that a client needs rate limiting, pagination, reduced polling, or retry-with-backoff behavior.
 
