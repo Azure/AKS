@@ -1,0 +1,107 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vllm-inference-check
+  namespace: gpu-inference
+  labels:
+    app.kubernetes.io/name: vllm-inference-check
+    app.kubernetes.io/part-of: kueue-gpu-inference-codelab
+    kueue.x-k8s.io/queue-name: gpu-inference
+spec:
+  suspend: true
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vllm-inference-check
+        app.kubernetes.io/part-of: kueue-gpu-inference-codelab
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: inference
+          image: vllm/vllm-openai:v0.10.2
+          command:
+            - bash
+            - -lc
+            - |
+              set -euo pipefail
+              LOG=/tmp/vllm.log
+
+              vllm serve Qwen/Qwen2.5-0.5B-Instruct \
+                --served-model-name qwen \
+                --host 127.0.0.1 \
+                --port 8000 >"$LOG" 2>&1 &
+              server_pid=$!
+              trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+              echo "Waiting for vLLM to load the model..."
+              for attempt in $(seq 1 120); do
+                if python3 - <<'PY'
+              import urllib.request
+              urllib.request.urlopen("http://127.0.0.1:8000/health", timeout=2)
+              PY
+                then
+                  break
+                fi
+                if ! kill -0 "$server_pid" 2>/dev/null; then
+                  echo "vLLM exited before becoming ready"
+                  cat "$LOG"
+                  exit 1
+                fi
+                if [[ "$attempt" == "120" ]]; then
+                  echo "Timed out waiting for vLLM"
+                  cat "$LOG"
+                  exit 1
+                fi
+                sleep 5
+              done
+
+              python3 - <<'PY'
+              import json
+              import urllib.request
+
+              body = json.dumps({
+                  "model": "qwen",
+                  "messages": [{"role": "user", "content": "Reply with exactly: AKS inference ready"}],
+                  "max_tokens": 16,
+                  "temperature": 0,
+              }).encode()
+              request = urllib.request.Request(
+                  "http://127.0.0.1:8000/v1/chat/completions",
+                  data=body,
+                  headers={"Content-Type": "application/json"},
+              )
+              with urllib.request.urlopen(request, timeout=120) as response:
+                  result = json.load(response)
+              content = result["choices"][0]["message"]["content"].strip()
+              if not content:
+                  raise RuntimeError("The model returned an empty response")
+              print(f"MODEL_RESPONSE: {content}")
+              print("INFERENCE_VALIDATED")
+              PY
+          env:
+            - name: HF_HOME
+              value: /models/cache
+          resources:
+            requests:
+              cpu: "2"
+              memory: 8Gi
+              nvidia.com/gpu: "1"
+            limits:
+              cpu: "4"
+              memory: 16Gi
+              nvidia.com/gpu: "1"
+          volumeMounts:
+            - name: model-cache
+              mountPath: /models/cache
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: model-cache
+          emptyDir:
+            sizeLimit: 20Gi
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 4Gi
