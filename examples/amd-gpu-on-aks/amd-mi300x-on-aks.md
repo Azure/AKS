@@ -71,6 +71,9 @@ aks-nodepool1-16790056-vmss000002   Ready    <none>   49m     v1.35.7
 
 # Create ACR and grant AKS pull access
 
+Create an Azure Container Registry (ACR) to store the AMD GPU driver image, then attach the registry to the AKS cluster so its managed identity can pull images from it. Finally, retrieve the registry login server and save it in `ACR_SERVER` for use in the following steps.
+
+
 ```bash
 az acr create \
 --subscription "$SUBSCRIPTION" \
@@ -93,6 +96,9 @@ ACR_SERVER=$(az acr show \
 ```
 
 # Configure ACR credentials
+
+Create a repository-scoped token that allows the AMD GPU Operator to read and write the driver image in ACR. Then generate a token password and save it in `ACR_PASSWORD` for creating the Kubernetes registry secret.
+
 ```bash
 az acr scope-map create \
 --subscription "$SUBSCRIPTION" \
@@ -117,6 +123,9 @@ ACR_PASSWORD=$(az acr token credential generate \
 ```
 
 # Add the secret configmap
+
+Create the `kube-amd-gpu` namespace, then add a Kubernetes image pull secret that the AMD GPU Operator can use to authenticate with ACR when building and deploying the driver image.
+
 ```
 kubectl create namespace kube-amd-gpu 
 
@@ -128,6 +137,9 @@ kubectl create secret docker-registry amd-driver-registry \
 ```
 
 # Install cert-manager and AMD GPU Operator
+Install cert-manager to manage the TLS certificates required by the AMD GPU Operator webhooks. Then add the AMD ROCm Helm repository and install the GPU Operator, configuring it to build and deploy the AMD driver from ACR and target the MI300X VF-passthrough node.
+
+
 ```bash
 helm repo add jetstack https://charts.jetstack.io --force-update
 
@@ -152,7 +164,9 @@ helm install amd-gpu-operator rocm/gpu-operator-charts \
 --set deviceConfig.spec.driver.imageRegistrySecret.name=amd-driver-registry \
 --set-json 'deviceConfig.spec.selector={"feature.node.kubernetes.io/amd-gpu":null,"feature.node.kubernetes.io/amd-vgpu":"true"}'
 ```
-The `amd-vgpu` selector is required for Azure's MI300X VF-passthrough node.
+
+
+> The `"feature.node.kubernetes.io/amd-vgpu":"true"}` selector is required for Azure's MI300X VF-passthrough node.
 
 # Verify the operator and GPUs
 Verify the device-plugin is Pod running. 
