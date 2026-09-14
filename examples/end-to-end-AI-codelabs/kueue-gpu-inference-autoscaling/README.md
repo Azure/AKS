@@ -107,6 +107,9 @@ subscription:
   the VM existed but didn't register as a Kubernetes node before the capacity
   reservation expired. CAS removed the unregistered node, so the inference pod
   never started.
+- The same test in the `AKS INT/Staging Test` subscription used a T4 in
+  `westus2`. The CRD and provisioning path were available, but the fresh T4 VM
+  also failed to register before the reservation expired.
 
 The watcher now reports Azure pool count and Ready Kubernetes node count
 separately to make this failure visible. The complete path through
