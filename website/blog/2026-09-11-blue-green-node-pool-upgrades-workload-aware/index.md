@@ -36,10 +36,10 @@ For example, imagine a cluster with two user node pools:
 
 | Node pool | Workloads | Upgrade strategy | Why |
 | --- | --- | --- | --- |
-| `rollingpool` | Steady-state APIs, frontends, customer-facing services | Rolling | Mature availability patterns make rolling upgrades a good fit without adding temporary blue-green capacity. |
-| `bluegreenpool` | Compatibility-sensitive services, internal platforms, workload canaries | BlueGreen | These workloads benefit from explicit validation on new nodes before the old nodes are removed. |
+| `rolling` | Steady-state APIs, frontends, customer-facing services | Rolling | Mature availability patterns make rolling upgrades a good fit without adding temporary blue-green capacity. |
+| `bluegreen` | Compatibility-sensitive services, internal platforms, workload canaries | BlueGreen | These workloads benefit from explicit validation on new nodes before the old nodes are removed. |
 
-The pool names reflect the upgrade strategy, not workload importance. `rollingpool` uses standard rolling upgrades. `bluegreenpool` uses blue-green upgrades for workloads that benefit from explicit validation before the old nodes are removed.
+The pool names reflect the upgrade strategy, not workload importance. `rolling` uses standard rolling upgrades. `bluegreen` uses blue-green upgrades for workloads that benefit from explicit validation before the old nodes are removed.
 
 This pattern changes the capacity and cost conversation. Instead of doubling the entire cluster, you double the smaller pool that hosts validation-focused workloads.
 
@@ -78,14 +78,14 @@ az aks create \
 az aks nodepool add \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
-  --name rollingpool \
+  --name rolling \
   --node-count 2 \
   --labels workload-tier=rolling
 
 az aks nodepool add \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
-  --name bluegreenpool \
+  --name bluegreen \
   --node-count 2 \
   --labels workload-tier=bluegreen \
   --upgrade-strategy bluegreen \
@@ -159,7 +159,7 @@ kubectl get pods -o wide
 kubectl get nodes --show-labels | grep workload-tier
 ```
 
-At this point, the steady-state service should be running on `rollingpool`, while the validation-focused workload should be running on `bluegreenpool`.
+At this point, the steady-state service should be running on `rolling`, while the validation-focused workload should be running on `bluegreen`.
 
 ## Upgrade only the blue-green pool
 
@@ -169,12 +169,12 @@ Now start a node image or Kubernetes version upgrade on the blue-green pool. The
 az aks nodepool upgrade \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
-  --name bluegreenpool \
+  --name bluegreen \
   --node-image-only \
   --upgrade-strategy bluegreen
 ```
 
-During the upgrade, AKS cordons the blue nodes, adds green nodes with the updated configuration, and drains pods from blue to green in batches. Because only `bluegreenpool` uses blue-green, the temporary capacity increase applies to that pool.
+During the upgrade, AKS cordons the blue nodes, adds green nodes with the updated configuration, and drains pods from blue to green in batches. Because only `bluegreen` uses blue-green, the temporary capacity increase applies to that pool.
 
 Watch the node and pod movement in separate terminals:
 
@@ -211,12 +211,12 @@ If validation passes, let the final soak complete and AKS removes the old blue n
 az aks nodepool operation-abort \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
-  --name bluegreenpool
+  --name bluegreen
 
 az aks nodepool rollback \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
-  --name bluegreenpool
+  --name bluegreen
 ```
 
 Rollback availability is time-bound. AKS supports rollback during the final soak period, before the old blue nodes are removed.
