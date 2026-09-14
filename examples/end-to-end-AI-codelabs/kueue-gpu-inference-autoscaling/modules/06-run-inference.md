@@ -30,12 +30,16 @@ elapsed time is expected to be infrastructure and model cold start.
 The watcher prints a new row whenever state changes. Expect this order:
 
 ```output
-ELAPSED  NODES WORKLOAD           PROVISIONING   SUSPENDED    POD
-0s       0     Pending            Pending        true         NotCreated
-...      1     Pending            Pending        true         NotCreated
-...      1     True               True           false        Pending
-...      1     True               True           false        Running
+ELAPSED  POOL  READY WORKLOAD           PROVISIONING   SUSPENDED  POD
+0s       0     0     Pending            Pending        true       NotCreated
+...      1     0     Pending            Pending        true       NotCreated
+...      1     1     True               True           false      Pending
+...      1     1     True               True           false      Running
 ```
+
+`POOL` is the desired VM count reported by Azure. `READY` is the number of GPU
+nodes registered with Kubernetes. Keeping them separate exposes node bootstrap
+failures instead of making a provisioned VM look like usable GPU capacity.
 
 Successful logs end with:
 
@@ -62,6 +66,8 @@ Continue only if this prints `INFERENCE_VALIDATED`.
 | No Workload | Kueue Job integration or queue label | `kubectl -n gpu-inference describe job vllm-inference-check` |
 | Workload pending without quota | Queue or flavor configuration | `kubectl -n gpu-inference describe workload` |
 | ProvisioningRequest pending | GPU quota, regional capacity, or pool maximum | `kubectl -n gpu-inference describe provisioningrequest` |
+| `POOL=1`, `READY=0` for more than 15 minutes | The VM exists but failed to register as a Kubernetes node | Check the node pool provisioning state and retry with another SKU or region |
+| `BookingExpired=True` and no Ready GPU node | Node bootstrap exceeded the capacity reservation window | Inspect the node pool and autoscaler status; don't treat `Provisioned=True` alone as proof that the node joined |
 | Pod Pending | Node label, taint, or device plugin | `kubectl -n gpu-inference describe pod` |
 | Pod fails during model load | Image, model download, GPU driver, or memory | `kubectl -n gpu-inference logs job/vllm-inference-check` |
 

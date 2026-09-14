@@ -3,15 +3,32 @@
 
 . "$(cd "$(dirname "$0")" && pwd)/lib.sh"
 
+print_diagnostics() {
+  echo
+  echo "--- ProvisioningRequest ---"
+  kubectl -n "$LAB_NAMESPACE" describe provisioningrequest 2>/dev/null || true
+  echo
+  echo "--- Pending pod ---"
+  kubectl -n "$LAB_NAMESPACE" describe pod -l job-name="$LAB_JOB" 2>/dev/null || true
+  echo
+  echo "--- Cluster autoscaler status ---"
+  kubectl -n kube-system get configmap cluster-autoscaler-status \
+    -o jsonpath='{.data.status}' 2>/dev/null || true
+}
+
 start=$(date +%s)
 last=""
-printf '%-8s %-5s %-18s %-14s %-12s %-12s\n' "ELAPSED" "NODES" "WORKLOAD" "PROVISIONING" "SUSPENDED" "POD"
+printf '%-8s %-5s %-5s %-18s %-14s %-10s %-12s\n' \
+  "ELAPSED" "POOL" "READY" "WORKLOAD" "PROVISIONING" "SUSPENDED" "POD"
 
 while true; do
   now=$(date +%s)
   elapsed=$((now - start))
-  nodes=$(az aks nodepool show -g "$LAB_RESOURCE_GROUP" --cluster-name "$LAB_CLUSTER" \
+  elapsed_label="${elapsed}s"
+  pool_count=$(az aks nodepool show -g "$LAB_RESOURCE_GROUP" --cluster-name "$LAB_CLUSTER" \
     -n "$LAB_GPU_POOL" --query count -o tsv 2>/dev/null || echo "?")
+  ready_nodes=$(kubectl get nodes -l "agentpool=$LAB_GPU_POOL" --no-headers 2>/dev/null \
+    | awk '$2 == "Ready" {count++} END {print count+0}')
   workload=$(kubectl -n "$LAB_NAMESPACE" get workload \
     -o jsonpath='{.items[0].status.conditions[?(@.type=="Admitted")].status}' \
     2>/dev/null || true)
@@ -26,10 +43,10 @@ while true; do
     -o jsonpath='{.items[0].status.phase}' 2>/dev/null || true)
   [[ -n "$pod" ]] || pod="NotCreated"
 
-  line="$nodes|$workload|$provisioning|$suspended|$pod"
+  line="$pool_count|$ready_nodes|$workload|$provisioning|$suspended|$pod"
   if [[ "$line" != "$last" ]]; then
-    printf '%-8ss %-5s %-18s %-14s %-12s %-12s\n' \
-      "$elapsed" "$nodes" "$workload" "$provisioning" "$suspended" "$pod"
+    printf '%-8s %-5s %-5s %-18s %-14s %-10s %-12s\n' \
+      "$elapsed_label" "$pool_count" "$ready_nodes" "$workload" "$provisioning" "$suspended" "$pod"
     last="$line"
   fi
 
@@ -43,7 +60,13 @@ while true; do
     pass "End-to-end inference completed"
     exit 0
   fi
-  [[ "$failed" != "True" ]] || fail "The inference Job failed. Run: kubectl -n $LAB_NAMESPACE describe job $LAB_JOB"
-  (( elapsed < 2700 )) || fail "Timed out after 45 minutes. Continue with modules/07-observe-and-troubleshoot.md."
+  if [[ "$failed" == "True" ]]; then
+    print_diagnostics
+    fail "The inference Job failed."
+  fi
+  if (( elapsed >= 2700 )); then
+    print_diagnostics
+    fail "Timed out after 45 minutes."
+  fi
   sleep 10
 done

@@ -34,9 +34,11 @@ kubectl -n gpu-inference get provisioningrequests
 kubectl -n gpu-inference describe provisioningrequest
 ```
 
-`Provisioned=True` means the cluster autoscaler found or added capacity.
+`Provisioned=True` means the cluster autoscaler found or added VM capacity. It
+doesn't by itself prove that a new VM registered as a Ready Kubernetes node.
 `Provisioned=False` with `CapacityIsNotFound` means the complete request can't
-fit within available regional capacity and node pool limits.
+fit within available regional capacity and node pool limits. `BookingExpired`
+means the reserved capacity wasn't consumed before the reservation expired.
 
 ### 4. GPU node and device plugin
 
@@ -46,7 +48,9 @@ kubectl get nodes -l agentpool=gpupool \
 kubectl -n kube-system get pods -l app.kubernetes.io/name=nvidia-device-plugin -o wide
 ```
 
-The new node must advertise one GPU before the inference pod can start.
+The new node must register as Ready and advertise one GPU before the inference
+pod can start. If Azure reports a pool count of one but this command returns no
+nodes, node bootstrap failed or is still in progress.
 
 ### 5. Inference
 

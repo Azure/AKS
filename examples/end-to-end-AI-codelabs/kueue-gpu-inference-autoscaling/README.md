@@ -96,7 +96,19 @@ use this sequence to repeat the lab:
 
 ## Validation status
 
-The structure and manifests are an initial implementation. The complete
-zero-node-to-inference path must be run against a live AKS cluster before this
-codelab is described as validated. Don't treat sample states as measured output
-until that validation is recorded here.
+The setup and provisioning path has been exercised in the AKS E2E GPU SKU Test
+subscription:
+
+- The preflight check passed for T4 in `centralus`, but the ProvisioningRequest
+  CRD hadn't rolled out there. The lab stopped at its explicit CRD checkpoint.
+- In `centraluseuap`, Kueue created a ProvisioningRequest, CAS changed the GPU
+  pool from zero to one, and the request reached `Provisioned=True`.
+- Attempts with A100 and RTX PRO pools then exposed a node-bootstrap problem:
+  the VM existed but didn't register as a Kubernetes node before the capacity
+  reservation expired. CAS removed the unregistered node, so the inference pod
+  never started.
+
+The watcher now reports Azure pool count and Ready Kubernetes node count
+separately to make this failure visible. The complete path through
+`INFERENCE_VALIDATED` remains unverified, so this codelab and its pull request
+stay in draft.

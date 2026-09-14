@@ -10,8 +10,7 @@ helm upgrade --install nvidia-device-plugin nvdp/nvidia-device-plugin \
   --namespace kube-system \
   --version "$NVIDIA_DEVICE_PLUGIN_VERSION" \
   --set-string nodeSelector.workload=gpu-inference \
-  --set-json 'tolerations=[{"key":"sku","operator":"Equal","value":"gpu","effect":"NoSchedule"}]' \
-  --wait=false
+  --set-json 'tolerations=[{"key":"sku","operator":"Equal","value":"gpu","effect":"NoSchedule"}]'
 pass "Installed NVIDIA device plugin $NVIDIA_DEVICE_PLUGIN_VERSION"
 
 step "Installing Kueue"
