@@ -67,7 +67,9 @@ Each result compares matched standard and PIS-backed pools. The timer starts wit
 
 Image tests used 100 rounds per arm, customization tests used 10 same-round pairs per cell, and the GPU test used 46 pairs that concurrently scaled matched pools from one to two nodes. VM size, AKS node image, networking, artifacts, and workload were held constant.
 
-The GPU timer includes VM provisioning, node registration, managed driver readiness, model loading, health, and first token. PIS reached GPU allocatable 13 seconds later on average, but then returned the first token 27 seconds sooner. Once preparation checks finished, its preloaded image started the container 86 seconds sooner: 11 seconds with PIS versus 97 seconds without it.
+In each GPU pair, the standard node downloaded and hash-verified the model and pulled the pinned container image if it wasn't already present. The PIS-backed node verified the same model from its prepared image and used the same preloaded container image. Both paths then loaded the model and served the same inference request.
+
+The image-pull result isolates download time, the work PIS moves out of scale-out. The GPU result measures the broader customer path from the scale request through VM provisioning, node registration, managed driver readiness, model loading, health, and first token. PIS reached GPU allocatable 13 seconds later on average, but its prepared assets reversed that gap and returned the first token 27 seconds sooner from that milestone, for a 14-second average end-to-end saving. The 95% confidence intervals for the paired mean savings were 5 to 24 seconds for model readiness and 4 to 23 seconds for first token. Once preparation checks finished, its preloaded image started the container 86 seconds sooner: 11 seconds with PIS versus 97 seconds without it.
 
 These are controlled observations, not service-level objectives. The 10-pair tail results are directional, and the tests did not measure cost savings, production traffic, autoscaler decisions, cross-region variation, throughput, upgrades, or long-lived drift. PIS helps when the prepared work is material; the small Linux setup shows that baking a task is not automatically faster.
 
@@ -81,7 +83,7 @@ Start with work that every new node repeats and that can be completed before the
 
 Large, digest-pinned images, portable runtimes, dependency bundles, security tools, and immutable model artifacts can fit this profile. Keep frequently changing, node-specific, or inexpensive setup on the normal startup path.
 
-For GPU pools, measure the operating event that matters to the workload. This benchmark covered scale-out through the first successful inference; it did not test operating system upgrades or disruption while GPU nodes are replaced.
+For GPU pools, measure the operating event that matters to the workload. Teams that reserve scarce GPU capacity might care more about planned upgrades or node replacement than routine scale-out. During a supported Kubernetes upgrade, AKS rebuilds the prepared node image for the referenced PIS version so replacement nodes still receive its specified images and customizations. This benchmark covered scale-out through the first successful inference; it did not measure upgrade duration or replacement disruption. Validate the target PIS and node image versions in a matched nonproduction pool, then measure until the replacement workload serves a representative request.
 
 ## How to adopt PIS
 
@@ -146,10 +148,11 @@ For Windows, use PowerShell and set `scriptType` to `PowerShell`. Keep secrets o
 
 ## Conclusion
 
-PIS is most useful when new nodes repeatedly pull large images, fetch models, or run stable host setup before workloads can serve. It shifts that work to a versioned image build so later scale-outs can be faster and more predictable. Because PIS is in preview, validate it in matched nonproduction pools before adoption.
+PIS is most useful when new nodes repeatedly pull large images, fetch models, or run stable host setup before workloads can serve. It shifts that work to a versioned image build so later scale-outs can be faster and more predictable. PIS doesn't remove every cold-start stage, so measure the full customer path and optimize the remaining bottleneck. Because PIS is in preview, validate it in matched nonproduction pools and follow the [AKS roadmap](https://github.com/orgs/Azure/projects/685) as the feature evolves.
 
 ## Resources
 
 - [Prepared Image Specification overview](https://learn.microsoft.com/azure/aks/prepared-image-specification-overview)
 - [Create and manage a Prepared Image Specification](https://learn.microsoft.com/azure/aks/prepared-image-specification)
 - [AKS preview feature support policy](https://learn.microsoft.com/azure/aks/support-policies)
+- [AKS roadmap](https://github.com/orgs/Azure/projects/685)
