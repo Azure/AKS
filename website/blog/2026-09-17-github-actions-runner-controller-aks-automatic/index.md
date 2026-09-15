@@ -31,7 +31,7 @@ The goal is pretty simple. We'll create a workflow where `runs-on` maps to the A
 
 ## Prerequisites
 
-First, make sure you have the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli), [GitHub CLI](https://cli.github.com/), [`kubectl`](https://kubernetes.io/docs/tasks/tools/), and [Helm](https://helm.sh/docs/intro/install/) installed.
+First, make sure you have the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli), [GitHub CLI](https://cli.github.com/), [`kubectl`](https://kubernetes.io/docs/tasks/tools/), [kubelogin](https://azure.github.io/kubelogin/install.html), and [Helm](https://helm.sh/docs/intro/install/) installed.
 
 Sign in to Azure and GitHub:
 
@@ -46,10 +46,11 @@ Install or update the AKS preview extension:
 az extension add --name aks-preview --upgrade
 ```
 
-Check that the local Kubernetes, Helm, and GitHub CLIs are ready:
+Check that the local Kubernetes, Azure auth, Helm, and GitHub CLIs are ready:
 
 ```bash
 kubectl version --client
+kubelogin --version
 helm version
 gh auth status
 ```
@@ -97,6 +98,8 @@ gh repo create "${GITHUB_OWNER}/${GITHUB_REPO}" \
   --clone
 
 cd "${GITHUB_REPO}"
+
+export GITHUB_BRANCH=$(git branch --show-current)
 ```
 
 If you already have a repo, clone it instead:
@@ -104,6 +107,8 @@ If you already have a repo, clone it instead:
 ```bash
 gh repo clone "${GITHUB_OWNER}/${GITHUB_REPO}"
 cd "${GITHUB_REPO}"
+
+export GITHUB_BRANCH=$(git branch --show-current)
 ```
 
 ## Create the AKS Automatic cluster
@@ -127,12 +132,32 @@ az aks create \
   --no-ssh-key
 ```
 
-Once the cluster is ready, get credentials:
+AKS Automatic uses Azure RBAC for Kubernetes authorization and disables local accounts. Assign your signed-in identity a scoped AKS RBAC role before using `kubectl`:
+
+```bash
+AKS_ID=$(az aks show \
+  --resource-group "${RG}" \
+  --name "${CLUSTER}" \
+  --query id \
+  --output tsv)
+
+SIGNED_IN_USER_ID=$(az ad signed-in-user show \
+  --query id \
+  --output tsv)
+
+az role assignment create \
+  --assignee "${SIGNED_IN_USER_ID}" \
+  --role "Azure Kubernetes Service RBAC Cluster Admin" \
+  --scope "${AKS_ID}"
+```
+
+Once the cluster is ready and the role assignment is in place, get credentials using the exec credential flow:
 
 ```bash
 az aks get-credentials \
   --resource-group "${RG}" \
   --name "${CLUSTER}" \
+  --format exec \
   --overwrite-existing
 
 # check connectivity
@@ -181,9 +206,9 @@ kubectl create namespace "${ARC_RUNNERS_NAMESPACE}" \
   --dry-run=client \
   --output yaml | kubectl apply -f -
 
-kubectl create secret generic github-pat \
+printf '%s' "${GITHUB_TOKEN}" | kubectl create secret generic github-pat \
   --namespace "${ARC_RUNNERS_NAMESPACE}" \
-  --from-literal=github_token="${GITHUB_TOKEN}"
+  --from-file=github_token=/dev/stdin
 ```
 
 :::caution
@@ -294,7 +319,7 @@ If you changed `RUNNER_SET_NAME`, update `runs-on` to match it. Then commit and 
 ```bash
 git add .github/workflows/arc-automatic-validation.yml
 git commit -m "Add AKS Automatic ARC validation workflow"
-git push
+git push --set-upstream origin "${GITHUB_BRANCH}"
 ```
 
 ## Run the workflow
@@ -304,7 +329,7 @@ Trigger the workflow:
 ```bash
 gh workflow run arc-automatic-validation.yml \
   --repo "${GITHUB_OWNER}/${GITHUB_REPO}" \
-  --ref main
+  --ref "${GITHUB_BRANCH}"
 ```
 
 Watch the run:
