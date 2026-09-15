@@ -10,7 +10,7 @@ GitHub Actions Runner Controller, also known as GitHub ARC or ARC for short, is 
 
 <!-- truncate -->
 
-The combination of ARC and AKS Automatic gives you the power of ARC on a production-ready AKS cluster with managed node pools, built-in monitoring, scaling, security settings, and other defaults that follow [AKS best practices](https://learn.microsoft.com/en-us/azure/well-architected/service-guides/azure-kubernetes-service). For runner workloads specifically, the [pod readiness SLA](https://learn.microsoft.com/azure/aks/intro-aks-automatic#pod-readiness-sla) is also a strong fit because CI/CD jobs depend on predictable pod startup.
+The combination of ARC and AKS Automatic gives you the power of ARC on a production-ready AKS cluster with managed node pools, built-in monitoring, scaling, security settings, and other defaults that follow [AKS best practices](https://learn.microsoft.com/azure/well-architected/service-guides/azure-kubernetes-service). For runner workloads specifically, the [pod readiness SLA](https://learn.microsoft.com/azure/aks/intro-aks-automatic#pod-readiness-sla) is also a strong fit because CI/CD jobs depend on predictable pod startup.
 
 ARC runner scale sets work extremely well on AKS Automatic, and the secure-by-default posture of AKS Automatic helps ensure your configuration is optimized and secure. You get the core ARC benefits: GitHub-native CI jobs, Kubernetes-native ephemeral runners, and runners that can live inside your Azure network, including private virtual networks. That means build jobs can reach private endpoints, internal services, and locked-down dependencies without exposing those resources to the public internet.
 
