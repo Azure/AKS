@@ -211,7 +211,7 @@ printf '%s' "${GITHUB_TOKEN}" | kubectl create secret generic github-pat \
   --from-file=github_token=/dev/stdin
 ```
 
-:::caution
+:::warning
 
 For production, wire this into your normal secret-management process. Don't hard-code this token into Helm values or source control.
 
