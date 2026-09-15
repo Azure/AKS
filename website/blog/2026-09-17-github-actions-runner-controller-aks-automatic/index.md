@@ -324,6 +324,13 @@ git push --set-upstream origin "${GITHUB_BRANCH}"
 
 ## Run the workflow
 
+If this is a new repository or workflow file, give GitHub a few seconds to index the workflow. Confirm that the workflow appears before dispatching it:
+
+```bash
+gh workflow list \
+  --repo "${GITHUB_OWNER}/${GITHUB_REPO}"
+```
+
 Trigger the workflow:
 
 ```bash
