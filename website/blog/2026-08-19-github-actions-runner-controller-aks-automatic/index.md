@@ -3,18 +3,18 @@ title: "Running GitHub Actions Runner Controller on AKS Automatic"
 date: "2026-08-19"
 description: "Create an AKS Automatic cluster, install Actions Runner Controller, and run a GitHub Actions workflow on ephemeral runner pods in your Azure network."
 authors: ["steve-griffith"]
-tags: ["aks-automatic", "github-actions", "arc", "devops"]
+tags: ["aks-automatic", "github-actions", "gh-arc", "devops"]
 ---
 
 GitHub Actions Runner Controller, also known as GitHub ARC or ARC for short, is a popular way to run self-hosted GitHub Actions runners on Kubernetes. In this walkthrough, we’ll set up ARC on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) and run a real GitHub Actions job on an ephemeral runner pod.
+
+<!-- truncate -->
 
 The combination of ARC and AKS Automatic gives you the power of ARC on a production-ready AKS cluster with managed node pools, built-in monitoring, scaling, security settings, and other defaults that follow [AKS best practices](https://learn.microsoft.com/en-us/azure/well-architected/service-guides/azure-kubernetes-service). For runner workloads specifically, the [pod readiness SLA](https://learn.microsoft.com/azure/aks/intro-aks-automatic#pod-readiness-sla) is also a strong fit because CI/CD jobs depend on predictable pod startup.
 
 ARC runner scale sets work extremely well on AKS Automatic, and the secure-by-default posture of AKS Automatic helps ensure your configuration is optimized and secure. You get the core ARC benefits: GitHub-native CI jobs, Kubernetes-native ephemeral runners, and runners that can live inside your Azure network, including private virtual networks. That means build jobs can reach private endpoints, internal services, and locked-down dependencies without exposing those resources to the public internet.
 
 AKS Automatic is secure by default and has production-minded safeguards enabled. That's a good thing, but it also means the default public ARC Helm chart values need a little tuning. In particular, we need to be explicit about resource requests and image tags.
-
-<!-- truncate --> 
 
 Let’s walk through the full setup.
 
@@ -31,20 +31,34 @@ The goal is pretty simple. We'll create a workflow where `runs-on` maps to the A
 
 ## Prerequisites
 
-First, make sure you have the Azure CLI, GitHub CLI, `kubectl`, and Helm installed and authenticated:
+First, make sure you have the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli), [GitHub CLI](https://cli.github.com/), [`kubectl`](https://kubernetes.io/docs/tasks/tools/), and [Helm](https://helm.sh/docs/intro/install/) installed.
+
+Sign in to Azure and GitHub:
 
 ```bash
 az login
 gh auth login
+```
 
+Install or update the AKS preview extension:
+
+```bash
 az extension add --name aks-preview --upgrade
+```
 
+Check that the local Kubernetes, Helm, and GitHub CLIs are ready:
+
+```bash
 kubectl version --client
 helm version
 gh auth status
 ```
 
-You'll also need a GitHub token with permission to manage Actions runners for the target repository. For a quick repo-scoped lab, a classic PAT with `repo` scope is enough for a private repo. For anything production-ish, I'd use a GitHub App instead so the permissions and rotation story are cleaner.
+:::tip
+
+You'll also need a GitHub token with permission to manage Actions runners for the target repository. For a quick repo-scoped lab, a classic PAT with `repo` scope is enough for a private repo. For anything production-ish, I'd use a [GitHub App](https://docs.github.com/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps) instead so the permissions and rotation story are cleaner.
+
+:::
 
 Read the token interactively so it doesn't end up in your shell history:
 
@@ -62,8 +76,8 @@ export LOCATION=eastus
 export RG=rg-arc-auto-lab
 export CLUSTER=arc-auto-lab
 
-export GITHUB_OWNER=<github-owner>
-export GITHUB_REPO=<github-repo>
+export GITHUB_OWNER="github-owner"
+export GITHUB_REPO="github-repo"
 export GITHUB_CONFIG_URL="https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}"
 
 export RUNNER_SET_NAME=arc-auto-runners
@@ -72,6 +86,25 @@ export ARC_RUNNERS_NAMESPACE=arc-runners
 ```
 
 The `RUNNER_SET_NAME` value is important. This is also the value we'll use in the workflow `runs-on`.
+
+## Create or clone the target GitHub repo
+
+The validation workflow needs to live in a GitHub repository. If you're starting with a new repo for the lab, create it and clone it locally:
+
+```bash
+gh repo create "${GITHUB_OWNER}/${GITHUB_REPO}" \
+  --private \
+  --clone
+
+cd "${GITHUB_REPO}"
+```
+
+If you already have a repo, clone it instead:
+
+```bash
+gh repo clone "${GITHUB_OWNER}/${GITHUB_REPO}"
+cd "${GITHUB_REPO}"
+```
 
 ## Create the AKS Automatic cluster
 
@@ -153,11 +186,15 @@ kubectl create secret generic github-pat \
   --from-literal=github_token="${GITHUB_TOKEN}"
 ```
 
+:::caution
+
 For production, wire this into your normal secret-management process. Don't hard-code this token into Helm values or source control.
+
+:::
 
 ## Install the runner scale set
 
-This is the most important part of the setup. The default runner scale set values are close, but AKS Automatic expects a few things to be explicit:
+This is the most important part of the setup. The default runner scale set values are close, but AKS Automatic expects a few things to be explicit because Deployment Safeguards block common Kubernetes anti-patterns before they land in the cluster:
 
 1. Resource requests and limits for the listener pod.
 2. Resource requests and limits for the runner pod.
@@ -300,7 +337,7 @@ When everything is working, you should see:
 - The runner pod use your pinned `ghcr.io/actions/actions-runner` image.
 - The workflow log print `ARC runner reached workflow execution`.
 
-In my validation run, the job ran on a pod named like `arc-auto-runners-<id>-runner-<id>`, reported runner version `2.336.0`, and completed successfully.
+In the validation run, you'll see the job ran on a pod named `arc-auto-runners-<id>-runner-<id>`, reported runner version `2.336.0`, and completed successfully.
 
 ## Troubleshooting the AKS Automatic-specific bits
 
@@ -320,11 +357,13 @@ or:
 container <manager> has no resource requests
 ```
 
-make sure the controller chart has `resources` set and the runner scale set chart has `listenerTemplate.spec.containers[].resources` set.
+AKS Automatic Deployment Safeguards blocks these pods because resource requests are a Kubernetes scheduling best practice. Requests give the scheduler enough information to place the controller, listener, and runner pods reliably as ARC scales jobs up and down.
+
+Make sure the controller chart has `resources` set and the runner scale set chart has `listenerTemplate.spec.containers[].resources` set.
 
 ### The `latest` runner image is blocked
 
-AKS Automatic safeguards can reject the default runner image because it uses a floating `latest` tag:
+AKS Automatic Deployment Safeguards can reject the default runner image because it uses a floating `latest` tag:
 
 ```text
 Avoiding the latest tag for container: runner
@@ -351,7 +390,7 @@ Runner version vX.Y.Z is deprecated and cannot receive messages.
 update the image tag to a current runner release and upgrade the Helm release:
 
 ```bash
-helm upgrade --install "${RUNNER_SET_NAME}" \
+helm upgrade "${RUNNER_SET_NAME}" \
   oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
   --namespace "${ARC_RUNNERS_NAMESPACE}" \
   --wait \

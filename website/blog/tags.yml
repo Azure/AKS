@@ -57,9 +57,9 @@ aks-mcp:
   permalink: /aks-mcp
   description: Model Context Protocol (MCP) server and client usage on AKS.
 
-arc:
-  label: Actions Runner Controller
-  permalink: /arc
+gh-arc:
+  label: GitHub ARC
+  permalink: /gh-arc
   description: Running GitHub Actions Runner Controller on AKS.
   
 argo-cd:
