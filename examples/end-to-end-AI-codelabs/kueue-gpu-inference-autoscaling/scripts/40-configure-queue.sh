@@ -11,11 +11,28 @@ fi
 pass "ProvisioningRequest CRD is installed"
 
 step "Applying the GPU queue"
-if kubectl get namespace "$LAB_NAMESPACE" >/dev/null 2>&1; then
-  NAMESPACE_OWNER=$(kubectl get namespace "$LAB_NAMESPACE" \
-    -o jsonpath="{.metadata.labels.$LAB_OWNER_TAG}" 2>/dev/null || true)
-  [[ "$NAMESPACE_OWNER" == "$LAB_OWNER_VALUE" ]] || fail "Namespace $LAB_NAMESPACE already exists without the $LAB_OWNER_TAG=$LAB_OWNER_VALUE ownership label."
-fi
+resources=(
+  "namespace/$LAB_NAMESPACE"
+  "resourceflavor/gpu-inference"
+  "provisioningrequestconfig/gpu-inference"
+  "admissioncheck/gpu-inference-provisioning"
+  "clusterqueue/gpu-inference-cluster-queue"
+  "localqueue/$LAB_NAMESPACE/gpu-inference"
+)
+for resource in "${resources[@]}"; do
+  IFS=/ read -r kind namespace name <<<"$resource"
+  if [[ -z "${name:-}" ]]; then
+    name=$namespace
+    namespace=""
+  fi
+  kubectl_args=(get "$kind" "$name")
+  [[ -z "$namespace" ]] || kubectl_args+=(--namespace "$namespace")
+  if kubectl "${kubectl_args[@]}" >/dev/null 2>&1; then
+    owner=$(kubectl "${kubectl_args[@]}" \
+      -o jsonpath="{.metadata.labels.$LAB_OWNER_TAG}" 2>/dev/null || true)
+    [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail "$kind/$name already exists without the $LAB_OWNER_TAG=$LAB_OWNER_VALUE ownership label."
+  fi
+done
 kubectl apply -f "$ROOT/manifests/kueue-gpu-queue.yaml"
 kubectl wait --for=condition=Active clusterqueue/gpu-inference-cluster-queue --timeout=2m
 pass "GPU inference queue is active"

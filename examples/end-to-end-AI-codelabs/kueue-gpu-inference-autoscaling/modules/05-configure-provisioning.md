@@ -22,6 +22,9 @@ The provisioning class is
 `best-effort-atomic-scale-up.autoscaling.x-k8s.io`. Kueue asks the cluster
 autoscaler to provision the complete pod set before it admits the Job.
 
+Every object carries the codelab ownership label. The script refuses to replace
+same-name namespace-scoped or cluster-scoped objects without that label.
+
 ## Checkpoint
 
 ```bash

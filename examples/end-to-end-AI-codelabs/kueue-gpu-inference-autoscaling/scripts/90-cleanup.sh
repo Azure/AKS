@@ -14,9 +14,28 @@ fi
 
 step "Deleting inference workload and queue"
 if kubectl get namespace "$LAB_NAMESPACE" >/dev/null 2>&1; then
-  NAMESPACE_OWNER=$(kubectl get namespace "$LAB_NAMESPACE" \
-    -o jsonpath="{.metadata.labels.$LAB_OWNER_TAG}" 2>/dev/null || true)
-  [[ "$NAMESPACE_OWNER" == "$LAB_OWNER_VALUE" ]] || fail "Refusing cleanup: namespace $LAB_NAMESPACE isn't owned by this codelab."
+  resources=(
+    "namespace/$LAB_NAMESPACE"
+    "resourceflavor/gpu-inference"
+    "provisioningrequestconfig/gpu-inference"
+    "admissioncheck/gpu-inference-provisioning"
+    "clusterqueue/gpu-inference-cluster-queue"
+    "localqueue/$LAB_NAMESPACE/gpu-inference"
+  )
+  for resource in "${resources[@]}"; do
+    IFS=/ read -r kind namespace name <<<"$resource"
+    if [[ -z "${name:-}" ]]; then
+      name=$namespace
+      namespace=""
+    fi
+    kubectl_args=(get "$kind" "$name")
+    [[ -z "$namespace" ]] || kubectl_args+=(--namespace "$namespace")
+    if kubectl "${kubectl_args[@]}" >/dev/null 2>&1; then
+      owner=$(kubectl "${kubectl_args[@]}" \
+        -o jsonpath="{.metadata.labels.$LAB_OWNER_TAG}" 2>/dev/null || true)
+      [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail "Refusing cleanup: $kind/$name isn't owned by this codelab."
+    fi
+  done
   kubectl delete -f "$ROOT/manifests/inference-job.yaml" --ignore-not-found
   kubectl delete -f "$ROOT/manifests/kueue-gpu-queue.yaml" --ignore-not-found
 else

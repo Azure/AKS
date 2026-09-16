@@ -10,6 +10,8 @@ apiVersion: kueue.x-k8s.io/v1beta2
 kind: ResourceFlavor
 metadata:
   name: gpu-inference
+  labels:
+    aks-codelab: kueue-gpu-inference-autoscaling
 spec:
   nodeLabels:
     agentpool: gpupool
@@ -23,6 +25,8 @@ apiVersion: kueue.x-k8s.io/v1beta2
 kind: ProvisioningRequestConfig
 metadata:
   name: gpu-inference
+  labels:
+    aks-codelab: kueue-gpu-inference-autoscaling
 spec:
   provisioningClassName: best-effort-atomic-scale-up.autoscaling.x-k8s.io
   managedResources:
@@ -32,6 +36,8 @@ apiVersion: kueue.x-k8s.io/v1beta2
 kind: AdmissionCheck
 metadata:
   name: gpu-inference-provisioning
+  labels:
+    aks-codelab: kueue-gpu-inference-autoscaling
 spec:
   controllerName: kueue.x-k8s.io/provisioning-request
   parameters:
@@ -43,6 +49,8 @@ apiVersion: kueue.x-k8s.io/v1beta2
 kind: ClusterQueue
 metadata:
   name: gpu-inference-cluster-queue
+  labels:
+    aks-codelab: kueue-gpu-inference-autoscaling
 spec:
   namespaceSelector:
     matchLabels:
@@ -73,5 +81,7 @@ kind: LocalQueue
 metadata:
   name: gpu-inference
   namespace: gpu-inference
+  labels:
+    aks-codelab: kueue-gpu-inference-autoscaling
 spec:
   clusterQueue: gpu-inference-cluster-queue

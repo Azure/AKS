@@ -61,8 +61,9 @@ try:
     gpus = int(capabilities.get("GPUs", "0"))
 except (TypeError, ValueError):
     gpus = 0
-if require_gpu and gpus < 1:
-    raise SystemExit(f"FAIL|{expected_sku} doesn't advertise an NVIDIA GPU capability")
+if require_gpu and gpus != 1:
+    raise SystemExit(
+        f"FAIL|{expected_sku} advertises {gpus} GPUs per node; this codelab requires exactly one")
 def norm(value):
     return re.sub(r"[ _]", "", value).lower()
 family = sku.get("family", "")
