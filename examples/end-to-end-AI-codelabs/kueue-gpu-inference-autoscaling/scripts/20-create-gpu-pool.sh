@@ -6,11 +6,33 @@
 cluster_exists || fail "Cluster $LAB_CLUSTER doesn't exist. Run 10-create-cluster.sh first."
 
 step "Creating autoscaling GPU node pool"
-if az aks nodepool show \
+if POOL_JSON=$(az aks nodepool show \
   --resource-group "$LAB_RESOURCE_GROUP" \
   --cluster-name "$LAB_CLUSTER" \
-  --name "$LAB_GPU_POOL" >/dev/null 2>&1; then
-  pass "$LAB_GPU_POOL already exists"
+  --name "$LAB_GPU_POOL" -o json 2>/dev/null); then
+  POOL_JSON="$POOL_JSON" python3 - "$LAB_GPU_SKU" "$LAB_GPU_MAX_COUNT" "$LAB_GPU_TAINT" <<'PY'
+import json, os, sys
+pool = json.loads(os.environ["POOL_JSON"])
+sku, max_count, taint = sys.argv[1], int(sys.argv[2]), sys.argv[3]
+expected_labels = {"workload": "gpu-inference", "nvidia.com/gpu.present": "true"}
+errors = []
+if pool.get("vmSize") != sku:
+    errors.append(f"SKU is {pool.get('vmSize')}, expected {sku}")
+if pool.get("mode", "").lower() != "user":
+    errors.append(f"mode is {pool.get('mode')}, expected User")
+if not pool.get("enableAutoScaling"):
+    errors.append("cluster autoscaler is disabled")
+if pool.get("minCount") != 0 or pool.get("maxCount") != max_count:
+    errors.append(f"autoscaler range is {pool.get('minCount')}–{pool.get('maxCount')}, expected 0–{max_count}")
+for key, value in expected_labels.items():
+    if pool.get("nodeLabels", {}).get(key) != value:
+        errors.append(f"label {key}={value} is missing")
+if taint not in (pool.get("nodeTaints") or []):
+    errors.append(f"taint {taint} is missing")
+if errors:
+    raise SystemExit("Existing gpupool doesn't match this codelab:\n- " + "\n- ".join(errors))
+PY
+  pass "$LAB_GPU_POOL already exists with the expected settings"
 else
   az aks nodepool add \
     --resource-group "$LAB_RESOURCE_GROUP" \

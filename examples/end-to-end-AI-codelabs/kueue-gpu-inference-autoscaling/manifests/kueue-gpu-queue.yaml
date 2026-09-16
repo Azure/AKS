@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: gpu-inference
   labels:
+    aks-codelab: kueue-gpu-inference-autoscaling
     app.kubernetes.io/part-of: kueue-gpu-inference-codelab
 ---
 apiVersion: kueue.x-k8s.io/v1beta2

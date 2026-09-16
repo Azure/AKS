@@ -26,42 +26,73 @@ for provider in Microsoft.Compute Microsoft.ContainerService; do
   fi
 done
 
-step "Checking $LAB_GPU_SKU in $LAB_LOCATION"
-SKU_JSON=$(az vm list-skus --location "$LAB_LOCATION" --size "$LAB_GPU_SKU" --all -o json)
-SKU_COUNT=$(python3 -c 'import json,sys; print(len(json.load(sys.stdin)))' <<<"$SKU_JSON")
-[[ "$SKU_COUNT" -gt 0 ]] || fail "$LAB_GPU_SKU isn't listed in $LAB_LOCATION. Set LAB_LOCATION or LAB_GPU_SKU."
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT
+az vm list-usage --location "$LAB_LOCATION" -o json >"$TMP_DIR/usage.json"
 
-LOCATION_RESTRICTIONS=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(sum(r.get("type") == "Location" for r in d[0].get("restrictions", [])))' <<<"$SKU_JSON")
-[[ "$LOCATION_RESTRICTIONS" -eq 0 ]] || fail "$LAB_GPU_SKU is restricted for this subscription in $LAB_LOCATION."
-ZONE_RESTRICTIONS=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(sum(r.get("type") == "Zone" for r in d[0].get("restrictions", [])))' <<<"$SKU_JSON")
-if [[ "$ZONE_RESTRICTIONS" -gt 0 ]]; then
-  warn "$LAB_GPU_SKU has availability-zone restrictions; this lab creates a regional node pool without --zones."
-fi
+check_sku() {
+  local sku=$1
+  local count=$2
+  local require_gpu=$3
+  local role=$4
+  local sku_file="$TMP_DIR/${role// /-}-sku.json"
 
-VCPUS=$(python3 -c 'import json,sys; d=json.load(sys.stdin)[0]; c={x["name"]:x["value"] for x in d.get("capabilities",[])}; print(c.get("vCPUs","unknown"))' <<<"$SKU_JSON")
-FAMILY=$(python3 -c 'import json,sys; print(json.load(sys.stdin)[0].get("family","unknown"))' <<<"$SKU_JSON")
-pass "$LAB_GPU_SKU is available ($VCPUS vCPUs, quota family $FAMILY)"
+  step "Checking $role SKU $sku in $LAB_LOCATION"
+  az vm list-skus --location "$LAB_LOCATION" --size "$sku" --all -o json >"$sku_file"
 
-REQUIRED_VCPUS=$((VCPUS * LAB_GPU_MAX_COUNT))
-USAGE_JSON=$(az vm list-usage --location "$LAB_LOCATION" -o json)
-QUOTA_RESULT=$(USAGE_JSON="$USAGE_JSON" python3 -c '
-import json, os, sys
-family, needed = sys.argv[1], sys.argv[2]
-data = json.loads(os.environ["USAGE_JSON"])
-normalize = lambda value: value.replace(" ", "").replace("_", "").lower()
-row = next((x for x in data if normalize(x.get("name", {}).get("value", "")) == normalize(family)), None)
-if row is None or needed == "unknown":
-    print("unknown")
-else:
-    print(int(row["limit"]) - int(row["currentValue"]) - int(needed))
-' "$FAMILY" "$REQUIRED_VCPUS")
-if [[ "$QUOTA_RESULT" == "unknown" ]]; then
-  warn "Couldn't map the SKU to a quota row. Confirm quota in the Azure portal before continuing."
-elif [[ "$QUOTA_RESULT" -lt 0 ]]; then
-  fail "The $FAMILY quota doesn't have $REQUIRED_VCPUS free vCPUs for $LAB_GPU_MAX_COUNT nodes in $LAB_LOCATION."
-else
-  pass "The $FAMILY quota has capacity for $LAB_GPU_MAX_COUNT $LAB_GPU_SKU nodes"
-fi
+  result=$(python3 - "$sku_file" "$TMP_DIR/usage.json" "$sku" "$count" "$require_gpu" 2>&1 <<'PY'
+import json, re, sys
+sku_file, usage_file, expected_sku, count, require_gpu = sys.argv[1:]
+count = int(count)
+require_gpu = require_gpu == "true"
+skus = [s for s in json.load(open(sku_file)) if s.get("name") == expected_sku]
+if not skus:
+    raise SystemExit(f"FAIL|{expected_sku} isn't listed in this region")
+sku = skus[0]
+location_blocks = [r for r in sku.get("restrictions", []) if r.get("type") == "Location"]
+if location_blocks:
+    raise SystemExit(f"FAIL|{expected_sku} isn't available for this subscription in this region")
+capabilities = {c["name"]: c["value"] for c in sku.get("capabilities", [])}
+try:
+    vcpus = int(capabilities["vCPUs"])
+except (KeyError, TypeError, ValueError):
+    raise SystemExit(f"FAIL|{expected_sku} doesn't report a numeric vCPUs capability")
+try:
+    gpus = int(capabilities.get("GPUs", "0"))
+except (TypeError, ValueError):
+    gpus = 0
+if require_gpu and gpus < 1:
+    raise SystemExit(f"FAIL|{expected_sku} doesn't advertise an NVIDIA GPU capability")
+def norm(value):
+    return re.sub(r"[ _]", "", value).lower()
+family = sku.get("family", "")
+quota = next((q for q in json.load(open(usage_file))
+              if norm(q.get("name", {}).get("value", "")) == norm(family)), None)
+if quota is None:
+    raise SystemExit(f"FAIL|quota family {family!r} isn't present in the regional usage list")
+used, limit = int(quota["currentValue"]), int(quota["limit"])
+required = vcpus * count
+if limit - used < required:
+    raise SystemExit(
+        f"FAIL|{family} has {limit-used} free vCPUs; {count} {expected_sku} nodes need {required}")
+zone_warning = any(r.get("type") == "Zone" for r in sku.get("restrictions", []))
+print(f"PASS|{expected_sku}: {vcpus} vCPUs, {gpus} GPU(s), quota {used}/{limit}; "
+      f"room for {count} node(s)|{str(zone_warning).lower()}")
+PY
+  ) || {
+    fail "${result#FAIL|}"
+  }
+
+  IFS='|' read -r verdict message zone_warning <<<"$result"
+  [[ "$verdict" == "PASS" ]] || fail "$message"
+  pass "$message"
+  if [[ "$zone_warning" == "true" ]]; then
+    warn "$sku has availability-zone restrictions; this codelab creates a regional pool without --zones."
+  fi
+}
+
+check_sku "$LAB_SYSTEM_SKU" 2 false "system node"
+check_sku "$LAB_GPU_SKU" "$LAB_GPU_MAX_COUNT" true "GPU node"
 
 step "Result"
 pass "Preflight passed. Continue with modules/02-create-cluster.md."

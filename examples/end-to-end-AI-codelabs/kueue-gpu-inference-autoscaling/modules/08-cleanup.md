@@ -11,9 +11,10 @@ the background.
 ./scripts/90-cleanup.sh
 ```
 
-Deleting the Job releases its Kueue Workload and ProvisioningRequest. With no
-GPU pods left, the cluster autoscaler can return `gpupool` to zero after its
-scale-down delay.
+Deleting the Job releases its Kueue Workload and ProvisioningRequest. The
+script deletes the dedicated namespace only when its codelab ownership label is
+present. With no GPU pods left, the cluster autoscaler can return `gpupool` to
+zero after its scale-down delay.
 
 Check the count:
 
@@ -28,7 +29,9 @@ az aks nodepool show \
 
 ## Delete all lab resources
 
-Don't wait for scale-down if you're finished. Delete the resource group:
+Don't wait for scale-down if you're finished. Delete the resource group. The
+script refuses this operation unless the resource group has the ownership tag
+added during Module 2:
 
 ```bash
 ./scripts/90-cleanup.sh --all

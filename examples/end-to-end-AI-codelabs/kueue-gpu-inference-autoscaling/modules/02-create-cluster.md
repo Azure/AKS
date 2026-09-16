@@ -12,7 +12,7 @@
 
 The script creates:
 
-- resource group `aks-kueue-inference-lab`;
+- dedicated resource group `aks-kueue-inference-lab`, tagged as owned by this codelab;
 - AKS cluster `aks-kueue-inference` running Kubernetes 1.35;
 - two `Standard_D4s_v5` system nodes.
 
@@ -20,6 +20,10 @@ It then downloads credentials and selects the new kubeconfig context.
 
 GPU nodes aren't created yet. Keeping system services on CPU nodes lets the GPU
 pool scale to zero without disrupting the control components used by the lab.
+
+For safety, the script refuses to reuse a resource group that doesn't have the
+codelab ownership tag. Choose a new `LAB_RESOURCE_GROUP` instead of pointing the
+lab at a shared resource group.
 
 ## Checkpoint
 

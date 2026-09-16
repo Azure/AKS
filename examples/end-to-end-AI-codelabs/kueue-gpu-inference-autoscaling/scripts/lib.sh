@@ -10,13 +10,15 @@ set -euo pipefail
 : "${LAB_KUBERNETES_VERSION:=1.35}"
 : "${LAB_SYSTEM_SKU:=Standard_D4s_v5}"
 : "${LAB_GPU_SKU:=Standard_NV6ads_A10_v5}"
-: "${LAB_GPU_POOL:=gpupool}"
-: "${LAB_GPU_MAX_COUNT:=3}"
-: "${LAB_GPU_TAINT:=sku=gpu:NoSchedule}"
+readonly LAB_GPU_POOL="gpupool"
+readonly LAB_GPU_MAX_COUNT=3
+readonly LAB_GPU_TAINT="sku=gpu:NoSchedule"
+readonly LAB_OWNER_TAG="aks-codelab"
+readonly LAB_OWNER_VALUE="kueue-gpu-inference-autoscaling"
 : "${KUEUE_VERSION:=0.17.1}"
 : "${NVIDIA_DEVICE_PLUGIN_VERSION:=0.17.0}"
-: "${LAB_NAMESPACE:=gpu-inference}"
-: "${LAB_JOB:=vllm-inference-check}"
+readonly LAB_NAMESPACE="gpu-inference"
+readonly LAB_JOB="vllm-inference-check"
 
 if [[ -t 1 ]]; then
   readonly GREEN=$'\033[32m'
@@ -39,4 +41,9 @@ require_command() {
 cluster_exists() {
   az aks show --resource-group "$LAB_RESOURCE_GROUP" --name "$LAB_CLUSTER" \
     >/dev/null 2>&1
+}
+
+resource_group_is_owned() {
+  [[ "$(az group show --name "$LAB_RESOURCE_GROUP" \
+    --query "tags.\"$LAB_OWNER_TAG\"" -o tsv 2>/dev/null || true)" == "$LAB_OWNER_VALUE" ]]
 }

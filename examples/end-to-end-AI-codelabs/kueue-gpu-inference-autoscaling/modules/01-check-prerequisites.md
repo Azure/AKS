@@ -10,10 +10,11 @@ GPU used by this codelab.
 You need:
 
 - An Azure subscription where you can create resource groups and AKS clusters.
-- Azure CLI, kubectl, and Helm.
+- Azure CLI, kubectl, Helm, and Python 3.
 - At least 18 A10-family vCPUs for three `Standard_NV6ads_A10_v5` nodes in the selected region.
 
-The default region is `eastasia`. Override any default before running a script:
+The default region is `eastasia`. Override the region or VM SKUs before running
+a script:
 
 ```bash
 export LAB_LOCATION=<region>
@@ -30,10 +31,10 @@ one NVIDIA GPU per node and the pool must have quota for three nodes.
 ./scripts/00-preflight.sh
 ```
 
-The script checks local tools, Azure sign-in, resource providers, SKU
-restrictions, and available family quota. SKU availability and quota are
-separate checks—a subscription can have quota for a family while a specific SKU
-is restricted in that region.
+The script checks local tools, Azure sign-in, resource providers, GPU
+capability, SKU restrictions, and family quota for two system nodes and three
+GPU nodes. SKU availability and quota are separate checks—a subscription can
+have quota for a family while a specific SKU is restricted in that region.
 
 ## Checkpoint
 
