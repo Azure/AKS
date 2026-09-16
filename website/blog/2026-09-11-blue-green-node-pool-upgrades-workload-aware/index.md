@@ -1,5 +1,5 @@
 ---
-title: "A Workload-Oriented Pattern for AKS Blue-Green Node Pool Upgrades"
+title: "Workload-Aware AKS Blue-Green Node Pool Upgrades"
 description: "Learn how to make AKS blue-green node pool upgrades workload-aware by isolating apps on dedicated pools, reducing capacity needs, and validating safely."
 date: 2026-09-11
 authors: [steve-griffith]
@@ -14,7 +14,7 @@ That raises an important design question: if the feature operates at the node-po
 
 <!-- truncate -->
 
-![Diagram showing a stable node pool using rolling upgrades next to a smaller validation node pool using blue-green upgrades](./hero-image.png)
+![Diagram showing a stable node pool using rolling upgrades next to an isolated validation node pool using blue-green upgrades](./hero-image.png)
 
 ## The problem with whole-cluster blue-green thinking
 
@@ -41,14 +41,14 @@ For example, imagine a cluster with two user node pools:
 
 The pool names reflect the upgrade strategy, not workload importance. `rolling` uses standard rolling upgrades. `bluegreen` uses blue-green upgrades for workloads that benefit from explicit validation before the old nodes are removed.
 
-This pattern changes the capacity and cost conversation. Instead of doubling the entire cluster, you double the smaller pool that hosts validation-focused workloads.
+This pattern changes the capacity and cost conversation. Instead of doubling the entire cluster, you only double the isolated blue-green pool that hosts validation-focused workloads.
 
 ## Example configuration
 
 This example creates a cluster shape that makes the upgrade boundary visible:
 
 1. A rolling pool that uses the default rolling upgrade strategy.
-2. A smaller blue-green pool configured for blue-green upgrades.
+2. An isolated blue-green pool configured for blue-green upgrades.
 3. A steady-state workload pinned to the rolling pool.
 4. A validation-focused workload pinned to the blue-green pool.
 5. A blue-green upgrade started only on the blue-green pool.
@@ -59,10 +59,19 @@ This example creates a cluster shape that makes the upgrade boundary visible:
 
 Start with an AKS cluster and add two user pools. The rolling pool uses the default rolling strategy. The blue-green pool uses blue-green and a short soak configuration for illustration.
 
+An AKS node pool can't be upgraded beyond the Kubernetes version of the control plane. To keep this walkthrough focused on node pool behavior, create the cluster control plane on version N and create both workload node pools on version N-1. If you later swap the node image upgrade command for a Kubernetes version upgrade, the blue-green pool can move up to the already-upgraded control plane version without adding a separate control-plane-only upgrade step.
+
+Blue-green node pool upgrades require Azure CLI 2.64.0 or later, the latest `aks-preview` extension, and the `2025-08-02-preview` AKS API version.
+
 ```bash
+az version --query '"azure-cli"'
+az extension add --name aks-preview --upgrade
+
 RESOURCE_GROUP=rg-bluegreen-upgrades
 CLUSTER_NAME=aks-bluegreen-upgrades
 LOCATION=eastus
+K8S_VERSION_CLUSTER=1.35.7
+K8S_VERSION_NODEPOOL=1.34.10
 
 az group create \
   --name $RESOURCE_GROUP \
@@ -72,6 +81,7 @@ az aks create \
   --resource-group $RESOURCE_GROUP \
   --name $CLUSTER_NAME \
   --location $LOCATION \
+  --kubernetes-version $K8S_VERSION_CLUSTER \
   --node-count 1 \
   --generate-ssh-keys
 
@@ -80,6 +90,7 @@ az aks nodepool add \
   --cluster-name $CLUSTER_NAME \
   --name rolling \
   --node-count 2 \
+  --kubernetes-version $K8S_VERSION_NODEPOOL \
   --labels workload-tier=rolling
 
 az aks nodepool add \
@@ -87,11 +98,17 @@ az aks nodepool add \
   --cluster-name $CLUSTER_NAME \
   --name bluegreen \
   --node-count 2 \
+  --kubernetes-version $K8S_VERSION_NODEPOOL \
   --labels workload-tier=bluegreen \
+  --taints workload-tier=bluegreen:NoSchedule \
   --upgrade-strategy bluegreen \
   --drain-batch-size 50% \
   --batch-soak-duration 5 \
   --final-soak-duration 60
+
+az aks get-credentials \
+  --resource-group $RESOURCE_GROUP \
+  --name $CLUSTER_NAME
 ```
 
 For production, choose soak durations based on the time your monitoring, smoke tests, and users need to detect meaningful regressions.
@@ -122,6 +139,13 @@ spec:
         image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
 ```
 
 The validation-focused workload targets the blue-green pool.
@@ -143,14 +167,26 @@ spec:
     spec:
       nodeSelector:
         workload-tier: bluegreen
+      tolerations:
+      - key: "workload-tier"
+        operator: "Equal"
+        value: "bluegreen"
+        effect: "NoSchedule"
       containers:
       - name: app
         image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
 ```
 
-For stronger isolation, add taints to the blue-green pool and tolerations to only the workloads that should run there.
+The `nodeSelector` places this workload on the blue-green pool. The matching taint and toleration make the boundary stronger by preventing unrelated workloads without that toleration from scheduling there.
 
 Confirm placement before starting the upgrade.
 
@@ -163,15 +199,14 @@ At this point, the steady-state service should be running on `rolling`, while th
 
 ## Upgrade only the blue-green pool
 
-Now start a node image or Kubernetes version upgrade on the blue-green pool. The rolling pool does not need to participate.
+Now start a node image upgrade on the blue-green pool. The rolling pool does not need to participate.
 
 ```bash
 az aks nodepool upgrade \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
   --name bluegreen \
-  --node-image-only \
-  --upgrade-strategy bluegreen
+  --node-image-only
 ```
 
 During the upgrade, AKS cordons the blue nodes, adds green nodes with the updated configuration, and drains pods from blue to green in batches. Because only `bluegreen` uses blue-green, the temporary capacity increase applies to that pool.
@@ -193,7 +228,10 @@ This is where the workload-focused story becomes visible. AKS does not infer app
 Blue-green upgrades are most useful when you do something with the soak window. Use that time to run validation against the workloads that moved to green nodes:
 
 ```bash
-kubectl rollout status deployment/recommendations-worker
+kubectl wait \
+  --for=condition=Ready pod \
+  -l app=recommendations-worker \
+  --timeout=5m
 kubectl get pods -l app=recommendations-worker -o wide
 kubectl logs deployment/recommendations-worker --tail=50
 ```
