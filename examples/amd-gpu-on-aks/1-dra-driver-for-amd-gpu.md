@@ -27,8 +27,6 @@ spec:
     image: rocm/k8s-gpu-dra-driver:latest
   devicePlugin:
     enableDevicePlugin: false # change to false
-  selector:
-    feature.node.kubernetes.io/amd-gpu: "true"
 ```
 
 Double check the `default-dra-driver` Pod is running.
@@ -114,7 +112,7 @@ GPU: 0
 
 Pod 1 complete. Sleeping...
 
-kubectl logs -f pod2
+kubectl logs pod2
 --- Pod 2 ---
 GPU: 0
     BDF: 0008:00:00.0
