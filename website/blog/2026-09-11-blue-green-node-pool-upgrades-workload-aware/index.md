@@ -59,7 +59,9 @@ This example creates a cluster shape that makes the upgrade boundary visible:
 
 Start with an AKS cluster and add two user pools. The rolling pool uses the default rolling strategy. The blue-green pool uses blue-green and a short soak configuration for illustration.
 
-An AKS node pool can't be upgraded beyond the Kubernetes version of the control plane. To keep this walkthrough focused on node pool behavior, create the cluster control plane on version N and create both workload node pools on version N-1. If you later swap the node image upgrade command for a Kubernetes version upgrade, the blue-green pool can move up to the already-upgraded control plane version without adding a separate control-plane-only upgrade step.
+An AKS node pool can't be upgraded beyond the Kubernetes version of the control plane. To keep this walkthrough focused on node pool behavior, create the cluster control plane on the target patch version and create both workload node pools on the previous patch version in the same minor release. The blue-green pool can then move up to the already-upgraded control plane version without adding a separate control-plane-only upgrade step.
+
+This example also disables automatic node OS image upgrades so the rollback command later in the walkthrough can focus on the blue-green Kubernetes version rollback path.
 
 Blue-green node pool upgrades require Azure CLI 2.64.0 or later, the latest `aks-preview` extension, and the `2025-08-02-preview` AKS API version.
 
@@ -69,9 +71,10 @@ az extension add --name aks-preview --upgrade
 
 RESOURCE_GROUP=rg-bluegreen-upgrades
 CLUSTER_NAME=aks-bluegreen-upgrades
-LOCATION=eastus
+LOCATION=eastus2
 K8S_VERSION_CLUSTER=1.35.7
-K8S_VERSION_NODEPOOL=1.34.10
+K8S_VERSION_NODEPOOL=1.35.6
+NODE_VM_SIZE=Standard_D2_v2
 
 az group create \
   --name $RESOURCE_GROUP \
@@ -82,7 +85,9 @@ az aks create \
   --name $CLUSTER_NAME \
   --location $LOCATION \
   --kubernetes-version $K8S_VERSION_CLUSTER \
+  --node-os-upgrade-channel None \
   --node-count 1 \
+  --node-vm-size $NODE_VM_SIZE \
   --generate-ssh-keys
 
 az aks nodepool add \
@@ -90,6 +95,7 @@ az aks nodepool add \
   --cluster-name $CLUSTER_NAME \
   --name rolling \
   --node-count 2 \
+  --node-vm-size $NODE_VM_SIZE \
   --kubernetes-version $K8S_VERSION_NODEPOOL \
   --labels workload-tier=rolling
 
@@ -98,13 +104,14 @@ az aks nodepool add \
   --cluster-name $CLUSTER_NAME \
   --name bluegreen \
   --node-count 2 \
+  --node-vm-size $NODE_VM_SIZE \
   --kubernetes-version $K8S_VERSION_NODEPOOL \
   --labels workload-tier=bluegreen \
-  --taints workload-tier=bluegreen:NoSchedule \
+  --node-taints workload-tier=bluegreen:NoSchedule \
   --upgrade-strategy bluegreen \
   --drain-batch-size 50% \
   --batch-soak-duration 5 \
-  --final-soak-duration 60
+  --final-soak-duration 5
 
 az aks get-credentials \
   --resource-group $RESOURCE_GROUP \
@@ -199,14 +206,16 @@ At this point, the steady-state service should be running on `rolling`, while th
 
 ## Upgrade only the blue-green pool
 
-Now start a node image upgrade on the blue-green pool. The rolling pool does not need to participate.
+Now start a Kubernetes version upgrade on the blue-green pool. The rolling pool does not need to participate because it uses its own upgrade boundary.
 
 ```bash
 az aks nodepool upgrade \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
   --name bluegreen \
-  --node-image-only
+  --kubernetes-version $K8S_VERSION_CLUSTER \
+  --yes \
+  --no-wait
 ```
 
 During the upgrade, AKS cordons the blue nodes, adds green nodes with the updated configuration, and drains pods from blue to green in batches. Because only `bluegreen` uses blue-green, the temporary capacity increase applies to that pool.
