@@ -79,7 +79,7 @@ az acr create \
 --subscription "$SUBSCRIPTION" \
 --resource-group "$RESOURCE_GROUP" \
 --name "$ACR_NAME" \
---sku Standard
+--sku Premium
 
 
 az aks update \
