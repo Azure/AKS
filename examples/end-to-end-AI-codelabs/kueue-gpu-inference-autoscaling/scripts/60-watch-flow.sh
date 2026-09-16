@@ -56,8 +56,19 @@ while true; do
     -o jsonpath='{.status.conditions[?(@.type=="Failed")].status}' 2>/dev/null || true)
   if [[ "$complete" == "True" ]]; then
     echo
-    kubectl -n "$LAB_NAMESPACE" logs "job/$LAB_JOB"
-    pass "End-to-end inference completed"
+    expected=$(kubectl -n "$LAB_NAMESPACE" get job "$LAB_JOB" -o jsonpath='{.spec.completions}')
+    validated=0
+    while IFS= read -r pod_name; do
+      echo "--- $pod_name ---"
+      logs=$(kubectl -n "$LAB_NAMESPACE" logs "$pod_name")
+      printf '%s\n' "$logs"
+      if grep -q '^INFERENCE_VALIDATED$' <<<"$logs"; then
+        validated=$((validated + 1))
+      fi
+    done < <(kubectl -n "$LAB_NAMESPACE" get pods -l job-name="$LAB_JOB" \
+      -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+    [[ "$validated" == "$expected" ]] || fail "$validated of $expected pods validated inference."
+    pass "End-to-end inference completed in all $validated pods"
     exit 0
   fi
   if [[ "$failed" == "True" ]]; then

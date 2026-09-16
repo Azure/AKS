@@ -4,14 +4,14 @@
 
 set -euo pipefail
 
-: "${LAB_LOCATION:=centralus}"
+: "${LAB_LOCATION:=eastasia}"
 : "${LAB_RESOURCE_GROUP:=aks-kueue-inference-lab}"
 : "${LAB_CLUSTER:=aks-kueue-inference}"
 : "${LAB_KUBERNETES_VERSION:=1.35}"
 : "${LAB_SYSTEM_SKU:=Standard_D4s_v5}"
-: "${LAB_GPU_SKU:=Standard_NC4as_T4_v3}"
+: "${LAB_GPU_SKU:=Standard_NV6ads_A10_v5}"
 : "${LAB_GPU_POOL:=gpupool}"
-: "${LAB_GPU_MAX_COUNT:=1}"
+: "${LAB_GPU_MAX_COUNT:=3}"
 : "${LAB_GPU_TAINT:=sku=gpu:NoSchedule}"
 : "${KUEUE_VERSION:=0.17.1}"
 : "${NVIDIA_DEVICE_PLUGIN_VERSION:=0.17.0}"

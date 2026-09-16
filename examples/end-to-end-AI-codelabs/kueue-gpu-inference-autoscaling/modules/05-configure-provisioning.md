@@ -15,7 +15,7 @@ The configuration creates:
 - a ResourceFlavor pinned to `agentpool=gpupool`;
 - a ProvisioningRequestConfig for atomic scale-up;
 - an AdmissionCheck controlled by Kueue's provisioning controller;
-- a ClusterQueue with quota for one GPU;
+- a ClusterQueue with quota for three GPUs;
 - a LocalQueue in the `gpu-inference` namespace.
 
 The provisioning class is

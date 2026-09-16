@@ -13,7 +13,7 @@
 The pool has these important settings:
 
 - `min-count: 0` starts and returns to zero GPU nodes.
-- `max-count: 1` limits cost during the codelab.
+- `max-count: 3` caps the pool at the exact size of the inference pod set.
 - `sku=gpu:NoSchedule` keeps general workloads off the GPU.
 - `workload=gpu-inference` selects nodes for the NVIDIA device plugin.
 - `nvidia.com/gpu.present=true` satisfies the plugin chart's GPU discovery affinity without requiring Node Feature Discovery.
@@ -39,7 +39,7 @@ Expected values:
 {
   "autoscaling": true,
   "count": 0,
-  "max": 1,
+  "max": 3,
   "min": 0
 }
 ```
@@ -49,7 +49,7 @@ Expected values:
 | Problem | Action |
 |---|---|
 | `AllocationFailed` | The region has no capacity for the selected GPU SKU; select another region or retry later |
-| Pool starts with one node | Run `az aks nodepool scale ... --node-count 0` before submitting the workload |
+| Pool starts above zero | Run `az aks nodepool scale ... --node-count 0` before submitting the workload |
 | `--min-count 0` is rejected | Confirm the pool uses `--mode User` and cluster autoscaler is enabled |
 
 ## Next step

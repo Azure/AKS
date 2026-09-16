@@ -56,11 +56,11 @@ spec:
         - name: gpu-inference
           resources:
             - name: cpu
-              nominalQuota: "4"
+              nominalQuota: "12"
             - name: memory
-              nominalQuota: 16Gi
+              nominalQuota: 48Gi
             - name: nvidia.com/gpu
-              nominalQuota: "1"
+              nominalQuota: "3"
   admissionChecksStrategy:
     admissionChecks:
       - name: gpu-inference-provisioning

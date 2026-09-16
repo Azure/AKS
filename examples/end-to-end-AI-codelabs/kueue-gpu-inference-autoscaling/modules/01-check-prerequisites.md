@@ -11,18 +11,18 @@ You need:
 
 - An Azure subscription where you can create resource groups and AKS clusters.
 - Azure CLI, kubectl, and Helm.
-- Quota for `Standard_NC4as_T4_v3` in the selected region.
+- At least 18 A10-family vCPUs for three `Standard_NV6ads_A10_v5` nodes in the selected region.
 
-The default region is `centralus`. Override any default before running a script:
+The default region is `eastasia`. Override any default before running a script:
 
 ```bash
 export LAB_LOCATION=<region>
 export LAB_GPU_SKU=<gpu-vm-size>
 ```
 
-The supplied workload requests one GPU and is sized for a 16-GB T4. A different
-SKU must provide at least one NVIDIA GPU with enough memory for
-Qwen2.5-0.5B-Instruct.
+The supplied workload requests three GPUs. Each pod is sized for the 4-GB
+A10-4Q profile exposed by `Standard_NV6ads_A10_v5`. A different SKU must expose
+one NVIDIA GPU per node and the pool must have quota for three nodes.
 
 ## Run the preflight check
 

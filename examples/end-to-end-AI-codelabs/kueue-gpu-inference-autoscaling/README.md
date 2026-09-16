@@ -1,8 +1,8 @@
 # Provision GPU inference with Kueue on AKS
 
-Start with an empty GPU node pool, submit a real inference workload, and watch
-Azure Kubernetes Service (AKS) add the GPU capacity before Kueue allows the
-workload to run.
+Start with an empty GPU node pool, submit a three-pod inference workload, and
+watch Azure Kubernetes Service (AKS) add all three GPU nodes before Kueue allows
+the workload to run.
 
 ## What you'll build
 
@@ -15,16 +15,16 @@ sequenceDiagram
     participant GPU as GPU node pool
     participant vLLM
 
-    You->>Kueue: Submit suspended inference Job
-    Kueue->>PR: Request one GPU
+    You->>Kueue: Submit suspended three-pod inference Job
+    Kueue->>PR: Request three GPUs
     PR->>CAS: Best-effort atomic scale-up
-    CAS->>GPU: Scale from zero to one node
-    GPU-->>CAS: GPU node is ready
+    CAS->>GPU: Scale from zero to three nodes
+    GPU-->>CAS: All three GPU nodes are ready
     CAS-->>PR: Provisioned=True
     PR-->>Kueue: Admission check ready
-    Kueue->>vLLM: Unsuspend Job
-    vLLM->>vLLM: Load Qwen2.5-0.5B and run a request
-    vLLM-->>You: INFERENCE_VALIDATED
+    Kueue->>vLLM: Unsuspend all three pods
+    vLLM->>vLLM: Each pod loads Qwen2.5-0.5B and runs a request
+    vLLM-->>You: INFERENCE_VALIDATED × 3
 ```
 
 This codelab demonstrates three separate responsibilities:
@@ -46,9 +46,9 @@ After you finish, you'll be able to:
 ## Time and cost
 
 - **Time:** 45–60 minutes, including cluster and GPU node provisioning.
-- **Cost:** The cluster uses two CPU system nodes. The GPU node is billed only
-  while the pool is above zero. Model download and cold start can take several
-  minutes.
+- **Cost:** The cluster uses two CPU system nodes. Up to three GPU nodes are
+  billed while the pool is above zero. Model download and cold start can take
+  several minutes.
 - **Cleanup:** Run `./scripts/90-cleanup.sh --all` as soon as you finish.
 
 Azure GPU availability and quota vary by subscription and region. The preflight
@@ -96,27 +96,21 @@ use this sequence to repeat the lab:
 
 ## Validation status
 
-The setup and provisioning path has been exercised in the AKS E2E GPU SKU Test
-subscription:
+The complete checked-in scenario was validated in `eastasia` using the
+`AKS E2E - GPU SKU Test` subscription and three
+`Standard_NV6ads_A10_v5` nodes:
 
-- The preflight check passed for T4 in `centralus`, but the ProvisioningRequest
-  CRD hadn't rolled out there. The lab stopped at its explicit CRD checkpoint.
-- In `centraluseuap`, Kueue created a ProvisioningRequest, CAS changed the GPU
-  pool from zero to one, and the request reached `Provisioned=True`.
-- Attempts with A100 and RTX PRO pools then exposed a node-bootstrap problem:
-  the VM existed but didn't register as a Kubernetes node before the capacity
-  reservation expired. CAS removed the unregistered node, so the inference pod
-  never started.
-- The same test in the `AKS INT/Staging Test` subscription used a T4 in
-  `westus2`. The CRD and provisioning path were available, but the fresh T4 VM
-  also failed to register before the reservation expired.
-- The complete path succeeded in `eastasia` on three
-  `Standard_NV6ads_A10_v5` nodes. CAS scaled the pool from zero to three, all
-  nodes became Ready, Kueue admitted the three-pod Job, and every pod returned
-  `INFERENCE_VALIDATED`. The successful run took 418 seconds from submission
-  through Job completion.
+- The pool started with zero nodes.
+- Kueue created one Workload and a ProvisioningRequest with `count: 3`.
+- CAS changed the pool from zero to three.
+- All three nodes became Ready and advertised `nvidia.com/gpu`.
+- The ProvisioningRequest reached `Provisioned=True` with reason
+  `CapacityIsProvisioned`.
+- Kueue admitted the Job only after all capacity was ready.
+- The Job completed `3/3`, and every pod returned `INFERENCE_VALIDATED`.
+- Submission through Job completion took 418 seconds.
 
-The successful run also established the settings required by a 4-GB A10-4Q
-profile: 70% GPU memory utilization, a 2,048-token context, four sequences, and
-eager execution. The watcher reports Azure pool count and Ready Kubernetes node
-count separately so node-bootstrap failures remain visible.
+The run established the settings required by a 4-GB A10-4Q profile: 70% GPU
+memory utilization, a 2,048-token context, four sequences, and eager execution.
+The watcher reports Azure pool count and Ready Kubernetes node count separately
+so node-bootstrap failures remain visible.

@@ -48,9 +48,9 @@ kubectl get nodes -l agentpool=gpupool \
 kubectl -n kube-system get pods -l app.kubernetes.io/name=nvidia-device-plugin -o wide
 ```
 
-The new node must register as Ready and advertise one GPU before the inference
-pod can start. If Azure reports a pool count of one but this command returns no
-nodes, node bootstrap failed or is still in progress.
+All three new nodes must register as Ready and advertise one GPU before the
+inference pods can start. If the Azure pool count is higher than the number of
+Ready nodes, one or more nodes are still bootstrapping or failed to register.
 
 ### 5. Inference
 
@@ -65,8 +65,9 @@ server, and returned an inference response.
 
 ## Understand the boundaries
 
-This codelab provisions **node capacity for one admitted workload**. It doesn't
-implement request-driven scaling for a long-running inference service:
+This codelab provisions three nodes atomically for **one admitted Workload**.
+It doesn't implement request-driven scaling for a long-running inference
+service:
 
 - Kueue controls workload admission.
 - The cluster autoscaler controls node count.

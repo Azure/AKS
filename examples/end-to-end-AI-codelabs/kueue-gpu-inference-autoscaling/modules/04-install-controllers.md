@@ -15,8 +15,8 @@ The script installs:
 - Kueue from the AKS AI Runtime chart in Microsoft Container Registry;
 - the NVIDIA device plugin from its upstream Helm chart.
 
-The device plugin DaemonSet has no pod yet because the GPU pool is at zero. When
-the cluster autoscaler creates a GPU node, the DaemonSet starts there and
+The device plugin DaemonSet has no pods yet because the GPU pool is at zero.
+When the cluster autoscaler creates GPU nodes, one plugin pod starts on each and
 advertises `nvidia.com/gpu`.
 
 Kueue runs on the existing CPU system pool. It watches suspended Jobs and admits
@@ -30,7 +30,7 @@ kubectl -n kube-system get daemonset nvidia-device-plugin
 ```
 
 Expect the Kueue Deployment to be Available. The device plugin can show zero
-desired pods until the GPU node is created.
+desired pods until GPU nodes are created.
 
 ## Troubleshoot
 

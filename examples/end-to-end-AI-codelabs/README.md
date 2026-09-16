@@ -12,7 +12,7 @@ clear next step.
 
 | Codelab | What you build | Time |
 |---|---|---:|
-| [Provision GPU inference with Kueue](kueue-gpu-inference-autoscaling/) | Start with zero GPU nodes, submit an inference workload through Kueue, and watch the AKS cluster autoscaler provision a GPU node before the model serves a request | 45–60 minutes |
+| [Provision GPU inference with Kueue](kueue-gpu-inference-autoscaling/) | Start with zero GPU nodes, submit a three-pod inference workload through Kueue, and watch the AKS cluster autoscaler provision all three GPU nodes before the models serve requests | 45–60 minutes |
 
 ## Before you begin
 

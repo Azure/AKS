@@ -12,11 +12,11 @@ inference request.
 ./scripts/60-watch-flow.sh
 ```
 
-The Job starts with `suspend: true` and requests one `nvidia.com/gpu`. Kueue
-creates a Workload and a ProvisioningRequest instead of creating the pod
-immediately. The AKS cluster autoscaler adds a node to `gpupool`, then marks the
-request provisioned. Kueue admits the Workload and changes the Job to
-`suspend: false`.
+The Job starts with `suspend: true` and requests three pods with one
+`nvidia.com/gpu` each. Kueue creates one Workload and a ProvisioningRequest with
+`count: 3` instead of creating pods immediately. The AKS cluster autoscaler adds
+three nodes to `gpupool`, then marks the request provisioned. Kueue admits the
+Workload and changes the Job to `suspend: false`.
 
 The Job starts vLLM with the ungated `Qwen/Qwen2.5-0.5B-Instruct` model, waits
 for `/health`, sends an OpenAI-compatible chat completion, verifies that the
@@ -24,8 +24,8 @@ response isn't empty, and exits. The manifest limits vLLM to 70% GPU memory, a
 2,048-token context, four sequences, and eager execution. Those settings were
 validated on a 4-GB A10-4Q profile and also work on larger GPUs.
 
-The first run pulls the container image and model onto a new node. Most of the
-elapsed time is expected to be infrastructure and model cold start.
+The first run pulls the container image and model onto all three new nodes.
+Most of the elapsed time is expected to be infrastructure and model cold start.
 
 ## Expected progression
 
@@ -34,21 +34,26 @@ The watcher prints a new row whenever state changes. Expect this order:
 ```output
 ELAPSED  POOL  READY WORKLOAD           PROVISIONING   SUSPENDED  POD
 0s       0     0     Pending            Pending        true       NotCreated
-...      1     0     Pending            Pending        true       NotCreated
-...      1     1     True               True           false      Pending
-...      1     1     True               True           false      Running
+...      3     0     Pending            Pending        true       NotCreated
+...      3     3     True               True           false      Pending
+...      3     3     True               True           false      Running
 ```
 
 `POOL` is the desired VM count reported by Azure. `READY` is the number of GPU
 nodes registered with Kubernetes. Keeping them separate exposes node bootstrap
 failures instead of making a provisioned VM look like usable GPU capacity.
 
-Successful logs end with:
+Each pod's logs end with:
 
 ```output
 MODEL_RESPONSE: ...
 INFERENCE_VALIDATED
-PASS  End-to-end inference completed
+```
+
+The watcher verifies all three pods and ends with:
+
+```output
+PASS  End-to-end inference completed in all 3 pods
 ```
 
 The exact response text, timing, and number of intermediate rows vary.
@@ -56,10 +61,14 @@ The exact response text, timing, and number of intermediate rows vary.
 ## Checkpoint
 
 ```bash
-kubectl -n gpu-inference logs job/vllm-inference-check | grep INFERENCE_VALIDATED
+for pod in $(kubectl -n gpu-inference get pods \
+  -l job-name=vllm-inference-check -o name); do
+  kubectl -n gpu-inference logs "$pod" | grep INFERENCE_VALIDATED
+done
 ```
 
-Continue only if this prints `INFERENCE_VALIDATED`.
+Continue only if this prints `INFERENCE_VALIDATED` three times and the Job
+reports `Complete 3/3`.
 
 ## Troubleshoot
 

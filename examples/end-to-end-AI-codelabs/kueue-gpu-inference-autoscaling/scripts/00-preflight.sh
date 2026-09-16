@@ -42,6 +42,7 @@ VCPUS=$(python3 -c 'import json,sys; d=json.load(sys.stdin)[0]; c={x["name"]:x["
 FAMILY=$(python3 -c 'import json,sys; print(json.load(sys.stdin)[0].get("family","unknown"))' <<<"$SKU_JSON")
 pass "$LAB_GPU_SKU is available ($VCPUS vCPUs, quota family $FAMILY)"
 
+REQUIRED_VCPUS=$((VCPUS * LAB_GPU_MAX_COUNT))
 USAGE_JSON=$(az vm list-usage --location "$LAB_LOCATION" -o json)
 QUOTA_RESULT=$(USAGE_JSON="$USAGE_JSON" python3 -c '
 import json, os, sys
@@ -53,13 +54,13 @@ if row is None or needed == "unknown":
     print("unknown")
 else:
     print(int(row["limit"]) - int(row["currentValue"]) - int(needed))
-' "$FAMILY" "$VCPUS")
+' "$FAMILY" "$REQUIRED_VCPUS")
 if [[ "$QUOTA_RESULT" == "unknown" ]]; then
   warn "Couldn't map the SKU to a quota row. Confirm quota in the Azure portal before continuing."
 elif [[ "$QUOTA_RESULT" -lt 0 ]]; then
-  fail "The $FAMILY quota doesn't have $VCPUS free vCPUs in $LAB_LOCATION."
+  fail "The $FAMILY quota doesn't have $REQUIRED_VCPUS free vCPUs for $LAB_GPU_MAX_COUNT nodes in $LAB_LOCATION."
 else
-  pass "The $FAMILY quota has capacity for one $LAB_GPU_SKU node"
+  pass "The $FAMILY quota has capacity for $LAB_GPU_MAX_COUNT $LAB_GPU_SKU nodes"
 fi
 
 step "Result"
