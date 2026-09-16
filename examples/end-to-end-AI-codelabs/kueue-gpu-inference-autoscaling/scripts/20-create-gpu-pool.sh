@@ -20,6 +20,8 @@ if pool.get("vmSize") != sku:
     errors.append(f"SKU is {pool.get('vmSize')}, expected {sku}")
 if pool.get("mode", "").lower() != "user":
     errors.append(f"mode is {pool.get('mode')}, expected User")
+if pool.get("osType", "").lower() != "linux":
+    errors.append(f"OS type is {pool.get('osType')}, expected Linux")
 if not pool.get("enableAutoScaling"):
     errors.append("cluster autoscaler is disabled")
 if pool.get("minCount") != 0 or pool.get("maxCount") != max_count:

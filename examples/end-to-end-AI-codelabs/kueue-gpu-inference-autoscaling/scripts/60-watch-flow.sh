@@ -2,6 +2,18 @@
 # Print the Kueue, ProvisioningRequest, node pool, pod, and Job state as one timeline.
 
 . "$(cd "$(dirname "$0")" && pwd)/lib.sh"
+require_lab_context
+
+stop_workload() {
+  kubectl -n "$LAB_NAMESPACE" delete job "$LAB_JOB" --ignore-not-found --wait=false >/dev/null 2>&1 || true
+}
+
+interrupted() {
+  warn "Watcher interrupted; deleting the Job so it can't keep GPU nodes allocated."
+  stop_workload
+  exit 130
+}
+trap interrupted INT TERM
 
 print_diagnostics() {
   echo
@@ -27,7 +39,7 @@ while true; do
   elapsed_label="${elapsed}s"
   pool_count=$(az aks nodepool show -g "$LAB_RESOURCE_GROUP" --cluster-name "$LAB_CLUSTER" \
     -n "$LAB_GPU_POOL" --query count -o tsv 2>/dev/null || echo "?")
-  ready_nodes=$(kubectl get nodes -l "agentpool=$LAB_GPU_POOL" --no-headers 2>/dev/null \
+  ready_nodes=$({ kubectl get nodes -l "agentpool=$LAB_GPU_POOL" --no-headers 2>/dev/null || true; } \
     | awk '$2 == "Ready" {count++} END {print count+0}')
   workload=$(kubectl -n "$LAB_NAMESPACE" get workload \
     -o jsonpath='{.items[0].status.conditions[?(@.type=="Admitted")].status}' \
@@ -73,11 +85,13 @@ while true; do
   fi
   if [[ "$failed" == "True" ]]; then
     print_diagnostics
-    fail "The inference Job failed."
+    stop_workload
+    fail "The inference Job failed; the Job was deleted to release GPU capacity."
   fi
   if (( elapsed >= 2700 )); then
     print_diagnostics
-    fail "Timed out after 45 minutes."
+    stop_workload
+    fail "Timed out after 45 minutes; the Job was deleted to release GPU capacity."
   fi
   sleep 10
 done

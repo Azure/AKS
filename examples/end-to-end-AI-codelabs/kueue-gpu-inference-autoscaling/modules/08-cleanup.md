@@ -12,9 +12,12 @@ the background.
 ```
 
 Deleting the Job releases its Kueue Workload and ProvisioningRequest. The
-script deletes the dedicated namespace and cluster-scoped queue objects only
-when their codelab ownership labels are present. With no GPU pods left, the
-cluster autoscaler can return `gpupool` to zero after its scale-down delay.
+script first verifies that kubectl targets the lab cluster. It deletes the
+dedicated namespace and cluster-scoped queue objects only when their codelab
+ownership labels are present, and waits for generated Workloads and
+ProvisioningRequests to disappear before removing the queue. With no GPU pods
+left, the cluster autoscaler can return `gpupool` to zero after its scale-down
+delay.
 
 Check the count:
 

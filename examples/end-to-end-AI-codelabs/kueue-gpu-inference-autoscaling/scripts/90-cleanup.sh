@@ -13,34 +13,46 @@ if [[ "${1:-}" == "--all" ]]; then
 fi
 
 step "Deleting inference workload and queue"
-if kubectl get namespace "$LAB_NAMESPACE" >/dev/null 2>&1; then
-  resources=(
-    "namespace/$LAB_NAMESPACE"
-    "resourceflavor/gpu-inference"
-    "provisioningrequestconfig/gpu-inference"
-    "admissioncheck/gpu-inference-provisioning"
-    "clusterqueue/gpu-inference-cluster-queue"
-    "localqueue/$LAB_NAMESPACE/gpu-inference"
-  )
-  for resource in "${resources[@]}"; do
-    IFS=/ read -r kind namespace name <<<"$resource"
-    if [[ -z "${name:-}" ]]; then
-      name=$namespace
-      namespace=""
-    fi
-    kubectl_args=(get "$kind" "$name")
-    [[ -z "$namespace" ]] || kubectl_args+=(--namespace "$namespace")
-    if kubectl "${kubectl_args[@]}" >/dev/null 2>&1; then
-      owner=$(kubectl "${kubectl_args[@]}" \
-        -o jsonpath="{.metadata.labels.$LAB_OWNER_TAG}" 2>/dev/null || true)
-      [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail "Refusing cleanup: $kind/$name isn't owned by this codelab."
-    fi
+require_lab_context
+resources=(
+  "namespace/$LAB_NAMESPACE"
+  "resourceflavor/gpu-inference"
+  "provisioningrequestconfig/gpu-inference"
+  "admissioncheck/gpu-inference-provisioning"
+  "clusterqueue/gpu-inference-cluster-queue"
+  "localqueue/$LAB_NAMESPACE/gpu-inference"
+)
+namespace_exists=false
+for resource in "${resources[@]}"; do
+  IFS=/ read -r kind namespace name <<<"$resource"
+  if [[ -z "${name:-}" ]]; then
+    name=$namespace
+    namespace=""
+  fi
+  kubectl_args=(get "$kind" "$name")
+  [[ -z "$namespace" ]] || kubectl_args+=(--namespace "$namespace")
+  if kubectl "${kubectl_args[@]}" >/dev/null 2>&1; then
+    owner=$(kubectl "${kubectl_args[@]}" \
+      -o jsonpath="{.metadata.labels.$LAB_OWNER_TAG}" 2>/dev/null || true)
+    [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail "Refusing cleanup: $kind/$name isn't owned by this codelab."
+    [[ "$kind" != "namespace" ]] || namespace_exists=true
+  fi
+done
+
+if [[ "$namespace_exists" == "true" ]]; then
+  kubectl delete -f "$ROOT/manifests/inference-job.yaml" --ignore-not-found --wait=true
+  for attempt in $(seq 1 60); do
+    remaining=$({ kubectl -n "$LAB_NAMESPACE" get workloads,provisioningrequests \
+      --no-headers 2>/dev/null || true; } | grep -c . || true)
+    [[ "$remaining" == "0" ]] && break
+    [[ "$attempt" != "60" ]] || fail "Kueue generated resources weren't removed within 2 minutes; queue cleanup stopped."
+    sleep 2
   done
-  kubectl delete -f "$ROOT/manifests/inference-job.yaml" --ignore-not-found
-  kubectl delete -f "$ROOT/manifests/kueue-gpu-queue.yaml" --ignore-not-found
-else
-  warn "Namespace $LAB_NAMESPACE doesn't exist; skipped workload and queue cleanup."
 fi
+# This also removes owned cluster-scoped objects after a partial cleanup where
+# the namespace has already gone.
+kubectl delete -f "$ROOT/manifests/kueue-gpu-queue.yaml" --ignore-not-found
+
 pass "Deleted the workload and owned queue resources. The GPU pool can now scale to zero."
 
 cat <<EOF

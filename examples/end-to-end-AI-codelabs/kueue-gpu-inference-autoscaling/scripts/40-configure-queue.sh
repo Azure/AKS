@@ -3,6 +3,7 @@
 
 . "$(cd "$(dirname "$0")" && pwd)/lib.sh"
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
+require_lab_context
 
 step "Checking ProvisioningRequest support"
 if ! kubectl get crd provisioningrequests.autoscaling.x-k8s.io >/dev/null 2>&1; then

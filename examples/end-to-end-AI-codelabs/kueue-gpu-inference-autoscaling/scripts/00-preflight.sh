@@ -17,7 +17,7 @@ SUBSCRIPTION_NAME=$(az account show --query name -o tsv)
 pass "Using $SUBSCRIPTION_NAME ($SUBSCRIPTION_ID)"
 
 step "Checking required resource providers"
-for provider in Microsoft.Compute Microsoft.ContainerService; do
+for provider in Microsoft.Compute Microsoft.ContainerService Microsoft.Network Microsoft.ManagedIdentity; do
   state=$(az provider show --namespace "$provider" --query registrationState -o tsv 2>/dev/null || true)
   if [[ "$state" == "Registered" ]]; then
     pass "$provider is registered"
@@ -94,6 +94,28 @@ PY
 
 check_sku "$LAB_SYSTEM_SKU" 2 false "system node"
 check_sku "$LAB_GPU_SKU" "$LAB_GPU_MAX_COUNT" true "GPU node"
+
+step "Checking total regional vCPU quota"
+TOTAL_RESULT=$(python3 - "$TMP_DIR/system-node-sku.json" "$TMP_DIR/GPU-node-sku.json" \
+  "$TMP_DIR/usage.json" "$LAB_GPU_MAX_COUNT" 2>&1 <<'PY'
+import json, sys
+system_file, gpu_file, usage_file, gpu_count = sys.argv[1:]
+def vcpus(path):
+    sku = json.load(open(path))[0]
+    caps = {c["name"]: c["value"] for c in sku.get("capabilities", [])}
+    return int(caps["vCPUs"])
+required = 2 * vcpus(system_file) + int(gpu_count) * vcpus(gpu_file)
+quota = next((q for q in json.load(open(usage_file))
+              if q.get("name", {}).get("value") == "cores"), None)
+if quota is None:
+    raise SystemExit("FAIL|Total Regional vCPUs quota isn't present in the usage list")
+used, limit = int(quota["currentValue"]), int(quota["limit"])
+if limit - used < required:
+    raise SystemExit(f"FAIL|Total Regional vCPUs has {limit-used} free; the codelab needs {required}")
+print(f"PASS|Total Regional vCPUs quota is {used}/{limit}; the codelab needs {required}")
+PY
+) || fail "${TOTAL_RESULT#FAIL|}"
+pass "${TOTAL_RESULT#PASS|}"
 
 step "Result"
 pass "Preflight passed. Continue with modules/02-create-cluster.md."

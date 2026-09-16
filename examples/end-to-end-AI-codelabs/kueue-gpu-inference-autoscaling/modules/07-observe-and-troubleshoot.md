@@ -44,7 +44,7 @@ means the reserved capacity wasn't consumed before the reservation expired.
 
 ```bash
 kubectl get nodes -l agentpool=gpupool \
-  -o custom-columns=NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu
+  -o 'custom-columns=NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu'
 kubectl -n kube-system get pods -l app.kubernetes.io/name=nvidia-device-plugin -o wide
 ```
 

@@ -47,3 +47,9 @@ resource_group_is_owned() {
   [[ "$(az group show --name "$LAB_RESOURCE_GROUP" \
     --query "tags.\"$LAB_OWNER_TAG\"" -o tsv 2>/dev/null || true)" == "$LAB_OWNER_VALUE" ]]
 }
+
+require_lab_context() {
+  local context
+  context=$(kubectl config current-context 2>/dev/null || true)
+  [[ "$context" == "$LAB_CLUSTER" ]] || fail "kubectl context is '$context', expected '$LAB_CLUSTER'. Run 10-create-cluster.sh to select the lab cluster."
+}

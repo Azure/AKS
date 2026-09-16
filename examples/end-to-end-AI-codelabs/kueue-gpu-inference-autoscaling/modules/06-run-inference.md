@@ -56,7 +56,10 @@ The watcher verifies all three pods and ends with:
 PASS  End-to-end inference completed in all 3 pods
 ```
 
-The exact response text, timing, and number of intermediate rows vary.
+The exact response text, timing, and number of intermediate rows vary. The Job
+has a 40-minute active deadline. If the watcher reaches its 45-minute timeout or
+is interrupted, it deletes the Job so pending or running pods don't keep GPU
+nodes allocated.
 
 ## Checkpoint
 

@@ -11,6 +11,7 @@ spec:
   suspend: true
   parallelism: 3
   completions: 3
+  activeDeadlineSeconds: 2400
   backoffLimit: 0
   ttlSecondsAfterFinished: 3600
   template:
