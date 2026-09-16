@@ -20,7 +20,9 @@ request provisioned. Kueue admits the Workload and changes the Job to
 
 The Job starts vLLM with the ungated `Qwen/Qwen2.5-0.5B-Instruct` model, waits
 for `/health`, sends an OpenAI-compatible chat completion, verifies that the
-response isn't empty, and exits.
+response isn't empty, and exits. The manifest limits vLLM to 70% GPU memory, a
+2,048-token context, four sequences, and eager execution. Those settings were
+validated on a 4-GB A10-4Q profile and also work on larger GPUs.
 
 The first run pulls the container image and model onto a new node. Most of the
 elapsed time is expected to be infrastructure and model cold start.

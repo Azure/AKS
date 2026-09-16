@@ -31,7 +31,11 @@ spec:
               vllm serve Qwen/Qwen2.5-0.5B-Instruct \
                 --served-model-name qwen \
                 --host 127.0.0.1 \
-                --port 8000 >"$LOG" 2>&1 &
+                --port 8000 \
+                --gpu-memory-utilization 0.70 \
+                --max-model-len 2048 \
+                --max-num-seqs 4 \
+                --enforce-eager >"$LOG" 2>&1 &
               server_pid=$!
               trap 'kill "$server_pid" 2>/dev/null || true' EXIT
 

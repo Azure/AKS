@@ -110,8 +110,13 @@ subscription:
 - The same test in the `AKS INT/Staging Test` subscription used a T4 in
   `westus2`. The CRD and provisioning path were available, but the fresh T4 VM
   also failed to register before the reservation expired.
+- The complete path succeeded in `eastasia` on three
+  `Standard_NV6ads_A10_v5` nodes. CAS scaled the pool from zero to three, all
+  nodes became Ready, Kueue admitted the three-pod Job, and every pod returned
+  `INFERENCE_VALIDATED`. The successful run took 418 seconds from submission
+  through Job completion.
 
-The watcher now reports Azure pool count and Ready Kubernetes node count
-separately to make this failure visible. The complete path through
-`INFERENCE_VALIDATED` remains unverified, so this codelab and its pull request
-stay in draft.
+The successful run also established the settings required by a 4-GB A10-4Q
+profile: 70% GPU memory utilization, a 2,048-token context, four sequences, and
+eager execution. The watcher reports Azure pool count and Ready Kubernetes node
+count separately so node-bootstrap failures remain visible.

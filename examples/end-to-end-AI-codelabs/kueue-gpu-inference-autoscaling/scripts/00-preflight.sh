@@ -31,8 +31,12 @@ SKU_JSON=$(az vm list-skus --location "$LAB_LOCATION" --size "$LAB_GPU_SKU" --al
 SKU_COUNT=$(python3 -c 'import json,sys; print(len(json.load(sys.stdin)))' <<<"$SKU_JSON")
 [[ "$SKU_COUNT" -gt 0 ]] || fail "$LAB_GPU_SKU isn't listed in $LAB_LOCATION. Set LAB_LOCATION or LAB_GPU_SKU."
 
-RESTRICTIONS=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(len(d[0].get("restrictions", [])))' <<<"$SKU_JSON")
-[[ "$RESTRICTIONS" -eq 0 ]] || fail "$LAB_GPU_SKU is restricted for this subscription in $LAB_LOCATION."
+LOCATION_RESTRICTIONS=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(sum(r.get("type") == "Location" for r in d[0].get("restrictions", [])))' <<<"$SKU_JSON")
+[[ "$LOCATION_RESTRICTIONS" -eq 0 ]] || fail "$LAB_GPU_SKU is restricted for this subscription in $LAB_LOCATION."
+ZONE_RESTRICTIONS=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(sum(r.get("type") == "Zone" for r in d[0].get("restrictions", [])))' <<<"$SKU_JSON")
+if [[ "$ZONE_RESTRICTIONS" -gt 0 ]]; then
+  warn "$LAB_GPU_SKU has availability-zone restrictions; this lab creates a regional node pool without --zones."
+fi
 
 VCPUS=$(python3 -c 'import json,sys; d=json.load(sys.stdin)[0]; c={x["name"]:x["value"] for x in d.get("capabilities",[])}; print(c.get("vCPUs","unknown"))' <<<"$SKU_JSON")
 FAMILY=$(python3 -c 'import json,sys; print(json.load(sys.stdin)[0].get("family","unknown"))' <<<"$SKU_JSON")

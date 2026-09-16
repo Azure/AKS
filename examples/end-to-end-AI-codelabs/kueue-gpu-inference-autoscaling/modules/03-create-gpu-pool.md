@@ -16,6 +16,7 @@ The pool has these important settings:
 - `max-count: 1` limits cost during the codelab.
 - `sku=gpu:NoSchedule` keeps general workloads off the GPU.
 - `workload=gpu-inference` selects nodes for the NVIDIA device plugin.
+- `nvidia.com/gpu.present=true` satisfies the plugin chart's GPU discovery affinity without requiring Node Feature Discovery.
 - `agentpool=gpupool`, added by AKS, binds the Kueue ResourceFlavor to this pool.
 
 This is a conventional GPU pool. AKS installs the NVIDIA driver, and Module 4

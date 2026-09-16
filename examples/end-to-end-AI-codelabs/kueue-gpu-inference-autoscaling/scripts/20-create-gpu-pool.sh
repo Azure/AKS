@@ -23,7 +23,7 @@ else
     --min-count 0 \
     --max-count "$LAB_GPU_MAX_COUNT" \
     --node-taints "$LAB_GPU_TAINT" \
-    --labels workload=gpu-inference \
+    --labels workload=gpu-inference nvidia.com/gpu.present=true \
     -o none
   pass "Created $LAB_GPU_POOL with a 0–$LAB_GPU_MAX_COUNT autoscaling range"
 fi
