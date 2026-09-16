@@ -103,7 +103,7 @@ pod2   1/1     Running   0          17h
 Check the log, verify that the Pods are sharing the same GPU resource. 
 
 ```bash
-kubectl logs -f pod1
+kubectl logs pod1
 --- Pod 1 ---
 GPU: 0
     BDF: 0008:00:00.0
