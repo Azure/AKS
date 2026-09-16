@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: default
+  name: pod1 # First pod to use the shared GPU
+  labels:
+    app: pod-shared-gpu
+spec:
+  containers:
+  - name: ctr0
+    image: docker.io/rocm/pytorch:latest # Or a specific ROCm version, e.g., rocm/pytorch:rocm-6.4.2-ubuntu-22.04
+    command: ["bash", "-c"]
+    # Simplified args: run rocm-smi, then sleep
+    args: ["echo '--- Pod 1 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 1 complete. Sleeping...'; sleep infinity"]
+    resources:
+      claims:
+      - name: gpu # This name must match the name in the `resourceClaims` list below
+  resourceClaims:
+  - name: gpu
+    # 2. Reference the *explicitly created* ResourceClaim, not a template
+    resourceClaimName: shared-gpu-claim
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: default
+  name: pod2 # Second pod to use the SAME shared GPU
+  labels:
+    app: pod-shared-gpu
+spec:
+  containers:
+  - name: ctr0
+    image: docker.io/rocm/pytorch:latest # Or a specific ROCm version
+    command: ["bash", "-c"]
+    # Simplified args: run rocm-smi, then sleep
+    args: ["echo '--- Pod 2 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 2 complete. Sleeping...'; sleep infinity"]
+    resources:
+      claims:
+      - name: gpu
+  resourceClaims:
+  - name: gpu
+    # 2. Reference the *same explicit* ResourceClaim
+    resourceClaimName: shared-gpu-claim
