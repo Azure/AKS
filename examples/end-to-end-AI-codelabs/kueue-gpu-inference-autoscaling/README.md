@@ -96,8 +96,7 @@ use this sequence to repeat the lab:
 
 ## Validation status
 
-The complete checked-in scenario was validated in `eastasia` using the
-`AKS E2E - GPU SKU Test` subscription and three
+The complete checked-in scenario was validated in `eastasia` using three
 `Standard_NV6ads_A10_v5` nodes:
 
 - The pool started with zero nodes.
