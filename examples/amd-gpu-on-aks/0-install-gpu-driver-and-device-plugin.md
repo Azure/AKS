@@ -4,7 +4,7 @@ This document creates an AKS cluster with one
 
 # Prerequisites
 - Azure subscription with `az login` completed, permission to create AKS clusters and ACR.
-- Azure CLI ≥ 2.85.0 and the aks-preview extension ≥ 19.0.0b30.
+- Azure CLI ≥ 2.85.0.
 - kubectl command installed.
 - `Standard_ND96isr_MI300X_v5` quota in this subscription. 
 
