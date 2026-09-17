@@ -22,9 +22,8 @@ metadata:
 spec:
   containers:
   - name: ctr0
-    image: docker.io/rocm/pytorch:latest # Or a specific ROCm version, e.g., rocm/pytorch:rocm-6.4.2-ubuntu-22.04
+    image: docker.io/rocm/pytorch:latest
     command: ["bash", "-c"]
-    # Simplified args: run rocm-smi, then sleep
     args: ["echo '--- Pod 1 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 1 complete. Sleeping...'; sleep infinity"]
     resources:
       claims:
@@ -45,9 +44,8 @@ metadata:
 spec:
   containers:
   - name: ctr0
-    image: docker.io/rocm/pytorch:latest # Or a specific ROCm version
+    image: docker.io/rocm/pytorch:latest 
     command: ["bash", "-c"]
-    # Simplified args: run rocm-smi, then sleep
     args: ["echo '--- Pod 2 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 2 complete. Sleeping...'; sleep infinity"]
     resources:
       claims:
