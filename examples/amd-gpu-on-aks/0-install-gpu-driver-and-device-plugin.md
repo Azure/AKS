@@ -11,7 +11,7 @@ This document creates an AKS cluster with one
 
 **Before your start**
 
-Define these shell environment values.
+Define the following environment variables:
 
 | Variable name | Description | Example value |
 |---|---|---|
