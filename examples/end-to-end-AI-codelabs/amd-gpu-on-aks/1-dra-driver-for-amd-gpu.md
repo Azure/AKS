@@ -3,7 +3,7 @@ In [0-install-gpu-driver-and-device-plugin.md](0-install-gpu-driver-and-device-p
 
 # DRA for AMD GPU
 
-Kubernetes Dynamic Resource Allocation (DRA) provides a structured way for workloads to request and consume specialized hardware such as AMD GPUs. Unlike traditional extended resources, DRA uses resource classes and claims to describe device requirements, allowing compatible drivers to prepare and assign devices to Pods with greater flexibility.
+Kubernetes Dynamic Resource Allocation (DRA) provides a structured way for workloads to request and consume specialized hardware such as AMD GPUs. Unlike traditional device plugin, DRA uses resource classes and claims to describe device requirements, allowing compatible drivers to prepare and assign devices to Pods with greater flexibility.
  
 ## Enable DRA Driver
 The device-plugin is currently enabled by default if you follow the instructions in [0-install-gpu-driver-and-device-plugin.md](0-install-gpu-driver-and-device-plugin.md). Before switching allocation mechanisms, delete the long-running sample Pod with `kubectl delete pod amd-smi`. Then **disable** `device-plugin` and **enable** DRA.
@@ -92,6 +92,9 @@ spec:
 ```
 
 You can simply apply the yaml file [manifests/1-dra-multiple-pods-share.yaml](manifests/1-dra-multiple-pods-share.yaml).
+```bash
+kubectl apply -f manifests/1-dra-multiple-pods-share.yaml
+```
 
 Verify the two Jobs complete successfully.
 ```bash
@@ -125,4 +128,15 @@ GPU: 0
     PARTITION_ID: 0
 
 Job 2 complete.
+```
+
+
+# Clean Up 
+
+Delete the AKS cluster and ACR resource. 
+
+```bash
+az acr delete --subscription "$SUBSCRIPTION" --resource-group "$RESOURCE_GROUP" --name "$ACR_NAME" --yes
+
+az group delete --subscription "$SUBSCRIPTION" --name "$RESOURCE_GROUP" --yes --no-wait
 ```
