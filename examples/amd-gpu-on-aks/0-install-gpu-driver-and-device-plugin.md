@@ -55,7 +55,8 @@ az aks nodepool add \
 Get the AKS cluster 
 ```
  az aks get-credentials --admin \
-    --resource-group "${RESOURCE_GROUP}" \
+    --subscription "${SUBSCRIPTION}" \
+    --resource-group "${RESOURCE_GROUP}" \\
     --name "${AKS_NAME}" \
     --overwrite-existing
 ```
