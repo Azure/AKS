@@ -37,7 +37,7 @@ NAME                                                              READY   STATUS
 default-dra-driver-fvq6l                                          1/1     Running   0          2d
 ```
 
-DRA Driver will automatically create `deviceclass` and `resourceslice` in your AKS. Verify this two objects exist
+DRA Driver will automatically create `deviceclass` and `resourceslice` in your AKS. Verify these two objects exist
 
 ```bash
 kubectl get deviceclass
