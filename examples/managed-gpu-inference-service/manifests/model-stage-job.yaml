@@ -1,0 +1,109 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stage-model
+  namespace: managed-gpu-inference
+  labels:
+    app.kubernetes.io/name: stage-model
+    app.kubernetes.io/part-of: managed-gpu-inference-service
+    aks.azure.com/example: managed-gpu-inference-service
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 3600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: stage-model
+        app.kubernetes.io/part-of: managed-gpu-inference-service
+        aks.azure.com/example: managed-gpu-inference-service
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: stage
+          image: python:3.12.11-slim-bookworm
+          command:
+            - /bin/bash
+            - -lc
+          args:
+            - |
+              set -euo pipefail
+              pip install --no-cache-dir --quiet huggingface_hub==0.34.4
+              python3 - <<'PY'
+              import json
+              import os
+              import shutil
+              import sys
+              from pathlib import Path
+
+              from huggingface_hub import snapshot_download
+
+              model = os.environ["MODEL_ID"]
+              destination = Path("/models") / model.split("/")[-1]
+
+              snapshot_download(
+                  repo_id=model,
+                  local_dir=str(destination),
+                  allow_patterns=["*.json", "*.safetensors", "*.model", "*.txt"],
+                  max_workers=4,
+              )
+
+              index = destination / "model.safetensors.index.json"
+              if index.exists():
+                  shards = sorted(set(json.loads(index.read_text())["weight_map"].values()))
+              else:
+                  shards = [path.name for path in destination.glob("*.safetensors")]
+                  if not shards:
+                      sys.exit("No safetensors files or model index were downloaded.")
+
+              missing = [
+                  shard
+                  for shard in shards
+                  if not (destination / shard).is_file()
+                  or (destination / shard).stat().st_size == 0
+              ]
+              if missing:
+                  sys.exit(f"Incomplete model download: {missing}")
+
+              weight_bytes = sum((destination / shard).stat().st_size for shard in shards)
+              print(
+                  f"MODEL_READY shards={len(shards)} "
+                  f"weight_gib={weight_bytes / 1024**3:.1f} path={destination}",
+                  flush=True,
+              )
+
+              cache = destination / ".cache"
+              if cache.is_dir():
+                  shutil.rmtree(cache)
+                  print("Removed the transfer cache after verification.", flush=True)
+              PY
+          env:
+            - name: MODEL_ID
+              value: Qwen/Qwen2.5-7B-Instruct
+            - name: HF_XET_HIGH_PERFORMANCE
+              value: "1"
+            - name: HF_HUB_DISABLE_TELEMETRY
+              value: "1"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 10Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: models
+              mountPath: /models
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: model-weights
