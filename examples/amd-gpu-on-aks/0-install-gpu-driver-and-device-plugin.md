@@ -1,6 +1,6 @@
 
 This document creates an AKS cluster with one  
-`Standard_ND96isr_MI300X_v5` node, and install AMD GPU Operator to build and deploy the AMD driver.
+`Standard_ND96isr_MI300X_v5` node, and install [AMD GPU Operator](https://github.com/ROCm/gpu-operator) to build and deploy the AMD driver.
 
 # Prerequisites
 - Azure subscription with `az login` completed, permission to create AKS clusters and ACR.
