@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <rect width="820" height="420" fill="#fcfcfb"/>
+
+  <!-- chart area: x=80..600, y=40..340; right margin 600..810 for labels -->
+  <!-- grid lines -->
+  <g stroke="#e1e0d9" stroke-width="1">
+    <line x1="80" y1="340" x2="600" y2="340"/>
+    <line x1="80" y1="280" x2="600" y2="280"/>
+    <line x1="80" y1="220" x2="600" y2="220"/>
+    <line x1="80" y1="160" x2="600" y2="160"/>
+    <line x1="80" y1="100" x2="600" y2="100"/>
+    <line x1="80" y1="40" x2="600" y2="40"/>
+  </g>
+
+  <!-- baseline axis -->
+  <line x1="80" y1="340" x2="600" y2="340" stroke="#c3c2b7" stroke-width="1"/>
+  <line x1="80" y1="40" x2="80" y2="340" stroke="#c3c2b7" stroke-width="1"/>
+
+  <!-- Y axis labels (0 to 1,500 ms) -->
+  <g fill="#898781" font-size="12" text-anchor="end">
+    <text x="72" y="344">0</text>
+    <text x="72" y="284">300</text>
+    <text x="72" y="224">600</text>
+    <text x="72" y="164">900</text>
+    <text x="72" y="104">1,200</text>
+    <text x="72" y="44">1,500</text>
+  </g>
+
+  <!-- Y axis title -->
+  <text x="16" y="190" fill="#52514e" font-size="12" text-anchor="middle" transform="rotate(-90 16 190)">Guardrail overhead (ms)</text>
+
+  <!-- X axis: linear scale from 1024 to 16384 -->
+  <!-- x = 80 + (token - 1024) / (16384 - 1024) * 520 -->
+  <!-- 1024→80, 2048→114.9, 4096→183.7, 8192→323.0, 16384→600 -->
+  <g fill="#898781" font-size="12" text-anchor="middle">
+    <text x="80" y="360" text-anchor="end">1,024</text>
+    <text x="115" y="360">2,048</text>
+    <text x="184" y="360">4,096</text>
+    <text x="323" y="360">8,192</text>
+    <text x="600" y="360">16,384</text>
+  </g>
+
+  <!-- X axis title -->
+  <text x="340" y="390" fill="#52514e" font-size="12" text-anchor="middle">Output tokens</text>
+
+  <!-- Data: y = 340 - value/1500 * 300 -->
+  <!-- Block only: 4.2→339.2, 8.1→338.4, 16.0→336.8, 32.2→333.6, 64.8→327.0 -->
+  <!-- Redact+block: 24.6→335.1, 51.7→329.7, 105.3→318.9, 212.8→297.4, 407.8→258.4 -->
+  <!-- All scanners: 79.5→324.1, 176.7→304.7, 361.2→267.8, 710.6→197.9, 1427.2→54.6 -->
+
+  <!-- Block only (blue #2a78d6) -->
+  <polyline points="80,339.2 115,338.4 184,336.8 323,333.6 600,327.0"
+    fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#2a78d6">
+    <circle cx="80" cy="339.2" r="4"/><circle cx="115" cy="338.4" r="4"/>
+    <circle cx="184" cy="336.8" r="4"/><circle cx="323" cy="333.6" r="4"/>
+    <circle cx="600" cy="327.0" r="4"/>
+  </g>
+
+  <!-- Redact+block (orange #eb6834) -->
+  <polyline points="80,335.1 115,329.7 184,318.9 323,297.4 600,258.4"
+    fill="none" stroke="#eb6834" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#eb6834">
+    <circle cx="80" cy="335.1" r="4"/><circle cx="115" cy="329.7" r="4"/>
+    <circle cx="184" cy="318.9" r="4"/><circle cx="323" cy="297.4" r="4"/>
+    <circle cx="600" cy="258.4" r="4"/>
+  </g>
+
+  <!-- All scanners (aqua #1baf7a) -->
+  <polyline points="80,324.1 115,304.7 184,267.8 323,197.9 600,54.6"
+    fill="none" stroke="#1baf7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#1baf7a">
+    <circle cx="80" cy="324.1" r="4"/><circle cx="115" cy="304.7" r="4"/>
+    <circle cx="184" cy="267.8" r="4"/><circle cx="323" cy="197.9" r="4"/>
+    <circle cx="600" cy="54.6" r="4"/>
+  </g>
+
+  <!-- End labels: value + rate, text tokens only -->
+  <g font-size="11" fill="#52514e">
+    <text x="612" y="330" font-weight="600">64.8 ms</text>
+    <text x="612" y="344" fill="#898781" font-size="10">3.95 μs / token</text>
+
+    <text x="612" y="255" font-weight="600">407.8 ms</text>
+    <text x="612" y="269" fill="#898781" font-size="10">24.95 μs / token</text>
+
+    <text x="612" y="51" font-weight="600">1,427.2 ms</text>
+    <text x="612" y="65" fill="#898781" font-size="10">87.39 μs / token</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(100, 16)">
+    <circle cx="0" cy="-4" r="5" fill="#2a78d6"/>
+    <text x="10" y="0" fill="#0b0b0b" font-size="12">Block only (1 scanner)</text>
+
+    <circle cx="185" cy="-4" r="5" fill="#eb6834"/>
+    <text x="195" y="0" fill="#0b0b0b" font-size="12">Redact + block (3 scanners)</text>
+
+    <circle cx="400" cy="-4" r="5" fill="#1baf7a"/>
+    <text x="410" y="0" fill="#0b0b0b" font-size="12">All scanners (8 scanners)</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="410" y="410" fill="#52514e" font-size="11" text-anchor="middle" font-style="italic">Figure 1. Guardrail processing overhead scales linearly with output length.</text>
+</svg>
