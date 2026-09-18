@@ -201,6 +201,8 @@ spec:
 EOF
 ```
 
+Inspect the `amd-smi` logs to confirm that all GPU accelerators are available (the `MI300X` VM size offers 8 GPU devices):
+
 ```
 kubectl logs amd-smi
 
