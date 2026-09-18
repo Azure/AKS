@@ -173,7 +173,9 @@ helm install amd-gpu-operator rocm/gpu-operator-charts \
 > The `"feature.node.kubernetes.io/amd-vgpu":"true"}` selector is required for Azure's MI300X VF-passthrough node.
 
 # Verify that the operator is running and GPUs are schedulable
-Verify the device-plugin is Pod running. 
+
+Verify that the `device-plugin` pod is running:
+
 ```bash
 kubectl get pods -n kube-amd-gpu
 default-device-plugin-jv9dr                                       1/1     Running   0          85s
