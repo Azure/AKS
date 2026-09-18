@@ -22,9 +22,9 @@ metadata:
 spec:
   containers:
   - name: ctr0
-    image: docker.io/rocm/pytorch:latest
+    image: docker.io/rocm/rocm-terminal:6.4
     command: ["bash", "-c"]
-    args: ["echo '--- Pod 1 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 1 complete. Sleeping...'"]
+    args: ["echo '--- Pod 1 ---'; amd-smi list; echo 'Pod 1 complete. Sleeping...'"]
     resources:
       claims:
       - name: gpu # This name must match the name in the `resourceClaims` list below
@@ -44,9 +44,9 @@ metadata:
 spec:
   containers:
   - name: ctr0
-    image: docker.io/rocm/pytorch:latest
+    image: docker.io/rocm/rocm-terminal:6.4
     command: ["bash", "-c"]
-    args: ["echo '--- Pod 2 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 2 complete. Sleeping...'"]
+    args: ["echo '--- Pod 2 ---'; amd-smi list; echo 'Pod 2 complete. Sleeping...'"]
     resources:
       claims:
       - name: gpu

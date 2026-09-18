@@ -77,7 +77,7 @@ kind: Pod
 spec:
   containers:
   - name: ctr0
-    image: docker.io/rocm/pytorch:latest
+    image: docker.io/rocm/rocm-terminal:6.4
     resources:
       claims:
       - name: gpu # This name must match the name in the `resourceClaims` list below
