@@ -150,7 +150,7 @@ helm repo add jetstack https://charts.jetstack.io --force-update
 helm install cert-manager jetstack/cert-manager \
 --namespace cert-manager \
 --create-namespace \
---version v1.15.1 \
+--version v1.21.1 \
 --set crds.enabled=true
 
 helm repo add rocm https://rocm.github.io/gpu-operator

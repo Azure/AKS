@@ -12,45 +12,53 @@ spec:
         allocationMode: ExactCount
         count: 1
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   namespace: default
-  name: pod1 # First pod to use the shared GPU
-  labels:
-    app: pod-shared-gpu
+  name: job1 # First job to use the shared GPU
 spec:
-  containers:
-  - name: ctr0
-    image: docker.io/rocm/pytorch:latest
-    command: ["bash", "-c"]
-    args: ["echo '--- Pod 1 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 1 complete. Sleeping...'"]
-    resources:
-      claims:
-      - name: gpu # This name must match the name in the `resourceClaims` list below
-  resourceClaims:
-  - name: gpu
-    # 2. Reference the *explicitly created* ResourceClaim, not a template
-    resourceClaimName: shared-gpu-claim
+  template:
+    metadata:
+      labels:
+        app: job-shared-gpu
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ctr0
+        image: docker.io/rocm/pytorch:latest
+        command: ["bash", "-c"]
+        args: ["echo '--- Job 1 ---'; /opt/venv/bin/amd-smi list; echo 'Job 1 complete.'"]
+        resources:
+          claims:
+          - name: gpu # This name must match the name in the `resourceClaims` list below
+      resourceClaims:
+      - name: gpu
+        # Reference the explicitly created ResourceClaim, not a template
+        resourceClaimName: shared-gpu-claim
 
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   namespace: default
-  name: pod2 # Second pod to use the SAME shared GPU
-  labels:
-    app: pod-shared-gpu
+  name: job2 # Second job to use the same shared GPU
 spec:
-  containers:
-  - name: ctr0
-    image: docker.io/rocm/pytorch:latest 
-    command: ["bash", "-c"]
-    args: ["echo '--- Pod 2 ---'; /opt/venv/bin/amd-smi list; echo 'Pod 2 complete. Sleeping...'"]
-    resources:
-      claims:
+  template:
+    metadata:
+      labels:
+        app: job-shared-gpu
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ctr0
+        image: docker.io/rocm/pytorch:latest
+        command: ["bash", "-c"]
+        args: ["echo '--- Job 2 ---'; /opt/venv/bin/amd-smi list; echo 'Job 2 complete.'"]
+        resources:
+          claims:
+          - name: gpu
+      resourceClaims:
       - name: gpu
-  resourceClaims:
-  - name: gpu
-    # 2. Reference the *same explicit* ResourceClaim
-    resourceClaimName: shared-gpu-claim
+        # Reference the same explicit ResourceClaim
+        resourceClaimName: shared-gpu-claim

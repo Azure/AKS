@@ -69,40 +69,43 @@ spec:
         count: 1
 ```
 
-Then, we create two Pods, both of them claim the resource `shared-gpu-claim`
+Then, we create two Jobs, both of which claim the resource `shared-gpu-claim`.
 
 ```yaml
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 spec:
-  containers:
-  - name: ctr0
-    image: docker.io/rocm/pytorch:latest
-    resources:
-      claims:
-      - name: gpu # This name must match the name in the `resourceClaims` list below
-  resourceClaims:
-  - name: gpu
-    # request the resource
-    resourceClaimName: shared-gpu-claim
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ctr0
+        image: docker.io/rocm/pytorch:latest
+        resources:
+          claims:
+          - name: gpu # This name must match the name in the `resourceClaims` list below
+      resourceClaims:
+      - name: gpu
+        # Request the resource
+        resourceClaimName: shared-gpu-claim
 
 ```
 
 You can simply apply the yaml file [manifests/1-dra-multiple-pods-share.yaml](manifests/1-dra-multiple-pods-share.yaml).
 
-Verify the two pods are running. 
+Verify the two Jobs complete successfully.
 ```bash
-kubectl get pod
-NAME   READY   STATUS    RESTARTS   AGE
-pod1   1/1     Running   0          17h
-pod2   1/1     Running   0          17h
+kubectl get jobs
+NAME   STATUS     COMPLETIONS   DURATION   AGE
+job1   Complete   1/1           8s         17h
+job2   Complete   1/1           8s         17h
 ```
 
-Check the log, verify that the Pods are sharing the same GPU resource. 
+Check the logs and verify that the Jobs used the same GPU resource.
 
 ```bash
-kubectl logs pod1
---- Pod 1 ---
+kubectl logs job/job1
+--- Job 1 ---
 GPU: 0
     BDF: 0008:00:00.0
     UUID: 690074b5-0000-1000-8062-1496304bd0ab
@@ -110,10 +113,10 @@ GPU: 0
     NODE_ID: 8
     PARTITION_ID: 0
 
-Pod 1 complete. Sleeping...
+Job 1 complete.
 
-kubectl logs pod2
---- Pod 2 ---
+kubectl logs job/job2
+--- Job 2 ---
 GPU: 0
     BDF: 0008:00:00.0
     UUID: 690074b5-0000-1000-8062-1496304bd0ab
@@ -121,5 +124,5 @@ GPU: 0
     NODE_ID: 8
     PARTITION_ID: 0
 
-Pod 2 complete. Sleeping...
+Job 2 complete.
 ```
