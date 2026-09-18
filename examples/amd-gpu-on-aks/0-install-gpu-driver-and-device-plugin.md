@@ -59,15 +59,6 @@ Get the AKS cluster
 ```
 
 Confirm the nodes are ready 
-```
-kubectl get nodes -o wide
-
-NAME                                STATUS   ROLES    AGE     VERSION
-aks-gpunp-14033257-vmss000000       Ready    <none>   6m22s   v1.35.7
-aks-nodepool1-16790056-vmss000000   Ready    <none>   49m     v1.35.7
-aks-nodepool1-16790056-vmss000001   Ready    <none>   49m     v1.35.7
-aks-nodepool1-16790056-vmss000002   Ready    <none>   49m     v1.35.7
-```
 
 # Create ACR and grant AKS pull access
 
