@@ -15,7 +15,7 @@ Define the following environment variables:
 
 | Variable name | Description | Example value |
 |---|---|---|
-| `SUBSCRIPTION` | Azure subscription ID | `000000-0000-0000-0000-00000000` |
+| `SUBSCRIPTION` | Azure subscription ID | `00000000-0000-0000-0000-000000000000` |
 | `LOCATION` | Azure region in which to create the resources | `francecentral` |
 | `RESOURCE_GROUP` | Name of the Azure resource group | `amd_gpu_test` |
 | `AKS_NAME` | Name of the AKS cluster | `aks-amd-gpu-test` |
