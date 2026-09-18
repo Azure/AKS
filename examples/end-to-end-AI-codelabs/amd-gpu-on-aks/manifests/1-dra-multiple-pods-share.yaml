@@ -24,7 +24,7 @@ spec:
   - name: ctr0
     image: docker.io/rocm/rocm-terminal:6.4
     command: ["bash", "-c"]
-    args: ["echo '--- Pod 1 ---'; amd-smi list; echo 'Pod 1 complete. Sleeping...'"]
+    args: ["echo '--- Pod 1 ---' && amd-smi list && echo 'Pod 1 complete. Sleeping...' && sleep infinity"]
     resources:
       claims:
       - name: gpu # This name must match the name in the `resourceClaims` list below
