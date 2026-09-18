@@ -1,0 +1,173 @@
+# Lab 2 — Multi-node distributed training with gang scheduling.
+#
+# This is the lab that justifies the whole Kueue + CAS design. Labs 1 and 3 fit
+# on one node; this one deliberately does not.
+#
+# A distributed training job is all-or-nothing. Every rank must join the
+# collective before step 1 begins, so a job that receives 2 of the 4 nodes it
+# needs does not run at 50% -- it runs at 0%, while holding 2 nodes' worth of
+# GPUs that nobody else can use. Two of these half-placed jobs can deadlock a
+# cluster indefinitely, each waiting for capacity the other is squatting on.
+#
+# The provisioning gate prevents that. Kueue does not admit this Job until CAS
+# has confirmed it can provision ALL the requested nodes as a single atomic
+# increment. Until then the Job stays suspended and consumes nothing.
+#
+# What it actually runs: a PyTorch DDP training loop over synthetic data. The
+# model is deliberately small and the data synthetic, so the lab exercises the
+# distributed machinery -- rendezvous, gradient all-reduce, throughput -- and
+# not a dataset download.
+#
+# Submit:
+#   kubectl apply -f 20-multinode-training.yaml
+#
+# Watch the gang get admitted together (all pods appear at once, or none do):
+#   kubectl -n gpu-lab get pods -w
+#
+# Follow rank 0:
+#   kubectl -n gpu-lab logs -f job/multinode-training --selector=batch.kubernetes.io/job-completion-index=0
+---
+# Headless Service gives the pods stable DNS names for rendezvous. Indexed Jobs
+# get predictable hostnames (<job>-<index>.<service>), which is what lets rank 0
+# advertise an address the other ranks can resolve before they have all started.
+apiVersion: v1
+kind: Service
+metadata:
+  name: multinode-training
+  namespace: gpu-lab
+spec:
+  clusterIP: None
+  # Ranks must resolve each other during startup, before any pod is Ready.
+  publishNotReadyAddresses: true
+  selector:
+    job-name: multinode-training
+  ports:
+    - name: rendezvous
+      port: 29500
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: multinode-training
+  namespace: gpu-lab
+  labels:
+    kueue.x-k8s.io/queue-name: gpu-local-queue
+spec:
+  suspend: true
+  backoffLimit: 0
+  # Indexed completion gives each pod a stable, unique index that maps directly
+  # onto a distributed rank.
+  completionMode: Indexed
+  completions: 2
+  parallelism: 2
+  template:
+    spec:
+      restartPolicy: Never
+      subdomain: multinode-training
+      containers:
+        - name: trainer
+          image: nvcr.io/nvidia/pytorch:24.12-py3
+          env:
+            - name: NNODES
+              value: "2"
+            - name: GPUS_PER_NODE
+              value: "8"
+            - name: MASTER_ADDR
+              value: multinode-training-0.multinode-training
+            - name: MASTER_PORT
+              value: "29500"
+            - name: JOB_INDEX
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+            # Surfaces NCCL's chosen transport in the logs. Worth keeping on in
+            # a lab: it is how you confirm the ranks are using the fast path.
+            - name: NCCL_DEBUG
+              value: INFO
+          command:
+            - bash
+            - -lc
+            - |
+              set -euo pipefail
+              echo "Rank ${JOB_INDEX} of ${NNODES}, master=${MASTER_ADDR}:${MASTER_PORT}"
+
+              # Wait for rank 0's DNS to resolve. Pods start in parallel, so on
+              # a cold scale-up the non-zero ranks routinely come up first.
+              until getent hosts "${MASTER_ADDR}" >/dev/null 2>&1; do
+                echo "waiting for ${MASTER_ADDR}..."
+                sleep 5
+              done
+
+              cat >/tmp/train.py <<'PY'
+              import os, time, torch, torch.distributed as dist
+              import torch.nn as nn
+              from torch.nn.parallel import DistributedDataParallel as DDP
+
+              dist.init_process_group("nccl")
+              rank, world = dist.get_rank(), dist.get_world_size()
+              local = int(os.environ["LOCAL_RANK"])
+              torch.cuda.set_device(local)
+
+              if rank == 0:
+                  print(f"process group up: {world} ranks", flush=True)
+
+              # Large enough that the gradient all-reduce is a real test of the
+              # interconnect rather than pure launch overhead.
+              model = nn.Sequential(
+                  nn.Linear(8192, 8192), nn.ReLU(),
+                  nn.Linear(8192, 8192), nn.ReLU(),
+                  nn.Linear(8192, 1024),
+              ).cuda()
+              model = DDP(model, device_ids=[local])
+              opt = torch.optim.AdamW(model.parameters(), lr=1e-4)
+
+              batch, steps = 32, 50
+              x = torch.randn(batch, 8192, device="cuda")
+              y = torch.randn(batch, 1024, device="cuda")
+
+              # Warm up before timing: the first steps include CUDA context
+              # setup and NCCL channel negotiation, which are not steady state.
+              for _ in range(5):
+                  opt.zero_grad(); nn.functional.mse_loss(model(x), y).backward(); opt.step()
+              torch.cuda.synchronize(); dist.barrier()
+
+              t0 = time.time()
+              for i in range(steps):
+                  opt.zero_grad()
+                  loss = nn.functional.mse_loss(model(x), y)
+                  loss.backward()
+                  opt.step()
+                  if rank == 0 and i % 10 == 0:
+                      print(f"  step {i:3d}  loss {loss.item():.4f}", flush=True)
+              torch.cuda.synchronize()
+              dt = time.time() - t0
+
+              if rank == 0:
+                  total = batch * world * steps
+                  print(f"\n{steps} steps in {dt:.1f}s")
+                  print(f"throughput: {total/dt:.1f} samples/s across {world} ranks")
+                  print(f"per-GPU:    {total/dt/world:.1f} samples/s")
+                  mem = torch.cuda.max_memory_allocated() / 1e9
+                  print(f"peak GPU memory: {mem:.1f} GB")
+
+              dist.destroy_process_group()
+              PY
+
+              torchrun \
+                --nnodes="${NNODES}" \
+                --nproc_per_node="${GPUS_PER_NODE}" \
+                --node_rank="${JOB_INDEX}" \
+                --master_addr="${MASTER_ADDR}" \
+                --master_port="${MASTER_PORT}" \
+                /tmp/train.py
+          resources:
+            limits:
+              nvidia.com/gpu: 8
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 16Gi
