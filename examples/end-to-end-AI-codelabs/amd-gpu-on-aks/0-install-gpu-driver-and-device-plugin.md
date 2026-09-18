@@ -220,3 +220,13 @@ GPU  POWER   GPU_T   MEM_T   GFX_CLK   GFX%   MEM%  MEM_CLOCK
   6  138 W   37 °C   32 °C   175 MHz    0 %    0 %    900 MHz
   7  138 W   37 °C   32 °C   183 MHz    0 %    0 %    902 MHz
 ```
+
+# Clean Up 
+
+Delete the AKS cluster and ACR resource. 
+
+```bash
+az acr delete --subscription "$SUBSCRIPTION" --resource-group "$RESOURCE_GROUP" --name "$ACR_NAME" --yes
+
+az group delete --subscription "$SUBSCRIPTION" --name "$RESOURCE_GROUP" --yes --no-wait
+```
