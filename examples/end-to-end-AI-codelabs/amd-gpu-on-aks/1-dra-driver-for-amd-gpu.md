@@ -6,7 +6,7 @@ In [0-install-gpu-driver-and-device-plugin.md](0-install-gpu-driver-and-device-p
 Kubernetes Dynamic Resource Allocation (DRA) provides a structured way for workloads to request and consume specialized hardware such as AMD GPUs. Unlike traditional extended resources, DRA uses resource classes and claims to describe device requirements, allowing compatible drivers to prepare and assign devices to Pods with greater flexibility.
  
 ## Enable DRA Driver
-The device-plugin is currently enabled by default if you follow the instructions in [0-install-gpu-driver-and-device-plugin.md](0-install-gpu-driver-and-device-plugin.md), so we need to **disable** `device-plugin` and **enable** DRA. 
+The device-plugin is currently enabled by default if you follow the instructions in [0-install-gpu-driver-and-device-plugin.md](0-install-gpu-driver-and-device-plugin.md). Before switching allocation mechanisms, delete the long-running sample Pod with `kubectl delete pod amd-smi`. Then **disable** `device-plugin` and **enable** DRA.
 
 Edit the `deviceconfigs` 
 ```bash
