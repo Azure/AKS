@@ -13,6 +13,7 @@ clear next step.
 | Codelab | What you build | Time |
 |---|---|---:|
 | [Provision GPU inference with Kueue](kueue-gpu-inference-autoscaling/) | Start with zero GPU nodes, submit a three-pod inference workload through Kueue, and watch the AKS cluster autoscaler provision all three GPU nodes before the models serve requests | 45–60 minutes |
+| [AMD GPU on AKS](amd-gpu-on-aks/) | Create an AKS cluster with an AMD `MI300X` GPU node pool, install the AMD GPU Operator, and use Dynamic Resource Allocation (DRA) to share a single GPU between multiple Pods | 45–60 minutes |
 
 ## Before you begin
 
