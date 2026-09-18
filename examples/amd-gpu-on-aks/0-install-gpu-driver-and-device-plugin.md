@@ -9,7 +9,7 @@ This document creates an AKS cluster with one
 - [`Standard_ND96isr_MI300X_v5`](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ndmi300xv5-series) quota in this subscription. 
 
 
-**Before your start**
+**Before you begin**
 
 Define the following environment variables:
 
