@@ -6,7 +6,7 @@ This document creates an AKS cluster with one
 - Azure subscription with `az login` completed, permission to create AKS clusters and ACR.
 - Azure CLI ≥ 2.85.0.
 - kubectl command installed.
-- `Standard_ND96isr_MI300X_v5` quota in this subscription. 
+- [`Standard_ND96isr_MI300X_v5`](https://learn.microsoft.com/azure/virtual-machines/sizes/gpu-accelerated/ndmi300xv5-series) quota in this subscription. 
 
 
 **Before your start**
