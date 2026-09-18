@@ -53,7 +53,7 @@ az aks nodepool add \
 ```
 
 Get the AKS cluster 
-```
+```bash
  az aks get-credentials --admin \
     --subscription "${SUBSCRIPTION}" \
     --resource-group "${RESOURCE_GROUP}" \\
@@ -63,6 +63,15 @@ Get the AKS cluster
 
 Confirm that the nodes are ready before installing the GPU Operator:
 
+```bash
+kubectl get node
+
+NAME                                STATUS   ROLES    AGE    VERSION
+aks-gpunp-14033257-vmss000000       Ready    <none>   2d1h   v1.35.7
+aks-nodepool1-16790056-vmss000000   Ready    <none>   2d1h   v1.35.7
+aks-nodepool1-16790056-vmss000001   Ready    <none>   2d1h   v1.35.7
+aks-nodepool1-16790056-vmss000002   Ready    <none>   2d1h   v1.35.7
+```
 
 # Create ACR and grant AKS pull access
 
