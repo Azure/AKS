@@ -25,6 +25,8 @@ Define these shell environment values.
 
 # Create AKS Cluster 
 
+In the following steps, you create the Azure resource group, deploy an AKS cluster, and add a dedicated GPU node pool for the `MI300X` VM size with no GPU driver installed. By the end of this section, you should have a running AKS cluster with at least one GPU-capable node available for the AMD GPU Operator.
+
 ```bash
 az group create \
 --subscription "$SUBSCRIPTION" \
