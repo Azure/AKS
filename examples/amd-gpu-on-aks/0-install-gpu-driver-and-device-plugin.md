@@ -179,7 +179,7 @@ kubectl get pods -n kube-amd-gpu
 default-device-plugin-jv9dr                                       1/1     Running   0          85s
 ```
 
-# Run a workload 
+# Run a sample workload 
 ```yaml
 kubectl apply -f - <<'EOF'
 apiVersion: v1
