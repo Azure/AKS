@@ -60,7 +60,8 @@ Get the AKS cluster
     --overwrite-existing
 ```
 
-Confirm the nodes are ready 
+Confirm that the nodes are ready before installing the GPU Operator:
+
 
 # Create ACR and grant AKS pull access
 
