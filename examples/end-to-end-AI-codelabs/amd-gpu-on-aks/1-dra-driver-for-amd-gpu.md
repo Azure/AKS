@@ -69,7 +69,7 @@ spec:
         count: 1
 ```
 
-Then, we create two Pods, both of which claim the resource `shared-gpu-claim`.
+Then, we create two Pods, both of which claim the resource `shared-gpu-claim`, comparing to using device plugin, Pods with DRA can share the resource at the same time.  
 
 ```yaml
 apiVersion: v1
