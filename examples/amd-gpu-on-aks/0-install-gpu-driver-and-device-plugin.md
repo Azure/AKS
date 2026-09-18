@@ -56,7 +56,7 @@ Get the AKS cluster
 ```bash
  az aks get-credentials --admin \
     --subscription "${SUBSCRIPTION}" \
-    --resource-group "${RESOURCE_GROUP}" \\
+    --resource-group "${RESOURCE_GROUP}" \
     --name "${AKS_NAME}" \
     --overwrite-existing
 ```
