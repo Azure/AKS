@@ -152,5 +152,5 @@ these H200 values everywhere.
 
 - [Set up InfiniBand on Azure HPC VMs](https://learn.microsoft.com/azure/virtual-machines/setup-infiniband#cluster-configuration-options)
 - [Azure/aks-rdma-infiniband](https://github.com/Azure/aks-rdma-infiniband)
-- [NVIDIA Network Operator](https://docs.nvidia.com/networking/display/kubernetes2540/)
+- [NVIDIA Network Operator 26.4.0](https://docs.nvidia.com/networking/display/kubernetes2640/getting-started-kubernetes.html)
 - [PyTorch DistributedDataParallel](https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html)
