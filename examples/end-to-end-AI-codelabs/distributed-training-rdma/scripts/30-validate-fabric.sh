@@ -82,6 +82,7 @@ for raw in client.splitlines():
         if section == "latency" and len(fields) >= 6 and fields[0] == "2":
             latency = float(fields[5])
         if section == "bandwidth" and len(fields) >= 5 and fields[0] == "8388608":
+            # Zero-based fields: bytes, iterations, peak, average, message rate.
             bandwidth = float(fields[3])
     except ValueError:
         pass
