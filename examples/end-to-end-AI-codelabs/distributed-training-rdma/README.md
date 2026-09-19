@@ -1,0 +1,156 @@
+# Accelerate distributed AI training with GPUDirect RDMA on AKS
+
+Provision two RDMA-capable GPU nodes, enable InfiniBand and GPUDirect RDMA,
+validate the fabric, and run the same PyTorch DistributedDataParallel (DDP)
+application twice: once over ordinary Ethernet sockets and once over
+InfiniBand. The final report accepts an RDMA speedup only when NCCL logs prove
+that the accelerated run used `NET/IB/.../GDRDMA`.
+
+## What you'll build
+
+```mermaid
+flowchart LR
+    CLI[Azure CLI] --> AKS[AKS cluster]
+    AKS --> VMSS[Single-placement-group GPU VMSS]
+    VMSS --> N0[RDMA GPU node 0]
+    VMSS --> N1[RDMA GPU node 1]
+    NO[NVIDIA Network Operator] --> N0
+    NO --> N1
+    DP[RDMA shared device plugin] --> R[rdma/shared_ib]
+    PM[nvidia-peermem] --> GDR[GPUDirect RDMA]
+    DDP[Two-rank PyTorch DDP app] --> TCP[NCCL Socket control]
+    DDP --> GDR
+    GDR --> METRICS[Step time and throughput comparison]
+    TCP --> METRICS
+```
+
+The lab validates each layer separately:
+
+1. **Placement:** both nodes belong to one VM scale set with
+   `singlePlacementGroup=true`.
+2. **Kernel and scheduling:** Mellanox OFED, `nvidia-peermem`, GPUs, and
+   `rdma/shared_ib` are ready.
+3. **Fabric:** verbs report an active InfiniBand link and cross-node
+   `ib_write_bw` bandwidth.
+4. **Application transport:** NCCL reports Socket for the control and
+   `NET/IB/.../GDRDMA` for the accelerated run.
+5. **Application impact:** the same 256-MiB DDP gradient, image, GPU count, and
+   nodes produce comparable step-time and throughput metrics.
+
+## Why placement matters
+
+Azure's InfiniBand fabric is isolated at the VMSS boundary. RDMA peers must be
+in the same VM scale set (or availability set), and an HPC VMSS must use a
+single placement group. This lab therefore creates both GPU nodes in one AKS
+node pool and verifies the generated VMSS setting instead of creating separate
+pools.
+
+The Azure RDMA network reserves `172.16.0.0/16`. The cluster uses
+`10.244.0.0/16` for pods and `10.0.0.0/16` for services so neither overlaps
+that range.
+
+## Learning objectives
+
+After completing the lab, you'll be able to:
+
+- Provision a two-node AKS pool that is eligible for the same InfiniBand fabric.
+- Explain the difference between Ethernet control traffic, InfiniBand verbs,
+  RDMA, and GPUDirect RDMA.
+- Expose InfiniBand HCAs as schedulable Kubernetes resources.
+- Prove that links are Active and measure latency and bandwidth with perftest.
+- Distinguish NCCL's Socket and IB/GDR transports from logs.
+- Quantify the effect of RDMA on a real PyTorch DDP gradient synchronization.
+
+## Time and cost
+
+- **Time:** 60–90 minutes; specialized node allocation and driver setup account
+  for most of it.
+- **Cost:** The default creates one CPU system node and **two 8-GPU
+  `Standard_ND96amsr_A100_v4` nodes**. These are expensive resources billed
+  from allocation until deletion.
+- **Quota/capacity:** Two default GPU nodes require 192 ND A100-family vCPUs.
+  Quota is not a capacity guarantee; allocation can still fail.
+- **Cleanup:** Run `./scripts/90-cleanup.sh --all` immediately after the lab.
+
+## Modules
+
+| # | Module | Goal | Time |
+| --- | --- | --- | ---: |
+| 1 | [Check prerequisites](modules/01-check-prerequisites.md) | Validate tools, feature state, SKU entitlement, RDMA capability, and quota | 5 minutes |
+| 2 | [Provision the cluster](modules/02-provision-cluster.md) | Create AKS and a two-node, single-placement-group RDMA GPU pool | 20–35 minutes |
+| 3 | [Enable RDMA and GPUDirect](modules/03-enable-rdma.md) | Install Network Operator, OFED, device plugins, and `nvidia-peermem` | 15–25 minutes |
+| 4 | [Validate InfiniBand](modules/04-validate-infiniband.md) | Prove active links and measure cross-node verbs latency/bandwidth | 5 minutes |
+| 5 | [Run the training comparison](modules/05-run-training-comparison.md) | Compare identical DDP steps over TCP and GPUDirect RDMA | 5–10 minutes |
+| 6 | [Observe and interpret results](modules/06-observe-results.md) | Verify transport evidence and interpret application metrics | 5 minutes |
+| 7 | [Clean up](modules/07-cleanup.md) | Delete all billable resources safely | 5 minutes |
+
+## Fast path
+
+Read the modules before the first run. To repeat the checked workflow:
+
+```bash
+./scripts/00-preflight.sh
+./scripts/10-create-cluster.sh
+./scripts/20-install-rdma.sh
+./scripts/30-validate-fabric.sh
+./scripts/40-run-training-comparison.sh
+./scripts/50-report.sh
+./scripts/90-cleanup.sh --all
+```
+
+Override defaults with environment variables, for example:
+
+```bash
+export LAB_SUBSCRIPTION=<subscription-id>
+export LAB_LOCATION=southcentralus
+export LAB_GPU_SKU=Standard_ND96amsr_A100_v4
+```
+
+## What the application measures
+
+The application is a real two-rank PyTorch DDP loop. Each rank owns one GPU on
+a different node. An 8,192 × 8,192 dense neural layer creates one 256-MiB
+gradient bucket; `loss.backward()` makes DDP synchronize that gradient before
+the optimizer step. Keeping the synthetic batch small isolates the network path
+that dominates communication-heavy distributed training.
+
+The control and accelerated runs differ only in `NCCL_IB_DISABLE`:
+
+| Run | Setting | Required log evidence |
+| --- | --- | --- |
+| TCP control | `NCCL_IB_DISABLE=1` | `Using network Socket` |
+| RDMA | `NCCL_IB_DISABLE=0` | `Using network IB` and `GDRDMA` |
+
+A faster run without `GDRDMA` evidence is not counted as a GPUDirect result.
+
+## Validation status
+
+The checked-in workload and validation scripts were exercised on a real AKS
+cluster with two `Standard_ND96isr_H200_v5` nodes. Each rank requested one H200
+GPU and one RDMA resource on a different node.
+
+Measured results on 2026-09-19:
+
+<!-- markdownlint-disable MD013 -->
+
+| Check | Result |
+| --- | ---: |
+| InfiniBand link | Active, 400 Gb/s; 3.40 µs average read latency |
+| `ib_write_bw`, 8-MiB messages | 378.06 Gb/s average |
+| DDP over TCP | 401.562 ms/step, 2.490 steps/s, 0.668 GB/s effective gradient rate |
+| DDP over GPUDirect RDMA | 12.431 ms/step, 80.446 steps/s, 21.595 GB/s effective gradient rate |
+| Application improvement | **32.30x lower step time / 32.31x higher throughput** |
+
+<!-- markdownlint-enable MD013 -->
+
+The accelerated logs contained `via NET/IB/.../GDRDMA`; the control logs
+contained `NET/Socket`. Exact numbers vary by SKU, image, topology, and cluster
+load. The scripts enforce evidence and configurable floors rather than assuming
+these H200 values everywhere.
+
+## Sources
+
+- [Set up InfiniBand on Azure HPC VMs](https://learn.microsoft.com/azure/virtual-machines/setup-infiniband#cluster-configuration-options)
+- [Azure/aks-rdma-infiniband](https://github.com/Azure/aks-rdma-infiniband)
+- [NVIDIA Network Operator](https://docs.nvidia.com/networking/display/kubernetes2540/)
+- [PyTorch DistributedDataParallel](https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html)
