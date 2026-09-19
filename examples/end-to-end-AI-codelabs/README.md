@@ -13,6 +13,7 @@ clear next step.
 | Codelab | What you build | Time |
 |---|---|---:|
 | [Provision GPU inference with Kueue](kueue-gpu-inference-autoscaling/) | Start with zero GPU nodes, submit a three-pod inference workload through Kueue, and watch the AKS cluster autoscaler provision all three GPU nodes before the models serve requests | 45–60 minutes |
+| [Accelerate distributed training with GPUDirect RDMA](distributed-training-rdma/) | Provision two InfiniBand GPU nodes, validate RDMA end to end, and measure the same PyTorch DDP workload over Ethernet and GPUDirect RDMA | 60–90 minutes |
 
 ## Before you begin
 
