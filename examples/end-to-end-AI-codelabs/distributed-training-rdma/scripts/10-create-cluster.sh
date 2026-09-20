@@ -34,8 +34,9 @@ if [[ "$LAB_REUSE_CLUSTER" == "true" ]]; then
   VMSS_ID=$(az vmss list --subscription "$SUBSCRIPTION_ID" --resource-group "$NODE_RG" \
     --query "[?tags.\"aks-managed-poolName\"=='$LAB_GPU_POOL'].id | [0]" -o tsv)
   [[ -n "$VMSS_ID" ]] || fail "could not find the VMSS for reuse pool $LAB_GPU_POOL"
-  SINGLE_PLACEMENT=$(az vmss show --subscription "$SUBSCRIPTION_ID" --ids "$VMSS_ID" \
-    --query singlePlacementGroup -o tsv)
+  VMSS_NAME=${VMSS_ID##*/}
+  SINGLE_PLACEMENT=$(az vmss show --subscription "$SUBSCRIPTION_ID" \
+    --resource-group "$NODE_RG" --name "$VMSS_NAME" --query singlePlacementGroup -o tsv)
   [[ "$SINGLE_PLACEMENT" == "true" ]] || fail \
     "reuse pool $LAB_GPU_POOL must use singlePlacementGroup=true"
   pass "Reusing $LAB_CLUSTER with two Ready nodes in one single-placement-group pool"
@@ -200,8 +201,9 @@ NODE_RG=$(az aks show --subscription "$SUBSCRIPTION_ID" --resource-group "$LAB_R
 VMSS_ID=$(az vmss list --subscription "$SUBSCRIPTION_ID" --resource-group "$NODE_RG" \
   --query "[?tags.\"aks-managed-poolName\"=='$LAB_GPU_POOL'].id | [0]" -o tsv)
 [[ -n "$VMSS_ID" ]] || fail "could not find the VMSS for pool $LAB_GPU_POOL"
-SINGLE_PLACEMENT=$(az vmss show --subscription "$SUBSCRIPTION_ID" --ids "$VMSS_ID" \
-  --query singlePlacementGroup -o tsv)
+VMSS_NAME=${VMSS_ID##*/}
+SINGLE_PLACEMENT=$(az vmss show --subscription "$SUBSCRIPTION_ID" \
+  --resource-group "$NODE_RG" --name "$VMSS_NAME" --query singlePlacementGroup -o tsv)
 [[ "$SINGLE_PLACEMENT" == "true" ]] || fail \
   "the RDMA pool VMSS must use singlePlacementGroup=true; got $SINGLE_PLACEMENT"
 pass "Both RDMA nodes are in one single-placement-group VMSS"

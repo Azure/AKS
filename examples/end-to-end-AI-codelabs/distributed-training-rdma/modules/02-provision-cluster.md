@@ -23,7 +23,8 @@ The script performs these operations in order:
 4. Finds the generated VMSS and fails unless `singlePlacementGroup=true`.
 
 The default uses the AKS-managed NVIDIA driver. Module 3 installs the device
-plugin and loads `nvidia-peermem`; it does not replace the AKS-managed driver.
+plugin and prepares `nvidia-peermem` or the modern DMA-BUF path; it does not
+replace the AKS-managed driver.
 
 ## Checkpoint
 

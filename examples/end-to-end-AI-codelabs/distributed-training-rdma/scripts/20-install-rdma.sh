@@ -116,7 +116,7 @@ helm upgrade --install rdma-lab-nvidia-device-plugin nvdp/nvidia-device-plugin \
   --values "$TMP_DIR/nvidia-device-plugin-values.yaml" \
   --wait --timeout 10m
 
-step "Loading nvidia-peermem"
+step "Preparing the GPUDirect peer-memory path"
 if kubectl get namespace gpu-resources >/dev/null 2>&1; then
   owner=$(kubectl get namespace gpu-resources -o json | \
     jq -r --arg key "$LAB_OWNER_TAG" '.metadata.labels[$key] // ""')
@@ -134,6 +134,12 @@ render_template "$ROOT/manifests/nvidia-peermem.yaml.tpl" "$TMP_DIR/nvidia-peerm
   "PEERMEM_IMAGE=$PEERMEM_IMAGE"
 kubectl apply -f "$TMP_DIR/nvidia-peermem.yaml"
 kubectl -n gpu-resources rollout status daemonset/nvidia-peermem-loader --timeout=15m
+loader_logs=$(kubectl -n gpu-resources logs -l app=nvidia-peermem-loader --tail=-1)
+if grep -q GPUDIRECT_DMABUF_FALLBACK <<<"$loader_logs"; then
+  warn "nvidia-peermem could not load; continuing with the DMA-BUF path. Module 5 must prove NET/IB/.../GDRDMA."
+else
+  pass "nvidia-peermem is loaded on the selected nodes"
+fi
 
 step "Verifying allocatable devices"
 for _ in $(seq 1 90); do
@@ -150,4 +156,4 @@ done
   "fewer than $LAB_GPU_NODE_COUNT nodes advertise nvidia.com/gpu and $LAB_RDMA_RESOURCE"
 matching_gpu_nodes_json | jq -r --arg rdma "$LAB_RDMA_RESOURCE" \
   '.items[] | [.metadata.name, .status.allocatable["nvidia.com/gpu"], .status.allocatable[$rdma]] | @tsv'
-pass "GPUs, InfiniBand devices, and nvidia-peermem are ready. Continue with modules/04-validate-infiniband.md."
+pass "GPUs and InfiniBand devices are ready; Module 5 will prove the peer-memory or DMA-BUF GPUDirect path."

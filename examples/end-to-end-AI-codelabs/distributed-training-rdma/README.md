@@ -17,7 +17,7 @@ flowchart LR
     NO[NVIDIA Network Operator] --> N0
     NO --> N1
     DP[RDMA shared device plugin] --> R[rdma/shared_ib]
-    PM[nvidia-peermem] --> GDR[GPUDirect RDMA]
+    PM[nvidia-peermem or DMA-BUF] --> GDR[GPUDirect RDMA]
     DDP[Two-rank PyTorch DDP app] --> TCP[NCCL Socket control]
     DDP --> GDR
     GDR --> METRICS[Step time and throughput comparison]
@@ -28,8 +28,8 @@ The lab validates each layer separately:
 
 1. **Placement:** both nodes belong to one VM scale set with
    `singlePlacementGroup=true`.
-2. **Kernel and scheduling:** Mellanox OFED, `nvidia-peermem`, GPUs, and
-   `rdma/shared_ib` are ready.
+2. **Kernel and scheduling:** Mellanox OFED, GPUs, `rdma/shared_ib`, and a
+   peer-memory path (`nvidia-peermem` or DMA-BUF) are ready.
 3. **Fabric:** verbs report an active InfiniBand link and cross-node
    `ib_write_bw` bandwidth.
 4. **Application transport:** NCCL reports Socket for the control and
@@ -78,7 +78,7 @@ After completing the lab, you'll be able to:
 | --- | --- | --- | ---: |
 | 1 | [Check prerequisites](modules/01-check-prerequisites.md) | Validate tools, feature state, SKU entitlement, RDMA capability, and quota | 5 minutes |
 | 2 | [Provision the cluster](modules/02-provision-cluster.md) | Create AKS and a two-node, single-placement-group RDMA GPU pool | 20–35 minutes |
-| 3 | [Enable RDMA and GPUDirect](modules/03-enable-rdma.md) | Install Network Operator, OFED, device plugins, and `nvidia-peermem` | 15–25 minutes |
+| 3 | [Enable RDMA and GPUDirect](modules/03-enable-rdma.md) | Install Network Operator, OFED, device plugins, and a GPUDirect memory path | 15–25 minutes |
 | 4 | [Validate InfiniBand](modules/04-validate-infiniband.md) | Prove active links and measure cross-node verbs latency/bandwidth | 5 minutes |
 | 5 | [Run the training comparison](modules/05-run-training-comparison.md) | Compare identical DDP steps over TCP and GPUDirect RDMA | 5–10 minutes |
 | 6 | [Observe and interpret results](modules/06-observe-results.md) | Verify transport evidence and interpret application metrics | 5 minutes |
@@ -125,21 +125,28 @@ A faster run without `GDRDMA` evidence is not counted as a GPUDirect result.
 
 ## Validation status
 
-The checked-in workload and validation scripts were exercised on a real AKS
-cluster with two `Standard_ND96isr_H200_v5` nodes. Each rank requested one H200
-GPU and one RDMA resource on a different node.
+The complete checked-in workflow was exercised from a new resource group to
+final deletion on a real AKS cluster in `eastus2euap`, with two managed
+`Standard_ND96isr_H200_v5` nodes in one single-placement-group VMSS. This run
+created the control plane and pool, installed every pinned component, validated
+the fabric, compared both transports, and deleted the resource group. Each DDP
+rank requested one H200 GPU and one RDMA resource on a different node.
 
-Measured results on 2026-09-19:
+The AKS-managed open NVIDIA module could not load `nvidia-peermem` after OFED
+installation, so the run took the documented DMA-BUF fallback. NCCL then proved
+that both accelerated ranks used `NET/IB/.../GDRDMA`.
+
+Measured results on 2026-09-20:
 
 <!-- markdownlint-disable MD013 -->
 
 | Check | Result |
 | --- | ---: |
-| InfiniBand link | Active, 400 Gb/s; 3.40 µs average read latency |
-| `ib_write_bw`, 8-MiB messages | 378.06 Gb/s average |
-| DDP over TCP | 401.562 ms/step, 2.490 steps/s, 0.668 GB/s effective gradient rate |
-| DDP over GPUDirect RDMA | 12.431 ms/step, 80.446 steps/s, 21.595 GB/s effective gradient rate |
-| Application improvement | **32.30x lower step time / 32.31x higher throughput** |
+| InfiniBand link | Active, 400 Gb/s; 3.29 µs average read latency |
+| `ib_write_bw`, 8-MiB messages | 379.96 Gb/s average |
+| DDP over TCP | 206.933 ms/step, 4.832 steps/s, 1.297 GB/s effective gradient rate |
+| DDP over GPUDirect RDMA | 11.716 ms/step, 85.351 steps/s, 22.911 GB/s effective gradient rate |
+| Application improvement | **17.66x lower step time / 17.66x higher throughput** |
 
 <!-- markdownlint-enable MD013 -->
 

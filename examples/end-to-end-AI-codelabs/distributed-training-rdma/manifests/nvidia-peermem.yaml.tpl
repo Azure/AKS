@@ -35,9 +35,16 @@ spec:
           set -euo pipefail
           apt-get update -qq
           DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends kmod
-          modprobe nvidia-peermem
-          test -d /sys/module/nvidia_peermem
-          echo NVIDIA_PEERMEM_READY
+          if modprobe nvidia-peermem && test -d /sys/module/nvidia_peermem; then
+            touch /tmp/nvidia-peermem-ready
+            echo NVIDIA_PEERMEM_READY
+          else
+            # Open NVIDIA kernel modules can use DMA-BUF instead. Module 5 must
+            # still prove the actual NCCL path with NET/IB/.../GDRDMA.
+            touch /tmp/dmabuf-fallback
+            echo GPUDIRECT_DMABUF_FALLBACK
+          fi
+          touch /tmp/gpudirect-prerequisite-checked
           sleep infinity
         securityContext:
           privileged: true
@@ -46,19 +53,19 @@ spec:
           limits: {cpu: "1", memory: 512Mi}
         startupProbe:
           exec:
-            command: [/bin/bash, -c, command -v modprobe && modprobe nvidia-peermem && test -d /sys/module/nvidia_peermem]
+            command: [/bin/bash, -c, test -f /tmp/gpudirect-prerequisite-checked]
           initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 120
           timeoutSeconds: 10
         readinessProbe:
           exec:
-            command: [/bin/bash, -c, test -d /sys/module/nvidia_peermem]
+            command: [/bin/bash, -c, test -f /tmp/gpudirect-prerequisite-checked]
           initialDelaySeconds: 5
           periodSeconds: 10
         livenessProbe:
           exec:
-            command: [/bin/bash, -c, modprobe nvidia-peermem && test -d /sys/module/nvidia_peermem]
+            command: [/bin/bash, -c, test -f /tmp/dmabuf-fallback || (modprobe nvidia-peermem && test -d /sys/module/nvidia_peermem)]
           initialDelaySeconds: 30
           periodSeconds: 30
           failureThreshold: 1

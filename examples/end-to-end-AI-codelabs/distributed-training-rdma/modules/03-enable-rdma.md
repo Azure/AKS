@@ -16,12 +16,14 @@ The script installs pinned components based on
 - Mellanox DOCA OFED on nodes carrying ConnectX devices.
 - RDMA shared device plugin, exposing `rdma/shared_ib` pod slots.
 - NVIDIA device plugin `0.17.4`, exposing `nvidia.com/gpu`.
-- A privileged loader for `nvidia-peermem`, which permits NCCL to transfer
-  directly between GPU memory and the InfiniBand NIC.
+- A privileged `nvidia-peermem` loader. If the AKS-managed open NVIDIA module
+  cannot load `nvidia-peermem` after OFED changes, the loader records a DMA-BUF
+  fallback; Module 5 must still prove `NET/IB/.../GDRDMA` on both ranks.
 
 The operator may drain and restart RDMA nodes while replacing networking
 modules. The script waits for reconciliation before checking allocatable
-resources.
+resources. A DMA-BUF fallback is not treated as proof by itself: only the
+application's NCCL `GDRDMA` evidence completes GPUDirect validation.
 
 ## Checkpoint
 
