@@ -10,6 +10,14 @@ require_command jq "Install jq."
 require_command python3 "Install Python 3."
 require_lab_context
 
+get_optional_resource_json() {
+  local kind=$1 name=$2 result
+  if ! result=$(kubectl get "$kind" "$name" --ignore-not-found -o json); then
+    fail "could not inspect $kind/$name"
+  fi
+  printf '%s' "$result"
+}
+
 if [[ "$LAB_REUSE_RDMA_STACK" == "true" ]]; then
   step "Checking the existing RDMA stack"
   result=$(matching_gpu_nodes_json | jq -r --arg rdma "$LAB_RDMA_RESOURCE" '
@@ -30,17 +38,21 @@ fi
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 
-if kubectl get nicclusterpolicy nic-cluster-policy >/dev/null 2>&1; then
-  owner=$(kubectl get nicclusterpolicy nic-cluster-policy -o json | \
-    jq -r --arg key "$LAB_OWNER_TAG" '.metadata.labels[$key] // ""')
-  [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail \
-    "nic-cluster-policy already exists and isn't owned by this codelab"
+nic_crd=$(get_optional_resource_json crd nicclusterpolicies.mellanox.com)
+if [[ -n "$nic_crd" ]]; then
+  policy=$(get_optional_resource_json nicclusterpolicy nic-cluster-policy)
+  if [[ -n "$policy" ]]; then
+    owner=$(jq -r --arg key "$LAB_OWNER_TAG" '.metadata.labels[$key] // ""' <<<"$policy")
+    [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail \
+      "nic-cluster-policy already exists and isn't owned by this codelab"
+  fi
 fi
 
 step "Installing NVIDIA Network Operator"
-if kubectl get namespace network-operator >/dev/null 2>&1; then
-  owner=$(kubectl get namespace network-operator -o json | \
-    jq -r --arg key "$LAB_OWNER_TAG" '.metadata.labels[$key] // ""')
+network_namespace=$(get_optional_resource_json namespace network-operator)
+if [[ -n "$network_namespace" ]]; then
+  owner=$(jq -r --arg key "$LAB_OWNER_TAG" \
+    '.metadata.labels[$key] // ""' <<<"$network_namespace")
   [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail \
     "network-operator already exists and isn't owned by this codelab"
 else
@@ -57,20 +69,22 @@ helm upgrade --install network-operator nvidia/network-operator \
   --values "$ROOT/manifests/network-operator-values.yaml" \
   --wait --timeout 10m
 
+nic_crd=""
+nfd_crd=""
 for _ in $(seq 1 60); do
-  if kubectl get crd nicclusterpolicies.mellanox.com >/dev/null 2>&1 && \
-     kubectl get crd nodefeaturerules.nfd.k8s-sigs.io >/dev/null 2>&1; then
-    break
-  fi
+  nic_crd=$(get_optional_resource_json crd nicclusterpolicies.mellanox.com)
+  nfd_crd=$(get_optional_resource_json crd nodefeaturerules.nfd.k8s-sigs.io)
+  [[ -n "$nic_crd" && -n "$nfd_crd" ]] && break
   sleep 5
 done
-kubectl get crd nicclusterpolicies.mellanox.com >/dev/null 2>&1 || fail \
+[[ -n "$nic_crd" && -n "$nfd_crd" ]] || fail \
   "Network Operator CRDs did not become available"
 
 step "Installing Mellanox OFED and the RDMA shared device plugin"
-if kubectl get nodefeaturerule rdma-training-mellanox >/dev/null 2>&1; then
-  owner=$(kubectl get nodefeaturerule rdma-training-mellanox -o json | \
-    jq -r --arg key "$LAB_OWNER_TAG" '.metadata.labels[$key] // ""')
+feature_rule=$(get_optional_resource_json nodefeaturerule rdma-training-mellanox)
+if [[ -n "$feature_rule" ]]; then
+  owner=$(jq -r --arg key "$LAB_OWNER_TAG" \
+    '.metadata.labels[$key] // ""' <<<"$feature_rule")
   [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail \
     "rdma-training-mellanox already exists and isn't owned by this codelab"
 fi
@@ -117,9 +131,10 @@ helm upgrade --install rdma-lab-nvidia-device-plugin nvdp/nvidia-device-plugin \
   --wait --timeout 10m
 
 step "Preparing the GPUDirect peer-memory path"
-if kubectl get namespace gpu-resources >/dev/null 2>&1; then
-  owner=$(kubectl get namespace gpu-resources -o json | \
-    jq -r --arg key "$LAB_OWNER_TAG" '.metadata.labels[$key] // ""')
+gpu_namespace=$(get_optional_resource_json namespace gpu-resources)
+if [[ -n "$gpu_namespace" ]]; then
+  owner=$(jq -r --arg key "$LAB_OWNER_TAG" \
+    '.metadata.labels[$key] // ""' <<<"$gpu_namespace")
   [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail \
     "gpu-resources already exists and isn't owned by this codelab"
 else
