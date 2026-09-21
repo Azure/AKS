@@ -22,6 +22,7 @@
 
 #### Preview features
 
+* [AKS Hyperscale Configuration](https://aka.ms/aks/hyperscale) is now available in public preview. It lets customers running large AI, high-performance computing (HPC), batch processing, and enterprise workloads preprovision control plane capacity with H2, H4, and H8 scaling profiles. These profiles provide predictable Kubernetes API responsiveness, pod scheduling throughput, and cluster state management during scale-out, recovery, and traffic spikes.
 * Existing clusters can now be [converted to use a managed system node pool](https://aka.ms/aks/hobo-conversion) in supported regions after registering the required preview feature.
 * Node pools with an in-progress [blue-green upgrade](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade) can now switch safely to the rolling upgrade strategy.
 * On-Demand Monitor, a new [Cluster Health Monitor](https://learn.microsoft.com/azure/aks/cluster-health-monitor) capability for node health checks and remediation, is available in preview.
