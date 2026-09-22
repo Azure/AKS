@@ -85,6 +85,7 @@ The workloads in Module 3:
 - **[Batch inference](3-workloads/batch-inference/)** — Parallel inference over a dataset using Ray Data and ActorPool (RayJob)
 - **[Online serving](3-workloads/online-serving/)** — Aurora model served behind a stable HTTP endpoint with Ray Serve (RayService)
 - **[CAS batch job](3-workloads/cas-batch-job/)** — a plain batch Job that provisions capacity on demand via a Kueue ProvisioningRequest driving the AKS cluster autoscaler
+- **[GPU labs](3-workloads/gpu-lab/)** — end-to-end GPU walkthrough: provision an autoscaling GPU pool, verify the hardware (driver, CUDA, NCCL), run multi-node distributed training with gang scheduling, exercise queue contention, and check DCGM/Kueue/CAS metrics
 
 ## Prerequisites
 

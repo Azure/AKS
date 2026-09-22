@@ -1,0 +1,107 @@
+# Lab 1 — Single-node GPU verification.
+#
+# Goal: prove the GPU stack works end to end before you trust it with a real
+# training run. This job asks Kueue for all 8 GPUs on one node, which forces a
+# ProvisioningRequest through CAS, then reports what it actually got.
+#
+# Three checks, in increasing order of strength:
+#
+#   1. nvidia-smi          — driver + device plugin are wired up
+#   2. CUDA compute        — the GPU can actually run a kernel
+#   3. NCCL all-reduce     — the interconnect between GPUs performs correctly
+#
+# Step 3 is the one that catches the expensive failures. A node can pass
+# nvidia-smi and still have NVLink degraded to PCIe, which silently turns a
+# multi-GPU training job into a crawl. Bus bandwidth is the number that tells
+# you, and you want to check it BEFORE queueing a multi-day run.
+#
+# Submit:
+#   kubectl apply -f 10-gpu-verify.yaml
+#
+# Watch admission (stays Suspended until CAS provisions):
+#   kubectl -n gpu-lab get workload -w
+#
+# Read the results:
+#   kubectl -n gpu-lab logs job/gpu-verify
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gpu-verify
+  namespace: gpu-lab
+  labels:
+    # Routes the Job through Kueue. Without this label Kueue ignores the Job
+    # and it schedules directly, bypassing the provisioning gate.
+    kueue.x-k8s.io/queue-name: gpu-local-queue
+spec:
+  # Kueue requires suspend: true. It flips this to false on admission, which is
+  # the whole point: the pod is not created until the GPUs exist.
+  suspend: true
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: verify
+          # NGC PyTorch ships nvidia-smi, a CUDA runtime, and the NCCL test
+          # binaries in one image, so all three checks run without a build step.
+          # It is large (~9 GB); the first pull onto a fresh node takes several
+          # minutes, which is normal and worth knowing before you think it hung.
+          image: nvcr.io/nvidia/pytorch:24.12-py3
+          command:
+            - bash
+            - -lc
+            - |
+              set -euo pipefail
+
+              echo "=============================================="
+              echo "1. Devices visible to this container"
+              echo "=============================================="
+              nvidia-smi --query-gpu=index,name,memory.total,driver_version \
+                         --format=csv
+
+              echo
+              echo "=============================================="
+              echo "2. CUDA compute check"
+              echo "=============================================="
+              python -c "
+              import torch
+              assert torch.cuda.is_available(), 'CUDA not available'
+              n = torch.cuda.device_count()
+              print(f'torch sees {n} GPU(s)')
+              # Real work on each device, not just a capability query.
+              for i in range(n):
+                  x = torch.randn(8192, 8192, device=f'cuda:{i}')
+                  torch.cuda.synchronize(i)
+                  print(f'  cuda:{i} {torch.cuda.get_device_name(i)} matmul ok '
+                        f'-> {float((x @ x).sum()):.3e}')
+              "
+
+              echo
+              echo "=============================================="
+              echo "3. NCCL all-reduce across all GPUs"
+              echo "=============================================="
+              # -g 8 = 8 GPUs in one process group. busbw is the number that
+              # matters: on 8xA100 SXM (NVLink) expect roughly 200+ GB/s.
+              # If you see single-digit or low-tens GB/s, the GPUs are talking
+              # over PCIe instead of NVLink -- investigate before training.
+              all_reduce_perf -b 512M -e 2G -f 2 -g 8
+
+              echo
+              echo "All checks passed."
+          resources:
+            limits:
+              # Whole-node request. This is what triggers the atomic scale-up:
+              # no existing node can satisfy it unless a full GPU node is free.
+              nvidia.com/gpu: 8
+          volumeMounts:
+            # NCCL and CUDA use shared memory for inter-process transfers. The
+            # default 64 MB /dev/shm is a classic cause of cryptic NCCL hangs.
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 16Gi
