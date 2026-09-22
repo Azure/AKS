@@ -1,17 +1,17 @@
 ---
 title: "Announcing the public preview of flex nodes for AKS"
 date: "2026-09-22"
-description: "Extend one AKS control plane to run worker nodes across Azure regions, other clouds, and on-premises hardware securely with flex nodes for AKS (preview)."
+description: "Extend one AKS control plane to run worker nodes across Azure regions, edge, and on-premises hardware securely with flex nodes for AKS (preview)."
 
 authors: ["sachi-desai", "leslie-lin"]
 tags: ["operations", "devops", "ai"]
 ---
 
-Today, we’re announcing the public preview of flex nodes for AKS, a new capability that lets you extend an existing Azure Kubernetes Service (AKS) cluster with worker nodes in other Azure regions, third-party cloud providers, and on-premises or edge environments. These nodes connect to your cluster’s API server over an encrypted overlay network and operate as standard node pools - extending the Kubernetes scheduler, RBAC, policy, and observability you already use without adding another cluster to manage.
+Today, we’re announcing the public preview of flex nodes for AKS, a new capability that lets you extend an existing Azure Kubernetes Service (AKS) cluster with worker nodes in other Azure regions, on-premises or edge environments. These nodes connect to your cluster’s API server over an encrypted overlay network and operate as standard node pools - extending the Kubernetes scheduler, RBAC, policy, and observability you already use without adding another cluster to manage.
 
 <!-- truncate -->
 
-Customers have told us that compute location is rarely a simple choice. Sometimes data cannot contractually leave a specific facility. Sometimes the preferred cloud region is constrained even though suitable capacity is available in another region, on-premises, or through an alternate compute provider. And sometimes a workload needs to run close to the data, users, or devices it serves to avoid extra latency. Today, each of these situations often means waiting, overprovisioning, or operating another Kubernetes cluster: with another control plane, upgrade cycle, and set of policies. Flex nodes for AKS (preview) is designed to bring that distributed compute into one familiar operating model. Below, we'll explore these common scenarios in more detail.
+Customers have told us that compute location is rarely a simple choice. Sometimes data cannot contractually leave a specific facility. Sometimes the preferred cloud region is constrained even though suitable capacity is available in another region or on-premises. And sometimes a workload needs to run close to the data, users, or devices it serves to avoid extra latency. Today, each of these situations often means waiting, overprovisioning, or operating another Kubernetes cluster: with another control plane, upgrade cycle, and set of policies. Flex nodes for AKS (preview) is designed to bring that distributed compute into one familiar operating model. Below, we'll explore these common scenarios in more detail.
 
 ![Flex nodes high level architecture and key capabilities](./flex-nodes-diagram.png)
 
@@ -23,7 +23,7 @@ With flex nodes, cluster operators can register capacity from an alternate regio
 
 ## Aggregating compute across regions under a single control plane
 
-Many organizations run compute in multiple Azure regions, and increasingly across compute providers, but manage each as a separate cluster stitched together with GitOps and service mesh tooling. Flex nodes allows nodes from multiple regions and providers to join a single AKS control plane, supporting a range of Azure authentication methods like managed identity, Azure Arc, and service principal. Operators retain a single view of the cluster's full footprint through standard tools like kubectl, while workload placement continues to use native Kubernetes primitives, including node affinity, taints and tolerations, and topology spread constraints.
+Many organizations run compute in multiple Azure regions and private datacenters, but manage each as a separate cluster stitched together with GitOps and service mesh tooling. Flex nodes allows nodes from multiple regions and providers to join a single AKS control plane, supporting a range of Azure authentication methods like managed identity, Azure Arc, and service principal. Operators retain a single view of the cluster's full footprint through standard tools like kubectl, while workload placement continues to use native Kubernetes primitives, including node affinity, taints and tolerations, and topology spread constraints.
 
 ## Workload placement for data residency on-premises
 
@@ -33,4 +33,3 @@ Regulated workloads in healthcare, financial services, and the public sector fre
 
 Flex nodes for AKS is available today in public preview. Documentation, including setup guidance and supported scenarios, is available on Microsoft Learn: [flex nodes for AKS overview](https://aka.ms/aks/flexnodeforaks).
 As with all AKS preview features, this release is shaped directly by customer feedback. We're particularly interested in hearing about your capacity and networking use cases, additional provider and hardware scenarios, and any gaps you encounter while testing. Please share feedback through the [AKS Flex Node GitHub repository](https://aka.ms/aks-flex-node/github) and we look forward to seeing what you build!
-As with all AKS preview features, this release is shaped directly by customer feedback. We're particularly interested in hearing about your capacity and networking use cases, additional provider and hardware scenarios, and any gaps you encounter while testing. Please share feedback through the [AKS GitHub repository](https://github.com/Azure/AKS) and we look forward to seeing what you build!
