@@ -24,12 +24,12 @@ With flex nodes, cluster operators can register capacity from an alternate regio
 
 Many organizations run compute in multiple Azure regions, and increasingly across compute providers, but manage each as a separate cluster stitched together with GitOps and service mesh tooling. Flex nodes allows nodes from multiple regions and providers to join a single AKS control plane, supporting a range of Azure authentication methods like managed identity, Azure Arc, and service principal. Operators retain a single view of the cluster's full footprint through standard tools like kubectl, while workload placement continues to use native Kubernetes primitives, including node affinity, taints and tolerations, and topology spread constraints.
 
-## Workload placement for data residency on-premises 
+## Workload placement for data residency on-premises
 
-Regulated workloads in healthcare, financial services, and the public sector frequently require that data remain within a specific facility, without managing the lifecycle of a separate on-premises Kubernetes stack. Flex nodes allows on-premises servers to join an AKS cluster as worker nodes. Operators can then use node selectors and taints to pin workloads that must remain local to that hardware, while the remainder of the cluster's workloads run in Azure. Cluster-wide setup remains unified across both environments, and only the data and the compute that processes it stay on-premises. 
+Regulated workloads in healthcare, financial services, and the public sector frequently require that data remain within a specific facility, without managing the lifecycle of a separate on-premises Kubernetes stack. Flex nodes allows on-premises servers to join an AKS cluster as worker nodes. Operators can then use node selectors and taints to pin workloads that must remain local to that hardware, while the remainder of the cluster's workloads run in Azure. Cluster-wide setup remains unified across both environments, and only the data and the compute that processes it stay on-premises.
 
 ## Get started today
 
 Flex nodes for AKS is available today in public preview. Documentation, including setup guidance and supported scenarios, is available on Microsoft Learn: [flex nodes for AKS overview](https://aka.ms/aks/flexnodeforaks).
 
-As with all AKS preview features, this release is shaped directly by customer feedback. We're particularly interested in hearing about your capacity and networking use cases, additional provider and hardware scenarios, and any gaps you encounter while testing. Please share feedback through the [AKS GitHub repository](https://github.com/Azure/AKS) and we look forward to seeing what you build! 
+As with all AKS preview features, this release is shaped directly by customer feedback. We're particularly interested in hearing about your capacity and networking use cases, additional provider and hardware scenarios, and any gaps you encounter while testing. Please share feedback through the [AKS GitHub repository](https://github.com/Azure/AKS) and we look forward to seeing what you build!
