@@ -1,7 +1,8 @@
 ---
 title: "Announcing the public preview of flex nodes for AKS"
 date: "2026-09-22"
-description: "Extend one AKS control plane to run worker nodes across Azure regions, other clouds, and on-premises hardware securely with flex nodes for AKS (preview)."
+description: "Extend one AKS control plane to run worker nodes across Azure regions, other clouds, and on-premises hardware securely with flex nodes for AKS (preview)."
+
 authors: ["sachi-desai", "leslie-lin"]
 tags: ["operations", "devops", "ai"]
 ---
@@ -31,5 +32,5 @@ Regulated workloads in healthcare, financial services, and the public sector fre
 ## Get started today
 
 Flex nodes for AKS is available today in public preview. Documentation, including setup guidance and supported scenarios, is available on Microsoft Learn: [flex nodes for AKS overview](https://aka.ms/aks/flexnodeforaks).
-
+As with all AKS preview features, this release is shaped directly by customer feedback. We're particularly interested in hearing about your capacity and networking use cases, additional provider and hardware scenarios, and any gaps you encounter while testing. Please share feedback through the [AKS Flex Node GitHub repository](https://aka.ms/aks-flex-node/github) and we look forward to seeing what you build!
 As with all AKS preview features, this release is shaped directly by customer feedback. We're particularly interested in hearing about your capacity and networking use cases, additional provider and hardware scenarios, and any gaps you encounter while testing. Please share feedback through the [AKS GitHub repository](https://github.com/Azure/AKS) and we look forward to seeing what you build!
