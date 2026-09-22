@@ -1,7 +1,7 @@
 ---
 title: "Announcing the public preview of flex nodes for AKS"
 date: "2026-09-22"
-description: "Extending a single AKS control plane to consolidate your compute across Azure regions, external clouds, or on-premises hardware with flex nodes for AKS (public preview)."
+description: "Extending a single AKS control plane to consolidate your compute across Azure regions, external clouds, or on-premises hardware with flex nodes for AKS (preview)."
 authors: ["sachi-desai", "leslie-lin"]
 tags: ["operations", "devops", "ai"]
 ---
