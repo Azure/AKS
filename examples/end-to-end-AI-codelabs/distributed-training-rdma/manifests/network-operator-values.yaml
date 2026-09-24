@@ -1,3 +1,6 @@
+# Persisted in the Helm release so reruns can verify fixed-name ownership.
+aksCodelabOwner: distributed-training-rdma
+
 # Network Operator deploys NFD; the codelab supplies the Azure Mellanox rule.
 nfd:
   deployNodeFeatureRules: false

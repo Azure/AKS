@@ -60,6 +60,14 @@ else
 fi
 kubectl label namespace network-operator "$LAB_OWNER_TAG=$LAB_OWNER_VALUE" \
   pod-security.kubernetes.io/enforce=privileged --overwrite >/dev/null
+NETWORK_RELEASES=$(helm list --namespace network-operator -o json) || fail \
+  "could not inspect existing Helm releases in network-operator"
+if jq -e '.[] | select(.name=="network-operator")' >/dev/null <<<"$NETWORK_RELEASES"; then
+  release_owner=$(helm get values network-operator --namespace network-operator \
+    -o json | jq -r '.aksCodelabOwner // ""')
+  [[ "$release_owner" == "$LAB_OWNER_VALUE" ]] || fail \
+    "Helm release network-operator/network-operator isn't owned by this codelab"
+fi
 
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia --force-update >/dev/null
 helm repo update nvidia >/dev/null
