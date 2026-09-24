@@ -153,20 +153,24 @@ Measured results on 2026-09-20:
 The accelerated logs contained `via NET/IB/.../GDRDMA`; the control logs
 contained `NET/Socket`.
 
-The workload path was also validated on two idle nodes in an existing
-`Standard_ND96isr_H100_v5` AKS pool. That pool exposes its RDMA resource as the
-valid Kubernetes quantity `1k`, so the scripts accept nonzero quantity suffixes
-instead of assuming all extended resources are plain integers.
+The same complete create-to-delete workflow also passed in `koreacentral` with
+two managed `Standard_ND96isr_H100_v5` nodes:
 
 <!-- markdownlint-disable MD013 -->
 
-| H100 check | Result |
+| Fresh H100 check | Result |
 | --- | ---: |
-| InfiniBand link | Active, 400 Gb/s; 5.24 µs average read latency |
-| `ib_write_bw`, 8-MiB messages | 378.46 Gb/s average |
-| DDP over TCP | 280.383 ms/step, 3.567 steps/s |
-| DDP over GPUDirect RDMA | 12.582 ms/step, 79.481 steps/s |
-| Application improvement | **22.28x** |
+| InfiniBand link | Active, 400 Gb/s; 4.77 µs average read latency |
+| `ib_write_bw`, 8-MiB messages | 379.67 Gb/s average |
+| DDP over TCP | 271.361 ms/step, 3.685 steps/s |
+| DDP over GPUDirect RDMA | 11.915 ms/step, 83.929 steps/s |
+| Application improvement | **22.77x** |
+
+The workload path was independently repeated on two idle nodes in an existing
+South Africa `Standard_ND96isr_H100_v5` pool: 378.46 Gb/s IB and a 22.28x DDP
+speedup. That pool exposes its RDMA resource as the valid Kubernetes quantity
+`1k`, so the scripts accept nonzero quantity suffixes instead of assuming all
+extended resources are plain integers.
 
 The InfiniBand-only phase was also validated between two
 `Standard_ND96amsr_A100_v4` AKS nodes: the 200-Gb/s link was Active,
