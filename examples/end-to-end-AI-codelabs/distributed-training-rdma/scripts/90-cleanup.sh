@@ -46,9 +46,12 @@ cluster_exists || fail \
   "$LAB_CLUSTER does not exist; refusing to run kubectl against the current context"
 require_lab_context
 step "Deleting codelab workloads"
-if kubectl get namespace "$LAB_NAMESPACE" >/dev/null 2>&1; then
-  owner=$(kubectl get namespace "$LAB_NAMESPACE" -o json | \
-    jq -r --arg key "$LAB_OWNER_TAG" '.metadata.labels[$key] // ""')
+if ! namespace=$(kubectl get namespace "$LAB_NAMESPACE" --ignore-not-found -o json); then
+  fail "could not inspect namespace $LAB_NAMESPACE"
+fi
+if [[ -n "$namespace" ]]; then
+  owner=$(jq -r --arg key "$LAB_OWNER_TAG" \
+    '.metadata.labels[$key] // ""' <<<"$namespace")
   [[ "$owner" == "$LAB_OWNER_VALUE" ]] || fail \
     "refusing to delete unowned namespace $LAB_NAMESPACE"
   kubectl delete namespace "$LAB_NAMESPACE" --wait=false
