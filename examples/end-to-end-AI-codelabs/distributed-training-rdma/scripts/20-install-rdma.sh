@@ -23,11 +23,11 @@ if [[ "$LAB_REUSE_RDMA_STACK" == "true" ]]; then
   result=$(matching_gpu_nodes_json | jq -r --arg rdma "$LAB_RDMA_RESOURCE" '
     [.items[] | {
       name: .metadata.name,
-      gpu: (.status.allocatable["nvidia.com/gpu"] // "0" | tonumber),
-      rdma: (.status.allocatable[$rdma] // "0" | tonumber)
+      gpu: (.status.allocatable["nvidia.com/gpu"] // "0"),
+      rdma: (.status.allocatable[$rdma] // "0")
     }]')
   printf '%s\n' "$result"
-  good=$(jq '[.[] | select(.gpu > 0 and .rdma > 0)] | length' <<<"$result")
+  good=$(jq '[.[] | select(.gpu != "0" and .gpu != "0m" and .rdma != "0" and .rdma != "0m")] | length' <<<"$result")
   (( good >= 2 )) || fail "two matching nodes must advertise nvidia.com/gpu and $LAB_RDMA_RESOURCE"
   pass "Reusing the existing device plugins on $good nodes"
   exit 0
@@ -161,8 +161,8 @@ for _ in $(seq 1 90); do
   nodes=$(matching_gpu_nodes_json)
   good=$(jq --arg rdma "$LAB_RDMA_RESOURCE" '[.items[] | select(
     any(.status.conditions[]; .type=="Ready" and .status=="True") and
-    ((.status.allocatable["nvidia.com/gpu"] // "0" | tonumber) > 0) and
-    ((.status.allocatable[$rdma] // "0" | tonumber) > 0))] | length' <<<"$nodes")
+    ((.status.allocatable["nvidia.com/gpu"] // "0") as $gpu | $gpu != "0" and $gpu != "0m") and
+    ((.status.allocatable[$rdma] // "0") as $rdmaQty | $rdmaQty != "0" and $rdmaQty != "0m"))] | length' <<<"$nodes")
   printf 'Nodes with GPU + RDMA resources: %s/%s\n' "$good" "$LAB_GPU_NODE_COUNT"
   (( good >= LAB_GPU_NODE_COUNT )) && break
   sleep 10

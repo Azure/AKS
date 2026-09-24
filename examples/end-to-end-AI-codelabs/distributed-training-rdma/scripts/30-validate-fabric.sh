@@ -18,11 +18,11 @@ nodes=$(matching_gpu_nodes_json)
 summary=$(jq --arg rdma "$LAB_RDMA_RESOURCE" '[.items[] | {
   name: .metadata.name,
   ready: ([.status.conditions[] | select(.type=="Ready")][0].status // "False"),
-  gpu: (.status.allocatable["nvidia.com/gpu"] // "0" | tonumber),
-  rdma: (.status.allocatable[$rdma] // "0" | tonumber)
+  gpu: (.status.allocatable["nvidia.com/gpu"] // "0"),
+  rdma: (.status.allocatable[$rdma] // "0")
 }]' <<<"$nodes")
 printf '%s\n' "$summary"
-good=$(jq '[.[] | select(.ready=="True" and .gpu>0 and .rdma>0)] | length' <<<"$summary")
+good=$(jq '[.[] | select(.ready=="True" and .gpu!="0" and .gpu!="0m" and .rdma!="0" and .rdma!="0m")] | length' <<<"$summary")
 (( good >= 2 )) || fail "two Ready $LAB_GPU_SKU nodes must advertise nvidia.com/gpu and $LAB_RDMA_RESOURCE"
 pass "$good matching nodes expose both resources"
 

@@ -151,9 +151,28 @@ Measured results on 2026-09-20:
 <!-- markdownlint-enable MD013 -->
 
 The accelerated logs contained `via NET/IB/.../GDRDMA`; the control logs
-contained `NET/Socket`. Exact numbers vary by SKU, image, topology, and cluster
-load. The scripts enforce evidence and configurable floors rather than assuming
-these H200 values everywhere.
+contained `NET/Socket`.
+
+The workload path was also validated on two idle nodes in an existing
+`Standard_ND96isr_H100_v5` AKS pool. That pool exposes its RDMA resource as the
+valid Kubernetes quantity `1k`, so the scripts accept nonzero quantity suffixes
+instead of assuming all extended resources are plain integers.
+
+<!-- markdownlint-disable MD013 -->
+
+| H100 check | Result |
+| --- | ---: |
+| InfiniBand link | Active, 400 Gb/s; 5.24 µs average read latency |
+| `ib_write_bw`, 8-MiB messages | 378.46 Gb/s average |
+| DDP over TCP | 280.383 ms/step, 3.567 steps/s |
+| DDP over GPUDirect RDMA | 12.582 ms/step, 79.481 steps/s |
+| Application improvement | **22.28x** |
+
+<!-- markdownlint-enable MD013 -->
+
+Exact numbers vary by SKU, image, topology, and cluster load. The scripts
+enforce evidence and configurable floors rather than assuming these values
+everywhere.
 
 ## Sources
 

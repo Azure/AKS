@@ -17,8 +17,8 @@ rm -f "$LAB_RESULTS_DIR"/{tcp,rdma}.json "$LAB_RESULTS_DIR"/summary.{json,md} \
 SELECTED_NODES=$(matching_gpu_nodes_json | jq -r --arg rdma "$LAB_RDMA_RESOURCE" '
   [.items[] | select(
     any(.status.conditions[]; .type=="Ready" and .status=="True") and
-    ((.status.allocatable["nvidia.com/gpu"] // "0" | tonumber) >= 1) and
-    ((.status.allocatable[$rdma] // "0" | tonumber) >= 1)) |
+    ((.status.allocatable["nvidia.com/gpu"] // "0") as $gpu | $gpu != "0" and $gpu != "0m") and
+    ((.status.allocatable[$rdma] // "0") as $rdmaQty | $rdmaQty != "0" and $rdmaQty != "0m")) |
     .metadata.name] | sort | .[]')
 RANK0_NODE=$(printf '%s\n' "$SELECTED_NODES" | sed -n '1p')
 RANK1_NODE=$(printf '%s\n' "$SELECTED_NODES" | sed -n '2p')
