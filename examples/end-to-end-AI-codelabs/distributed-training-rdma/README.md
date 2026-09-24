@@ -168,6 +168,12 @@ instead of assuming all extended resources are plain integers.
 | DDP over GPUDirect RDMA | 12.582 ms/step, 79.481 steps/s |
 | Application improvement | **22.28x** |
 
+The InfiniBand-only phase was also validated between two
+`Standard_ND96amsr_A100_v4` AKS nodes: the 200-Gb/s link was Active,
+`ib_read_lat` averaged 5.99 µs, and `ib_write_bw` sustained 187.78 Gb/s. One
+node's GPUs were fully allocated by an existing workload, so no A100 DDP A/B
+result is claimed.
+
 <!-- markdownlint-enable MD013 -->
 
 Exact numbers vary by SKU, image, topology, and cluster load. The scripts
