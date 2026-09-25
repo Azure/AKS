@@ -1,7 +1,7 @@
 ---
 title: "AKS on bare metal now on Ubuntu"
 date: 2026-09-30
-description: "Run Azure Kubernetes Service directly on customer-owned Ubuntu infrastructure with bare metal performance, flexible hardware choices, and consistent management through Azure."
+description: "Run Azure Kubernetes Service on customer-owned Ubuntu infrastructure with bare metal performance, flexible hardware choices, and consistent Azure management."
 authors: ["rishi-mody"]
 tags: ["aks-on-baremetal", "ai", "gpu", "operations"]
 draft: true
@@ -48,7 +48,7 @@ This flexibility allows organizations to align Kubernetes with their existing ha
 
 Direct access to local hardware and data makes AKS on bare metal Ubuntu well suited for AI inference, computer vision, industrial automation, intelligent retail, telecommunications, and data processing at the edge.
 
-## Get started with single command
+## Get started with a single command
 
 The fastest way to try AKS on bare metal Ubuntu is to run a single command on a  customer-owned Ubuntu machine:
 
@@ -63,7 +63,7 @@ This end-to-end quickstart script maintained by the AKS team installs the requir
 The public preview provides a streamlined Azure CLI path from a provisioned, Arc enabled Ubuntu machine to a running AKS cluster. With a single Azure Resource Manager deployment command, customers can create the required Azure resources and deploy AKS directly on their physical server.
 
 ```bash
-az aksarc deploy -–resource-group <resource-group-name> --arc-machine-names <machine-name>
+az aksarc deploy --resource-group <resource-group-name> --arc-machine-names <machine-name>
 ```
 
 ## Consistent management through Azure
