@@ -627,3 +627,12 @@ leslie-lin:
   url: https://github.com/leslielin-5
   socials:
     github: leslielin-5
+
+will-case:
+  name: Will Case
+  title: Product Manager
+  url: https://github.com/willspacecase
+  image_url: https://github.com/willspacecase.png
+  page: true
+  socials:
+    github: willspacecase
