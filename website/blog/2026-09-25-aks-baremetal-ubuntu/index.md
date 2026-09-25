@@ -3,7 +3,7 @@ title: "AKS on bare metal now on Ubuntu"
 date: 2026-09-30
 description: "Run Azure Kubernetes Service directly on customer-owned Ubuntu infrastructure with bare metal performance, flexible hardware choices, and consistent management through Azure."
 authors: ["rishi-mody"]
-tags: ["aks-on-baremetal", "ai", "gpu", "operations"]
+tags: ["aks-on-baremetal", "ai", "self-managed gpu"]
 draft: true
 ---
 
@@ -17,7 +17,7 @@ Today, we are announcing the public preview of AKS on bare metal Ubuntu. Custome
 
 This release extends the AKS experience to organizations that need Kubernetes close to their applications, devices, and data. It is designed for environments such as retail locations, factories, branch sites, telecommunications infrastructure, and on-premises AI systems, where performance, latency, hardware access, or data residency are critical.
 
-Earlier this year, we introduced AKS running directly on bare metal through Azure Local small form factor. Support for Ubuntu expands that vision by giving customers another way to run AKS on infrastructure they own while maintaining a consistent Kubernetes and Azure management experience.
+Earlier this year, we introduced AKS running directly on bare metal Azure Linux through Azure Local small form factor. Support for Ubuntu expands that vision by giving customers another way to run AKS on infrastructure they own while maintaining a consistent Kubernetes and Azure management experience.
 
 ![AKS on bare metal Ubuntu high level architecture and key capabilities](./bare-metal-ubuntu.png)
 
