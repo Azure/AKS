@@ -50,7 +50,7 @@ Direct access to local hardware and data makes AKS on bare metal Ubuntu well sui
 
 ## Get started with a single command
 
-The fastest way to try AKS on bare metal Ubuntu is to run a single command on a  customer-owned Ubuntu machine:
+The fastest way to try AKS on bare metal Ubuntu is to run a single command on a customer-owned Ubuntu machine:
 
 ```bash
 curl -sSL https://aka.ms/aksbm | bash -s -- -s <subscription-id> -t <tenant-id>
