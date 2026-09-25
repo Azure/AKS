@@ -30,6 +30,8 @@ The goal is not to replace the developer or operator making the decision. It is 
 
 For example, if a pod is repeatedly restarting, the assistant can help bring together the warning events, recent logs, and workload configuration that might explain the failure. From there, the user can review the evidence, understand the recommendation, and decide how to proceed.
 
+**Watch the walkthrough:** See how AKS desktop helps investigate and fix a broken Kubernetes app in [Debug Kubernetes with AI: Fix a Broken App in AKS desktop](https://youtu.be/Z9eCdpk2hlk).
+
 ## Make the first investigation easier
 
 We also heard that an AI troubleshooting experience is only useful if it is easy to start using.
@@ -58,7 +60,7 @@ These capabilities are part of the same direction: make troubleshooting more con
 
 ## Keep AKS desktop focused while making it extensible
 
-AI troubleshooting is the center of this release, but it is not the only way teams need to adapt AKS desktop to their environments.
+AI troubleshooting is the center of this release, but teams can also extend AKS desktop with workflows that fit their environments.
 
 AKS desktop is built on the open-source Headlamp project, and this release includes an integrated Plugin Catalog. The catalog gives users a way to discover and install focused workflows without requiring every integration to become part of the core application.
 
