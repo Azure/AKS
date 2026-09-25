@@ -3,7 +3,7 @@ title: "AKS on bare metal now on Ubuntu"
 date: 2026-09-30
 description: "Run Azure Kubernetes Service on customer-owned Ubuntu infrastructure with bare metal performance, flexible hardware choices, and consistent Azure management."
 authors: ["rishi-mody"]
-tags: ["aks-on-baremetal", "ai", "self-managed gpu"]
+tags: ["aks-on-baremetal", "ai", "gpu"]
 draft: true
 ---
 
