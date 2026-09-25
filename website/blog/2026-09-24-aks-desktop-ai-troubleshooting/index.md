@@ -1,5 +1,5 @@
 ---
-title: "Why this is our biggest AKS desktop release yet"
+title: "AKS desktop evolves with AI troubleshooting and plugins"
 date: 2026-09-24
 description: "See how AKS desktop v0.10.0 uses AI-assisted troubleshooting, cluster context, proactive diagnosis, and plugins to help teams resolve Kubernetes issues."
 authors: [will-case]
