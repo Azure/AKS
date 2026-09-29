@@ -258,7 +258,9 @@ Plan the change as a replacement rather than an upgrade, because that's what hap
 
 How you stage the cutover depends on which ownership model you're moving to. If you supply your own StandardV2 addresses, create them first and add them to downstream firewall rules, allowlists, and partner registrations before you start the update, so the new addresses are already trusted when traffic shifts. If you let Azure manage the addresses, they don't exist until the update creates them, so you can't allowlist them in advance. Plan a maintenance window for that path: run the update, resolve the new `effectiveOutboundIPs` references to actual addresses, update downstream systems, and then resume production traffic.
 
-Migration guidance and the current supported paths, including moving from load balancer outbound connectivity, live in the [AKS NAT gateway documentation](https://learn.microsoft.com/azure/aks/nat-gateway).
+Moving to AKS-managed StandardV2 from `loadBalancer` outbound connectivity is supported as well, and the same address-change planning applies. For broader outbound-type concepts and the user-assigned NAT gateway scenarios, see the [AKS NAT gateway documentation](https://learn.microsoft.com/azure/aks/nat-gateway).
+
+> **Note**: That article is still being updated for this release. Where it describes a `managedNATGatewayV2` outbound type alongside the `aks-preview` extension and the `ManagedNATGatewayV2Preview` feature flag, it's documenting the public preview. For GA, use `managedNATGateway` with `natGatewayProfile.sku` as shown in this post.
 
 ## NAT gateway profile properties
 
@@ -286,7 +288,7 @@ The `2026-06-01` API supports both Azure-managed and customer-defined outbound I
 | Regional availability varies | Check the [StandardV2 regional limitations](https://learn.microsoft.com/azure/nat-gateway/nat-overview#key-limitations-of-standardv2) for your region instead of assuming parity across the fleet. |
 | Azure quotas still apply | Public IP and subscription limits constrain how far you can scale outbound addresses. |
 
-One known issue deserves a closer look if you run dual-stack clusters. Attaching a StandardV2 NAT gateway to a subnet disrupts IPv6 outbound traffic that relies on load balancer outbound rules. If you need both address families and depend on those rules, use load balancer outbound rules for both, or pair a Standard NAT gateway for IPv4 with load balancer outbound rules for IPv6. More broadly, outbound connections that previously used a load balancer, Azure Firewall, or instance-level public IPs may be interrupted when the gateway attaches, because all new outbound connections move to the NAT gateway.
+One known issue deserves a closer look if you run dual-stack clusters. On the underlying platform, attaching a StandardV2 NAT gateway to a subnet disrupts IPv6 outbound traffic that relies on load balancer outbound rules. In AKS this is a decision you make once per cluster, because `outboundType` is cluster-wide and applies to both address families. Either send both families through the gateway with `managedNATGateway` and the StandardV2 SKU, or keep both on load balancer outbound rules with `loadBalancer`. Splitting the two families across a NAT gateway and load balancer outbound rules isn't available in AKS-managed egress, and the Standard SKU isn't a dual-stack option because it handles IPv4 only. More broadly, outbound connections that previously used a load balancer, Azure Firewall, or instance-level public IPs may be interrupted when the gateway attaches, because all new outbound connections move to the NAT gateway.
 
 Finally, the SKU change is one way. You can move from Standard to StandardV2, but you can't downgrade a StandardV2 gateway back to Standard.
 
