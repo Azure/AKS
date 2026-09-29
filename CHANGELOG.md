@@ -31,7 +31,7 @@
 * Fixed an issue where workload identity webhook pods did not restart after a certificate-only update, preventing them from loading the updated certificate.
 * Fixed an issue where node image upgrades could use bootstrap settings associated with a previously selected node image instead of the new image.
 * Fixed an issue where automatic security patching could repeatedly reimage a node pool that was already running the latest available node image, causing unnecessary disruption and delaying updates to other pools.
-* Fixed an issue where VMSS rolling upgrades could leave extra surge nodes behind when drain-failure recovery had already removed one of the original surge nodes.
+* Fixed an issue where upgrades on VMSS-based nodepools could leave extra surge nodes behind when drain-failure recovery had already removed one of the original surge nodes.
 * Fixed an issue where configuring a versionless customer-managed key could override an explicitly configured infrastructure encryption setting. AKS now preserves the selected setting. For more information, see [KMS infrastructure encryption](https://learn.microsoft.com/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key).
 * Fixed an incorrect Azure CLI flag in the error message shown when a PodDisruptionBudget blocks node pool deletion. The message now recommends `az aks nodepool delete --ignore-pdb`.
 
