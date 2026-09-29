@@ -7,7 +7,6 @@
 ### Announcements of upcoming changes and retirements
 
 * Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`.
-* Azure Linux with OS Guard for AKS (preview) will be retired on December 10, 2026. Migrate to [Azure Container Linux](https://learn.microsoft.com/azure/aks/azure-container-linux-overview) before that date to continue receiving node images and security patches. On March 10, 2027, AKS will remove the existing Azure Linux with OS Guard node images, causing scaling and remediation operations to fail. For more information, see the [retirement announcement](https://github.com/Azure/AKS/issues/5950).
 
 ### Release notes
 
