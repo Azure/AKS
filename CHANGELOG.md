@@ -15,8 +15,8 @@
 
 #### Preview features
 
-* [Ubuntu 26.04](https://aka.ms/aks/upgrade-os-version) is now available in preview on AKS, using Ubuntu Minimal as the baseline image for Kubernetes 1.36 and later. Register the `Ubuntu2604Preview` flag and use `--os-sku Ubuntu2604` to test the new OS version on supported Generation 2 VM sizes. 
-* [Windows Server OS SKU migration](https://aka.ms/aks/upgrade-windows-os-version) is now supported in preview to migrate from Windows Server 2022 to Windows Server 2025. On kubernetes versions where both OS versions are supported, use a node pool update command to migrate. This triggers an automatic reimage.
+* [Ubuntu 26.04](https://aka.ms/aks/upgrade-os-version) is now available in preview on AKS, using Ubuntu Minimal as the baseline image for Kubernetes 1.36 and later. Register the `Ubuntu2604Preview` flag and use `--os-sku Ubuntu2604` to test the new OS version on supported Generation 2 VM sizes.
+* [Windows Server OS SKU migration](https://aka.ms/aks/upgrade-windows-os-version) is now supported in preview to migrate from Windows Server 2022 to Windows Server 2025. On Kubernetes versions where both OS versions are supported, use a node pool update command to migrate. This triggers an automatic reimage.
 
 #### Behavioral changes
 
