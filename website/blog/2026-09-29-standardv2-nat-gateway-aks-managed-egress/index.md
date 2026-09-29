@@ -78,7 +78,7 @@ Three defaulting rules follow from that design:
 2. An existing cluster with a Standard gateway keeps it. AKS backfills `natGatewayProfile.sku` as the read-only value `Standard` in GET responses so the configuration is explicit without changing the deployed resource.
 3. A request on an earlier API version keeps the previous Standard behavior.
 
-> **Note**: If you used the public preview, the GA API doesn't expose `managedNATGatewayV2` as an outbound type. Preview API versions continue to accept `managedNATGatewayV2` for one year, which gives you time to move to `managedNATGateway` with an explicit `sku`.
+> **Note**: If you used the public preview, the GA API doesn't expose `managedNATGatewayV2` as an outbound type. Preview API versions `2026-01-02-preview` through `2026-05-02-preview` continue to accept `managedNATGatewayV2` for around one year, which gives you time to move to `managedNATGateway` with an explicit `sku`. For deprecation dates of the preview APIs, see the [AKS Preview API life cycle documentation](https://learn.microsoft.com/en-us/azure/aks/concepts-preview-api-life-cycle).
 
 ## Choose who owns the outbound IP addresses
 
@@ -218,6 +218,22 @@ Plan the change as a replacement rather than an upgrade, because that's what hap
 > **Warning**: Your egress IP addresses change during this migration. StandardV2 requires StandardV2 public IP resources, so your existing Standard public IPs can't carry over. Capture the new `effectiveOutboundIPs` values and update every downstream firewall rule, allowlist, and partner registration before you cut over production traffic. Expect existing outbound connections to reset as the gateway is swapped.
 
 Migration guidance and the current supported paths, including moving from load balancer outbound connectivity, live in the [AKS NAT gateway documentation](https://learn.microsoft.com/azure/aks/nat-gateway).
+
+## NAT gateway profile properties
+
+The StandardV2 NAT gateway profile supports the following properties:
+
+| Property | Purpose |
+| --- | --- |
+| `sku` | Selects the NAT Gateway SKU. Use `StandardV2` for the configuration described in this post. |
+| `managedOutboundIPProfile.count` | Number of IPv4 public IP addresses created and managed by Azure. |
+| `managedOutboundIPProfile.countIPv6` | Number of IPv6 public IP addresses created and managed by Azure. |
+| `outboundIPs.publicIPs` | Resource IDs of customer-defined StandardV2 public IP addresses. |
+| `outboundIPPrefixes.publicIPPrefixes` | Resource IDs of customer-defined StandardV2 public IP prefixes. |
+| `idleTimeoutInMinutes` | Outbound flow idle timeout, from 4 through 120 minutes. |
+| `effectiveOutboundIPs` | Read-only list of the public IP resources currently used for egress. |
+
+The `2026-06-01` API supports both Azure-managed and customer-defined outbound IP configurations. Don't configure `managedOutboundIPProfile` together with `outboundIPs` or `outboundIPPrefixes`.
 
 ## Limitations to plan for
 
