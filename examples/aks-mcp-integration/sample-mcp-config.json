@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "aks-mcp": {
+      "command": "aks-mcp",
+      "args": [
+        "--cluster-name", "my-aks-cluster",
+        "--resource-group", "my-resource-group",
+        "--subscription", "my-subscription-id",
+        "--permission-level", "readonly"
+      ],
+      "env": {
+        "AZURE_CLIENT_ID": "",
+        "AZURE_CLIENT_SECRET": "",
+        "AZURE_TENANT_ID": ""
+      }
+    }
+  }
+}
