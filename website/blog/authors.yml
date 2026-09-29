@@ -636,3 +636,12 @@ rishi-mody:
   socials:
     linkedin: rishimmody
     github: RishiMody7
+
+will-case:
+  name: Will Case
+  title: Product Manager
+  url: https://github.com/willspacecase
+  image_url: https://github.com/willspacecase.png
+  page: true
+  socials:
+    github: willspacecase
