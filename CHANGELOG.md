@@ -19,6 +19,8 @@
 
 * On Kubernetes 1.37, external `LoadBalancer` Services that specify an invalid or non-public load balancer IP address now fail validation early. This provides a clearer error instead of attempting to locate a matching Azure public IP. For more information, see the [Cloud Provider Azure release notes](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/).
 * The `service.beta.kubernetes.io/azure-pip-tags` annotation no longer overrides public IP tags managed by the cloud controller manager, including `k8s-azure-cluster-name`, `k8s-azure-service`, and `k8s-azure-dns-label-service`. Attempts to set these keys, including case variants, are ignored and generate an `IgnoredPIPTagKeys` warning event. This change is included in the [Cloud Provider Azure 1.36.6](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.36.6/) and [1.37.0](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/) updates.
+* AKS now rejects customer-supplied `kubernetes.azure.com/managedby` and `control-plane` label keys on managed namespaces. These keys are reserved for AKS; other valid customer-defined labels remain supported.
+* When first attaching a Capacity Reservation Group (CRG) from the same subscription to an existing node pool, AKS now checks location and explicit availability-zone compatibility before saving the association. Incompatible configurations fail immediately instead of causing repeated provisioning failures. Regional or automatically zoned VMSS pools must be scaled to zero before attaching a CRG.
 
 #### Bug fixes
 
@@ -28,6 +30,7 @@
 * Fixed an issue where automatic security patching could repeatedly reimage a node pool that was already running the latest available node image, causing unnecessary disruption and delaying updates to other pools.
 * Fixed an issue where VMSS rolling upgrades could leave extra surge nodes behind when drain-failure recovery had already removed one of the original surge nodes.
 * Fixed an issue where configuring a versionless customer-managed key could override an explicitly configured infrastructure encryption setting. AKS now preserves the selected setting. For more information, see [KMS infrastructure encryption](https://learn.microsoft.com/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key).
+* Fixed an incorrect Azure CLI flag in the error message shown when a PodDisruptionBudget blocks node pool deletion. The message now recommends `az aks nodepool delete --ignore-pdb`.
 
 #### Component updates
 
@@ -46,6 +49,7 @@
   * Azure Blob CSI driver to [`v1.27.11`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.11) on Kubernetes 1.34 and later.
   * Azure Disk CSI driver to [`v1.33.13`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.13) on Kubernetes 1.34, [`v1.34.7`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.7) on Kubernetes 1.35 and 1.36, and [`v1.36.0`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.36.0) on Kubernetes 1.37 and later.
 * Secrets Store CSI Driver has been updated to [`v1.5.7`](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.7).
+* The KEDA add-on has been updated to [`2.20.2`](https://github.com/kedacore/keda/releases/tag/v2.20.2) for Kubernetes 1.37. Kubernetes 1.36 and earlier retain their existing KEDA versions.
 * Ratify has been updated to [`v1.4.6`](https://github.com/notaryproject/ratify/releases/tag/v1.4.6).
 * Tigera Operator has been updated to [`v1.40.15-4`](https://github.com/tigera/operator/releases/tag/v1.40.15).
 * Istio-based service mesh add-on revisions `asm-1-29` and `asm-1-30` have been updated to security-patched builds [`1.29.7-2`](https://github.com/istio/istio/releases/tag/1.29.7) and [`1.30.4-2`](https://github.com/istio/istio/releases/tag/1.30.4), respectively. Restart workload pods to trigger reinjection of the updated `istio-proxy` sidecar. For more information, see the [Istio add-on upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
