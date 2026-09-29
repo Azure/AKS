@@ -4,7 +4,6 @@ date: 2026-09-30
 description: "Run Azure Kubernetes Service on customer-owned Ubuntu infrastructure with bare metal performance, flexible hardware choices, and consistent Azure management."
 authors: ["rishi-mody"]
 tags: ["aks-on-baremetal", "ai", "gpu"]
-draft: true
 ---
 
 Run Azure Kubernetes Service directly on customer-owned Ubuntu infrastructure with bare metal performance, flexible hardware choices, and consistent management through Azure.
