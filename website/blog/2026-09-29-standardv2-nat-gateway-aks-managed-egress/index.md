@@ -21,7 +21,7 @@ AKS nodes need outbound connectivity just to function. They talk to the API serv
 
 Every one of those connections consumes a source network address translation (SNAT) port. As outbound concurrency grows, thin SNAT capacity surfaces as intermittent connection failures and timeouts that are frustrating to diagnose.
 
-Azure NAT Gateway addresses this by providing SNAT for internet-bound traffic at the subnet level. A single gateway serves every subnet you attach it to within the same virtual network, and it hands out SNAT ports on demand to the nodes that need them instead of pre-allocating a fixed block per node. Each attached public IP address contributes 64,512 SNAT ports, and one gateway supports up to 16 addresses.
+Azure NAT Gateway addresses this by providing SNAT for internet-bound traffic at the subnet level. A single gateway serves every subnet you attach it to within the same virtual network, and it hands out SNAT ports on demand to the nodes that need them instead of pre-allocating a fixed block per node. Each attached public IP address contributes 64,512 SNAT ports, and a gateway supports up to 16 public IP addresses for each IP version.
 
 When you plan egress capacity, size it against both the [required AKS outbound network rules and FQDNs](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) and your own application dependencies.
 
@@ -40,6 +40,15 @@ The higher throughput ceiling matters for data-heavy clusters that push large vo
 
 ```mermaid
 flowchart LR
+    accTitle: AKS egress through a zone-redundant StandardV2 NAT gateway
+    accDescr {
+      Pods run on nodes spread across availability zones 1, 2, and 3.
+      Nodes in every zone send outbound traffic to a single AKS-managed
+      StandardV2 NAT gateway, which is zone redundant. The gateway translates
+      that traffic to its attached StandardV2 public IP addresses or prefixes,
+      which then reach external endpoints such as container registries,
+      Azure services, and external APIs.
+    }
     subgraph AKS["AKS cluster"]
         Pods["Pods"]
         Z1["Nodes in zone 1"]
@@ -78,7 +87,7 @@ Three defaulting rules follow from that design:
 2. An existing cluster with a Standard gateway keeps it. AKS backfills `natGatewayProfile.sku` as the read-only value `Standard` in GET responses so the configuration is explicit without changing the deployed resource.
 3. A request on an earlier API version keeps the previous Standard behavior.
 
-> **Note**: If you used the public preview, the GA API doesn't expose `managedNATGatewayV2` as an outbound type. Preview API versions `2026-01-02-preview` through `2026-05-02-preview` continue to accept `managedNATGatewayV2` for around one year, which gives you time to move to `managedNATGateway` with an explicit `sku`. For deprecation dates of the preview APIs, see the [AKS Preview API life cycle documentation](https://learn.microsoft.com/en-us/azure/aks/concepts-preview-api-life-cycle).
+> **Note**: If you used the public preview, the GA API doesn't expose `managedNATGatewayV2` as an outbound type. Preview API versions `2026-01-02-preview` through `2026-05-02-preview` continue to accept `managedNATGatewayV2` for around one year, which gives you time to move to `managedNATGateway` with an explicit `sku`. For deprecation dates of the preview APIs, see the [AKS Preview API life cycle documentation](https://learn.microsoft.com/azure/aks/concepts-preview-api-life-cycle).
 
 ## Choose who owns the outbound IP addresses
 
@@ -195,7 +204,18 @@ az rest \
   }'
 ```
 
-`effectiveOutboundIPs` is read only. AKS populates it after provisioning, so leave it out of create and update requests. The addresses it lists are the ones your workloads egress from, which makes it the right source for downstream allowlists.
+`effectiveOutboundIPs` is read only. AKS populates it after provisioning, so leave it out of create and update requests. Note that it returns Azure Resource Manager resource references, not literal addresses. Each entry looks like `{"id": "/subscriptions/.../publicIPAddresses/<name>"}`, so resolve those resources before you put anything into a downstream allowlist:
+
+```bash
+az rest --method get --url "$URL" \
+  --query 'properties.networkProfile.natGatewayProfile.effectiveOutboundIPs[].id' \
+  --output tsv |
+while read -r ip_id; do
+  az network public-ip show --ids "$ip_id" --query ipAddress --output tsv
+done
+```
+
+If you attached public IP prefixes instead, resolve them with `az network public-ip prefix show --ids <prefix-id> --query ipPrefix` and allowlist the resulting CIDR range.
 
 To confirm the data path end to end, run a short-lived pod that reports its public source address:
 
@@ -207,7 +227,7 @@ kubectl run natv2-egress-check \
   --command -- curl --fail --silent --show-error https://api.ipify.org
 ```
 
-The address it returns should match one of the entries in `effectiveOutboundIPs`. Follow up by testing the outbound paths your applications actually depend on, including container registries, Azure APIs, and allowlisted partner services.
+The address it returns should match one of the resolved public IP addresses from the previous step, or fall inside one of the resolved prefix ranges. Follow up by testing the outbound paths your applications actually depend on, including container registries, Azure APIs, and allowlisted partner services.
 
 ## Move an existing cluster to StandardV2
 
@@ -215,7 +235,9 @@ Existing clusters stay on Standard until you ask for the change, and you request
 
 Plan the change as a replacement rather than an upgrade, because that's what happens underneath. AKS removes the Standard gateway and provisions a StandardV2 gateway in its place, reusing the same NAT gateway resource name.
 
-> **Warning**: Your egress IP addresses change during this migration. StandardV2 requires StandardV2 public IP resources, so your existing Standard public IPs can't carry over. Capture the new `effectiveOutboundIPs` values and update every downstream firewall rule, allowlist, and partner registration before you cut over production traffic. Expect existing outbound connections to reset as the gateway is swapped.
+> **Warning**: Your egress IP addresses change during this migration. StandardV2 requires StandardV2 public IP resources, so your existing Standard public IPs can't carry over. Expect existing outbound connections to reset as the gateway is swapped.
+
+How you stage the cutover depends on which ownership model you're moving to. If you supply your own StandardV2 addresses, create them first and add them to downstream firewall rules, allowlists, and partner registrations before you start the update, so the new addresses are already trusted when traffic shifts. If you let Azure manage the addresses, they don't exist until the update creates them, so you can't allowlist them in advance. Plan a maintenance window for that path: run the update, resolve the new `effectiveOutboundIPs` references to actual addresses, update downstream systems, and then resume production traffic.
 
 Migration guidance and the current supported paths, including moving from load balancer outbound connectivity, live in the [AKS NAT gateway documentation](https://learn.microsoft.com/azure/aks/nat-gateway).
 
