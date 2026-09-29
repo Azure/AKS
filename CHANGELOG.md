@@ -26,7 +26,7 @@
 
 #### Bug fixes
 
-* Fixed an issue when first attaching a Capacity Reservation Group (CRG) from the same subscription to an existing node pool, AKS now checks location and explicit availability-zone compatibility before saving the association. Incompatible configurations fail immediately instead of causing repeated provisioning failures. Regional or automatically zoned VMSS pools must be scaled to zero before attaching a CRG.
+* Fixed an issue that allowed an incompatible Capacity Reservation Group (CRG) from the same subscription to be attached to an existing node pool. AKS now checks location and explicit availability-zone compatibility before saving the association. Incompatible configurations fail immediately instead of causing repeated provisioning failures. Regional or automatically zoned VMSS pools must be scaled to zero before attaching a CRG.
 * Fixed an issue where CoreDNS replicas could be placed on the same node after a rolling update. On Kubernetes 1.27 and later, updated scheduling constraints spread replicas more evenly across available nodes, improving DNS resilience.
 * Fixed an issue where workload identity webhook pods did not restart after a certificate-only update, preventing them from loading the updated certificate.
 * Fixed an issue where node image upgrades could use bootstrap settings associated with a previously selected node image instead of the new image.
