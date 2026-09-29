@@ -204,18 +204,25 @@ az rest \
   }'
 ```
 
-`effectiveOutboundIPs` is read only. AKS populates it after provisioning, so leave it out of create and update requests. Note that it returns Azure Resource Manager resource references, not literal addresses. Each entry looks like `{"id": "/subscriptions/.../publicIPAddresses/<name>"}`, so resolve those resources before you put anything into a downstream allowlist:
+`effectiveOutboundIPs` is read only. AKS populates it after provisioning, so leave it out of create and update requests. Note that it returns Azure Resource Manager resource references, not literal addresses. Each entry is a resource ID for either a public IP address or a public IP prefix, so resolve them before you put anything into a downstream allowlist:
 
 ```bash
 az rest --method get --url "$URL" \
   --query 'properties.networkProfile.natGatewayProfile.effectiveOutboundIPs[].id' \
   --output tsv |
-while read -r ip_id; do
-  az network public-ip show --ids "$ip_id" --query ipAddress --output tsv
+while read -r resource_id; do
+  case "$resource_id" in
+    */publicIPPrefixes/*)
+      az network public-ip prefix show --ids "$resource_id" --query ipPrefix --output tsv
+      ;;
+    *)
+      az network public-ip show --ids "$resource_id" --query ipAddress --output tsv
+      ;;
+  esac
 done
 ```
 
-If you attached public IP prefixes instead, resolve them with `az network public-ip prefix show --ids <prefix-id> --query ipPrefix` and allowlist the resulting CIDR range.
+Address references resolve to a single IP address and prefix references resolve to a CIDR range. Allowlist whichever form each entry produces.
 
 To confirm the data path end to end, run a short-lived pod that reports its public source address:
 
