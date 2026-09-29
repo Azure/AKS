@@ -190,7 +190,7 @@ Build `cluster.json` from one of the two ownership models above, wrapped in the 
 
 ## Confirm the SKU you actually got
 
-This step isn't optional. Because AKS falls back to Standard in regions where StandardV2 isn't available, a successful cluster creation doesn't by itself prove you're running StandardV2. Read the SKU back:
+This step isn't optional. When you omit `sku`, the region decides which SKU you get: StandardV2 where it's available, Standard everywhere else. A successful cluster creation therefore doesn't by itself tell you which SKU is deployed. Read it back:
 
 ```bash
 az rest \
@@ -234,7 +234,19 @@ kubectl run natv2-egress-check \
   --command -- curl --fail --silent --show-error https://api.ipify.org
 ```
 
-The address it returns should match one of the resolved public IP addresses from the previous step, or fall inside one of the resolved prefix ranges. Follow up by testing the outbound paths your applications actually depend on, including container registries, Azure APIs, and allowlisted partner services.
+The address it returns should match one of the resolved public IP addresses from the previous step, or fall inside one of the resolved prefix ranges.
+
+On a dual-stack cluster, check the IPv6 path separately, because `api.ipify.org` answers over IPv4 only:
+
+```bash
+kubectl run natv2-egress-check-v6 \
+  --image=curlimages/curl:8.12.1 \
+  --restart=Never \
+  --rm --stdin \
+  --command -- curl --ipv6 --fail --silent --show-error https://api6.ipify.org
+```
+
+Follow up by testing the outbound paths your applications actually depend on, including container registries, Azure APIs, and allowlisted partner services.
 
 ## Move an existing cluster to StandardV2
 
