@@ -22,7 +22,7 @@ Troubleshooting Kubernetes can require a lot of context. A pod might be restarti
 
 Finding the answer often means moving between resource views, logs, events, metrics, YAML, and documentation. You need to know where to look before you can begin making progress.
 
-We want AKS desktop to shorten that path.
+We want AKS desktop to shorten that path by bringing the investigation together without requiring you to switch between tools.
 
 With the AI Assistant, you can start from the resource that is showing a problem and ask a direct question. The assistant can use the Kubernetes context available in AKS desktop—including resource state, logs, events, and metrics—to help explain what is happening and recommend the next troubleshooting steps.
 
@@ -36,11 +36,13 @@ For example, if a pod is repeatedly restarting, the assistant can help bring tog
 
 We also heard that an AI troubleshooting experience is only useful if it is easy to start using.
 
-AKS desktop can now automatically detect GitHub Copilot as an AI provider. To use Auto Detect, install the GitHub CLI, sign in to a GitHub account with an active GitHub Copilot subscription, and let AKS desktop detect the authenticated session.
+AKS desktop can now automatically detect GitHub Copilot as an AI provider. To use Auto Detect, install the GitHub CLI, sign in to a GitHub account with an active GitHub Copilot subscription, and let AKS desktop detect the authenticated session and available model catalog—including supported Claude models.
+
+You can also connect directly to Anthropic and use Claude with your own API key. AKS desktop continues to support other providers, including Azure OpenAI, OpenAI, Google Gemini, Mistral AI, DeepSeek, and locally hosted or OpenAI-compatible models.
 
 ![AKS desktop AI Assistant settings showing GitHub Copilot Auto Detect and Proactive Diagnosis](./ai-assistant-settings.png)
 
-For many users, this removes the need to configure another model provider before asking their first troubleshooting question. Organizations that have specific requirements for model selection, compliance, data residency, or existing AI services can still configure a supported provider of their choice.
+This flexibility lets individuals and organizations use the provider that fits their existing subscriptions, model preferences, compliance requirements, and data residency needs.
 
 Whichever provider you choose, the important part is the connection between the model and the environment you are already investigating. The assistant can work with the current cluster context instead of relying only on a manually written description of the problem.
 
@@ -50,7 +52,7 @@ It also stays within the permissions of the active Kubernetes identity. Users ch
 
 Troubleshooting is rarely one-size-fits-all. Teams develop their own checks, conventions, tools, and ways of diagnosing common failures.
 
-Skills make it possible to bring more of that specialized guidance into the AI Assistant. Teams can use built-in skill repositories or add their own, helping the assistant follow the practices that are relevant to their workloads and environments.
+[Skills](https://agentskills.io) are reusable packages of instructions and domain knowledge that help an AI assistant handle specialized tasks. AKS desktop enables the Microsoft-authored [AKS skill](https://github.com/microsoft/azure-skills/tree/main/skills/azure-kubernetes) by default, giving the AI Assistant AKS-specific guidance for troubleshooting, networking, security, upgrades, and day-to-day operations. Teams can also enable additional skill repositories or add their own to reflect the practices and knowledge specific to their environments.
 
 We are also introducing support for Model Context Protocol (MCP) servers, which can connect the assistant to additional tools and data sources. These integrations are opt-in, and users can control approval for actions requested by the assistant.
 
@@ -62,11 +64,13 @@ These capabilities are part of the same direction: make troubleshooting more con
 
 AI troubleshooting is the center of this release, but teams can also extend AKS desktop with workflows that fit their environments.
 
-AKS desktop is built on the open-source Headlamp project, and this release includes an integrated Plugin Catalog. The catalog gives users a way to discover and install focused workflows without requiring every integration to become part of the core application.
+AKS desktop is built on the open-source Headlamp project, and this release includes an integrated Plugin Catalog (preview). You can browse, install, update, and manage plugins directly in AKS desktop instead of setting up each integration separately.
+
+The initial catalog includes plugins for Flux GitOps workflows, cert-manager certificate management, and Kubernetes Event-driven Autoscaling (KEDA). Headlamp plugins can also add dashboards, resource views, visualizations, actions, and integrations with external operational tools.
 
 ![AKS desktop Plugin Catalog showing AKS optimized plugins for Kubernetes workflows](./plugin-catalog.png)
 
-This lets the core experience stay focused while teams add the capabilities that fit how they operate Kubernetes. The catalog initially highlights **AKS optimized** plugins that have passed Microsoft accessibility and localization checks, while Official Headlamp plugins can also be explored from the catalog.
+The catalog initially highlights **AKS desktop optimized** plugins that have passed Microsoft accessibility and localization checks. Turn off that filter to explore Official plugins published by the upstream Headlamp project. Catalog availability can change as plugins are added, updated, deprecated, or removed.
 
 ## Why this release matters (to me 🤗)
 
