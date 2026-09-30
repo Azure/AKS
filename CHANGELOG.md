@@ -7,7 +7,6 @@
 ### Announcements of upcoming changes and retirements
 
 * Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`.
-* On September 14, 2026, [the preview property enableCustomCATrust retired](https://github.com/Azure/AKS/issues/5826). The `enableCustomCATrust=true` node pool level field will no longer enable [Custom Certificate Authority (CA)](https://aka.ms/aks/custom-certificate-authority). To avoid failures during scaling and certificate updates, update the impacted clusters and node pools and remove the preview property.
 * Windows Server 2022 is not supported in kubernetes version 1.37 and above. For more information on this retirement, see the [Retirement GitHub issue](https://github.com/Azure/AKS/issues/4168).
 
 ### Release notes
@@ -19,6 +18,7 @@
 
 #### Behavioral changes
 
+* On September 14, 2026, [the preview property enableCustomCATrust retired](https://github.com/Azure/AKS/issues/5826). The `enableCustomCATrust=true` node pool level field will no longer enable [Custom Certificate Authority (CA)](https://aka.ms/aks/custom-certificate-authority). To avoid failures during scaling and certificate updates, update the impacted clusters and node pools and remove the preview property.
 * Flatcar Container Linux node images are now removed, causing scaling and remediation (reimage and redeploy) operations to fail. For more information, see [Flatcar preview retirement](https://aka.ms/aks/flatcar-preview-retirement).
 * On Kubernetes 1.37, external `LoadBalancer` Services that specify an invalid or non-public load balancer IP address now fail validation early. This provides a clearer error instead of attempting to locate a matching Azure public IP. For more information, see the [Cloud Provider Azure release notes](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/).
 * The `service.beta.kubernetes.io/azure-pip-tags` annotation no longer overrides public IP tags managed by the cloud controller manager, including `k8s-azure-cluster-name`, `k8s-azure-service`, and `k8s-azure-dns-label-service`. Attempts to set these keys, including case variants, are ignored and generate an `IgnoredPIPTagKeys` warning event. This change is included in the [Cloud Provider Azure 1.36.6](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.36.6/) and [1.37.0](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/) updates.
