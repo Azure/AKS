@@ -23,6 +23,7 @@
 * On Kubernetes 1.37, external `LoadBalancer` Services that specify an invalid or non-public load balancer IP address now fail validation early. This provides a clearer error instead of attempting to locate a matching Azure public IP. For more information, see the [Cloud Provider Azure release notes](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/).
 * The `service.beta.kubernetes.io/azure-pip-tags` annotation no longer overrides public IP tags managed by the cloud controller manager, including `k8s-azure-cluster-name`, `k8s-azure-service`, and `k8s-azure-dns-label-service`. Attempts to set these keys, including case variants, are ignored and generate an `IgnoredPIPTagKeys` warning event. This change is included in the [Cloud Provider Azure 1.36.6](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.36.6/) and [1.37.0](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/) updates.
 * AKS now rejects customer-supplied `kubernetes.azure.com/managedby` and `control-plane` label keys on managed namespaces. These keys are reserved for AKS; other valid customer-defined labels remain supported.
+The AKS rollout sequence has been updated: Central US moves to Batch 3 while East US moves to Batch 6. This change affects rollout sequence and timing only. Check [AKS Release Tracker](https://releases.aks.azure.com/AKSRelease)  for details.
 
 #### Bug fixes
 
