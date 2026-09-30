@@ -8,6 +8,7 @@
 
 * Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`.
 * Windows Server 2022 is not supported in kubernetes version 1.37 and above. For more information on this retirement, see the [Retirement GitHub issue](https://github.com/Azure/AKS/issues/4168).
+* [Identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts), which extends the existing workload identity feature to address scale limitations around federated identity credentials (FICs) on user-assigned managed identities (UAMIs), is now generally available.
 
 ### Release notes
 
