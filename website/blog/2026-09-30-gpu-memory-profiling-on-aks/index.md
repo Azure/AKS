@@ -1,5 +1,5 @@
 ---
-title: "GPU Profiling on AKS: Find and Fix Costly Memory Blind Spots"
+title: "GPU Profiling on AKS: Find and Fix Memory Blind Spots"
 date: 2026-09-30
 description: "Use GPU memory profiling on Azure Kubernetes Service to trace allocations to the functions responsible, right-size AI workloads, and validate fixes at scale."
 authors: [brian-benz]
