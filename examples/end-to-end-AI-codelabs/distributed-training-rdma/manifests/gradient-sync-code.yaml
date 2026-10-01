@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gradient-sync-code
+  labels:
+    app.kubernetes.io/part-of: distributed-training-rdma
+data:
+  gradient_sync.py: |
+    import json
+    import os
+    import math
+    import socket
+    import statistics
+    import time
+    from datetime import timedelta
+
+    import torch
+    import torch.distributed as dist
+    from torch.nn.parallel import DistributedDataParallel as DDP
+
+    rank = int(os.environ["RANK"])
+    world_size = int(os.environ.get("WORLD_SIZE", "2"))
+    mode = os.environ["TRANSPORT_MODE"]
+    gradient_mib = int(os.environ.get("GRADIENT_MIB", "256"))
+    warmup_steps = int(os.environ.get("WARMUP_STEPS", "3"))
+    measure_steps = int(os.environ.get("MEASURE_STEPS", "10"))
+    device = torch.device("cuda", 0)
+    torch.cuda.set_device(device)
+    dist.init_process_group(
+        "nccl", timeout=timedelta(minutes=10), device_id=device
+    )
+
+    class GradientSyncModel(torch.nn.Module):
+        """A dense neural layer sized to create one network-dominant DDP bucket."""
+
+        def __init__(self, width):
+            super().__init__()
+            self.projection = torch.nn.Linear(width, width, bias=False, device=device)
+
+        def forward(self, inputs):
+            return self.projection(inputs)
+
+    target_elements = gradient_mib * 1024 * 1024 // 4
+    width = math.isqrt(target_elements)
+    model = DDP(
+        GradientSyncModel(width),
+        device_ids=[0],
+        output_device=0,
+        bucket_cap_mb=gradient_mib + 1,
+        gradient_as_bucket_view=True,
+    )
+    optimizer = torch.optim.SGD(model.parameters(), lr=1e-4)
+    inputs = torch.randn(4, width, dtype=torch.float32, device=device)
+    torch.set_float32_matmul_precision("high")
+    step_times = []
+
+    for step in range(warmup_steps + measure_steps):
+        optimizer.zero_grad(set_to_none=True)
+        dist.barrier(device_ids=[0])
+        torch.cuda.synchronize()
+        started = time.perf_counter()
+        outputs = model(inputs)
+        loss = outputs.square().mean()
+        loss.backward()  # DDP synchronizes the dense-layer gradient here.
+        optimizer.step()
+        torch.cuda.synchronize()
+        elapsed = time.perf_counter() - started
+        if not torch.isfinite(loss):
+            raise RuntimeError("non-finite loss after distributed training step")
+        if step >= warmup_steps:
+            step_times.append(elapsed)
+
+    gathered = [None for _ in range(world_size)] if rank == 0 else None
+    dist.gather_object(step_times, gathered, dst=0)
+    if rank == 0:
+        # Distributed step time is the slower rank for each iteration.
+        critical_path = [max(per_rank) for per_rank in zip(*gathered)]
+        average = statistics.mean(critical_path)
+        p95_index = max(0, math.ceil(len(critical_path) * 0.95) - 1)
+        p95 = sorted(critical_path)[p95_index]
+        parameter = model.module.projection.weight
+        gradient_bytes = parameter.numel() * parameter.element_size()
+        metric = {
+            "mode": mode,
+            "world_size": world_size,
+            "gradient_mib": round(gradient_bytes / 1024 / 1024, 1),
+            "layer_width": width,
+            "iterations": measure_steps,
+            "avg_step_ms": round(average * 1000, 3),
+            "p95_step_ms": round(p95 * 1000, 3),
+            "steps_per_second": round(1 / average, 3),
+            "effective_gradient_GBps": round(gradient_bytes / average / 1e9, 3),
+            "max_gpu_memory_mib": round(torch.cuda.max_memory_allocated() / 1024 / 1024, 1),
+            "gpu": torch.cuda.get_device_name(0),
+            "host": socket.gethostname(),
+        }
+        print("APP_METRIC " + json.dumps(metric, sort_keys=True), flush=True)
+
+    dist.destroy_process_group()
