@@ -27,15 +27,15 @@ The profile is visualized as a flame graph, a chart that stacks functions to sho
 
 ![GPU memory profile flame graph showing allocation call paths](./gpu-memory-profile-flame-graph.png)
 
-You don't add profiling code to your app, and you don't need a sidecar just to turn it on. Point the profiler at a running cluster, and it starts showing you details right away. Profiling won't decide for you that an allocation is wasteful, and it won't tune your workload automatically. It gives you the evidence to decide what your workload needs.
+You don't add profiling code to your app, and you don't need a sidecar just to turn it on. Enable profiling on the cluster before deploying your workload, or restart an already-running workload after profiling is enabled so its allocations are captured. Profiling won't decide for you that an allocation is wasteful, and it won't tune your workload automatically. It gives you the evidence to decide what your workload needs.
 
 ## How it works
 
 GPU memory profiling on AKS runs on [Inspektor Gadget](https://inspektor-gadget.io/), an open-source, eBPF-based observability framework for Kubernetes and a CNCF project that Microsoft helps maintain. For GPU profiling, it traces CUDA memory-allocation calls directly from the node, which is why there's no profiling code or sidecar container needed. Just turn on profiling before you deploy, or restart the workload once profiling is enabled.
 
-Results flow into [Pyroscope](https://grafana.com/oss/pyroscope/) and show up as flame graphs in Grafana. Pair that with Azure Monitor managed service for Prometheus, and you get memory pressure in one panel and the code path behind it in another.
-
 It's also secure: the Inspektor Gadget project recently completed its [first independent security audit](https://inspektor-gadget.io/blog/2026/04/inspektor-gadget-security-audit); three issues were found and fixed in version 0.51.1.
+
+Results flow into [Pyroscope](https://grafana.com/oss/pyroscope/) and show up as flame graphs in Grafana. Pair that with Azure Monitor managed service for Prometheus, and you get memory pressure in one panel and the code path behind it in another.
 
 For more details and to get started, check out the [AKS GPU profiling documentation](https://learn.microsoft.com/azure/aks/gpu-profiling), which covers the prerequisites, extension installation, and wiring up Pyroscope, Grafana, and the dashboard.
 
