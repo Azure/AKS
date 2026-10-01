@@ -27,7 +27,7 @@ The profile is visualized as a flame graph, a chart that stacks functions to sho
 
 ![GPU memory profile flame graph showing allocation call paths](./gpu-memory-profile-flame-graph.png)
 
-You don't add profiling code to your app, and you don't need a sidecar just to turn it on. Enable profiling on the cluster before deploying your workload, or restart an already-running workload after profiling is enabled so its allocations are captured. Profiling won't decide for you that an allocation is wasteful, and it won't tune your workload automatically. It gives you the evidence to decide what your workload needs.
+You don't add profiling code to your app, and you don't need a sidecar or pod restart to turn it on. Enable profiling on the cluster before deploying your workload, or enable it while an existing workload is running so its CUDA allocation calls can be captured. Profiling won't decide for you that an allocation is wasteful, and it won't tune your workload automatically. It gives you the evidence to decide what your workload needs.
 
 ## How it works
 
