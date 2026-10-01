@@ -31,7 +31,7 @@ You don't add profiling code to your app, and you don't need a sidecar or pod re
 
 ## How it works
 
-GPU memory profiling on AKS runs on [Inspektor Gadget](https://inspektor-gadget.io/), an open-source, eBPF-based observability framework for Kubernetes and a CNCF project that Microsoft helps maintain. For GPU profiling, it traces CUDA memory-allocation calls directly from the node, which is why there's no profiling code or sidecar container needed. Just turn on profiling before you deploy, or restart the workload once profiling is enabled.
+GPU memory profiling on AKS runs on [Inspektor Gadget](https://inspektor-gadget.io/), an open-source, eBPF-based observability framework for Kubernetes and a CNCF project that Microsoft helps maintain. For GPU profiling, it traces CUDA memory-allocation calls directly from the node, which is why there's no profiling code or sidecar container needed. Enable profiling before deploying the workload, or restart it afterward when you need to capture allocations that occurred during startup.
 
 It's also secure: the Inspektor Gadget project recently completed its [first independent security audit](https://inspektor-gadget.io/blog/2026/04/inspektor-gadget-security-audit); three issues were found and fixed in version 0.51.1.
 
