@@ -15,7 +15,7 @@ With this release, please note the following change implemented starting with AP
 
 <!-- truncate -->
 
-## Why cluster egress needs a bigger envelope
+## Why NAT Gateway for AKS egress?
 
 AKS nodes need outbound connectivity for basic functionality. They talk to the API server, pull container images, download Kubernetes and networking components, and receive node security updates. Your workloads add their own demands: Azure services, external APIs, package repositories, telemetry endpoints, and partner integrations.
 
