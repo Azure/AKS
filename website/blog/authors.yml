@@ -645,3 +645,21 @@ will-case:
   page: true
   socials:
     github: willspacecase
+
+connie-zhang:
+  name: Connie Zhang
+  title: Product Manager for Azure Networking
+  url: https://github.com/cozhang8
+  image_url: https://github.com/cozhang8.png
+  page: true
+  socials:
+    github: cozhang8
+
+rahul-rai:
+  name: Rahul Rai
+  title: Product Manager for Azure Kubernetes Service
+  url: https://github.com/rahulrai-in
+  image_url: https://github.com/rahulrai-in.png
+  page: true
+  socials:
+    github: rahulrai-in
