@@ -1,12 +1,88 @@
 # Azure Kubernetes Service Changelog
 
+## Release Notes 2026-09-25
+
+> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20260925`.
+
+### Announcements of upcoming changes and retirements
+
+* Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`.
+* Windows Server 2022 is not supported in kubernetes version 1.37 and above. For more information on this retirement, see the [Retirement GitHub issue](https://github.com/Azure/AKS/issues/4168).
+
+### Release notes
+
+#### Features
+
+* [Identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts), which extends the existing workload identity feature to address scale limitations around federated identity credentials (FICs) on user-assigned managed identities (UAMIs), is now generally available.
+
+#### Preview features
+
+* [Ubuntu 26.04](https://aka.ms/aks/upgrade-os-version) is now available in preview on AKS, using Ubuntu Minimal as the baseline image for Kubernetes 1.36 and later. Register the `Ubuntu2604Preview` flag and use `--os-sku Ubuntu2604` to test the new OS version on supported Generation 2 VM sizes.
+* [Windows Server OS SKU migration](https://aka.ms/aks/upgrade-windows-os-version) is now supported in preview to migrate from Windows Server 2022 to Windows Server 2025. On Kubernetes versions where both OS versions are supported, use a node pool update command to migrate. This triggers an automatic reimage.
+
+#### Behavioral changes
+
+* Flatcar Container Linux node images are now removed, causing scaling and remediation (reimage and redeploy) operations to fail. For more information, see [Flatcar preview retirement](https://aka.ms/aks/flatcar-preview-retirement).
+* On Kubernetes 1.37, external `LoadBalancer` Services that specify an invalid or non-public load balancer IP address now fail validation early. This provides a clearer error instead of attempting to locate a matching Azure public IP. For more information, see the [Cloud Provider Azure release notes](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/).
+* The `service.beta.kubernetes.io/azure-pip-tags` annotation no longer overrides public IP tags managed by the cloud controller manager, including `k8s-azure-cluster-name`, `k8s-azure-service`, and `k8s-azure-dns-label-service`. Attempts to set these keys, including case variants, are ignored and generate an `IgnoredPIPTagKeys` warning event. This change is included in the [Cloud Provider Azure 1.36.6](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.36.6/) and [1.37.0](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/) updates.
+* AKS now rejects customer-supplied `kubernetes.azure.com/managedby` and `control-plane` values on AKS platform-owned namespace keys. These keys are reserved for AKS; other valid customer-defined labels remain supported.
+* AKS release order has been updated: Central US moves to batch 3 while East US moves to batch 6. This change affects release order and timing only. Please check [AKS Release Tracker](https://releases.aks.azure.com/AKSRelease) for details.
+
+#### Bug fixes
+
+* Fixed an issue that allowed an incompatible Capacity Reservation Group (CRG) from the same subscription to be attached to an existing node pool. AKS now checks location and explicit availability-zone compatibility before saving the association. Incompatible configurations fail immediately instead of causing repeated provisioning failures. Regional or automatically zoned VMSS pools must be scaled to zero before attaching a CRG.
+* Fixed an issue where CoreDNS replicas could be placed on the same node after a rolling update. On Kubernetes 1.27 and later, updated scheduling constraints spread replicas more evenly across available nodes, improving DNS resilience.
+* Fixed an issue where workload identity webhook pods did not restart after a certificate-only update, preventing them from loading the updated certificate.
+* Fixed an issue where node image upgrades could use bootstrap settings associated with a previously selected node image instead of the new image.
+* Fixed an issue where automatic security patching could repeatedly reimage a node pool that was already running the latest available node image, causing unnecessary disruption and delaying updates to other pools.
+* Fixed an issue where upgrades on VMSS-based nodepools could leave extra surge nodes behind when drain-failure recovery had already removed one of the original surge nodes.
+* Fixed an issue where configuring a versionless customer-managed key could override an explicitly configured infrastructure encryption setting. AKS now preserves the selected setting. For more information, see [KMS infrastructure encryption](https://learn.microsoft.com/azure/aks/migrate-key-management-service-platform-managed-key-customer-managed-key).
+* Fixed an incorrect Azure CLI flag in the error message shown when a PodDisruptionBudget blocks node pool deletion. The message now recommends `az aks nodepool delete --ignore-pdb`.
+
+#### Component updates
+
+* Cloud Provider Azure components, including `cloud-controller-manager` and `cloud-node-manager`, have been updated:
+  * [`v1.31.15-1`](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.31.15/) on Kubernetes 1.31.
+  * [`v1.32.21-1`](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.32.21/) on Kubernetes 1.32.
+  * [`v1.33.18-1`](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.33.18/) on Kubernetes 1.33.
+  * [`v1.34.14-1`](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.34.14/) on Kubernetes 1.34.
+  * [`v1.35.9-1`](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.35.9/) on Kubernetes 1.35.
+  * [`v1.36.6-1`](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/14/v1.36.6/) on Kubernetes 1.36.
+  * [`v1.37.0-1`](https://cloud-provider-azure.sigs.k8s.io/blog/2026/09/24/v1.37.0/) on Kubernetes 1.37 and later.
+  * Windows `cloud-node-manager` uses the corresponding `-windows-hpc-1` builds. The health probe proxy has been updated to `v1.36.6-1`.
+* Azure CNI and CNS have been updated to [`v1.8.13`](https://github.com/Azure/azure-container-networking/releases/tag/v1.8.13) for Kubernetes 1.35.
+* Azure CSI drivers have been updated:
+  * Azure File CSI driver to [`v1.34.10`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.10) on Kubernetes 1.34 and [`v1.35.10`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.10) on Kubernetes 1.35 and later.
+  * Azure Blob CSI driver to [`v1.27.11`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.11) on Kubernetes 1.34 and later.
+  * Azure Disk CSI driver to [`v1.33.13`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.13) on Kubernetes 1.34, [`v1.34.7`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.7) on Kubernetes 1.35 and 1.36, and [`v1.36.0`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.36.0) on Kubernetes 1.37 and later.
+* Secrets Store CSI Driver has been updated to [`v1.5.7`](https://github.com/kubernetes-sigs/secrets-store-csi-driver/releases/tag/v1.5.7).
+* The KEDA add-on has been updated to [`2.20.2`](https://github.com/kedacore/keda/releases/tag/v2.20.2) for Kubernetes 1.37. Kubernetes 1.36 and earlier retain their existing KEDA versions.
+* Ratify has been updated to [`v1.4.6`](https://github.com/notaryproject/ratify/releases/tag/v1.4.6).
+* Tigera Operator has been updated to [`v1.40.15-4`](https://github.com/tigera/operator/releases/tag/v1.40.15).
+* Istio-based service mesh add-on revisions `asm-1-29` and `asm-1-30` have been updated to security-patched builds [`1.29.7-2`](https://github.com/istio/istio/releases/tag/1.29.7) and [`1.30.4-2`](https://github.com/istio/istio/releases/tag/1.30.4), respectively. Restart workload pods to trigger reinjection of the updated `istio-proxy` sidecar. For more information, see the [Istio add-on upgrade guide](https://learn.microsoft.com/azure/aks/istio-upgrade).
+* Cilium agent and operator images have been updated to [`v1.16.19-260921`](https://github.com/cilium/cilium/releases/tag/v1.16.19) on Kubernetes 1.31, [`v1.17.18-260922`](https://github.com/cilium/cilium/releases/tag/v1.17.18) on Kubernetes 1.32 and 1.33, [`v1.18.12-260901`](https://github.com/cilium/cilium/releases/tag/v1.18.12) on Kubernetes 1.34 and 1.35, and [`v1.19.8-260923`](https://github.com/cilium/cilium/releases/tag/v1.19.8) on Kubernetes 1.36 and later.
+* Hubble Relay and Advanced Container Networking Services DNS proxy images have been updated to [`v1.16.19-260921`](https://github.com/cilium/cilium/releases/tag/v1.16.19) on Kubernetes 1.31, [`v1.17.18-260922`](https://github.com/cilium/cilium/releases/tag/v1.17.18) on Kubernetes 1.32 and 1.33, [`v1.18.14-260923`](https://github.com/cilium/cilium/releases/tag/v1.18.14) on Kubernetes 1.34 and 1.35, and [`v1.19.8-260923`](https://github.com/cilium/cilium/releases/tag/v1.19.8) on Kubernetes 1.36 and later.
+* The Advanced Container Networking Services Envoy sidecar now uses Azure Linux-based images: [`v1.33.9`](https://github.com/envoyproxy/envoy/releases/tag/v1.33.9) on Kubernetes 1.29 and 1.30, [`v1.34.12`](https://github.com/envoyproxy/envoy/releases/tag/v1.34.12) on Kubernetes 1.31, and [`v1.36.9`](https://github.com/envoyproxy/envoy/releases/tag/v1.36.9) on Kubernetes 1.32 and later. These updates align the sidecar with the corresponding Cilium releases.
+* AKS Windows images:
+  * Windows Server 2022 - [`20348.5622.260909`](vhd-notes/AKSWindows/2022/20348.5622.260909.txt).
+  * Windows Server 2025 - [`26100.33438.260909`](vhd-notes/AKSWindows/2025/26100.33438.260909.txt).
+* AKS Azure Linux images:
+  * v3.0 - [`202609.23.0`](vhd-notes/AzureLinuxv3/202609.23.0.txt).
+* AKS Azure Container Linux images:
+  * ACLv3 - [`202609.23.0`](vhd-notes/AzureContainerLinuxv3/202609.23.0.txt).
+* AKS Ubuntu images:
+  * Ubuntu 22.04 - [`202609.23.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202609.23.0.txt).
+  * Ubuntu 24.04 - [`202609.23.0`](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202609.23.0.txt).
+
+---
+
 ## Release Notes - 2026-09-04
 
 > Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20260904`.
 
 ### Announcements of upcoming changes and retirements
 
-* Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using `az aks update --migrate-vmas-to-vms`.
+* Starting September 30, 2026, AKS will automatically migrate deprecated Availability Sets (VMAS) clusters to Virtual Machines node pools through the auto-upgrader. To control the migration timing, migrate before that date by using the [migration script for availability set migration](https://learn.microsoft.com/azure/aks/availability-sets-on-aks#run-migration-script-for-availability-set-migration).
 * Azure Linux with OS Guard for Azure Kubernetes Service (AKS) (preview) will be retired on December 10, 2026. Please transition to [Azure Container Linux](https://learn.microsoft.com/en-us/azure/azure-linux/azure-container-linux-overview) by that date. From now to December 9, 2026, you can continue to use Azure Linux with OS Guard (preview) without disruption. On December 10, 2026, AKS will no longer produce new Azure Linux with OS Guard node images or provide security patches, and you will not be able to create new node pools with Azure Linux with OS Guard. On March 10, 2027, AKS will remove all existing Azure Linux with OS Guard node images, which will cause scaling and remediation (reimage and redeploy) operations to fail.
 
 ### Release notes
