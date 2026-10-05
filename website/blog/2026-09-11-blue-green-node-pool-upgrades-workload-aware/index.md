@@ -1,7 +1,7 @@
 ---
 title: "Workload-Aware AKS Blue-Green Node Pool Upgrades"
 description: "Learn how to make AKS blue-green node pool upgrades workload-aware by isolating apps on dedicated pools, reducing capacity needs, and validating safely."
-date: 2026-09-11
+date: 2026-10-09
 authors: [steve-griffith]
 tags: [operations, best-practices, cost, scheduler]
 image: ./hero-image.png
