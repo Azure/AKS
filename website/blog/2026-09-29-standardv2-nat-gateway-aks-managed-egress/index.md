@@ -7,11 +7,11 @@ tags: [networking, traffic-management, operations]
 keywords: ["AKS", "StandardV2 NAT Gateway", "managed NAT gateway", "egress", "SNAT", "networking"]
 ---
 
-StandardV2 NAT Gateway support for AKS-managed egress is now generally available. When your cluster uses the `managedNATGateway` outbound type, AKS can provision and manage a StandardV2 NAT gateway on your behalf.
+StandardV2 NAT Gateway support for AKS-managed egress is now generally available. When your cluster uses the `managedNATGateway` outbound type, AKS will provision and manage a StandardV2 NAT gateway on your behalf.
 
 StandardV2 is zone redundant by default and doubles the throughput ceiling of the Standard SKU. You keep the fully managed experience, and you choose who owns the outbound public IP resources: let Azure create and manage them, or attach your own pre-provisioned StandardV2 public IP addresses and prefixes.
 
-With this release, please note the following change implemented starting with API version `2026-06-01`, new clusters that use `managedNATGateway` default to StandardV2 in regions where it's available. Existing clusters keep the Standard gateway they already have.
+With this release, when using API version `2026-06-01` and beyond, new clusters that use `managedNATGateway` default to StandardV2 in regions where it's available. Existing clusters keep the Standard NAT gateway they already have.
 
 <!-- truncate -->
 
@@ -19,9 +19,9 @@ With this release, please note the following change implemented starting with AP
 
 AKS nodes need outbound connectivity for basic functionality. They talk to the API server, pull container images, download Kubernetes and networking components, and receive node security updates. Your workloads add their own demands: Azure services, external APIs, package repositories, telemetry endpoints, and partner integrations.
 
-Every one of those connections consumes a source network address translation (SNAT) port. As outbound concurrency grows, insufficient SNAT capacity surfaces as intermittent connection failures and timeouts that are frustrating to diagnose.
+Every one of those connections consumes a source network address translation (SNAT) port. As outbound concurrency grows, insufficient SNAT capacity surfaces as intermittent connection failures and timeouts that are time-consuming to diagnose.
 
-Azure NAT Gateway addresses this by providing SNAT for internet-bound traffic at the subnet level. A single gateway serves every subnet you attach it to within the same virtual network, and it hands out SNAT ports on demand to the nodes that need them instead of pre-allocating a fixed block per node. Each attached public IP address contributes 64,512 SNAT ports, and a gateway supports up to 16 public IP addresses for each IP version.
+Azure NAT Gateway addresses this by providing SNAT for internet-bound traffic at the subnet level. A single NAT gateway serves every subnet you attach it to within the same virtual network, and it hands out SNAT ports on demand to the nodes that need them instead of pre-allocating a fixed block per node. Each attached public IP address contributes 64,512 SNAT ports, and a NAT gateway supports up to 16 public IP addresses for each IP version.
 
 When you plan egress capacity, size it against both the [required AKS outbound network rules and FQDNs](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) and your own application dependencies.
 
@@ -30,11 +30,11 @@ When you plan egress capacity, size it against both the [required AKS outbound n
 | Capability | Standard | StandardV2 |
 | --- | --- | --- |
 | Availability zones | Single zone | Zone redundant |
-| Throughput per gateway | Up to 50 Gbps | Up to 100 Gbps |
+| Throughput per NAT gateway | Up to 50 Gbps | Up to 100 Gbps |
 | IPv6 outbound addresses | Not supported | Supported |
 | Required public IP SKU | Standard | StandardV2 |
 
-The most significant improvement in StandardV2 is built-in zone redundancy. A Standard NAT gateway operates out of a single availability zone, so a zone-level disruption takes your cluster egress with it. StandardV2 spans every availability zone in the region, so new outbound connections continue to flow through the healthy zones.
+Zone redundancy is a key enhancement of StandardV2. A Standard NAT gateway operates out of a single availability zone, so a zone-level disruption can impact your cluster's egress traffic. StandardV2 spans every availability zone in the region, so new outbound connections continue to flow through the healthy zones.
 
 The higher throughput ceiling matters for data-heavy clusters that push large volumes to object storage, model registries, or partner endpoints. IPv6 support lets dual-stack clusters use the same managed egress path for both address families.
 
@@ -83,8 +83,8 @@ The generally available API expresses the SKU as a property of the existing outb
 
 Three defaulting rules follow from that design:
 
-1. A new cluster that omits `sku` on API version `2026-06-01` or later gets StandardV2 wherever the region supports it, and Standard everywhere else.
-2. An existing cluster with a Standard gateway keeps it. AKS backfills `natGatewayProfile.sku` as the read-only value `Standard` in GET responses so the configuration is explicit without changing the deployed resource.
+1. A new cluster on API version `2026-06-01` or later defaults to StandardV2 wherever the region supports it, and Standard everywhere else.
+2. An existing cluster with a Standard NAT gateway keeps it. AKS backfills `natGatewayProfile.sku` as the read-only value `Standard` in GET responses so the configuration is explicit without changing the deployed resource.
 3. A request on an earlier API version keeps the previous Standard behavior.
 
 > **Note**: If you used the public preview, the GA API doesn't expose `managedNATGatewayV2` as an outbound type. Preview API versions `2026-01-02-preview` through `2026-05-02-preview` continue to accept `managedNATGatewayV2` for around one year, which gives you time to move to `managedNATGateway` with an explicit `sku`. For deprecation dates of the preview APIs, see the [AKS Preview API life cycle documentation](https://learn.microsoft.com/azure/aks/concepts-preview-api-life-cycle).
@@ -168,7 +168,7 @@ Then reference the resource IDs in the cluster definition:
 }
 ```
 
-These resources stay under your control even though AKS manages the gateway itself, and they can carry IPv4 or IPv6 addresses.
+These resources stay under your control even though AKS manages the NAT gateway itself, and they can carry IPv4 or IPv6 addresses.
 
 > **Note**: The StandardV2 public IP requirement applies only to NAT gateway egress. The AKS-managed load balancer that serves `type: LoadBalancer` Services is still a Standard load balancer and needs Standard public IPs. If you pre-provision public IP inventory, plan for both SKUs.
 
@@ -252,9 +252,9 @@ Follow up by testing the outbound paths your applications actually depend on, in
 
 Existing clusters stay on Standard until you ask for the change, and you request it by updating the cluster with `sku` set to `StandardV2` on API version `2026-06-01` or later. AKS handles the rest of the migration.
 
-Plan the change as a replacement rather than an upgrade, because that's what happens underneath. AKS removes the Standard gateway and provisions a StandardV2 gateway in its place, reusing the same NAT gateway resource name.
+Plan the change as a replacement rather than an upgrade, because that's what happens underneath. AKS removes the Standard NAT gateway and provisions a StandardV2 NAT gateway in its place, reusing the same NAT gateway resource name.
 
-> **Warning**: Your egress IP addresses change during this migration. StandardV2 requires StandardV2 public IP resources, so your existing Standard public IPs can't carry over. Expect existing outbound connections to reset as the gateway is swapped.
+> **Warning**: Your egress IP addresses change during this migration. StandardV2 requires StandardV2 public IP resources, so your existing Standard public IPs can't carry over. Expect existing outbound connections to reset as the NAT gateway is swapped.
 
 How you stage the cutover depends on which ownership model you're moving to. If you supply your own StandardV2 addresses, create them first and add them to downstream firewall rules, allowlists, and partner registrations before you start the update, so the new addresses are already trusted when traffic shifts. If you let Azure manage the addresses, they don't exist until the update creates them, so you can't allowlist them in advance. Plan a maintenance window for that path: run the update, resolve the new `effectiveOutboundIPs` references to actual addresses, update downstream systems, and then resume production traffic.
 
@@ -281,15 +281,15 @@ The `2026-06-01` API supports both Azure-managed and customer-defined outbound I
 
 | Limitation | What it means for your cluster |
 | --- | --- |
-| StandardV2 public IP SKU is required | Standard public IP addresses and prefixes aren't compatible with a StandardV2 gateway. |
+| StandardV2 public IP SKU is required | Standard public IP addresses and prefixes aren't compatible with a StandardV2 NAT gateway. |
 | Custom IP prefixes aren't supported | If you bring your own IP ranges through Azure Custom IP Prefix, StandardV2 isn't an option today. |
 | The outbound IP ownership model is fixed | Decide between Azure-managed and customer-defined addresses at creation time. |
 | Regional availability varies | Check the [StandardV2 regional limitations](https://learn.microsoft.com/azure/nat-gateway/nat-overview#key-limitations-of-standardv2) for your region instead of assuming parity across the fleet. |
 | Azure quotas still apply | Public IP and subscription limits constrain how far you can scale outbound addresses. |
 
-One known issue deserves a closer look if you run dual-stack clusters. On the underlying platform, attaching a StandardV2 NAT gateway to a subnet disrupts IPv6 outbound traffic that relies on load balancer outbound rules. In AKS this is a decision you make once per cluster, because `outboundType` is cluster-wide and applies to both address families. Either send both families through the gateway with `managedNATGateway` and the StandardV2 SKU, or keep both on load balancer outbound rules with `loadBalancer`. Splitting the two families across a NAT gateway and load balancer outbound rules isn't available in AKS-managed egress, and the Standard SKU isn't a dual-stack option because it handles IPv4 only. More broadly, outbound connections that previously used a load balancer, Azure Firewall, or instance-level public IPs may be interrupted when the gateway attaches, because all new outbound connections move to the NAT gateway.
+One known issue deserves a closer look if you run dual-stack clusters. On the underlying platform, attaching a StandardV2 NAT gateway to a subnet disrupts IPv6 outbound traffic that relies on load balancer outbound rules. In AKS this is a decision you make once per cluster, because `outboundType` is cluster-wide and applies to both address families. Either send both families through the NAT gateway with `managedNATGateway` and the StandardV2 SKU, or keep both on load balancer outbound rules with `loadBalancer`. Splitting the two families across a NAT gateway and load balancer outbound rules isn't available in AKS-managed egress, and the Standard SKU isn't a dual-stack option because it handles IPv4 only. More broadly, outbound connections that previously used a load balancer, Azure Firewall, or instance-level public IPs may be interrupted when the gateway attaches, because all new outbound connections move to the NAT gateway.
 
-Finally, the SKU change is one way. You can move from Standard to StandardV2, but you can't downgrade a StandardV2 gateway back to Standard.
+Finally, the SKU change is one way. You can move from Standard to StandardV2, but you can't downgrade a StandardV2 NAT gateway back to Standard.
 
 ## How we validated it
 
@@ -297,7 +297,7 @@ Before GA, we tested the integration at scale. A 1,003-node StandardV2 cluster c
 
 Functional testing covered IPv4, IPv6, and dual-stack clusters across multiple regions, along with Linux-only and mixed Linux and Windows node pools. Windows scenarios included scaling deployments, rolling restarts, and user node pool deletion.
 
-Observability needs no special setup. Existing Azure NAT Gateway metrics, alerts, and dashboards apply unchanged, so your current SNAT monitoring continues to work against the new gateway.
+Observability needs no special setup. Existing Azure NAT Gateway metrics, alerts, and dashboards apply unchanged, so your current SNAT monitoring continues to work against the new NAT gateway.
 
 ## Get started
 
