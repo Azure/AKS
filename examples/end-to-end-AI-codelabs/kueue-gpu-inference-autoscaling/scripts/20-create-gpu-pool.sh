@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Create a conventional GPU node pool that the cluster autoscaler can scale to zero.
+
+. "$(cd "$(dirname "$0")" && pwd)/lib.sh"
+
+cluster_exists || fail "Cluster $LAB_CLUSTER doesn't exist. Run 10-create-cluster.sh first."
+
+step "Creating autoscaling GPU node pool"
+if POOL_JSON=$(az aks nodepool show \
+  --resource-group "$LAB_RESOURCE_GROUP" \
+  --cluster-name "$LAB_CLUSTER" \
+  --name "$LAB_GPU_POOL" -o json 2>/dev/null); then
+  POOL_JSON="$POOL_JSON" python3 - "$LAB_GPU_SKU" "$LAB_GPU_MAX_COUNT" "$LAB_GPU_TAINT" <<'PY'
+import json, os, sys
+pool = json.loads(os.environ["POOL_JSON"])
+sku, max_count, taint = sys.argv[1], int(sys.argv[2]), sys.argv[3]
+expected_labels = {"workload": "gpu-inference", "nvidia.com/gpu.present": "true"}
+errors = []
+if pool.get("vmSize") != sku:
+    errors.append(f"SKU is {pool.get('vmSize')}, expected {sku}")
+if pool.get("mode", "").lower() != "user":
+    errors.append(f"mode is {pool.get('mode')}, expected User")
+if pool.get("osType", "").lower() != "linux":
+    errors.append(f"OS type is {pool.get('osType')}, expected Linux")
+if not pool.get("enableAutoScaling"):
+    errors.append("cluster autoscaler is disabled")
+if pool.get("minCount") != 0 or pool.get("maxCount") != max_count:
+    errors.append(f"autoscaler range is {pool.get('minCount')}–{pool.get('maxCount')}, expected 0–{max_count}")
+for key, value in expected_labels.items():
+    if pool.get("nodeLabels", {}).get(key) != value:
+        errors.append(f"label {key}={value} is missing")
+if taint not in (pool.get("nodeTaints") or []):
+    errors.append(f"taint {taint} is missing")
+if errors:
+    raise SystemExit("Existing gpupool doesn't match this codelab:\n- " + "\n- ".join(errors))
+PY
+  pass "$LAB_GPU_POOL already exists with the expected settings"
+else
+  az aks nodepool add \
+    --resource-group "$LAB_RESOURCE_GROUP" \
+    --cluster-name "$LAB_CLUSTER" \
+    --name "$LAB_GPU_POOL" \
+    --mode User \
+    --node-vm-size "$LAB_GPU_SKU" \
+    --node-count 0 \
+    --enable-cluster-autoscaler \
+    --min-count 0 \
+    --max-count "$LAB_GPU_MAX_COUNT" \
+    --node-taints "$LAB_GPU_TAINT" \
+    --labels workload=gpu-inference nvidia.com/gpu.present=true \
+    -o none
+  pass "Created $LAB_GPU_POOL with a 0–$LAB_GPU_MAX_COUNT autoscaling range"
+fi
+
+step "Checking the zero-node starting state"
+COUNT=$(az aks nodepool show \
+  --resource-group "$LAB_RESOURCE_GROUP" \
+  --cluster-name "$LAB_CLUSTER" \
+  --name "$LAB_GPU_POOL" \
+  --query count -o tsv)
+[[ "$COUNT" == "0" ]] || fail "$LAB_GPU_POOL has $COUNT nodes. Scale it to zero before continuing."
+pass "$LAB_GPU_POOL starts at zero nodes"
+
+cat <<'EOF'
+
+This lab intentionally doesn't use --enable-managed-gpu=true. Managed GPU node
+pools don't support cluster autoscaler during preview. This conventional pool
+uses the AKS-installed driver; the next script installs the NVIDIA device plugin.
+EOF

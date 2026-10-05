@@ -620,3 +620,28 @@ hariharan-sethuraman:
   socials:
     linkedin: hariharansethuraman
     github: hasethuraman
+
+leslie-lin:
+  name: Leslie Lin
+  title: Senior Product Manager
+  url: https://github.com/leslielin-5
+  socials:
+    github: leslielin-5
+
+rishi-mody:
+  name: Rishi Mody
+  title: Senior Product Manager at Microsoft
+  url: https://www.linkedin.com/in/rishimmody/
+  image_url: https://github.com/RishiMody7.png
+  socials:
+    linkedin: rishimmody
+    github: RishiMody7
+
+will-case:
+  name: Will Case
+  title: Product Manager
+  url: https://github.com/willspacecase
+  image_url: https://github.com/willspacecase.png
+  page: true
+  socials:
+    github: willspacecase
