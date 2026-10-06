@@ -9,7 +9,7 @@ keywords: ["AKS", "StandardV2 NAT Gateway", "managed NAT gateway", "egress", "SN
 
 StandardV2 NAT Gateway support for AKS-managed egress is now generally available. When your cluster uses the `managedNATGateway` outbound type, AKS will provision and manage a StandardV2 NAT gateway on your behalf.
 
-StandardV2 is zone redundant by default and doubles the throughput ceiling of the Standard SKU. You keep the fully managed experience, and you choose who owns the outbound public IP resources: let Azure create and manage them, or attach your own pre-provisioned StandardV2 public IP addresses and prefixes.
+StandardV2 is zone redundant by default and supports double the throughput and packets per seconds compared to Standard SKU. You keep the fully managed experience, and you choose who owns the outbound public IP resources: let Azure create and manage them, or attach your own pre-provisioned StandardV2 public IP addresses and prefixes.
 
 With this release, when using API version `2026-06-01` and beyond, new clusters that use `managedNATGateway` default to StandardV2 in regions where it's available. Existing clusters keep the Standard NAT gateway they already have.
 
@@ -21,7 +21,7 @@ AKS nodes need outbound connectivity for basic functionality. They talk to the A
 
 Every one of those connections consumes a source network address translation (SNAT) port. As outbound concurrency grows, insufficient SNAT capacity surfaces as intermittent connection failures and timeouts that are time-consuming to diagnose.
 
-Azure NAT Gateway addresses this by providing SNAT for internet-bound traffic at the subnet level. A single NAT gateway serves every subnet you attach it to within the same virtual network, and it hands out SNAT ports on demand to the nodes that need them instead of pre-allocating a fixed block per node. Each attached public IP address contributes 64,512 SNAT ports, and a NAT gateway supports up to 16 public IP addresses for each IP version.
+Azure NAT Gateway addresses this by providing SNAT for internet-bound traffic at the subnet level. A single NAT gateway serves every subnet you attach it to within the same virtual network, and it hands out SNAT ports on demand to the nodes that need them instead of pre-allocating a fixed block per node. This dynamic allocation uses the available port pool more efficiently and reduces the risk of SNAT port exhaustion because idle nodes don’t hold ports that busy nodes could use. Each attached public IP address contributes 64,512 SNAT ports, and a NAT gateway supports up to 16 public IP addresses for each IP version.
 
 When you plan egress capacity, size it against both the [required AKS outbound network rules and FQDNs](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) and your own application dependencies.
 
@@ -85,7 +85,7 @@ Three defaulting rules follow from that design:
 
 1. A new cluster on API version `2026-06-01` or later defaults to StandardV2 wherever the region supports it, and Standard everywhere else.
 2. An existing cluster with a Standard NAT gateway keeps it. AKS backfills `natGatewayProfile.sku` as the read-only value `Standard` in GET responses so the configuration is explicit without changing the deployed resource.
-3. A request on an earlier API version keeps the previous Standard behavior.
+3. A request on an earlier API version keeps the previous Standard SKU behavior.
 
 > **Note**: If you used the public preview, the GA API doesn't expose `managedNATGatewayV2` as an outbound type. Preview API versions `2026-01-02-preview` through `2026-05-02-preview` continue to accept `managedNATGatewayV2` for around one year, which gives you time to move to `managedNATGateway` with an explicit `sku`. For deprecation dates of the preview APIs, see the [AKS Preview API life cycle documentation](https://learn.microsoft.com/azure/aks/concepts-preview-api-life-cycle).
 
@@ -174,8 +174,6 @@ These resources stay under your control even though AKS manages the NAT gateway 
 
 ## Create the cluster
 
-Azure CLI support for selecting the SKU is on the way. Until it ships, send the cluster definition through the Azure Resource Manager REST API with the GA API version:
-
 ```bash
 URL="https://management.azure.com/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ContainerService/managedClusters/${CLUSTER_NAME}?api-version=2026-06-01"
 
@@ -188,21 +186,7 @@ az rest \
 
 Build `cluster.json` from one of the two ownership models above, wrapped in the usual managed cluster envelope with your `location`, `identity`, `dnsPrefix`, `agentPoolProfiles`, and `linuxProfile` values.
 
-## Confirm the SKU you actually got
-
-This step isn't optional. When you omit `sku`, the region decides which SKU you get: StandardV2 where it's available, Standard everywhere else. A successful cluster creation therefore doesn't by itself tell you which SKU is deployed. Read it back:
-
-```bash
-az rest \
-  --method get \
-  --url "$URL" \
-  --query '{
-    provisioningState: properties.provisioningState,
-    outboundType: properties.networkProfile.outboundType,
-    sku: properties.networkProfile.natGatewayProfile.sku,
-    effectiveOutboundIPs: properties.networkProfile.natGatewayProfile.effectiveOutboundIPs
-  }'
-```
+## Confirm the deployment
 
 `effectiveOutboundIPs` is read only. AKS populates it after provisioning, so leave it out of create and update requests. Note that it returns Azure Resource Manager resource references, not literal addresses. Each entry is a resource ID for either a public IP address or a public IP prefix, so resolve them before you put anything into a downstream allowlist:
 
