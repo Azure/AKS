@@ -9,7 +9,7 @@ keywords: ["AKS", "StandardV2 NAT Gateway", "managed NAT gateway", "egress", "SN
 
 StandardV2 NAT Gateway support for AKS-managed egress is now generally available. When your cluster uses the `managedNATGateway` outbound type, AKS will provision and manage a StandardV2 NAT gateway on your behalf.
 
-StandardV2 is zone redundant by default and supports double the throughput and packets per seconds compared to Standard SKU. You keep the fully managed experience, and you choose who owns the outbound public IP resources: let Azure create and manage them, or attach your own pre-provisioned StandardV2 public IP addresses and prefixes.
+StandardV2 is zone redundant by default and supports double the throughput and packets per second compared to Standard SKU. You keep the fully managed experience, and you choose who owns the outbound public IP resources: let Azure create and manage them, or attach your own pre-provisioned StandardV2 public IP addresses and prefixes.
 
 With this release, when using API version `2026-06-01` and beyond, new clusters that use `managedNATGateway` default to StandardV2 in regions where it's available. Existing clusters keep the Standard NAT gateway they already have.
 
@@ -70,7 +70,7 @@ For a full SKU comparison, see the [Azure NAT Gateway SKU documentation](https:/
 
 ## How the GA API models StandardV2
 
-The generally available API expresses the SKU as a property of the existing outbound type rather than as a new outbound type. Starting with API version `2026-06-01`, set `networkProfile.natGatewayProfile.sku` to either `Standard` or `StandardV2`:
+Starting with API version `2026-06-01`, newly deployed clusters with `outboundType` set to `managedNATGateway` will default `networkProfile.natGatewayProfile.sku` to `StandardV2` or `Standard` in regions where StandardV2 NAT gateway is not available. To migrate existing clusters with Standard NAT gateway, update the cluster with `sku` set to `StandardV2` on API version `2026-06-01` or later.
 
 ```json
 {
@@ -80,12 +80,6 @@ The generally available API expresses the SKU as a property of the existing outb
   }
 }
 ```
-
-Three defaulting rules follow from that design:
-
-1. A new cluster on API version `2026-06-01` or later defaults to StandardV2 wherever the region supports it, and Standard everywhere else.
-2. An existing cluster with a Standard NAT gateway keeps it. AKS backfills `natGatewayProfile.sku` as the read-only value `Standard` in GET responses so the configuration is explicit without changing the deployed resource.
-3. A request on an earlier API version keeps the previous Standard SKU behavior.
 
 > **Note**: If you used the public preview, the GA API doesn't expose `managedNATGatewayV2` as an outbound type. Preview API versions `2026-01-02-preview` through `2026-05-02-preview` continue to accept `managedNATGatewayV2` for around one year, which gives you time to move to `managedNATGateway` with an explicit `sku`. For deprecation dates of the preview APIs, see the [AKS Preview API life cycle documentation](https://learn.microsoft.com/azure/aks/concepts-preview-api-life-cycle).
 
