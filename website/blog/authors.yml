@@ -34,6 +34,15 @@ ahmed-sabbour:
     linkedin: ahmedsabbour
     github: sabbour
 
+brian-benz:
+  name: Brian Benz
+  title: Principal Cloud Advocate at Microsoft
+  url: https://www.brianbenz.com
+  image_url: https://avatars.githubusercontent.com/bbenz
+  page: true
+  socials:
+    github: bbenz
+
 brian-redmond:
   name: Brian Redmond
   title: AKS and Azure Cloud Native Platforms
