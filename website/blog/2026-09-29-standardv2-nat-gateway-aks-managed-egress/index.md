@@ -288,7 +288,11 @@ Plan the change as a replacement rather than an upgrade, because that's what hap
 
 > **Warning**: Your egress IP addresses change during this migration. StandardV2 requires StandardV2 public IP resources, so your existing Standard public IPs can't carry over. Expect existing outbound connections to reset as the NAT gateway is swapped.
 
-How you stage the cutover depends on which ownership model you're moving to. If you supply your own StandardV2 addresses, create them first and add them to downstream firewall rules, allowlists, and partner registrations before you start the update, so the new addresses are already trusted when traffic shifts. If you let Azure manage the addresses, they don't exist until the update creates them, so you can't allowlist them in advance. Plan a maintenance window for that path: run the update, resolve the new `effectiveOutboundIPs` references to actual addresses, update downstream systems, and then resume production traffic.
+How you stage the cutover depends on which ownership model you're moving to. The CLI update above keeps Azure-managed outbound IPs.
+
+If you supply your own StandardV2 addresses, create them first and add them to downstream firewall rules, allowlists, and partner registrations. Then use a REST update on API version `2026-06-01` or later that sets `networkProfile.natGatewayProfile.sku` to `StandardV2`, supplies `outboundIPs`, `outboundIPPrefixes`, or both in that profile, and omits `managedOutboundIPProfile`. Change the SKU and ownership model in the same update: once the cluster is on StandardV2, its ownership model is fixed. Don't use the customer-IP CLI flags for this transition in Azure CLI 2.91.0; they retain the existing managed profile and combine mutually exclusive configurations.
+
+If you keep Azure-managed addresses, the new addresses don't exist until the update creates them, so you can't allowlist them in advance. Plan a maintenance window: run the CLI update above, resolve the new `effectiveOutboundIPs` references to actual addresses, update downstream systems, and then resume production traffic.
 
 Moving to AKS-managed StandardV2 from `loadBalancer` outbound connectivity is supported as well, and the same address-change planning applies. For broader outbound-type concepts and the user-assigned NAT gateway scenarios, see the [AKS NAT gateway documentation](https://learn.microsoft.com/azure/aks/nat-gateway).
 
