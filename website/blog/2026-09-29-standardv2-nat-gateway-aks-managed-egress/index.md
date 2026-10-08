@@ -273,6 +273,8 @@ kubectl run natv2-egress-check-v6 \
 
 Follow up by testing the outbound paths your applications actually depend on, including container registries, Azure APIs, and allowlisted partner services.
 
+Ongoing monitoring needs no special setup. Existing Azure NAT Gateway metrics, alerts, and dashboards apply unchanged, so your current SNAT monitoring continues to work against a StandardV2 NAT gateway.
+
 ## Move an existing cluster to StandardV2
 
 Existing clusters stay on Standard until you ask for the change. Pass the new SKU to `az aks update`, where `--outbound-type` can be omitted because the cluster already uses `managedNATGateway`:
@@ -325,14 +327,6 @@ Dual-stack clusters have one extra design point to work through. `outboundType` 
 More broadly, for traffic whose next hop is the internet, the NAT gateway takes precedence over load balancer outbound rules, instance-level public IPs, and Azure Firewall, so connections that previously used those paths may be interrupted when it attaches. A user-defined route is the exception: traffic doesn't pass through the NAT gateway at all when a route sends `0.0.0.0/0` to a network virtual appliance or a virtual network gateway.
 
 Finally, the SKU change is one way. You can move from Standard to StandardV2, but you can't downgrade a StandardV2 NAT gateway back to Standard.
-
-## How we validated it
-
-Before GA, we tested the integration at scale. A 1,003-node StandardV2 cluster came up with every node reporting `Ready`, and a follow-up workload issued 20,000 outbound requests with no dropped connections and even distribution across all 16 attached StandardV2 public IP addresses.
-
-Functional testing covered IPv4, IPv6, and dual-stack clusters across multiple regions, along with Linux-only and mixed Linux and Windows node pools. Windows scenarios included scaling deployments, rolling restarts, and user node pool deletion.
-
-Observability needs no special setup. Existing Azure NAT Gateway metrics, alerts, and dashboards apply unchanged, so your current SNAT monitoring continues to work against the new NAT gateway.
 
 ## Get started
 
