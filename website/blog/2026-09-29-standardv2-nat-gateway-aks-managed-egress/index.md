@@ -181,6 +181,7 @@ Azure CLI 2.91.0 and later can select the SKU directly. Set `--outbound-type-sku
 az aks create \
   --resource-group "$RESOURCE_GROUP" \
   --name "$CLUSTER_NAME" \
+  --location "$LOCATION" \
   --outbound-type managedNATGateway \
   --outbound-type-sku StandardV2 \
   --nat-gateway-managed-outbound-ip-count 2 \
@@ -188,12 +189,15 @@ az aks create \
   --generate-ssh-keys
 ```
 
-To bring your own addresses instead, swap the managed count for your pre-provisioned StandardV2 resource IDs:
+On a dual-stack cluster, add `--nat-gateway-managed-outbound-ipv6-count` to request Azure-managed IPv6 addresses as well. That flag requires the StandardV2 SKU.
+
+To bring your own addresses instead, swap the managed counts for your pre-provisioned StandardV2 resource IDs. Supply IPv6 addresses or prefixes here too if the cluster is dual-stack, rather than mixing in the managed count flags, which belong to the other ownership model:
 
 ```bash
 az aks create \
   --resource-group "$RESOURCE_GROUP" \
   --name "$CLUSTER_NAME" \
+  --location "$LOCATION" \
   --outbound-type managedNATGateway \
   --outbound-type-sku StandardV2 \
   --nat-gateway-outbound-ips "$PUBLIC_IP_ID" \
@@ -202,7 +206,9 @@ az aks create \
   --generate-ssh-keys
 ```
 
-For dual-stack clusters, add `--nat-gateway-managed-outbound-ipv6-count`, which requires the StandardV2 SKU.
+Keep the cluster in the same region as those IP resources. A NAT gateway can only attach public IPs from its own region, and `az aks create` falls back to the resource group's location when you omit `--location`.
+
+If the pre-provisioned addresses live outside the cluster's node resource group, the cluster identity also needs permission to attach them. See [Use a managed identity in AKS](https://learn.microsoft.com/azure/aks/use-managed-identity) for granting access to networking resources in another resource group.
 
 Both examples name the SKU explicitly, so they only succeed in regions that support StandardV2. Drop `--outbound-type-sku` to let AKS pick the regional default instead.
 
