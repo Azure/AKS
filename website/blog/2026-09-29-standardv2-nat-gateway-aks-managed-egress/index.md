@@ -92,7 +92,7 @@ Existing clusters are unaffected until you act on them. A cluster already runnin
 
 ## Choose who owns the outbound IP addresses
 
-The NAT gateway profile also determines where the outbound public IP resources come from. Pick one of the two models below when you create the cluster. You can't combine them, and you can't switch between them afterward, although you can still adjust counts, addresses, and idle timeout within the model you chose.
+The NAT gateway profile also determines where the outbound public IP resources come from. Pick one of the two models below when you create the cluster. You can't combine them, and you can't switch between them for as long as the cluster stays on its current SKU, although you can still adjust counts, addresses, and idle timeout within the model you chose.
 
 ### Let Azure manage the outbound IPs
 
@@ -225,6 +225,8 @@ Build `cluster.json` from one of the two ownership models above, wrapped in the 
 `effectiveOutboundIPs` is read only. AKS populates it after provisioning, so leave it out of create and update requests. Note that it returns Azure Resource Manager resource references, not literal addresses. Each entry is a resource ID for either a public IP address or a public IP prefix, so resolve them before you put anything into a downstream allowlist:
 
 ```bash
+URL="https://management.azure.com/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ContainerService/managedClusters/${CLUSTER_NAME}?api-version=2026-06-01"
+
 az rest --method get --url "$URL" \
   --query 'properties.networkProfile.natGatewayProfile.effectiveOutboundIPs[].id' \
   --output tsv |
@@ -242,9 +244,14 @@ done
 
 Address references resolve to a single IP address and prefix references resolve to a CIDR range. Allowlist whichever form each entry produces.
 
-To confirm the data path end to end, run a short-lived pod that reports its public source address:
+To confirm the data path end to end, point `kubectl` at the new cluster and run a short-lived pod that reports its public source address:
 
 ```bash
+az aks get-credentials \
+  --resource-group "$RESOURCE_GROUP" \
+  --name "$CLUSTER_NAME" \
+  --overwrite-existing
+
 kubectl run natv2-egress-check \
   --image=curlimages/curl:8.12.1 \
   --restart=Never \
@@ -283,7 +290,7 @@ Plan the change as a replacement rather than an upgrade, because that's what hap
 
 > **Warning**: Your egress IP addresses change during this migration. StandardV2 requires StandardV2 public IP resources, so your existing Standard public IPs can't carry over. Expect existing outbound connections to reset as the NAT gateway is swapped.
 
-How you stage the cutover depends on which ownership model you're moving to. If you supply your own StandardV2 addresses, create them first and add them to downstream firewall rules, allowlists, and partner registrations before you start the update, so the new addresses are already trusted when traffic shifts. If you let Azure manage the addresses, they don't exist until the update creates them, so you can't allowlist them in advance. Plan a maintenance window for that path: run the update, resolve the new `effectiveOutboundIPs` references to actual addresses, update downstream systems, and then resume production traffic.
+How you stage the cutover depends on which ownership model you want afterward. Customer-defined addresses are a StandardV2-only capability, so a cluster on Standard is always running Azure-managed addresses today, and the SKU update is the point at which you can choose. Supply your own StandardV2 addresses with `--nat-gateway-outbound-ips` or `--nat-gateway-outbound-ip-prefixes` and you can create them and add them to downstream firewall rules, allowlists, and partner registrations before you start the update, so the new addresses are already trusted when traffic shifts. Stay on Azure-managed addresses and they don't exist until the update creates them, so you can't allowlist them in advance. Plan a maintenance window for that path: run the update, resolve the new `effectiveOutboundIPs` references to actual addresses, update downstream systems, and then resume production traffic.
 
 Moving to AKS-managed StandardV2 from `loadBalancer` outbound connectivity is supported as well, and the same address-change planning applies. For broader outbound-type concepts and the user-assigned NAT gateway scenarios, see the [AKS NAT gateway documentation](https://learn.microsoft.com/azure/aks/nat-gateway).
 
@@ -309,11 +316,13 @@ The `2026-06-01` API supports both Azure-managed and customer-defined outbound I
 | --- | --- |
 | StandardV2 public IP SKU is required | Standard public IP addresses and prefixes aren't compatible with a StandardV2 NAT gateway. |
 | Custom IP prefixes aren't supported | If you bring your own IP ranges through Azure Custom IP Prefix, StandardV2 isn't an option today. |
-| The outbound IP ownership model is fixed | Decide between Azure-managed and customer-defined addresses at creation time. |
+| The outbound IP ownership model is fixed per SKU | Choose between Azure-managed and customer-defined addresses at creation, or at the point you migrate the SKU. |
 | Regional availability varies | Check the [StandardV2 regional limitations](https://learn.microsoft.com/azure/nat-gateway/nat-overview#key-limitations-of-standardv2) for your region instead of assuming parity across the fleet. |
 | Azure quotas still apply | Public IP and subscription limits constrain how far you can scale outbound addresses. |
 
-One known issue deserves a closer look if you run dual-stack clusters. On the underlying platform, attaching a StandardV2 NAT gateway to a subnet disrupts IPv6 outbound traffic that relies on load balancer outbound rules. In AKS this is a decision you make once per cluster, because `outboundType` is cluster-wide and applies to both address families. Either send both families through the NAT gateway with `managedNATGateway` and the StandardV2 SKU, or keep both on load balancer outbound rules with `loadBalancer`. Splitting the two families across a NAT gateway and load balancer outbound rules isn't available in AKS-managed egress, and the Standard SKU isn't a dual-stack option because it handles IPv4 only. More broadly, outbound connections that previously used a load balancer, Azure Firewall, or instance-level public IPs may be interrupted when the gateway attaches, because all new outbound connections move to the NAT gateway.
+One known issue deserves a closer look if you run dual-stack clusters. On the underlying platform, attaching a StandardV2 NAT gateway to a subnet disrupts IPv6 outbound traffic that relies on load balancer outbound rules. In AKS this is a decision you make once per cluster, because `outboundType` is cluster-wide and applies to both address families. Either send both families through the NAT gateway with `managedNATGateway` and the StandardV2 SKU, or keep both on load balancer outbound rules with `loadBalancer`. Splitting the two families across a NAT gateway and load balancer outbound rules isn't available in AKS-managed egress, and the Standard SKU isn't a dual-stack option because it handles IPv4 only.
+
+More broadly, for traffic whose next hop is the internet, the NAT gateway takes precedence over load balancer outbound rules, instance-level public IPs, and Azure Firewall, so connections that previously used those paths may be interrupted when it attaches. A user-defined route is the exception: traffic doesn't pass through the NAT gateway at all when a route sends `0.0.0.0/0` to a network virtual appliance or a virtual network gateway.
 
 Finally, the SKU change is one way. You can move from Standard to StandardV2, but you can't downgrade a StandardV2 NAT gateway back to Standard.
 
