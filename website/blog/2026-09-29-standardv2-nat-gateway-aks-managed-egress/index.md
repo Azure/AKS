@@ -198,6 +198,8 @@ az aks create \
   --generate-ssh-keys
 ```
 
+Both examples name the SKU explicitly, so they only succeed in regions that support StandardV2. Drop `--outbound-type-sku` to let AKS pick the regional default instead.
+
 Keep the cluster in the same region as those IP resources. A NAT gateway can only attach public IPs from its own region, and `az aks create` falls back to the resource group's location when you omit `--location`.
 
 If the pre-provisioned addresses live outside the cluster's node resource group, the cluster identity also needs permission to attach them. See [Use a managed identity in AKS](https://learn.microsoft.com/azure/aks/use-managed-identity) for granting access to networking resources in another resource group.
