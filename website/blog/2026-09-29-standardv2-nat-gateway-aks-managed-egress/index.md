@@ -168,7 +168,7 @@ These resources stay under your control even though AKS manages the NAT gateway 
 
 ## Create the cluster
 
-Azure CLI 2.91.0 and later set `--outbound-type managedNATGateway` and `sku` will default to `StandardV2` in an supported region:
+With Azure CLI 2.91.0 or later, set `--outbound-type managedNATGateway`. The SKU defaults to `StandardV2` in a supported region:
 
 ```bash
 az aks create \
