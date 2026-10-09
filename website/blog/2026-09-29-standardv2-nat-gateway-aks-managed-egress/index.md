@@ -70,7 +70,7 @@ For a full SKU comparison, see the [Azure NAT Gateway SKU documentation](https:/
 
 ## How the GA API models StandardV2
 
-Starting with API version `2026-06-01`, newly deployed clusters with `outboundType` set to `managedNATGateway` will default `networkProfile.natGatewayProfile.sku` to `StandardV2` or `Standard` in regions where StandardV2 NAT gateway is not available. To migrate existing clusters with Standard NAT gateway, update the cluster with `sku` set to `StandardV2` on API version `2026-06-01` or later.
+The generally available API expresses the SKU as a property of the existing outbound type rather than as a new outbound type. Starting with API version `2026-06-01`, newly deployed clusters with `outboundType` set to `managedNATGateway` will default `networkProfile.natGatewayProfile.sku` to `StandardV2` in regions where StandardV2 NAT gateway is available. Otherwise, it will set `sku` to `Standard`. To migrate existing clusters with Standard NAT gateway, update the cluster with `sku` set to `StandardV2` on API version `2026-06-01` or later.
 
 ```json
 {
@@ -168,7 +168,7 @@ These resources stay under your control even though AKS manages the NAT gateway 
 
 ## Create the cluster
 
-Azure CLI 2.91.0 and later set `--outbound-type managedNATGateway`:
+Azure CLI 2.91.0 and later set `--outbound-type managedNATGateway` and `sku` will default to `StandardV2` in an supported region:
 
 ```bash
 az aks create \
