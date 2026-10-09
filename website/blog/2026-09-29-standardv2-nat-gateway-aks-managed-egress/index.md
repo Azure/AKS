@@ -302,7 +302,7 @@ The StandardV2 NAT gateway profile supports the following properties:
 
 | Property | Purpose |
 | --- | --- |
-| `sku` | Selects the NAT Gateway SKU, default to `StandardV2` in regions where StandardV2 NAT Gateway is available|
+| `sku` | Selects the NAT Gateway SKU, either `Standard` or `StandardV2`. Omit it to take the regional default. |
 | `managedOutboundIPProfile.count` | Number of IPv4 public IP addresses created and managed by Azure. |
 | `managedOutboundIPProfile.countIPv6` | Number of IPv6 public IP addresses created and managed by Azure. |
 | `outboundIPs.publicIPs` | Resource IDs of customer-defined StandardV2 public IP addresses. |
