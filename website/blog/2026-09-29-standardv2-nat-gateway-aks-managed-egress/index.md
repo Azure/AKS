@@ -80,7 +80,8 @@ The generally available API expresses the SKU as a property of the existing outb
   }
 }
 ```
-AKS validates that value against the region and will result in the following behavior:
+
+AKS validates that value against the region, which results in the following behavior:
 
 - **Omit `sku`** and AKS picks the regional default: StandardV2 where it's available, Standard everywhere else. Use this when the same template deploys to many regions.
 - **Set `sku` explicitly** and the request has to match what the region supports. Asking for `StandardV2` where it isn't available fails, and so does asking for `Standard` in a region that already supports StandardV2. Both return `UnsupportedOutboundType`.
@@ -204,7 +205,7 @@ az aks create \
   --generate-ssh-keys
 ```
 
-Both examples name the SKU explicitly, so they only succeed in regions that support StandardV2. Drop `--outbound-type-sku` to let AKS pick the regional default instead.
+The second example names the SKU explicitly, so it only succeeds in regions that support StandardV2. Omitting `--outbound-type-sku`, as the first example does, lets AKS pick the regional default instead.
 
 Keep the cluster in the same region as those IP resources. A NAT gateway can only attach public IPs from its own region, and `az aks create` falls back to the resource group's location when you omit `--location`.
 
