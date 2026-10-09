@@ -32,7 +32,7 @@ When you plan egress capacity, size it against both the [required AKS outbound n
 | Availability zones | Single zone | Zone redundant |
 | Throughput per NAT gateway | Up to 50 Gbps | Up to 100 Gbps |
 | IPv6 outbound addresses | Not supported | Supported |
-| Required public IP SKU | Standard | StandardV2 |
+| Required public IP SKU | Standard | [StandardV2](https://learn.microsoft.com/azure/virtual-network/ip-services/public-ip-addresses#sku), always zone redundant and not interchangeable with Standard |
 
 Zone redundancy is a key enhancement of StandardV2. A Standard NAT gateway operates out of a single availability zone, so a zone-level disruption can impact your cluster's egress traffic. StandardV2 spans every availability zone in the region, so new outbound connections continue to flow through the healthy zones.
 
