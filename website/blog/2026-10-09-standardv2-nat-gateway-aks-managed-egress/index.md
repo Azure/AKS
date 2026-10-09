@@ -1,6 +1,6 @@
 ---
 title: "Announcing StandardV2 NAT Gateway for AKS-managed egress"
-date: 2026-09-29
+date: 2026-10-09
 description: "AKS-managed StandardV2 NAT Gateway is now generally available, adding zone-redundant egress, higher throughput, IPv6 support, and flexible outbound IPs."
 authors: [connie-zhang, rahul-rai]
 tags: [networking, traffic-management, operations]
