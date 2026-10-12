@@ -1,0 +1,56 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+metadata:
+  namespace: default
+  name: shared-gpu-claim 
+spec:
+  devices:
+    requests:
+    - name: gpu
+      exactly:
+        deviceClassName: gpu.amd.com
+        allocationMode: ExactCount
+        count: 1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: default
+  name: pod1 # First pod to use the shared GPU
+  labels:
+    app: pod-shared-gpu
+spec:
+  containers:
+  - name: ctr0
+    image: docker.io/rocm/rocm-terminal:6.4
+    command: ["bash", "-c"]
+    args: ["echo '--- Pod 1 ---' && amd-smi list && echo 'Pod 1 complete. Sleeping...' && sleep infinity"]
+    resources:
+      claims:
+      - name: gpu # This name must match the name in the `resourceClaims` list below
+  resourceClaims:
+  - name: gpu
+    # Reference the explicitly created ResourceClaim, not a template
+    resourceClaimName: shared-gpu-claim
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: default
+  name: pod2 # Second pod to use the same shared GPU
+  labels:
+    app: pod-shared-gpu
+spec:
+  containers:
+  - name: ctr0
+    image: docker.io/rocm/rocm-terminal:6.4
+    command: ["bash", "-c"]
+    args: ["echo '--- Pod 2 ---' && amd-smi list && echo 'Pod 2 complete. Sleeping...' && sleep infinity"]
+    resources:
+      claims:
+      - name: gpu
+  resourceClaims:
+  - name: gpu
+    # Reference the same explicit ResourceClaim
+    resourceClaimName: shared-gpu-claim

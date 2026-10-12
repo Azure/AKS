@@ -580,6 +580,38 @@ fuyuan-bie:
     github: biefy
     linkedin: biefy
 
+pengfei-ni:
+  name: Pengfei Ni
+  title: Principal Software Engineer at Microsoft
+  url: https://github.com/feiskyer
+  image_url: https://github.com/feiskyer.png
+  socials:
+    github: feiskyer
+
+june-liu:
+  name: June Liu
+  title: Principal Software Engineer at Microsoft
+  url: https://github.com/yliu382
+  image_url: https://github.com/yliu382.png
+  socials:
+    github: yliu382
+
+kevin-cho:
+  name: Kevin Cho
+  title: Senior Software Engineer at Microsoft
+  url: https://github.com/chokevin
+  image_url: https://github.com/chokevin.png
+  socials:
+    github: chokevin
+
+guoxun-wei:
+  name: Guoxun Wei
+  title: Senior Software Engineer at Microsoft
+  url: https://github.com/gossion
+  image_url: https://github.com/gossion.png
+  socials:
+    github: gossion
+
 hariharan-sethuraman:
   name: Hariharan Sethuraman
   title: Principal Software Engineer
@@ -588,6 +620,31 @@ hariharan-sethuraman:
   socials:
     linkedin: hariharansethuraman
     github: hasethuraman
+
+leslie-lin:
+  name: Leslie Lin
+  title: Senior Product Manager
+  url: https://github.com/leslielin-5
+  socials:
+    github: leslielin-5
+
+rishi-mody:
+  name: Rishi Mody
+  title: Senior Product Manager at Microsoft
+  url: https://www.linkedin.com/in/rishimmody/
+  image_url: https://github.com/RishiMody7.png
+  socials:
+    linkedin: rishimmody
+    github: RishiMody7
+
+will-case:
+  name: Will Case
+  title: Product Manager
+  url: https://github.com/willspacecase
+  image_url: https://github.com/willspacecase.png
+  page: true
+  socials:
+    github: willspacecase
 
 spencer-libbing:
   name: Spencer Libbing

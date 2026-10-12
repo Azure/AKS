@@ -57,7 +57,7 @@ const eventTypes: EventType[] = [
     description:
       "Roadmap updates, product demos, and open Q&A with the AKS team.",
     schedule:
-      "8 AM Pacific / 11 AM Eastern / 4 PM GMT / 8:30 PM IST",
+      "8 AM Pacific / 11 AM Eastern / 3 PM GMT / 8:30 PM IST",
     icsHref: "/webinars/calendar/AKS-Community-Roadmap-Call-US.ics",
     joinHref: "https://aka.ms/aks/communitycalls-us/roadmap/joinnow",
     agendaBasePath: "/webinars/agenda",
