@@ -19,11 +19,11 @@ With this release, when using API version `2026-06-01` and beyond, new clusters 
 
 AKS nodes need outbound connectivity for basic functionality. They talk to the API server, pull container images, download Kubernetes and networking components, and receive node security updates. Your workloads add their own demands: Azure services, external APIs, package repositories, telemetry endpoints, and partner integrations.
 
-Every one of those connections consumes a source network address translation (SNAT) port. As outbound concurrency grows, insufficient SNAT capacity surfaces as intermittent connection failures and timeouts that are time-consuming to diagnose.
+Connections that leave the cluster over the public internet consume a source network address translation (SNAT) port. Traffic that stays on the Azure backbone doesn't, so a private cluster's API server traffic and anything you reach through private endpoints or service endpoints never touches the NAT gateway. As public outbound concurrency grows, insufficient SNAT capacity surfaces as intermittent connection failures and timeouts that are time-consuming to diagnose.
 
 Azure NAT Gateway addresses this by providing SNAT for internet-bound traffic at the subnet level. A single NAT gateway serves every subnet you attach it to within the same virtual network, and it hands out SNAT ports on demand to the nodes that need them instead of pre-allocating a fixed block per node. This dynamic allocation uses the available port pool more efficiently and reduces the risk of SNAT port exhaustion because idle nodes don't hold ports that busy nodes could use. Each attached public IP address contributes 64,512 SNAT ports, and a NAT gateway supports up to 16 public IP addresses for each IP version.
 
-When you plan egress capacity, size it against both the [required AKS outbound network rules and FQDNs](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) and your own application dependencies.
+When you plan egress capacity, size it against the public-internet dependencies in the [required AKS outbound network rules and FQDNs](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) together with your own application dependencies.
 
 ## What StandardV2 NAT Gateway adds
 
