@@ -50,6 +50,7 @@ The table separates the customer-visible outcomes. Reductions mean the PIS-backe
 | Add three Windows nodes | All three workloads started on distinct new nodes | 810s | 202s | **74% at median**<br />**78% at p90** |
 | Add one Windows node | Workload started on the new node | 246s | 190s | **27% at median**<br />**77% at p90** |
 | Add three Linux nodes | All three workloads started on distinct new nodes | 86s | 82s | **4% at median**<br />**24% at p90** |
+| Add one Linux node | Workload started on the new node | 81s | 80s | **3% at median**<br />**28% at p90** |
 | Large image pulls during a three-node burst | Slowest new-node pull completed | Linux: 11s<br />Windows: 22s | Linux: under 1s<br />Windows: under 1s | **92% at Linux median**<br />**98% at Windows median** |
 | Install a pinned portable runtime | Runtime verified and workload started | Linux: 123s<br />Windows: 320s | Linux: 107s<br />Windows: 207s | **10% at Linux median**<br />**34% at Windows median** |
 | Prepare a large dependency bundle | Dependencies verified and workload started | Linux: 135s<br />Windows: 252s | Linux: 110s<br />Windows: 242s | **20% at Linux median**<br />**5% at Windows median** |
