@@ -1,7 +1,7 @@
 ---
 title: "Reducing AKS cold starts with Prepared Image Specification"
 description: "Learn how Prepared Image Specification can reduce AKS scale-out latency by preparing container images, models, and host customizations before nodes start."
-date: 2026-09-02
+date: 2026-10-16
 authors: ["spencer-libbing"]
 tags:
   - performance
@@ -41,26 +41,26 @@ PIS does not remove VM allocation, node registration, networking, scheduling, dr
 
 ## What the results mean for customers
 
-The table separates the customer-visible outcomes. Reductions mean the PIS-backed path completed sooner; the final row shows the one median regression. The time column shows standard versus PIS-backed pool times so you can see the size of each change.
+The table separates the customer-visible outcomes. Reductions mean the PIS-backed path completed sooner; the final row shows the one median regression. The Standard and PIS columns show each pool's median time, or mean time for the GPU row, so you can see the size of each change.
 
 <!-- markdownlint-disable MD033 -->
 
-| Scenario | Customer-visible outcome | Standard → PIS | Observed result |
-| --- | --- | ---: | ---: |
-| Add three Windows nodes | All three workloads started on distinct new nodes | 810 s → 202 s median | **74% at median**<br />**78% at p90** |
-| Add one Windows node | Workload started on the new node | 246 s → 190 s median | **27% at median**<br />**77% at p90** |
-| Add three Linux nodes | All three workloads started on distinct new nodes | 86 s → 82 s median | **4% at median**<br />**24% at p90** |
-| Large image pulls during a three-node burst | Slowest new-node pull completed | Linux: 11 s → under 1 s<br />Windows: 22 s → under 1 s | **92% at Linux median**<br />**98% at Windows median** |
-| Install a pinned portable runtime | Runtime verified and workload started | Linux: 123 s → 107 s<br />Windows: 320 s → 207 s | **10% at Linux median**<br />**34% at Windows median** |
-| Prepare a large dependency bundle | Dependencies verified and workload started | Linux: 135 s → 110 s<br />Windows: 252 s → 242 s | **20% at Linux median**<br />**5% at Windows median** |
-| Serve a model on a T4 GPU node | Model healthy and first token returned | First token: 484 s → 458 s mean<br />Model ready: 451 s → 425 s mean | **26 seconds sooner on average**<br />**Similar at p95: 511 s → 517 s to first token** |
-| Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | 127 s → 144 s median | **14% slower at median**<br />**Tail latency favored PIS** |
+| Scenario | Customer-visible outcome | Standard | PIS | Improvement |
+| --- | --- | ---: | ---: | ---: |
+| Add three Windows nodes | All three workloads started on distinct new nodes | 810 s | 202 s | **74% at median**<br />**78% at p90** |
+| Add one Windows node | Workload started on the new node | 246 s | 190 s | **27% at median**<br />**77% at p90** |
+| Add three Linux nodes | All three workloads started on distinct new nodes | 86 s | 82 s | **4% at median**<br />**24% at p90** |
+| Large image pulls during a three-node burst | Slowest new-node pull completed | Linux: 11 s<br />Windows: 22 s | Linux: under 1 s<br />Windows: under 1 s | **92% at Linux median**<br />**98% at Windows median** |
+| Install a pinned portable runtime | Runtime verified and workload started | Linux: 123 s<br />Windows: 320 s | Linux: 107 s<br />Windows: 207 s | **10% at Linux median**<br />**34% at Windows median** |
+| Prepare a large dependency bundle | Dependencies verified and workload started | Linux: 135 s<br />Windows: 252 s | Linux: 110 s<br />Windows: 242 s | **20% at Linux median**<br />**5% at Windows median** |
+| Serve a model on a T4 GPU node | Model healthy and first token returned | First token: 484 s<br />Model ready: 451 s<br />First token p95: 511 s | First token: 458 s<br />Model ready: 425 s<br />First token p95: 517 s | **26 seconds sooner on average**<br />**Similar at p95** |
+| Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | 127 s | 144 s | **14% slower at median**<br />**Tail latency favored PIS** |
 
 <!-- markdownlint-enable MD033 -->
 
 ### How to read these results
 
-Each result compares matched standard and PIS-backed pools. The timer starts with the scale request and stops at the outcome in the table; PIS creation and initial pool setup are not included. Percentages are the median or p90 of same-round improvements, while the time column shows each pool's own median, so the two can differ slightly. The GPU row uses means because its 54 pairs support confidence intervals. Times are rounded to whole seconds.
+Each result compares matched standard and PIS-backed pools. The timer starts with the scale request and stops at the outcome in the table; PIS creation and initial pool setup are not included. Percentages are the median or p90 of same-round improvements, while the Standard and PIS columns show each pool's own median, so the two can differ slightly. The GPU row uses means because its 54 pairs support confidence intervals. Times are rounded to whole seconds.
 
 Image tests used 100 same-round pairs per operating system, customization tests used 10 same-round pairs per cell, and the GPU test used 54 pairs in which scale requests were issued concurrently to two matched clusters, each scaling from one to two nodes. VM size, AKS node image, networking, artifacts, and workload were held constant.
 
