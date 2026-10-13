@@ -1,6 +1,6 @@
 ---
-title: "Benchmarking AKS Node Hardening: memory protection, capacity, and CPU tuning"
-description: "Controlled AKS benchmarks show how Node Hardening protects nodes from runaway memory, what it costs in allocatable capacity, and how to tune kube-reserved CPU for CPU-saturated nodes."
+title: "AKS Node Hardening: benchmarks, capacity, and CPU tuning"
+description: "Benchmarks show how AKS Node Hardening protects nodes from runaway memory, what it costs in allocatable capacity, and how to tune its kube-reserved CPU."
 date: 2026-10-23
 authors: ["spencer-libbing"]
 tags:
@@ -39,7 +39,7 @@ Values are medians across repeated trials. The sections below describe the metho
 
 Node Hardening is a cluster-level setting for Linux node pools. When it's enabled, AKS makes the following changes on each node:
 
-- **Enforced reservations:** The kubelet and containerd run in a dedicated `kubereserved.slice` cgroup, and host services run in `system.slice`. Both cgroups are limited to their reserved values, and the `kubepods.slice` cgroup that contains every pod is limited to the remaining node memory.
+- **Enforced reservations:** The kubelet and containerd run in a dedicated `kubereserved.slice` cgroup, and host services run in `system.slice`. Each cgroup's memory is limited to its reserved value, and the `kubepods.slice` cgroup that contains every pod is limited to the remaining node memory. CPU reservations become proportional CPU weights rather than hard limits, as described in [CPU saturation: tune kube-reserved CPU](#cpu-saturation-tune-kube-reserved-cpu).
 - **System-reserved capacity:** Host operating system services get their own CPU, memory, and ephemeral storage reservation.
 - **Larger kube-reserved memory:** Kube-reserved memory scales with the maximum number of pods per node, which accounts for the kubelet and containerd overhead of running more pods.
 - **Earlier, more graceful eviction:** The hard eviction threshold for available memory scales with node size, and new soft eviction thresholds give pods a grace period to shut down before the node reaches the hard threshold.
@@ -183,12 +183,26 @@ Values that you don't set keep the Node Hardening defaults. Appropriate CPU limi
 
 ## Try Node Hardening
 
-Install the `aks-preview` extension, register the `CustomNodeConfigPreview` feature flag, and enable Node Hardening on a cluster:
+Install the `aks-preview` extension and register the `CustomNodeConfigPreview` feature flag:
 
 ```azurecli
 az extension add --name aks-preview
 az extension update --name aks-preview
 az feature register --namespace Microsoft.ContainerService --name CustomNodeConfigPreview
+```
+
+Registration is asynchronous and can take a few minutes. Re-run the following command until it reports `Registered`:
+
+```azurecli
+az feature show \
+    --namespace Microsoft.ContainerService \
+    --name CustomNodeConfigPreview \
+    --query properties.state -o tsv
+```
+
+Once it prints `Registered`, refresh the resource provider and enable Node Hardening on a cluster:
+
+```azurecli
 az provider register --namespace Microsoft.ContainerService
 
 az aks update \
