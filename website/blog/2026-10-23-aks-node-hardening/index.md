@@ -165,7 +165,7 @@ az aks nodepool add \
     --kubelet-config ./kubelet-config.json
 ```
 
-Values that you don't set keep the Node Hardening defaults. Setting CPU limits on your workloads also reduces this risk, because pods with CPU limits can't saturate the node's CPU.
+Values that you don't set keep the Node Hardening defaults. Appropriate CPU limits can reduce this risk by bounding each pod's CPU consumption, but the combined workload can still saturate the node unless enough CPU remains available for node services.
 
 ## Other observations
 
