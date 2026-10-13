@@ -21,7 +21,7 @@ Prepared Image Specification (PIS) moves stable, repeated preparation into an AK
 
 ![Prepared Image Specification reuses prepared container images, host setup, and model assets across new AKS nodes](./hero-image.png)
 
-In our controlled comparisons of otherwise-equivalent standard and PIS-backed pools, the strongest result was a Windows burst that added three nodes: median time to start all three workloads fell from 810 seconds to 202 seconds, a **74%** reduction. For a T4 graphics processing unit (GPU) model-serving pool, PIS returned the first token **14 seconds sooner on average** across 46 paired scale-outs. Not every scenario improved, and the results section explains where the time went.
+In our controlled comparisons of otherwise-equivalent standard and PIS-backed pools, the strongest result was a Windows burst that added three nodes: median time to start all three workloads fell from 810 seconds to 202 seconds, a **74%** reduction. For a T4 graphics processing unit (GPU) model-serving pool, PIS returned the first token **26 seconds sooner on average** across 54 paired scale-outs. Not every scenario improved, and the results section explains where the time went.
 
 > **Preview notice:** PIS is currently an AKS preview feature. Preview features are opt-in, provided as-is and as-available, and not intended for production use. Review the current prerequisites, regions, limitations, and support policy before testing it.
 
@@ -53,22 +53,22 @@ The table separates the customer-visible outcomes. Reductions mean the PIS-backe
 | Large image pulls during a three-node burst | Slowest new-node pull completed | Linux: 11 s → under 1 s<br />Windows: 22 s → under 1 s | **92% at Linux median**<br />**98% at Windows median** |
 | Install a pinned portable runtime | Runtime verified and workload started | Linux: 123 s → 107 s<br />Windows: 320 s → 207 s | **10% at Linux median**<br />**34% at Windows median** |
 | Prepare a large dependency bundle | Dependencies verified and workload started | Linux: 135 s → 110 s<br />Windows: 252 s → 242 s | **20% at Linux median**<br />**5% at Windows median** |
-| Serve a model on a T4 GPU node | Model healthy and first token returned | First token: 515 s → 502 s mean<br />Model ready: 482 s → 468 s mean | **14 seconds sooner on average**<br />**At p95: 543 s → 537 s to first token**<br />**At p95: 510 s → 503 s to model ready** |
+| Serve a model on a T4 GPU node | Model healthy and first token returned | First token: 484 s → 458 s mean<br />Model ready: 451 s → 425 s mean | **26 seconds sooner on average**<br />**Similar at p95: 511 s → 517 s to first token** |
 | Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | 127 s → 144 s median | **14% slower at median**<br />**Tail latency favored PIS** |
 
 <!-- markdownlint-enable MD033 -->
 
 ### How to read these results
 
-Each result compares matched standard and PIS-backed pools. The timer starts with the scale request and stops at the outcome in the table; PIS creation and initial pool setup are not included. Percentages are the median or p90 of same-round improvements, while the time column shows each pool's own median, so the two can differ slightly. The GPU row uses means because its 46 pairs support confidence intervals. Times are rounded to whole seconds.
+Each result compares matched standard and PIS-backed pools. The timer starts with the scale request and stops at the outcome in the table; PIS creation and initial pool setup are not included. Percentages are the median or p90 of same-round improvements, while the time column shows each pool's own median, so the two can differ slightly. The GPU row uses means because its 54 pairs support confidence intervals. Times are rounded to whole seconds.
 
-Image tests used 100 same-round pairs per operating system, customization tests used 10 same-round pairs per cell, and the GPU test used 46 pairs in which scale requests were issued concurrently to two matched clusters, each scaling from one to two nodes. VM size, AKS node image, networking, artifacts, and workload were held constant.
+Image tests used 100 same-round pairs per operating system, customization tests used 10 same-round pairs per cell, and the GPU test used 54 pairs in which scale requests were issued concurrently to two matched clusters, each scaling from one to two nodes. VM size, AKS node image, networking, artifacts, and workload were held constant.
 
-The customization and GPU preparation checks ran through Azure VM Run Command, whose status was polled about every 30 seconds, so those steps have roughly 30-second resolution. Treat the 10-pair customization results, including their medians, as directional.
+The customization and GPU preparation checks ran through Azure VM Run Command, whose status was polled about every 30 seconds, so those steps have roughly 30-second resolution. The GPU test also recorded timestamps on the node to measure the model check precisely. Treat the 10-pair customization results, including their medians, as directional.
 
 These are controlled observations, not service-level objectives. The tests did not measure cost savings, production traffic, autoscaler decisions, cross-region variation, throughput, upgrades, or long-lived drift.
 
-Preparation also has a one-time cost. Creating a PIS-backed pool took about 22 minutes at the median for the customization pools and 26 minutes for the GPU pool, compared with about 5 minutes for the standard GPU pool. That time is spent when the pool is created or its prepared image is rebuilt, not on each scale-out.
+Preparation also has a one-time cost. Creating a PIS-backed pool took about 22 minutes at the median for the customization pools and 30 minutes for the GPU pool, compared with about 4 minutes for the standard GPU pool. That time is spent when the pool is created or its prepared image is rebuilt, not on each scale-out.
 
 ### Where the time went
 
@@ -80,16 +80,18 @@ Preparation also has a one-time cost. Creating a PIS-backed pool took about 22 m
 
 | Stage (mean) | Standard | PIS | Difference |
 | --- | ---: | ---: | --- |
-| Scale request to GPU allocatable | 251 s | 265 s | PIS 13 s later |
-| GPU allocatable to model check finished | 106 s | 154 s | PIS 47 s longer |
-| Model check finished to container started | 97 s | 11 s | PIS 86 s sooner |
-| Container started to model ready | 27 s | 39 s | PIS 11 s longer |
+| Scale request to GPU allocatable | 219 s | 214 s | PIS 5 s sooner |
+| GPU allocatable to model check finished | 99 s | 161 s | PIS 62 s longer |
+| Model check finished to container started | 106 s | 12 s | PIS 95 s sooner |
+| Container started to model ready | 27 s | 38 s | PIS 11 s longer |
 | Model ready to first token | 33 s | 34 s | About the same |
-| **Scale request to first token** | **515 s** | **502 s** | **PIS 14 s sooner** |
+| **Scale request to first token** | **484 s** | **458 s** | **PIS 26 s sooner** |
 
-The preloaded container image saved 86 seconds, but PIS gave back most of that time in other stages. PIS-backed nodes became allocatable 13 seconds later, and most of that delay occurred before the node object appeared. The model check took about 47 seconds longer even though the PIS node only verified a model that was already present, and the model took 11 seconds longer to load. We didn't trace the cause; it is consistent with slower first reads from a newly created disk, while the standard node read a model it had just written. At 30-second resolution, the PIS model check finished one or two polling intervals later in most pairs. The 95% confidence intervals for the paired mean savings were 5 to 24 seconds for model readiness and 4 to 23 seconds for first token.
+The preloaded container image saved 95 seconds, but PIS gave back much of that time in two later stages. Timestamps recorded on the nodes show why. The standard node downloaded the 2.4 GB model in 58 seconds and then hash-verified it in 2 seconds, because the file it had just written was still in memory. The PIS-backed node only had to verify the prepared model, but that check took 115 seconds, about 21 MB per second, because it was the first read of that data from the new node's disk. The model also took 11 seconds longer to load on the PIS-backed node. Time to GPU allocatable was similar for both pools.
 
-For large models, measure each stage rather than only the total. Reducing redundant verification of a model that was already checked during the image build, or reading the model before the workload needs it, may recover time that PIS currently gives back.
+The 95% confidence intervals for the paired mean savings were 17 to 36 seconds for model readiness and 16 to 35 seconds for first token, and PIS returned the first token sooner in 43 of 54 pairs. At p95, the two pools were within 6 seconds of each other.
+
+For large models, measure each stage rather than only the total. On this path, the first read of the prepared model was the largest remaining cost. Avoiding a full re-hash of a model that was already verified during the image build, or reading the model before the workload needs it, could recover much of that time.
 
 ## When to use PIS
 
