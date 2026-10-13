@@ -47,14 +47,14 @@ The table separates the customer-visible outcomes. Reductions mean the PIS-backe
 
 | Scenario | Customer-visible outcome | Standard | PIS | Improvement |
 | --- | --- | ---: | ---: | ---: |
-| Add three Windows nodes | All three workloads started on distinct new nodes | 810 s | 202 s | **74% at median**<br />**78% at p90** |
-| Add one Windows node | Workload started on the new node | 246 s | 190 s | **27% at median**<br />**77% at p90** |
-| Add three Linux nodes | All three workloads started on distinct new nodes | 86 s | 82 s | **4% at median**<br />**24% at p90** |
-| Large image pulls during a three-node burst | Slowest new-node pull completed | Linux: 11 s<br />Windows: 22 s | Linux: under 1 s<br />Windows: under 1 s | **92% at Linux median**<br />**98% at Windows median** |
-| Install a pinned portable runtime | Runtime verified and workload started | Linux: 123 s<br />Windows: 320 s | Linux: 107 s<br />Windows: 207 s | **10% at Linux median**<br />**34% at Windows median** |
-| Prepare a large dependency bundle | Dependencies verified and workload started | Linux: 135 s<br />Windows: 252 s | Linux: 110 s<br />Windows: 242 s | **20% at Linux median**<br />**5% at Windows median** |
-| Serve a model on a T4 GPU node | Model healthy and first token returned | First token: 484 s<br />Model ready: 451 s<br />First token p95: 511 s | First token: 458 s<br />Model ready: 425 s<br />First token p95: 517 s | **26 seconds sooner on average**<br />**Similar at p95** |
-| Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | 127 s | 144 s | **14% slower at median**<br />**Tail latency favored PIS** |
+| Add three Windows nodes | All three workloads started on distinct new nodes | 810s | 202s | **74% at median**<br />**78% at p90** |
+| Add one Windows node | Workload started on the new node | 246s | 190s | **27% at median**<br />**77% at p90** |
+| Add three Linux nodes | All three workloads started on distinct new nodes | 86s | 82s | **4% at median**<br />**24% at p90** |
+| Large image pulls during a three-node burst | Slowest new-node pull completed | Linux: 11s<br />Windows: 22s | Linux: under 1s<br />Windows: under 1s | **92% at Linux median**<br />**98% at Windows median** |
+| Install a pinned portable runtime | Runtime verified and workload started | Linux: 123s<br />Windows: 320s | Linux: 107s<br />Windows: 207s | **10% at Linux median**<br />**34% at Windows median** |
+| Prepare a large dependency bundle | Dependencies verified and workload started | Linux: 135s<br />Windows: 252s | Linux: 110s<br />Windows: 242s | **20% at Linux median**<br />**5% at Windows median** |
+| Serve a model on a T4 GPU node | Model healthy and first token returned | First token: 484s<br />Model ready: 451s<br />First token p95: 511s | First token: 458s<br />Model ready: 425s<br />First token p95: 517s | **26 seconds sooner on average**<br />**Similar at p95** |
+| Apply a small Linux certificate authority (CA) and policy setup | Setup verified and workload started | 127s | 144s | **14% slower at median**<br />**Tail latency favored PIS** |
 
 <!-- markdownlint-enable MD033 -->
 
@@ -80,12 +80,12 @@ Preparation also has a one-time cost. Creating a PIS-backed pool took about 22 m
 
 | Stage (mean) | Standard | PIS | Difference |
 | --- | ---: | ---: | --- |
-| Scale request to GPU allocatable | 219 s | 214 s | PIS 5 s sooner |
-| GPU allocatable to model check finished | 99 s | 161 s | PIS 62 s longer |
-| Model check finished to container started | 106 s | 12 s | PIS 95 s sooner |
-| Container started to model ready | 27 s | 38 s | PIS 11 s longer |
-| Model ready to first token | 33 s | 34 s | About the same |
-| **Scale request to first token** | **484 s** | **458 s** | **PIS 26 s sooner** |
+| Scale request to GPU allocatable | 219s | 214s | PIS 5s sooner |
+| GPU allocatable to model check finished | 99s | 161s | PIS 62s longer |
+| Model check finished to container started | 106s | 12s | PIS 95s sooner |
+| Container started to model ready | 27s | 38s | PIS 11s longer |
+| Model ready to first token | 33s | 34s | About the same |
+| **Scale request to first token** | **484s** | **458s** | **PIS 26s sooner** |
 
 The preloaded container image saved 95 seconds, but PIS gave back much of that time in two later stages. Timestamps recorded on the nodes show why. The standard node downloaded the 2.4 GB model in 58 seconds and then hash-verified it in 2 seconds, because the file it had just written was still in memory. The PIS-backed node only had to verify the prepared model, but that check took 115 seconds, about 21 MB per second, because it was the first read of that data from the new node's disk. The model also took 11 seconds longer to load on the PIS-backed node. Time to GPU allocatable was similar for both pools.
 
