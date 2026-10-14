@@ -92,7 +92,7 @@ The generally available API expresses the SKU as a property of the existing outb
 AKS validates that value against the region, which results in the following behavior:
 
 - **Omit `sku`** and AKS picks the regional default: StandardV2 where it's available, Standard everywhere else. Use this when the same template deploys to many regions.
-- **Set `sku` explicitly** and the request has to match what the region supports. Asking for `StandardV2` where it isn't available fails, and so does asking for `Standard` in a region that already supports StandardV2. Both return `UnsupportedOutboundType`.
+- **Set `sku` explicitly** and the request has to match what the region supports. Asking for `StandardV2` where it isn't available fails with `UnsupportedOutboundType`.
 
 Existing clusters are unaffected until you act on them. A cluster already running a Standard NAT gateway keeps it, and a request on an earlier API version keeps the previous Standard behavior.
 
