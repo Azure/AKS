@@ -27,7 +27,7 @@ Prepared Image Specification (PIS) lets you list the container images and host s
 
 ## What PIS does
 
-**Bottom line:** You define what every new node needs once, and AKS prepares it ahead of time so scale-outs skip that work.
+You define what every new node needs once, and AKS prepares it ahead of time so scale-outs skip that work.
 
 A PIS is a versioned Azure resource that lists container images to cache and Bash or PowerShell setup scripts to run. AKS builds a prepared node image from a supported AKS node image, and every new node in a PIS-backed pool boots from it. You don't build or maintain the image yourself.
 
@@ -37,13 +37,13 @@ The tradeoff is a one-time build. Creating a PIS-backed pool took about 20 to 30
 
 ## How much time PIS saves
 
-**Bottom line:** Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common.
+Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common.
 
 Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Standard and PIS columns show typical (median) times unless noted, and time saved is the difference between them.
 
 ### Scaling out with cached container images
 
-**Bottom line:** Windows scale-outs were up to 10 minutes faster, and the slowest Windows scale-outs dropped from about 14 minutes to about 4.
+Windows scale-outs were up to 10 minutes faster, and the slowest Windows scale-outs dropped from about 14 minutes to about 4.
 
 | Scenario | Standard | PIS | Typical time saved | Slowest 10% of scale-outs |
 | --- | ---: | ---: | ---: | ---: |
@@ -60,7 +60,7 @@ On Linux, a 90 MB image takes only a few seconds to pull, so the typical saving 
 
 ### Preparing runtimes and dependencies
 
-**Bottom line:** Moving installs into the image saved up to 2 minutes per Windows node and up to 25 seconds per Linux node.
+Moving installs into the image saved up to 2 minutes per Windows node and up to 25 seconds per Linux node.
 
 | Setup task | Standard | PIS | Typical time saved |
 | --- | ---: | ---: | ---: |
@@ -74,7 +74,7 @@ Windows installs take longer at node startup, so baking them into the image save
 
 ### Serving a model on a GPU node
 
-**Bottom line:** For a T4 GPU model server, PIS returned the first token 26 seconds sooner on average by preloading a 2.6 GB inference image and a 2.4 GB model.
+For a T4 GPU model server, PIS returned the first token 26 seconds sooner on average by preloading a 2.6 GB inference image and a 2.4 GB model.
 
 | Outcome (average) | Standard | PIS | Time saved |
 | --- | ---: | ---: | ---: |
@@ -85,7 +85,7 @@ With the inference image already on the node, the model server container started
 
 ## When to use PIS
 
-**Bottom line:** Use PIS for pools that scale out often and whose new nodes spend more than about half a minute pulling images or running setup.
+Use PIS for pools that scale out often and whose new nodes spend more than about half a minute pulling images or running setup.
 
 Good fits include:
 
@@ -98,7 +98,7 @@ PIS is a poor fit for small images, quick setup, content that changes more often
 
 ## How to adopt PIS
 
-**Bottom line:** You can move an existing pool's images and setup into a PIS in a few commands, then compare its scale-out time with your current pool.
+You can move an existing pool's images and setup into a PIS in a few commands, then compare its scale-out time with your current pool.
 
 1. **Pick what to prepare.** Start with the largest images and the setup steps every new node repeats.
 2. **Create a PIS version.** List digest-pinned container images and any setup scripts.
@@ -145,7 +145,7 @@ To also bake in runtimes, dependencies, or certificates, add setup scripts with 
 
 ## Conclusion
 
-**Bottom line:** PIS turns repeated per-node setup into a one-time build, so pools with large images or heavy setup scale out faster and more predictably.
+PIS turns repeated per-node setup into a one-time build, so pools with large images or heavy setup scale out faster and more predictably.
 
 The benefit is largest for Windows pools, large images, and runtime or dependency installs, and smallest when nodes have little to download. Because PIS is in preview, try it in a nonproduction pool first and follow the [AKS roadmap](https://github.com/orgs/Azure/projects/685) as the feature evolves.
 
