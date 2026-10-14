@@ -39,7 +39,7 @@ The tradeoff is a one-time build. Creating a PIS-backed pool took about 20 to 30
 
 **Bottom line:** Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common.
 
-Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Standard and PIS columns show typical (median) times unless noted.
+Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Standard and PIS columns show typical (median) times unless noted, and time saved is the difference between them.
 
 ### Scaling out with cached container images
 
@@ -47,10 +47,10 @@ Each comparison scaled a standard pool and a PIS-backed pool at the same time an
 
 | Scenario | Standard | PIS | Typical time saved | Slowest 10% of scale-outs |
 | --- | ---: | ---: | ---: | ---: |
-| Add three Windows nodes | 810s | 202s | **About 10 minutes (74%)** | 849s vs. 246s (**71% faster**) |
-| Add one Windows node | 246s | 190s | **About 1 minute (27%)** | 823s vs. 238s (**71% faster**) |
-| Add three Linux nodes | 86s | 82s | **3s (4%)** | 104s vs. 98s (**6% faster**) |
-| Add one Linux node | 81s | 80s | **3s (3%)** | 104s vs. 94s (**10% faster**) |
+| Add three Windows nodes | 810s | 202s | **About 10 minutes (75%)** | 849s vs. 246s (**71% faster**) |
+| Add one Windows node | 246s | 190s | **56s (23%)** | 823s vs. 238s (**71% faster**) |
+| Add three Linux nodes | 86s | 82s | **4s (4%)** | 104s vs. 98s (**6% faster**) |
+| Add one Linux node | 81s | 80s | **2s (2%)** | 104s vs. 94s (**10% faster**) |
 
 These workloads used a .NET application image of 90 MB on Linux and 171 MB on Windows. PIS removed almost all of the image pull time, about 10 seconds on Linux and 20 seconds on Windows.
 
@@ -60,17 +60,17 @@ On Linux, a 90 MB image takes only a few seconds to pull, so the typical saving 
 
 ### Preparing runtimes and dependencies
 
-**Bottom line:** Moving installs into the image saved up to 2 minutes per Windows node and up to half a minute per Linux node.
+**Bottom line:** Moving installs into the image saved up to 2 minutes per Windows node and up to 25 seconds per Linux node.
 
 | Setup task | Standard | PIS | Typical time saved |
 | --- | ---: | ---: | ---: |
-| Install a Node.js runtime on Windows | 320s | 207s | **About 2 minutes (34%)** |
-| Install a certificate and security policy on Windows | 254s | 198s | **34s (14%)** |
-| Install a 512 MiB dependency bundle on Windows | 252s | 242s | **13s (5%)** |
-| Install a 512 MiB dependency bundle on Linux | 135s | 110s | **28s (20%)** |
-| Install a Node.js runtime on Linux | 123s | 107s | **12s (10%)** |
+| Install a Node.js runtime on Windows | 320s | 207s | **About 2 minutes (35%)** |
+| Install a certificate and security policy on Windows | 254s | 198s | **56s (22%)** |
+| Install a 512 MiB dependency bundle on Windows | 252s | 242s | **11s (4%)** |
+| Install a 512 MiB dependency bundle on Linux | 135s | 110s | **25s (19%)** |
+| Install a Node.js runtime on Linux | 123s | 107s | **16s (13%)** |
 
-Windows installs take longer at node startup, so baking them into the image saved the most time. On Linux, the saving grew with the size of the download: the 512 MiB dependency bundle saved more than twice as much time as the runtime.
+Windows installs take longer at node startup, so baking them into the image saved the most time. On Linux, the saving grew with the size of the download: the 512 MiB dependency bundle saved more time than the smaller runtime.
 
 ### Serving a model on a GPU node
 
