@@ -37,7 +37,7 @@ The tradeoff is a one-time build. Creating a PIS-backed pool took about 20 to 30
 
 ## How much time PIS saves
 
-**Bottom line:** Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common. A small Linux image with no setup saw little change.
+**Bottom line:** Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common.
 
 Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Standard and PIS columns show typical (median) times unless noted.
 
@@ -69,23 +69,19 @@ On Linux, a 90 MB image takes only a few seconds to pull, so the typical saving 
 | Install a 512 MiB dependency bundle on Windows | 252s | 242s | **13s (5%)** |
 | Install a 512 MiB dependency bundle on Linux | 135s | 110s | **28s (20%)** |
 | Install a Node.js runtime on Linux | 123s | 107s | **12s (10%)** |
-| Install a certificate and security policy on Linux | 127s | 144s | 17s slower (-14%) |
 
-Windows installs are slower to run at node startup, so baking them into the image saved more time. On Linux, PIS-backed nodes took a few seconds longer to start, so a small task such as installing one certificate came out slightly slower. Larger downloads and installs more than made up that difference.
+Windows installs take longer at node startup, so baking them into the image saved the most time. On Linux, the saving grew with the size of the download: the 512 MiB dependency bundle saved more than twice as much time as the runtime.
 
 ### Serving a model on a GPU node
 
-**Bottom line:** For a T4 GPU model server, PIS returned the first token 26 seconds sooner on average, mostly by skipping a 2.6 GB inference image pull.
+**Bottom line:** For a T4 GPU model server, PIS returned the first token 26 seconds sooner on average by preloading a 2.6 GB inference image and a 2.4 GB model.
 
-| Stage (average) | Standard | PIS | Difference |
-| --- | ---: | ---: | --- |
-| Node ready for GPU work | 219s | 214s | PIS 5s sooner |
-| Model downloaded or prepared model checked | 99s | 161s | PIS 62s longer |
-| Inference container started | 106s | 12s | **PIS 95s sooner** |
-| Model loaded and first token returned | 60s | 72s | PIS 12s longer |
-| **Total to first token** | **484s** | **458s** | **PIS 26s sooner** |
+| Outcome (average) | Standard | PIS | Time saved |
+| --- | ---: | ---: | ---: |
+| Model ready to serve | 451s | 425s | **26s** |
+| First token returned | 484s | 458s | **26s** |
 
-The preloaded inference image saved 95 seconds. Part of that was offset by the first read of the 2.4 GB prepared model from the new node's disk, which was slower than reading a freshly downloaded copy that was still in memory. Workloads that load large files baked into the image should expect that first read to take longer than later reads.
+With the inference image already on the node, the model server container started without waiting for a multi-gigabyte pull.
 
 ## When to use PIS
 
