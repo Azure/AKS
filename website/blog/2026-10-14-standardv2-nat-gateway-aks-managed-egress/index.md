@@ -21,7 +21,7 @@ AKS nodes need outbound connectivity to reach the API server, pull images, and r
 
 Azure NAT Gateway provides SNAT at the subnet level and hands out ports on demand rather than reserving a fixed block per node, which uses the available pool far more efficiently. For the mechanics, including per-address port counts and scaling limits, see [Azure NAT Gateway resources](https://learn.microsoft.com/azure/nat-gateway/nat-gateway-resource).
 
-Traffic that stays on the Azure backbone doesn't consume SNAT ports at all, so a private cluster's API server traffic and anything behind private or service endpoints never touches the NAT gateway. Size egress capacity against your public-internet dependencies, including the [required AKS outbound network rules and FQDNs](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress).
+Traffic that stays on the Azure backbone doesn't consume SNAT ports at all, so a private cluster's API server traffic and anything behind private or service endpoints never touches the NAT gateway. When you plan egress capacity, size it against both the [required AKS outbound network rules and FQDNs](https://learn.microsoft.com/azure/aks/outbound-rules-control-egress) and your own application dependencies.
 
 ## What StandardV2 NAT Gateway adds
 
@@ -86,11 +86,6 @@ The generally available API expresses the SKU as a property of the existing outb
   }
 }
 ```
-
-AKS validates that value against the region, which results in the following behavior:
-
-- **Omit `sku`** and AKS picks the regional default: StandardV2 where it's available, Standard everywhere else. Use this when the same template deploys to many regions.
-- **Set `sku` explicitly** and the request has to match what the region supports. Asking for `StandardV2` where it isn't available fails with `UnsupportedOutboundType`.
 
 Existing clusters are unaffected until you act on them. A cluster already running a Standard NAT gateway keeps it, and a request on an earlier API version keeps the previous Standard behavior.
 
@@ -225,7 +220,7 @@ Migrating from `loadBalancer` outbound connectivity is supported too, with the s
 | Azure quotas still apply | Public IP and subscription limits constrain how far you can scale outbound addresses. |
 | The SKU change is one way | You can move from Standard to StandardV2, but you can't downgrade back to Standard. |
 
-Dual-stack clusters have one extra design point. `outboundType` is a single cluster-wide setting that governs IPv4 and IPv6 together, so you can't route one address family through a NAT gateway and the other through load balancer outbound rules. That makes the StandardV2 NAT gateway the only managed NAT gateway option for dual-stack egress, because the Standard SKU handles IPv4 only. If you'd rather keep both families on load balancer outbound rules, choose `loadBalancer` as the outbound type instead.
+Dual-stack clusters have an additional design consideration; `outboundType` is a single cluster-wide setting that governs IPv4 and IPv6 together, so you can't route one address family through a NAT gateway and the other through load balancer outbound rules. That makes the StandardV2 NAT gateway the only managed NAT gateway option for dual-stack egress, because the Standard SKU handles IPv4 only. If you'd rather keep both families on load balancer outbound rules, choose `loadBalancer` as the outbound type instead.
 
 For traffic whose next hop is the internet, the NAT gateway takes precedence over load balancer outbound rules, instance-level public IPs, and Azure Firewall, so connections that previously used those paths may be interrupted when it attaches. A user-defined route is the exception: traffic doesn't pass through the NAT gateway at all when a route sends `0.0.0.0/0` to a network virtual appliance or a virtual network gateway.
 
