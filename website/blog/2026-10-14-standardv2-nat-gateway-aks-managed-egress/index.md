@@ -1,6 +1,6 @@
 ---
 title: "Announcing StandardV2 NAT Gateway for AKS-managed egress"
-date: 2026-10-09
+date: 2026-10-14
 description: "AKS-managed StandardV2 NAT Gateway is now generally available, adding zone-redundant egress, higher throughput, IPv6 support, and flexible outbound IPs."
 authors: [connie-zhang, rahul-rai]
 tags: [networking, traffic-management, operations]
@@ -116,7 +116,7 @@ Requesting IPv6 addresses requires a dual-stack cluster, which you configure wit
 
 ### Bring your own StandardV2 public IPs
 
-Use `outboundIPs`, `outboundIPPrefixes`, or both when downstream systems need to allowlist known, pre-provisioned egress addresses. Create the resources first with the StandardV2 SKU using [az network public-ip create](https://learn.microsoft.com/cli/azure/network/public-ip#az-network-public-ip-create), then reference their resource IDs:
+Use `outboundIPs`, `outboundIPPrefixes`, or both when downstream systems need to allowlist known, pre-provisioned egress addresses. Create the resources first with the StandardV2 SKU, using [az network public-ip create](https://learn.microsoft.com/cli/azure/network/public-ip#az-network-public-ip-create) for addresses and [az network public-ip prefix create](https://learn.microsoft.com/cli/azure/network/public-ip/prefix#az-network-public-ip-prefix-create) for prefixes, then reference their resource IDs:
 
 ```json
 "natGatewayProfile": {
