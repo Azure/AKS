@@ -11,11 +11,11 @@ tags:
 keywords: ["Azure Kubernetes Service", "AKS", "Prepared Image Specification", "PIS", "node scaling", "cold starts"]
 ---
 
-When an Azure Kubernetes Service (AKS) cluster needs more capacity, creating a virtual machine (VM) is only the beginning. The node still has to join the cluster, become Ready, prepare its host dependencies, pull container images, and start a workload before it can serve traffic.
+When an Azure Kubernetes Service (AKS) cluster needs more capacity, creating a virtual machine (VM) is only the beginning. The node still has to join the cluster, become Ready, install host dependencies, pull container images, and start a workload before it can serve traffic.
 
-That delay has a customer cost. Teams often keep extra nodes running to absorb bursts, accept slower recovery when demand changes, or build complex bootstrap automation that every new node must repeat.
+While new nodes start, workloads wait. To compensate, teams keep spare nodes running, accept slower recovery when demand spikes, or maintain bootstrap scripts that every new node has to rerun.
 
-Prepared Image Specification (PIS) moves stable, repeated preparation into an AKS-managed node image. Container images and host customizations are prepared once, versioned, and reused by a node pool. New nodes still have to be created and join the cluster, but they can avoid repeating much of the work between node creation and workload readiness.
+Prepared Image Specification (PIS) lets you list the container images and host setup scripts that every new node needs, such as a large inference image, a security agent, or an internal CA bundle. AKS bakes them into a versioned node image once, and new nodes in the pool boot from it instead of repeating that work. Nodes still have to be created, join the cluster, and start your workloads, so PIS shortens that path rather than removing it.
 
 <!-- truncate -->
 
@@ -25,21 +25,17 @@ In our controlled comparisons of otherwise-equivalent standard and PIS-backed po
 
 > **Preview notice:** PIS is currently an AKS preview feature. Preview features are opt-in, provided as-is and as-available, and not intended for production use. Review the current prerequisites, regions, limitations, and support policy before testing it.
 
-## What Prepared Image Specification changes for customers
+## What PIS does
 
 A PIS is an AKS-managed, versioned Azure resource that describes container images and Bash or PowerShell customizations to include in a prepared AKS node image. AKS builds on a supported AKS node image; this is not a bring-your-own-image workflow.
 
-The tradeoff is timing: spend preparation time and operational effort when a PIS-backed pool is created or updated, then avoid repeating the same downloads and initialization during later scale-outs.
+The tradeoff is timing: you spend preparation time when a PIS-backed pool is created or updated, then avoid repeating the same downloads and setup during later scale-outs.
 
-| Customer goal | How PIS helps |
-| --- | --- |
-| Respond to demand sooner | New nodes can start with large image layers and stable host dependencies already present. |
-| Reduce warm-capacity pressure | A faster, more predictable scale-out path may let a team hold fewer idle nodes solely as a cold-start buffer. |
-| Eliminate repeated bootstrap work | Build stable host setup into a reusable image instead of running it again on every new node. |
+PIS complements approaches you might already use. An image pre-pull DaemonSet or [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming) still does its work after each new node starts. PIS does the work before the node joins the pool, and it covers host setup scripts as well as container images. The [PIS overview](https://learn.microsoft.com/azure/aks/prepared-image-specification-overview#prepared-image-specification-and-artifact-streaming) compares PIS with Artifact Streaming in more detail.
 
-PIS does not remove VM allocation, node registration, networking, scheduling, driver initialization, or application startup. Its value depends on how much of the customer-visible delay comes from work that can be prepared ahead of time.
+PIS doesn't remove VM allocation, node registration, networking, scheduling, driver initialization, or application startup. It helps most when downloads and host setup are a large share of your startup time.
 
-## What the results mean for customers
+## Scale-out test results
 
 The table separates the customer-visible outcomes. Reductions mean the PIS-backed path completed sooner; the final row shows the one median regression. The Standard and PIS columns show each pool's median time, or mean time for the GPU row, so you can see the size of each change.
 
@@ -104,7 +100,7 @@ Start with work that every new node repeats and that can be completed before the
 
 Large, digest-pinned images, portable runtimes, dependency bundles, security tools, and immutable model artifacts can fit this profile. Keep frequently changing, node-specific, or inexpensive setup on the normal startup path.
 
-For GPU pools, measure the operating event that matters to the workload. Teams that reserve scarce GPU capacity might care more about planned upgrades or node replacement than routine scale-out. During a supported Kubernetes upgrade, AKS rebuilds the prepared node image for the referenced PIS version so replacement nodes still receive its specified images and customizations. This benchmark covered scale-out through the first successful inference; it did not measure upgrade duration or replacement disruption. Validate the target PIS and node image versions in a matched nonproduction pool, then measure until the replacement workload serves a representative request.
+For GPU pools, measure the operating event that matters to the workload. Teams that reserve scarce GPU capacity might care more about planned upgrades or node replacement than routine scale-out. During a supported Kubernetes upgrade, AKS rebuilds the prepared node image for the referenced PIS version so replacement nodes still receive its specified images and customizations. To pick up a newer AKS node image or changed content, create a new PIS version and point the pool at it; plan for the one-time rebuild when you schedule maintenance. This benchmark covered scale-out through the first successful inference; it did not measure upgrade duration or replacement disruption.
 
 ## How to adopt PIS
 
@@ -117,7 +113,7 @@ For GPU pools, measure the operating event that matters to the workload. Teams t
 
 ### Create and attach a PIS
 
-After registering the preview and configuring registry access and role-based access control (RBAC), create a version with pinned images, get its resource ID, and reference it from a node pool. See the [PIS how-to](https://learn.microsoft.com/azure/aks/prepared-image-specification) for current prerequisites and feature-registration steps.
+After registering the preview and configuring registry access and role-based access control (RBAC), create a version with pinned images and setup scripts, get its resource ID, and reference it from a node pool. This example caches an application image and installs a pinned Node.js runtime after verifying its checksum. See the [PIS how-to](https://learn.microsoft.com/azure/aks/prepared-image-specification) for current prerequisites and feature-registration steps.
 
 ```bash
 az extension add --name aks-preview --upgrade
@@ -136,8 +132,8 @@ LOCATION=$(az aks show \
 cat >scripts.json <<'JSON'
 [
   {
-    "name": "install-bootstrap",
-    "script": "#!/usr/bin/env bash\nset -euo pipefail\nmkdir -p /opt/example\nprintf '%s\\n' 'v1' >/opt/example/version",
+    "name": "install-node-runtime",
+    "script": "#!/usr/bin/env bash\nset -euo pipefail\nurl=https://nodejs.org/dist/v22.18.0/node-v22.18.0-linux-x64.tar.gz\nsha=a2e703725d8683be86bb5da967bf8272f4518bdaf10f21389e2b2c9eaeae8c8a\ncurl -fsSLo /tmp/node.tar.gz \"$url\"\necho \"$sha  /tmp/node.tar.gz\" | sha256sum -c -\nmkdir -p /opt/node\ntar -xzf /tmp/node.tar.gz --strip-components=1 -C /opt/node\nrm /tmp/node.tar.gz",
     "scriptType": "Bash",
     "executionPoint": "NodeImageBuildTime",
     "postScriptAction": "None"
