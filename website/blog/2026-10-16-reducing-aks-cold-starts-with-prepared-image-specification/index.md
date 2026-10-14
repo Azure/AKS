@@ -37,23 +37,55 @@ The tradeoff is a one-time build. Creating a PIS-backed pool took about 20 to 30
 
 ## How much time PIS saves
 
-**Bottom line:** Savings grow with the amount of download and setup work you move into the image. Large images, runtimes, and Windows workloads benefited most; a small image with no setup saw little change.
+**Bottom line:** Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common. A small Linux image with no setup saw little change.
 
-Each row compares a standard pool and a PIS-backed pool that scaled out at the same time. Times run from the scale request until the workload was running, and are medians except for the GPU row, which uses averages.
+Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Standard and PIS columns show typical (median) times unless noted.
 
-| Scenario | What each new node needed | Standard | PIS | Time saved |
-| --- | --- | ---: | ---: | ---: |
-| Add three Windows nodes | A .NET application image | 810s | 202s | **About 10 minutes (74%)** |
-| Add a Windows node with a runtime | A pinned Node.js runtime | 320s | 207s | **About 2 minutes (34%)** |
-| Add a Linux node with dependencies | A 512 MiB dependency bundle | 135s | 110s | **28s (20%)** |
-| Serve a model on a T4 GPU node | A 2.6 GB inference image and a 2.4 GB model | 484s | 458s | **26s (5%)** |
-| Add three Linux nodes | A 90 MB .NET application image | 86s | 82s | **3s (4%)** |
+### Scaling out with cached container images
 
-The Windows results stand out because standard Windows nodes sometimes took more than 10 minutes to become ready, and none of the PIS-backed nodes did. When a scale-out adds several nodes, it waits for the slowest one, so PIS avoided that delay in most bursts.
+**Bottom line:** Windows scale-outs were up to 10 minutes faster, and the slowest Windows scale-outs dropped from about 14 minutes to about 4.
 
-On Linux, the savings tracked the size of the work removed. Skipping a 90 MB image pull saved only a few seconds, while skipping a 512 MiB bundle saved about half a minute. PIS-backed Linux nodes also took a few seconds longer to start, so very small setup tasks can come out even or slightly slower; a small certificate setup was 14% slower in our tests.
+| Scenario | Standard | PIS | Typical time saved | Slowest 10% of scale-outs |
+| --- | ---: | ---: | ---: | ---: |
+| Add three Windows nodes | 810s | 202s | **About 10 minutes (74%)** | 849s vs. 246s (**71% faster**) |
+| Add one Windows node | 246s | 190s | **About 1 minute (27%)** | 823s vs. 238s (**71% faster**) |
+| Add three Linux nodes | 86s | 82s | **3s (4%)** | 104s vs. 98s (**6% faster**) |
+| Add one Linux node | 81s | 80s | **3s (3%)** | 104s vs. 94s (**10% faster**) |
 
-For GPU model serving, PIS removed a 95-second image pull. Most of that saving was offset because the prepared model was read from the new node's disk for the first time, which was slower than reading a freshly downloaded copy that was still in memory.
+These workloads used a .NET application image of 90 MB on Linux and 171 MB on Windows. PIS removed almost all of the image pull time, about 10 seconds on Linux and 20 seconds on Windows.
+
+The larger Windows gains came from more predictable node startup. Standard Windows nodes sometimes took more than 10 minutes to become ready, and none of the PIS-backed nodes did. A multi-node scale-out waits for its slowest node, so avoiding that delay is why the three-node Windows result is so large.
+
+On Linux, a 90 MB image takes only a few seconds to pull, so the typical saving was small. In the slowest 10% of Linux scale-outs, PIS finished 6 to 10 seconds sooner. Larger images and setup tasks, shown below, produce larger Linux savings.
+
+### Preparing runtimes and dependencies
+
+**Bottom line:** Moving installs into the image saved up to 2 minutes per Windows node and up to half a minute per Linux node.
+
+| Setup task | Standard | PIS | Typical time saved |
+| --- | ---: | ---: | ---: |
+| Install a Node.js runtime on Windows | 320s | 207s | **About 2 minutes (34%)** |
+| Install a certificate and security policy on Windows | 254s | 198s | **34s (14%)** |
+| Install a 512 MiB dependency bundle on Windows | 252s | 242s | **13s (5%)** |
+| Install a 512 MiB dependency bundle on Linux | 135s | 110s | **28s (20%)** |
+| Install a Node.js runtime on Linux | 123s | 107s | **12s (10%)** |
+| Install a certificate and security policy on Linux | 127s | 144s | 17s slower (-14%) |
+
+Windows installs are slower to run at node startup, so baking them into the image saved more time. On Linux, PIS-backed nodes took a few seconds longer to start, so a small task such as installing one certificate came out slightly slower. Larger downloads and installs more than made up that difference.
+
+### Serving a model on a GPU node
+
+**Bottom line:** For a T4 GPU model server, PIS returned the first token 26 seconds sooner on average, mostly by skipping a 2.6 GB inference image pull.
+
+| Stage (average) | Standard | PIS | Difference |
+| --- | ---: | ---: | --- |
+| Node ready for GPU work | 219s | 214s | PIS 5s sooner |
+| Model downloaded or prepared model checked | 99s | 161s | PIS 62s longer |
+| Inference container started | 106s | 12s | **PIS 95s sooner** |
+| Model loaded and first token returned | 60s | 72s | PIS 12s longer |
+| **Total to first token** | **484s** | **458s** | **PIS 26s sooner** |
+
+The preloaded inference image saved 95 seconds. Part of that was offset by the first read of the 2.4 GB prepared model from the new node's disk, which was slower than reading a freshly downloaded copy that was still in memory. Workloads that load large files baked into the image should expect that first read to take longer than later reads.
 
 ## When to use PIS
 
@@ -68,15 +100,52 @@ Good fits include:
 
 PIS is a poor fit for small images, quick setup, content that changes more often than the pool scales, and pools that rarely scale. Kubernetes upgrades rebuild the prepared image automatically. To pick up new content or a newer AKS node image, create a new PIS version and point the pool at it.
 
-## Get started
+## How to adopt PIS
 
-**Bottom line:** Start with the images and setup your nodes repeat most, and compare one PIS-backed pool with your current pool.
+**Bottom line:** You can move an existing pool's images and setup into a PIS in a few commands, then compare its scale-out time with your current pool.
 
-1. Register the preview and install the `aks-preview` Azure CLI extension.
-2. Create a PIS version that lists your digest-pinned container images and setup scripts.
-3. Create a node pool that references the PIS version, and compare its scale-out time with your current pool.
+1. **Pick what to prepare.** Start with the largest images and the setup steps every new node repeats.
+2. **Create a PIS version.** List digest-pinned container images and any setup scripts.
+3. **Create a PIS-backed node pool.** Reference the PIS version, scale it alongside your current pool, and compare how long workloads take to start.
+4. **Roll out.** Point production pools at the tested version, and create a new version when your images or scripts change.
 
-The [PIS how-to guide](https://learn.microsoft.com/azure/aks/prepared-image-specification) walks through each step with Azure CLI examples.
+Register the preview and install the `aks-preview` extension:
+
+```bash
+az feature register --namespace Microsoft.ContainerService --name AKSPreparedImageSpecificationPreview
+az provider register --namespace Microsoft.ContainerService
+az extension add --name aks-preview --upgrade
+```
+
+Create a PIS version that caches your image, then add a node pool that uses it:
+
+```bash
+RESOURCE_GROUP="my-resource-group"
+CLUSTER_NAME="my-aks-cluster"
+PIS_NAME="my-pis"
+
+az aks prepared-image-specification create \
+  --resource-group "$RESOURCE_GROUP" \
+  --name "$PIS_NAME" \
+  --version v1 \
+  --location "$(az aks show --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME" --query location --output tsv)" \
+  --container-images "myacr.azurecr.io/my-app@sha256:<digest>"
+
+PIS_VERSION_ID=$(az aks prepared-image-specification version show \
+  --resource-group "$RESOURCE_GROUP" \
+  --pis-name "$PIS_NAME" \
+  --name v1 \
+  --query id \
+  --output tsv)
+
+az aks nodepool add \
+  --resource-group "$RESOURCE_GROUP" \
+  --cluster-name "$CLUSTER_NAME" \
+  --name pispool \
+  --prepared-image-specification-id "$PIS_VERSION_ID"
+```
+
+To also bake in runtimes, dependencies, or certificates, add setup scripts with `--customization-scripts`. The [PIS how-to guide](https://learn.microsoft.com/azure/aks/prepared-image-specification) covers scripts, registry access, and permissions.
 
 ## Conclusion
 
