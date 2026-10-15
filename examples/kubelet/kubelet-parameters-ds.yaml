@@ -50,7 +50,7 @@ spec:
              echo "kube-api-burst parameter has been added to kubelet configuration"
           fi
           while true; do sleep 100000; done
-        image: alpine
+        image: mcr.microsoft.com/azure-policy/alpine:prod_20200505.1
         imagePullPolicy: IfNotPresent
         name: kubelet-parameters
         resources:
