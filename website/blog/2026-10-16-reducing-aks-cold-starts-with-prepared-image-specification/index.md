@@ -72,6 +72,17 @@ Moving installs into the image saved up to 2 minutes per Windows node and up to 
 
 Windows installs take longer at node startup, so baking them into the image saved the most time. On Linux, the saving grew with the size of the download: the 512 MiB dependency bundle saved more time than the smaller runtime.
 
+### Scaling out ten Linux nodes with a large image and setup
+
+When each new Linux node had to pull a 5.7 GB machine learning image and install a Node.js runtime and a 512 MiB dependency bundle, PIS had all 10 workloads running about 3.5 minutes sooner.
+
+| Outcome (all 10 workloads running) | Standard | PIS | Time saved |
+| --- | ---: | ---: | ---: |
+| Typical scale-out | 315s | 104s | **About 3.5 minutes (67%)** |
+| Slowest 10% of scale-outs | 338s | 115s | **About 3.5 minutes (66%)** |
+
+Nodes became ready in about the same time on both pools. The difference came from what happened next: standard nodes spent about 3 minutes pulling the image and 45 seconds on setup, while PIS-backed nodes had the image already present and finished setup in about 4 seconds.
+
 ### Serving a model on a GPU node
 
 For a T4 GPU model server, PIS returned the first token 26 seconds sooner on average by preloading a 2.6 GB inference image and a 2.4 GB model.
