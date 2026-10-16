@@ -17,13 +17,11 @@ If you enabled control plane metrics during the preview, metrics continue to flo
 
 AKS manages control plane patching, high availability, and infrastructure health for you. But even a fully managed control plane responds to the load your cluster puts on it. A busy API server or an etcd database nearing its storage quota can show up as stalled deployments, request timeouts, or delayed autoscaling, and it's hard to tell where the problem starts.
 
-Until now, investigating these symptoms often meant opening a support case. Control plane metrics make key signals queryable in your own Azure Monitor workspace, so you can do first-pass investigation yourself:
+Control plane metrics make key signals queryable in your own Azure Monitor workspace, so you can investigate these symptoms yourself:
 
-- **Faster investigation**: Quickly check whether control plane pressure is contributing to slow deployments or request timeouts.
+- **Faster investigation**: Check whether control plane pressure is behind slow deployments or request timeouts.
 - **Proactive monitoring**: Alert on sustained latency, throttling, and errors before they cause wider impact.
-- **Self-serve diagnostics**: Use PromQL and Grafana dashboards to answer common questions without waiting on a support case.
-- **Data-informed tuning**: Use request patterns by verb and resource, together with client-side telemetry, to tune retries, polling, and admission webhooks.
-- **No self-hosted stack**: Collect control plane metrics without running your own exporters or Prometheus server.
+- **Self-serve diagnostics**: Answer common questions with PromQL and the built-in dashboards instead of opening a support case.
 
 Metrics show *where* pressure is building. To find *which* client is causing it, see [Find the client behind the load](#find-the-client-behind-the-load).
 
