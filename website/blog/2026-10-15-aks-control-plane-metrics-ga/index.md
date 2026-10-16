@@ -94,13 +94,13 @@ We recommend focusing on the following signals when assessing API server health.
 
 | Signal | Example metrics | What it tells you |
 | --- | --- | --- |
-| **Request volume and mix** | `apiserver_request_total` | API request rate and how the mix of verbs and resources changes over time |
+| **Availability and restarts** | `up{job="controlplane-apiserver"}`, `process_start_time_seconds{job="controlplane-apiserver"}` | Whether the API server is reachable and whether it has restarted |
 | **Errors and throttling** | `apiserver_request_total{code="429"}`, `apiserver_request_total{code=~"5.."}` | Requests that were throttled (429) or failed (5xx) |
 | **Request latency** | `apiserver_request_duration_seconds_bucket`, `apiserver_request_duration_seconds_sum`, `apiserver_request_duration_seconds_count` | Average latency, or percentiles when full histogram buckets are retained |
 | **In-flight requests** | `apiserver_current_inflight_requests` | How many requests the API server is processing right now |
 | **APF demand vs. capacity** | `apiserver_flowcontrol_demand_seats_average`, `apiserver_flowcontrol_current_limit_seats` | Requested concurrency compared to the available limit for each priority level |
 | **LIST object fan-out** | `apiserver_storage_list_fetched_objects_total`, `apiserver_storage_list_returned_objects_total` | How many objects LIST calls fetch from storage compared to how many they return |
-| **Availability and restarts** | `up{job="controlplane-apiserver"}`, `process_start_time_seconds{job="controlplane-apiserver"}` | Whether the API server is reachable and whether it has restarted |
+| **Request volume and mix** | `apiserver_request_total` | API request rate and how the mix of verbs and resources changes over time |
 
 > **Note**: A metric appears in your workspace only if its target is enabled and your ingestion profile or keep list retains it. Request labels such as verb and resource describe traffic patterns but don't identify the client sending the requests.
 
@@ -114,27 +114,28 @@ API server load depends on three things: how many requests arrive (demand), how 
 
 Demand, cost, and capacity signals are leading indicators, so they let you act before clients are affected. Latency, `429` responses, and `5xx` errors are lagging indicators that tell you clients are already affected. Clients that retry without backoff add demand and make the overload worse.
 
-When you troubleshoot, work backward: start from the outcome, check whether APF capacity is saturated, look for expensive LIST calls, identify which verbs and resources drive demand, and then [find the client behind the load](#find-the-client-behind-the-load).
+When you troubleshoot, work backward from what clients experience. The following sections follow that order: confirm the API server is available, check errors and latency, see whether APF capacity is saturated, look for expensive `LIST` calls, and identify which verbs and resources drive demand. When several signals point the same way, such as rising latency, APF pressure, and sustained `429` responses, [find the client behind the load](#find-the-client-behind-the-load).
 
 Here's a closer look at each signal, what it tells you, and how to query it. Every cluster has a different normal, so establish a baseline for each production cluster and watch for sustained deviations from it rather than applying universal thresholds.
 
-### 1. Request volume and mix
-
-Start with the total volume of traffic reaching the API server, then break it down by verb to understand how your workloads interact with the cluster.
-
-```promql
-# Total request rate per cluster
-sum by (cluster) (rate(apiserver_request_total[5m]))
-
-# Request rate by verb
-sum by (cluster, verb) (rate(apiserver_request_total[5m]))
-```
-
-Pay close attention to `LIST`, `GET`, `WATCH`, `PATCH`, `UPDATE`, and `CREATE` requests. High request volume on its own isn't a warning sign, since large clusters naturally generate significant traffic. The pattern to watch for is request volume that grows alongside rising latency, APF pressure, or errors. Verb and resource labels describe what kind of traffic is arriving; to see which client is sending it, see [Find the client behind the load](#find-the-client-behind-the-load).
-
 > **Tip**: If multiple clusters share an Azure Monitor workspace, keep the `cluster` label in your aggregations so baselines and alerts stay separate. Use a matcher such as `{cluster="your-cluster"}` to query a single cluster, and make sure each cluster has a distinct [cluster alias](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration#cluster-alias).
 
-**Recommendation:** Investigate sustained growth, especially when it's driven by `LIST`, `WATCH`, `PATCH`, or `UPDATE` requests.
+### 1. Availability and restarts
+
+Basic availability and restart detection remain an essential foundation for monitoring:
+
+```promql
+# API server target is reachable (1 = up, 0 = down)
+up{job="controlplane-apiserver"}
+
+# API server process start time (changes when the process restarts)
+process_start_time_seconds{job="controlplane-apiserver"}
+
+# Number of API server restarts in the last hour
+changes(process_start_time_seconds{job="controlplane-apiserver"}[1h])
+```
+
+**Recommendation:** Don't rely on availability alone. An API server can report as `up` while being too overloaded to respond effectively. Availability confirms that the API server is reachable, while latency, APF pressure, errors, and `LIST` behavior confirm that it's *healthy*.
 
 ### 2. Errors and throttling
 
@@ -253,37 +254,21 @@ sum by (cluster, resource) (rate(apiserver_storage_list_fetched_objects_total[5m
 
 **Recommendation:** A large gap between fetched and returned objects means the API server read far more from storage than it returned. For large clusters, this is a useful clue. To find which client is issuing those `LIST` calls, see [Find the client behind the load](#find-the-client-behind-the-load).
 
-### 7. Availability and restarts
+### 7. Request volume and mix
 
-Basic availability and restart detection remain an essential foundation for monitoring:
+Finally, look at the total volume of traffic reaching the API server, and break it down by verb to see which kinds of requests drive the change.
 
 ```promql
-# API server target is reachable (1 = up, 0 = down)
-up{job="controlplane-apiserver"}
+# Total request rate per cluster
+sum by (cluster) (rate(apiserver_request_total[5m]))
 
-# API server process start time (changes when the process restarts)
-process_start_time_seconds{job="controlplane-apiserver"}
-
-# Number of API server restarts in the last hour
-changes(process_start_time_seconds{job="controlplane-apiserver"}[1h])
+# Request rate by verb
+sum by (cluster, verb) (rate(apiserver_request_total[5m]))
 ```
 
-**Recommendation:** Don't rely on availability alone. An API server can report as `up` while being too overloaded to respond effectively. Availability confirms that the API server is reachable, while latency, APF pressure, errors, and `LIST` behavior confirm that it's *healthy*.
+Pay close attention to `LIST`, `GET`, `WATCH`, `PATCH`, `UPDATE`, and `CREATE` requests. High request volume on its own isn't a warning sign, since large clusters naturally generate significant traffic. The pattern to watch for is request volume that grows alongside rising latency, APF pressure, or errors. Verb and resource labels describe what kind of traffic is arriving; to see which client is sending it, see [Find the client behind the load](#find-the-client-behind-the-load).
 
-## A recommended investigation flow
-
-When investigating a suspected control plane issue, use the available API server metrics in the following order:
-
-1. **Availability**: Is the API server reachable and running steadily?
-2. **Errors**: Are there sustained 429 or 5xx responses?
-3. **Latency**: Is `LIST` or non-`LIST` latency drifting?
-4. **In-flight requests**: Are requests draining normally?
-5. **APF seats**: Which priority levels sit at their limits?
-6. **LIST volume**: Is any resource showing unusual fan-out?
-7. **Request rate by verb and resource**: Which dimensions drive the change?
-8. **Client attribution**: Which user agent drives the change? See [Find the client behind the load](#find-the-client-behind-the-load).
-
-Each signal on its own is a clue, not a diagnosis. When several point in the same direction, such as rising latency, APF pressure, and sustained `429` responses, that's a strong reason to identify the client and review its configuration or your APF settings. Dashboard panels can also vary by template and configuration, so use PromQL queries to confirm exactly what a dashboard is showing.
+**Recommendation:** Investigate sustained growth, especially when it's driven by `LIST`, `WATCH`, `PATCH`, or `UPDATE` requests.
 
 ## Find the client behind the load
 
