@@ -112,7 +112,7 @@ We recommend focusing on the following signals when assessing API server health.
 
 API server load depends on three things: how many requests arrive (demand), how expensive each request is (cost), and how much concurrency is available to serve them (capacity). When demand multiplied by cost exceeds capacity, clients see the outcome as higher latency, `429` responses, or errors.
 
-![Diagram showing how demand, cost, and capacity signals lead to API server outcomes such as latency and 429 responses](./api-server-signals.svg)
+![Diagram showing how demand, cost, and capacity signals lead to API server outcomes such as latency and 429 responses](./api-server-signals.png)
 
 Demand, cost, and capacity signals are leading indicators, so they let you act before clients are affected. Latency, `429` responses, and `5xx` errors are lagging indicators that tell you clients are already affected. Clients that retry without backoff add demand and make the overload worse.
 
