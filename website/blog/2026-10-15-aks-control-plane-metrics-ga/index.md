@@ -1,7 +1,7 @@
 ---
-title: "Control plane metrics are GA: Keep your API server healthy"
+title: "Keep your AKS API server healthy with control plane metrics"
 date: 2026-10-15
-description: "AKS control plane metrics are now generally available. Monitor API server and etcd health with Azure Monitor managed Prometheus, PromQL, and Grafana dashboards."
+description: "AKS control plane metrics are GA. Keep your API server healthy by tracking demand, capacity, latency, and 429s, then find the client behind the load and fix it."
 authors: [reshmi-mangalore, david-kydd]
 tags: [monitoring, observability, metrics, azure-monitor, grafana, troubleshooting]
 keywords: ["AKS", "control plane metrics", "API server", "etcd", "Prometheus", "Azure Monitor", "APF"]
