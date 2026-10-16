@@ -1,39 +1,39 @@
 ---
 title: "Control plane metrics are GA: Keep your API server healthy"
 date: 2026-10-15
-description: "AKS control plane metrics are now generally available. Monitor API server and etcd health with Azure Monitor managed Prometheus, PromQL, and Grafana today."
+description: "AKS control plane metrics are now generally available. Monitor API server and etcd health with Azure Monitor managed Prometheus, PromQL, and Grafana dashboards."
 authors: [reshmi-mangalore, david-kydd]
 tags: [monitoring, observability, metrics, azure-monitor, grafana, troubleshooting]
 keywords: ["AKS", "control plane metrics", "API server", "etcd", "Prometheus", "Azure Monitor", "APF"]
 ---
 
-Control plane metrics collection for Azure Kubernetes Service (AKS) is now generally available. Powered by Azure Monitor managed service for Prometheus, the feature collects API server and etcd metrics by default. You can also enable kube-scheduler, kube-controller-manager, Cluster Autoscaler, and node auto-provisioning targets where they're available.
+We're excited to announce the general availability of **control plane metrics for Azure Kubernetes Service (AKS)**, built on [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview). With this release, customers gain deeper visibility into the health and performance of the AKS control plane, helping them operate Kubernetes with greater confidence at scale.
 
-Clusters that enabled control plane metrics during preview keep collecting at GA with no action required. New clusters and clusters without preview enablement can follow the setup steps below.
+AKS control plane metrics collect API server and etcd metrics by default, with optional support for kube-scheduler, kube-controller-manager, Cluster Autoscaler, and node auto-provisioning. These insights help platform teams understand how workloads, controllers, automation, and scaling activity affect the control plane, so they can detect issues earlier, troubleshoot faster, and keep critical applications running smoothly.
 
-This post covers how to enable collection, how to tune what you ingest, and which API server signals to watch first.
+Customers already using control plane metrics in public preview will continue to receive metrics seamlessly at general availability, with no action required. New clusters, and existing clusters not enabled during the preview, can get started by following the setup steps below.
 
 <!-- truncate -->
 
 ## Why control plane visibility matters
 
-AKS manages control plane patching, high availability, and infrastructure health for you. Even so, a slow API server or an etcd database nearing its storage quota can show up in your environment as stalled deployments, request timeouts, or delayed autoscaling.
+AKS manages control plane patching, high availability, and infrastructure health for you. But even a fully managed control plane responds to the load your cluster puts on it. A busy API server or an etcd database nearing its storage quota can show up as stalled deployments, request timeouts, or delayed autoscaling, and it's hard to tell where the problem starts.
 
-Without visibility into the control plane, investigating these symptoms often meant opening a support case. Control plane metrics make key signals queryable in your own Azure Monitor workspace, so you can do first-pass investigation yourself:
+Until now, investigating these symptoms often meant opening a support case. Control plane metrics make key signals queryable in your own Azure Monitor workspace, so you can do first-pass investigation yourself:
 
-- **Faster investigation**: Determine whether control plane pressure might be contributing to slow deployments or timeouts.
-- **Proactive monitoring**: Track sustained latency, errors, and throttling before they cause wider impact.
-- **Self-serve diagnostics**: Use PromQL and Grafana dashboards to narrow down next steps.
-- **Data-informed tuning**: Use request dimensions such as verb and resource to inform retry, polling, and admission webhook tuning.
-- **No self-hosted stack**: Collection runs through the AKS and Azure Monitor integration, with no exporters or Prometheus servers to manage.
+- **Faster investigation**: Quickly check whether control plane pressure is contributing to slow deployments or request timeouts.
+- **Proactive monitoring**: Alert on sustained latency, throttling, and errors before they cause wider impact.
+- **Self-serve diagnostics**: Use PromQL and Grafana dashboards to answer common questions without waiting on a support case.
+- **Data-informed tuning**: Use request patterns by verb and resource, together with client-side telemetry, to tune retries, polling, and admission webhooks.
+- **No self-hosted stack**: Collect control plane metrics without running your own exporters or Prometheus server.
 
-> **Note**: Metrics support investigation but don't identify individual clients or prove root cause on their own. Issues that require AKS backend investigation still need a support case.
+> **Note**: Metrics help you narrow down where pressure comes from, but they don't identify which client is sending requests or prove root cause on their own.
 
 ## Enable control plane metrics
 
-Control plane metrics use the Azure Monitor managed service for Prometheus (the Azure Monitor metrics add-on) and store data in an Azure Monitor workspace. Your cluster must use [managed identity](https://learn.microsoft.com/azure/aks/use-managed-identity).
+Control plane collection uses the Azure Monitor managed service for Prometheus (the Azure Monitor Metrics add-on) and stores Prometheus data in an Azure Monitor workspace. The cluster must use managed identity authentication; see the AKS [managed identity guidance](https://learn.microsoft.com/azure/aks/use-managed-identity).
 
-For a new cluster, enable the add-on and control plane collection together:
+For a **new cluster**, enable the add-on and control plane collection together:
 
 ```bash
 az aks create \
@@ -43,7 +43,7 @@ az aks create \
   --enable-control-plane-metrics
 ```
 
-For an existing cluster that already has the managed Prometheus add-on:
+For an **existing cluster that already has the managed Prometheus add-on**:
 
 ```bash
 az aks update \
@@ -52,13 +52,13 @@ az aks update \
   --enable-control-plane-metrics
 ```
 
-If your cluster doesn't have the add-on yet, first [enable monitoring for your AKS cluster](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable). For full prerequisites, see [Monitor AKS control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor). Allow several minutes for metrics to appear in the workspace.
+If your existing cluster doesn't yet have the add-on, first enable it and configure an Azure Monitor workspace by following [Enable monitoring for AKS clusters](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable). For the exact prerequisites and other deployment options, see [Monitor AKS control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor).
 
-To visualize the data, [connect Azure Managed Grafana to your Azure Monitor workspace](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace). The Grafana managed identity needs the **Monitoring Data Reader** role on the workspace. Then import the [API server dashboard (20331)](https://grafana.com/grafana/dashboards/20331) and optionally the [etcd dashboard (20330)](https://grafana.com/grafana/dashboards/20330). The feature doesn't provision these dashboards automatically.
+To visualize control plane metrics, connect your [Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/overview) workspace to your [Azure Monitor workspace](https://learn.microsoft.com/azure/azure-monitor/metrics/azure-monitor-workspace-overview) by going to **Integrations** > **Azure Monitor workspaces** > **Add**. The Grafana managed identity needs the **Monitoring Data Reader** role on the Azure Monitor workspace. For step-by-step instructions, see [Add an Azure Monitor workspace to Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace). Built-in API server and etcd dashboards are also available through [Dashboards with Grafana](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes) in the Azure portal.
 
-## Tune targets and ingestion
+## Tune your targets and ingestion settings
 
-The API server and etcd are enabled by default. Other targets are supported but off by default, and availability depends on your cluster configuration.
+The API server (`apiserver`) and etcd are collected by default. You can optionally enable `kube-scheduler`, `kube-controller-manager`, `cluster-autoscaler`, and `node-auto-provisioning`, depending on your cluster configuration.
 
 You customize collection with the `ama-metrics-settings-configmap` in the `kube-system` namespace. The ConfigMap might not exist by default, so start from the [current version on Microsoft Learn](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration). Here's the schema v2 control plane section:
 
@@ -82,16 +82,37 @@ data:
       enabled = true
 ```
 
-Keep these points in mind:
+The **minimal ingestion profile is enabled by default** and limits ingestion to the curated metrics used by the default dashboards, recording rules, and alerts. Keep it enabled, and when you need more metrics, add a target-specific keep list instead of disabling the profile, which can significantly increase ingestion volume and cost. ConfigMap changes can take several minutes to appear in the workspace. For the full target list and schema, see [Customize control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#customize-control-plane-metrics).
 
-- **Keep the minimal ingestion profile on.** It's enabled by default and limits ingestion to the metrics used by default dashboards, recording rules, and alerts. Disabling it can significantly increase ingestion volume and cost.
-- **Add metrics with keep lists.** When you need more metrics, add a target-specific keep list instead of disabling the profile.
-- **Don't mix schema versions.** Schema v1 uses legacy key names. Don't combine v1 and v2 keys.
-- **Verify after applying.** Validation is advisory, so invalid settings can still be applied. Confirm the expected targets and metrics appear in your workspace.
+## Start with the API server
+
+The API server is the front door to Kubernetes. Every interaction with your cluster flows through it, including `kubectl`, controllers and operators, CI/CD pipelines, autoscalers, admission webhooks, and in-cluster automation. When the API server is under pressure, the impact ripples across the entire cluster: deployments stall, pod scheduling slows, and controllers fall behind.
+
+For production clusters, it's not enough to know that the API server is running. The real question is whether it's keeping up with demand and serving requests without sustained latency, throttling, or errors.
+
+To help you get started, Microsoft provides Grafana dashboards for the [API server](https://grafana.com/grafana/dashboards/20331-kubernetes-api-server/) and [etcd](https://grafana.com/grafana/dashboards/20330-kubernetes-etcd/) that you can import into Azure Managed Grafana.
+
+### Recommended signals to monitor
+
+We recommend focusing on the following signals when assessing API server health.
+
+| Signal | Example metrics | What it tells you |
+| --- | --- | --- |
+| **Request volume and mix** | `apiserver_request_total` | API request rate and how the mix of verbs and resources changes over time |
+| **Errors and throttling** | `apiserver_request_total{code="429"}`, `apiserver_request_total{code=~"5.."}` | Requests that were throttled (429) or failed (5xx) |
+| **Request latency** | `apiserver_request_duration_seconds_bucket`, `apiserver_request_duration_seconds_sum`, `apiserver_request_duration_seconds_count` | Average latency, or percentiles when full histogram buckets are retained |
+| **In-flight requests** | `apiserver_current_inflight_requests` | How many requests the API server is processing right now |
+| **APF demand vs. capacity** | `apiserver_flowcontrol_demand_seats_average`, `apiserver_flowcontrol_current_limit_seats` | Requested concurrency compared to the available limit for each priority level |
+| **LIST object fan-out** | `apiserver_storage_list_fetched_objects_total`, `apiserver_storage_list_returned_objects_total` | How many objects LIST calls fetch from storage compared to how many they return |
+| **Availability and restarts** | `up{job="controlplane-apiserver"}`, `process_start_time_seconds{job="controlplane-apiserver"}` | Whether the API server is reachable and whether it has restarted |
+
+> **Note**: A metric appears in your workspace only if its target is enabled and your ingestion profile or keep list retains it. Request labels such as verb and resource describe traffic patterns but don't identify the client sending the requests.
 
 ### Enable latency percentiles
 
-The minimal ingestion profile retains only the `le="+Inf"` bucket of `apiserver_request_duration_seconds_bucket`. That's enough for average latency through `_sum` and `_count`, but not for percentiles. To calculate percentiles with `histogram_quantile`, merge this keep list into your ConfigMap and apply it:
+The [default configuration](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-default) uses a minimal ingestion profile that retains only the `le="+Inf"` latency bucket. That's enough to calculate average latency from `_sum` and `_count`, but not percentiles. To use `histogram_quantile`, you need to retain the full histogram, including the finite `le` bucket boundaries.
+
+To do this, add the following keep list to the `controlplane-metrics` section of your `ama-metrics-settings-configmap`:
 
 ```yaml
 data:
@@ -100,93 +121,154 @@ data:
       apiserver = "apiserver_request_duration_seconds_bucket|apiserver_request_duration_seconds_sum|apiserver_request_duration_seconds_count"
 ```
 
+Then apply the complete ConfigMap:
+
 ```bash
 kubectl apply -f configmap-controlplane.yaml
 ```
 
-Then verify that finite bucket boundaries appear in your workspace. For the list of metrics collected by default, see [default Prometheus metrics configuration](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-default).
+After a few minutes, verify that the finite bucket boundaries and `+Inf` appear in your workspace. To customize other metrics, follow the steps in [Customize an ingestion profile](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#customize-an-ingestion-profile).
 
-## Start with the API server
+Here's a closer look at each signal, what it tells you, and how to query it.
 
-Every interaction with your cluster flows through the API server: `kubectl`, controllers and operators, CI/CD pipelines, autoscalers, and admission webhooks. When it's under pressure, deployments stall, scheduling slows, and controllers fall behind. The key question isn't whether the API server is running, but whether it's keeping up with demand.
+### 1. Request volume and mix
 
-| Signal | Example metric | What it tells you |
-| --- | --- | --- |
-| Request volume and mix | `apiserver_request_total` | Request rate and verb/resource mix |
-| Errors and throttling | `apiserver_request_total{code="429"}`, `{code=~"5.."}` | Throttled and failed requests |
-| Request latency | `apiserver_request_duration_seconds_*` | Average latency, or percentiles with full buckets |
-| In-flight requests | `apiserver_current_inflight_requests` | Current concurrency |
-| APF demand vs. capacity | `apiserver_flowcontrol_demand_seats_average`, `apiserver_flowcontrol_current_limit_seats` | Demand and seat limit by priority level |
-| LIST fan-out | `apiserver_storage_list_fetched_objects_total`, `apiserver_storage_list_returned_objects_total` | Objects fetched vs. returned for LIST calls |
-| Availability | `up{job="controlplane-apiserver"}` | Whether the API server target is reachable |
-
-These are examples. A series appears only if the enabled target exposes it and your ingestion profile or keep list retains it. If multiple clusters share a workspace, keep the `cluster` label in your aggregations so baselines don't mix.
-
-### Request volume and mix
+Start with the total volume of traffic reaching the API server, then break it down by verb to understand how your workloads interact with the cluster.
 
 ```promql
+# Total request rate per cluster
+sum by (cluster) (rate(apiserver_request_total[5m]))
+
+# Request rate by verb
 sum by (cluster, verb) (rate(apiserver_request_total[5m]))
 ```
 
-High volume alone isn't a problem. Large clusters legitimately generate significant traffic. Watch for volume growing alongside latency, APF pressure, or errors, especially when `LIST`, `WATCH`, `PATCH`, or `UPDATE` dominate the growth.
+Pay close attention to `LIST`, `GET`, `WATCH`, `PATCH`, `UPDATE`, and `CREATE` requests. High request volume on its own isn't a warning sign, since large clusters naturally generate significant traffic. The pattern to watch for is request volume that grows alongside rising latency, APF pressure, or errors. Keep in mind that verb and resource labels describe what kind of traffic is arriving, not which client is sending it.
 
-### Errors and throttling
+> **Tip**: If multiple clusters share an Azure Monitor workspace, keep the `cluster` label in your aggregations so baselines and alerts stay separate. Use a matcher such as `{cluster="your-cluster"}` to query a single cluster, and make sure each cluster has a distinct [cluster alias](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration#cluster-alias).
 
-Sustained 429 and 5xx responses are among the clearest signs of control plane pressure:
+**Recommendation:** Establish a baseline for each cluster and investigate sustained deviations, especially when growth is driven by `LIST`, `WATCH`, `PATCH`, or `UPDATE` requests. Set alert thresholds per cluster rather than using universal values. To alert on these signals, use Azure Monitor [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups) and [Prometheus metric alerts](https://learn.microsoft.com/azure/azure-monitor/alerts/prometheus-alerts).
+
+### 2. Errors and throttling
+
+Sustained `429` (Too Many Requests) and `5xx` (server error) responses are among the clearest signs that the control plane is under pressure.
 
 ```promql
+# Throttled requests per second
+sum by (cluster) (rate(apiserver_request_total{code="429"}[5m]))
+
+# Percentage of requests throttled
 100 * sum by (cluster) (rate(apiserver_request_total{code="429"}[5m]))
     / sum by (cluster) (rate(apiserver_request_total[5m]))
+
+# Server errors by response code
+sum by (cluster, code) (rate(apiserver_request_total{code=~"5.."}[5m]))
 ```
 
-- **Healthy**: 429 and 5xx responses are absent or isolated.
-- **Warning**: Intermittent 429 responses during traffic bursts.
-- **Investigate**: Sustained 429 responses, or 5xx responses with rising latency.
+Use the following guidance to interpret what you see:
 
-### Request latency
+- **Healthy:** `429` and `5xx` responses are absent or isolated.
+- **Warning:** Intermittent `429` responses appear during traffic bursts.
+- **Investigate:** `429` responses are sustained, or `500`/`503` responses appear alongside rising latency.
+
+**Recommendation:** Require errors to persist for a short window before paging. This filters out isolated, transient failures and keeps your alerts focused on real issues.
+
+### 3. Request latency
+
+Latency is one of the most customer-visible indicators of control plane health. Always compare it with request volume and response codes, because `LIST` operations can be significantly more expensive than a typical `GET` or `UPDATE`.
+
+The minimal ingestion profile retains the latency `_sum` and `_count` series, so you can calculate average latency right away:
 
 ```promql
+# Average API server request latency (seconds)
 sum by (cluster) (rate(apiserver_request_duration_seconds_sum[5m]))
   / sum by (cluster) (rate(apiserver_request_duration_seconds_count[5m]))
 ```
 
-Compare latency against a per-cluster baseline rather than a universal threshold. `LIST` operations can be much more expensive than `GET` or `UPDATE`.
-
-### In-flight requests
+If you've retained the full latency histogram (see [Enable latency percentiles](#enable-latency-percentiles)), you can also track tail latency:
 
 ```promql
+# p99 API server request latency by verb (seconds)
+histogram_quantile(0.99,
+  sum by (cluster, verb, le) (rate(apiserver_request_duration_seconds_bucket[5m])))
+```
+
+**Recommendation:** Compare latency against each cluster's own baseline rather than a universal threshold. Latency that stays elevated across multiple evaluation intervals, especially alongside APF pressure, growing in-flight requests, or errors, can indicate control plane pressure.
+
+### 4. In-flight requests
+
+In-flight requests show how many requests the API server is processing at any moment. This metric is often the earliest warning sign of pressure, rising before latency or errors do.
+
+```promql
+# Current in-flight requests by type (read-only vs. mutating)
 sum by (cluster, request_kind) (apiserver_current_inflight_requests)
 ```
 
-In-flight requests often move before latency or errors do. They should rise during bursts and return to baseline. Sustained elevation, especially with rising APF demand and latency, indicates ongoing pressure.
+In a healthy cluster, in-flight requests spike during traffic bursts and quickly return to baseline. When they stay elevated, the API server isn't keeping up with demand.
 
-### API Priority and Fairness
+**Recommendation:** Watch for in-flight requests that remain above baseline across multiple intervals, especially when APF seat demand and latency rise at the same time.
 
-[API Priority and Fairness (APF)](https://kubernetes.io/docs/concepts/cluster-administration/flow-control/) controls how concurrency is shared across classes of API traffic. Compare demand to available seats for each priority level:
+### 5. API Priority and Fairness (APF) demand vs. capacity
+
+[API Priority and Fairness (APF)](https://kubernetes.io/docs/concepts/cluster-administration/flow-control/) protects the API server by controlling how concurrency is shared across different classes of API traffic. Two metrics help you see whether a priority level is running out of room:
+
+- **Demand seats:** The concurrency a priority level is requesting.
+- **Limit seats:** The concurrency currently available to that priority level.
+
+Plot demand and limit side by side for each priority level, and use the ratio between them to spot contention:
 
 ```promql
+# Seats requested by each priority level
+sum by (cluster, priority_level) (apiserver_flowcontrol_demand_seats_average)
+
+# Seats available to each priority level
+sum by (cluster, priority_level) (apiserver_flowcontrol_current_limit_seats)
+
+# Demand-to-limit ratio (values near 1 indicate contention)
 sum by (cluster, priority_level) (apiserver_flowcontrol_demand_seats_average)
   / sum by (cluster, priority_level) (apiserver_flowcontrol_current_limit_seats)
 ```
 
-A ratio that stays near 1 means a priority level is consistently near its limit. That doesn't prove requests were rejected, so correlate it with response codes and latency.
+**Recommendation:** Watch for priority levels where demand stays close to the limit over time. When this happens, APF may queue requests, and `429` responses can occur if requests are rejected or time out. However, demand reaching the limit doesn't by itself mean requests were rejected, so correlate seat metrics with response codes and latency before drawing conclusions.
 
-### LIST fan-out
+### 6. LIST object fan-out
+
+Request rate tells you how many `LIST` calls the API server receives, but not how much work each one requires. These metrics show how many objects the API server fetched from storage compared to how many it actually returned, which makes them especially useful for large AKS clusters:
 
 ```promql
+# Objects fetched from storage by LIST calls, per resource
 sum by (cluster, resource) (rate(apiserver_storage_list_fetched_objects_total[5m]))
+
+# Objects returned to clients by LIST calls, per resource
 sum by (cluster, resource) (rate(apiserver_storage_list_returned_objects_total[5m]))
+
+# Fetched-to-returned ratio (higher values mean more filtering per LIST)
+sum by (cluster, resource) (rate(apiserver_storage_list_fetched_objects_total[5m]))
+  / sum by (cluster, resource) (rate(apiserver_storage_list_returned_objects_total[5m]))
 ```
 
-A large gap between fetched and returned objects means the API server read far more from storage than it returned. For large clusters, this is a useful clue, but it doesn't identify the client. Correlate with client-side telemetry before drawing conclusions.
+**Recommendation:** A large gap between fetched and returned objects means the API server read far more from storage than it returned. For large clusters, this is a useful clue, but it doesn't identify the client. Correlate with client-side telemetry before drawing conclusions.
 
-### Availability
+### 7. Availability and restarts
 
-`up{job="controlplane-apiserver"}` confirms the API server is reachable, and `process_start_time_seconds` reveals restarts. Availability alone isn't enough, though: an overloaded API server can report as up while barely responding.
+Basic availability and restart detection remain an essential foundation for monitoring:
+
+```promql
+# API server target is reachable (1 = up, 0 = down)
+up{job="controlplane-apiserver"}
+
+# API server process start time (changes when the process restarts)
+process_start_time_seconds{job="controlplane-apiserver"}
+
+# Number of API server restarts in the last hour
+changes(process_start_time_seconds{job="controlplane-apiserver"}[1h])
+```
+
+**Recommendation:** Don't rely on availability alone. An API server can report as `up` while being too overloaded to respond effectively. Availability confirms that the API server is reachable, while latency, APF pressure, errors, and `LIST` behavior confirm that it's *healthy*.
 
 ## A recommended investigation flow
 
-When you suspect a control plane issue, work through the signals in this order:
+When investigating a suspected control plane issue, use the available API server metrics in the following order:
 
 1. **Availability**: Is the API server reachable and running steadily?
 2. **Errors**: Are there sustained 429 or 5xx responses?
@@ -196,20 +278,29 @@ When you suspect a control plane issue, work through the signals in this order:
 6. **LIST volume**: Is any resource showing unusual fan-out?
 7. **Request rate by verb and resource**: Which dimensions drive the change?
 
-Rising latency combined with APF pressure and 429 responses is a strong reason to review client-side telemetry, controller configuration, or APF settings. To alert on these signals, configure [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups) and [Prometheus metric alerts](https://learn.microsoft.com/azure/azure-monitor/alerts/prometheus-alerts). Treat the guidance above as a starting point and use a short persistence window to avoid paging on transient spikes.
+Each signal on its own is a clue, not a diagnosis. When several point in the same direction, such as rising latency, APF pressure, and sustained `429` responses, that's a strong reason to review client-side telemetry, controller configuration, or APF settings. Keep in mind that these metrics don't prove root cause or identify which client is generating the load. Dashboard panels can also vary by template and configuration, so use PromQL queries to confirm exactly what a dashboard is showing.
 
-## GA limitations
-
-- Collection requires Azure Monitor managed service for Prometheus. Self-hosted or bring-your-own Prometheus isn't supported.
-- Azure Private Link isn't supported for the control plane metrics ingestion path.
-- The cluster must use managed identity.
-- Only `ama-metrics-settings-configmap` in `kube-system` can customize control plane collection.
+To turn these signals into proactive alerts, configure [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups) and [Prometheus metric alerts](https://learn.microsoft.com/azure/azure-monitor/alerts/prometheus-alerts) in Azure Monitor. Treat the guidance in this post as a starting point, tune thresholds to each cluster's baseline, and use a short persistence window to avoid paging on transient spikes.
 
 ## Get started
 
-1. Enable the Azure Monitor metrics add-on and control plane metrics on your cluster.
-2. Connect Azure Managed Grafana and import the API server (20331) and etcd (20330) dashboards.
-3. Establish a baseline for each production cluster.
-4. Build and validate PromQL alert rules tuned to that baseline.
+1. [Enable the Azure Monitor metrics add-on](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable) and [control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#enable-control-plane-metrics-on-an-aks-cluster) on your cluster.
+2. [Connect Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace) to your Azure Monitor workspace and use the [API server and etcd dashboards](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes).
+3. Establish a baseline for each production cluster by [querying control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#query-control-plane-metrics).
+4. Build and validate PromQL alert rules tuned to that baseline using [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups).
 
-Next in this series, we'll take a deep dive into etcd metrics and how to interpret them. We'd love to hear what you learn about your clusters. Share feedback on the [AKS GitHub repository](https://github.com/Azure/AKS/issues).
+## GA limitations
+
+- **Managed Prometheus only:** Control plane metrics require [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview). Self-hosted or bring-your-own Prometheus isn't supported.
+- **No Private Link support:** Azure Private Link isn't supported for the control plane metrics ingestion path. This limitation applies only to this feature, not to other AKS or Azure Monitor scenarios.
+- **Managed identity required:** The cluster must use [managed identity](https://learn.microsoft.com/azure/aks/use-managed-identity) authentication for the Azure Monitor integration.
+- **Single supported ConfigMap:** Control plane collection can only be customized through the `ama-metrics-settings-configmap` in the `kube-system` namespace. Other ConfigMaps aren't supported for this purpose.
+
+For the full list, see [Prerequisites and limitations](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#prerequisites-and-limitations).
+
+## What's next
+
+Next in this series, we'll take a deep dive into etcd metrics and how to interpret them.
+
+We're excited to bring this capability to general availability and look forward to seeing what your teams discover about your clusters. As always, we welcome your feedback on the [AKS GitHub repository](https://github.com/Azure/AKS/issues).
+
