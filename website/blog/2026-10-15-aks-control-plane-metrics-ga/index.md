@@ -50,7 +50,7 @@ az aks update \
 
 If your existing cluster doesn't yet have the add-on, first enable it and configure an Azure Monitor workspace by following [Enable monitoring for AKS clusters](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable). For the exact prerequisites and other deployment options, see [Monitor AKS control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor).
 
-To visualize control plane metrics, connect your [Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/overview) workspace to your [Azure Monitor workspace](https://learn.microsoft.com/azure/azure-monitor/metrics/azure-monitor-workspace-overview) by going to **Integrations** > **Azure Monitor workspaces** > **Add**. The Grafana managed identity needs the **Monitoring Data Reader** role on the Azure Monitor workspace. For step-by-step instructions, see [Add an Azure Monitor workspace to Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace). Built-in API server and etcd dashboards are available through [Dashboards with Grafana](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes) in the Azure portal.
+To visualize these metrics, open the built-in API server and etcd dashboards in the Azure portal through [Dashboards with Grafana](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes). To use your own Azure Managed Grafana instance instead, see [Add an Azure Monitor workspace to Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace).
 
 ## Tune your targets and ingestion settings
 
@@ -324,7 +324,7 @@ To turn these signals into proactive alerts, configure [Prometheus rule groups](
 ## Get started
 
 1. [Enable the Azure Monitor metrics add-on](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable) and [control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#enable-control-plane-metrics-on-an-aks-cluster) on your cluster.
-2. [Connect Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace) to your Azure Monitor workspace and use the [API server and etcd dashboards](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes).
+2. Open the built-in [API server and etcd dashboards](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes) in the Azure portal, or [connect Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace) to your Azure Monitor workspace.
 3. Establish a baseline for each production cluster by [querying control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#query-control-plane-metrics).
 4. Build and validate PromQL alert rules tuned to that baseline using [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups).
 
