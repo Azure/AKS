@@ -143,7 +143,7 @@ sum by (cluster) (rate(apiserver_request_total[5m]))
 sum by (cluster, verb) (rate(apiserver_request_total[5m]))
 ```
 
-Pay close attention to `LIST`, `GET`, `WATCH`, `PATCH`, `UPDATE`, and `CREATE` requests. High request volume on its own isn't a warning sign, since large clusters naturally generate significant traffic. The pattern to watch for is request volume that grows alongside rising latency, APF pressure, or errors. Keep in mind that verb and resource labels describe what kind of traffic is arriving, not which client is sending it.
+Pay close attention to `LIST`, `GET`, `WATCH`, `PATCH`, `UPDATE`, and `CREATE` requests. High request volume on its own isn't a warning sign, since large clusters naturally generate significant traffic. The pattern to watch for is request volume that grows alongside rising latency, APF pressure, or errors. Verb and resource labels describe what kind of traffic is arriving; to see which client is sending it, see [Find the client behind the load](#find-the-client-behind-the-load).
 
 > **Tip**: If multiple clusters share an Azure Monitor workspace, keep the `cluster` label in your aggregations so baselines and alerts stay separate. Use a matcher such as `{cluster="your-cluster"}` to query a single cluster, and make sure each cluster has a distinct [cluster alias](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration#cluster-alias).
 
@@ -247,7 +247,7 @@ sum by (cluster, resource) (rate(apiserver_storage_list_fetched_objects_total[5m
   / sum by (cluster, resource) (rate(apiserver_storage_list_returned_objects_total[5m]))
 ```
 
-**Recommendation:** A large gap between fetched and returned objects means the API server read far more from storage than it returned. For large clusters, this is a useful clue, but it doesn't identify the client. Correlate with client-side telemetry before drawing conclusions.
+**Recommendation:** A large gap between fetched and returned objects means the API server read far more from storage than it returned. For large clusters, this is a useful clue. To find which client is issuing those `LIST` calls, see [Find the client behind the load](#find-the-client-behind-the-load).
 
 ### 7. Availability and restarts
 
@@ -277,8 +277,43 @@ When investigating a suspected control plane issue, use the available API server
 5. **APF seats**: Which priority levels sit at their limits?
 6. **LIST volume**: Is any resource showing unusual fan-out?
 7. **Request rate by verb and resource**: Which dimensions drive the change?
+8. **Client attribution**: Which user agent drives the change? See [Find the client behind the load](#find-the-client-behind-the-load).
 
-Each signal on its own is a clue, not a diagnosis. When several point in the same direction, such as rising latency, APF pressure, and sustained `429` responses, that's a strong reason to review client-side telemetry, controller configuration, or APF settings. Keep in mind that these metrics don't prove root cause or identify which client is generating the load. Dashboard panels can also vary by template and configuration, so use PromQL queries to confirm exactly what a dashboard is showing.
+Each signal on its own is a clue, not a diagnosis. When several point in the same direction, such as rising latency, APF pressure, and sustained `429` responses, that's a strong reason to identify the client and review its configuration or your APF settings. Dashboard panels can also vary by template and configuration, so use PromQL queries to confirm exactly what a dashboard is showing.
+
+## Find the client behind the load
+
+Control plane metrics tell you *what* is happening, but not *who* is causing it. To identify the client, use AKS [control plane resource logs](https://learn.microsoft.com/azure/aks/monitor-aks#aks-control-plane-resource-logs), which record the user agent, identity, verb, and response code for each API request.
+
+Enable the audit log categories through a diagnostic setting that sends data to a Log Analytics workspace in resource-specific mode:
+
+- **`kube-audit-admin`** (`AKSAuditAdmin` table): Captures mutating requests such as `create`, `update`, `patch`, and `delete`, but excludes `get` and `list`. It's lower cost and suitable to keep on continuously.
+- **`kube-audit`** (`AKSAudit` table): Captures all requests, including `get` and `list`. Enable it when you need to attribute `LIST` traffic or `429` responses, and consider disabling it afterward, because it can generate significant log volume.
+
+Then query for the clients that generate the most requests or the most throttled responses:
+
+```kusto
+// Top user agents by request volume and throttled responses
+AKSAudit
+| where TimeGenerated > ago(1h)
+| extend Code = toint(ResponseStatus.code)
+| summarize Requests = count(), Throttled = countif(Code == 429) by UserAgent, Verb
+| top 10 by Requests desc
+```
+
+Look for a single controller, operator, or CI/CD tool that dominates request volume, issues frequent unscoped `LIST` calls, or receives most of the `429` responses. Once you've identified it, check its retry, polling, and watch behavior. For more queries and mitigation steps, see [Identify unoptimized clients](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd#step-1-identify-unoptimized-clients) in the AKS troubleshooting guide.
+
+## Common fixes
+
+Once you've identified the source of the pressure, these changes resolve most API server load issues:
+
+- **Scope your `LIST` calls.** Avoid cluster-wide `LIST` calls without filters, especially in large clusters. Add label or field selectors to restrict results to the objects you need, and use the `limit` and `continue` parameters to paginate large result sets. See [Efficient Kubernetes API usage](https://learn.microsoft.com/azure/aks/best-practices-performance-scale-large#efficient-kubernetes-api-usage).
+- **Watch instead of poll.** Replace repeated `LIST` polling with a `WATCH` or a client-go informer, which keeps a local cache and receives only changes. Start the watch from the most recent `resourceVersion` so the API server doesn't resend the full list.
+- **Back off on throttling.** Make sure clients honor the `Retry-After` header and retry with exponential backoff and jitter when they receive `429` responses. Tight retry loops turn short bursts into sustained pressure. See [Manage throttling in AKS](https://learn.microsoft.com/azure/aks/best-practices-performance-scale-large#manage-throttling-in-aks).
+- **Limit an overwhelming client.** If a single client continues to overload the control plane, create a dedicated FlowSchema and PriorityLevelConfiguration to cap its concurrency. Avoid modifying the default API Priority and Fairness objects, which protect system traffic. See [Throttle a client that's overwhelming the control plane](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/create-upgrade-delete/troubleshoot-apiserver-etcd#solution-5b-throttle-a-client-thats-overwhelming-the-control-plane).
+- **Use the right pricing tier.** The Free tier is intended for development and testing. For production clusters, use the [Standard tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers), which supports clusters up to 5,000 nodes and includes a financially backed uptime SLA for the API server.
+
+For more guidance, see [Best practices for performance and scaling for large workloads in AKS](https://learn.microsoft.com/azure/aks/best-practices-performance-scale-large).
 
 To turn these signals into proactive alerts, configure [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups) and [Prometheus metric alerts](https://learn.microsoft.com/azure/azure-monitor/alerts/prometheus-alerts) in Azure Monitor. Treat the guidance in this post as a starting point, tune thresholds to each cluster's baseline, and use a short persistence window to avoid paging on transient spikes.
 
