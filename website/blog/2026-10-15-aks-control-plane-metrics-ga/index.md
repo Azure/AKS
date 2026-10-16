@@ -7,11 +7,9 @@ tags: [monitoring, observability, metrics, azure-monitor, grafana, troubleshooti
 keywords: ["AKS", "control plane metrics", "API server", "etcd", "Prometheus", "Azure Monitor", "APF"]
 ---
 
-We're excited to announce the general availability of **control plane metrics for Azure Kubernetes Service (AKS)**, built on [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview). With this release, customers gain deeper visibility into the health and performance of the AKS control plane, helping them operate Kubernetes with greater confidence at scale.
+We're excited to announce the general availability of **control plane metrics for Azure Kubernetes Service (AKS)**, built on [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-metrics-overview). With this release, customers gain deeper visibility into the health and performance of the AKS control plane, helping them operate Kubernetes with greater confidence at scale. Control plane metrics collect API server and etcd metrics by default, with optional support for kube-scheduler, kube-controller-manager, Cluster Autoscaler, and node auto-provisioning, so platform teams can detect issues earlier, troubleshoot faster, and keep critical applications running smoothly.
 
-AKS control plane metrics collect API server and etcd metrics by default, with optional support for kube-scheduler, kube-controller-manager, Cluster Autoscaler, and node auto-provisioning. These insights help platform teams understand how workloads, controllers, automation, and scaling activity affect the control plane, so they can detect issues earlier, troubleshoot faster, and keep critical applications running smoothly.
-
-Customers already using control plane metrics in public preview will continue to receive metrics seamlessly at general availability, with no action required. New clusters, and existing clusters not enabled during the preview, can get started by following the setup steps below.
+If you enabled control plane metrics during the preview, metrics continue to flow with no action required. For other clusters, follow the setup steps below. This post also shows how to keep your API server healthy: which signals to watch, how they connect, and how to find and fix the client behind the load.
 
 <!-- truncate -->
 
