@@ -27,7 +27,7 @@ Until now, investigating these symptoms often meant opening a support case. Cont
 - **Data-informed tuning**: Use request patterns by verb and resource, together with client-side telemetry, to tune retries, polling, and admission webhooks.
 - **No self-hosted stack**: Collect control plane metrics without running your own exporters or Prometheus server.
 
-> **Note**: Metrics help you narrow down where pressure comes from, but they don't identify which client is sending requests or prove root cause on their own.
+Metrics show *where* pressure is building. To find *which* client is causing it, see [Find the client behind the load](#find-the-client-behind-the-load).
 
 ## Enable control plane metrics
 
@@ -54,7 +54,7 @@ az aks update \
 
 If your existing cluster doesn't yet have the add-on, first enable it and configure an Azure Monitor workspace by following [Enable monitoring for AKS clusters](https://learn.microsoft.com/azure/azure-monitor/containers/kubernetes-monitoring-enable). For the exact prerequisites and other deployment options, see [Monitor AKS control plane metrics](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor).
 
-To visualize control plane metrics, connect your [Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/overview) workspace to your [Azure Monitor workspace](https://learn.microsoft.com/azure/azure-monitor/metrics/azure-monitor-workspace-overview) by going to **Integrations** > **Azure Monitor workspaces** > **Add**. The Grafana managed identity needs the **Monitoring Data Reader** role on the Azure Monitor workspace. For step-by-step instructions, see [Add an Azure Monitor workspace to Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace). Built-in API server and etcd dashboards are also available through [Dashboards with Grafana](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes) in the Azure portal.
+To visualize control plane metrics, connect your [Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/overview) workspace to your [Azure Monitor workspace](https://learn.microsoft.com/azure/azure-monitor/metrics/azure-monitor-workspace-overview) by going to **Integrations** > **Azure Monitor workspaces** > **Add**. The Grafana managed identity needs the **Monitoring Data Reader** role on the Azure Monitor workspace. For step-by-step instructions, see [Add an Azure Monitor workspace to Azure Managed Grafana](https://learn.microsoft.com/azure/managed-grafana/how-to-connect-azure-monitor-workspace). Built-in API server and etcd dashboards are available through [Dashboards with Grafana](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes) in the Azure portal.
 
 ## Tune your targets and ingestion settings
 
@@ -90,7 +90,7 @@ The API server is the front door to Kubernetes. Every interaction with your clus
 
 For production clusters, it's not enough to know that the API server is running. The real question is whether it's keeping up with demand and serving requests without sustained latency, throttling, or errors.
 
-To help you get started, Microsoft provides Grafana dashboards for the [API server](https://grafana.com/grafana/dashboards/20331-kubernetes-api-server/) and [etcd](https://grafana.com/grafana/dashboards/20330-kubernetes-etcd/) that you can import into Azure Managed Grafana.
+To help you get started, the [built-in API server and etcd dashboards](https://learn.microsoft.com/azure/azure-monitor/visualize/grafana-kubernetes) visualize many of these signals.
 
 ### Recommended signals to monitor
 
@@ -108,28 +108,7 @@ We recommend focusing on the following signals when assessing API server health.
 
 > **Note**: A metric appears in your workspace only if its target is enabled and your ingestion profile or keep list retains it. Request labels such as verb and resource describe traffic patterns but don't identify the client sending the requests.
 
-### Enable latency percentiles
-
-The [default configuration](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-default) uses a minimal ingestion profile that retains only the `le="+Inf"` latency bucket. That's enough to calculate average latency from `_sum` and `_count`, but not percentiles. To use `histogram_quantile`, you need to retain the full histogram, including the finite `le` bucket boundaries.
-
-To do this, add the following keep list to the `controlplane-metrics` section of your `ama-metrics-settings-configmap`:
-
-```yaml
-data:
-  controlplane-metrics: |-
-    default-targets-metrics-keep-list: |-
-      apiserver = "apiserver_request_duration_seconds_bucket|apiserver_request_duration_seconds_sum|apiserver_request_duration_seconds_count"
-```
-
-Then apply the complete ConfigMap:
-
-```bash
-kubectl apply -f configmap-controlplane.yaml
-```
-
-After a few minutes, verify that the finite bucket boundaries and `+Inf` appear in your workspace. To customize other metrics, follow the steps in [Customize an ingestion profile](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#customize-an-ingestion-profile).
-
-Here's a closer look at each signal, what it tells you, and how to query it.
+Here's a closer look at each signal, what it tells you, and how to query it. Every cluster has a different normal, so establish a baseline for each production cluster and watch for sustained deviations from it rather than applying universal thresholds.
 
 ### 1. Request volume and mix
 
@@ -147,7 +126,7 @@ Pay close attention to `LIST`, `GET`, `WATCH`, `PATCH`, `UPDATE`, and `CREATE` r
 
 > **Tip**: If multiple clusters share an Azure Monitor workspace, keep the `cluster` label in your aggregations so baselines and alerts stay separate. Use a matcher such as `{cluster="your-cluster"}` to query a single cluster, and make sure each cluster has a distinct [cluster alias](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-configuration#cluster-alias).
 
-**Recommendation:** Establish a baseline for each cluster and investigate sustained deviations, especially when growth is driven by `LIST`, `WATCH`, `PATCH`, or `UPDATE` requests. Set alert thresholds per cluster rather than using universal values. To alert on these signals, use Azure Monitor [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups) and [Prometheus metric alerts](https://learn.microsoft.com/azure/azure-monitor/alerts/prometheus-alerts).
+**Recommendation:** Investigate sustained growth, especially when it's driven by `LIST`, `WATCH`, `PATCH`, or `UPDATE` requests.
 
 ### 2. Errors and throttling
 
@@ -185,7 +164,24 @@ sum by (cluster) (rate(apiserver_request_duration_seconds_sum[5m]))
   / sum by (cluster) (rate(apiserver_request_duration_seconds_count[5m]))
 ```
 
-If you've retained the full latency histogram (see [Enable latency percentiles](#enable-latency-percentiles)), you can also track tail latency:
+#### Enable latency percentiles
+
+The [default configuration](https://learn.microsoft.com/azure/azure-monitor/containers/prometheus-metrics-scrape-default) retains only the `le="+Inf"` latency bucket. That's enough for average latency, but not percentiles. To use `histogram_quantile`, retain the full histogram by adding the following keep list to the `controlplane-metrics` section of your `ama-metrics-settings-configmap`:
+
+```yaml
+data:
+  controlplane-metrics: |-
+    default-targets-metrics-keep-list: |-
+      apiserver = "apiserver_request_duration_seconds_bucket|apiserver_request_duration_seconds_sum|apiserver_request_duration_seconds_count"
+```
+
+Then apply the complete ConfigMap:
+
+```bash
+kubectl apply -f configmap-controlplane.yaml
+```
+
+After a few minutes, verify that the finite bucket boundaries and `+Inf` appear in your workspace. For other metrics, see [Customize an ingestion profile](https://learn.microsoft.com/azure/aks/control-plane-metrics-monitor#customize-an-ingestion-profile). You can then track tail latency:
 
 ```promql
 # p99 API server request latency by verb (seconds)
@@ -193,7 +189,7 @@ histogram_quantile(0.99,
   sum by (cluster, verb, le) (rate(apiserver_request_duration_seconds_bucket[5m])))
 ```
 
-**Recommendation:** Compare latency against each cluster's own baseline rather than a universal threshold. Latency that stays elevated across multiple evaluation intervals, especially alongside APF pressure, growing in-flight requests, or errors, can indicate control plane pressure.
+**Recommendation:** Latency that stays elevated across multiple evaluation intervals, especially alongside APF pressure, growing in-flight requests, or errors, can indicate control plane pressure.
 
 ### 4. In-flight requests
 
@@ -206,7 +202,7 @@ sum by (cluster, request_kind) (apiserver_current_inflight_requests)
 
 In a healthy cluster, in-flight requests spike during traffic bursts and quickly return to baseline. When they stay elevated, the API server isn't keeping up with demand.
 
-**Recommendation:** Watch for in-flight requests that remain above baseline across multiple intervals, especially when APF seat demand and latency rise at the same time.
+**Recommendation:** Watch for in-flight requests that stay elevated across multiple intervals, especially when APF seat demand and latency rise at the same time.
 
 ### 5. API Priority and Fairness (APF) demand vs. capacity
 
@@ -315,7 +311,7 @@ Once you've identified the source of the pressure, these changes resolve most AP
 
 For more guidance, see [Best practices for performance and scaling for large workloads in AKS](https://learn.microsoft.com/azure/aks/best-practices-performance-scale-large).
 
-To turn these signals into proactive alerts, configure [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups) and [Prometheus metric alerts](https://learn.microsoft.com/azure/azure-monitor/alerts/prometheus-alerts) in Azure Monitor. Treat the guidance in this post as a starting point, tune thresholds to each cluster's baseline, and use a short persistence window to avoid paging on transient spikes.
+To turn these signals into proactive alerts, configure [Prometheus rule groups](https://learn.microsoft.com/azure/azure-monitor/metrics/prometheus-rule-groups) and [Prometheus metric alerts](https://learn.microsoft.com/azure/azure-monitor/alerts/prometheus-alerts) in Azure Monitor. Treat the guidance in this post as a starting point and use a short persistence window to avoid paging on transient spikes.
 
 ## Get started
 
