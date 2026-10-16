@@ -1,5 +1,5 @@
 ---
-title: "Keep your AKS API server healthy with control plane metrics"
+title: "Keep your API server healthy with AKS control plane metrics"
 date: 2026-10-15
 description: "AKS control plane metrics are GA. Keep your API server healthy by tracking demand, capacity, latency, and 429s, then find the client behind the load and fix it."
 authors: [reshmi-mangalore, david-kydd]
