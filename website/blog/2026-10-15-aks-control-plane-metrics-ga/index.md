@@ -303,4 +303,3 @@ For the full list, see [Prerequisites and limitations](https://learn.microsoft.c
 Next in this series, we'll take a deep dive into etcd metrics and how to interpret them.
 
 We're excited to bring this capability to general availability and look forward to seeing what your teams discover about your clusters. As always, we welcome your feedback on the [AKS GitHub repository](https://github.com/Azure/AKS/issues).
-
