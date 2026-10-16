@@ -663,3 +663,21 @@ rahul-rai:
   page: true
   socials:
     linkedin: rahulrai-in
+
+reshmi-mangalore:
+  name: Reshmi Mangalore
+  title: Principal Product Manager for Azure Kubernetes Service
+  url: https://github.com/mangalorereshmi
+  image_url: https://github.com/mangalorereshmi.png
+  page: true
+  socials:
+    github: mangalorereshmi
+
+david-kydd:
+  name: David Kydd
+  title: Senior Software Engineer for Azure Kubernetes Service
+  url: https://github.com/davidkydd
+  image_url: https://github.com/davidkydd.png
+  page: true
+  socials:
+    github: davidkydd
