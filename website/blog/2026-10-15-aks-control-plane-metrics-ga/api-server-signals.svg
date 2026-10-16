@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1375" height="570" viewBox="0 0 1375 570" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title>How load signals affect API server health</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5c6670"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c4314b"/></marker>
+  </defs>
+  <rect width="1375" height="570" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="687" y="36" text-anchor="middle" font-size="22" font-weight="600" fill="#1b1f23">How load signals affect API server health</text>
+  <text x="687" y="60" text-anchor="middle" font-size="13" fill="#5c6670">Load = how many requests arrive × how expensive each one is, compared to the capacity available to serve them</text>
+
+  <!-- Legend -->
+  <g font-size="12" fill="#3b444d">
+    <rect x="437" y="78" width="14" height="14" rx="3" fill="#0f6cbd"/><text x="457" y="90">Leading signal: act early</text>
+    <rect x="627" y="78" width="14" height="14" rx="3" fill="#c4314b"/><text x="647" y="90">Lagging signal: clients affected</text>
+    <rect x="845" y="78" width="14" height="14" rx="3" fill="#6b7580"/><text x="865" y="90">Health check</text>
+  </g>
+
+  <!-- Retry loop -->
+  <path d="M1240,170 L1240,128 L110,128 L110,168" fill="none" stroke="#c4314b" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#r)"/>
+  <rect x="487" y="117" width="400" height="22" fill="#ffffff"/>
+  <text x="687" y="133" text-anchor="middle" font-size="13" font-weight="700" fill="#c4314b">Retries without backoff add demand and feed the overload</text>
+
+  <!-- Control plane container -->
+  <rect x="240" y="150" width="855" height="300" rx="12" fill="#fafbfc" stroke="#9aa4ae" stroke-dasharray="6 4"/>
+  <text x="258" y="172" font-size="12" font-weight="700" fill="#6b7580" letter-spacing="1">AKS MANAGED CONTROL PLANE</text>
+
+  <!-- Clients -->
+  <rect x="20" y="170" width="180" height="250" rx="10" fill="#f3f4f6" stroke="#9aa4ae"/>
+  <text x="110" y="198" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1f23">Clients</text>
+  <g font-size="12.5" fill="#3b444d" text-anchor="middle">
+    <text x="110" y="226">kubectl</text>
+    <text x="110" y="246">Controllers, operators</text>
+    <text x="110" y="266">CI/CD pipelines</text>
+    <text x="110" y="286">Autoscalers</text>
+  </g>
+  <rect x="30" y="318" width="160" height="92" rx="8" fill="#0f6cbd"/>
+  <text x="110" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">DEMAND</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#ffffff" text-anchor="middle">
+    <text x="110" y="362">apiserver_request_total</text>
+    <text x="110" y="378">by verb, resource</text>
+  </g>
+
+  <!-- APF -->
+  <rect x="265" y="190" width="270" height="220" rx="10" fill="#ffffff" stroke="#0f6cbd" stroke-width="1.5"/>
+  <text x="400" y="216" text-anchor="middle" font-size="14.5" font-weight="600" fill="#1b1f23">API Priority and Fairness</text>
+  <g font-size="12.5" fill="#3b444d" text-anchor="middle">
+    <text x="400" y="244">Admits, queues, or rejects</text>
+    <text x="400" y="264">requests per priority level</text>
+  </g>
+  <rect x="275" y="318" width="250" height="82" rx="8" fill="#0f6cbd"/>
+  <text x="400" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">CAPACITY</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#ffffff" text-anchor="middle">
+    <text x="400" y="358">apiserver_current_inflight_requests</text>
+    <text x="400" y="374">apiserver_flowcontrol_demand_seats_average</text>
+    <text x="400" y="390">apiserver_flowcontrol_current_limit_seats</text>
+  </g>
+
+  <!-- API server -->
+  <rect x="570" y="190" width="220" height="220" rx="10" fill="#ffffff" stroke="#6b7580" stroke-width="1.5"/>
+  <text x="680" y="216" text-anchor="middle" font-size="14.5" font-weight="600" fill="#1b1f23">API server</text>
+  <g font-size="12.5" fill="#3b444d" text-anchor="middle">
+    <text x="680" y="244">Authenticates, validates,</text>
+    <text x="680" y="264">and processes requests</text>
+  </g>
+  <rect x="580" y="318" width="200" height="82" rx="8" fill="#6b7580"/>
+  <text x="680" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">AVAILABILITY</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#ffffff" text-anchor="middle">
+    <text x="680" y="362">up{job="controlplane-apiserver"}</text>
+    <text x="680" y="378">process_start_time_seconds</text>
+  </g>
+
+  <!-- etcd -->
+  <rect x="820" y="190" width="260" height="220" rx="10" fill="#ffffff" stroke="#0f6cbd" stroke-width="1.5"/>
+  <text x="950" y="216" text-anchor="middle" font-size="14.5" font-weight="600" fill="#1b1f23">etcd</text>
+  <g font-size="12.5" fill="#3b444d" text-anchor="middle">
+    <text x="950" y="244">Stores cluster state.</text>
+    <text x="950" y="264">Broad LIST calls read many objects.</text>
+  </g>
+  <rect x="830" y="318" width="240" height="82" rx="8" fill="#0f6cbd"/>
+  <text x="950" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">COST</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#ffffff" text-anchor="middle">
+    <text x="950" y="362">apiserver_storage_list_fetched_objects_total</text>
+    <text x="950" y="378">apiserver_storage_list_returned_objects_total</text>
+  </g>
+
+  <!-- Outcome -->
+  <rect x="1125" y="170" width="230" height="250" rx="10" fill="#fdf0f2" stroke="#c4314b" stroke-width="1.5"/>
+  <text x="1240" y="198" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1f23">What clients experience</text>
+  <g font-size="12.5" fill="#3b444d" text-anchor="middle">
+    <text x="1240" y="232">Slower responses</text>
+    <text x="1240" y="252">429 Too Many Requests</text>
+    <text x="1240" y="272">5xx server errors</text>
+  </g>
+  <rect x="1135" y="318" width="210" height="92" rx="8" fill="#c4314b"/>
+  <text x="1240" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">OUTCOME</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="9.5" fill="#ffffff" text-anchor="middle">
+    <text x="1240" y="362">apiserver_request_duration_seconds_*</text>
+    <text x="1240" y="378">apiserver_request_total{code="429"}</text>
+    <text x="1240" y="394">apiserver_request_total{code=~"5.."}</text>
+  </g>
+
+  <!-- Request path -->
+  <g stroke="#5c6670" stroke-width="2" fill="none">
+    <line x1="201" y1="260" x2="263" y2="260" marker-end="url(#a)"/>
+    <line x1="536" y1="260" x2="568" y2="260" marker-end="url(#a)"/>
+    <line x1="792" y1="252" x2="818" y2="252" marker-end="url(#a)"/>
+    <line x1="818" y1="268" x2="792" y2="268" marker-end="url(#a)"/>
+  </g>
+  <text x="232" y="252" text-anchor="middle" font-size="11" fill="#5c6670">requests</text>
+
+  <!-- Response path -->
+  <path d="M400,411 L400,432 L1240,432 L1240,422" fill="none" stroke="#c4314b" stroke-width="2" marker-end="url(#r)"/>
+  <line x1="680" y1="411" x2="680" y2="430" stroke="#c4314b" stroke-width="2"/>
+  <rect x="820" y="422" width="250" height="20" fill="#fafbfc"/>
+  <text x="945" y="436" text-anchor="middle" font-size="12" fill="#c4314b">responses, including 429 rejections</text>
+
+  <!-- Troubleshoot backward -->
+  <line x1="1355" y1="495" x2="22" y2="495" stroke="#3b444d" stroke-width="2.5" marker-end="url(#a)"/>
+  <rect x="322" y="483" width="730" height="24" fill="#ffffff"/>
+  <text x="687" y="500" text-anchor="middle" font-size="13.5" fill="#1b1f23"><tspan font-weight="700">To troubleshoot, work backward:</tspan> outcome → capacity → cost → demand → find the client in audit logs</text>
+
+  <text x="687" y="545" text-anchor="middle" font-size="12.5" fill="#5c6670">Typical overload: more or heavier requests fill APF seats, requests queue, latency rises, and the API server returns 429 responses.</text>
+</svg>

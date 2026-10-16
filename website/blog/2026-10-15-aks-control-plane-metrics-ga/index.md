@@ -108,6 +108,16 @@ We recommend focusing on the following signals when assessing API server health.
 
 > **Note**: A metric appears in your workspace only if its target is enabled and your ingestion profile or keep list retains it. Request labels such as verb and resource describe traffic patterns but don't identify the client sending the requests.
 
+### How the signals connect
+
+API server load depends on three things: how many requests arrive (demand), how expensive each request is (cost), and how much concurrency is available to serve them (capacity). When demand multiplied by cost exceeds capacity, clients see the outcome as higher latency, `429` responses, or errors.
+
+![Diagram showing how demand, cost, and capacity signals lead to API server outcomes such as latency and 429 responses](./api-server-signals.svg)
+
+Demand, cost, and capacity signals are leading indicators, so they let you act before clients are affected. Latency, `429` responses, and `5xx` errors are lagging indicators that tell you clients are already affected. Clients that retry without backoff add demand and make the overload worse.
+
+When you troubleshoot, work backward: start from the outcome, check whether APF capacity is saturated, look for expensive LIST calls, identify which verbs and resources drive demand, and then [find the client behind the load](#find-the-client-behind-the-load).
+
 Here's a closer look at each signal, what it tells you, and how to query it. Every cluster has a different normal, so establish a baseline for each production cluster and watch for sustained deviations from it rather than applying universal thresholds.
 
 ### 1. Request volume and mix
