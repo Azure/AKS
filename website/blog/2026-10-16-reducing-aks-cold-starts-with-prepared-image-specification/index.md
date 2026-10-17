@@ -21,7 +21,7 @@ Prepared Image Specification (PIS) lets you list the container images and host s
 
 ![Prepared Image Specification reuses prepared container images, host setup, and model assets across new AKS nodes](./hero-image.png)
 
-**Bottom line:** PIS saves roughly the time each new node would otherwise spend pulling images and running setup. The more of that work your nodes do, the more PIS saves. In our tests, it cut a three-node Windows scale-out from 810 seconds to 202 seconds and returned the first token from a GPU model server 26 seconds sooner.
+**Bottom line:** PIS saves roughly the time each new node would otherwise spend pulling images and running setup. The more of that work your nodes do, the more PIS saves. In our tests, it cut a three-node Windows scale-out from 810 seconds to 202 seconds and returned the first token from a GPU model server 74 seconds sooner.
 
 > **Preview notice:** PIS is currently an AKS preview feature. Preview features are opt-in, provided as-is and as-available, and not intended for production use. Review the current prerequisites, regions, limitations, and support policy before using it.
 
@@ -85,14 +85,14 @@ Nodes became ready in about the same time on both pools. The difference came fro
 
 ### Serving a model on a GPU node
 
-For a T4 GPU model server, PIS returned the first token 26 seconds sooner on average by preloading a 2.6 GB inference image and a 2.4 GB model.
+For a T4 GPU model server, PIS returned the first token 74 seconds sooner on average by preloading a 2.6 GB inference image and a 2.4 GB model.
 
 | Outcome (average) | Standard | PIS | Time saved |
 | --- | ---: | ---: | ---: |
-| Model ready to serve | 451s | 425s | **26s** |
-| First token returned | 484s | 458s | **26s** |
+| Model ready to serve | 466s | 390s | **76s** |
+| First token returned | 499s | 425s | **74s** |
 
-With the inference image already on the node, the model server container started without waiting for a multi-gigabyte pull.
+With the inference image already on the node, the model server container started without waiting for a multi-gigabyte pull. Files in a prepared image are fetched from storage the first time they're read, so read large model files in parallel before the model server starts. That loads the model into memory faster than letting the server read it on demand.
 
 ## When to use PIS
 
