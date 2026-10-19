@@ -11,7 +11,7 @@ tags:
 keywords: ["Azure Kubernetes Service", "AKS", "Prepared Image Specification", "PIS", "node scaling", "cold starts"]
 ---
 
-Have you ever watched your Azure Kubernetes Service (AKS) cluster add nodes right on cue, and then waited several more minutes before any of them could take traffic? Or kept extra nodes running all day so a traffic spike wouldn't leave you waiting on cold starts? If large container images or runtime dependencies are making your scale-outs slow and your bill bigger, this post is for you.
+Have you ever watched your Azure Kubernetes Service (AKS) cluster add nodes right on cue, only to wait several more minutes before any of them could take traffic? Or kept extra nodes running all day so a traffic spike wouldn't leave you waiting on cold starts? If large container images or runtime dependencies are making your scale-outs slow and your bill bigger, this post is for you.
 
 A new virtual machine (VM) is only the start. Each node still has to join the cluster, install whatever your hosts need, pull your container images, and start your workload. With a multi-gigabyte inference image, a Windows app, or a runtime that every node installs at boot, that work adds up quickly, and it repeats on every new node.
 
