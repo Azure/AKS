@@ -78,10 +78,9 @@ Windows installs take longer at node startup, so baking them into the image save
 
 When each new Linux node had to pull a 5.7 GB machine learning image and install a Node.js runtime and a 512 MiB dependency bundle, PIS had all 10 workloads running about 3.5 minutes sooner at the median.
 
-| Outcome (all 10 workloads running) | Standard | PIS | Time saved |
-| --- | ---: | ---: | ---: |
-| Median scale-out | 315s | 104s | **About 3.5 minutes (67%)** |
-| Slowest 10% of scale-outs (p90) | 338s | 115s | **About 3.5 minutes (66%)** |
+| Scenario | Standard (median) | PIS (median) | Time saved (median) | Slowest 10% (p90) |
+| --- | ---: | ---: | ---: | ---: |
+| Add ten Linux nodes, all workloads running | 315s | 104s | **About 3.5 minutes (67%)** | 338s vs. 115s (**66% faster**) |
 
 Nodes became ready in about the same time on both pools. The difference came from what happened next: standard nodes spent about 3 minutes pulling the image and 45 seconds on setup, while PIS-backed nodes had the image already present and finished setup in about 4 seconds.
 
@@ -89,7 +88,7 @@ Nodes became ready in about the same time on both pools. The difference came fro
 
 For a T4 GPU model server, PIS returned the first token 74 seconds sooner on average by preloading a 2.6 GB inference image and a 2.4 GB model.
 
-| Outcome (average) | Standard | PIS | Time saved |
+| Outcome | Standard (average) | PIS (average) | Time saved (average) |
 | --- | ---: | ---: | ---: |
 | Model ready to serve | 466s | 390s | **76s** |
 | First token returned | 499s | 425s | **74s** |
