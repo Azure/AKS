@@ -51,8 +51,8 @@ Windows scale-outs were up to 10 minutes faster, and the slowest Windows scale-o
 | --- | ---: | ---: | ---: | ---: |
 | Add three Windows nodes | 810s | 202s | **About 10 minutes (75%)** | 849s vs. 246s (**71% faster**) |
 | Add one Windows node | 246s | 190s | **56s (23%)** | 823s vs. 238s (**71% faster**) |
-| Add three Linux nodes | 86s | 82s | **4s (4%)** | 104s vs. 98s (**6% faster**) |
-| Add one Linux node | 81s | 80s | **2s (2%)** | 104s vs. 94s (**10% faster**) |
+| Add three Linux nodes | 86s | 82s | **4s (5%)** | 104s vs. 98s (**6% faster**) |
+| Add one Linux node | 81s | 80s | **1s (1%)** | 104s vs. 94s (**10% faster**) |
 
 These workloads used a .NET application image of 90 MB on Linux and 171 MB on Windows. PIS removed almost all of the image pull time, about 10 seconds on Linux and 20 seconds on Windows.
 
@@ -68,7 +68,7 @@ Moving installs into the image saved up to 2 minutes per Windows node and up to 
 | --- | ---: | ---: | ---: |
 | Install a Node.js runtime on Windows | 320s | 207s | **About 2 minutes (35%)** |
 | Install a certificate and security policy on Windows | 254s | 198s | **56s (22%)** |
-| Install a 512 MiB dependency bundle on Windows | 252s | 242s | **11s (4%)** |
+| Install a 512 MiB dependency bundle on Windows | 252s | 242s | **10s (4%)** |
 | Install a 512 MiB dependency bundle on Linux | 135s | 110s | **25s (19%)** |
 | Install a Node.js runtime on Linux | 123s | 107s | **16s (13%)** |
 
@@ -116,17 +116,28 @@ The easiest way to see what PIS does for your workload is to run it side by side
 1. **Pick what to prepare.** Start with the largest images and the setup steps every new node repeats.
 2. **Create a PIS version.** List digest-pinned container images and any setup scripts.
 3. **Create a PIS-backed node pool.** Reference the PIS version, scale it alongside your current pool, and compare how long workloads take to start.
-4. **Roll out.** Point production pools at the tested version, and create a new version when your images or scripts change.
+4. **Expand carefully.** While PIS is in preview, keep it to nonproduction pools. Point more of them at the tested version, and create a new version when your images or scripts change.
 
-Register the preview and install the `aks-preview` extension:
+Register the preview feature:
 
 ```bash
 az feature register --namespace Microsoft.ContainerService --name AKSPreparedImageSpecificationPreview
+```
+
+Registration can take a few minutes. Rerun this command until it prints `Registered`:
+
+```bash
+az feature show --namespace Microsoft.ContainerService --name AKSPreparedImageSpecificationPreview --query properties.state --output tsv
+```
+
+Then refresh the resource provider and install the `aks-preview` extension:
+
+```bash
 az provider register --namespace Microsoft.ContainerService
 az extension add --name aks-preview --upgrade
 ```
 
-Create a PIS version that caches your image, then add a node pool that uses it:
+Create a PIS version that caches an image, then add a node pool that uses it. This example uses a public image. To cache images from a private registry such as Azure Container Registry (ACR), the PIS build needs its own access: create a user-assigned managed identity, grant it the `AcrPull` role on the registry, and pass it to `az aks prepared-image-specification create` with `--assign-identity`. The [PIS how-to guide](https://learn.microsoft.com/azure/aks/prepared-image-specification) lists the full permissions.
 
 ```bash
 RESOURCE_GROUP="my-resource-group"
@@ -138,7 +149,7 @@ az aks prepared-image-specification create \
   --name "$PIS_NAME" \
   --version v1 \
   --location "$(az aks show --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME" --query location --output tsv)" \
-  --container-images "myacr.azurecr.io/my-app@sha256:<digest>"
+  --container-images "mcr.microsoft.com/dotnet/samples:aspnetapp@sha256:<digest>"
 
 PIS_VERSION_ID=$(az aks prepared-image-specification version show \
   --resource-group "$RESOURCE_GROUP" \
@@ -154,7 +165,7 @@ az aks nodepool add \
   --prepared-image-specification-id "$PIS_VERSION_ID"
 ```
 
-To also bake in runtimes, dependencies, or certificates, add setup scripts with `--customization-scripts`. The [PIS how-to guide](https://learn.microsoft.com/azure/aks/prepared-image-specification) covers scripts, registry access, and permissions.
+To also bake in runtimes, dependencies, or certificates, add setup scripts with `--customization-scripts`. The how-to guide covers scripts in detail.
 
 ## Conclusion
 
