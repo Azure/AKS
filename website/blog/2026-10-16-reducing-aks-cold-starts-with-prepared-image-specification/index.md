@@ -158,7 +158,7 @@ To also bake in runtimes, dependencies, or certificates, add setup scripts with 
 
 ## Conclusion
 
-Cold starts are easy to accept as just part of how scaling works. PIS moves the slow, repetitive part of node startup into a one-time build, so new nodes show up ready to work.
+Slow cold starts don't have to be the price you pay for scaling. With PIS, the slow, repetitive part of node startup happens once, in a build, instead of on every new node, so nodes show up ready to work.
 
 If your pools carry large images, run Windows workloads, or repeat the same setup on every node, try PIS in a nonproduction pool and see how much time you get back. It's still in preview, so keep an eye on the [AKS roadmap](https://github.com/orgs/Azure/projects/685) as the feature evolves.
 
