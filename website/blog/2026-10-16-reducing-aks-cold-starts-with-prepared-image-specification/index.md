@@ -41,7 +41,7 @@ There's one tradeoff to plan for: the build. Creating a PIS-backed pool took abo
 
 Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common.
 
-Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Unless noted, Standard and PIS columns show median (50th percentile) times, and time saved is the difference between them. "Slowest 10%" values are the 90th percentile (p90).
+Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running.
 
 ### Scaling out with cached container images
 
