@@ -54,7 +54,7 @@ Windows scale-outs were up to 10 minutes faster, and the slowest 10% of Windows 
 | Add three Linux nodes | 86s | 82s | **4s (5%)** | 104s vs. 98s (**6% faster**) |
 | Add one Linux node | 81s | 80s | **1s (1%)** | 104s vs. 94s (**10% faster**) |
 
-These workloads used a .NET application image of 90 MB on Linux and 171 MB on Windows. PIS removed almost all of the image pull time, about 10 seconds on Linux and 20 seconds on Windows.
+These workloads used a .NET app image of 90 MB on Linux and 171 MB on Windows. PIS removed almost all of the image pull time, about 10 seconds on Linux and 20 seconds on Windows.
 
 The larger Windows gains came from more predictable node startup. Standard Windows nodes sometimes took more than 10 minutes to become ready, and none of the PIS-backed nodes did. A multi-node scale-out waits for its slowest node, so avoiding that delay is why the three-node Windows result is so large.
 
@@ -93,7 +93,9 @@ For a T4 GPU model server, PIS returned the first token 74 seconds sooner on ave
 | Model ready to serve | 466s | 390s | **76s** |
 | First token returned | 499s | 425s | **74s** |
 
-With the inference image already on the node, the model server container started without waiting for a multi-gigabyte pull. Files in a prepared image are fetched from storage the first time they're read, so read large model files in parallel before the model server starts. That loads the model into memory faster than letting the server read it on demand.
+With the inference image already on the node, the model server container started without waiting for a multi-gigabyte pull.
+
+One tip for large model files: files in a prepared image are fetched from storage the first time they're read, so a model server that reads a multi-gigabyte file on demand can load slowly. To avoid that, warm up the files before the server starts. For example, add an init container that reads the model files with several parallel readers, which loads them into memory much faster than a single sequential read.
 
 ## When to use PIS
 
@@ -101,7 +103,7 @@ So is PIS a good fit for your pool? A useful rule of thumb: if the pool scales o
 
 Good fits include:
 
-- **Large container images**, such as AI inference, data processing, or Windows application images.
+- **Large container images**, such as AI inference, data processing, or Windows app images.
 - **Runtimes and dependency bundles** that every node installs, such as language runtimes, SDKs, or shared libraries.
 - **Windows node pools**, where provisioning and image pulls tend to be slow.
 - **Burst scaling**, where waiting for the slowest of several new nodes delays the whole scale-out.
@@ -118,6 +120,12 @@ The easiest way to see what PIS does for your workload is to run it side by side
 2. **Create a PIS version.** List digest-pinned container images and any setup scripts.
 3. **Create a PIS-backed node pool.** Reference the PIS version, scale it alongside your current pool, and compare how long workloads take to start.
 4. **Expand carefully.** While PIS is in preview, keep it to nonproduction pools. Point more of them at the tested version, and create a new version when your images or scripts change.
+
+Before you begin, make sure you have:
+
+- An AKS cluster in a region and node OS that PIS supports. The [PIS overview](https://learn.microsoft.com/azure/aks/prepared-image-specification-overview) lists both.
+- The Azure CLI. You install the `aks-preview` extension in the next step.
+- Permission to create node pools in the cluster, plus pull access to any private registry images you want to cache.
 
 Register the preview feature:
 
