@@ -41,13 +41,13 @@ There's one tradeoff to plan for: the build. Creating a PIS-backed pool took abo
 
 Savings grow with the amount of download and setup work you move into the image. Windows pools, runtime installs, and large dependencies benefited most, and PIS made slow Windows scale-outs far less common.
 
-Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Standard and PIS columns show typical (median) times unless noted, and time saved is the difference between them.
+Each comparison scaled a standard pool and a PIS-backed pool at the same time and measured from the scale request until the workload was running. Unless noted, Standard and PIS columns show median (50th percentile) times, and time saved is the difference between them. "Slowest 10%" values are the 90th percentile (p90).
 
 ### Scaling out with cached container images
 
-Windows scale-outs were up to 10 minutes faster, and the slowest Windows scale-outs dropped from about 14 minutes to about 4.
+Windows scale-outs were up to 10 minutes faster, and the slowest 10% of Windows scale-outs dropped from about 14 minutes to about 4.
 
-| Scenario | Standard | PIS | Typical time saved | Slowest 10% of scale-outs |
+| Scenario | Standard (median) | PIS (median) | Time saved (median) | Slowest 10% (p90) |
 | --- | ---: | ---: | ---: | ---: |
 | Add three Windows nodes | 810s | 202s | **About 10 minutes (75%)** | 849s vs. 246s (**71% faster**) |
 | Add one Windows node | 246s | 190s | **56s (23%)** | 823s vs. 238s (**71% faster**) |
@@ -58,13 +58,13 @@ These workloads used a .NET application image of 90 MB on Linux and 171 MB on Wi
 
 The larger Windows gains came from more predictable node startup. Standard Windows nodes sometimes took more than 10 minutes to become ready, and none of the PIS-backed nodes did. A multi-node scale-out waits for its slowest node, so avoiding that delay is why the three-node Windows result is so large.
 
-On Linux, a 90 MB image takes only a few seconds to pull, so the typical saving was small. In the slowest 10% of Linux scale-outs, PIS finished 6 to 10 seconds sooner. Larger images and setup tasks, shown below, produce larger Linux savings.
+On Linux, a 90 MB image takes only a few seconds to pull, so the median saving was small. In the slowest 10% (p90) of Linux scale-outs, PIS finished 6 to 10 seconds sooner. Larger images and setup tasks, shown below, produce larger Linux savings.
 
 ### Preparing runtimes and dependencies
 
 Moving installs into the image saved up to 2 minutes per Windows node and up to 25 seconds per Linux node.
 
-| Setup task | Standard | PIS | Typical time saved |
+| Setup task | Standard (median) | PIS (median) | Time saved (median) |
 | --- | ---: | ---: | ---: |
 | Install a Node.js runtime on Windows | 320s | 207s | **About 2 minutes (35%)** |
 | Install a certificate and security policy on Windows | 254s | 198s | **56s (22%)** |
@@ -76,12 +76,12 @@ Windows installs take longer at node startup, so baking them into the image save
 
 ### Scaling out ten Linux nodes with a large image and setup
 
-When each new Linux node had to pull a 5.7 GB machine learning image and install a Node.js runtime and a 512 MiB dependency bundle, PIS had all 10 workloads running about 3.5 minutes sooner.
+When each new Linux node had to pull a 5.7 GB machine learning image and install a Node.js runtime and a 512 MiB dependency bundle, PIS had all 10 workloads running about 3.5 minutes sooner at the median.
 
 | Outcome (all 10 workloads running) | Standard | PIS | Time saved |
 | --- | ---: | ---: | ---: |
-| Typical scale-out | 315s | 104s | **About 3.5 minutes (67%)** |
-| Slowest 10% of scale-outs | 338s | 115s | **About 3.5 minutes (66%)** |
+| Median scale-out | 315s | 104s | **About 3.5 minutes (67%)** |
+| Slowest 10% of scale-outs (p90) | 338s | 115s | **About 3.5 minutes (66%)** |
 
 Nodes became ready in about the same time on both pools. The difference came from what happened next: standard nodes spent about 3 minutes pulling the image and 45 seconds on setup, while PIS-backed nodes had the image already present and finished setup in about 4 seconds.
 
@@ -107,7 +107,9 @@ Good fits include:
 - **Windows node pools**, where provisioning and image pulls tend to be slow.
 - **Burst scaling**, where waiting for the slowest of several new nodes delays the whole scale-out.
 
-On the other hand, if your images are small, setup is quick, your content changes more often than the pool scales, or the pool rarely scales at all, you probably won't notice much difference. Kubernetes upgrades rebuild the prepared image for you. To pick up new content or a newer AKS node image, create a new PIS version and point the pool at it.
+On the other hand, if your images are small, setup is quick, your content changes more often than the pool scales, or the pool rarely scales at all, you probably won't notice much difference.
+
+Once a pool uses PIS, keeping it current is mostly hands-off. Kubernetes upgrades rebuild the prepared image for you. When you want new content or a newer AKS node image, create a new PIS version and point the pool at it.
 
 ## How to adopt PIS
 
