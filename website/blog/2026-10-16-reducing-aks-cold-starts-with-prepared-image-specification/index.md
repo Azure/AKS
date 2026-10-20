@@ -33,7 +33,7 @@ The idea is straightforward: do the slow work once, ahead of time, instead of on
 
 A PIS is a versioned Azure resource with two lists: container images to cache, and Bash or PowerShell setup scripts to run. AKS starts from a supported AKS node image, applies your lists, and produces a prepared node image. Every new node in a PIS-backed pool boots from it. You don't have to build, patch, or host that image yourself.
 
-If you already use an image pre-pull DaemonSet or [Artifact Streaming](https://learn.microsoft.com/azure/aks/artifact-streaming), PIS works alongside them. The difference is timing. Those tools do their work after a node starts, while your workload waits. PIS does it before the node ever joins the pool, and it handles host setup too, not just container images.
+If you already use an image pre-pull DaemonSet or [Artifact Streaming](https://aka.ms/aks/artifact-streaming), PIS works alongside them. The difference is timing. Those tools do their work after a node starts, while your workload waits. PIS does it before the node ever joins the pool, and it handles host setup too, not just container images.
 
 There's one tradeoff to plan for: the build. Creating a PIS-backed pool took about 20 to 30 minutes in our tests, compared with about 4 minutes for a standard pool. You pay that once, when you create the pool or move it to a new PIS version. After that, every scale-out benefits.
 
