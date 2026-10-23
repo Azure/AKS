@@ -35,9 +35,7 @@ More information on supported versions and version support policy is available i
 * [Updating node public IP prefixes](https://learn.microsoft.com/azure/aks/use-node-public-ips) on existing node pools is now available as preview in public Azure regions. Supports adding, replacing, and reordering IPv4 and IPv6 prefixes; changing prefixes recreates the affected nodes. Not yet available in sovereign clouds.
 * Upgrade Insights is now available as preview in all Azure regions, including sovereign clouds. Register the `Microsoft.ContainerService/AKSUpgradeInsightsPreview` feature on your subscription to use it.
 * [Confidential VM (CVM)](https://aka.ms/aks/cvm) node pools with Azure Container Linux are now available as preview. FIPS isn't yet supported on these node pools.
-* [Kata confidential containers](https://learn.microsoft.com/azure/aks/confidential-containers-overview) are now available as preview on Azure Linux 3. New Kata confidential container node pools use Azure Linux 3 images; existing node pools keep their current image family.
 * [Converting AKS Base clusters to AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about) with managed system node pools is now available as preview. Register the `Microsoft.ContainerService/NonHoboToHoboConversionPreview` feature, then run `az aks update --sku automatic`. Clusters that use a custom virtual network also need `--enable-hosted-system` and `--system-node-subnet-id`.
-* [Kata VM Isolation V2](https://learn.microsoft.com/azure/aks/use-pod-sandboxing) is now available as preview with self-service registration. Register the `Microsoft.ContainerService/KataVMIsolationV2Preview` feature; subscription approval is no longer required.
 
 #### Behavioral changes
 
