@@ -1,7 +1,7 @@
 ---
 title: "What's new in AKS Automatic: migration, SLAs, and more"
 description: "Explore the latest AKS Automatic improvements: preview migration, a managed system components SLA, native Terraform support, and flexible workload guardrails."
-date: 2026-10-22
+date: 2026-10-27
 authors: ["amanda-wang"]
 tags:
   - aks-automatic
@@ -100,7 +100,9 @@ Use the [NGINX-to-Gateway API migration guide](https://learn.microsoft.com/azure
 
 ## Istio support with Istio CNI
 
-For traffic management between services as well as ingress, Automatic now supports the [Istio-based service mesh add-on with Istio CNI](https://learn.microsoft.com/azure/aks/intro-aks-automatic#aks-automatic-and-standard-feature-comparison). The Container Network Interface (CNI) plug-in configures traffic redirection at the node level. Application pods don't need privileged network capabilities to join the mesh.
+For traffic management between services as well as ingress, Automatic now supports the [Istio-based service mesh add-on with Istio CNI](https://learn.microsoft.com/azure/aks/intro-aks-automatic#networking). The Container Network Interface (CNI) plug-in configures traffic redirection at the node level. Application pods don't need privileged network capabilities to join the mesh.
+
+ > **Important**: The Istio service mesh add-on and the application routing Gateway API implementation can't be enabled together. If your cluster uses application routing Gateway API—including the default on new Automatic clusters running AKS 1.36. Disable the Gateway API first, then enable the mesh in a separate operation. See the [Istio Gateway API limitations](https://learn.microsoft.com/azure/aks/istio-gateway-api#limitations).
 
 [Istio CNI](https://learn.microsoft.com/azure/aks/istio-cni) is the default for new mesh installations starting with `asm-1-30`. For supported earlier revisions, enable it explicitly. Unlike the cluster itself, **the Istio add-on isn't automatically upgraded**. Plan [mesh upgrades](https://learn.microsoft.com/azure/aks/istio-upgrade) to keep it compatible with Kubernetes and avoid blocking cluster auto-upgrades.
 
