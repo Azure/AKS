@@ -7,7 +7,7 @@ tags:
   - aks-automatic
 ---
 
-Azure Kubernetes Service (AKS) Automatic now gives you a path to levereage managed system node pools, expanded service level agreement (SLA) coverage, and native Terraform support. You also get more control over workload guardrails and new traffic-management options.
+Azure Kubernetes Service (AKS) Automatic now gives you a path to leverage managed system node pools, expanded service level agreement (SLA) coverage, and native Terraform support. You also get more control over workload guardrails and new traffic-management options.
 
 This roundup explains what's changed and what you need to configure. If you still use managed NGINX ingress, prioritize migration before Microsoft's critical security patch support ends in November 2026.
 
