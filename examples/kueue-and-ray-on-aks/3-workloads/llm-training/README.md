@@ -37,6 +37,11 @@ kubectl -n ray logs -f -l ray.io/cluster=$(kubectl -n ray get rayjob ${JOB_NAME}
 
 ## Verify
 
+A usable LoRA adapter needs both `adapter_config.json` and nonempty
+`adapter_model.safetensors` (or `adapter_model.bin`). Nonzero training ranks can
+save only `rng_state_*.pth`; that isn't a model. The script skips incomplete
+worker checkpoints and refuses to upload them or advance `lora/latest.txt`.
+
 ```bash
 # Check LoRA upload
 az storage blob list -c llm-pipeline --prefix lora/ \
