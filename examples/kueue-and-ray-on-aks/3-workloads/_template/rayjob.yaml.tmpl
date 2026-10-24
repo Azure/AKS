@@ -4,15 +4,15 @@
 #   envsubst < rayjob.yaml.tmpl | kubectl apply -f -
 #
 # Required variables:
-#   RAY_IMAGE          - Full MCR image ref, e.g. mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0
-#   RAY_VERSION        - Ray version string, e.g. 2.55.1
+#   RAY_IMAGE          - Full MCR image ref, e.g. mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.56.1-cuda13.0
+#   RAY_VERSION        - Matching Ray version string, e.g. 2.56.1
 #   JOB_NAME           - Unique name for this RayJob, e.g. aurora-finetune-$(date +%s)
 #   QUEUE_NAME         - Kueue LocalQueue name, e.g. default, team-a, team-b
 #   NUM_WORKERS        - Number of GPU worker replicas
 #   GPUS_PER_WORKER    - GPUs per worker, e.g. 1 or 4
 #   ENTRYPOINT         - Python command, e.g. python3 /home/ray/scripts/aurora_finetune.py
 #   CONFIGMAP_NAME     - Name of the ConfigMap that holds the Python script(s)
-#   AZURE_STORAGE_ACCOUNT_NAME - Storage account from Module 1 terraform output
+#   AZURE_STORAGE_ACCOUNT_NAME - Storage account prepared for the selected setup
 #
 # Optional variables (workload-specific env vars injected into runtimeEnvYAML):
 #   WORKLOAD_ENV       - Extra env_vars block lines (indented 6 spaces), or leave empty
@@ -43,10 +43,32 @@ ${WORKLOAD_ENV}
   submitterPodTemplate:
     spec:
       restartPolicy: Never
+      # Preserve KubeRay's generated health/submission commands with the MCR
+      # image's python3-only runtime; the wrapper stays local to this Pod.
+      initContainers:
+        - name: python-compat
+          image: "${RAY_IMAGE}"
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              printf '#!/bin/sh\nexec python3 "$@"\n' > /python-compat/python
+              chmod 0555 /python-compat/python
+          volumeMounts:
+            - name: python-compat
+              mountPath: /python-compat
       containers:
         - name: ray-job-submitter
           image: "${RAY_IMAGE}"
           imagePullPolicy: Always
+          volumeMounts:
+            - name: python-compat
+              mountPath: /usr/local/bin/python
+              subPath: python
+              readOnly: true
+      volumes:
+        - name: python-compat
+          emptyDir: {}
 
   rayClusterSpec:
     rayVersion: "${RAY_VERSION}"

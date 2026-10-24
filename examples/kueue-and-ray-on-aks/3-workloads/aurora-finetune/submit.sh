@@ -2,7 +2,7 @@
 # Submit the aurora-finetune RayJob to Kueue.
 # Usage:
 #   source env.example
-#   export AZURE_STORAGE_ACCOUNT_NAME=$(terraform -chdir=../../1-infrastructure/terraform output -raw storage_account_name)
+#   export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
 #   ./submit.sh [--dry-run]
 
 set -euo pipefail
@@ -19,7 +19,7 @@ fi
 DRY_RUN=""
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN="--dry-run=client"
 
-: "${AZURE_STORAGE_ACCOUNT_NAME:?Set AZURE_STORAGE_ACCOUNT_NAME (terraform output -raw storage_account_name)}"
+: "${AZURE_STORAGE_ACCOUNT_NAME:?Set AZURE_STORAGE_ACCOUNT_NAME from your managed storage setup}"
 : "${JOB_NAME:?Set JOB_NAME}"
 
 echo "→ Applying ConfigMap ${CONFIGMAP_NAME} ..."
@@ -32,4 +32,6 @@ kubectl create configmap "${CONFIGMAP_NAME}" \
 echo "→ Submitting RayJob ${JOB_NAME} to queue '${QUEUE_NAME}' ..."
 envsubst < "${SCRIPT_DIR}/manifests/rayjob.yaml.tmpl" | kubectl apply ${DRY_RUN} -f -
 
-[[ -z "${DRY_RUN}" ]] && echo "✓ Done. Watch: kubectl -n ray get rayjob ${JOB_NAME} -w"
+if [[ -z "${DRY_RUN}" ]]; then
+  echo "✓ Done. Watch: kubectl -n ray get rayjob ${JOB_NAME} -w"
+fi

@@ -1,36 +1,25 @@
-# Kueue Queue Manifests
+# Kueue queue manifests
 
-Kubernetes manifests for Kueue resource management. Apply these in numbered
-order after Module 1 infrastructure is provisioned.
+Use these files with the [managed Kueue setup and verification steps](../README.md).
+Apply only the demo you choose, not the whole directory.
 
-## Files
+| File | Ownership and purpose |
+| --- | --- |
+| `00-namespace.yaml` | Creates the customer-owned `ray` namespace for Ray demos. |
+| `10-resource-flavors.yaml` | Creates customer-owned `default` and `gpu` flavors for the Ray demos. It doesn't replace generated AKS flavors. |
+| `20-single-queue.yaml` | Creates the `cluster-queue` ClusterQueue and `default` LocalQueue. |
+| `30-team-queues.yaml` | Creates `team-a-cq` and `team-b-cq` ClusterQueues with cohort borrowing, plus their LocalQueues. Use instead of the single queue. |
+| `40-autoscale-queue.yaml` | Creates the CPU demo's namespace, ClusterQueue, and LocalQueue. References existing managed `aks-cpu` and `aks-provisioning-check` resources. |
 
-| File | What it creates |
-|------|-----------------|
-| `00-namespace.yaml` | `ray` namespace |
-| `10-resource-flavors.yaml` | `default` (any node) and `gpu` (NVIDIA accelerator) ResourceFlavors |
-| `20-single-queue.yaml` | Single `cluster-queue` ClusterQueue + `default` LocalQueue |
-| `30-team-queues.yaml` | Team-based `team-a-cq` / `team-b-cq` ClusterQueues with `shared-cohort` borrowing and preemption |
+The CPU autoscale demo needs only `40-autoscale-queue.yaml`, after verifying its
+managed defaults and autoscaling pool. It doesn't use the Ray namespace,
+ServiceAccount, or the customer-owned Ray flavors.
 
-## Quick start
+For either Ray demo, prepare the `ray` namespace and authorized workload identity,
+apply `10-resource-flavors.yaml`, and then choose **either**
+`20-single-queue.yaml` **or** `30-team-queues.yaml`. Follow the parent guide for
+verification, quota sizing, safe switching, and cleanup.
 
-```bash
-# 1. Create namespace + apply the workload identity ServiceAccount from Module 1
-kubectl apply -f 00-namespace.yaml
-kubectl apply -f <(terraform -chdir=../1-infrastructure/terraform output -raw ray_workload_sa_yaml)
-
-# 2. Create resource flavors
-kubectl apply -f 10-resource-flavors.yaml
-
-# 3. Choose ONE queue configuration:
-
-# Option A — Single queue (admission backpressure demo)
-kubectl apply -f 20-single-queue.yaml
-
-# Option B — Team queues (cohort borrowing + preemption demo)
-kubectl apply -f 30-team-queues.yaml
-```
-
-> **Note:** Apply either `20-single-queue.yaml` or `30-team-queues.yaml` — they
-> are independent configurations, not meant to coexist. To switch, delete one
-> before applying the other.
+Don't create, edit, or delete the managed `aks-*` defaults. Deleting
+`40-autoscale-queue.yaml` removes only the example's customer-owned namespace and
+queues, not the managed provisioning check, config, or flavor.

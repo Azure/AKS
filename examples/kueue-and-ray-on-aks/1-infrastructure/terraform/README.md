@@ -1,6 +1,11 @@
-# Infrastructure Terraform
+# Legacy self-managed Terraform alternative
 
-Terraform configuration that provisions:
+Prefer the [managed setup](../managed/) for the managed-first examples. This
+module intentionally retains its existing Terraform resources and Helm operator
+ownership; don't apply it to a managed target or treat a flag/state change as an
+automatic migration. See the [full legacy guide](legacy-guide.md) for this path.
+
+This alternative's Terraform configuration provisions:
 
 - **AKS cluster** with a system node pool and an optional GPU-enabled workload node pool (toggled via `gpu_enabled`)
 - **Helm releases** for KubeRay operator, Kueue (with RayJob/RayCluster integration), and GPU monitoring (DCGM exporter)
