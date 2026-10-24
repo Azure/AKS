@@ -22,9 +22,13 @@ def environment(**extra):
 
 def render(folder):
     directory = WORKLOADS / folder
+    template = "rayservice.yaml.tmpl" if folder == "online-serving" else "rayjob.yaml.tmpl"
+    env = environment()
+    env.pop("RAY_IMAGE", None)
+    env.pop("RAY_VERSION", None)
     result = subprocess.check_output(
-        ["bash", "-c", 'source env.example; envsubst < manifests/rayjob.yaml.tmpl'],
-        cwd=directory, env=environment(), text=True,
+        ["bash", "-c", f'source env.example; envsubst < manifests/{template}'],
+        cwd=directory, env=env, text=True,
     )
     return yaml.safe_load(result)
 
@@ -46,7 +50,25 @@ class ManagedRayTest(unittest.TestCase):
                 }])
                 self.assertEqual(pod["initContainers"][0]["image"], submitter["image"])
                 self.assertTrue(job["spec"]["suspend"])
-                self.assertEqual(job["spec"]["rayClusterSpec"]["rayVersion"], "2.55.1")
+                self.assertEqual(job["spec"]["rayClusterSpec"]["rayVersion"], "2.56.1")
+
+    def test_fixed_runtime_pins_stay_consistent_and_gpu_based(self):
+        image = "mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.56.1-cuda13.0"
+        for folder in (*BATCH, "online-serving"):
+            with self.subTest(folder=folder):
+                spec = render(folder)["spec"]
+                cluster = spec.get("rayClusterSpec", spec.get("rayClusterConfig"))
+                self.assertEqual(cluster["rayVersion"], "2.56.1")
+                groups = [cluster["headGroupSpec"], *cluster.get("workerGroupSpecs", [])]
+                for group in groups:
+                    self.assertEqual(group["template"]["spec"]["containers"][0]["image"], image)
+                gpu_group = cluster["headGroupSpec"] if folder == "online-serving" else cluster["workerGroupSpecs"][0]
+                resources = gpu_group["template"]["spec"]["containers"][0]["resources"]
+                self.assertGreater(int(resources["requests"]["nvidia.com/gpu"]), 0)
+                self.assertGreater(int(resources["limits"]["nvidia.com/gpu"]), 0)
+                self.assertEqual(gpu_group["rayStartParams"]["num-gpus"], "1")
+        variables = WORKLOADS.parent / "1-infrastructure/terraform/variables.tf"
+        self.assertIn(image, variables.read_text())
 
     def test_python_alias_preserves_arguments(self):
         for folder in BATCH:

@@ -152,7 +152,7 @@ The default deployment takes approximately **10–15 minutes** (cluster creation
 | `kueue_controller_image_tag` | `v0.17.1` | Kueue controller image tag |
 | `gpu_monitoring_chart_version` | `0.1.1` | GPU monitoring chart version |
 | `gpu_monitoring_sku_name` | `a100` | gpuSkus key for gpu-monitoring Helm values |
-| `ray_image` | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0` | Ray image for Module 3 workloads |
+| `ray_image` | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.56.1-cuda13.0` | GPU Ray image for Module 3 workloads |
 | `storage_account_name` | *(auto-generated)* | Globally unique storage account name |
 | `storage_account_name_prefix` | `rayaks` | Prefix for auto-generated name |
 | `aurora_container_name` | `aurora` | Blob container for Aurora data |

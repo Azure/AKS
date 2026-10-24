@@ -113,7 +113,8 @@ for a client dry run; don't treat it as a disconnected test.
 The [legacy Terraform lab](1-infrastructure/terraform/legacy-guide.md) provisions
 its own Helm-installed KubeRay/Kueue operators. It's an explicit alternative,
 not the default or a prerequisite for the managed path. Its Terraform resource
-addresses and behavior are unchanged.
+addresses and Helm ownership are unchanged. The Ray image output follows the
+GPU runtime pin used by Module 3.
 
 Don't layer installations, rewrite ownership, or apply this change as an
 automatic Terraform-state migration. Preserve data and configuration and use a

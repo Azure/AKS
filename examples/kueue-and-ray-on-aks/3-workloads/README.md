@@ -56,7 +56,7 @@ workload-specific pip packages, env vars, and resource counts.
 | Workload deps | `runtimeEnvYAML.pip` | Never baked into image |
 | `serviceAccountName` | `ray-workload` | Workload identity from Module 1 |
 | `azure.workload.identity/use` | `"true"` | Required for Azure SDK auth |
-| Ray image | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0` | Workload runtime default, separate from the managed operator version. |
+| Ray image | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.56.1-cuda13.0` | GPU workload runtime default, separate from the managed operator version. |
 
 ### Key design choice: RayService is not Kueue-admitted
 
@@ -129,6 +129,14 @@ just-in-time.
 | Deps | Aurora, torch, azure-storage-blob | LLaMA-Factory, azure-storage-blob | vLLM, azure-storage-blob | Aurora, azure-storage-blob | none (busybox) |
 | Reads from blob | `aurora/data/` (init/truth) | `llm-pipeline/data/` (train.jsonl) | `llm-pipeline/data/` + `lora/` | `aurora/checkpoints/` (adapter) | — |
 | Writes to blob | `aurora/checkpoints/` | `llm-pipeline/lora/` | `llm-pipeline/inference/` | — | — |
+
+## Runtime compatibility
+
+Use the pinned Ray 2.56.1 CUDA image with its matching `RAY_VERSION`. The older
+2.55.1 image contains protobuf 7, while its Serve controller still uses the
+removed `FieldDescriptor.label` API. Ray 2.56.1 fixes that compatibility issue.
+Changing only application `runtime_env` dependencies doesn't fix a controller
+running in the base image. The checked-in workloads remain GPU examples.
 
 ## Submitter compatibility
 
