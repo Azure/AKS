@@ -5,6 +5,11 @@ manages the Kueue controller, generates ResourceFlavors for eligible user nodes,
 and supplies default workload priority classes and a provisioning admission check.
 You own the ClusterQueues, LocalQueues, and workload policies in this module.
 
+For Ray workloads, start with [Module 1's managed setup](../1-infrastructure/managed/),
+which installs **both managed KubeRay and Kueue** and documents storage, identity,
+and datasets. If those extensions are already installed, keep them and skip
+creation below. The independent CPU demo can use the Kueue-only steps here.
+
 Choose one of these independent demos:
 
 | Configuration | File | Purpose |
@@ -25,14 +30,14 @@ resources; don't replace or edit generated `aks-*` resources to run these demos.
 - Permissions to manage cluster extensions and the example Kubernetes resources.
 - An eligible CPU user node pool for the CPU demo, or NVIDIA GPU capacity sized
   for the Ray demo that you choose.
-- For Ray workloads only: KubeRay, the required datasets and Blob storage, and a
-  workload identity authorized to access that storage. Its federated credential
+- For Ray workloads only: managed KubeRay, the required datasets and Blob storage,
+  and a workload identity authorized to access that storage. Its federated credential
   must trust `system:serviceaccount:ray:ray-workload`. See the
   [AKS workload identity deployment guide](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster).
 
 > [!IMPORTANT]
-> Don't run Module 1 Terraform to prepare a managed Kueue cluster. Module 1 is a
-> separate self-managed alternative that installs Kueue through Helm. Never
+> Don't run the [legacy Module 1 Terraform lab](../1-infrastructure/terraform/legacy-guide.md)
+> to prepare a managed Kueue cluster. That alternative installs Kueue through Helm. Never
 > install that controller alongside the managed extension. This module doesn't
 > perform an in-place migration. Before uninstalling any existing self-hosted
 > Kueue, preserve queue and workload manifests, review running and queued work,
@@ -40,6 +45,12 @@ resources; don't replace or edit generated `aks-*` resources to run these demos.
 > uninstall procedure for that installation, or use a clean target cluster.
 
 ## Install and verify managed Kueue
+
+For the CPU autoscaler demo, prepare its autoscaling pool and shared
+ProvisioningRequest `v1` API **before Kueue starts**. See the
+[CPU prerequisites](../3-workloads/cas-batch-job/#prerequisites). Waiting for an
+admission check doesn't dynamically register a controller that skipped setup at
+startup; don't install a shared CRD or another controller as a workaround.
 
 For the complete lifecycle and supported configuration, see
 [Install managed Kueue on AKS](https://learn.microsoft.com/azure/aks/configure-queues-with-automatic-resource-flavors).
@@ -155,8 +166,8 @@ namespace and ServiceAccount for your existing, authorized workload identity:
 ```bash
 kubectl apply -f manifests/00-namespace.yaml
 
-IDENTITY_CLIENT_ID="<workload-identity-client-id>"
-TENANT_ID="<tenant-id>"
+IDENTITY_CLIENT_ID="${IDENTITY_CLIENT_ID:-<workload-identity-client-id>}"
+TENANT_ID="${TENANT_ID:-<tenant-id>}"
 
 kubectl create serviceaccount ray-workload --namespace ray \
   --dry-run=client --output yaml | kubectl apply -f -

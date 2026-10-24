@@ -1,17 +1,16 @@
 # Module 3 — Workloads
 
-Four example workloads demonstrating Ray on AKS with Kueue admission control.
-Use the managed Kueue cluster and queue configuration from
-[Module 2](../2-kueue-queues/). Its CPU autoscale demo needs no Ray dependencies.
-The existing [Module 1](../1-infrastructure/) Terraform lab is a separate
-self-managed alternative for the Ray examples; don't layer the managed extension
-over that Helm-installed controller.
+Four Ray workloads use the managed KubeRay and Kueue setup from
+[Module 1](../1-infrastructure/managed/) and the customer-owned queues from
+[Module 2](../2-kueue-queues/). The separate CPU autoscale demo needs no Ray
+dependencies. The [legacy Terraform lab](../1-infrastructure/terraform/legacy-guide.md)
+is a self-managed alternative; don't layer managed operators over its Helm releases.
 
 ## Prerequisites
 
-- For Ray examples: an AKS cluster with KubeRay, Kueue, storage, datasets, and
-  authorized workload identity. Prepare them separately for the managed path,
-  or deliberately use the self-managed Module 1 alternative.
+- For Ray examples: an AKS cluster with managed KubeRay and Kueue, storage,
+  datasets, and authorized workload identity prepared through the managed path.
+  The legacy Terraform installation is a separate deliberate alternative.
 - For Ray examples: Module 2's `ray` namespace, `ray-workload` ServiceAccount,
   customer-owned ResourceFlavors, and one queue configuration
   (`20-single-queue.yaml` or `30-team-queues.yaml`).
@@ -57,7 +56,7 @@ workload-specific pip packages, env vars, and resource counts.
 | Workload deps | `runtimeEnvYAML.pip` | Never baked into image |
 | `serviceAccountName` | `ray-workload` | Workload identity from Module 1 |
 | `azure.workload.identity/use` | `"true"` | Required for Azure SDK auth |
-| Ray image | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0` | Module 1 pin |
+| Ray image | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0` | Workload runtime default, separate from the managed operator version. |
 
 ### Key design choice: RayService is not Kueue-admitted
 
@@ -69,7 +68,7 @@ directly by KubeRay.
 ## Examples
 
 ### 1. aurora-finetune/ — Aurora weather model fine-tune
-Fine-tunes Microsoft Aurora on WeatherBench2 Hurricane-Ida data uploaded by
+Fine-tunes Microsoft Aurora on the regional WeatherBench2 data prepared in
 Module 1. Produces a LoRA adapter in Azure Blob (`aurora/checkpoints/<run-id>/`).
 
 - **1 worker × 1 A100 GPU**
@@ -131,16 +130,24 @@ just-in-time.
 | Reads from blob | `aurora/data/` (init/truth) | `llm-pipeline/data/` (train.jsonl) | `llm-pipeline/data/` + `lora/` | `aurora/checkpoints/` (adapter) | — |
 | Writes to blob | `aurora/checkpoints/` | `llm-pipeline/lora/` | `llm-pipeline/inference/` | — | — |
 
+## Submitter compatibility
+
+The three RayJob templates provide a pod-local `python` wrapper for the MCR
+image's `python3`. KubeRay 1.7's generated submitter health check needs that
+unversioned executable. A small init container writes the wrapper to an
+`emptyDir`, mounted read-only only in the submitter. The runtime image, generated
+health/submission commands, and managed operator settings aren't replaced.
+RayService has no batch submitter and doesn't need this wrapper.
+
 ## Quick start
 
-For a managed cluster, set `AZURE_STORAGE_ACCOUNT_NAME` and the other example
-variables from your separately prepared storage and datasets before sourcing
-`env.example`. Its defaults preserve supplied values. Skip the Terraform-output
-command below; it applies only to the self-managed Module 1 lab.
+For the managed path, use the private kubeconfig from Module 1 and set the
+storage account from that setup before sourcing each workload's defaults.
+The defaults preserve supplied values; no Terraform state is needed:
 
 ```bash
-# Self-managed Terraform lab only: get its storage account
-export AZURE_STORAGE_ACCOUNT_NAME=$(terraform -chdir=../1-infrastructure/terraform output -raw storage_account_name)
+source ../1-infrastructure/managed/.managed/managed.env
+export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
 
 # Run Example 1 (aurora fine-tune)
 cd aurora-finetune
@@ -149,3 +156,7 @@ export JOB_NAME="aurora-finetune-$(date +%s)"
 ./submit.sh
 kubectl -n ray get rayjob ${JOB_NAME} -w
 ```
+
+For the legacy Terraform path only, retrieve its storage account with
+`terraform -chdir=../1-infrastructure/terraform output -raw storage_account_name`
+instead. Don't use a different lab's state or install both sets of operators.

@@ -9,14 +9,14 @@ The LoRA output is consumed by Example 3 (batch inference).
 
 ## Prerequisites
 
-- Modules 1 and 2 deployed (cluster, queues, storage, service account)
-- Viggo dataset uploaded to `llm-pipeline/data/` (done by Module 1 or manually)
+- [Managed setup](../../1-infrastructure/managed/) and Module 2 completed (managed operators, queues, storage, and service account).
+- ViGGO data uploaded to `llm-pipeline/data/` following [dataset preparation](../../1-infrastructure/managed/data.md).
 
 ## Quick start
 
 ```bash
-# Set the storage account from Module 1 outputs
-export AZURE_STORAGE_ACCOUNT_NAME=<your-storage-account>
+# Use the storage account prepared for the managed target.
+export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
 
 # Source defaults (generates a unique JOB_NAME)
 source env.example
@@ -51,7 +51,7 @@ az storage blob download -c llm-pipeline -n lora/latest.txt \
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `AZURE_STORAGE_ACCOUNT_NAME` | (required) | Storage account from Module 1 |
+| `AZURE_STORAGE_ACCOUNT_NAME` | (required) | Storage account from the selected managed setup. |
 | `NUM_WORKERS` | `4` | GPU worker replicas (4 × 1 GPU each) |
 | `QUEUE_NAME` | `default` | Kueue LocalQueue name |
 | `LLM_DATA_CONTAINER` | `llm-pipeline` | Blob container for input data |
