@@ -57,6 +57,9 @@ More information on supported versions and version support policy is available i
 * [Prepared Image Specification (preview)](https://learn.microsoft.com/azure/aks/prepared-image-specification) will now require the `Microsoft.ContainerService/preparedImageSpecifications/versions/read` permission for pinned image versions. Requests without this permission are rejected, and image bakes fail on authorization errors instead of falling back.
 * [Generation 2 VMs](https://learn.microsoft.com/azure/aks/generation-2-vms) will now be selected for new Windows Server 2022 node pools when the VM size supports only Generation 2. Previously, node pool creation on these VM sizes could fail.
 * [Availability set (VMAS) node pools](https://learn.microsoft.com/azure/aks/availability-sets-on-aks) are now automatically migrated to [Virtual Machines node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) during planned maintenance windows in 23 regions, as announced for the September 30, 2026 VMAS retirement. This includes clusters without an auto-upgrade channel. The migration reprovisions the node pool and may disrupt workloads; Basic Load Balancer and Basic public IP resources are converted to Standard. To control the timing, migrate your clusters before your next maintenance window by using `az aks update --migrate-vmas-to-vms`. The enabled regions are australiaeast, australiasoutheast, brazilsouth, canadacentral, centralindia, eastasia, francecentral, germanywestcentral, japaneast, northcentralus, polandcentral, southafricanorth, southcentralus, southeastasia, southindia, spaincentral, swedencentral, switzerlandnorth, uksouth, ukwest, westcentralus, westus, westus2. For more information, see [Availability sets on AKS](https://learn.microsoft.com/azure/aks/availability-sets-on-aks).
+* Cilium, Hubble, and ACNS security agent images have been upgraded:
+  * [`v1.18.14-260923`](https://github.com/cilium/cilium/releases/tag/v1.18.14) and [`v1.19.8-261006`](https://github.com/cilium/cilium/releases/tag/v1.19.8) on AKS 1.36 and earlier
+  * [`v1.20.2-260921`](https://github.com/cilium/cilium/releases/tag/v1.20.2) on AKS 1.37 and later. Cilium 1.20 no longer enforces Kafka-aware network policies; remove Kafka-aware policy rules before upgrading from AKS 1.36.
 
 #### Bug fixes
 
@@ -77,30 +80,42 @@ More information on supported versions and version support policy is available i
   * [`v1.8.15`](https://github.com/Azure/azure-container-networking/releases/tag/v1.8.15) on AKS 1.35 and 1.36
   * [`v1.9.3`](https://github.com/Azure/azure-container-networking/releases/tag/v1.9.3) on AKS 1.37 and later
 * Azure CSI drivers have been upgraded:
-  * Azure Disk CSI driver to [`v1.33.15`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.15), [`v1.34.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.9), and [`v1.36.1`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.36.1)
-  * Azure File CSI driver to [`v1.34.11`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.11) and [`v1.35.11`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.11)
-  * Azure Blob CSI driver to [`v1.27.11`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.11)
-* Cilium, Hubble, and ACNS security agent images have been upgraded:
-  * [`v1.18.14-260923`](https://github.com/cilium/cilium/releases/tag/v1.18.14) and [`v1.19.8-261006`](https://github.com/cilium/cilium/releases/tag/v1.19.8) on AKS 1.36 and earlier
-  * [`v1.20.2-260921`](https://github.com/cilium/cilium/releases/tag/v1.20.2) on AKS 1.37 and later. Cilium 1.20 no longer enforces Kafka-aware network policies; remove Kafka-aware policy rules before upgrading from AKS 1.36.
+  * Azure Disk CSI driver to [`v1.33.15`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.33.15) on AKS 1.34, [`v1.34.9`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.34.9) on AKS 1.35 and 1.36, and [`v1.36.1`](https://github.com/kubernetes-sigs/azuredisk-csi-driver/releases/tag/v1.36.1) on AKS 1.37 and later
+  * Azure File CSI driver to [`v1.34.11`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.34.11) on AKS 1.34 and [`v1.35.11`](https://github.com/kubernetes-sigs/azurefile-csi-driver/releases/tag/v1.35.11) on AKS 1.35 and later
+  * Azure Blob CSI driver to [`v1.27.11`](https://github.com/kubernetes-sigs/blob-csi-driver/releases/tag/v1.27.11) on AKS 1.34 and later
 * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) revision [asm-1-31](https://istio.io/latest/news/releases/1.31.x/announcing-1.31/) is now available, and revisions [asm-1-29](https://istio.io/latest/news/releases/1.29.x/announcing-1.29.8/) and [asm-1-30](https://istio.io/latest/news/releases/1.30.x/announcing-1.30.5/) have been updated with patch releases `1.29.8-3` and `1.30.5-3`. To adopt the patch updates, restart workloads to trigger sidecar re-injection of the new `istio-proxy` version. For more information, see [Upgrade the Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-upgrade).
 * Konnectivity has been updated to [`v0.37.0`](https://github.com/kubernetes-sigs/apiserver-network-proxy/releases/tag/v0.37.0), which includes improved backend dial handling and graceful connection draining.
 * Ratify has been updated to [`v1.4.7`](https://github.com/notaryproject/ratify/releases/tag/v1.4.7).
 * Retina has been updated to [`v1.2.9`](https://github.com/microsoft/retina/releases/tag/v1.2.9).
-* The pause container image has been updated to `3.10.2` on Linux and Windows nodes.
 * The NVIDIA GRID driver for Windows GPU node pools has been updated to `582.78` in public Azure regions.
 * kube-apiserver, kube-controller-manager, kube-scheduler, and kube-proxy images have been updated with new AKS builds across Kubernetes 1.31 to 1.37 patch versions.
 * CoreDNS images have been upgraded:
-  * `v1.11.3-41`, `v1.12.1-36`, `v1.13.1-33`, `v1.14.3-27`, and `v1.14.7-6`
+  * `v1.11.3-41` on AKS 1.32
+  * `v1.12.1-36` on AKS 1.33
+  * `v1.13.1-33` on AKS 1.34 and 1.35
+  * `v1.14.3-27` on AKS 1.36
+  * `v1.14.7-6` on AKS 1.37 and later
 * Cluster autoscaler images have been upgraded:
-  * `v1.30.7-aks-17`, `v1.31.5-aks-19`, `v1.32.7-aks-20`, `v1.33.6-aks-11`, `v1.34.5-aks-10`, and `v1.35.2-aks-11`
-* KEDA add-on images have been updated to `2.14.1-31`, `2.16.1-32`, `2.17.3-25`, `2.19.0-24`, and `2.20.2-12`.
-* Metrics Server images have been updated to `v0.7.2-37` and `v0.8.0-30`.
-* Workload identity webhook has been updated to `v1.5.1-24`.
-* Azure Key Vault provider for Secrets Store CSI Driver has been updated to `v1.8.2-13`.
-* Application routing NGINX ingress controller images have been updated to `v1.13.10-13` and `v1.15.1-23`, and ExternalDNS has been updated to `v0.21.0-15`.
-* Static Egress Gateway has been updated to `v0.1.9-3`.
-* NVIDIA device plugin has been updated to `v0.18.2-24`.
+  * `v1.30.7-aks-17` on AKS 1.30
+  * `v1.31.5-aks-19` on AKS 1.31
+  * `v1.32.7-aks-20` on AKS 1.32
+  * `v1.33.6-aks-11` on AKS 1.33
+  * `v1.34.5-aks-10` on AKS 1.34
+  * `v1.35.2-aks-11` on AKS 1.35 and later
+* KEDA add-on images have been upgraded:
+  * `2.14.1-31` on AKS 1.30 and 1.31
+  * `2.16.1-32` on AKS 1.32
+  * `2.17.3-25` on AKS 1.33 to 1.35
+  * `2.19.0-24` on AKS 1.36
+  * `2.20.2-12` on AKS 1.37 and later
+* Metrics Server images have been upgraded:
+  * `v0.7.2-37` on AKS 1.32 and 1.33
+  * `v0.8.0-30` on AKS 1.34 and later
+* Workload identity webhook has been updated to `v1.5.1-24` on all supported AKS versions.
+* Azure Key Vault provider for Secrets Store CSI Driver has been updated to `v1.8.2-13` on all supported AKS versions.
+* Application routing NGINX ingress controller images have been updated to `v1.13.10-13` and `v1.15.1-23`, and ExternalDNS has been updated to `v0.21.0-15`, on all supported AKS versions.
+* Static Egress Gateway has been updated to `v0.1.9-3` on AKS 1.34 and later.
+* NVIDIA device plugin has been updated to `v0.18.2-24` on all supported AKS versions.
 * AKS Windows images:
   * Windows Server 2022 - [`20348.5761.261015`](vhd-notes/AKSWindows/2022/20348.5761.261015.txt).
   * Windows Server 2025 - [`26100.33650.261015`](vhd-notes/AKSWindows/2025/26100.33650.261015.txt).
