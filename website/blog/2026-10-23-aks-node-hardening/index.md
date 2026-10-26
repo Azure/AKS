@@ -10,7 +10,9 @@ tags:
 keywords: ["Azure Kubernetes Service", "AKS", "Node Hardening", "kube-reserved", "system-reserved", "kubelet eviction", "node stability"]
 ---
 
-When a pod on an Azure Kubernetes Service (AKS) node leaks memory or saturates CPU, the damage rarely stays inside that pod. The kubelet, the container runtime, and host services share the same node. If they're starved, a node can stop starting pods, the kernel can terminate processes abruptly, and in the worst case the node can stop reporting healthy.
+One of the more frustrating support cases we see starts small. A pod uses more memory than it requested, and nobody set a limit because it never mattered in testing. Then traffic picks up. The node runs low on memory, the kubelet can't keep up with its own work, and the node goes NotReady. AKS reboots it, the pods land right back on it or on its neighbor, and the cycle starts over. By the time someone opens a ticket, the cluster has been flapping for hours, and the workload that started it doesn't look broken at all.
+
+The pod caused the problem, but the whole node paid for it. On an Azure Kubernetes Service (AKS) node, the kubelet, the container runtime, and host services share memory and CPU with every pod. When they're starved, a node can stop starting pods, the kernel can terminate processes abruptly, and eventually the node can stop reporting healthy.
 
 Node Hardening is an AKS preview feature that changes how Linux nodes reserve and protect resources. It enforces kube-reserved and system-reserved capacity with Linux control groups (cgroups), raises the hard memory eviction threshold, and adds soft eviction so the kubelet can remove pods gracefully before a node runs out of memory.
 
