@@ -1,11 +1,14 @@
 # Azure Kubernetes Service Changelog
 
-## Release Notes - 2026-10-23
+## Release Notes - 2026-10-25
 
-> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20261023`.
+> Monitor the release status by regions at [AKS-Release-Tracker](https://releases.aks.azure.com/). This release is titled `v20261025`.
 
 ### Announcements of upcoming changes and retirements
 
+* Starting on June 1, 2027, AKS automatically upgrades any cluster that stays on an unsupported Kubernetes version after its 60-day [platform support grace period](https://learn.microsoft.com/en-us/azure/aks/platform-initiated-upgrades#platform-support-grace-period) ends.
+  * What’s changing: AKS will be able to automatically initiate upgrades to help keep clusters supported, secure, and aligned with platform lifecycle requirements.
+  * How to prepare now: Review upgrade channels, maintenance windows, and workload readiness so your clusters can absorb automated upgrade events with minimal disruption. See: [Platform-initiated upgrades](https://learn.microsoft.com/azure/aks/platform-initiated-upgrades).
 * Starting with Kubernetes 1.38, node pools that use the `Ubuntu` OS SKU will default to Ubuntu 26.04. To continue using Ubuntu 24.04 on Kubernetes 1.38, specify the `Ubuntu2404` OS SKU. For more information, see [Upgrade the OS version for your AKS node pools](https://aka.ms/aks/upgrade-os-version).
 
 ### Release notes
@@ -14,6 +17,7 @@
 
 * Kubernetes version [1.37](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md) is now generally available and designated as a [Long-Term Support (LTS)](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#long-term-support-lts) version. Kubernetes 1.36 is now the default version for new clusters.
 * Kubernetes patch versions [1.37.1](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md), [1.36.5](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md), [1.35.9](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md), and [1.34.12](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md) are now available.
+* Community support for Kubernetes version [1.34](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md) and LTS support for Kubernetes version [1.31](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md) are going soon end of life by November 2026. Please review the [calendar and platform support policy](https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-kubernetes-release-calendar-and-upcoming-versions).
 
 More information on supported versions and version support policy is available in [documentation](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#kubernetes-version-support-policy).
 
@@ -33,9 +37,7 @@ More information on supported versions and version support policy is available i
 
 * [Windows node support for Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass) is now available as preview. Supports Windows Server 2022 and Windows Server 2025 nodes; Cilium isn't supported on Windows nodes.
 * [Updating node public IP prefixes](https://learn.microsoft.com/azure/aks/use-node-public-ips) on existing node pools is now available as preview in public Azure regions. Supports adding, replacing, and reordering IPv4 and IPv6 prefixes; changing prefixes recreates the affected nodes. Not yet available in sovereign clouds.
-* Upgrade Insights is now available as preview in all Azure regions, including sovereign clouds. Register the `Microsoft.ContainerService/AKSUpgradeInsightsPreview` feature on your subscription to use it.
-* [Confidential VM (CVM)](https://aka.ms/aks/cvm) node pools with Azure Container Linux are now available as preview. FIPS isn't yet supported on these node pools.
-* [Converting AKS Base clusters to AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about) with managed system node pools is now available as preview. Register the `Microsoft.ContainerService/NonHoboToHoboConversionPreview` feature, then run `az aks update --sku automatic`. Clusters that use a custom virtual network also need `--enable-hosted-system` and `--system-node-subnet-id`.
+* [Converting AKS Base clusters to AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) with managed system node pools is now available as preview. See [document](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) for details.
 
 #### Behavioral changes
 
@@ -49,14 +51,10 @@ More information on supported versions and version support policy is available i
 * [Istio Gateway API ConfigMap customization](https://learn.microsoft.com/azure/aks/istio-gateway-api#configmap-customizations) now supports Service `spec.ports` and Deployment seccomp profile settings for the Istio add-on and Application Routing with Istio.
 * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) will now intercept both IPv4 and IPv6 workload traffic on dual-stack clusters. Restart existing workloads after the add-on update to apply the new proxy configuration.
 * [Application Routing Gateway API](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) controller will now run on the managed system node pool in AKS Automatic clusters, improving isolation between the control plane and data plane.
-* [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) clusters on Kubernetes 1.36 and later will now exclude protected system namespaces from customer mutating admission configurations. Customer webhooks and policies can no longer change system workloads.
+* [[AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic)](https://learn.microsoft.com/azure/aks/intro-aks-automatic) clusters on Kubernetes 1.36+ now exclude protected system namespaces from customer mutating admission configurations to preserve the AKS Automatic security boundary: customer webhooks and policies can still mutate customer workloads, but they can’t mutate AKS-managed system workloads.
 * [Platform-managed keys for etcd encryption](https://learn.microsoft.com/azure/aks/kms-data-encryption?pivots=pmk) will now be enabled by default for new clusters on Kubernetes 1.37 and later, unless infrastructure encryption is explicitly configured.
 * [Azure Policy for Kubernetes](https://learn.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes) can now evaluate DELETE operations on Kubernetes resources for policies that explicitly opt in. Existing policies don't enforce DELETE operations.
 * [Prepared Image Specification (preview)](https://learn.microsoft.com/azure/aks/prepared-image-specification) will now require the `Microsoft.ContainerService/preparedImageSpecifications/versions/read` permission for pinned image versions. Requests without this permission are rejected, and image bakes fail on authorization errors instead of falling back.
-* Managed DRANET will now validate requirements when it's enabled. Requests that don't meet these requirements are rejected; existing Managed DRANET node pools remain manageable:
-  * The node pool must run Kubernetes 1.35 or later. Upgrade the node pool before enabling Managed DRANET.
-  * The cluster must use Azure CNI, including Azure CNI Powered by Cilium. Clusters that use kubenet, bring your own (BYO) CNI, or the Calico network policy can't enable Managed DRANET.
-  * Windows node pools aren't supported.
 * [Generation 2 VMs](https://learn.microsoft.com/azure/aks/generation-2-vms) will now be selected for new Windows Server 2022 node pools when the VM size supports only Generation 2. Previously, node pool creation on these VM sizes could fail.
 * [Availability set (VMAS) node pools](https://learn.microsoft.com/azure/aks/availability-sets-on-aks) are now automatically migrated to [Virtual Machines node pools](https://learn.microsoft.com/azure/aks/virtual-machines-node-pools) during planned maintenance windows in 23 regions, as announced for the September 30, 2026 VMAS retirement. This includes clusters without an auto-upgrade channel. The migration reprovisions the node pool and may disrupt workloads; Basic Load Balancer and Basic public IP resources are converted to Standard. To control the timing, migrate your clusters before your next maintenance window by using `az aks update --migrate-vmas-to-vms`. The enabled regions are australiaeast, australiasoutheast, brazilsouth, canadacentral, centralindia, eastasia, francecentral, germanywestcentral, japaneast, northcentralus, polandcentral, southafricanorth, southcentralus, southeastasia, southindia, spaincentral, swedencentral, switzerlandnorth, uksouth, ukwest, westcentralus, westus, westus2. For more information, see [Availability sets on AKS](https://learn.microsoft.com/azure/aks/availability-sets-on-aks).
 
@@ -113,6 +111,7 @@ More information on supported versions and version support policy is available i
 * AKS Ubuntu images:
   * Ubuntu 22.04 - [`202610.16.1`](vhd-notes/aks-ubuntu/AKSUbuntu-2204/202610.16.1.txt).
   * Ubuntu 24.04 - [`202610.16.1`](vhd-notes/aks-ubuntu/AKSUbuntu-2404/202610.16.1.txt).
+  * Ubuntu 26.04 - [`202610.16.1`](vhd-notes/aks-ubuntu/AKSUbuntu-2604/202610.16.1.txt).
 
 ---
 
