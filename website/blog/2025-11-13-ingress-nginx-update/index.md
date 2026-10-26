@@ -13,7 +13,7 @@ The [Kubernetes SIG Network](https://github.com/kubernetes/community/blob/master
 
 <!--truncate-->
 
-> **Note**: We published this post in November 2025, when the application routing add-on with NGINX needed no immediate action. Since then, upstream Ingress NGINX maintenance ended in March 2026 and the [application routing Gateway API implementation](https://blog.aks.azure.com/2026/06/10/app-routing-gateway-api-ga) became available. If you use the application routing add-on with NGINX or OSS Ingress NGINX, migrate now to the application routing Gateway API implementation or to Application Gateway for Containers.
+> **Note**: We published this post in November 2025, when the application routing add-on with NGINX needed no immediate action. Since then, upstream Ingress NGINX maintenance ended in March 2026 and the [application routing Gateway API implementation](https://blog.aks.azure.com/2026/06/10/app-routing-gateway-api-ga) became available. If you use the application routing add-on with NGINX or OSS Ingress NGINX, migrate now to the [application routing Gateway API implementation](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) or to [Application Gateway for Containers](https://learn.microsoft.com/azure/application-gateway/for-containers/overview).
 
 ## No immediate action required
 
