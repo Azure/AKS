@@ -1,4 +1,4 @@
-# cas-batch-job — provision capacity on demand with Kueue + cluster autoscaler
+# cas-batch-job — provision capacity with managed Kueue and the cluster autoscaler
 
 A plain Kubernetes batch Job that demonstrates the **ProvisioningRequest → AKS
 cluster autoscaler (CAS)** path. The other Module 3 workloads admit against a
@@ -15,7 +15,7 @@ simplest way to see a *provision-first* scale-up end to end.
 Job (suspend: true, queue-name: cas-local-queue)
    │
    ▼
-Kueue creates a Workload ──► AdmissionCheck cas-provisioning
+Kueue creates a Workload ──► AdmissionCheck aks-provisioning-check
    │                              │
    │                              ▼
    │                        ProvisioningRequest  ──►  cluster autoscaler
@@ -84,27 +84,48 @@ new nodes to join.
 
 ## Prerequisites
 
-- An AKS cluster running Kubernetes 1.33+ with the cluster autoscaler enabled
-  (ProvisioningRequest support), and Kueue v0.7.0 or later. The companion
-  AKS how-to guide lists the supported version matrix in detail.
-- Module 1 cluster deployed and Kueue running.
-- An **autoscaling** CPU pool named `scalepool`. If your Module 1 cluster
-  doesn't have one, add it:
+- An AKS cluster running Kubernetes 1.34 or later with the
+  [managed Kueue extension installed and verified](../../2-kueue-queues/#install-and-verify-managed-kueue).
+  Don't install it beside Module 1's self-managed Helm controller. This CPU-only
+  example doesn't require Terraform, Ray, a GPU, storage, or workload identity.
+- An autoscaling CPU user pool named `scalepool`. Use the `RESOURCE_GROUP` and
+  `CLUSTER_NAME` variables from the managed setup. If the pool doesn't exist, add
+  it with one initial node:
+
   ```bash
   az aks nodepool add \
-    --resource-group <rg> --cluster-name <cluster> \
+    --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
     --name scalepool --mode User \
-    --node-vm-size Standard_D4s_v3 \
+    --node-vm-size Standard_D4s_v6 --node-count 1 \
     --enable-cluster-autoscaler --min-count 1 --max-count 5
+
+  kubectl wait --for=condition=Ready nodes \
+    --selector agentpool=scalepool --timeout=10m
   ```
-  `--min-count 0` also works — the pool can scale from zero, and the
-  ProvisioningRequest simply provisions the whole block from empty. `--max-count`
-  is the real ceiling: a request larger than it fails with
-  `Provisioned=False` / `CapacityIsNotFound` rather than partially scheduling.
-- The autoscale queue applied from Module 2:
+
+  The pool's maximum node count and available Azure capacity bound scale-up.
+  Queue quota alone doesn't guarantee capacity.
+- Verify the shared API provided by the cluster autoscaler and the managed
+  defaults, then apply your customer-owned queue configuration from this
+  `cas-batch-job` directory:
+
   ```bash
+  kubectl wait --for=condition=Established \
+    crd/provisioningrequests.autoscaling.x-k8s.io --timeout=2m
+  kubectl wait --for=create resourceflavor/aks-cpu --timeout=5m
+  kubectl wait --for=condition=Active admissioncheck/aks-provisioning-check --timeout=2m
+  kubectl get provisioningrequestconfig aks-provisioning-config
+
   kubectl apply -f ../../2-kueue-queues/manifests/40-autoscale-queue.yaml
+  kubectl wait --for=condition=Active clusterqueue/cas-cluster-queue --timeout=2m
+  kubectl wait --for=condition=Active localqueue/cas-local-queue \
+    --namespace cas-kueue-demo --timeout=2m
   ```
+
+The queue references the existing `aks-cpu` flavor and `aks-provisioning-check`,
+which uses the extension's `aks-provisioning-config`. The Job's
+`agentpool: scalepool` selector targets the intended pool; don't edit the managed
+flavor or provisioning defaults.
 
 ## Submit
 
@@ -150,7 +171,7 @@ the request flows through the system:
 kubectl -n cas-kueue-demo get workloads -o yaml
 
 # AdmissionCheck status
-kubectl get admissioncheck cas-provisioning -o yaml
+kubectl get admissioncheck aks-provisioning-check -o yaml
 
 # ProvisioningRequest conditions and events (Provisioned / CapacityIsNotFound)
 kubectl -n cas-kueue-demo describe provisioningrequest
@@ -188,32 +209,34 @@ kubectl delete -f manifests/job.yaml
 kubectl -n cas-kueue-demo get workloads,provisioningrequest
 ```
 
-If you are done with the demo entirely, also remove the queue objects and the
-node pool:
+If you are done with the demo, delete its customer-owned namespace and queues:
 
 ```bash
-# 3. The Kueue objects from Module 2. This deletes the cas-kueue-demo namespace
-#    (and cas-local-queue inside it), plus the cluster-scoped cas-cluster-queue,
-#    cas-provisioning AdmissionCheck, cas-provreq-config, and scalepool
-#    ResourceFlavor.
 kubectl delete -f ../../2-kueue-queues/manifests/40-autoscale-queue.yaml
+```
 
-# 4. The autoscaling node pool added in the Prerequisites. Skip this if
-#    scalepool was already part of your Module 1 cluster.
+Keep the managed `aks-cpu` ResourceFlavor, `aks-provisioning-check`,
+`aks-provisioning-config`, priority classes, extension, and shared CRDs. The queue
+manifest doesn't own or delete them. Verify the example resources are gone and
+inspect the retained defaults:
+
+```bash
+kubectl get clusterqueue cas-cluster-queue          # Expected: NotFound
+kubectl get namespace cas-kueue-demo                # Expected: NotFound
+kubectl get admissioncheck aks-provisioning-check
+kubectl get provisioningrequestconfig aks-provisioning-config
+kubectl get resourceflavor aks-cpu
+```
+
+If you created `scalepool` only for this demo, review its remaining workloads
+before deleting it. Skip this command for an existing shared pool:
+
+```bash
 az aks nodepool delete \
-  --resource-group <rg> --cluster-name <cluster> \
+  --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
   --name scalepool
 ```
 
-Verify the cluster is clean:
-
-```bash
-kubectl get clusterqueue cas-cluster-queue          # NotFound
-kubectl get admissioncheck cas-provisioning         # NotFound
-kubectl get resourceflavor scalepool                # NotFound
-kubectl get namespace cas-kueue-demo                # NotFound
-```
-
-> If the `cas-kueue-demo` namespace hangs in `Terminating`, a Workload is still
-> pending finalization. Re-run step 1 and confirm step 2 returns no resources
-> before retrying the namespace delete.
+> If the example namespace remains in `Terminating`, inspect remaining Workloads,
+> events, and controller health. Don't delete shared CRDs, clear finalizers
+> manually, or uninstall the managed extension as a cleanup shortcut.
