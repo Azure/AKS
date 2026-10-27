@@ -27,7 +27,7 @@ More information on supported versions and version support policy is available i
   * [Capacity Reservation Groups](https://learn.microsoft.com/azure/aks/use-capacity-reservation-groups).
   * The Capacity Buffers CRD, which specifies a fixed number of surplus nodes.
   * OS disk type selection with the `osDiskType` field in the `AKSNodeClass` CRD.
-  * [Pinning the current node image version](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image).
+  * [Pinning the current node image version and specify Kubernetes versions](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image).
   * [Trusted Launch](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass#enable-trusted-launch-in-nap-clusters) through the `AKSNodeClass` CRD.
   * [Azure Container Linux](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass#image-family-configuration) as the node OS.
   * [Managed GPU](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes), enabled with a field in the `AKSNodeClass` CRD.
@@ -35,7 +35,8 @@ More information on supported versions and version support policy is available i
 
 #### Preview features
 
-* [Windows node support for Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass) is now available as preview. Supports Windows Server 2022 and Windows Server 2025 nodes; Cilium isn't supported on Windows nodes.
+* [Windows node support for Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass) is now available in preview. Supports Windows Server 2022 and Windows Server 2025 nodes; Cilium isn't supported on Windows nodes.
+* [IPv4/IPv6 Dualstack support in Node Auto Provisioning (NAP) managed clusters](https://learn.microsoft.com/azure/aks/node-auto-provisioning-networking#dual-stack-networking-considerations-for-nap-preview) is now available in preview.
 * [Updating node public IP prefixes](https://learn.microsoft.com/azure/aks/use-node-public-ips) on existing node pools is now available as preview in public Azure regions. Supports adding, replacing, and reordering IPv4 and IPv6 prefixes; changing prefixes recreates the affected nodes. Not yet available in sovereign clouds.
 * [Converting AKS Base clusters to AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) with managed system node pools is now available as preview. See [document](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) for details.
 
