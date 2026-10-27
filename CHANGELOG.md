@@ -31,7 +31,13 @@ More information on supported versions and version support policy is available i
   * [Trusted Launch](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass#enable-trusted-launch-in-nap-clusters) through the `AKSNodeClass` CRD.
   * [Azure Container Linux](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass#image-family-configuration) as the node OS.
   * [Managed GPU](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes), enabled with a field in the `AKSNodeClass` CRD.
+* [Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision) will now have the following changes:
   * Instance-level public IPs with the `spec.nodePublicIP` field in the `AKSNodeClass` CRD.
+  * VM SKUs within about six months of retirement are no longer selected for new nodes. See [document](https://learn.microsoft.com/azure/virtual-machines/sizes/lifecycle/retirements-and-capacity-restrictions) for details.
+  * NAP-enabled clusters now include an AKS-managed `aksmanagednap` node pool, which represents NAP machines through the Machine API for better integration with other AKS features.
+  * When `osDiskSizeGB` isn't specified, the default OS disk size now matches AKS behavior, including SKU-appropriate ephemeral disk sizing where supported.
+  * Before choosing an ephemeral disk, NAP now checks eligible disk placements and accounts for Trusted Launch storage needs, preventing failed provisioning.
+  * NAP now respects external load balancer exclusions when deciding whether to add nodes to external load balancers.
 
 #### Preview features
 
@@ -41,13 +47,7 @@ More information on supported versions and version support policy is available i
 * [Converting AKS Base clusters to AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) with managed system node pools is now available as preview. See [document](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) for details.
 
 #### Behavioral changes
-
-* [Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision) will now have the following changes:
-  * VM SKUs within about six months of retirement are no longer selected for new nodes.
-  * NAP-enabled clusters now include an AKS-managed `aksmanagednap` node pool, which represents NAP machines through the Machine API for better integration with other AKS features.
-  * When `osDiskSizeGB` isn't specified, the default OS disk size now matches AKS behavior, including SKU-appropriate ephemeral disk sizing where supported.
-  * Before choosing an ephemeral disk, NAP now checks eligible disk placements and accounts for Trusted Launch storage needs, preventing failed provisioning.
-  * NAP now respects external load balancer exclusions when deciding whether to add nodes to external load balancers.
+  
 * [Network isolated clusters](https://learn.microsoft.com/azure/aks/concepts-network-isolated) will now automatically purge stale AKS-cached images from the managed Azure Container Registry, reclaiming registry storage in public Azure regions.
 * [Istio Gateway API ConfigMap customization](https://learn.microsoft.com/azure/aks/istio-gateway-api#configmap-customizations) now supports Service `spec.ports` and Deployment seccomp profile settings for the Istio add-on and Application Routing with Istio.
 * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) will now intercept both IPv4 and IPv6 workload traffic on dual-stack clusters. Restart existing workloads after the add-on update to apply the new proxy configuration.
