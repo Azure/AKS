@@ -47,8 +47,7 @@ More information on supported versions and version support policy is available i
 * [Converting AKS Base clusters to AKS Automatic](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) with managed system node pools is now available as preview. See [document](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration) for details.
 
 #### Behavioral changes
-  
-* [Network isolated clusters](https://learn.microsoft.com/azure/aks/concepts-network-isolated) will now automatically purge stale AKS-cached images from the managed Azure Container Registry, reclaiming registry storage in public Azure regions.
+
 * [Istio Gateway API ConfigMap customization](https://learn.microsoft.com/azure/aks/istio-gateway-api#configmap-customizations) now supports Service `spec.ports` and Deployment seccomp profile settings for the Istio add-on and Application Routing with Istio.
 * [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) will now intercept both IPv4 and IPv6 workload traffic on dual-stack clusters. Restart existing workloads after the add-on update to apply the new proxy configuration.
 * [Application Routing Gateway API](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) controller will now run on the managed system node pool in AKS Automatic clusters, improving isolation between the control plane and data plane.
