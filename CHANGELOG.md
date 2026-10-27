@@ -34,7 +34,7 @@ More information on supported versions and version support policy is available i
 * [Node Auto Provisioning (NAP)](https://learn.microsoft.com/azure/aks/node-autoprovision) will now have the following changes:
   * Instance-level public IPs with the `spec.nodePublicIP` field in the `AKSNodeClass` CRD.
   * VM SKUs within about six months of retirement are no longer selected for new nodes. See [document](https://learn.microsoft.com/azure/virtual-machines/sizes/lifecycle/retirements-and-capacity-restrictions) for details.
-  * NAP-enabled clusters now include an AKS-managed `aksmanagednap` node pool, which represents NAP machines through the Machine API for better integration with other AKS features.
+  * NAP-enabled clusters now include an AKS-managed `aksmanagednap` node pool, which represents NAP machines through the Machine API for better integration with other AKS features. See the [Azure Karpenter Provider github issue](https://github.com/Azure/karpenter-provider-azure/issues/2032) for more details.
   * When `osDiskSizeGB` isn't specified, the default OS disk size now matches AKS behavior, including SKU-appropriate ephemeral disk sizing where supported.
   * Before choosing an ephemeral disk, NAP now checks eligible disk placements and accounts for Trusted Launch storage needs, preventing failed provisioning.
   * NAP now respects external load balancer exclusions when deciding whether to add nodes to external load balancers.
