@@ -1,7 +1,7 @@
 ---
-title: "Benchmarking AKS Node Hardening: memory and capacity"
-description: "Benchmarks show how AKS Node Hardening keeps nodes Ready under memory pressure, what it costs in allocatable capacity, and what to know about CPU saturation."
-date: 2026-10-23
+title: "Keeping AKS nodes Ready with Node Hardening"
+description: "Benchmarks show how AKS Node Hardening keeps nodes Ready under memory pressure, protects node agents from runaway pods, and lets you tune it per node pool."
+date: 2026-11-03
 authors: ["spencer-libbing"]
 tags:
   - performance
@@ -10,7 +10,7 @@ tags:
 keywords: ["Azure Kubernetes Service", "AKS", "Node Hardening", "kube-reserved", "system-reserved", "kubelet eviction", "node stability"]
 ---
 
-One of the more frustrating support cases we see starts small. A pod uses more memory than it requested, and nobody set a limit because it never mattered in testing. Then traffic picks up. The node runs low on memory, the kubelet can't keep up with its own work, and the node goes NotReady. AKS reboots it, the pods land right back on it or on its neighbor, and the cycle starts over. By the time someone opens a ticket, the cluster has been flapping for hours, and the workload that started it doesn't look broken at all.
+One of the more frustrating support cases we see starts small. A pod uses more memory than it requested, and nobody set a limit because it never mattered in testing. Then traffic picks up. The node runs low on memory, the kubelet can't keep up with its own work, and the node goes NotReady. Node auto-repair reboots it, the pods land right back on it or on its neighbor, and the cycle starts over. By the time someone opens a ticket, the cluster has been flapping for hours, and the workload that started it doesn't look broken at all.
 
 The pod caused the problem, but the whole node paid for it. On an Azure Kubernetes Service (AKS) node, the kubelet, the container runtime, and host services share memory and CPU with every pod. When they're starved, a node can stop starting pods, the kernel can terminate processes abruptly, and eventually the node can stop reporting healthy.
 
@@ -32,7 +32,7 @@ We ran controlled benchmarks on otherwise identical standard and hardened nodes 
 | Failed requests to an app on that node during those trials | 33% | 0% | Workloads that stayed within their own limits kept serving traffic. |
 | Lowest available memory during a runaway memory leak | 11 MiB | 776 MiB | The hardened node kept headroom for the kubelet and host services. |
 | How runaway pods were stopped | 5 kernel OOM kills | 3 kubelet evictions, 2 pod-cgroup OOM kills | The kubelet, rather than the kernel's last-resort OOM killer, did most of the work. |
-| Time the kubelet and containerd stalled on memory | up to 7.1% | 0% | Node agents kept running at full speed during memory pressure. |
+| Time the kubelet and containerd stalled on memory (peak) | 3.2% | 0% | Node agents didn't stall on memory during the leak. |
 | Allocatable memory per node | baseline | 4% to 15% less | Plan for slightly less schedulable capacity. |
 | New pod start on a node with fully saturated CPU | 2.9 s | 33.4 s | Something to note if your nodes regularly saturate CPU. |
 
@@ -47,36 +47,15 @@ Node Hardening is a cluster-level setting for Linux node pools. When it's enable
 - **Larger kube-reserved memory:** Kube-reserved memory scales with the maximum number of pods per node, which accounts for the kubelet and containerd overhead of running more pods.
 - **Earlier, more graceful eviction:** The hard eviction threshold for available memory scales with node size, and new soft eviction thresholds give pods a grace period to shut down before the node reaches the hard threshold.
 
-For the full list of default values and the settings that you can customize, see [Node Hardening (preview) in AKS](https://learn.microsoft.com/azure/aks/node-hardening).
+Each node pool can override these defaults with a custom kubelet configuration. Twelve settings cover kube-reserved CPU and memory, hard and soft eviction thresholds, soft eviction grace periods, and the maximum pod grace period during soft eviction. For the full list of defaults and settings, see [Node Hardening (preview) in AKS](https://learn.microsoft.com/azure/aks/node-hardening).
 
 ## How we tested
 
-We compared two otherwise identical AKS 1.35 clusters, one with Node Hardening enabled, on a 4-vCPU, 16 GiB test node. In each five- to seven-minute trial, pods without resource limits held the node's memory near capacity, leaked memory past the node's capacity, or saturated its CPU. We ran five trials of each scenario on each cluster and measured node health, a well-behaved app on the same node, and how quickly new pods started. We also measured allocatable capacity on node sizes from 8 GiB to 64 GiB.
+We compared two otherwise identical AKS 1.35 clusters, one with Node Hardening enabled, on a 4-vCPU, 16 GiB test node. In each five- to seven-minute trial, pods without resource limits held the node's memory near capacity, leaked memory past the node's capacity, or saturated its CPU. We ran five trials of each scenario on each cluster and measured node health, a well-behaved app on the same node, and how quickly new pods started. We also measured allocatable capacity on node sizes from 8 GiB to 64 GiB. Stall percentages come from Linux pressure stall information (PSI), averaged over 10 seconds.
 
-## What hardening reserves on each node
+## Memory held near capacity: hardened nodes stayed Ready
 
-Node Hardening increases kube-reserved memory, adds system-reserved memory, and raises the hard eviction threshold. The scheduler subtracts all three from node capacity, so every node reports less allocatable memory.
-
-![Memory withheld from pods on standard and hardened nodes of different sizes](./allocatable-memory.png)
-
-| Node memory | Max pods | Kube-reserved memory, standard / hardened | System-reserved memory | Hard eviction, standard / hardened | Allocatable memory, standard / hardened | Change |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 8 GiB (D2ads_v5) | 30 | 650 MiB / 1,300 MiB | 300 MiB | 100 MiB / 250 MiB | 7.0 / 5.9 GiB | -15.3% |
-| 16 GiB (D4ads_v5) | 30 | 650 MiB / 1,377 MiB | 300 MiB | 100 MiB / 375 MiB | 14.9 / 13.6 GiB | -8.5% |
-| 32 GiB (D8ads_v5) | 30 | 650 MiB / 1,705 MiB | 400 MiB | 100 MiB / 512 MiB | 30.6 / 28.8 GiB | -6.0% |
-| 64 GiB (D16ads_v5) | 30 | 650 MiB / 2,360 MiB | 500 MiB | 100 MiB / 512 MiB | 62.1 / 59.5 GiB | -4.1% |
-| 16 GiB (D4ads_v5) | 250 | 4,096 MiB / 4,096 MiB | 300 MiB | 100 MiB / 375 MiB | 11.5 / 11.0 GiB | -4.9% |
-| 32 GiB (D8ads_v5) | 250 | 5,050 MiB / 8,192 MiB | 400 MiB | 100 MiB / 512 MiB | 26.3 / 22.4 GiB | -14.7% |
-
-Every hardened node also reported 100 millicores less allocatable CPU and 1 GiB less allocatable ephemeral storage.
-
-The largest relative reductions were on the smallest node and on the high-density node. On small nodes, the fixed parts of the reservation are a larger share of memory. On a 32 GiB node with 250 pods, the higher per-pod kube-reserved memory reaches the 25% cap. On a 16 GiB node with 250 pods, both configurations already reach the 25% cap, so the difference is only the system reservation and eviction threshold.
-
-**What this means for you:** Before you enable Node Hardening, check how close your nodes run to their allocatable memory. Workloads that fit on a node today might need a few percent more nodes afterward.
-
-## Memory held near capacity: standard nodes went NotReady
-
-Memory pressure often takes a node down not with a sudden spike, but with workloads that use far more memory than they request and keep the node at the edge of its memory. To reproduce that, pods without memory limits grew until the node had about 50 MiB of memory available and then held there for seven minutes, while another pod read files from disk as a typical app does.
+Memory pressure often takes a node down slowly, when workloads use far more memory than they request and keep the node at the edge of its capacity. To reproduce that, we let pods without memory limits grow until the node had about 50 MiB of memory available, held them there for seven minutes, and ran another pod that read files from disk like a typical app.
 
 ![Available memory and node readiness while pods hold memory near capacity on a standard node and a hardened node](./notready-timeline.png)
 
@@ -92,9 +71,9 @@ Memory pressure often takes a node down not with a sudden spike, but with worklo
 | Lowest available node memory (median) | 15 MiB | 729 MiB |
 | Peak time the node was stalled on memory (10-second PSI, median) | 69% | 6.7% |
 
-On the standard node, nothing stepped in to stop the pods. The kubelet didn't evict any pods, and the kernel OOM killer didn't act in four of the five trials, because the kernel could keep reclaiming page cache to make room. Instead, the node thrashed, and at its worst it spent about 70% of its time stalled on memory. The kubelet stopped renewing its lease, the node went NotReady, and the well-behaved app on the node failed about a third of its requests until the pods released their memory.
+On the standard node, nothing stepped in to stop the pods. The kubelet didn't evict any pods, and the kernel's out-of-memory (OOM) killer didn't act in four of the five trials, because the kernel could keep reclaiming page cache to make room. Instead, the node thrashed, and at its worst it spent about 70% of its time stalled on memory. The kubelet stopped renewing its lease, the node went NotReady, and the well-behaved app on the node failed about a third of its requests until the pods released their memory.
 
-On the hardened node, the `kubepods.slice` limit stopped the pods while the node still had about 700 MiB of memory available. The kernel killed the growing processes inside the pods' cgroup, and the kubelet evicted pods as memory crossed its eviction thresholds. The node stayed Ready in every trial, and the app on the node didn't fail a single request. Only the test workloads were evicted.
+On the hardened node, the `kubepods.slice` limit stopped the pods while the node still had about 700 MiB of memory available. The kernel killed the growing processes inside the pods' cgroup, and because the test pods restarted and grew again each time, those kills repeated throughout each trial. The kubelet also evicted pods as memory crossed its eviction thresholds. The node stayed Ready in every trial, the app on the node didn't fail a single request, and only the test workloads were evicted.
 
 ## Runaway memory: hardening kept the node healthy
 
@@ -102,7 +81,7 @@ The following chart shows the median trial for each node.
 
 ![Available memory during a runaway memory leak on a standard node and a hardened node](./memory-pressure-timeline.png)
 
-On the standard node, the leaking pods consumed almost all node memory before anything stopped them. The kubelet's default hard eviction threshold of 100 MiB was too small to act in time, so the kernel's out-of-memory (OOM) killer stopped the pods instead. Available memory repeatedly dropped close to zero, and the kernel reclaimed host page cache, including memory used by the kubelet and containerd, to keep going.
+On the standard node, the leaking pods consumed almost all node memory before anything stopped them. The kubelet's default hard eviction threshold of 100 MiB was too small to act in time, so the kernel's OOM killer stopped the pods instead. Available memory repeatedly dropped close to zero, and the kernel reclaimed host page cache, including memory used by the kubelet and containerd, to keep going.
 
 On the hardened node, two mechanisms acted earlier:
 
@@ -120,7 +99,7 @@ On the hardened node, two mechanisms acted earlier:
 | Well-behaved app, failed requests in the worst trial | 0.07% | 0% |
 | New pod start time | 1.8 s | 1.8 s |
 
-In every runaway-leak trial, the Guaranteed app kept running on both nodes, and the kubelet only evicted the leaking pods. Because the leak grew quickly, the standard node's kernel OOM killer stopped it before the node thrashed long enough to go NotReady. The hardened node reported the `MemoryPressure` condition for several minutes after each trial, which includes the kubelet's default five-minute pressure transition period. While that condition is set, the node has the `node.kubernetes.io/memory-pressure` taint, which can keep new pods from being scheduled on it.
+In every runaway-leak trial, the well-behaved app kept running on both nodes, and the kubelet only evicted the leaking pods. Because the leak grew quickly, the standard node's kernel OOM killer stopped it before the node thrashed long enough to go NotReady. The hardened node reported the `MemoryPressure` condition for several minutes after each trial, which includes the kubelet's default five-minute pressure transition period. While that condition is set, the node has the `node.kubernetes.io/memory-pressure` taint, which can keep new pods from being scheduled on it.
 
 ## CPU saturation: something to note
 
@@ -138,7 +117,28 @@ In AKS, memory saturation is a more common cause of node instability than CPU sa
 
 When pods saturate a node's CPU, Linux shares CPU time between cgroups in proportion to their CPU weights, which the kubelet derives from the reservations. On a standard node, the kubelet and containerd run in `system.slice` with the default weight of 100. On a hardened 4-vCPU node, they run in `kubereserved.slice`, whose weight of 6 comes from the default kube-reserved CPU of 140 millicores. That share is enough for steady-state work, but it leaves less room for bursts of pod starts and container operations while CPU is fully saturated.
 
-The well-behaved app, which had its own CPU request, wasn't affected, and no node became NotReady. Only node operations such as starting pods and rolling out deployments slowed down, and they returned to normal within seconds after CPU contention ended. Kube-reserved CPU is one of the [Node Hardening settings that you can customize](https://learn.microsoft.com/azure/aks/node-hardening#customize-node-hardening-settings). In a separate test, a value of 500 millicores brought the median pod start time to 4.2 seconds.
+The well-behaved app, which had its own CPU request, wasn't affected, and no node became NotReady. Only node operations such as starting pods and rolling out Deployments slowed down, and they returned to normal within seconds after CPU contention ended. Kube-reserved CPU is one of the [Node Hardening settings that you can customize](https://learn.microsoft.com/azure/aks/node-hardening#customize-node-hardening-settings). In a separate test, a value of 500 millicores brought the median pod start time to 4.2 seconds.
+
+## What hardening reserves on each node
+
+Node Hardening increases kube-reserved memory, adds system-reserved memory, and raises the hard eviction threshold. The kubelet subtracts all three from node capacity when it reports allocatable memory, so every node offers pods a bit less room.
+
+![Memory withheld from pods on standard and hardened nodes of different sizes](./allocatable-memory.png)
+
+| Node memory | Max pods | Kube-reserved memory, standard / hardened | System-reserved memory | Hard eviction, standard / hardened | Allocatable memory, standard / hardened | Change |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 8 GiB (D2ads_v5) | 30 | 650 MiB / 1,300 MiB | 300 MiB | 100 MiB / 250 MiB | 7.0 / 5.9 GiB | -15.3% |
+| 16 GiB (D4ads_v5) | 30 | 650 MiB / 1,377 MiB | 300 MiB | 100 MiB / 375 MiB | 14.9 / 13.6 GiB | -8.5% |
+| 32 GiB (D8ads_v5) | 30 | 650 MiB / 1,705 MiB | 400 MiB | 100 MiB / 512 MiB | 30.6 / 28.8 GiB | -6.0% |
+| 64 GiB (D16ads_v5) | 30 | 650 MiB / 2,360 MiB | 500 MiB | 100 MiB / 512 MiB | 62.1 / 59.5 GiB | -4.1% |
+| 16 GiB (D4ads_v5) | 250 | 4,096 MiB / 4,096 MiB | 300 MiB | 100 MiB / 375 MiB | 11.5 / 11.0 GiB | -4.9% |
+| 32 GiB (D8ads_v5) | 250 | 5,050 MiB / 8,192 MiB | 400 MiB | 100 MiB / 512 MiB | 26.3 / 22.4 GiB | -14.7% |
+
+Every hardened node also reported 100 millicores less allocatable CPU and 1 GiB less allocatable ephemeral storage.
+
+The largest relative reductions were on the smallest node and on the high-density node. On small nodes, the fixed parts of the reservation are a larger share of memory. On a 32 GiB node with 250 pods, the higher per-pod kube-reserved memory reaches the 25% cap. On a 16 GiB node with 250 pods, both configurations already reach the 25% cap, so the difference is only the system reservation and eviction threshold.
+
+**What this means for you:** Before you enable Node Hardening, check how close your nodes run to their allocatable memory. Workloads that fit on a node today might need a few percent more nodes afterward.
 
 ## Other observations
 
