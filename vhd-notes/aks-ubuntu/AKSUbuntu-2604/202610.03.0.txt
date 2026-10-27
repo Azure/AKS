@@ -1,0 +1,703 @@
+Starting build on  Sat Oct 3 18:28:22 UTC 2026
+Components downloaded in this VHD build (some of the below components might get deleted during cluster provisioning if they are not needed):
+  - oras version 1.3.3
+  - aks-secure-tls-bootstrap-client package version 1.1.4-ubuntu26.04u2 (requested 1.1.4)
+  - aks-secure-tls-bootstrap-client version 1.1.4
+  - moby-runc package version 1.4.3-ubuntu26.04u29 (requested 1.4.3)
+  - runc version 1.4.3
+  - moby-containerd package version 2.3.6-ubuntu26.04u1 (requested 2.3.6)
+  - containerd version 2.3.6
+  - CNI plugin version 1.6.2
+  - containernetworking-plugins package version 1.9.1-ubuntu26.04u47 (requested 1.9.1)
+  - containernetworking-plugins version 1.9.1
+  - Azure CNI version 1.5.38
+  - Azure CNI version 1.6.21
+  - kubernetes-cri-tools package version 1.34.0-ubuntu26.04u34 (requested 1.34.0)
+  - kubelet package version 1.36.4-ubuntu26.04u6 (requested 1.36.4)
+  - cached kubelet binary at /opt/bin/kubelet-1.36.4
+  - kubelet version 1.36.4
+  - kubelet package version 1.36.3-ubuntu26.04u7 (requested 1.36.3)
+  - cached kubelet binary at /opt/bin/kubelet-1.36.3
+  - kubelet version 1.36.3
+  - kubectl package version 1.36.4-ubuntu26.04u1 (requested 1.36.4)
+  - cached kubectl binary at /opt/bin/kubectl-1.36.4
+  - kubectl version 1.36.4
+  - kubectl package version 1.36.3-ubuntu26.04u5 (requested 1.36.3)
+  - cached kubectl binary at /opt/bin/kubectl-1.36.3
+  - kubectl version 1.36.3
+  - ig package version 0.56.0-ubuntu26.04u3 (requested 0.56.0)
+  - ig-gadgets package version 0.56.0-ubuntu20.04u1 (requested 0.56.0)
+  - ig version 0.56.0
+  - azure-acr-credential-provider package version 1.36.6-ubuntu26.04u1 (requested 1.36.6)
+  - azure-acr-credential-provider version 1.36.6
+  - azure-acr-credential-provider package version 1.37.0-ubuntu26.04u1 (requested 1.37.0)
+  - azure-acr-credential-provider version 1.37.0
+  - nvidia-device-plugin package version 0.19.3-ubuntu26.04u16 (requested 0.19.3)
+  - nvidia-device-plugin version 0.19.3
+  - datacenter-gpu-manager-4-core package version 1:4.6.0-1 (requested 4.6.0)
+  - datacenter-gpu-manager-4-core version 4.6.0
+  - datacenter-gpu-manager-4-proprietary package version 1:4.6.0-1 (requested 4.6.0)
+  - datacenter-gpu-manager-4-proprietary version 4.6.0
+  - dcgm-exporter package version 4.8.3-ubuntu26.04u7 (requested 4.8.3)
+  - dcgm-exporter version 4.8.3
+  - node-exporter-kubernetes package version 1.12.1-ubuntu26.04u7 (requested 1.12.1)
+  - node-exporter version 1.12.1
+  - acr-mirror version 1.0.0
+  - blobfuse2 version 2.5.5
+  - nvidia-cuda-driver=580.159.04-20260918140533
+Components installed at node provisioning time (CSE) for supported GPU VM sizes (example A10 family):
+  - nvidia-grid-driver=570.237-20260817204535
+images pre-pulled:
+  - mcr.microsoft.com/containernetworking/azure-cni:v1.7.17-0
+  - mcr.microsoft.com/containernetworking/azure-ipam:v0.2.1
+  - mcr.microsoft.com/oss/v2/kubernetes/coredns:v1.13.1-20
+  - mcr.microsoft.com/oss/v2/kubernetes/coredns:v1.11.3-32
+  - mcr.microsoft.com/oss/v2/kubernetes/coredns:v1.12.1-25
+  - mcr.microsoft.com/containernetworking/azure-cni:v1.6.44-0
+  - mcr.microsoft.com/containernetworking/azure-ipam:v0.3.0
+  - mcr.microsoft.com/oss/v2/kubernetes/coredns:v1.14.7-2
+  - mcr.microsoft.com/containernetworking/azure-ipam:v0.4.0-0
+  - mcr.microsoft.com/oss/v2/kubernetes/coredns:v1.14.3-18
+  - mcr.microsoft.com/oss/v2/kubernetes/pause:3.10.2
+  - mcr.microsoft.com/oss/v2/kubernetes/pause:3.6
+  - mcr.microsoft.com/containernetworking/v2/azure-cni:v1.8.13
+  - mcr.microsoft.com/oss/v2/kubernetes/autoscaler/addon-resizer:v1.8.23-29
+  - mcr.microsoft.com/containernetworking/v2/azure-cns:v1.8.13
+  - mcr.microsoft.com/containernetworking/azure-npm:v1.6.42
+  - mcr.microsoft.com/containernetworking/cilium-log-collector:v0.0.2-0
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless:v1.18.14-260923
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless:v1.19.6-260811
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless:v1.18.12-260811
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless:v1.19.8-260923
+  - mcr.microsoft.com/containernetworking/azure-cns:v1.7.17-0
+  - mcr.microsoft.com/containernetworking/azure-cns:v1.6.44-0
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod:3.8.0-ci-prod-09-03-2026-fd42f68c
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:7.4.0-main-09-11-2026-e2bfa13b
+  - mcr.microsoft.com/containernetworking/azure-iptables-monitor:v0.0.5-0
+  - mcr.microsoft.com/oss/v2/kubernetes/apiserver-network-proxy/agent:v0.32.1-11
+  - mcr.microsoft.com/oss/v2/azure/secrets-store/provider-azure:v1.8.2-11
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/secrets-store/driver:v1.6.1-1
+  - mcr.microsoft.com/oss/v2/kubernetes/kube-state-metrics:v2.15.0-4
+  - mcr.microsoft.com/oss/v2/kubernetes/azure-cloud-node-manager:v1.33.18-1
+  - mcr.microsoft.com/oss/v2/kubernetes/azure-cloud-node-manager:v1.35.9-1
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:7.4.0-main-09-11-2026-e2bfa13b-targetallocator
+  - mcr.microsoft.com/oss/v2/kubernetes/azure-cloud-node-manager:v1.34.14-1
+  - mcr.microsoft.com/oss/v2/kubernetes/autoscaler/cluster-proportional-autoscaler:v1.8.11-27
+  - mcr.microsoft.com/oss/v2/kubernetes/azure-cloud-node-manager:v1.36.6-1
+  - mcr.microsoft.com/oss/v2/azure/ip-masq-agent-v2:v0.1.16-16
+  - mcr.microsoft.com/oss/v2/kubernetes/azure-cloud-node-manager:v1.37.0-1
+  - mcr.microsoft.com/oss/v2/azure/ip-masq-agent-v2:v0.1.16-17
+  - mcr.microsoft.com/oss/v2/kubernetes/autoscaler/cluster-proportional-autoscaler:v1.9.0-22
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azuredisk-csi:v1.34.5
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azuredisk-csi:v1.33.11
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azurefile-csi:v1.35.7
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azurefile-csi:v1.35.6
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azurefile-csi:v1.33.10
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless-init:v1.19.8-260923
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/livenessprobe:v2.19.0
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azurefile-csi:v1.33.9
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azurefile-csi:v1.34.7
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/azurefile-csi:v1.34.8
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/livenessprobe:v2.18.0
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless-init:v1.18.12-260811
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless-init:v1.19.6-260811
+  - mcr.microsoft.com/containernetworking/cilium/cilium-distroless-init:v1.18.14-260923
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/csi-node-driver-registrar:v2.17.0
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/blob-csi:v1.27.9
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/blob-csi:v1.27.8
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/blob-csi:v1.26.16
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/blob-csi:v1.26.15
+  - mcr.microsoft.com/oss/v2/kubernetes-csi/csi-node-driver-registrar:v2.16.0
+  - mcr.microsoft.com/oss/v2/kubernetes/windows-gmsa-webhook:v0.14.1
+  - mcr.microsoft.com/aks/aks-node-ca-watcher:master.241021.1
+  - mcr.microsoft.com/oss/v2/kubernetes/kube-proxy:v1.33.13-11
+  - mcr.microsoft.com/oss/v2/kubernetes/kube-proxy:v1.35.8-4
+  - mcr.microsoft.com/oss/v2/kubernetes/kube-proxy:v1.36.4-4
+  - mcr.microsoft.com/oss/v2/kubernetes/kube-proxy:v1.34.11-5
+  - mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:7.4.0-main-09-11-2026-e2bfa13b-cfg
+Successfully copied coredns binary of v1.14.7-2
+kubelet/kubectl downloaded:
+-rwxr-xr-x 1 root root  61185856 Oct  3 18:37 /opt/bin/kubelet-1.36.4
+-rwxr-xr-x 1 root root 102619360 Oct  3 18:37 /opt/bin/kubelet-1.36.3
+-rwxr-xr-x 1 root root  90306880 Oct  3 18:37 /opt/bin/kubectl-1.36.4
+-rwxr-xr-x 1 root root  90007224 Oct  3 18:37 /opt/bin/kubectl-1.36.3
+=== Installed Packages Begin
+Listing...
+3cpio/resolute,now 0.14.0-1ubuntu1 amd64 [installed,automatic]
+acr-mirror/now 1.0.0-1 amd64 [installed,local]
+adduser/resolute,now 3.153ubuntu1 all [installed,automatic]
+amd64-microcode/resolute,now 3.20251202.1ubuntu2 amd64 [installed,automatic]
+apparmor-utils/resolute-updates,now 5.0.2-0ubuntu1~26.04.1 all [installed]
+apparmor/resolute-updates,now 5.0.2-0ubuntu1~26.04.1 amd64 [installed]
+apt/resolute,now 3.2.0 amd64 [installed]
+attr/resolute-updates,resolute-security,now 1:2.5.2-4ubuntu0.1 amd64 [installed,automatic]
+aznfs/resolute,now 3.0.19 amd64 [installed]
+azure-vm-utils/resolute,now 0.6.0-4build1 amd64 [installed]
+base-files/resolute-updates,now 14ubuntu6.2 amd64 [installed,automatic]
+base-passwd/resolute,now 3.6.8 amd64 [installed,automatic]
+bash/resolute,now 5.3-2ubuntu1 amd64 [installed]
+bind9-dnsutils/resolute-updates,resolute-security,now 1:9.20.24-1ubuntu0.3 amd64 [installed]
+bind9-host/resolute-updates,resolute-security,now 1:9.20.24-1ubuntu0.3 amd64 [installed,automatic]
+bind9-libs/resolute-updates,resolute-security,now 1:9.20.24-1ubuntu0.3 amd64 [installed,automatic]
+binutils-common/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+binutils-x86-64-linux-gnu/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+binutils/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+blobfuse2/resolute,now 2.5.5 amd64 [installed]
+bsdutils/resolute-updates,resolute-security,now 1:2.41.3-3ubuntu2.2 amd64 [installed]
+busybox-initramfs/resolute,now 1:1.37.0-7ubuntu1 amd64 [installed,automatic]
+bzip2/resolute-updates,resolute-security,now 1.0.8-6ubuntu0.1 amd64 [installed,automatic]
+ca-certificates/resolute-updates,resolute-security,now 20260601~26.04.1 all [installed]
+ceph-common/resolute,now 20.2.0-0ubuntu2 amd64 [installed]
+cgroup-lite/resolute,now 1.15build1 all [installed]
+chrony/resolute,now 4.8-2ubuntu1 amd64 [installed]
+cifs-utils/resolute-updates,resolute-security,now 2:7.4-1ubuntu0.26.04.3 amd64 [installed]
+cloud-guest-utils/resolute,now 0.33-1build1 all [installed]
+cloud-init-base/resolute-updates,now 26.1-0ubuntu3~26.04.1 all [installed,automatic]
+cloud-init/resolute-updates,now 26.1-0ubuntu3~26.04.1 all [installed]
+conntrack/resolute,now 1:1.4.9-1 amd64 [installed]
+console-setup-linux/resolute-updates,now 1.237ubuntu3.1 all [installed,automatic]
+console-setup/resolute-updates,now 1.237ubuntu3.1 all [installed]
+containerd-accelerated-container-image/resolute,now 1.4.5-ubuntu26.04u3 amd64 [installed,automatic]
+containerd-overlaybd/resolute,now 1.0.18-ubuntu26.04u2 amd64 [installed,automatic]
+containernetworking-plugins/resolute,now 1.9.1-ubuntu26.04u47 amd64 [installed]
+coreutils-from-uutils/resolute,now 0.0.0~ubuntu25 all [installed]
+coreutils/resolute,now 9.5-1ubuntu2+0.0.0~ubuntu25 all [installed]
+cpp-15-x86-64-linux-gnu/resolute,now 15.2.0-16ubuntu1 amd64 [installed,automatic]
+cpp-15/resolute,now 15.2.0-16ubuntu1 amd64 [installed,automatic]
+cpp-x86-64-linux-gnu/resolute,now 4:15.2.0-5ubuntu1 amd64 [installed,automatic]
+cpp/resolute,now 4:15.2.0-5ubuntu1 amd64 [installed,automatic]
+cracklib-runtime/resolute,now 2.9.6-5.2build3 amd64 [installed]
+cron-daemon-common/resolute,now 3.0pl1-200ubuntu1 all [installed,automatic]
+cron/resolute,now 3.0pl1-200ubuntu1 amd64 [installed]
+curl/resolute-updates,resolute-security,now 8.18.0-1ubuntu2.7 amd64 [installed]
+dash/resolute,now 0.5.12-12ubuntu3 amd64 [installed]
+dbus-bin/resolute,now 1.16.2-2ubuntu4 amd64 [installed,automatic]
+dbus-daemon/resolute,now 1.16.2-2ubuntu4 amd64 [installed,automatic]
+dbus-session-bus-common/resolute,now 1.16.2-2ubuntu4 all [installed,automatic]
+dbus-system-bus-common/resolute,now 1.16.2-2ubuntu4 all [installed,automatic]
+dbus-user-session/resolute,now 1.16.2-2ubuntu4 amd64 [installed,automatic]
+dbus/resolute,now 1.16.2-2ubuntu4 amd64 [installed]
+debconf/resolute,now 1.5.92 all [installed,automatic]
+debianutils/resolute,now 5.23.2build1 amd64 [installed,automatic]
+dhcpcd-base/resolute,now 1:10.3.0-7 amd64 [installed,automatic]
+diffutils/resolute-updates,resolute-security,now 1:3.12-1ubuntu0.1 amd64 [installed]
+distro-info-data/resolute-updates,resolute-security,now 0.72-0ubuntu0.26.04.1 all [installed,automatic]
+distro-info/resolute,now 1.15 amd64 [installed,automatic]
+dkms/resolute,now 3.2.2-1ubuntu1 all [installed]
+dmidecode/resolute-updates,now 3.6-2ubuntu1 amd64 [installed,automatic]
+dmsetup/resolute,now 2:1.02.205-2ubuntu3 amd64 [installed]
+dpkg-dev/resolute,now 1.23.7ubuntu1 all [installed,automatic]
+dpkg/resolute,now 1.23.7ubuntu1 amd64 [installed]
+dracut-install/resolute-updates,resolute-security,now 110-11ubuntu0.1 amd64 [installed,automatic]
+e2fsprogs/resolute,now 1.47.2-3ubuntu4 amd64 [installed]
+ebtables/resolute,now 2.0.11-6build2 amd64 [installed]
+efibootmgr/resolute,now 18-4ubuntu1 amd64 [installed]
+ethtool/resolute,now 1:6.19-1 amd64 [installed]
+fdisk/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed]
+file/resolute,now 1:5.46-5build2 amd64 [installed,automatic]
+findutils/resolute,now 4.10.0-3build2 amd64 [installed]
+fuse3/resolute,now 3.18.2-1 amd64 [installed,automatic]
+gcc-11-base/resolute,now 11.5.0-11ubuntu2 amd64 [installed,automatic]
+gcc-15-base/resolute,now 15.2.0-16ubuntu1 amd64 [installed,automatic]
+gcc-15-x86-64-linux-gnu/resolute,now 15.2.0-16ubuntu1 amd64 [installed,automatic]
+gcc-15/resolute,now 15.2.0-16ubuntu1 amd64 [installed,automatic]
+gcc-16-base/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+gcc-x86-64-linux-gnu/resolute,now 4:15.2.0-5ubuntu1 amd64 [installed,automatic]
+gcc/resolute,now 4:15.2.0-5ubuntu1 amd64 [installed]
+gettext-base/resolute,now 0.23.2-1 amd64 [installed,automatic]
+gir1.2-girepository-3.0/resolute-updates,resolute-security,now 2.88.0-1ubuntu0.1 amd64 [installed,automatic]
+gir1.2-glib-2.0/resolute-updates,resolute-security,now 2.88.0-1ubuntu0.1 amd64 [installed,automatic]
+glusterfs-client/resolute,now 11.2-2 amd64 [installed]
+glusterfs-common/resolute,now 11.2-2 amd64 [installed,automatic]
+gnu-coreutils/resolute-updates,resolute-security,now 9.7-3ubuntu2.1 amd64 [installed]
+gpg/resolute-updates,resolute-security,now 2.4.8-4ubuntu3.1 amd64 [installed]
+gpgconf/resolute-updates,resolute-security,now 2.4.8-4ubuntu3.1 amd64 [installed,automatic]
+gpgv/resolute-updates,resolute-security,now 2.4.8-4ubuntu3.1 amd64 [installed,automatic]
+grep/resolute,now 3.12-1 amd64 [installed]
+grub-efi-amd64-bin/resolute,now 2.14-2ubuntu1 amd64 [installed,automatic]
+grub-efi-amd64-signed/resolute,now 1.215+2.14-2ubuntu1 amd64 [installed,automatic]
+grub-efi-amd64-unsigned/resolute,now 2.14-2ubuntu1 amd64 [installed,automatic]
+grub-gfxpayload-lists/resolute,now 0.7build3 amd64 [installed,automatic]
+grub-pc-bin/resolute-updates,now 2.14-2ubuntu2.1 amd64 [installed,automatic]
+grub-pc/resolute-updates,now 2.14-2ubuntu2.1 amd64 [installed]
+grub2-common/resolute-updates,now 2.14-2ubuntu2.1 amd64 [installed,automatic]
+gzip/resolute-updates,resolute-security,now 1.14-1~exp2ubuntu1.1 amd64 [installed]
+hostname/resolute,now 3.25build1 amd64 [installed]
+htop/resolute,now 3.4.1-5build2 amd64 [installed]
+hwdata/resolute,now 0.394-1build1 all [installed,automatic]
+ig-gadgets/now 0.56.0-ubuntu20.04u1 amd64 [installed,local]
+ig/resolute,now 0.56.0-ubuntu26.04u3 amd64 [installed,upgradable to: 0.56.2-ubuntu26.04u1]
+init-system-helpers/resolute,now 1.69 all [installed]
+initramfs-tools-bin/resolute,now 0.151ubuntu1 amd64 [installed,automatic]
+initramfs-tools-core/resolute,now 0.151ubuntu1 all [installed,automatic]
+initramfs-tools/resolute,now 0.151ubuntu1 all [installed]
+inotify-tools/resolute,now 4.25.9.0-1 amd64 [installed]
+intel-microcode/resolute,now 3.20260210.1ubuntu2 amd64 [installed,automatic]
+iotop/resolute,now 0.6-42-ga14256a-0.3build4 amd64 [installed]
+iproute2/resolute-updates,now 6.19.0-1ubuntu1.1 amd64 [installed]
+ipset/resolute,now 7.19-1ubuntu3 amd64 [installed]
+iptables/resolute,now 1.8.11-2ubuntu3 amd64 [installed]
+irqbalance/resolute,now 1.9.4-3 amd64 [installed]
+iucode-tool/resolute,now 2.3.1-3build2 amd64 [installed,automatic]
+jq/resolute-updates,resolute-security,now 1.8.1-4ubuntu2 amd64 [installed]
+kbd/resolute,now 2.7.1-2ubuntu2 amd64 [installed,automatic]
+keyboard-configuration/resolute-updates,now 1.237ubuntu3.1 all [installed,automatic]
+keyutils/resolute,now 1.6.3-6ubuntu3 amd64 [installed]
+klibc-utils/resolute,now 2.0.14-1ubuntu2 amd64 [installed,automatic]
+kmod/resolute,now 34.2-2ubuntu2 amd64 [installed]
+kubernetes-cri-tools/resolute,now 1.34.0-ubuntu26.04u34 amd64 [installed,upgradable to: 1.37.0-ubuntu26.04u1]
+libacl1/resolute,now 2.3.2-2 amd64 [installed,automatic]
+libaio1t64/resolute,now 0.3.113-8build1 amd64 [installed,automatic]
+libapparmor1/resolute-updates,now 5.0.2-0ubuntu1~26.04.1 amd64 [installed,automatic]
+libapt-pkg7.0/resolute,now 3.2.0 amd64 [installed,automatic]
+libasan6/resolute,now 11.5.0-11ubuntu2 amd64 [installed,automatic]
+libasan8/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libassuan9/resolute,now 3.0.2-2build1 amd64 [installed,automatic]
+libatomic1/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libattr1/resolute-updates,resolute-security,now 1:2.5.2-4ubuntu0.1 amd64 [installed]
+libaudit-common/resolute-updates,now 1:4.1.2-1ubuntu0.1 all [installed,automatic]
+libaudit1/resolute-updates,now 1:4.1.2-1ubuntu0.1 amd64 [installed,automatic]
+libbabeltrace1/resolute,now 1.5.11-5build1 amd64 [installed,automatic]
+libbinutils/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+libblkid1/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed,automatic]
+libboost-context1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libboost-filesystem1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libboost-iostreams1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libboost-locale1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libboost-process1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libboost-program-options1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libboost-thread1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libboost-url1.90.0/resolute,now 1.90.0-6ubuntu1 amd64 [installed,automatic]
+libbpf1/resolute,now 1:1.6.3-1ubuntu1 amd64 [installed,automatic]
+libbrotli1/resolute,now 1.2.0-3build1 amd64 [installed,automatic]
+libbsd0/resolute,now 0.12.2-2build2 amd64 [installed,automatic]
+libbz2-1.0/resolute-updates,resolute-security,now 1.0.8-6ubuntu0.1 amd64 [installed,automatic]
+libc-bin/resolute-updates,resolute-security,now 2.43-2ubuntu2.4 amd64 [installed]
+libc-dev-bin/resolute-updates,resolute-security,now 2.43-2ubuntu2.4 amd64 [installed,automatic]
+libc-gconv-modules-extra/resolute-updates,resolute-security,now 2.43-2ubuntu2.4 amd64 [installed,automatic]
+libc6-dev/resolute-updates,resolute-security,now 2.43-2ubuntu2.4 amd64 [installed]
+libc6/resolute-updates,resolute-security,now 2.43-2ubuntu2.4 amd64 [installed,automatic]
+libcap-ng0/resolute,now 0.8.5-4build5 amd64 [installed,automatic]
+libcap2-bin/resolute,now 1:2.75-10ubuntu2 amd64 [installed,automatic]
+libcap2/resolute,now 1:2.75-10ubuntu2 amd64 [installed,automatic]
+libcbor0.10/resolute,now 0.10.2-2ubuntu3 amd64 [installed,automatic]
+libcc1-0/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libcephfs2/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+libcom-err2/resolute,now 1.47.2-3ubuntu4 amd64 [installed,automatic]
+libcrack2/resolute,now 2.9.6-5.2build3 amd64 [installed,automatic]
+libcrypt1/resolute,now 1:4.5.1-1 amd64 [installed,automatic]
+libcryptsetup12/resolute,now 2:2.8.4-1ubuntu4 amd64 [installed,automatic]
+libctf-nobfd0/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+libctf0/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+libcurl3t64-gnutls/resolute-updates,resolute-security,now 8.18.0-1ubuntu2.7 amd64 [installed,automatic]
+libcurl4t64/resolute-updates,resolute-security,now 8.18.0-1ubuntu2.7 amd64 [installed,automatic]
+libdaxctl1/resolute,now 81-1ubuntu1 amd64 [installed,automatic]
+libdb5.3t64/resolute,now 5.3.28+dfsg2-10ubuntu1 amd64 [installed,automatic]
+libdbus-1-3/resolute,now 1.16.2-2ubuntu4 amd64 [installed,automatic]
+libdebconfclient0/resolute,now 0.280ubuntu1 amd64 [installed,automatic]
+libdevmapper1.02.1/resolute,now 2:1.02.205-2ubuntu3 amd64 [installed,automatic]
+libdpkg-perl/resolute,now 1.23.7ubuntu1 all [installed,automatic]
+libdrm-common/resolute,now 2.4.131-1 all [installed,automatic]
+libdrm2/resolute,now 2.4.131-1 amd64 [installed,automatic]
+libdw1t64/resolute,now 0.194-4 amd64 [installed,automatic]
+libedit2/resolute,now 3.1-20251016-1 amd64 [installed,automatic]
+libefiboot1t64/resolute,now 39-2 amd64 [installed,automatic]
+libefivar1t64/resolute,now 39-2 amd64 [installed,automatic]
+libelf1t64/resolute,now 0.194-4 amd64 [installed,automatic]
+libestr0/resolute,now 0.1.11-2build1 amd64 [installed,automatic]
+libevent-core-2.1-7t64/resolute-updates,resolute-security,now 2.1.12-stable-10ubuntu0.2 amd64 [installed,automatic]
+libexpat1/resolute-updates,resolute-security,now 2.7.4-1ubuntu0.2 amd64 [installed,automatic]
+libext2fs2t64/resolute,now 1.47.2-3ubuntu4 amd64 [installed,automatic]
+libfastjson4/resolute,now 1.2304.0-2build1 amd64 [installed,automatic]
+libfdisk1/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed,automatic]
+libffi8/resolute,now 3.5.2-4 amd64 [installed,automatic]
+libfido2-1/resolute,now 1.16.0-2build1 amd64 [installed,automatic]
+libfreetype6/resolute-updates,resolute-security,now 2.14.2+dfsg-1ubuntu0.1 amd64 [installed,automatic]
+libfuse3-4/resolute,now 3.18.2-1 amd64 [installed,automatic]
+libgcc-15-dev/resolute,now 15.2.0-16ubuntu1 amd64 [installed,automatic]
+libgcc-s1/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libgcrypt20/resolute-updates,resolute-security,now 1.12.0-2ubuntu1.1 amd64 [installed,automatic]
+libgdbm-compat4t64/resolute,now 1.26-1build1 amd64 [installed,automatic]
+libgdbm6t64/resolute,now 1.26-1build1 amd64 [installed,automatic]
+libgfapi0/resolute,now 11.2-2 amd64 [installed,automatic]
+libgfchangelog0/resolute,now 11.2-2 amd64 [installed,automatic]
+libgfrpc0/resolute,now 11.2-2 amd64 [installed,automatic]
+libgfxdr0/resolute,now 11.2-2 amd64 [installed,automatic]
+libgirepository-2.0-0/resolute-updates,resolute-security,now 2.88.0-1ubuntu0.1 amd64 [installed,automatic]
+libglib2.0-0t64/resolute-updates,resolute-security,now 2.88.0-1ubuntu0.1 amd64 [installed,automatic]
+libglusterfs0/resolute,now 11.2-2 amd64 [installed,automatic]
+libgmp10/resolute,now 2:6.3.0+dfsg-5ubuntu2 amd64 [installed,automatic]
+libgnutls30t64/resolute-updates,resolute-security,now 3.8.12-2ubuntu1.1 amd64 [installed,automatic]
+libgomp1/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libgoogle-perftools4t64/resolute,now 2.18.1-1 amd64 [installed,automatic]
+libgpg-error0/resolute,now 1.58-2 amd64 [installed,automatic]
+libgprofng0/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+libgssapi-krb5-2/resolute-updates,resolute-security,now 1.22.1-2ubuntu4.1 amd64 [installed,automatic]
+libhogweed6t64/resolute,now 3.10.2-1 amd64 [installed,automatic]
+libhwasan0/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libibverbs1/resolute,now 61.0-2ubuntu3 amd64 [installed,automatic]
+libicu78/resolute,now 78.2-2ubuntu1 amd64 [installed,automatic]
+libidn2-0/resolute,now 2.3.8-4build1 amd64 [installed,automatic]
+libinih1/resolute,now 61-1ubuntu1 amd64 [installed,automatic]
+libinotifytools0/resolute,now 4.25.9.0-1 amd64 [installed,automatic]
+libip4tc2/resolute,now 1.8.11-2ubuntu3 amd64 [installed,automatic]
+libip6tc2/resolute,now 1.8.11-2ubuntu3 amd64 [installed,automatic]
+libipset13/resolute,now 7.19-1ubuntu3 amd64 [installed,automatic]
+libisl23/resolute,now 0.27-1build1 amd64 [installed,automatic]
+libitm1/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libjansson4/resolute,now 2.14-2build4 amd64 [installed,automatic]
+libjemalloc2/resolute,now 5.3.0-4 amd64 [installed,automatic]
+libjq1/resolute-updates,resolute-security,now 1.8.1-4ubuntu2 amd64 [installed,automatic]
+libjs-sphinxdoc/resolute,now 8.2.3-12 all [installed,automatic]
+libjson-c5/resolute,now 0.18+ds-3 amd64 [installed,automatic]
+libk5crypto3/resolute-updates,resolute-security,now 1.22.1-2ubuntu4.1 amd64 [installed,automatic]
+libkeyutils1/resolute,now 1.6.3-6ubuntu3 amd64 [installed,automatic]
+libklibc/resolute,now 2.0.14-1ubuntu2 amd64 [installed,automatic]
+libkmod2/resolute,now 34.2-2ubuntu2 amd64 [installed,automatic]
+libkrb5-3/resolute-updates,resolute-security,now 1.22.1-2ubuntu4.1 amd64 [installed,automatic]
+libkrb5support0/resolute-updates,resolute-security,now 1.22.1-2ubuntu4.1 amd64 [installed,automatic]
+libksba8/resolute,now 1.6.7-2build1 amd64 [installed,automatic]
+libldap-common/resolute,now 2.6.10+dfsg-1ubuntu5 all [installed,automatic]
+libldap2/resolute,now 2.6.10+dfsg-1ubuntu5 amd64 [installed,automatic]
+liblmdb0/resolute,now 0.9.31-1build2 amd64 [installed,automatic]
+liblocale-gettext-perl/resolute,now 1.07-8 amd64 [installed,automatic]
+liblsan0/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+liblua5.4-0/resolute,now 5.4.8-1build1 amd64 [installed,automatic]
+liblz4-1/resolute,now 1.10.0-8 amd64 [installed,automatic]
+liblzma5/resolute,now 5.8.3-1 amd64 [installed,automatic]
+libmagic-mgc/resolute,now 1:5.46-5build2 amd64 [installed,automatic]
+libmagic1t64/resolute,now 1:5.46-5build2 amd64 [installed,automatic]
+libmaxminddb0/resolute,now 1.12.2-1build2 amd64 [installed,automatic]
+libmd0/resolute,now 1.1.0-2build4 amd64 [installed,automatic]
+libmnl0/resolute,now 1.0.5-3build1 amd64 [installed,automatic]
+libmount1/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed,automatic]
+libmpc3/resolute,now 1.3.1-3 amd64 [installed,automatic]
+libmpfr6/resolute,now 4.2.2-3 amd64 [installed,automatic]
+libncurses6/resolute,now 6.6+20251231-1 amd64 [installed,automatic]
+libncursesw6/resolute,now 6.6+20251231-1 amd64 [installed,automatic]
+libndctl6/resolute,now 81-1ubuntu1 amd64 [installed,automatic]
+libnetfilter-conntrack3/resolute,now 1.1.1-1 amd64 [installed,automatic]
+libnetplan1/resolute-updates,now 1.2-1ubuntu5.1 amd64 [installed,automatic]
+libnettle8t64/resolute,now 3.10.2-1 amd64 [installed,automatic]
+libnewt0.52/resolute,now 0.52.25-1ubuntu3 amd64 [installed,automatic]
+libnfnetlink0/resolute,now 1.0.2-3build1 amd64 [installed,automatic]
+libnfsidmap1/resolute,now 1:2.8.5-1ubuntu1 amd64 [installed,automatic]
+libnftables1/resolute,now 1.1.6-1 amd64 [installed,automatic]
+libnftnl11/resolute,now 1.3.1-1 amd64 [installed,automatic]
+libnghttp2-14/resolute-updates,resolute-security,now 1.68.0-2ubuntu0.2 amd64 [installed,automatic]
+libnl-3-200/resolute,now 3.12.0-2 amd64 [installed,automatic]
+libnl-genl-3-200/resolute,now 3.12.0-2 amd64 [installed,automatic]
+libnl-route-3-200/resolute,now 3.12.0-2 amd64 [installed,automatic]
+libnpth0t64/resolute,now 1.8-3build1 amd64 [installed,automatic]
+libnuma1/resolute,now 2.0.19-1build1 amd64 [installed,automatic]
+libnvme1t64/resolute,now 1.16.1-4 amd64 [installed,automatic]
+liboath0t64/resolute,now 2.6.14-1 amd64 [installed,automatic]
+libonig5/resolute,now 6.9.10-1build1 amd64 [installed,automatic]
+libp11-kit0/resolute,now 0.26.2-2 amd64 [installed,automatic]
+libpam-modules-bin/resolute-updates,resolute-security,now 1.7.0-5ubuntu3.2 amd64 [installed,automatic]
+libpam-modules/resolute-updates,resolute-security,now 1.7.0-5ubuntu3.2 amd64 [installed,automatic]
+libpam-pwquality/resolute,now 1.4.5-5build1 amd64 [installed]
+libpam-runtime/resolute-updates,resolute-security,now 1.7.0-5ubuntu3.2 all [installed,automatic]
+libpam-systemd/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed,automatic]
+libpam0g/resolute-updates,resolute-security,now 1.7.0-5ubuntu3.2 amd64 [installed,automatic]
+libparted2t64/resolute,now 3.6-6 amd64 [installed,automatic]
+libpci3/resolute,now 1:3.14.0-1build2 amd64 [installed,automatic]
+libpcre2-8-0/resolute,now 10.46-1build1 amd64 [installed,automatic]
+libperl5.40/resolute-updates,resolute-security,now 5.40.1-7ubuntu0.3 amd64 [installed,automatic]
+libpmem1/resolute,now 1.13.1-1.1ubuntu4 amd64 [installed,automatic]
+libpmemobj1/resolute,now 1.13.1-1.1ubuntu4 amd64 [installed,automatic]
+libpng16-16t64/resolute,now 1.6.57-1 amd64 [installed,automatic]
+libpopt0/resolute,now 1.19+dfsg-2build1 amd64 [installed,automatic]
+libproc2-0/resolute,now 2:4.0.4-9ubuntu1 amd64 [installed,automatic]
+libpsl5t64/resolute,now 0.21.2-1.1build2 amd64 [installed,automatic]
+libpwquality-common/resolute,now 1.4.5-5build1 all [installed,automatic]
+libpwquality-tools/resolute,now 1.4.5-5build1 amd64 [installed]
+libpwquality1/resolute,now 1.4.5-5build1 amd64 [installed,automatic]
+libpython3-stdlib/resolute,now 3.14.3-0ubuntu2 amd64 [installed,automatic]
+libpython3.14-minimal/resolute-updates,resolute-security,now 3.14.4-1ubuntu0.2 amd64 [installed,automatic]
+libpython3.14-stdlib/resolute-updates,resolute-security,now 3.14.4-1ubuntu0.2 amd64 [installed,automatic]
+libquadmath0/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+librabbitmq4/resolute-updates,resolute-security,now 0.15.0-1ubuntu0.26.04.2 amd64 [installed,automatic]
+librados2/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+libradosstriper1/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+librbd1/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+librdmacm1t64/resolute,now 61.0-2ubuntu3 amd64 [installed,automatic]
+libreadline8t64/resolute,now 8.3-4 amd64 [installed,automatic]
+librtmp1/resolute,now 2.4+20151223.gitfa8646d.1-3 amd64 [installed,automatic]
+libsasl2-2/resolute,now 2.1.28+dfsg1-9ubuntu3 amd64 [installed,automatic]
+libsasl2-modules-db/resolute,now 2.1.28+dfsg1-9ubuntu3 amd64 [installed,automatic]
+libseccomp2/resolute,now 2.6.0-2ubuntu5 amd64 [installed,automatic]
+libselinux1/resolute,now 3.9-4build1 amd64 [installed,automatic]
+libsemanage-common/resolute,now 3.9-1build1 all [installed,automatic]
+libsemanage2/resolute,now 3.9-1build1 amd64 [installed,automatic]
+libsensors-config/resolute,now 1:3.6.2-2build1 all [installed,automatic]
+libsensors5/resolute,now 1:3.6.2-2build1 amd64 [installed,automatic]
+libsepol2/resolute,now 3.9-2 amd64 [installed,automatic]
+libsframe3/resolute,now 2.46-3ubuntu2 amd64 [installed,automatic]
+libslang2/resolute,now 2.3.3-5build1 amd64 [installed,automatic]
+libsmartcols1/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed,automatic]
+libsqlite3-0/resolute-updates,resolute-security,now 3.46.1-9ubuntu0.3 amd64 [installed,automatic]
+libss2/resolute,now 1.47.2-3ubuntu4 amd64 [installed,automatic]
+libssh2-1t64/resolute-updates,resolute-security,now 1.11.1-1ubuntu0.26.04.4 amd64 [installed,automatic]
+libssl3t64/resolute-updates,resolute-security,now 3.5.5-1ubuntu3.7 amd64 [installed,automatic]
+libstdc++6/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libsysfs2/resolute,now 2.1.1-7build1 amd64 [installed,automatic]
+libsystemd-shared/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed,automatic]
+libsystemd0/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed,automatic]
+libtalloc2/resolute-updates,resolute-security,now 2:2.4.3+samba4.23.6+dfsg-1ubuntu2.2 amd64 [installed,automatic]
+libtasn1-6/resolute,now 4.21.0-2 amd64 [installed,automatic]
+libtcmalloc-minimal4t64/resolute,now 2.18.1-1 amd64 [installed,automatic]
+libtext-charwidth-perl/resolute,now 0.04-11build4 amd64 [installed,automatic]
+libtext-wrapi18n-perl/resolute,now 0.06-10 all [installed,automatic]
+libtinfo6/resolute,now 6.6+20251231-1 amd64 [installed,automatic]
+libtirpc-common/resolute,now 1.3.7-0.1 all [installed,automatic]
+libtirpc3t64/resolute,now 1.3.7-0.1 amd64 [installed,automatic]
+libtsan2/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libtss2-esys-3.0.2-0t64/resolute,now 4.1.3-6 amd64 [installed]
+libtss2-mu-4.0.1-0t64/resolute,now 4.1.3-6 amd64 [installed]
+libtss2-rc0t64/resolute,now 4.1.3-6 amd64 [installed]
+libtss2-sys1t64/resolute,now 4.1.3-6 amd64 [installed,automatic]
+libtss2-tcti-cmd0t64/resolute,now 4.1.3-6 amd64 [installed,automatic]
+libtss2-tcti-device0t64/resolute,now 4.1.3-6 amd64 [installed,automatic]
+libtss2-tcti-mssim0t64/resolute,now 4.1.3-6 amd64 [installed,automatic]
+libtss2-tcti-swtpm0t64/resolute,now 4.1.3-6 amd64 [installed,automatic]
+libubsan1/resolute,now 16-20260322-1ubuntu1 amd64 [installed,automatic]
+libudev1/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed,automatic]
+libunistring5/resolute,now 1.3-2build1 amd64 [installed,automatic]
+libunwind8/resolute,now 1.8.3-0ubuntu1 amd64 [installed,automatic]
+liburcu8t64/resolute,now 0.15.6-1 amd64 [installed,automatic]
+libusb-1.0-0/resolute,now 2:1.0.29-2build1 amd64 [installed,automatic]
+libuuid1/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed,automatic]
+libuv1t64/resolute,now 1.51.0-2ubuntu1 amd64 [installed,automatic]
+libwbclient0/resolute-updates,resolute-security,now 2:4.23.6+dfsg-1ubuntu2.2 amd64 [installed,automatic]
+libwrap0/resolute,now 7.6.q-36build2 amd64 [installed,automatic]
+libxml2-16/resolute-updates,resolute-security,now 2.15.2+dfsg-0.1ubuntu0.2 amd64 [installed,automatic]
+libxtables12/resolute,now 1.8.11-2ubuntu3 amd64 [installed,automatic]
+libxxhash0/resolute,now 0.8.3-2build1 amd64 [installed,automatic]
+libyaml-0-2/resolute,now 0.2.5-2build3 amd64 [installed,automatic]
+libzstd1/resolute,now 1.5.7+dfsg-3 amd64 [installed,automatic]
+linux-azure-cloud-tools-7.0.0-1017/resolute-updates,now 7.0.0-1017.17 amd64 [installed,automatic]
+linux-azure-headers-7.0.0-1017/resolute-updates,now 7.0.0-1017.17 all [installed,automatic]
+linux-azure-tools-7.0.0-1017/resolute-updates,now 7.0.0-1017.17 amd64 [installed,automatic]
+linux-base-sgx/resolute,now 4.15ubuntu5 all [installed,automatic]
+linux-base/resolute,now 4.15ubuntu5 all [installed]
+linux-cloud-tools-7.0.0-1017-azure/resolute-updates,now 7.0.0-1017.17 amd64 [installed,automatic]
+linux-cloud-tools-azure-lts-26.04/resolute-updates,now 7.0.0-1017.17 amd64 [installed]
+linux-cloud-tools-common/resolute-updates,now 7.0.0-38.38 all [installed,automatic]
+linux-headers-7.0.0-1017-azure/resolute-updates,now 7.0.0-1017.17 amd64 [installed]
+linux-headers-azure-lts-26.04/resolute-updates,now 7.0.0-1017.17 amd64 [installed]
+linux-image-7.0.0-1017-azure/resolute-updates,now 7.0.0-1017.17 amd64 [installed,automatic]
+linux-image-azure-lts-26.04/resolute-updates,now 7.0.0-1017.17 amd64 [installed]
+linux-libc-dev/resolute-updates,now 7.0.0-38.38 amd64 [installed,automatic]
+linux-main-modules-zfs-7.0.0-1017-azure/resolute-updates,now 7.0.0-1017.17 amd64 [installed,automatic]
+linux-modules-7.0.0-1017-azure/resolute-updates,now 7.0.0-1017.17 amd64 [installed,automatic]
+linux-tools-7.0.0-1017-azure/resolute-updates,now 7.0.0-1017.17 amd64 [installed,automatic]
+linux-tools-azure-lts-26.04/resolute-updates,now 7.0.0-1017.17 amd64 [installed]
+linux-tools-common/resolute-updates,now 7.0.0-38.38 all [installed,automatic]
+login.defs/resolute,now 1:4.17.4-2ubuntu3 all [installed,automatic]
+login/resolute-updates,resolute-security,now 1:4.16.0-2+really2.41.3-3ubuntu2.2 amd64 [installed,automatic]
+logsave/resolute,now 1.47.2-3ubuntu4 amd64 [installed,automatic]
+lsb-release/resolute,now 12.1-2build1 all [installed,automatic]
+lto-disabled-list/resolute,now 79 all [installed,automatic]
+lxd-agent-loader/resolute,now 0.13ubuntu0 all [installed]
+lxd-installer/resolute,now 14ubuntu0 all [installed]
+make/resolute,now 4.4.1-3 amd64 [installed]
+mawk/resolute,now 1.3.4.20260129-1 amd64 [installed,automatic]
+media-types/resolute,now 14.0.0build1 all [installed,automatic]
+microcode-initrd/resolute,now 4ubuntu amd64 [installed]
+moby-containerd/resolute,now 2.3.6-ubuntu26.04u1 amd64 [installed,upgradable to: 2.4.1-ubuntu26.04u1]
+moby-runc/resolute,now 1.4.3-ubuntu26.04u29 amd64 [installed,upgradable to: 1.5.2-ubuntu26.04u4]
+mokutil/resolute,now 0.7.2-2 amd64 [installed,automatic]
+mount/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed]
+ncurses-base/resolute,now 6.6+20251231-1 all [installed]
+ncurses-bin/resolute,now 6.6+20251231-1 amd64 [installed]
+net-tools/resolute,now 2.10-2ubuntu1 amd64 [installed,automatic]
+netbase/resolute,now 6.5build1 all [installed]
+netcat-openbsd/resolute,now 1.234-1 amd64 [installed]
+netplan-generator/resolute-updates,now 1.2-1ubuntu5.1 amd64 [installed,automatic]
+netplan.io/resolute-updates,now 1.2-1ubuntu5.1 amd64 [installed,automatic]
+nfs-common/resolute,now 1:2.8.5-1ubuntu1 amd64 [installed]
+nftables/resolute,now 1.1.6-1 amd64 [installed]
+node-exporter-kubernetes/resolute,now 1.12.1-ubuntu26.04u7 amd64 [installed]
+nvme-cli/resolute,now 2.16-1 amd64 [installed]
+openssh-client/resolute-updates,resolute-security,now 1:10.2p1-2ubuntu3.6 amd64 [installed,automatic]
+openssh-server/resolute-updates,resolute-security,now 1:10.2p1-2ubuntu3.6 amd64 [installed]
+openssh-sftp-server/resolute-updates,resolute-security,now 1:10.2p1-2ubuntu3.6 amd64 [installed,automatic]
+openssl-provider-legacy/resolute-updates,resolute-security,now 3.5.5-1ubuntu3.7 amd64 [installed,automatic]
+openssl/resolute-updates,resolute-security,now 3.5.5-1ubuntu3.7 amd64 [installed,automatic]
+packages-microsoft-prod/resolute,now 1.2-ubuntu26.04 all [installed]
+parted/resolute,now 3.6-6 amd64 [installed]
+passwd/resolute,now 1:4.17.4-2ubuntu3 amd64 [installed,automatic]
+patch/resolute,now 2.8-2build1 amd64 [installed,automatic]
+pci.ids/resolute,now 0.0~2026.02.12-1 all [installed,automatic]
+pciutils/resolute,now 1:3.14.0-1build2 amd64 [installed,automatic]
+perl-base/resolute-updates,resolute-security,now 5.40.1-7ubuntu0.3 amd64 [installed,automatic]
+perl-modules-5.40/resolute-updates,resolute-security,now 5.40.1-7ubuntu0.3 all [installed,automatic]
+perl/resolute-updates,resolute-security,now 5.40.1-7ubuntu0.3 amd64 [installed,automatic]
+pigz/resolute,now 2.8-1build1 amd64 [installed]
+pnp.ids/resolute,now 0.394-1build1 all [installed,automatic]
+procps/resolute,now 2:4.0.4-9ubuntu1 amd64 [installed,automatic]
+psmisc/resolute,now 23.7-2ubuntu2 amd64 [installed,automatic]
+python-apt-common/resolute-updates,now 3.1.0ubuntu1.1 all [installed,automatic]
+python3-apparmor/resolute-updates,now 5.0.2-0ubuntu1~26.04.1 all [installed,automatic]
+python3-apt/resolute-updates,now 3.1.0ubuntu1.1 amd64 [installed,automatic]
+python3-attr/resolute,now 25.4.0-1build1 all [installed,automatic]
+python3-autocommand/resolute,now 2.2.2-4 all [installed,automatic]
+python3-bcrypt/resolute,now 5.0.0-3build1 amd64 [installed,automatic]
+python3-blinker/resolute,now 1.9.0-2build1 all [installed,automatic]
+python3-ceph-argparse/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+python3-ceph-common/resolute,now 20.2.0-0ubuntu2 all [installed,automatic]
+python3-cephfs/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+python3-certifi/resolute,now 2026.1.4+ds-1 all [installed,automatic]
+python3-cffi-backend/resolute,now 2.0.0-3build1 amd64 [installed,automatic]
+python3-chardet/resolute,now 5.2.0+dfsg-2build1 all [installed,automatic]
+python3-click/resolute,now 8.2.0+0.really.8.1.8-1build1 all [installed,automatic]
+python3-configobj/resolute,now 5.0.9-1build1 all [installed,automatic]
+python3-cryptography/resolute-updates,resolute-security,now 46.0.5-1ubuntu2.2 amd64 [installed,automatic]
+python3-dbus/resolute,now 1.4.0-1build2 amd64 [installed,automatic]
+python3-debconf/resolute,now 1.5.92 all [installed,automatic]
+python3-distro-info/resolute,now 1.15 all [installed,automatic]
+python3-distro/resolute,now 1.9.0-1build1 all [installed,automatic]
+python3-distupgrade/resolute-updates,now 1:26.04.25 all [installed,automatic]
+python3-gi/resolute,now 3.56.2-1 amd64 [installed,automatic]
+python3-httplib2/resolute-updates,resolute-security,now 0.22.0-1ubuntu0.1 all [installed,automatic]
+python3-idna/resolute-updates,resolute-security,now 3.11-1ubuntu0.1 all [installed,automatic]
+python3-inflect/resolute,now 7.5.0-1build1 all [installed,automatic]
+python3-jaraco.context/resolute,now 6.0.1-2 all [installed,automatic]
+python3-jaraco.functools/resolute,now 4.1.0-1build1 all [installed,automatic]
+python3-jaraco.text/resolute,now 4.0.0-1build1 all [installed,automatic]
+python3-jinja2/resolute,now 3.1.6-1build1 all [installed,automatic]
+python3-json-pointer/resolute,now 2.4-4 all [installed,automatic]
+python3-jsonpatch/resolute,now 1.32-6 all [installed,automatic]
+python3-jsonschema-specifications/resolute,now 2023.12.1-4 all [installed,automatic]
+python3-jsonschema/resolute,now 4.19.2-6ubuntu2 all [installed,automatic]
+python3-jwt/resolute-updates,resolute-security,now 2.10.1-4ubuntu1.1 all [installed,automatic]
+python3-launchpadlib/resolute,now 2.1.0-1build1 all [installed,automatic]
+python3-lazr.restfulclient/resolute,now 0.14.6-3build1 all [installed,automatic]
+python3-lazr.uri/resolute,now 1.0.6-7build1 all [installed,automatic]
+python3-libapparmor/resolute-updates,now 5.0.2-0ubuntu1~26.04.1 amd64 [installed,automatic]
+python3-markupsafe/resolute,now 3.0.3-1build1 amd64 [installed,automatic]
+python3-minimal/resolute,now 3.14.3-0ubuntu2 amd64 [installed,automatic]
+python3-more-itertools/resolute,now 10.8.0-1build1 all [installed,automatic]
+python3-netplan/resolute-updates,now 1.2-1ubuntu5.1 amd64 [installed,automatic]
+python3-oauthlib/resolute,now 3.3.1-1build1 all [installed,automatic]
+python3-passlib/resolute,now 1.9.3-1ubuntu1 all [installed,automatic]
+python3-pkg-resources/resolute,now 78.1.1-0.1build1 all [installed,automatic]
+python3-prettytable/resolute,now 3.16.0-1build1 all [installed,automatic]
+python3-pyparsing/resolute,now 3.3.2-2 all [installed,automatic]
+python3-rados/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+python3-rbd/resolute,now 20.2.0-0ubuntu2 amd64 [installed,automatic]
+python3-referencing/resolute,now 0.36.2-1ubuntu2 all [installed,automatic]
+python3-requests/resolute-updates,resolute-security,now 2.32.5+dfsg-1ubuntu1.1 all [installed,automatic]
+python3-rpds-py/resolute,now 0.27.1-2ubuntu3 amd64 [installed,automatic]
+python3-serial/resolute,now 3.5-2build1 all [installed,automatic]
+python3-setuptools/resolute,now 78.1.1-0.1build1 all [installed,automatic]
+python3-typeguard/resolute,now 4.4.4-2 all [installed,automatic]
+python3-typing-extensions/resolute,now 4.15.0-2 all [installed,automatic]
+python3-update-manager/resolute,now 1:26.04.5 all [installed,automatic]
+python3-urllib3/resolute-updates,resolute-security,now 2.6.3-1ubuntu1.1 all [installed,automatic]
+python3-wadllib/resolute,now 2.0.0-3 all [installed,automatic]
+python3-wcwidth/resolute,now 0.2.14+dfsg1-1build1 all [installed,automatic]
+python3-xkit/resolute,now 0.5.0ubuntu8 all [installed,automatic]
+python3-yaml/resolute,now 6.0.3-1build1 amd64 [installed,automatic]
+python3-zipp/resolute,now 3.23.0-1build1 all [installed,automatic]
+python3.14-minimal/resolute-updates,resolute-security,now 3.14.4-1ubuntu0.2 amd64 [installed,automatic]
+python3.14/resolute-updates,resolute-security,now 3.14.4-1ubuntu0.2 amd64 [installed,automatic]
+python3/resolute,now 3.14.3-0ubuntu2 amd64 [installed,automatic]
+readline-common/resolute,now 8.3-4 all [installed,automatic]
+rng-tools-debian/resolute,now 2.6build1 amd64 [installed]
+rpcbind/resolute,now 1.2.7-1build2 amd64 [installed,automatic]
+rpcsvc-proto/resolute,now 1.4.3-1build1 amd64 [installed,automatic]
+rsyslog/resolute-updates,resolute-security,now 8.2512.0-1ubuntu4.2 amd64 [installed]
+rust-coreutils/resolute-updates,now 0.10.0-1ubuntu2~26.04.1 amd64 [installed]
+sbsigntool/resolute,now 0.9.4-3.1ubuntu9 amd64 [installed,automatic]
+screen/resolute,now 4.9.1-3ubuntu2 amd64 [installed,automatic]
+secureboot-db/resolute,now 1.9build2 amd64 [installed]
+sed/resolute-updates,resolute-security,now 4.9-2ubuntu1 amd64 [installed,automatic]
+sensible-utils/resolute,now 0.0.26build1 all [installed,automatic]
+shim-signed/resolute,now 1.59+15.8-0ubuntu2 amd64 [installed]
+socat/resolute-updates,resolute-security,now 1.8.1.1-1ubuntu0.1 amd64 [installed]
+ssh-import-id/resolute,now 5.11-0ubuntu4 all [installed]
+stunnel4/resolute,now 3:5.77-1 amd64 [installed,automatic]
+sudo-common/resolute,now 1.2ubuntu all [installed,automatic]
+sudo-rs/resolute-updates,resolute-security,now 0.2.13-0ubuntu1.2 amd64 [installed]
+sudo/resolute-updates,resolute-security,now 1.9.17p2-1ubuntu3.1 amd64 [installed]
+sysfsutils/resolute,now 2.1.1-7build1 amd64 [installed]
+sysstat/resolute,now 12.7.7-0ubuntu2 amd64 [installed]
+systemd-resolved/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed]
+systemd-sysv/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed]
+systemd/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed]
+sysvinit-utils/resolute,now 3.15-5ubuntu1 amd64 [installed,automatic]
+tar/resolute-updates,resolute-security,now 1.35+dfsg-4ubuntu0.4 amd64 [installed]
+tpm-udev/resolute,now 4.1.3-6 all [installed,automatic]
+tzdata/resolute-updates,resolute-security,now 2026c-0ubuntu0.26.04.1 all [installed,automatic]
+ubuntu-drivers-common/resolute,now 1:0.10.9 amd64 [installed]
+ubuntu-keyring/resolute,now 2023.11.28.1build1 all [installed,automatic]
+ubuntu-pro-client/resolute-updates,resolute-security,now 37.2ubuntu0.1 amd64 [installed]
+ubuntu-release-upgrader-core/resolute-updates,now 1:26.04.25 all [installed]
+ucf/resolute,now 3.0052ubuntu1 all [installed,automatic]
+udev/resolute-updates,resolute-security,now 259.5-0ubuntu3.4 amd64 [installed]
+unattended-upgrades/resolute,now 2.12ubuntu9 all [installed]
+unminimize/resolute,now 0.5build1 amd64 [installed]
+usb.ids/resolute,now 2025.12.13-1 all [installed,automatic]
+usbutils/resolute,now 1:019-1 amd64 [installed,automatic]
+util-linux/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed]
+uuid-runtime/resolute-updates,resolute-security,now 2.41.3-3ubuntu2.2 amd64 [installed,automatic]
+walinuxagent/resolute,now 2.15.0.1-0ubuntu2 amd64 [installed]
+wget/resolute-updates,resolute-security,now 1.25.0-2ubuntu4.4 amd64 [installed,automatic]
+whiptail/resolute,now 0.52.25-1ubuntu3 amd64 [installed,automatic]
+xfsprogs/resolute,now 6.18.0-3 amd64 [installed,automatic]
+xkb-data/resolute,now 2.46-2 all [installed,automatic]
+xxd/resolute-updates,resolute-security,now 2:9.1.2141-1ubuntu4.9 amd64 [installed]
+xz-utils/resolute,now 5.8.3-1 amd64 [installed]
+zip/resolute,now 3.0-15ubuntu3 amd64 [installed]
+zlib1g/resolute-updates,resolute-security,now 1:1.3.dfsg+really1.3.1-1ubuntu3.1 amd64 [installed,automatic]
+zstd/resolute,now 1.5.7+dfsg-3 amd64 [installed,automatic]
+=== Installed Packages End
+Disk usage:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        28G   20G  8.3G  71% /
+tmpfs            32G     0   32G   0% /dev/shm
+tmpfs            13G  820K   13G   1% /run
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+tmpfs            32G  4.0K   32G   1% /tmp
+none            1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+/dev/sda13      989M  122M  800M  14% /boot
+/dev/sda15      105M  6.3M   99M   7% /boot/efi
+none            1.0M     0  1.0M   0% /run/credentials/systemd-networkd.service
+/dev/sdb1       590G  2.1M  560G   1% /mnt
+none            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+none            1.0M     0  1.0M   0% /run/credentials/serial-getty@ttyS0.service
+tmpfs           6.3G  4.0K  6.3G   1% /run/user/1000
+=== os-release Begin
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04.1 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=resolute
+LOGO=ubuntu-logo
+=== os-release End
+PUUID: BootCurrent: 0001
+Timeout: 0 seconds
+BootOrder: 0001
+Boot0000* MsTemp	AcpiEx(VMBus,,)/VenHw(9b17e5a2-0891-42dd-b653-80b5c22809ba,d96361baa104294db60572e2ffb1dc7f1a78b3f8821e1848a1c363d806ec15bb)/SCSI(0,0)/HD(15,GPT,214199bf-1765-4696-ab45-dbebc050692b,0x202800,0x35000)
+      dp: 02 02 18 00 00 00 00 00 00 00 00 00 00 00 00 00 56 4d 42 75 73 00 00 00 / 01 04 34 00 a2 e5 17 9b 91 08 dd 42 b6 53 80 b5 c2 28 09 ba d9 63 61 ba a1 04 29 4d b6 05 72 e2 ff b1 dc 7f 1a 78 b3 f8 82 1e 18 48 a1 c3 63 d8 06 ec 15 bb / 03 02 08 00 00 00 00 00 / 04 01 2a 00 0f 00 00 00 00 28 20 00 00 00 00 00 00 50 03 00 00 00 00 00 bf 99 41 21 65 17 96 46 ab 45 db eb c0 50 69 2b 02 02 / 7f ff 04 00
+Boot0001* Ubuntu	HD(15,GPT,214199bf-1765-4696-ab45-dbebc050692b,0x202800,0x35000)/FIuntu\shimx64.efi
+      dp: 04 01 2a 00 0f 00 00 00 00 28 20 00 00 00 00 00 00 50 03 00 00 00 00 00 bf 99 41 21 65 17 96 46 ab 45 db eb c0 50 69 2b 02 02 / 04 04 34 00 5c 00 45 00 46 00 49 00 5c 00 75 00 62 00 75 00 6e 00 74 00 75 00 5c 00 73 00 68 00 69 00 6d 00 78 00 36 00 34 00 2e 00 65 00 66 00 69 00 00 00 / 7f ff 04 00
+Using kernel:
+Linux version 7.0.0-1017-azure (buildd@lcy02-amd64-092) (x86_64-linux-gnu-gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0, GNU ld (GNU Binutils for Ubuntu) 2.46) #17-Ubuntu SMP PREEMPT Thu Sep 24 15:54:51 UTC 2026
+Install completed successfully on  Sat Oct 3 18:53:38 UTC 2026
+VSTS Build NUMBER: 20261003.1_main_184030976
+VSTS Build ID: 184030976
+Commit: aab2c4cfd01f05f6e39317b4221ed43e502eb5e6
+Ubuntu version: 26.04
+Hyperv generation: V2
+Feature flags: minimal
+FIPS enabled: False
