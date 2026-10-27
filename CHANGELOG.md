@@ -27,7 +27,7 @@ More information on supported versions and version support policy is available i
   * [Capacity Reservation Groups](https://learn.microsoft.com/azure/aks/use-capacity-reservation-groups).
   * The Capacity Buffers CRD, which specifies a fixed number of surplus nodes.
   * OS disk type selection with the `osDiskType` field in the `AKSNodeClass` CRD.
-  * [Pinning the current node image version and specify Kubernetes versions](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image).
+  * [Pinning the current node image version and specifying Kubernetes versions](https://learn.microsoft.com/azure/aks/node-auto-provisioning-upgrade-image).
   * [Trusted Launch](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass#enable-trusted-launch-in-nap-clusters) through the `AKSNodeClass` CRD.
   * [Azure Container Linux](https://learn.microsoft.com/azure/aks/node-autoprovision-aksnodeclass#image-family-configuration) as the node OS.
   * [Managed GPU](https://learn.microsoft.com/azure/aks/aks-managed-gpu-nodes), enabled with a field in the `AKSNodeClass` CRD.
