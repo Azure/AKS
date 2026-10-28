@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: managed-gpu-inference
+  labels:
+    app.kubernetes.io/part-of: managed-gpu-inference-service
+    aks.azure.com/example: managed-gpu-inference-service
