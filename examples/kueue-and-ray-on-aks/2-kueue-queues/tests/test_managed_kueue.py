@@ -1,6 +1,7 @@
 """Offline contract checks for the managed Kueue examples; no cluster access."""
 
 from pathlib import Path
+import re
 import unittest
 
 import yaml
@@ -74,6 +75,16 @@ class ManagedKueueExamplesTest(unittest.TestCase):
         self.assertNotIn("admitted once nodes exist", guide)
         self.assertIn("Nodes aren't `Ready`, or a node label doesn't match", guide)
         self.assertIn('id="why-this-matters-no-wasted-spend-on-partial-capacity"', guide)
+
+    def test_cpu_azure_mutations_are_explicitly_subscription_scoped(self):
+        guide = (EXAMPLES / "3-workloads/cas-batch-job/README.md").read_text()
+        commands = re.findall(
+            r'^\s*az aks (?:nodepool (?:add|delete)|update)\b[^\n]*',
+            guide.replace("\\\n", " "), re.MULTILINE,
+        )
+        self.assertEqual(len(commands), 3)
+        for command in commands:
+            self.assertIn('--subscription "$SUBSCRIPTION_ID"', command)
 
     def test_ray_flavors_remain_customer_owned(self):
         flavors = objects(MODULE / "manifests/10-resource-flavors.yaml")

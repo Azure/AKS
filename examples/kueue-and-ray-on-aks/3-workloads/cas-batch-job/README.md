@@ -56,7 +56,8 @@ on the cluster, for example:
 
 ```bash
 az aks update \
-  --resource-group <rg> --name <cluster> \
+  --subscription "$SUBSCRIPTION_ID" \
+  --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME" \
   --cluster-autoscaler-profile \
       scale-down-unneeded-time=1m \
       scale-down-delay-after-add=1m \
@@ -97,12 +98,13 @@ might still wait for nodes to join and become `Ready`.
   [managed Kueue extension installed and verified](../../2-kueue-queues/#install-and-verify-managed-kueue).
   Don't install it beside Module 1's self-managed Helm controller. This CPU-only
   example doesn't require Terraform, Ray, a GPU, storage, or workload identity.
-- An autoscaling CPU user pool named `scalepool`. Use the `RESOURCE_GROUP` and
-  `CLUSTER_NAME` variables from the managed setup. If the pool doesn't exist, add
+- An autoscaling CPU user pool named `scalepool`. Use the `SUBSCRIPTION_ID`,
+  `RESOURCE_GROUP`, and `CLUSTER_NAME` variables from the managed setup. If the pool doesn't exist, add
   it with one initial node:
 
   ```bash
   az aks nodepool add \
+    --subscription "$SUBSCRIPTION_ID" \
     --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
     --name scalepool --mode User \
     --node-vm-size Standard_D4s_v6 --node-count 1 \
@@ -243,6 +245,7 @@ before deleting it. Skip this command for an existing shared pool:
 
 ```bash
 az aks nodepool delete \
+  --subscription "$SUBSCRIPTION_ID" \
   --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
   --name scalepool
 ```
