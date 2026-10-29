@@ -1,10 +1,15 @@
 # cas-batch-job — provision capacity with managed Kueue and the cluster autoscaler
 
 A plain Kubernetes batch Job that demonstrates the **ProvisioningRequest → AKS
-cluster autoscaler (CAS)** path. The other Module 3 workloads admit against a
-fixed quota on an already-provisioned GPU node; this one instead asks CAS to
-*grow* an autoscaling CPU pool before the Job is admitted, so batch capacity is
-provisioned just-in-time.
+cluster autoscaler (CAS)** path. The Ray batch workloads admit against a
+fixed quota on an already-provisioned GPU node; this one requests or provisions
+capacity in an autoscaling CPU pool's virtual machine scale set (VMSS) before
+the Job is admitted.
+
+A `Provisioned=True` condition doesn't guarantee `Ready` Kubernetes nodes.
+Placement checks for the managed `aks-default` hostname topology can delay
+admission while eligible nodes become `Ready`. Pods can remain Pending after
+admission while instances join the cluster.
 
 This isolates the Kueue↔CAS integration from the Ray runtime — it's the
 simplest way to see a *provision-first* scale-up end to end.
@@ -21,26 +26,28 @@ Kueue creates a Workload ──► AdmissionCheck aks-provisioning-check
    │                        ProvisioningRequest  ──►  cluster autoscaler
    │                              │                     atomically scales
    │                              ▼                     up `scalepool`
-   └──── admitted once nodes exist ◄── Provisioned=True
+   └──── provisioning gate passes ◄── Provisioned=True
    │
    ▼
-suspend flips to false → 3 pods schedule on the new nodes → Job completes
+Kueue placement/topology checks → Workload admitted → suspend: false
+   │
+   ▼
+pods schedule when eligible nodes are Ready → Job completes
 ```
 
-The atomic `best-effort-atomic-scale-up.autoscaling.x-k8s.io` provisioning class
-adds the whole capacity block at once, avoiding the half-scheduled gang problem
-where some pods land and others sit Pending.
+The `best-effort-atomic-scale-up.autoscaling.x-k8s.io` provisioning class requests
+an atomic capacity increase. This gate concerns VMSS capacity, not Kubernetes
+node readiness or simultaneous pod scheduling.
 
-### Why this matters: no wasted spend on partial capacity
+<a id="why-this-matters-no-wasted-spend-on-partial-capacity"></a>
 
-Because pods stay gated until the *entire* capacity block is provisioned, the
-cluster autoscaler can quickly clean up partially provisioned nodes — no pods
-have been scheduled on them, so nothing blocks scale-down. This is especially
-valuable when a scale-up is cut short by capacity or quota limits: instead of
-paying for a handful of nodes that sit half-used while the gang waits, the
-autoscaler reclaims them and the Job simply stays suspended until the full
-block can be satisfied. For gang-scheduled batch and AI training jobs, this
-significantly reduces wasteful compute spend.
+### Why this matters: reduce spend on partial capacity
+
+The Job remains suspended while the provisioning gate is pending, so its pods
+don't occupy a partially provisioned capacity block. If the request can't be
+satisfied, CAS can reclaim unused nodes according to the cluster autoscaler
+profile. Other workloads, node-joining delays, and profile settings can still
+affect reclamation timing and cost.
 
 If you are cost sensitive and want those partially provisioned nodes released
 as fast as possible, run an aggressive scale-down
@@ -79,8 +86,10 @@ state reached tells you which component to look at — see
 | 8 | Pods scheduled on new nodes | `kubectl -n cas-kueue-demo get pods -o wide` |
 | 9 | Job completes | `kubectl -n cas-kueue-demo get job kueue-cas-job` → `Complete 3/3` |
 
-Steps 4–5 are the CAS scale-up and take the longest — allow a few minutes for
-new nodes to join.
+Steps 4–5 cover capacity provisioning. Node readiness is separate:
+`Provisioned=True` at step 5 doesn't confirm that all new nodes are `Ready`.
+Placement and other admission checks can delay step 6. After admission, pods
+might still wait for nodes to join and become `Ready`.
 
 ## Prerequisites
 
@@ -146,7 +155,7 @@ kubectl -n cas-kueue-demo get job kueue-cas-job
 kubectl -n cas-kueue-demo get workloads
 kubectl -n cas-kueue-demo get provisioningrequest
 
-# CAS provisions the nodes (Provisioned=True), the pool grows
+# CAS reports provisioning; check node readiness separately
 kubectl -n cas-kueue-demo get provisioningrequest -o yaml | grep -A5 conditions
 kubectl get nodes -l agentpool=scalepool
 
@@ -192,7 +201,8 @@ kubectl -n kube-system describe configmap cluster-autoscaler-status
 | Job stays `Suspended`, no ProvisioningRequest | Wrong queue-name label | Verify `kueue.x-k8s.io/queue-name: cas-local-queue` matches the LocalQueue |
 | ProvisioningRequest created but `status.conditions` empty | Cluster autoscaler not yet processing the request | Check the autoscaler is enabled on `scalepool` and re-check after a minute |
 | `Provisioned=False` with reason `CapacityIsNotFound` | Pool can't reach the requested size — existing workloads occupy it, or the request exceeds `--max-count` | Free capacity or raise `--max-count`. CAS keeps retrying; the Job stays suspended rather than partially scheduling |
-| Pods Pending after admission | Node label mismatch | Confirm `scalepool` nodes carry `agentpool=scalepool` (`kubectl get nodes --show-labels`) |
+| `Provisioned=True`, but the Job stays suspended | Placement, topology, or another admission check is still pending | Inspect Workload conditions and admission-check state, and check eligible nodes' `Ready` conditions. Don't patch the managed defaults. |
+| Pods Pending after admission | Nodes aren't `Ready`, or a node label doesn't match | Check node conditions and pod events, then confirm `scalepool` nodes carry `agentpool=scalepool` (`kubectl get nodes --show-labels`) |
 
 ## Clean up
 

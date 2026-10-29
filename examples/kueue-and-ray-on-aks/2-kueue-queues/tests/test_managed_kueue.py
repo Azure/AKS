@@ -65,6 +65,16 @@ class ManagedKueueExamplesTest(unittest.TestCase):
         ):
             self.assertLess(guide.index(check), apply)
 
+    def test_provisioned_capacity_does_not_imply_node_readiness(self):
+        guide = (EXAMPLES / "3-workloads/cas-batch-job/README.md").read_text()
+        prose = " ".join(guide.split())
+        self.assertIn("A `Provisioned=True` condition doesn't guarantee `Ready` Kubernetes nodes", prose)
+        self.assertIn("`aks-default` hostname topology can delay admission", prose)
+        self.assertIn("not Kubernetes node readiness or simultaneous pod scheduling", prose)
+        self.assertNotIn("admitted once nodes exist", guide)
+        self.assertIn("Nodes aren't `Ready`, or a node label doesn't match", guide)
+        self.assertIn('id="why-this-matters-no-wasted-spend-on-partial-capacity"', guide)
+
     def test_ray_flavors_remain_customer_owned(self):
         flavors = objects(MODULE / "manifests/10-resource-flavors.yaml")
         self.assertEqual({item["metadata"]["name"] for item in flavors}, {"default", "gpu"})
