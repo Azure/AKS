@@ -1,7 +1,10 @@
 """Offline contract checks for the managed Kueue examples; no cluster access."""
 
 from pathlib import Path
+import os
 import re
+import subprocess
+import tempfile
 import unittest
 
 import yaml
@@ -119,6 +122,20 @@ class ManagedKueueExamplesTest(unittest.TestCase):
         self.assertIn("OPTIONAL", custom)
         self.assertIn("managed Kueue/KubeRay", custom)
         self.assertIn("Prefer existing AKS-managed ResourceFlavors", custom)
+
+    def test_manual_install_uses_one_owned_kubeconfig_not_inherited_list(self):
+        guide = (MODULE / "README.md").read_text()
+        line = next(value for value in guide.splitlines() if value.startswith("export KUBECONFIG="))
+        self.assertEqual(line, 'export KUBECONFIG="$PWD/.managed/kubeconfig"')
+        with tempfile.TemporaryDirectory() as temporary:
+            value = subprocess.check_output(
+                ["bash", "-c", line + '\nprintf "%s" "$KUBECONFIG"'],
+                cwd=temporary, text=True,
+                env=dict(os.environ, KUBECONFIG="/unrelated/first:/unrelated/second"),
+            )
+            self.assertEqual(Path(value).resolve(), (Path(temporary) / ".managed/kubeconfig").resolve())
+            self.assertNotIn(":", value)
+        self.assertIn('--file "$KUBECONFIG" --overwrite-existing', guide)
 
     def test_ray_flavors_remain_customer_owned(self):
         flavors = objects(MODULE / "manifests/10-resource-flavors.yaml")

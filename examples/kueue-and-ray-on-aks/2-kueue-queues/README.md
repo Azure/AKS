@@ -42,7 +42,9 @@ Waiting later doesn't register a controller that skipped startup setup. Don't
 install a shared CRD or another controller as a workaround.
 
 For the full lifecycle, see [Install managed Kueue on AKS](https://learn.microsoft.com/azure/aks/configure-queues-with-automatic-resource-flavors).
-Select your target explicitly:
+Run this section from `examples/kueue-and-ray-on-aks/2-kueue-queues`. It writes
+one example-owned kubeconfig file, not an inherited file list. Select the target
+explicitly:
 
 ```bash
 export SUBSCRIPTION_ID="<subscription-id>"
@@ -55,7 +57,7 @@ az login
 az extension add --name k8s-extension --upgrade
 az provider register --subscription "$SUBSCRIPTION_ID" \
   --namespace Microsoft.KubernetesConfiguration --wait
-export KUBECONFIG="${KUBECONFIG:-$PWD/.managed/kubeconfig}"
+export KUBECONFIG="$PWD/.managed/kubeconfig"
 umask 077
 mkdir -p "$(dirname "$KUBECONFIG")"
 az aks get-credentials --subscription "$SUBSCRIPTION_ID" \
