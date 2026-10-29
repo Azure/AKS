@@ -153,7 +153,19 @@ AKS lowered its default memory reservations in Kubernetes 1.29 to give pods more
 
 Each value combines kube-reserved memory, system-reserved memory, and the hard eviction threshold, with the share of node memory in parentheses. Values before 1.29 are calculated from the [documented reservation formulas](https://learn.microsoft.com/azure/aks/node-resource-reservations), and the other values are measured.
 
-**What this means for you:** Before you enable Node Hardening, check how close your nodes run to their allocatable memory. Workloads that fit on a node today might need a few percent more nodes afterward.
+### Lowering kube-reserved memory
+
+To see how much of the stability gain depends on the size of the reservation, we repeated the [memory-held-near-capacity](#memory-held-near-capacity-hardened-nodes-stayed-ready) scenario on hardened 16 GiB nodes with three kube-reserved memory values: the default, 300 MiB less, and the minimum allowed value of 750 MiB.
+
+| Kube-reserved memory | Memory withheld from pods | Trials where the node went NotReady | Lowest available node memory (median) | Lowest kubelet and containerd page cache (median) |
+| --- | ---: | ---: | ---: | ---: |
+| 1,377 MiB (default) | 2,052 MiB | 0 of 5 | 667 MiB | 261 MiB |
+| 1,077 MiB | 1,752 MiB | 0 of 5 | 368 MiB | 171 MiB |
+| 750 MiB (minimum) | 1,425 MiB | 0 of 5 | 124 MiB | 59 MiB |
+
+All three nodes stayed Ready, and the well-behaved app didn't fail a single request. In this scenario, enforcement kept the node Ready: once the pods were capped and the kubelet and containerd had their own cgroup, even the minimum reservation was enough. The size of the reservation sets the safety margin. At 750 MiB, the kernel squeezed the page cache that the kubelet and containerd rely on to about 60 MiB, and the node had only about 125 MiB of memory available. Our test node ran well below its 30-pod maximum. With more pods, image pulls, or container churn, the kubelet and containerd need more memory, which is why the default scales with the maximum number of pods per node.
+
+**What this means for you:** Before you enable Node Hardening, check how close your nodes run to their allocatable memory. Workloads that fit on a node today might need a few percent more nodes afterward. If you need that capacity back, you can lower kube-reserved memory for a node pool, but validate the new value with your own pod density and churn first.
 
 ## Other observations
 
