@@ -1,32 +1,16 @@
-# Module 1 — Prepare a managed Ray and Kueue cluster
+# Module 1 — Prepare managed infrastructure
 
-Use the **managed KubeRay and Kueue extensions** for the recommended example path.
-Prepare an AKS cluster and its capacity, install the managed operators, and then
-configure storage and workload identity before running Modules 2 and 3.
+Use the **managed KubeRay and Kueue extensions** for these examples. Select an
+AKS target with no self-installed Kueue or KubeRay controllers, prepare its
+capacity, and install the managed operators before configuring queues.
 
-1. Follow [Managed setup](managed/) for the executable operator installer and
-   Azure CLI storage/identity commands. It uses your explicitly selected AKS
-   cluster and a private kubeconfig, not global context changes.
-2. [Configure your customer-owned queues](../2-kueue-queues/).
-3. [Run the workload examples](../3-workloads/).
+1. Follow [Managed setup](managed/) for prerequisites, the executable extension
+   installer, and storage/workload identity preparation.
+2. Complete [dataset preparation](managed/data.md) for the workload you choose.
+3. Continue to [Module 2 — Queues](../2-kueue-queues/) after the platform and
+   workload dependencies pass their verification checks.
 
-The CPU autoscaler demo is independent: it needs managed Kueue and an autoscaling
-CPU user pool, but no Ray runtime, GPU, storage, or workload identity. See its
-[own prerequisites](../3-workloads/cas-batch-job/#prerequisites).
-
-## Installation choices
-
-| Path | Operator ownership | When to use it |
-| --- | --- | --- |
-| **Managed setup — recommended** | Azure extension resources `microsoft.kuberay` and `microsoft.kueue`. | Validate and run the managed-first Learn walkthroughs. |
-| [Legacy Terraform alternative](terraform/legacy-guide.md) | Self-managed KubeRay/Kueue Helm releases. | Deliberately run the existing all-in-one self-managed lab. |
-
-Don't apply both installations to the same cluster. This change doesn't migrate
-Terraform state, uninstall existing controllers, adopt Helm ownership, or modify
-the legacy Terraform resources. Use a clean target or an owner-reviewed removal
-plan if a self-hosted operator is already present.
-
-The managed extensions install the operators and supported APIs. You still own
-your Ray runtime images, application code, queue policies, storage, and workload
-identity. Installing an operator doesn't create the datasets or authorize pods
-to read them.
+The managed extensions supply the operators and supported APIs. You still
+configure the Ray runtime images, application code, queue policies, storage,
+and workload identity. Operator readiness alone doesn't create datasets or
+authorize application access to them.

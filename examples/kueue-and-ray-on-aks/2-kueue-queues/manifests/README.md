@@ -1,25 +1,30 @@
 # Kueue queue manifests
 
-Use these files with the [managed Kueue setup and verification steps](../README.md).
-Apply only the demo you choose, not the whole directory.
+Use the [managed Kueue and KubeRay setup](../README.md). Apply one queue policy,
+not the whole folder.
 
 | File | Ownership and purpose |
 | --- | --- |
-| `00-namespace.yaml` | Creates the customer-owned `ray` namespace for Ray demos. |
-| `10-resource-flavors.yaml` | Creates customer-owned `default` and `gpu` flavors for the Ray demos. It doesn't replace generated AKS flavors. |
-| `20-single-queue.yaml` | Creates the `cluster-queue` ClusterQueue and `default` LocalQueue. |
-| `30-team-queues.yaml` | Creates `team-a-cq` and `team-b-cq` ClusterQueues with cohort borrowing, plus their LocalQueues. Use instead of the single queue. |
-| `40-autoscale-queue.yaml` | Creates the CPU demo's namespace, ClusterQueue, and LocalQueue. References existing managed `aks-cpu` and `aks-provisioning-check` resources. |
+| `00-namespace.yaml` | Customer-owned `ray` namespace. Prepare its workload identity through Module 2. |
+| `15-managed-queue.yaml.tmpl` | Recommended Ray queue policy, rendered with existing verified managed CPU/GPU ResourceFlavors. Creates only queues. |
+| `10-resource-flavors.yaml` | Optional customer-owned `default`/`gpu` placement flavors, only when managed flavors don't meet your policy. Never replaces `aks-*` objects. |
+| `20-single-queue.yaml` | Optional fixed-quota policy for the custom `default`/`gpu` flavors. |
+| `30-team-queues.yaml` | Optional team/cohort/borrowing policy for custom flavors. Use instead of the single queue. |
+| `40-autoscale-queue.yaml` | CPU demo namespace/queues referencing managed `aks-cpu` and `aks-provisioning-check`. |
 
-The CPU autoscale demo needs only `40-autoscale-queue.yaml`, after verifying its
-managed defaults and autoscaling pool. It doesn't use the Ray namespace,
-ServiceAccount, or the customer-owned Ray flavors.
+Start with `15-managed-queue.yaml.tmpl` for Ray. GPU flavor names vary, so inspect
+the cluster and render the names as described in the parent guide. Verify their
+node selectors, topology, and physical resources. Don't combine a CPU-only
+flavor's selector with a GPU flavor for the same worker's CPU/GPU requests.
 
-For either Ray demo, prepare the `ray` namespace and authorized workload identity,
-apply `10-resource-flavors.yaml`, and then choose **either**
-`20-single-queue.yaml` **or** `30-team-queues.yaml`. Follow the parent guide for
-verification, quota sizing, safe switching, and cleanup.
+If you need a custom placement policy, explicitly choose `10-resource-flavors.yaml`
+and either `20-single-queue.yaml` or `30-team-queues.yaml` instead. The operators
+remain managed in every case.
 
-Don't create, edit, or delete the managed `aks-*` defaults. Deleting
-`40-autoscale-queue.yaml` removes only the example's customer-owned namespace and
-queues, not the managed provisioning check, config, or flavor.
+The independent CPU autoscaler demo needs only `40-autoscale-queue.yaml` after its
+pool, API, and defaults pass verification. It doesn't need the Ray namespace,
+ServiceAccount, GPU flavors, storage, or dataset preparation.
+
+Delete only the workloads and customer-owned policy objects you created. Keep
+managed flavors, priority classes, admission/provisioning defaults, and shared
+CRDs intact. See [cleanup](../README.md#clean-up) for the selected policy.

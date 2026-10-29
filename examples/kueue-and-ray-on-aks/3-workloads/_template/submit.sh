@@ -3,7 +3,7 @@
 #
 # Usage:
 #   source env.example              # set required variables
-#   export AZURE_STORAGE_ACCOUNT_NAME=$(terraform -chdir=../../1-infrastructure/terraform output -raw storage_account_name)
+#   export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
 #   ./submit.sh [--dry-run]
 #
 # What it does:

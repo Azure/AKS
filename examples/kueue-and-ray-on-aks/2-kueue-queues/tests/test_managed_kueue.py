@@ -86,6 +86,40 @@ class ManagedKueueExamplesTest(unittest.TestCase):
         for command in commands:
             self.assertIn('--subscription "$SUBSCRIPTION_ID"', command)
 
+    def test_recommended_ray_policy_references_existing_managed_flavors(self):
+        template = (MODULE / "manifests/15-managed-queue.yaml.tmpl").read_text()
+        rendered = template.replace("${CPU_RESOURCE_FLAVOR}", "aks-cpu").replace(
+            "${GPU_RESOURCE_FLAVOR}", "fixture-managed-gpu"
+        )
+        resources = [item for item in yaml.safe_load_all(rendered) if item]
+        self.assertEqual({item["kind"] for item in resources}, {"ClusterQueue", "LocalQueue"})
+        self.assertEqual(len(resources), 2)
+        queue = next(item for item in resources if item["kind"] == "ClusterQueue")
+        local = next(item for item in resources if item["kind"] == "LocalQueue")
+        self.assertEqual(local["spec"]["clusterQueue"], queue["metadata"]["name"])
+        self.assertEqual(queue["spec"]["namespaceSelector"]["matchLabels"],
+                         {"kubernetes.io/metadata.name": local["metadata"]["namespace"]})
+        groups = queue["spec"]["resourceGroups"]
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(set(groups[0]["coveredResources"]), {"cpu", "memory", "nvidia.com/gpu"})
+        self.assertEqual([item["name"] for item in groups[0]["flavors"]],
+                         ["aks-cpu", "fixture-managed-gpu"])
+        for flavor in groups[0]["flavors"]:
+            self.assertEqual({r["name"] for r in flavor["resources"]},
+                             {"cpu", "memory", "nvidia.com/gpu"})
+        gpu_quota = next(r for r in groups[0]["flavors"][0]["resources"] if r["name"] == "nvidia.com/gpu")
+        self.assertEqual(str(gpu_quota["nominalQuota"]), "0")
+
+    def test_managed_policy_is_recommended_and_custom_flavors_are_optional(self):
+        guide = (MODULE / "README.md").read_text()
+        self.assertLess(guide.index("### Use managed Ray placement flavors"),
+                        guide.index("### Optional custom placement and queue policies"))
+        self.assertIn("manifests/15-managed-queue.yaml.tmpl", guide)
+        custom = (MODULE / "manifests/10-resource-flavors.yaml").read_text()
+        self.assertIn("OPTIONAL", custom)
+        self.assertIn("managed Kueue/KubeRay", custom)
+        self.assertIn("Prefer existing AKS-managed ResourceFlavors", custom)
+
     def test_ray_flavors_remain_customer_owned(self):
         flavors = objects(MODULE / "manifests/10-resource-flavors.yaml")
         self.assertEqual({item["metadata"]["name"] for item in flavors}, {"default", "gpu"})

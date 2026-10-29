@@ -1,7 +1,9 @@
-# Customer-owned Ray placement flavors. Use these with either the managed
-# Kueue controller or the separate self-managed Terraform alternative.
-# They don't replace or modify the generated aks-* flavors. The managed CPU
-# autoscale demo uses aks-cpu directly and doesn't apply this file.
+# OPTIONAL customer-owned placement flavors for the managed Kueue/KubeRay example.
+# Prefer existing AKS-managed ResourceFlavors with 15-managed-queue.yaml.tmpl.
+# Apply this file only when those flavors don't meet your placement policy and
+# you choose the custom 20/30 queue examples. It installs no controllers and
+# never replaces or modifies generated aks-* flavors. The CPU autoscale demo
+# uses aks-cpu directly and doesn't apply this file.
 #
 # Two flavors:
 #   - default: matches any node (used for CPU-only pods like the Ray head)

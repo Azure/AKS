@@ -96,8 +96,8 @@ might still wait for nodes to join and become `Ready`.
 
 - An AKS cluster running Kubernetes 1.34 or later with the
   [managed Kueue extension installed and verified](../../2-kueue-queues/#install-and-verify-managed-kueue).
-  Don't install it beside Module 1's self-managed Helm controller. This CPU-only
-  example doesn't require Terraform, Ray, a GPU, storage, or workload identity.
+  Don't add managed operators beside self-installed Kueue or KubeRay controllers.
+  This CPU-only example doesn't require Ray, a GPU, storage, or workload identity.
 - An autoscaling CPU user pool named `scalepool`. Use the `SUBSCRIPTION_ID`,
   `RESOURCE_GROUP`, and `CLUSTER_NAME` variables from the managed setup. If the pool doesn't exist, add
   it with one initial node:

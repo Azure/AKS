@@ -85,7 +85,6 @@ training writes its LoRA adapter and pointer under `lora/`; run batch inference
 only after those artifacts exist. Online serving similarly requires the Aurora
 checkpoint from a completed fine-tuning Job.
 
-The legacy Terraform upload helpers have their own behavior and aren't invoked
-by this managed path. Dataset uploads, successful identity authentication, model
-training, inference, and serving must be observed separately; an operator
-readiness check or a rendered manifest doesn't prove them.
+Verify dataset uploads, identity authentication, model training, inference, and
+serving separately. Operator readiness or a rendered manifest doesn't prove
+application execution or stored results.

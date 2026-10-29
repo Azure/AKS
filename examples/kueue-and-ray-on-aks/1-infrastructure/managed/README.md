@@ -1,19 +1,18 @@
 # Managed KubeRay and Kueue setup
 
-This is the recommended operator setup for these examples. It installs the
-customer-visible `microsoft.kuberay` and `microsoft.kueue` extensions through Azure,
-not self-hosted Helm releases. The legacy Terraform lab remains an
-[explicit alternative](../terraform/legacy-guide.md).
+Install the customer-visible `microsoft.kuberay` and `microsoft.kueue` extensions
+through Azure. These managed extensions are the operator setup used throughout
+all three example modules.
 
 ## Prerequisites
 
-- A clean AKS cluster running Kubernetes 1.34 or later, or an already healthy
-  managed installation. Don't install these operators beside self-hosted ones.
+- An AKS cluster running Kubernetes 1.34 or later with **no self-installed Kueue
+  or KubeRay controllers**. An existing healthy managed installation is acceptable.
+  The installer rejects detected controller/CRD ownership conflicts; it doesn't
+  replace or adopt another installation.
 - Azure CLI 2.70 or later, `k8s-extension` 1.9.3 or later, compatible `kubectl`,
   Python 3.9 or later for preflight checks, Bash, and GNU `envsubst` (gettext)
-  for workload submission. Windows users can use a
-  suitable Bash environment; the legacy Terraform alternative retains its own
-  native PowerShell instructions.
+  for workload submission. Windows users need a suitable Bash environment.
 - Permissions to manage cluster extensions and retrieve cluster credentials.
   The storage steps additionally need resource-management and storage-scoped
   role-assignment permissions.
@@ -56,8 +55,8 @@ registers a controller that skipped setup at startup.
 
 For GPU pools, `accelerator` is a protected AKS label key. Don't attempt to set it
 in `az aks nodepool add --labels`. Verify the actual GPU labels and allocatable
-resources, or adapt your customer-owned flavor selector to an existing pool
-label such as `agentpool: <gpu-pool-name>`.
+resources. Prefer the managed ResourceFlavors when they meet your placement
+requirements. Module 2 explains [managed flavor selection and optional custom policies](../../2-kueue-queues/#use-managed-ray-placement-flavors).
 
 ## Install and verify the managed operators
 
@@ -209,7 +208,8 @@ metadata files under `llm-pipeline/data/`.
 ## Continue to queues and workloads
 
 From `examples/kueue-and-ray-on-aks/2-kueue-queues`, use the managed path to create
-the Ray namespace/service account and choose **one** single/team queue policy.
+the Ray namespace/service account and choose **one** queue policy, starting with
+[managed placement flavors](../../2-kueue-queues/#use-managed-ray-placement-flavors).
 Then supply the account from this setup before sourcing each workload's defaults:
 
 ```bash

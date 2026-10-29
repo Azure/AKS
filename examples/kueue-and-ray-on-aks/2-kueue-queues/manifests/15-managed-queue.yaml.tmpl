@@ -1,0 +1,44 @@
+# Recommended Ray queue policy for managed Kueue and managed KubeRay.
+# Set CPU_RESOURCE_FLAVOR and GPU_RESOURCE_FLAVOR to existing managed flavors
+# verified for the target pools; GPU flavor names depend on the cluster.
+# This file creates only customer-owned queues. It never creates or edits the
+# managed ResourceFlavors, priority classes, or provisioning defaults.
+#
+# CPU, memory, and GPU requests share a resource group so each PodSet uses one
+# compatible node flavor rather than combining CPU-only and GPU node selectors.
+# Quotas are examples, not physical-capacity guarantees; size them for your pools.
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue
+metadata:
+  name: cluster-queue
+spec:
+  namespaceSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: ray
+  resourceGroups:
+    - coveredResources: [cpu, memory, nvidia.com/gpu]
+      flavors:
+        - name: "${CPU_RESOURCE_FLAVOR}"
+          resources:
+            - name: cpu
+              nominalQuota: "8"
+            - name: memory
+              nominalQuota: 32Gi
+            - name: nvidia.com/gpu
+              nominalQuota: "0"
+        - name: "${GPU_RESOURCE_FLAVOR}"
+          resources:
+            - name: cpu
+              nominalQuota: "96"
+            - name: memory
+              nominalQuota: 768Gi
+            - name: nvidia.com/gpu
+              nominalQuota: "8"
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: default
+  namespace: ray
+spec:
+  clusterQueue: cluster-queue

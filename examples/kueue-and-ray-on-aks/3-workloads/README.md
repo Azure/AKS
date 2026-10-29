@@ -3,25 +3,22 @@
 Four Ray workloads use the managed KubeRay and Kueue setup from
 [Module 1](../1-infrastructure/managed/) and the customer-owned queues from
 [Module 2](../2-kueue-queues/). The separate CPU autoscale demo needs no Ray
-dependencies. The [legacy Terraform lab](../1-infrastructure/terraform/legacy-guide.md)
-is a self-managed alternative; don't layer managed operators over its Helm releases.
+dependencies. Complete the selected workload's checks before submission.
 
 ## Prerequisites
 
 - For Ray examples: an AKS cluster with managed KubeRay and Kueue, storage,
-  datasets, and authorized workload identity prepared through the managed path.
-  The legacy Terraform installation is a separate deliberate alternative.
-- For Ray examples: Module 2's `ray` namespace, `ray-workload` ServiceAccount,
-  customer-owned ResourceFlavors, and one queue configuration
-  (`20-single-queue.yaml` or `30-team-queues.yaml`).
+  datasets, and authorized workload identity prepared in Module 1.
+- For Ray examples: Module 2's `ray` namespace and `ray-workload` ServiceAccount,
+  verified managed placement flavors, and one queue policy. Start with
+  [`15-managed-queue.yaml.tmpl`](../2-kueue-queues/#use-managed-ray-placement-flavors).
+  Use the optional customer-owned flavors/policies only when the managed ones
+  don't meet your requirements.
 - For the CPU autoscale example: follow its own prerequisites; Ray, storage,
   identity, and the Ray queues aren't required.
 - `envsubst` available for Ray templates (`gettext` package on most Linux distros,
   `brew install gettext` on macOS).
-- `kubectl` configured to the target cluster:
-  ```bash
-  az aks get-credentials --resource-group <rg> --name <cluster>
-  ```
+- `kubectl` using the private kubeconfig prepared in Module 1.
 
 ## Manifest template system
 
@@ -44,13 +41,13 @@ workload-specific pip packages, env vars, and resource counts.
 > demonstrates the cluster-autoscaler ProvisioningRequest path rather than a Ray
 > runtime, so it doesn't use the template system described here.
 
-### Standard fields (all workloads)
+### Shared fields
 
 | Field | Value | Reason |
 |-------|-------|--------|
-| `suspend: true` | required | Kueue gates admission |
-| `shutdownAfterJobFinishes: true` | required | Kueue tracks completion |
-| `ttlSecondsAfterFinished` | `300` | Consistent cleanup |
+| `suspend: true` | RayJob only | Kueue gates batch admission. |
+| `shutdownAfterJobFinishes: true` | RayJob only | Stop the batch Ray cluster after completion. |
+| `ttlSecondsAfterFinished` | `300`, RayJob only | Remove completed batch resources. |
 | Head `num-cpus: "0"` | RayJob only | Tasks land on GPU workers only (RayService sets `"4"`) |
 | Code mount | ConfigMap → `/home/ray/scripts` | Scripts injected at runtime |
 | Workload deps | `runtimeEnvYAML.pip` | Never baked into image |
@@ -108,8 +105,8 @@ Ray Serve. Loads the LoRA adapter from blob storage on startup.
 
 ### 5. cas-batch-job/ — provision capacity on demand (cluster autoscaler)
 A plain Kubernetes batch Job (no Ray) that demonstrates the **ProvisioningRequest
-→ cluster autoscaler** path. Where the examples above admit against a fixed quota
-on an existing GPU node, this one drives the AKS cluster autoscaler to grow an
+→ cluster autoscaler** path. Where the Ray batch examples admit against fixed
+quota, this one drives the AKS cluster autoscaler to grow an
 autoscaling CPU pool *before* the Job is admitted — capacity provisioned
 just-in-time.
 
@@ -149,9 +146,8 @@ RayService has no batch submitter and doesn't need this wrapper.
 
 ## Quick start
 
-For the managed path, use the private kubeconfig from Module 1 and set the
-storage account from that setup before sourcing each workload's defaults.
-The defaults preserve supplied values; no Terraform state is needed:
+Use the private kubeconfig and storage account from Module 1 before sourcing
+each workload's defaults. The defaults preserve supplied values:
 
 ```bash
 source ../1-infrastructure/managed/.managed/managed.env
@@ -164,7 +160,3 @@ export JOB_NAME="aurora-finetune-$(date +%s)"
 ./submit.sh
 kubectl -n ray get rayjob ${JOB_NAME} -w
 ```
-
-For the legacy Terraform path only, retrieve its storage account with
-`terraform -chdir=../1-infrastructure/terraform output -raw storage_account_name`
-instead. Don't use a different lab's state or install both sets of operators.
