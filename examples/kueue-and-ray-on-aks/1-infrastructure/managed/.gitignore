@@ -1,0 +1,3 @@
+.managed/
+__pycache__/
+*.pyc

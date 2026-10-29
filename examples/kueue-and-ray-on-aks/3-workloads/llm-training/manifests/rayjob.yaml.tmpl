@@ -39,10 +39,33 @@ spec:
   submitterPodTemplate:
     spec:
       restartPolicy: Never
+      # KubeRay 1.7's generated GCS health check calls `python`; the MCR image
+      # has only `python3`. Supply a pod-local alias without changing the image,
+      # operator settings, or generated health/submission commands.
+      initContainers:
+        - name: python-compat
+          image: "${RAY_IMAGE}"
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              printf '#!/bin/sh\nexec python3 "$@"\n' > /python-compat/python
+              chmod 0555 /python-compat/python
+          volumeMounts:
+            - name: python-compat
+              mountPath: /python-compat
       containers:
         - name: ray-job-submitter
           image: "${RAY_IMAGE}"
           imagePullPolicy: Always
+          volumeMounts:
+            - name: python-compat
+              mountPath: /usr/local/bin/python
+              subPath: python
+              readOnly: true
+      volumes:
+        - name: python-compat
+          emptyDir: {}
 
   rayClusterSpec:
     rayVersion: "${RAY_VERSION}"

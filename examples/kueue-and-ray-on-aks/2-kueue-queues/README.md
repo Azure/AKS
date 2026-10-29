@@ -1,128 +1,120 @@
 # Module 2 — Queues with managed Kueue
 
-Use the AKS managed Kueue extension to control workload admission. The extension
-manages the Kueue controller, generates ResourceFlavors for eligible user nodes,
-and supplies default workload priority classes and a provisioning admission check.
-You own the ClusterQueues, LocalQueues, and workload policies in this module.
+Use the **managed Kueue and KubeRay extensions** from
+[Module 1](../1-infrastructure/managed/) for these examples. Kueue supplies batch
+admission and generates ResourceFlavors for eligible user nodes. KubeRay manages
+the Ray resources. You configure the namespace, identity, queues, and quota.
 
-Choose one of these independent demos:
+Prefer the managed scheduling resources when they meet your requirements.
+Create customer-owned flavors only when you need a placement policy that the
+managed flavors don't provide. Don't create replacements with managed `aks-*`
+names or modify the generated defaults.
+
+Choose one queue policy, not every manifest:
 
 | Configuration | File | Purpose |
 | --- | --- | --- |
-| Single Ray queue | `manifests/20-single-queue.yaml` | Admit Ray workloads against a fixed quota. Workloads wait when they don't fit. |
-| Team Ray queues | `manifests/30-team-queues.yaml` | Share a cohort with borrowing and priority-based preemption. |
-| CPU autoscale queue | `manifests/40-autoscale-queue.yaml` | Reference the managed flavor and provisioning check so the cluster autoscaler provisions capacity before admission. |
-
-The CPU autoscale demo doesn't require Ray, a GPU, storage, or workload identity.
-The Ray demos keep the customer-owned `default` and `gpu` flavors to preserve their
-existing resource-group and placement policy. Those names aren't AKS-managed
-resources; don't replace or edit generated `aks-*` resources to run these demos.
+| Managed Ray placement — recommended | `manifests/15-managed-queue.yaml.tmpl` | Reference existing managed CPU/GPU flavors in a fixed-quota queue. |
+| Custom Ray placement — optional | `manifests/10-resource-flavors.yaml` plus `20-single-queue.yaml` or `30-team-queues.yaml` | Define a customer-owned placement/borrowing policy when managed flavors don't meet it. |
+| CPU autoscale queue | `manifests/40-autoscale-queue.yaml` | Reference the managed CPU flavor/provisioning check for capacity before admission. |
 
 ## Prerequisites
 
-- An AKS cluster running Kubernetes 1.34 or later, Azure CLI 2.70 or later, and
-  `kubectl` compatible with the cluster.
-- Permissions to manage cluster extensions and the example Kubernetes resources.
-- An eligible CPU user node pool for the CPU demo, or NVIDIA GPU capacity sized
-  for the Ray demo that you choose.
-- For Ray workloads only: KubeRay, the required datasets and Blob storage, and a
-  workload identity authorized to access that storage. Its federated credential
-  must trust `system:serviceaccount:ray:ray-workload`. See the
-  [AKS workload identity deployment guide](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster).
-
-> [!IMPORTANT]
-> Don't run Module 1 Terraform to prepare a managed Kueue cluster. Module 1 is a
-> separate self-managed alternative that installs Kueue through Helm. Never
-> install that controller alongside the managed extension. This module doesn't
-> perform an in-place migration. Before uninstalling any existing self-hosted
-> Kueue, preserve queue and workload manifests, review running and queued work,
-> preserve application data, and pause GitOps reconciliation. Follow the supported
-> uninstall procedure for that installation, or use a clean target cluster.
+- AKS 1.34 or later, Azure CLI 2.70 or later, and compatible `kubectl`.
+- No self-installed Kueue or KubeRay controllers. Use the managed extensions;
+  don't layer controllers or transfer ownership to make an installation fit.
+- Permissions to manage extensions and the example Kubernetes resources.
+- Capacity sized for the selected workload. Queue quota isn't physical capacity.
+- For Ray workloads: Module 1's storage, datasets, and authorized workload identity.
+  The federation subject must be `system:serviceaccount:ray:ray-workload`.
+- Python with the [test dependency](tests/requirements.txt) and GNU `envsubst` for
+  rendering the managed Ray queue template.
 
 ## Install and verify managed Kueue
 
-For the complete lifecycle and supported configuration, see
-[Install managed Kueue on AKS](https://learn.microsoft.com/azure/aks/configure-queues-with-automatic-resource-flavors).
+Module 1 installs and verifies both managed operators. Keep those instances and
+skip creation below if you completed it. These Kueue-only steps also support the
+independent CPU demo, which needs no Ray, GPU, storage, or workload identity.
 
-Set your target cluster and preferred extension instance name:
+For CPU autoscaling, prepare its autoscaling pool and shared ProvisioningRequest
+`v1` API **before Kueue starts**. See the [CPU prerequisites](../3-workloads/cas-batch-job/#prerequisites).
+Waiting later doesn't register a controller that skipped startup setup. Don't
+install a shared CRD or another controller as a workaround.
+
+For the full lifecycle, see [Install managed Kueue on AKS](https://learn.microsoft.com/azure/aks/configure-queues-with-automatic-resource-flavors).
+Run this section from `examples/kueue-and-ray-on-aks/2-kueue-queues`. It writes
+one example-owned kubeconfig file, not an inherited file list. Select the target
+explicitly:
 
 ```bash
-SUBSCRIPTION_ID="<subscription-id>"
-RESOURCE_GROUP="<resource-group>"
-CLUSTER_NAME="<aks-cluster-name>"
+export SUBSCRIPTION_ID="<subscription-id>"
+export RESOURCE_GROUP="<resource-group>"
+export CLUSTER_NAME="<aks-cluster-name>"
 EXTENSION_NAME="aks-kueue"
 RELEASE_TRAIN="preview"
 
 az login
-az account set --subscription "$SUBSCRIPTION_ID"
 az extension add --name k8s-extension --upgrade
-az provider register --namespace Microsoft.KubernetesConfiguration --wait
-az aks get-credentials --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME"
+az provider register --subscription "$SUBSCRIPTION_ID" \
+  --namespace Microsoft.KubernetesConfiguration --wait
+export KUBECONFIG="$PWD/.managed/kubeconfig"
+umask 077
+mkdir -p "$(dirname "$KUBECONFIG")"
+az aks get-credentials --subscription "$SUBSCRIPTION_ID" \
+  --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME" \
+  --file "$KUBECONFIG" --overwrite-existing
 ```
 
-Use `k8s-extension` version 1.9.3 or later. Check package availability for the
-cluster before you install:
+Use `k8s-extension` 1.9.3 or later and check compatible packages:
 
 ```bash
 az k8s-extension extension-types list-versions-by-cluster \
-  --resource-group "$RESOURCE_GROUP" \
-  --cluster-name "$CLUSTER_NAME" \
-  --cluster-type managedClusters \
-  --extension-type microsoft.kueue \
-  --release-train "$RELEASE_TRAIN" \
-  --output table
+  --subscription "$SUBSCRIPTION_ID" \
+  --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
+  --cluster-type managedClusters --extension-type microsoft.kueue \
+  --release-train "$RELEASE_TRAIN" --output table
 ```
 
-If no compatible version is listed, stop and check the prerequisites and release
-availability. If the extension is already installed, use its actual resource name
-and skip creation. Otherwise, install it in the required namespace:
+If no compatible package is listed, stop. For a new installation only:
 
 ```bash
 az k8s-extension create \
-  --resource-group "$RESOURCE_GROUP" \
-  --cluster-name "$CLUSTER_NAME" \
-  --cluster-type managedClusters \
-  --name "$EXTENSION_NAME" \
-  --extension-type microsoft.kueue \
-  --scope cluster \
-  --release-namespace kueue-system \
-  --release-train "$RELEASE_TRAIN" \
+  --subscription "$SUBSCRIPTION_ID" \
+  --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
+  --cluster-type managedClusters --name "$EXTENSION_NAME" \
+  --extension-type microsoft.kueue --scope cluster \
+  --release-namespace kueue-system --release-train "$RELEASE_TRAIN" \
   --auto-upgrade-mode compatible
 ```
 
-Verify Azure provisioning and both controllers:
+Verify Azure provisioning, both controllers, and the managed resources:
 
 ```bash
 az k8s-extension show \
-  --resource-group "$RESOURCE_GROUP" \
-  --cluster-name "$CLUSTER_NAME" \
-  --cluster-type managedClusters \
-  --name "$EXTENSION_NAME" \
+  --subscription "$SUBSCRIPTION_ID" \
+  --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
+  --cluster-type managedClusters --name "$EXTENSION_NAME" \
   --query '{name:name,version:currentVersion,provisioningState:provisioningState,extensionState:extensionState,statuses:statuses}' \
   --output json
-
 kubectl rollout status deployment/kueue-controller-manager --namespace kueue-system --timeout=5m
 kubectl rollout status deployment/kueue-extension --namespace kueue-system --timeout=5m
 kubectl get resourceflavors
 kubectl get workloadpriorityclasses aks-low-priority aks-medium-priority aks-high-priority
 ```
 
-If verification fails, inspect extension status, events, and controller logs.
-Don't use Helm to repair the managed release, apply arbitrary upstream CRDs, or
-uninstall the extension as a health workaround. Customer-supplied feature-gate or
-controller-configuration overrides aren't supported.
+If verification fails, inspect extension status, events, and logs. Don't repair
+managed releases with another installation, replace shared CRDs, change protected
+settings, or uninstall/reinstall as a health workaround.
 
 ## Choose a queue demo
 
-All following commands run from `examples/kueue-and-ray-on-aks/2-kueue-queues`.
-Apply only the configuration you intend to use, not every file in `manifests/`.
+Run the following commands from `examples/kueue-and-ray-on-aks/2-kueue-queues`.
 
 ### CPU autoscale queue
 
-First add or verify an autoscaling CPU user pool named `scalepool`, initially with
-one node. Follow the [CPU batch Job prerequisites](../3-workloads/cas-batch-job/#prerequisites).
-The cluster autoscaler provides the shared ProvisioningRequest API. Verify it and
-the managed defaults before applying your queue:
+Add or verify the autoscaling `scalepool` with one starting node, following the
+[CPU Job prerequisites](../3-workloads/cas-batch-job/#prerequisites). Verify the
+CAS-owned API and managed defaults before applying the queue:
 
 ```bash
 kubectl wait --for=condition=Established \
@@ -137,27 +129,22 @@ kubectl wait --for=condition=Active localqueue/cas-local-queue \
   --namespace cas-kueue-demo --timeout=2m
 ```
 
-This file creates only the example namespace and customer-owned queues. Its
-ClusterQueue references `aks-cpu` and gates admission on `aks-provisioning-check`,
-which uses `aks-provisioning-config` and the
-`best-effort-atomic-scale-up.autoscaling.x-k8s.io` provisioning class. The example
-Job's `agentpool: scalepool` node selector targets that pool even though `aks-cpu`
-can cover multiple CPU user pools.
-
-Continue with [Submit the CPU batch Job](../3-workloads/cas-batch-job/#submit).
-Don't create or patch the managed defaults if a readiness check fails.
+This file owns only the demo namespace and queues. Its gate references existing
+`aks-cpu`, `aks-provisioning-check`, and `aks-provisioning-config`; its provisioning
+class is `best-effort-atomic-scale-up.autoscaling.x-k8s.io`. The Job's
+`agentpool: scalepool` selector targets that pool. Continue with
+[Submit the CPU Job](../3-workloads/cas-batch-job/#submit). Don't patch managed
+defaults if a check fails.
 
 ### Prepare the Ray namespace and identity
 
-Skip this section for the CPU autoscale demo. On a managed cluster, prepare the
-namespace and ServiceAccount for your existing, authorized workload identity:
+Skip this section for the CPU demo. Complete Module 1 identity/federation setup,
+then create the namespace and ServiceAccount:
 
 ```bash
 kubectl apply -f manifests/00-namespace.yaml
-
-IDENTITY_CLIENT_ID="<workload-identity-client-id>"
-TENANT_ID="<tenant-id>"
-
+IDENTITY_CLIENT_ID="${IDENTITY_CLIENT_ID:-<workload-identity-client-id>}"
+TENANT_ID="${TENANT_ID:-<tenant-id>}"
 kubectl create serviceaccount ray-workload --namespace ray \
   --dry-run=client --output yaml | kubectl apply -f -
 kubectl annotate serviceaccount ray-workload --namespace ray --overwrite \
@@ -165,105 +152,107 @@ kubectl annotate serviceaccount ray-workload --namespace ray --overwrite \
   "azure.workload.identity/tenant-id=$TENANT_ID"
 ```
 
-These annotations don't create the Azure identity, federated credential, storage,
-role assignments, or datasets. Complete those prerequisites before submitting Ray
-workloads. Set the Module 3 environment variables, including the storage account,
-from your own provisioned resources rather than Terraform outputs.
+These annotations don't create the Azure identity, role, federation, or datasets.
+Supply the prepared storage account in each workload's environment.
 
-Create the **customer-owned** Ray placement flavors:
+### Use managed Ray placement flavors
+
+Prefer existing AKS-managed flavors with the managed operators. Inspect what the
+cluster generated and confirm their selectors match your actual CPU/GPU pools:
+
+```bash
+kubectl get resourceflavors
+kubectl get nodes --show-labels
+kubectl get nodes --output 'custom-columns=NAME:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu'
+```
+
+The CPU flavor is `aks-cpu`; managed GPU flavor names depend on the cluster and
+hardware. Don't invent a GPU flavor name. Inspect the selected objects with
+`kubectl get resourceflavor <name> --output yaml`, including their node selectors
+and topology, and verify allocatable GPU capacity first.
+
+Set the existing flavor names and render the recommended queue policy:
+
+```bash
+export CPU_RESOURCE_FLAVOR="aks-cpu"
+export GPU_RESOURCE_FLAVOR="<existing-managed-GPU-flavor>"
+kubectl get resourceflavor "$CPU_RESOURCE_FLAVOR" "$GPU_RESOURCE_FLAVOR" &&
+  envsubst '${CPU_RESOURCE_FLAVOR} ${GPU_RESOURCE_FLAVOR}' \
+    < manifests/15-managed-queue.yaml.tmpl | kubectl apply -f -
+kubectl wait --for=condition=Active clusterqueue/cluster-queue --timeout=2m
+kubectl wait --for=condition=Active localqueue/default --namespace ray --timeout=2m
+```
+
+This template creates customer-owned queues, not ResourceFlavors. CPU, memory,
+and GPU requests share a resource group so each PodSet uses one compatible
+flavor. Don't combine the CPU-only managed flavor's selector with a GPU flavor's
+selector for the same GPU worker. The example quotas allow CPU heads and an
+eight-GPU pool; adjust all resource quotas for your capacity and workload policy.
+Quota isn't a one-Job concurrency limit or a node-readiness guarantee.
+
+### Optional custom placement and queue policies
+
+Use this path only when the managed flavors don't meet your placement policy.
+The optional file creates customer-owned `default` (no selector) and `gpu`
+(`accelerator: nvidia`) flavors. The label is an AKS-provided selector to verify,
+not a protected node label to set yourself. These examples use device-plugin
+`nvidia.com/gpu` resources, not DRA.
 
 ```bash
 kubectl apply -f manifests/10-resource-flavors.yaml
 kubectl get resourceflavors default gpu
 ```
 
-`default` has no node selector. `gpu` matches `accelerator: nvidia`. These demos
-use the NVIDIA device-plugin resource `nvidia.com/gpu`, not DRA. Inspect node
-labels and GPU resources before selecting quotas:
+Choose **one** custom policy instead of the managed-flavor policy above:
 
 ```bash
-kubectl get nodes --show-labels
-kubectl get nodes --output 'custom-columns=NAME:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu'
-```
-
-### Single Ray queue
-
-Apply this option for a fixed-quota queue:
-
-```bash
+# One fixed-quota queue:
 kubectl apply -f manifests/20-single-queue.yaml
-kubectl wait --for=condition=Active clusterqueue/cluster-queue --timeout=2m
-kubectl wait --for=condition=Active localqueue/default --namespace ray --timeout=2m
+# OR team queues with borrowing/preemption:
+# kubectl apply -f manifests/30-team-queues.yaml
 ```
 
-The defaults are 96 CPUs, 768 Gi of memory, and eight GPUs. Adjust them to your
-capacity and workload policy. Kueue admits every workload that fits the available
-quota; this configuration doesn't guarantee that only one Job runs at a time.
-CPU and memory are charged for the Ray head **and** workers.
+The single policy admits every workload that fits its 96-CPU, 768-Gi memory,
+and eight-GPU quota.
+The team policy shares `shared-cohort`: each team has four nominal GPUs and can
+borrow four idle GPUs. Size those quotas for physical capacity before use.
 
-### Team Ray queues
-
-Use this option instead of the single queue:
-
-```bash
-kubectl apply -f manifests/30-team-queues.yaml
-kubectl wait --for=condition=Active clusterqueue/team-a-cq clusterqueue/team-b-cq --timeout=2m
-kubectl wait --for=condition=Active localqueue/team-a localqueue/team-b --namespace ray --timeout=2m
-```
-
-The queues share `shared-cohort`. Each team has nominal quota for four GPUs and
-can borrow four idle GPUs from the other team. This configuration requires enough
-GPU capacity; don't use the default quota on a single-GPU cluster.
-
-`withinClusterQueue: LowerPriority` permits a higher-priority workload to preempt
-one of lower priority within a team. Use the managed `aks-low-priority`,
-`aks-medium-priority`, or `aks-high-priority` classes through a workload's
-`kueue.x-k8s.io/priority-class` label. `reclaimWithinCohort: Any` permits a team to
-reclaim its lent quota. Preemption stops a workload; it doesn't shrink an
-eight-GPU RayJob into a four-GPU Job. Checkpoint work that must resume safely.
-
-## Self-managed Terraform alternative
-
-If you deliberately use the existing Module 1 Terraform path, keep its Helm-owned
-controller and **skip the managed installation section**. It isn't a supported
-way to install the managed extension. The single and team Ray queue files can
-still be used with that self-managed controller. The CPU autoscale manifest now
-requires the managed defaults and isn't part of that alternative.
-
-For that Terraform path only, use its ServiceAccount output instead of the manual
-identity setup above, from this module's root:
-
-```bash
-kubectl apply -f manifests/00-namespace.yaml
-kubectl apply -f <(terraform -chdir=../1-infrastructure/terraform output -raw ray_workload_sa_yaml)
-```
+`withinClusterQueue: LowerPriority` allows higher-priority workloads to preempt
+lower-priority ones in a team. Reference the managed `aks-low-priority`,
+`aks-medium-priority`, or `aks-high-priority` classes through
+`kueue.x-k8s.io/priority-class`. `reclaimWithinCohort: Any` lets a team reclaim
+lent quota. Preemption stops a workload; it doesn't shrink a RayJob. Checkpoint
+work that must resume safely.
 
 ## Clean up
 
-Delete the example workloads first so Kueue can release their quota. Follow the
-[CPU Job cleanup](../3-workloads/cas-batch-job/#clean-up) for the autoscale demo.
-For a Ray demo, delete the **one queue configuration you applied**. For example:
+Delete the workloads first. Use the [CPU cleanup guide](../3-workloads/cas-batch-job/#clean-up)
+for that independent demo. For the recommended managed-flavor Ray policy, remove
+only the queues you created:
 
 ```bash
-kubectl delete -f manifests/20-single-queue.yaml
-kubectl delete -f manifests/10-resource-flavors.yaml
+kubectl delete localqueue default --namespace ray
+kubectl delete clusterqueue cluster-queue
 ```
 
-Don't delete the managed `aks-*` flavors, priority classes, admission check,
-provisioning config, or shared CRDs. Deleting the `ray` namespace also deletes its
-workloads, LocalQueues, and ServiceAccount; do so only if it was dedicated to this
-demo and you no longer need its contents. Uninstalling the managed extension is a
-separate destructive lifecycle operation, not part of queue cleanup.
+If you instead created a custom policy, delete its file (`20-single-queue.yaml`
+or `30-team-queues.yaml`). Only after removing its queues, delete
+`10-resource-flavors.yaml` if you created those custom flavors.
+
+Keep managed `aks-*` flavors, priority classes, admission/provisioning defaults,
+and shared CRDs. Delete the `ray` namespace only if it was dedicated to this demo
+and no longer contains needed data. Planned extension removal is separate from
+queue cleanup; don't force finalizers or rewrite ownership.
 
 ## Troubleshooting
 
 | Symptom | Next action |
 | --- | --- |
-| A managed default is missing. | Verify eligible user nodes and both managed controllers. Don't create a replacement with the managed name. |
-| A ClusterQueue isn't active. | Inspect its conditions, flavor references, and admission-check status. |
-| A Job stays suspended. | Check its LocalQueue label, quota, priority, and Workload admission conditions. |
-| Pods are pending after admission. | Check physical capacity, node labels, taints, tolerations, and workload placement constraints. |
-| A controller isn't ready. | Inspect Azure extension status and both controllers' events and logs; use the managed extension support path. |
+| A managed default is missing. | Verify eligible user nodes and both managed controllers. Don't recreate its managed name. |
+| A ClusterQueue isn't active. | Inspect conditions, actual flavor references, namespace selection, and admission checks. |
+| A Job stays suspended. | Check its LocalQueue, quota, priority, topology, and Workload conditions. |
+| Pods stay Pending after admission. | Check node readiness, capacity, selectors, taints, and tolerations. |
+| A controller isn't ready. | Inspect Azure extension status, controller events/logs, and the managed support path. |
 
 ```bash
 kubectl get deployments,pods --namespace kueue-system
@@ -273,18 +262,17 @@ kubectl logs deployment/kueue-extension --namespace kueue-system --tail=200
 
 ## Validate the example offline
 
-From this module's root, use a Python virtual environment with the test dependency
-and run the manifest contract tests:
+From this module, run the contracts before live submission:
 
 ```bash
 python3 -m pip install -r tests/requirements.txt
 python3 -m unittest discover -s tests -v
 ```
 
-These tests check ownership, managed references, queue routing, and the target
-pool selector. They don't prove extension availability or live autoscaler behavior.
+These check files and ownership/routing references, not live extension or model
+execution. Verify live readiness and application outputs separately.
 
 ## Next steps
 
 - [Run the CPU autoscaler demo](../3-workloads/cas-batch-job/).
-- [Submit Ray workloads](../3-workloads/) after preparing their storage and identity dependencies.
+- [Submit Ray workloads](../3-workloads/) after their storage/identity/data checks.

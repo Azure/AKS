@@ -7,15 +7,15 @@ Unlike the other examples, this uses **RayService** (not RayJob) and runs as a l
 ## Prerequisites
 
 - Completed Example 1 (Aurora fine-tune) with a successful checkpoint at `aurora/checkpoints/<run-id>/last.safetensors`
-- Module 1 infrastructure deployed (storage account, workload identity)
+- [Module 1 managed setup](../../1-infrastructure/managed/) completed (managed operators, storage, and workload identity).
 - Module 2 namespace and ServiceAccount applied
 
 ## Deploy
 
 ```bash
 # Set required environment variables
-export AZURE_STORAGE_ACCOUNT_NAME=$(terraform -chdir=../../1-infrastructure/terraform output -raw storage_account_name)
-export AURORA_RUN_ID=<JOB_NAME from your completed aurora-finetune run>
+export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
+export AURORA_RUN_ID="<job-name-from-completed-aurora-finetune>"
 
 # Source defaults and deploy
 source env.example
@@ -59,7 +59,7 @@ kubectl -n ray delete configmap ${CONFIGMAP_NAME}
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `AZURE_STORAGE_ACCOUNT_NAME` | (required) | Storage account from Module 1 |
+| `AZURE_STORAGE_ACCOUNT_NAME` | (required) | Storage account from the selected managed setup. |
 | `AURORA_RUN_ID` | (required) | JOB_NAME from a completed aurora-finetune run |
 | `AURORA_INPUT_CONTAINER` | `aurora` | Container with init data (`data/*.npz`) |
 | `AURORA_ADAPTER_CONTAINER` | `aurora` | Container with the LoRA checkpoint |
