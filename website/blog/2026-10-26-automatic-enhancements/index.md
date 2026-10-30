@@ -70,6 +70,10 @@ Other add-ons and extensions run on `aks-system-surge` nodes, with scaling handl
 
 ![Logical architecture of an AKS Automatic cluster: Microsoft-owned infrastructure hosts the control plane and managed system components, while application nodes and other add-ons run in your subscription.](./managed-system-pools.svg)
 
+## Migrate an existing AKS Standard cluster to AKS Automatic with managed system node pools (preview)
+
+Already running AKS Standard? A new preview migration path lets you move your existing AKS Standard cluster to AKS Automatic with managed system node pools. First, align the cluster with Automatic's required configuration. Then, update its SKU and enable managed system node pools. Follow the [AKS Standard to Automatic migration guide](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-sku-migration#migrate-from-an-aks-standard-cluster-to-an-aks-automatic-cluster-with-managed-system-node-pools-preview) to migrate your cluster.
+
 ## Terraform support for AKS Automatic
 
 For your next cluster, bring Automatic into your infrastructure-as-code workflow. Terraform now has a dedicated AzureRM resource: **`azurerm_kubernetes_automatic_cluster`**, available with AzureRM provider **v4.81 or later**. Manage Automatic directly through the provider instead of relying on an AzAPI resource.
