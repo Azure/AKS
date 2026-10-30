@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1040" viewBox="0 0 1200 1040" role="img" aria-labelledby="title desc">
+  <title id="title">SLA coverage across an AKS Automatic cluster</title>
+  <desc id="desc">A single cluster boundary encloses the control plane, managed system node pool, and user workload nodes. The API server has a 99.95% uptime SLA. System components on Microsoft-owned infrastructure have a 99.9% uptime SLA. Application pods in the customer subscription have a readiness SLA: 99.9% of qualifying operations complete within five minutes, including scheduling and node provisioning when needed. Both uptime commitments shown require availability zones. These separate SLAs do not guarantee end-to-end application uptime or cover every component.</desc>
+  <defs>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #172b4d; }
+      .title { font-size: 32px; font-weight: 700; }
+      .label { font-size: 24px; font-weight: 700; }
+      .body { font-size: 22px; }
+      .small { font-size: 20px; fill: #43546c; }
+      .metric { font-size: 30px; font-weight: 700; }
+      .white { fill: #ffffff; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#617693"/>
+    </marker>
+    <g id="pod">
+      <rect width="108" height="54" rx="9" fill="#ffffff" stroke="#3283b4" stroke-width="2"/>
+      <path d="M15 18 L25 12 L35 18 V30 L25 36 L15 30 Z M25 24 V36 M15 18 L25 24 L35 18" fill="none" stroke="#3283b4" stroke-width="2"/>
+      <text x="46" y="34" class="small">Pod</text>
+    </g>
+    <g id="shield">
+      <path d="M0 3 L15 -3 L30 3 V19 Q30 32 15 39 Q0 32 0 19 Z" fill="#ffffff" fill-opacity=".16" stroke="#ffffff" stroke-width="2"/>
+      <path d="M7 17 L13 23 L24 11" fill="none" stroke="#ffffff" stroke-width="3"/>
+    </g>
+  </defs>
+  <rect width="1200" height="1040" rx="20" fill="#f5f8fc"/>
+  <text x="48" y="56" class="title">SLA coverage across your AKS Automatic cluster</text>
+  <text x="48" y="94" class="body">From the API server to system services and application pod startup</text>
+
+  <rect x="32" y="122" width="1136" height="790" rx="24" fill="#ffffff" stroke="#8a9eb8" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="56" y="160" class="label">AKS Automatic cluster</text>
+  <text x="1144" y="160" class="small" text-anchor="end">Logical architecture / separate SLA scopes</text>
+
+  <rect x="56" y="182" width="1088" height="310" rx="18" fill="#f0f2fb" stroke="#c0c8e7"/>
+  <text x="80" y="218" class="small">MICROSOFT-OWNED INFRASTRUCTURE</text>
+  <rect x="80" y="240" width="500" height="224" rx="14" fill="#ffffff" stroke="#9dabe0" stroke-width="2"/>
+  <text x="104" y="278" class="label">Control plane</text>
+  <rect x="104" y="300" width="452" height="58" rx="10" fill="#eef2ff" stroke="#c0c8e7"/>
+  <text x="330" y="337" class="body" text-anchor="middle">Kubernetes API server</text>
+  <rect x="104" y="376" width="218" height="58" rx="10" fill="#f5f7fc"/>
+  <rect x="338" y="376" width="218" height="58" rx="10" fill="#f5f7fc"/>
+  <text x="213" y="412" class="small" text-anchor="middle">Scheduler</text>
+  <text x="447" y="412" class="small" text-anchor="middle">Controllers</text>
+  <path d="M580 329 H632" fill="none" stroke="#6974bd" stroke-width="2"/>
+  <rect x="632" y="254" width="488" height="182" rx="14" fill="#4d5ca6"/>
+  <use href="#shield" x="656" y="279"/>
+  <text x="704" y="305" class="label white">API server uptime SLA</text>
+  <text x="656" y="354" class="metric white">99.95% uptime</text>
+  <text x="656" y="390" class="body white">Covers API server connectivity</text>
+  <text x="656" y="419" class="small white">Availability-zone-enabled clusters</text>
+
+  <path d="M330 464 V522 H314 V548 M330 522 H874 V548" fill="none" stroke="#617693" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="572" y="518" class="small">Orchestration</text>
+
+  <rect x="56" y="548" width="516" height="338" rx="18" fill="#f0f2fb" stroke="#c0c8e7"/>
+  <text x="80" y="580" class="small">MICROSOFT-OWNED INFRASTRUCTURE</text>
+  <text x="80" y="616" class="label">Managed system node pool</text>
+  <rect x="80" y="636" width="468" height="84" rx="10" fill="#ffffff" stroke="#c0c8e7"/>
+  <text x="104" y="669" class="body">CoreDNS / KEDA / Metrics Server</text>
+  <text x="104" y="700" class="small">VPA / Workload identity / Eraser / Konnectivity</text>
+  <rect x="80" y="736" width="468" height="128" rx="12" fill="#4d5ca6"/>
+  <use href="#shield" x="100" y="755"/>
+  <text x="148" y="778" class="body white" font-weight="700">Managed system components SLA</text>
+  <text x="104" y="820" class="metric white">99.9% uptime</text>
+  <text x="104" y="849" class="small white">System pod availability / availability zones</text>
+
+  <rect x="596" y="548" width="548" height="338" rx="18" fill="#eaf5fc" stroke="#aed2e8"/>
+  <text x="620" y="580" class="small">YOUR AZURE SUBSCRIPTION</text>
+  <text x="620" y="616" class="label">User workloads</text>
+  <rect x="620" y="636" width="232" height="84" rx="10" fill="#ffffff" stroke="#aed2e8"/>
+  <rect x="868" y="636" width="252" height="84" rx="10" fill="#ffffff" stroke="#aed2e8" stroke-dasharray="5 4"/>
+  <text x="636" y="662" class="small">Existing node</text>
+  <text x="884" y="662" class="small">New node if needed</text>
+  <use href="#pod" transform="translate(636 670) scale(.75)"/>
+  <use href="#pod" transform="translate(884 670) scale(.75)"/>
+  <rect x="620" y="736" width="500" height="128" rx="12" fill="#176b9d"/>
+  <use href="#shield" x="640" y="755"/>
+  <text x="688" y="778" class="body white" font-weight="700">Pod readiness SLA</text>
+  <text x="644" y="820" class="metric white">99.9% within 5 minutes</text>
+  <text x="644" y="849" class="small white">Qualifying operations: scheduling + provisioning</text>
+
+  <text x="48" y="952" class="small">Coverage spans three cluster layers, not every component or failure mode.</text>
+  <text x="48" y="984" class="small">Pod readiness covers startup, not ongoing application uptime. These SLAs don't combine into one SLA.</text>
+  <text x="48" y="1016" class="small">Published eligibility, calculations, exclusions, and service credit terms apply.</text>
+</svg>
