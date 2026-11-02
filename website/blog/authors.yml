@@ -672,3 +672,12 @@ spencer-libbing:
   page: true
   socials:
     github: stl327
+
+amanda-wang:
+  name: Amanda Wang
+  title: Product Manager at Microsoft
+  url: https://github.com/wangyira
+  image_url: https://github.com/wangyira.png
+  socials:
+    github: wangyira
+    linkedin: amandawang14
