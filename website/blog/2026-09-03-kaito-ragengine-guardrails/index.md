@@ -14,7 +14,7 @@ Deterministic scanners can block or redact recognizable risks such as credential
 
 > **Grounding gives the model relevant evidence for its response. Guardrails enforce what content the application is allowed to return.**
 
-KAITO RAGEngine currently provides centrally managed output guardrails for standard and streaming responses, with blocking, redaction, hot reload, metrics, and structured logs. This post configures and evaluates those controls on Azure Kubernetes Service (AKS), explains cross-chunk protection, and considers future semantic checks. RAGEngine does not currently scan user input or retrieved context or provide model-based scanners.
+[KAITO RAGEngine](https://kaito-project.github.io/kaito/docs/rag) currently provides [centrally managed output guardrails](https://kaito-project.github.io/kaito/docs/rag-output-guardrails/) for standard and streaming responses, with blocking, redaction, hot reload, metrics, and structured logs. This post configures and evaluates those controls on Azure Kubernetes Service (AKS), explains cross-chunk protection, and considers future semantic checks. RAGEngine does not currently scan user input or retrieved context or provide model-based scanners.
 
 <!-- truncate -->
 
