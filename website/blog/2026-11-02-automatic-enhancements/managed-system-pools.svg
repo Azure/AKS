@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">One Automatic cluster, two infrastructure boundaries</title>
+  <desc id="desc">Microsoft-owned infrastructure hosts the control plane and managed system node pool. Your subscription hosts application nodes and system surge nodes for add-ons that need to run in your subscription. DaemonSets also run on managed system nodes and other nodes in your subscription. AKS manages node operations, while you deploy applications.</desc>
+  <defs>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #172b4d; }
+      .heading { font-size: 32px; font-weight: 700; }
+      .label { font-size: 25px; font-weight: 700; }
+      .body { font-size: 23px; }
+      .small { font-size: 21px; fill: #43546c; }
+    </style>
+  </defs>
+  <rect width="1200" height="760" rx="20" fill="#f5f8fc"/>
+  <text x="48" y="60" class="heading">One cluster. Less infrastructure to manage.</text>
+  <text x="48" y="98" class="body">Managed system components stay separate from your applications.</text>
+
+  <rect x="40" y="134" width="548" height="504" rx="16" fill="#eef2ff" stroke="#6974bd" stroke-width="2"/>
+  <text x="64" y="178" class="label">Microsoft-owned infrastructure</text>
+  <rect x="64" y="204" width="500" height="76" rx="10" fill="#ffffff" stroke="#c0c8e7"/>
+  <text x="88" y="251" class="label">Control plane / Kubernetes API server</text>
+  <rect x="64" y="302" width="500" height="242" rx="10" fill="#ffffff" stroke="#c0c8e7"/>
+  <text x="88" y="344" class="label">Managed system node pool</text>
+  <text x="88" y="387" class="body">CoreDNS · Metrics Server · KEDA</text>
+  <text x="88" y="426" class="body">VPA · Workload identity webhook</text>
+  <text x="88" y="465" class="body">Eraser · Konnectivity</text>
+  <path d="M88 488 H540" stroke="#d9dfef" stroke-width="2"/>
+  <text x="88" y="521" class="small">No user workloads on this pool</text>
+  <text x="64" y="585" class="body" font-weight="600">System pool VMs: no compute charge</text>
+  <text x="64" y="616" class="small">or compute quota use in your subscription</text>
+
+  <rect x="612" y="134" width="548" height="504" rx="16" fill="#eaf5fc" stroke="#3283b4" stroke-width="2"/>
+  <text x="636" y="178" class="label">Your Azure subscription</text>
+  <rect x="636" y="204" width="500" height="164" rx="10" fill="#ffffff" stroke="#aed2e8"/>
+  <text x="660" y="247" class="label">Application nodes</text>
+  <rect x="660" y="271" width="136" height="64" rx="8" fill="#eaf5fc"/>
+  <rect x="810" y="271" width="136" height="64" rx="8" fill="#eaf5fc"/>
+  <rect x="960" y="271" width="152" height="64" rx="8" fill="#eaf5fc"/>
+  <text x="728" y="311" class="body" text-anchor="middle">App pods</text>
+  <text x="878" y="311" class="body" text-anchor="middle">App pods</text>
+  <text x="1036" y="311" class="body" text-anchor="middle">App pods</text>
+  <rect x="636" y="390" width="500" height="154" rx="10" fill="#ffffff" stroke="#aed2e8"/>
+  <text x="660" y="423" class="label">aks-system-surge nodes</text>
+  <text x="660" y="465" class="body">Add-ons that need to run</text>
+  <text x="660" y="497" class="body">in your subscription</text>
+  <text x="660" y="532" class="small">Scaled by node autoprovisioning</text>
+  <text x="636" y="585" class="body" font-weight="600">You deploy and configure workloads</text>
+  <text x="636" y="616" class="small">AKS handles node provisioning and scaling</text>
+
+  <text x="48" y="686" class="small">DaemonSets also run on managed system nodes and nodes in your subscription.</text>
+  <text x="48" y="722" class="small">Logical view of a single AKS Automatic cluster; not a network topology.</text>
+</svg>
