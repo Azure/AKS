@@ -1,9 +1,9 @@
 # Kueue and Ray on AKS
 
 A hands-on walkthrough for running Ray training, inference, and serving on
-Azure Kubernetes Service with Kueue admission control. It provisions the full
-stack from scratch (cluster, node pools, operators, storage, queues) and submits
-real Ray workloads.
+Azure Kubernetes Service with Kueue admission control. Prefer the managed Kueue
+path for an existing AKS cluster. A separate self-managed Terraform alternative
+provisions a complete lab, including Helm-installed controllers.
 
 ## Overview
 
@@ -31,7 +31,29 @@ without stored credentials, and the AI Runtime images and Helm charts served
 from MCR. The three modules below provision that infrastructure, configure the
 queues, and submit the workloads.
 
+## Recommended: managed Kueue
+
+Start with [Module 2 — Queues with managed Kueue](2-kueue-queues/) to install and
+verify the Azure-managed extension on an AKS 1.34 or later cluster. For a CPU-only
+end-to-end example, use its autoscale queue and the
+[CPU batch Job](3-workloads/cas-batch-job/). That path doesn't need Terraform,
+Ray, a GPU, storage, or workload identity.
+
+For Ray workloads, also prepare KubeRay, storage, datasets, and workload identity
+as described in Module 2. Supply Module 3 environment variables from those
+resources instead of Terraform outputs.
+
+> [!IMPORTANT]
+> Module 1 Terraform installs Kueue through Helm. Don't apply it to a managed
+> Kueue target or install the managed extension beside its controller. Keep the
+> two installation paths separate. Preserve configuration and workload data
+> before any planned uninstall; this walkthrough doesn't perform an in-place
+> migration.
+
 ## Architecture
+
+The following diagram describes the **self-managed Terraform alternative**, not
+the managed extension installation path:
 
 ```mermaid
 flowchart TB
@@ -72,11 +94,13 @@ keys in the manifests.
 
 | Module | Directory | What you'll do |
 |--------|-----------|----------------|
-| 1 — Infrastructure | [`1-infrastructure/`](1-infrastructure/) | Provision the AKS cluster, KubeRay + Kueue operators, Blob storage, workload identity, and pre-staged datasets with one `terraform apply` |
-| 2 — Kueue Queues | [`2-kueue-queues/`](2-kueue-queues/) | Apply ResourceFlavors and ClusterQueues — a single backpressure queue, two teams sharing a cohort with borrowing, or an autoscale queue that drives the cluster autoscaler on demand |
+| 1 — Infrastructure | [`1-infrastructure/`](1-infrastructure/) | Separate self-managed alternative: provision a lab with Helm-installed operators, storage, identity, and datasets. Don't combine with the managed installation. |
+| 2 — Kueue Queues | [`2-kueue-queues/`](2-kueue-queues/) | Install and verify managed Kueue, then choose Ray queues or the CPU autoscale queue that references managed defaults. |
 | 3 — Workloads | [`3-workloads/`](3-workloads/) | Submit Ray examples: Aurora fine-tune, LLM training, batch inference (RayJob), online serving (RayService), and a cluster-autoscaler batch Job |
 
-Work through them in order — each module assumes the previous one is in place.
+For the managed path, start at Module 2 and provide its infrastructure
+prerequisites separately. Work through Modules 1–3 in order only for the
+self-managed Terraform alternative, using its single or team Ray queues.
 
 The workloads in Module 3:
 
@@ -90,9 +114,9 @@ The workloads in Module 3:
 
 | Tool | Version | Notes |
 |------|---------|-------|
-| [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) | ≥ 2.70 | Authenticated (`az login`) to a subscription with GPU quota |
+| [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) | ≥ 2.70 | Authenticated (`az login`) to the target subscription; GPU quota is needed only for GPU workloads. |
 | [Terraform](https://developer.hashicorp.com/terraform/install) | ≥ 1.6 | Module 1 provisioning |
-| [kubectl](https://kubernetes.io/docs/tasks/tools/) | ≥ 1.28 | `az aks install-cli` |
+| [kubectl](https://kubernetes.io/docs/tasks/tools/) | Compatible with the target cluster | `az aks install-cli`; managed Kueue requires AKS 1.34 or later. |
 | `envsubst` | — | Renders the Module 3 manifest templates (`gettext` package) |
 | Python | ≥ 3.10 | Only for Aurora data generation in Module 1 |
 
@@ -101,10 +125,11 @@ You also need GPU quota in your target region. The default config provisions a
 `az vm list-usage` before deploying, or set `gpu_enabled=false` for a CPU-only
 run. See [Module 1](1-infrastructure/) for details.
 
-## Quick start — Aurora fine-tune
+## Self-managed Terraform alternative: Aurora fine-tune
 
-The fast path: provision, point kubectl at the cluster, apply one queue, submit
-one RayJob, and watch it complete.
+This alternative provisions Helm-installed controllers, not the managed Kueue
+extension. It remains separate from the recommended managed path. Provision the
+lab, point kubectl at it, apply the single Ray queue, and submit one RayJob.
 
 > **CPU-only note:** If you deployed with `gpu_enabled=false`, the Module 3
 > workloads request `nvidia.com/gpu` and will stay Pending (no GPU nodes).
@@ -143,7 +168,11 @@ the team-queue borrowing demo, follow each module's README.
 
 ## Cleanup
 
-Delete the workloads and queue objects, then tear down all Azure resources:
+For the managed path, use the demo-specific cleanup in Module 2 and keep the
+managed defaults. Uninstalling the extension is a separate destructive operation.
+
+For the self-managed Terraform lab below, delete workloads and queue objects,
+then tear down its Azure resources:
 
 ```bash
 # Return to the example root (Quick start leaves you in 3-workloads/aurora-finetune)
