@@ -26,6 +26,15 @@ class ManagedDocumentationTest(unittest.TestCase):
         self.assertIn("Module 2 cleanup", cleanup)
         self.assertIn("Module 1 resource cleanup", cleanup)
 
+    def test_terraform_readme_preserves_navigation_without_an_install_route(self):
+        notes = (EXAMPLES / "1-infrastructure/terraform/README.md").read_text()
+        self.assertIn("[managed setup](../managed/)", notes)
+        self.assertIn("[managed dataset preparation](../managed/data.md)", notes)
+        self.assertIn("scripts/populate_weatherbench2_regional_data.py", notes)
+        self.assertIn("don't apply this configuration", notes)
+        for command in ("helm install", "terraform init", "terraform apply", "terraform destroy"):
+            self.assertNotIn(command, notes)
+
     def test_managed_route_has_no_controller_install_alternative(self):
         for path in EXAMPLES.rglob("*.md"):
             text = path.read_text().lower()
