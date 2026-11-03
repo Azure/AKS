@@ -16,9 +16,14 @@ all three example modules.
 - Permissions to manage cluster extensions and retrieve cluster credentials.
   The storage steps additionally need resource-management and storage-scoped
   role-assignment permissions.
+- For the recommended managed-flavor Ray queue, an eligible CPU **User** pool
+  for the generated `aks-cpu` ResourceFlavor and CPU-only Ray head pods, in
+  addition to any GPU user pool needed by the workload. A CPU system pool alone
+  doesn't satisfy this requirement. Verify eligible CPU user-node capacity and
+  the actual `aks-cpu` flavor before applying the Module 2 policy.
 - Only for the CPU autoscaler demo: prepare its shared ProvisioningRequest `v1`
   API **before starting Kueue**, as described below. The default fixed-quota Ray
-  queue path doesn't need a CPU autoscaler.
+  queue path needs CPU user-node capacity, but it doesn't need a CPU autoscaler.
 - For GPU examples, eligible user nodes with enough NVIDIA device-plugin GPUs,
   CPU, and memory for the selected workload. Follow the
   [AKS NVIDIA GPU guide](https://learn.microsoft.com/azure/aks/use-nvidia-gpu).

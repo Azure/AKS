@@ -35,6 +35,15 @@ class ManagedDocumentationTest(unittest.TestCase):
         for command in ("helm install", "terraform init", "terraform apply", "terraform destroy"):
             self.assertNotIn(command, notes)
 
+    def test_managed_ray_queue_requires_cpu_user_capacity_without_autoscaling(self):
+        managed = (EXAMPLES / "1-infrastructure/managed/README.md").read_text()
+        prerequisites = managed.split("## Prerequisites", 1)[1].split("Select the intended target", 1)[0]
+        self.assertIn("CPU **User** pool", prerequisites)
+        self.assertIn("`aks-cpu` ResourceFlavor", prerequisites)
+        self.assertIn("A CPU system pool alone", prerequisites)
+        self.assertIn("doesn't satisfy this requirement", prerequisites)
+        self.assertIn("queue path needs CPU user-node capacity, but it doesn't need a CPU autoscaler", prerequisites)
+
     def test_managed_route_has_no_controller_install_alternative(self):
         for path in EXAMPLES.rglob("*.md"):
             text = path.read_text().lower()
