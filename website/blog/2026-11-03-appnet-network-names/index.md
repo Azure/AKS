@@ -1,0 +1,134 @@
+---
+title: "Flat and overlapping networks in Application Network"
+date: 2026-11-03
+description: "Learn how Azure Kubernetes Application Network connects AKS clusters across flat and overlapping pod networks, and why network names do not create reachability."
+authors: [jack-ma]
+tags: [application-network, networking, multi-cluster]
+draft: true
+---
+
+You have two Azure Kubernetes Service (AKS) clusters with unique pod ranges and working routes between them. A third team wants to join. Its cluster uses a pod range you've already allocated elsewhere. Renumbering it could mean changing an existing cluster before you can connect the application.
+
+With Azure Kubernetes Application Network (AppNet), currently in preview, you set `--network-name` on each member to describe which clusters share pod reachability and which need an east-west gateway between them.
+
+<!-- truncate -->
+
+![Cluster A reaches a target in cluster B directly because both share the corp-routable network. Cluster C reuses the pod range of B in isolated-c and reaches the same target through a separately reachable east-west gateway in B.](./mixed-network-paths.svg)
+
+## Flat and overlapping pod networks
+
+With a **flat or contiguous pod network**, each cluster has a non-overlapping pod range and can reach the other clusters' pod IPs in both directions. The ranges can be far apart. `10.10.0.0/16` and `10.20.0.0/16` work just as well as neighboring blocks when the routes and security rules allow that traffic.
+
+Keeping those ranges unique takes IP address management (IPAM). You need space for new clusters, plus room for existing clusters to grow and add temporary nodes during an upgrade. A deployment template that uses `10.20.0.0/16` can end up in several teams' clusters, even if each cluster's local address plan makes sense. [AKS address planning](https://learn.microsoft.com/azure/aks/concepts-network-ip-address-planning) covers the sizing requirements.
+
+With **overlapping pod networks**, two isolated clusters use some or all of the same address range. Reusing `10.20.0.0/16` in B and C makes an address such as `10.20.0.20` ambiguous outside its own network. Keep those pod spaces separate. To send a request across that boundary, the source needs a reachable gateway address for the destination network.
+
+Unique ranges don't guarantee a direct path. [Azure CNI Overlay](https://learn.microsoft.com/azure/aks/concepts-network-azure-cni-overlay) keeps pod addresses inside each cluster. Even with distinct pod ranges and peered VNets, those pods need a gateway-based path for the cross-cluster traffic described here.
+
+## Give each member a network name
+
+`--network-name` sets the optional member field `properties.connectivityProfile.network`. Use it when you join a cluster or update an existing member. The value identifies a mesh network and is separate from the Azure VNet resource name.
+
+Assign the same name only after you confirm that the members' pod ranges don't overlap and that pods can reach each other in both directions. Different names make AppNet use east-west gateways between those networks.
+
+Leaving the name out when you join gives that member its own default network identity. It uses the gateway path to other members. Check pod reachability before grouping members under a shared name, including when their address ranges are different.
+
+## How the mixed setup works
+
+The diagram puts A and B in `corp-routable`, while C uses `isolated-c`:
+
+| Member | Pod address range | Network name |
+| --- | --- | --- |
+| A | `10.10.0.0/16` | `corp-routable` |
+| B | `10.20.0.0/16` | `corp-routable` |
+| C | `10.20.0.0/16` | `isolated-c` |
+
+A and B use `corp-routable`, and their pod ranges are reachable, so a request from A goes directly through the ambient data plane to the target in B.
+
+C takes a different path. Its `isolated-c` network reuses B's `10.20.0.0/16` range, so C sends traffic to the same target through B's east-west gateway at a separately reachable address.
+
+Keeping A and B on their existing flat network lets them use the direct path, while C can join the same AppNet without changing its isolated pod range. Teams can add clusters as they're ready. IPAM still covers the addresses that need to be reachable between networks, including gateway endpoints.
+
+AppNet keeps the east-west gateways and load balancers provisioned even when members share a network name. B still needs its gateway for requests from C. The diagram shows that receiving gateway and leaves out most proxy hops.
+
+## Set the network names
+
+Use Azure CLI **2.84.0 or later** with the `appnet-preview` extension **1.0.0b4 or later** for network-name commands. The extension uses API version `2026-08-01-preview`.
+
+Before updating the three members in this example, confirm that they've joined AppNet and check [supported Application Network versions](https://learn.microsoft.com/azure/application-network/supported-versions) and the [multi-cluster prerequisites](https://learn.microsoft.com/azure/application-network/multi-cluster-connectivity#prerequisites). Replace the resource names and confirm that the network paths work before applying the commands.
+
+```bash
+export APPNET_RG="<appnet-resource-group>"
+export APPNET_NAME="<appnet-name>"
+
+az appnet member update \
+    --resource-group "$APPNET_RG" \
+    --appnet-name "$APPNET_NAME" \
+    --member-name member-a \
+    --network-name corp-routable
+
+az appnet member update \
+    --resource-group "$APPNET_RG" \
+    --appnet-name "$APPNET_NAME" \
+    --member-name member-b \
+    --network-name corp-routable
+
+az appnet member update \
+    --resource-group "$APPNET_RG" \
+    --appnet-name "$APPNET_NAME" \
+    --member-name member-c \
+    --network-name isolated-c
+```
+
+When you join a new cluster, pass `--network-name` to `az appnet member join` to choose its mesh network as part of onboarding. The JSON fragment shows where the network name goes in the member's connectivity profile:
+
+```json
+{
+  "properties": {
+    "connectivityProfile": {
+      "network": "corp-routable"
+    }
+  }
+}
+```
+
+:::caution Plan network-name changes
+
+Updating members takes separate operations. During that transition, a pair that will share a name can temporarily have different names, so keep the gateway path working until both updates finish. Leaving `--network-name` out of an update keeps the existing name.
+
+:::
+
+## You still need the network paths
+
+Before A and B can use the direct path, you need routes and security rules that allow their pods to talk in both directions. C needs access to B's gateway.
+
+Where the address spaces allow it, [VNet peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) or a VPN can provide that path, but you still need to configure routing and the security rules that permit the traffic. AppNet doesn't create those connections when you set a network name.
+
+Reusing pod ranges doesn't make overlapping VNets peerable. Keep gateway addresses reachable from the source network and follow the address-planning rules for your network plugin. The diagram uses example IPs, so work out the VNet and subnet layout for your own clusters.
+
+Gateway visibility has its own setting. With `--east-west-gateway Internal`, the default, members in other networks need private connectivity to the gateway. Choose `External` for a public address when your security policy allows it. Kubernetes API-server access stays the same.
+
+## Check a real request
+
+Check the name stored on B, which should be `corp-routable` for this example:
+
+```bash
+az appnet member show \
+    --resource-group "$APPNET_RG" \
+    --appnet-name "$APPNET_NAME" \
+    --member-name member-b \
+    --query properties.connectivityProfile.network \
+    -o tsv
+```
+
+Now test an application request.
+
+Use pod reachability tests in both directions for A and B, and check that C's data plane can reach B's gateway on the required ports. On the application side, enroll the intended namespaces in ambient mode and mark the participating services as global, then make sure your authorization policies allow the caller's workload identity.
+
+Network names leave those controls in place. Send requests from A and C and confirm that the backend in B handles them, checking logs or backend-specific responses so a successful call to a local backend doesn't hide a broken cross-cluster path.
+
+The [multi-cluster guide](https://learn.microsoft.com/azure/application-network/multi-cluster-connectivity#verify-configuration-and-traffic) has the commands for checking member configuration and gateway endpoints, along with steps for testing application traffic between clusters.
+
+## Less network setup is on the roadmap
+
+Making the underlying connectivity easier to establish is on the AppNet roadmap. We plan to remove much of the manual network setup involved in connecting member clusters. The current preview still needs you to provide the pod routes or reachable gateways described here, so check those paths before you change a member's network name.
