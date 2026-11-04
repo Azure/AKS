@@ -41,11 +41,11 @@ DRANET and DRA also underpin [Multi-NIC support (preview) on AKS](https://learn.
 You can enable the feature on new or existing node pools with an RDMA-capable VM size:
 
 ```bash
-az aks nodepool update \ 
-  --resource-group $RESOURCE_GROUP \ 
-  --cluster-name $CLUSTER_NAME \ 
-  --name $RDMA_POOL \ 
-  --enable-managed-dranet=true 
+az aks nodepool update \
+  --resource-group $RESOURCE_GROUP \
+  --cluster-name $CLUSTER_NAME \
+  --name $RDMA_POOL \
+  --enable-managed-dranet=true
 ```
 
 After enablement, AKS manages DRANET and networking drivers for that node pool to discover eligible RDMA devices and makes them available through DRA.
@@ -64,7 +64,7 @@ spec:
           - name: rdma-nic
 ```
 
-For detailed deployment examples, steps to migrate from a self-managed Network Operator, and troubleshooting steps, check out the feature documentation: https://www.aka.ms/aks/managed-support-for-dranet.
+For detailed deployment examples, steps to migrate from a self-managed Network Operator, and troubleshooting steps, check out the [AKS feature documentation](https://www.aka.ms/aks/managed-support-for-dranet).
 
 ## Performance depends on placement
 
