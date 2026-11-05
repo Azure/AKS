@@ -207,11 +207,7 @@ Allow a short time for the managed DNS record to propagate, then copy the URL pr
 
 ## Availability and support
 
-The managed default domain is available in selected Azure public regions during preview. See the [default domain documentation](https://learn.microsoft.com/azure/aks/app-routing-default-domain#supported-regions) for the current region list, complete prerequisites, and steps for enabling the feature on an existing cluster. The preview isn't available in Azure Government or Microsoft Azure operated by 21Vianet.
-
-The wildcard certificate covers exactly one label beneath the assigned domain. For example, it covers `hello.<id>.<region>.aksapp.io`, but not the domain apex or `api.hello.<id>.<region>.aksapp.io`.
-
-The default domain feature is validated and supported with the application routing Kubernetes Gateway API implementation. Other Gateway API implementations might interoperate with the feature if they use the Managed Gateway API installation, honor listener TLS `certificateRefs`, populate `Gateway.status.addresses`, and populate route `status.parents` (these fields are part of the standard Kubernetes Gateway API specification). Microsoft doesn't test or support these configurations.
+The managed default domain is available in selected Azure public regions during preview. See the [default domain documentation](https://learn.microsoft.com/azure/aks/app-routing-default-domain#supported-regions) for the current region list, complete prerequisites, and steps for enabling the feature on an existing cluster.
 
 ## Start with HTTPS, not certificate setup
 
