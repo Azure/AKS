@@ -191,7 +191,7 @@ spec:
 EOF
 ```
 
-Wait for the `Gateway` and DNS record to become ready, then make a request:
+Wait for the `Gateway` to become ready:
 
 ```bash
 kubectl wait \
@@ -200,14 +200,10 @@ kubectl wait \
   --namespace hello-world \
   --timeout=5m
 
-until nslookup "${HOST}" >/dev/null 2>&1; do sleep 10; done
-
-curl -sS -o /dev/null \
-  -w "HTTP %{http_code} verify=%{ssl_verify_result}\n" \
-  "https://${HOST}/"
+echo "https://${HOST}"
 ```
 
-`HTTP 200 verify=0` means the request succeeded and `curl` validated the certificate against a trusted certificate authority. No `curl -k`, certificate issuer configuration, or manual DNS record is required.
+Allow a short time for the managed DNS record to propagate, then copy the URL printed by the command and open it in a browser. The application appears over HTTPS. Notice the lock or site information icon next to the URL in the browser: it shows that the connection is secured by a publicly trusted, signed TLS certificate. You didn't need to configure a certificate issuer or create a DNS record manually.
 
 ## Availability and support
 
