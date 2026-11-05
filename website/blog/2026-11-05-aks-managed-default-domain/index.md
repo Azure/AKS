@@ -29,7 +29,7 @@ When you enable the default domain feature, AKS provides:
 - **A managed TLS certificate.** AKS issues and renews a publicly trusted wildcard certificate for `*.<id>.<region>.aksapp.io`. A `DefaultDomainCertificate` resource tells AKS which Kubernetes Secret should hold the certificate.
 - **Managed DNS records.** A managed `external-dns` instance watches your Gateway API resources and publishes records for your route hostnames. The records point to the address reported by the `Gateway`.
 
-Used with the App Routing Gateway API implementation, the managed default domain gives you everything needed to expose a workload through a trusted HTTPS endpoint: a managed gateway, domain, DNS records, and TLS certificate. You don't need to buy a domain, create an Azure DNS zone, or operate certificate and DNS controllers yourself.
+The result is a trusted HTTPS endpoint such as `hello.<id>.<region>.aksapp.io`, without buying a domain, creating an Azure DNS zone, or operating certificate and DNS controllers yourself. Use the managed default domain in tandem with the App Routing Gateway API implementation, and you have everything needed to expose a workload through a trusted HTTPS endpoint: a managed gateway, domain, DNS records, and TLS certificate.
 
 ## How an endpoint comes together
 
