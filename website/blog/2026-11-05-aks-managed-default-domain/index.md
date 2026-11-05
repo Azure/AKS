@@ -217,6 +217,8 @@ The managed default domain is available in selected Azure public regions during 
 
 ## Start with HTTPS, not certificate setup
 
-The managed default domain removes the setup work between deploying a service and reaching it at a trusted HTTPS endpoint. You can keep the same Gateway API resources when you switch to a [custom domain and certificate](https://learn.microsoft.com/azure/aks/app-routing-gateway-api-dns-tls). We expect other AKS features to build on this foundation, making it easier to expose secure endpoints for features and workloads running on AKS.
+The managed default domain removes the setup work between deploying a service and reaching it at a trusted HTTPS endpoint. You can keep the same Gateway API resources when you switch to a [custom domain and certificate](https://learn.microsoft.com/azure/aks/app-routing-gateway-api-dns-tls).
+
+We expect other AKS features to build on this foundation, making it easier to expose secure endpoints for features and workloads running on AKS.
 
 For the complete walkthrough, limitations, and supported regions, read [Use the managed default domain with the application routing add-on](https://learn.microsoft.com/azure/aks/app-routing-default-domain). If a certificate or DNS record doesn't become ready, follow [Troubleshoot the application routing default domain feature in AKS](https://learn.microsoft.com/troubleshoot/azure/azure-kubernetes/extensions/application-routing-default-domain).
