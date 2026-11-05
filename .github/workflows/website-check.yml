@@ -33,6 +33,8 @@ jobs:
         run: npm install
       - name: Build website
         run: npm run build
+      - name: Check search index
+        run: npm run test:search
 
   get-files-changed:
     name: Get changed markdown files
