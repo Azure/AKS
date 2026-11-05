@@ -207,7 +207,7 @@ Allow a short time for the managed DNS record to propagate, then copy the URL pr
 
 ## Availability and support
 
-The managed default domain is available in selected Azure public regions during preview. See the [default domain documentation](https://learn.microsoft.com/azure/aks/app-routing-default-domain#supported-regions) for the current region list, complete prerequisites, and steps for enabling the feature on an existing cluster.
+The managed default domain is available in selected Azure public regions during preview. See the [default domain documentation](https://learn.microsoft.com/azure/aks/app-routing-default-domain#supported-regions) for the current region list, complete prerequisites, steps for enabling the feature on an existing cluster, and the full list of limitations.
 
 ## Start with HTTPS, not certificate setup
 
