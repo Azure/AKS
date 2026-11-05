@@ -144,6 +144,11 @@ kubectl create deployment hello-world \
   --namespace hello-world \
   --image mcr.microsoft.com/azuredocs/aks-helloworld:v1
 
+kubectl set resources deployment hello-world \
+  --namespace hello-world \
+  --requests=cpu=100m,memory=64Mi \
+  --limits=cpu=250m,memory=128Mi
+
 kubectl expose deployment hello-world \
   --namespace hello-world \
   --port 80 \
