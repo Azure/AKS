@@ -140,19 +140,51 @@ kubectl wait \
 Deploy a sample application and Service:
 
 ```bash
-kubectl create deployment hello-world \
-  --namespace hello-world \
-  --image mcr.microsoft.com/azuredocs/aks-helloworld:v1
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-world
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 128Mi
+        ports:
+        - containerPort: 80
+EOF
+```
 
-kubectl set resources deployment hello-world \
-  --namespace hello-world \
-  --requests=cpu=100m,memory=64Mi \
-  --limits=cpu=250m,memory=128Mi
-
-kubectl expose deployment hello-world \
-  --namespace hello-world \
-  --port 80 \
-  --target-port 80
+```bash
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+  namespace: hello-world
+spec:
+  selector:
+    app: hello-world
+  ports:
+  - port: 80
+    targetPort: 80
+EOF
 ```
 
 Create an HTTPS `Gateway` that uses the managed certificate:
