@@ -31,6 +31,8 @@ When you enable the default domain feature, AKS provides:
 
 The result is a trusted HTTPS endpoint such as `hello.<id>.<region>.aksapp.io`, without buying a domain, creating an Azure DNS zone, or operating certificate and DNS controllers yourself.
 
+Use the managed default domain in tandem with the App Routing Gateway API implementation, and you have everything needed to expose a workload through a trusted HTTPS endpoint: a managed gateway, domain, DNS records, and TLS certificate.
+
 ## How an endpoint comes together
 
 The feature builds on the [AKS application routing add-on](https://learn.microsoft.com/azure/aks/app-routing) and the Kubernetes Gateway API:
