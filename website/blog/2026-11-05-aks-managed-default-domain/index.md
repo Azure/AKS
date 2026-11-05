@@ -43,7 +43,7 @@ The feature builds on the [AKS application routing add-on](https://learn.microso
 4. An `HTTPRoute` declares a hostname under the cluster domain and attaches to the `Gateway`.
 5. Managed `external-dns` reads the route hostname and the address in `Gateway.status.addresses`, then publishes the DNS record.
 
-This design keeps the Kubernetes resources portable and familiar. `certificateRefs`, `Gateway.status.addresses`, and route `status.parents` are all part of the standard [Kubernetes Gateway API specification](https://gateway-api.sigs.k8s.io/reference/api-spec/).
+The routing model uses standard Kubernetes Gateway API fields, including `certificateRefs`, `Gateway.status.addresses`, and route `status.parents`. When you move to a custom domain and supply your own certificates, you can keep the same `Gateway` and `HTTPRoute` structure.
 
 ## Try it
 
