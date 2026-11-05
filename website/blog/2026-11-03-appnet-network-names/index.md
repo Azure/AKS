@@ -29,6 +29,8 @@ Unique ranges don't guarantee a direct path. [Azure CNI Overlay](https://learn.m
 
 `--network-name` sets the optional member field `properties.connectivityProfile.network`. Use it when you join a cluster or update an existing member. The value identifies a mesh network and is separate from the Azure VNet resource name.
 
+Use 2-63 characters for an explicit name. Start and end with a lowercase letter or digit. Between them, use lowercase letters, digits, dots (`.`), underscores (`_`), or hyphens (`-`). These rules are stricter than [Kubernetes label value syntax](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set): AppNet requires lowercase letters and at least two characters.
+
 Assign the same name only after you confirm that the members' pod ranges don't overlap and that pods can reach each other in both directions. Different names make AppNet use east-west gateways between those networks.
 
 Leaving the name out when you join gives that member its own default network identity. It uses the gateway path to other members. Check pod reachability before grouping members under a shared name, including when their address ranges are different.
