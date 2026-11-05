@@ -29,9 +29,7 @@ When you enable the default domain feature, AKS provides:
 - **A managed TLS certificate.** AKS issues and renews a publicly trusted wildcard certificate for `*.<id>.<region>.aksapp.io`. A `DefaultDomainCertificate` resource tells AKS which Kubernetes Secret should hold the certificate.
 - **Managed DNS records.** A managed `external-dns` instance watches your Gateway API resources and publishes records for your route hostnames. The records point to the address reported by the `Gateway`.
 
-The result is a trusted HTTPS endpoint such as `hello.<id>.<region>.aksapp.io`, without buying a domain, creating an Azure DNS zone, or operating certificate and DNS controllers yourself.
-
-Use the managed default domain in tandem with the App Routing Gateway API implementation, and you have everything needed to expose a workload through a trusted HTTPS endpoint: a managed gateway, domain, DNS records, and TLS certificate.
+Used with the App Routing Gateway API implementation, the managed default domain gives you everything needed to expose a workload through a trusted HTTPS endpoint: a managed gateway, domain, DNS records, and TLS certificate. You don't need to buy a domain, create an Azure DNS zone, or operate certificate and DNS controllers yourself.
 
 ## How an endpoint comes together
 
@@ -44,6 +42,10 @@ The feature builds on the [AKS application routing add-on](https://learn.microso
 5. Managed `external-dns` reads the route hostname and the address in `Gateway.status.addresses`, then publishes the DNS record.
 
 The routing model uses standard Kubernetes Gateway API fields, including `certificateRefs`, `Gateway.status.addresses`, and route `status.parents`. When you move to a custom domain and supply your own certificates, you can keep the same `Gateway` and `HTTPRoute` structure.
+
+## Availability and support
+
+The managed default domain is available in selected Azure public regions during preview. See the [default domain documentation](https://learn.microsoft.com/azure/aks/app-routing-default-domain#supported-regions) for the current region list, complete prerequisites, steps for enabling the feature on an existing cluster, and the full list of limitations.
 
 ## Try it
 
@@ -168,11 +170,7 @@ spec:
             memory: 128Mi
         ports:
         - containerPort: 80
-EOF
-```
-
-```bash
-kubectl apply -f - <<EOF
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -247,10 +245,6 @@ echo "https://${HOST}"
 ```
 
 Allow a short time for the managed DNS record to propagate, then copy the URL printed by the command and open it in a browser. The application appears over HTTPS. Notice the lock or site information icon next to the URL in the browser: it shows that the connection is secured by a publicly trusted, signed TLS certificate. You didn't need to configure a certificate issuer or create a DNS record manually.
-
-## Availability and support
-
-The managed default domain is available in selected Azure public regions during preview. See the [default domain documentation](https://learn.microsoft.com/azure/aks/app-routing-default-domain#supported-regions) for the current region list, complete prerequisites, steps for enabling the feature on an existing cluster, and the full list of limitations.
 
 ## Start with HTTPS, not certificate setup
 
