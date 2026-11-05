@@ -133,4 +133,10 @@ The [multi-cluster guide](https://learn.microsoft.com/azure/application-network/
 
 ## Less network setup is on the roadmap
 
-Making the underlying connectivity easier to establish is on the AppNet roadmap. We plan to remove much of the manual network setup involved in connecting member clusters. The current preview still needs you to provide the pod routes or reachable gateways described here, so check those paths before you change a member's network name.
+AppNet aims to make the underlying connectivity easier to establish. We plan to remove much of the manual network setup involved in connecting member clusters.
+
+:::caution Current preview requires network connectivity
+
+The current preview still needs you to provide the pod routes or reachable gateways described here, so check those paths before you change a member's network name.
+
+:::
