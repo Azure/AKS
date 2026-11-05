@@ -25,7 +25,7 @@ Today, we're introducing the **managed default domain for Azure Kubernetes Servi
 
 When you enable the default domain feature, AKS provides:
 
-- **A stable cluster domain.** Each cluster receives a unique name in the form `<id>.<region>.aksapp.io`. The name remains assigned to the cluster if you disable and later reenable the feature.
+- **A stable cluster domain.** Each cluster receives a unique name in the form `<id>.<region>.aksapp.io`. The name remains assigned to the cluster if you disable and later re-enable the feature.
 - **A managed TLS certificate.** AKS issues and renews a publicly trusted wildcard certificate for `*.<id>.<region>.aksapp.io`. A `DefaultDomainCertificate` resource tells AKS which Kubernetes Secret should hold the certificate.
 - **Managed DNS records.** A managed `external-dns` instance watches your Gateway API resources and publishes records for your route hostnames. The records point to the address reported by the `Gateway`.
 
