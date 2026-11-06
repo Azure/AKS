@@ -1,6 +1,6 @@
 ---
 title: "Flat and overlapping networks in Application Network"
-date: 2026-11-03
+date: 2026-11-09
 description: "Learn how Azure Kubernetes Application Network connects AKS clusters across flat and overlapping pod networks, and why network names do not create reachability."
 authors: [jack-ma, zhewei-hu]
 tags: [application-network, networking, multi-cluster]
@@ -94,12 +94,6 @@ When you join a new cluster, pass `--network-name` to `az appnet member join` to
 }
 ```
 
-:::caution[Plan network-name changes]
-
-Updating members takes separate operations. During that transition, a pair that will share a name can temporarily have different names, so keep the gateway path working until both updates finish. Leaving `--network-name` out of an update keeps the existing name.
-
-:::
-
 ## You still need the network paths
 
 Before A and B can use the direct path, you need routes and security rules that allow their pods to talk in both directions. C needs access to B's gateway.
@@ -130,13 +124,3 @@ Use pod reachability tests in both directions for A and B, and check that C's da
 Network names leave those controls in place. Send requests from A and C and confirm that the backend in B handles them, checking logs or backend-specific responses so a successful call to a local backend doesn't hide a broken cross-cluster path.
 
 The [multi-cluster guide](https://learn.microsoft.com/azure/application-network/multi-cluster-connectivity#verify-configuration-and-traffic) has the commands for checking member configuration and gateway endpoints, along with steps for testing application traffic between clusters.
-
-## Less network setup is on the roadmap
-
-AppNet aims to make the underlying connectivity easier to establish. We plan to remove much of the manual network setup involved in connecting member clusters.
-
-:::caution[Current preview requires network connectivity]
-
-The current preview still needs you to provide the pod routes or reachable gateways described here, so check those paths before you change a member's network name.
-
-:::
