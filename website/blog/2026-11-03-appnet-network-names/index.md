@@ -2,7 +2,7 @@
 title: "Flat and overlapping networks in Application Network"
 date: 2026-11-03
 description: "Learn how Azure Kubernetes Application Network connects AKS clusters across flat and overlapping pod networks, and why network names do not create reachability."
-authors: [jack-ma]
+authors: [jack-ma, zhewei-hu]
 tags: [application-network, networking, multi-cluster]
 draft: true
 ---
