@@ -20,7 +20,7 @@ spec:
         beta.kubernetes.io/os: linux
       containers:
         - name: nsenter
-          image: alpine
+          image: mcr.microsoft.com/azure-policy/alpine:prod_20200505.1
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
