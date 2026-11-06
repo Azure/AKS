@@ -25,7 +25,7 @@ Managed system node pools have been generally available since June and are the d
 
 :::caution
 
-Migration is in preview and is one-way: you can't revert to non-managed system node pools. 
+Migration is in preview and is one-way: you can't revert to non-managed system node pools.
 
 :::
 
@@ -90,7 +90,7 @@ You can now exclude specific namespaces from Deployment Safeguards and baseline 
 
 If your workloads use managed NGINX ingress, there's also a migration deadline to plan for.
 
-:::caution 
+:::caution
 
 Microsoft NGINX security patch support ends in November 2026
 
