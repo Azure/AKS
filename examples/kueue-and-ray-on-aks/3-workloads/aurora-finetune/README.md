@@ -8,16 +8,15 @@ training metrics back to blob storage (`aurora/checkpoints/<run-id>/`).
 
 ## Prerequisites
 
-- Module 1 infrastructure deployed (AKS cluster, storage account, workload identity)
+- [Module 1 managed setup](../../1-infrastructure/managed/) completed (managed KubeRay/Kueue, storage, and workload identity).
 - Module 2 queues applied (`default` LocalQueue or `team-a`/`team-b`)
-- Aurora data uploaded to `aurora/data/` (done by Module 1 Terraform, or manually
-  via `populate_weatherbench2_regional_data.py`)
+- Aurora inputs uploaded to `aurora/data/` according to [managed dataset preparation](../../1-infrastructure/managed/data.md).
 
 ## Quick start
 
 ```bash
-# Set the storage account from Module 1 outputs
-export AZURE_STORAGE_ACCOUNT_NAME=<your-storage-account>
+# Use the storage account prepared for the managed target.
+export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
 
 # Source defaults (image, queue, worker count)
 source env.example
@@ -69,7 +68,7 @@ The `loss_history` array in `train-metrics.json` should contain finite values
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `AZURE_STORAGE_ACCOUNT_NAME` | *(required)* | Storage account from Module 1 |
+| `AZURE_STORAGE_ACCOUNT_NAME` | *(required)* | Storage account from the selected managed setup. |
 | `AURORA_INPUT_CONTAINER` | `aurora` | Container for input data |
 | `AURORA_OUTPUT_CONTAINER` | `aurora` | Container for checkpoints |
 | `AURORA_INIT_FILE` | `init-2021-01-01-00z.npz` | Init NPZ file name |
