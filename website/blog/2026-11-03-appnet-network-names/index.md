@@ -94,7 +94,7 @@ When you join a new cluster, pass `--network-name` to `az appnet member join` to
 }
 ```
 
-:::caution Plan network-name changes
+:::caution[Plan network-name changes]
 
 Updating members takes separate operations. During that transition, a pair that will share a name can temporarily have different names, so keep the gateway path working until both updates finish. Leaving `--network-name` out of an update keeps the existing name.
 
@@ -135,7 +135,7 @@ The [multi-cluster guide](https://learn.microsoft.com/azure/application-network/
 
 AppNet aims to make the underlying connectivity easier to establish. We plan to remove much of the manual network setup involved in connecting member clusters.
 
-:::caution Current preview requires network connectivity
+:::caution[Current preview requires network connectivity]
 
 The current preview still needs you to provide the pod routes or reachable gateways described here, so check those paths before you change a member's network name.
 
