@@ -113,6 +113,92 @@
   --docusaurus-highlighted-code-line-bg: rgba(176, 130, 240, 0.2);
 }
 
+/* Keep the navbar trigger independent of the query shown in the search panel. */
+.navbar .aa-DetachedSearchButton {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  justify-content: center;
+  border-color: transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ifm-font-color-base);
+}
+
+.navbar .aa-DetachedSearchButton:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.navbar .aa-DetachedSearchButton:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.navbar .aa-DetachedSearchButton:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.navbar .aa-DetachedSearchButton:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+.navbar .aa-DetachedSearchButtonIcon {
+  width: 100%;
+  color: inherit;
+}
+
+.navbar .aa-DetachedSearchButtonIcon::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: var(--search-trigger-icon) center / contain no-repeat;
+}
+
+.navbar .aa-DetachedSearchButtonIcon svg {
+  display: none;
+}
+
+@media (min-width: 997px) {
+  .navbar__items--right {
+    gap: calc(2 * var(--ifm-navbar-item-padding-horizontal));
+  }
+
+  .navbar__items--right > * {
+    padding-inline: 0;
+  }
+
+  .navbar__items--right > :last-child {
+    margin-inline-start: calc(-1 * var(--ifm-navbar-item-padding-horizontal));
+  }
+}
+
+.navbar .aa-DetachedSearchButtonPlaceholder,
+.navbar .aa-DetachedSearchButtonQuery {
+  display: none;
+}
+
+/* Fragment links identify section matches without replacing the plugin renderer. */
+.aa-ItemLink .aa-ItemContent::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.5' stroke-linejoin='round' d='M14 3H5v18h14V8l-5-5Zm0 0v5h5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.aa-ItemLink[href*="#"] .aa-ItemContent::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' d='m10 3-4 18M18 3l-4 18M4 9h17M2 15h17'/%3E%3C/svg%3E");
+}
+
+/* Keep articles readable after search without changing authored mark elements. */
+article mark[data-markjs] {
+  background: transparent;
+  color: inherit;
+}
+
 /* Clean blog styling */
 .blog-post-title {
   color: var(--ifm-font-color-base);
