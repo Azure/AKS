@@ -7,9 +7,11 @@ tags: [application-network, networking, multi-cluster]
 draft: true
 ---
 
+Azure Kubernetes Application Network (AppNet), currently in preview, aims to simplify network connectivity between clusters. In this post, we explore how to connect clusters with overlapping pod address spaces.
+
 You have two Azure Kubernetes Service (AKS) clusters with unique pod ranges and working routes between them. A third team wants to join. Its cluster uses a pod range you've already allocated elsewhere. Renumbering it could mean changing an existing cluster before you can connect the application.
 
-With Azure Kubernetes Application Network (AppNet), currently in preview, you set `--network-name` on each member to describe which clusters share pod reachability and which need an east-west gateway between them.
+You set `--network-name` on each AppNet member to describe which clusters share pod reachability and which need an east-west gateway between them.
 
 <!-- truncate -->
 
@@ -124,3 +126,5 @@ Use pod reachability tests in both directions for A and B, and check that C's da
 Network names leave those controls in place. Send requests from A and C and confirm that the backend in B handles them, checking logs or backend-specific responses so a successful call to a local backend doesn't hide a broken cross-cluster path.
 
 The [multi-cluster guide](https://learn.microsoft.com/azure/application-network/multi-cluster-connectivity#verify-configuration-and-traffic) has the commands for checking member configuration and gateway endpoints, along with steps for testing application traffic between clusters.
+
+Stay tuned for more updates to AppNet.
