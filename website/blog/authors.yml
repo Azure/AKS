@@ -690,3 +690,13 @@ amanda-wang:
   socials:
     github: wangyira
     linkedin: amandawang14
+
+oliver-king:
+  name: Oliver King
+  title: Senior Software Engineer for Azure Kubernetes Service
+  url: https://www.linkedin.com/in/oliver-merkley-king/
+  image_url: https://github.com/OliverMKing.png
+  page: true
+  socials:
+    github: OliverMKing
+    linkedin: oliver-merkley-king
