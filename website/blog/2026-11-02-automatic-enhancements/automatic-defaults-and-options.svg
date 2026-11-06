@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="840" viewBox="0 0 1200 840" role="img" aria-labelledby="title desc">
+  <title id="title">AKS Automatic defaults and optional capabilities</title>
+  <desc id="desc">New Automatic clusters include managed system node pools, LocalDNS, enforced workload guardrails, and Gateway API starting with AKS 1.36. Optional capabilities include native Terraform deployment, namespace exceptions, Istio CNI, and managed app domains. Existing Automatic clusters can migrate to managed system pools in a one-way preview.</desc>
+  <defs>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #172b4d; }
+      .heading { font-size: 32px; font-weight: 700; }
+      .label { font-size: 25px; font-weight: 700; }
+      .body { font-size: 23px; }
+      .small { font-size: 21px; fill: #43546c; }
+    </style>
+  </defs>
+  <rect width="1200" height="840" rx="20" fill="#f5f8fc"/>
+  <text x="48" y="60" class="heading">Built in by default. More ways to get started.</text>
+  <text x="48" y="100" class="body">Separate the new-cluster defaults from the capabilities you choose.</text>
+
+  <rect x="40" y="136" width="548" height="510" rx="16" fill="#eef2ff" stroke="#6974bd" stroke-width="2"/>
+  <text x="64" y="182" class="label">Included on new Automatic clusters</text>
+  <path d="M64 202 H564" stroke="#c0c8e7" stroke-width="2"/>
+  <text x="64" y="247" class="label">Managed system node pools</text>
+  <text x="64" y="281" class="body">AKS operates the system infrastructure</text>
+  <path d="M64 304 H564" stroke="#d9dfef"/>
+  <text x="64" y="347" class="label">LocalDNS</text>
+  <text x="64" y="381" class="body">Node-local caching for DNS resolution</text>
+  <path d="M64 404 H564" stroke="#d9dfef"/>
+  <text x="64" y="447" class="label">Workload guardrails</text>
+  <text x="64" y="481" class="body">Safeguards + baseline pod security</text>
+  <path d="M64 504 H564" stroke="#d9dfef"/>
+  <text x="64" y="547" class="label">Gateway API for app routing</text>
+  <text x="64" y="581" class="body">Default starting with AKS 1.36</text>
+  <text x="64" y="618" class="small">Existing clusters aren't switched automatically</text>
+
+  <rect x="612" y="136" width="548" height="510" rx="16" fill="#eaf5fc" stroke="#3283b4" stroke-width="2"/>
+  <text x="636" y="182" class="label">Choose for your deployment</text>
+  <path d="M636 202 H1136" stroke="#aed2e8" stroke-width="2"/>
+  <text x="636" y="247" class="label">Native Terraform deployment</text>
+  <text x="636" y="281" class="body">Dedicated resource in AzureRM v4.81+</text>
+  <path d="M636 304 H1136" stroke="#cee4f1"/>
+  <text x="636" y="347" class="label">Namespace exceptions</text>
+  <text x="636" y="381" class="body">Scope exceptions to workloads that need them</text>
+  <path d="M636 404 H1136" stroke="#cee4f1"/>
+  <text x="636" y="447" class="label">Istio with Istio CNI</text>
+  <text x="636" y="481" class="body">You manage the mesh upgrade lifecycle</text>
+  <path d="M636 504 H1136" stroke="#cee4f1"/>
+  <text x="636" y="547" class="label">Managed app domain + TLS</text>
+  <text x="636" y="581" class="body">Opt in to a domain and trusted certificate</text>
+  <text x="636" y="618" class="small">Configure application routing for your app</text>
+
+  <rect x="40" y="678" width="1120" height="126" rx="16" fill="#ffffff" stroke="#6974bd" stroke-width="2"/>
+  <rect x="64" y="703" width="122" height="38" rx="8" fill="#eef2ff"/>
+  <text x="125" y="729" class="small" font-weight="700" text-anchor="middle">PREVIEW</text>
+  <text x="206" y="731" class="label">Already using Automatic? Migrate your system pool.</text>
+  <text x="64" y="776" class="body">One-way migration for existing Automatic clusters; not a Standard-to-Automatic conversion.</text>
+</svg>

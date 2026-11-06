@@ -1,16 +1,25 @@
 # Module 3 — Workloads
 
 Four example workloads demonstrating Ray on AKS with Kueue admission control.
-Each example reuses the cluster from [Module 1](../1-infrastructure/) and the
-queue configuration from [Module 2](../2-kueue-queues/).
+Use the managed Kueue cluster and queue configuration from
+[Module 2](../2-kueue-queues/). Its CPU autoscale demo needs no Ray dependencies.
+The existing [Module 1](../1-infrastructure/) Terraform lab is a separate
+self-managed alternative for the Ray examples; don't layer the managed extension
+over that Helm-installed controller.
 
 ## Prerequisites
 
-- Module 1 deployed: AKS cluster, KubeRay, Kueue, storage, workload identity
-- Module 2 applied: `ray` namespace, ResourceFlavors, at least one queue
-  (`20-single-queue.yaml` or `30-team-queues.yaml`)
-- `envsubst` available (`gettext` package on most Linux distros, `brew install gettext` on macOS)
-- `kubectl` configured to the Module 1 cluster:
+- For Ray examples: an AKS cluster with KubeRay, Kueue, storage, datasets, and
+  authorized workload identity. Prepare them separately for the managed path,
+  or deliberately use the self-managed Module 1 alternative.
+- For Ray examples: Module 2's `ray` namespace, `ray-workload` ServiceAccount,
+  customer-owned ResourceFlavors, and one queue configuration
+  (`20-single-queue.yaml` or `30-team-queues.yaml`).
+- For the CPU autoscale example: follow its own prerequisites; Ray, storage,
+  identity, and the Ray queues aren't required.
+- `envsubst` available for Ray templates (`gettext` package on most Linux distros,
+  `brew install gettext` on macOS).
+- `kubectl` configured to the target cluster:
   ```bash
   az aks get-credentials --resource-group <rg> --name <cluster>
   ```
@@ -124,8 +133,13 @@ just-in-time.
 
 ## Quick start
 
+For a managed cluster, set `AZURE_STORAGE_ACCOUNT_NAME` and the other example
+variables from your separately prepared storage and datasets before sourcing
+`env.example`. Its defaults preserve supplied values. Skip the Terraform-output
+command below; it applies only to the self-managed Module 1 lab.
+
 ```bash
-# Get storage account from Module 1 outputs
+# Self-managed Terraform lab only: get its storage account
 export AZURE_STORAGE_ACCOUNT_NAME=$(terraform -chdir=../1-infrastructure/terraform output -raw storage_account_name)
 
 # Run Example 1 (aurora fine-tune)
