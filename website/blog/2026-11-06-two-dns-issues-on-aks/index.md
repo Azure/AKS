@@ -1,5 +1,5 @@
 ---
-title: "Two DNS Issues on AKS, and How to Address Them"
+title: "Two DNS Issues on AKS and How to Address Them"
 date: "2026-11-06"
 description: "Learn why a few DNS queries fail during AKS upgrades and why one unreachable CoreDNS pod breaks DNS, and how LocalDNS and Cluster Health Monitor help."
 authors: ["mitch-shao"]
