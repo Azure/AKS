@@ -19,9 +19,9 @@ tags:
 draft: false
 ---
 
-Getting one app running on AKS isn't the hard part. Running a platform that works for every app is. Without one, you aren't really scaling. You're asking every team to wire up the same plumbing over and over again. A landing zone sets up Azure. A platform sets up your developers.
+Getting one app running on AKS isn't the hard part. Running a platform that works for every app is. Without one, you aren't really scaling. You're asking every team to wire up the same plumbing over and over again. A landing zone sets up Azure. A platform sets up your developers to be productive with Kubernetes supported by AKS.
 
-Most platform conversations start with a tool list: Backstage? Argo CD? Flux? But tools shouldn't dictate your developer contract; they should fulfill it. In this post, I'll walk through how I'd build one, why I'd build it on AKS (yes, I work on AKS and this is the AKS blog, so I'm a little biased here 😅), and the trade-offs along the way.
+Most platform conversations start with a tool list: Backstage? Argo CD? Flux? But tools shouldn't dictate your developer contract; they should fulfill it. In this post, I'll walk through how I'd build one, why I'd build it on AKS, and the trade-offs along the way.
 
 <!-- truncate -->
 
@@ -29,14 +29,14 @@ Most platform conversations start with a tool list: Backstage? Argo CD? Flux? Bu
 
 Start with the work your app teams keep repeating or waiting on. Microsoft's [platform engineering guidance](https://learn.microsoft.com/platform-engineering/what-is-platform-engineering) puts developers' needs, self-service, and reducing cognitive load at the center. The contract should capture what those teams need to ship and run their apps without having to understand the plumbing.
 
-No matter which team owns it, every app needs the same few things before it can ship:
+No matter which team owns it, every app needs the same things before it can ship:
 
 1. **A place to run** with clear boundaries
 2. **An identity** to reach other services without copying keys around
 3. **A way to see what it's doing**, not just whether it's running
 4. **A safe way to ship**: review first, then reconcile
 
-Kubernetes gives you building blocks for all of these. Keeping them working together through upgrades and CVEs is the real work. A platform turns those building blocks into one contract every team can depend on. That doesn't mean every app looks the same, just that the same capabilities are always there.
+Kubernetes gives you building blocks for all of these. Keeping them working together through upgrades, app onboarding and releases is the real work. A platform turns those building blocks into one contract every team can depend on. That doesn't mean every app looks the same, just that the same capabilities are always there.
 
 ## Map each promise to what delivers it
 
@@ -92,7 +92,7 @@ The [App Configuration Kubernetes provider](https://learn.microsoft.com/azure/az
 
 | Promise                                     | On AKS                                                                                                                                                                                                                                                                                       | Bring your own               |
 | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| Your images get scanned for vulnerabilities | [Azure Container Registry](https://learn.microsoft.com/azure/container-registry/container-registry-intro) with [Defender for Containers](https://learn.microsoft.com/azure/defender-for-cloud/defender-for-containers-introduction) scanning enabled                                         | Trivy                        |
+| Your images get scanned for vulnerabilities | [Azure Container Registry (ACR)](https://learn.microsoft.com/azure/container-registry/container-registry-intro) with [Defender for Containers](https://learn.microsoft.com/azure/defender-for-cloud/defender-for-containers-introduction) scanning enabled                                   | Trivy                        |
 | A rejected change tells you how to fix it   | [Deployment Safeguards](https://learn.microsoft.com/azure/aks/deployment-safeguards)                                                                                                                                                                                                         | Kyverno                      |
 | You ship by merging a pull request          | [Argo CD](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-argocd) or [Flux](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2) extension                                                                                           | Self-managed Argo CD or Flux |
 | A bad release doesn't reach everyone        | Not built in. Building blocks: Fleet Manager [staged resource rollout runs](https://learn.microsoft.com/azure/kubernetes-fleet/howto-staged-update-run), or the [Istio-based service mesh add-on](https://learn.microsoft.com/azure/aks/istio-about) as an alternative ingress and mesh path | Argo Rollouts or Flagger     |
@@ -114,10 +114,10 @@ Keep application-routing Gateway API as the default ingress path. If you need th
 
 If you've seen the [BACK stack](https://github.com/crossplane-contrib/back-stack) (Backstage, Argo CD, Crossplane, and Kyverno), you'll notice every piece of it shows up in the "Bring your own" column. Either path keeps the promise. The difference is what delivers it and who maintains it.
 
-Your platform team adds the most value where AKS doesn't build things in yet. These are yours to design:
+Your platform team adds the most value by turning these building blocks into a developer contract. These are yours to design:
 
 - **You can request an environment**: a self-service API in front of managed namespaces and Azure resources, so a team can open a pull request with a name, an owner, and the database it needs, and get all of it back
-- **A bad release doesn't reach everyone**: progressive delivery once your teams have real SLOs
+- **A bad release doesn't reach everyone**: your team defines SLOs, promotion criteria, and rollback policy. Fleet can provide staged resource rollouts across clusters, or you can implement those controls in your GitOps workflow.
 - **You can find what's available**: a catalog of what the platform offers
 
 ## Start smaller than you think
@@ -144,14 +144,14 @@ One cluster is where your platform starts, not where it stays. Most orgs already
 
 Once your platform runs its own components, like a self-service API or a GitOps controller that serves every cluster, the pattern I'd recommend is: **run the platform where you want control, and run tenant workloads where you want guardrails by default.**
 
-- **Control cluster on AKS Standard** runs Crossplane or kro and your GitOps controller. It's small and owned by the platform team, so lock it down: a fixed node count, the `patch` upgrade channel, and a private API server. It holds the credentials that create infrastructure, so scope its workload identity to the resource groups it manages and keep tenant workloads off it.
+- **Control cluster on AKS Standard** runs Crossplane or kro and your GitOps controller. It's small and owned by the platform team, so lock it down: a fixed node count, the Kubernetes [`patch` upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster?tabs=azure-cli#for-aks-standard-clusters), and a [private API server](https://learn.microsoft.com/azure/aks/api-server-vnet-integration). It holds the credentials that create infrastructure, so scope its workload identity to the resource groups it manages and keep tenant workloads off it.
 - **Workload clusters on AKS Automatic** run developer apps. Every namespace starts from a hardened baseline, and nodes show up when workloads need them.
 
-Why not Automatic for the control cluster too? Its fixed [`stable` upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#for-aks-automatic-clusters) includes minor-version upgrades, although you can set maintenance windows. I'd use Standard with `patch` here when the platform team needs explicit approval of minor-version upgrades after testing Crossplane providers or kro. That also means owning those upgrades and keeping the cluster on a supported version.
+Why not Automatic for the control cluster too? Its fixed Kubernetes [`stable` upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster#for-aks-automatic-clusters) includes minor-version upgrades, although you can set maintenance windows. I'd use Standard with Kubernetes [`patch` upgrade channel](https://learn.microsoft.com/azure/aks/auto-upgrade-cluster?tabs=azure-cli#for-aks-standard-clusters) here when the platform team needs explicit approval of minor-version upgrades after testing Crossplane providers or kro. That also means owning those upgrades and keeping the cluster on a supported version.
 
 Use [Azure Kubernetes Fleet Manager](https://learn.microsoft.com/azure/kubernetes-fleet/overview) to manage these clusters as a group, but separate infrastructure upgrades from Kubernetes resource rollouts:
 
-- **Start without a hub for infrastructure upgrades.** A Fleet Manager without a hub cluster costs nothing. [Fleet update strategies](https://learn.microsoft.com/azure/kubernetes-fleet/update-orchestration) can stage Kubernetes and node image upgrades across supported cluster configurations, with soak times and approval gates (in preview). Check the [Fleet FAQ](https://learn.microsoft.com/azure/kubernetes-fleet/faq#what-clusters-does-multi-cluster-updates-support) for upgrade support and limitations before promising a dev-to-prod upgrade order.
+- **Start without a hub for infrastructure upgrades.** A Fleet Manager without a hub cluster costs nothing. [Fleet update strategies](https://learn.microsoft.com/azure/kubernetes-fleet/update-orchestration) can stage Kubernetes and node image upgrades across supported cluster configurations, with soak times and approval gates. Check the [Fleet FAQ](https://learn.microsoft.com/azure/kubernetes-fleet/faq#what-clusters-does-multi-cluster-updates-support) for upgrade support and limitations before promising a dev-to-prod upgrade order.
 - **Add a hub when you need resource placement.** With a [hub cluster](https://learn.microsoft.com/azure/kubernetes-fleet/concepts-choosing-fleet), Fleet can place the same namespaces, policies, and config on member clusters and [roll those resources out stage by stage](https://learn.microsoft.com/azure/kubernetes-fleet/howto-staged-update-run), with soak times and approval tasks between stages. Git stays the source of truth: your GitOps controller syncs to the hub, and Fleet decides which clusters get the resources and when. The hub doesn't run your workloads.
 
 ![Developers open a pull request. A control cluster on AKS Standard runs Crossplane or kro and a GitOps controller, creates Azure resources through Azure Resource Manager, and writes placements to the Fleet Manager hub. Fleet Manager rolls Kubernetes resources out to AKS Automatic workload clusters in stages, dev then staging then prod, with soak times and approval tasks between stages. Automatic infrastructure upgrades run independently.](./platform-topology.svg)
@@ -171,9 +171,9 @@ The contract only works if developers can use it without learning your plumbing.
 
 If your developers live in Visual Studio Code, the [AKS extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-aks-tools) can keep manifest creation and cluster troubleshooting in the editor. With Argo CD already installed, its [Argo CD integration](https://azure.github.io/vscode-aks-tools/features/argocd-gitops-integration.html) generates an `Application` manifest pointing at your repo and target namespace. Its [AKS-MCP integration](https://azure.github.io/vscode-aks-tools/features/aks-mcp-server-integration.html) gives Copilot Chat cluster context for troubleshooting. Keep generated manifests and fixes on the same pull request and GitOps path.
 
-So what does this look like in practice? A developer opens a pull request that requests an environment. After merge, GitOps applies it, and the team gets a managed namespace with quota, a workload identity, Application Insights, and an HTTPS URL. Copilot CLI generates the Dockerfile and manifests, and a second pull request ships the app.
+So what does this look like in practice? A developer opens a pull request that requests an environment, with the same checks and approvals your organization already requires. After merge, GitOps applies it, and the team gets a managed namespace with quota, a workload identity, Application Insights, and an HTTPS URL. Copilot CLI generates the Dockerfile and manifests, and a second pull request ships the app.
 
-Say a week later, a config change makes the app slower without breaking a single pod. The developer opens AKS desktop and sees the workload is healthy, finds the slow dependency call in Application Insights traces, reverts the change in Git, and watches the fix roll out. They never had to ask the platform team for access, and nothing was changed by hand.
+Say a week later, a config change makes it through established change control processes yet causes a performance regression, making the app slower without breaking a single pod. The developer opens AKS desktop and sees the workload is healthy, finds the slow dependency call in Application Insights traces, opens a revert pull request, and watches the fix roll out after the required approvals and merge. They never had to ask the platform team for access, and nothing was changed by hand.
 
 ## Measure whether it's working
 
@@ -188,7 +188,7 @@ A platform is a product, so treat adoption as a signal, not a mandate. Track the
 ## Trade-offs to keep in mind
 
 - **Fewer tuning options, less upkeep.** AKS Automatic handles node management and routine upgrades, but some settings are fixed. For workload clusters, that can be a useful trade-off when the defaults fit your developer contract. Check the [feature comparison](https://learn.microsoft.com/azure/aks/intro-aks-automatic) and use Standard where you need specific node or upgrade settings.
-- **More clusters means more of everything.** More credentials, more upgrade cadences, and more places to look when something breaks. Fleet Manager coordinates supported upgrades and, with a hub, stages and reconciles shared config, but you still own access and debugging.
+- **More clusters, more isolation, more coordination.** More credentials, more upgrade cadences, and more places to look when something breaks. Fleet Manager coordinates supported upgrades and, with a hub, stages and reconciles shared config, but you still own access and debugging.
 - **Managed defaults move.** Pin what your contract depends on, such as your template and module versions.
 - **The contract is portable, the defaults aren't.** Deployment Safeguards, managed namespaces, and Entra-based identity are Azure services. Keep the contract in your own templates or APIs, and moving becomes a swap of the "On AKS" column instead of a rewrite.
 
