@@ -40,7 +40,13 @@ Kubernetes gives you building blocks for all of these. Keeping them working toge
 
 ## Map each promise to what delivers it
 
-Think of the contract as a set of promises to your developers. Every piece you assemble by hand to keep them is another thing to patch, debug, and staff. The tables group each promise by the need it serves and show what AKS gives you versus what you'd bring yourself. Most of the "On AKS" column comes preconfigured on [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic).
+Think of the contract as a set of promises to your developers. Every piece you assemble by hand to keep them is another thing to patch, debug, and staff. The tables group each promise by the need it serves and show what AKS gives you versus what you'd bring yourself.
+
+:::tip
+
+[AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) preconfigures many of the capabilities in the "On AKS" column, giving you a production-ready starting point with less setup. See the [feature comparison](https://learn.microsoft.com/azure/aks/intro-aks-automatic#aks-automatic-and-standard-feature-comparison) for defaults and optional features.
+
+:::
 
 ### A place to run
 
