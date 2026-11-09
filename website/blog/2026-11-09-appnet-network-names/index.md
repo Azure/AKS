@@ -9,7 +9,7 @@ draft: true
 
 Azure Kubernetes Application Network (AppNet), currently in preview, aims to simplify network connectivity between clusters. In this post, we explore how to connect clusters with overlapping pod address spaces.
 
-You have two Azure Kubernetes Service (AKS) clusters with unique pod ranges and working routes between them. A third team wants to join. Its cluster uses a pod range you've already allocated elsewhere. Renumbering it could mean changing an existing cluster before you can connect the application.
+You have two Azure Kubernetes Service (AKS) clusters with unique pod ranges and working routes between them. Now, a third team wants to join with a cluster that uses a pod range you've already allocated elsewhere, and renumbering it could mean changing an existing cluster before you can connect the application.
 
 You set `--network-name` on each AppNet member to describe which clusters share pod reachability and which need an east-west gateway between them.
 
@@ -96,7 +96,7 @@ When you join a new cluster, pass `--network-name` to `az appnet member join` to
 }
 ```
 
-## You still need the network paths
+## Establish network paths
 
 Before A and B can use the direct path, you need routes and security rules that allow their pods to talk in both directions. C needs access to B's gateway.
 
@@ -126,5 +126,27 @@ Use pod reachability tests in both directions for A and B, and check that C's da
 Network names leave those controls in place. Send requests from A and C and confirm that the backend in B handles them, checking logs or backend-specific responses so a successful call to a local backend doesn't hide a broken cross-cluster path.
 
 The [multi-cluster guide](https://learn.microsoft.com/azure/application-network/multi-cluster-connectivity#verify-configuration-and-traffic) has the commands for checking member configuration and gateway endpoints, along with steps for testing application traffic between clusters.
+
+### Try the mixed-network scenario
+
+For a hands-on starting point, follow the [AppNet multi-cluster Bookinfo walkthrough](https://learn.microsoft.com/azure/application-network/traffic-management-use-cases#create-sample-application). It includes sample manifests, ambient enrollment, global-service configuration, and application requests. The [Bookinfo sample manifests](https://github.com/istio/istio/tree/release-1.29/samples/bookinfo) are also available in the Istio repository.
+
+The walkthrough uses two clusters; it doesn't provision the three-cluster network layout in this post. To exercise both paths, keep B as the destination and use the walkthrough's source-cluster setup first in A, then in C:
+
+| Test | Source and destination | Connectivity to establish first | What to verify |
+| --- | --- | --- | --- |
+| Direct path | A to B, both in `corp-routable` | Bidirectional pod-IP routes and security rules between A and B | A's request reaches a backend in B |
+| Gateway path | C in `isolated-c` to B in `corp-routable` | Reachability from C's data plane to B's east-west gateway address and exposed ports, including response traffic | C's request reaches a backend in B despite the overlapping pod ranges |
+
+Use the [connectivity guide's data-path checks](https://learn.microsoft.com/azure/application-network/multi-cluster-connectivity#validate-the-data-path) before each application test. For the gateway case, set `CONTEXT_B` to B's kubeconfig context, then inspect its gateway services with `kubectl --context "$CONTEXT_B" -n applink-system get services -o wide`. Check the addresses and ports against your routes and security rules; listing the services alone doesn't prove reachability.
+
+Follow the walkthrough's application deployment and request steps for each source/destination pair, using matching service names and namespaces. Use B-specific backend responses or B's application logs to confirm the destination. A response from a local backend is not evidence that either cross-cluster path works.
+
+## Next steps and resources
+
+- [Configure multi-cluster connectivity](https://learn.microsoft.com/azure/application-network/multi-cluster-connectivity) for network prerequisites, member onboarding, and data-path checks.
+- [Try the Bookinfo walkthrough](https://learn.microsoft.com/azure/application-network/traffic-management-use-cases) for application deployment, global services, traffic management, and authorization.
+- [Watch the AppNet demo](https://aka.ms/aks/appnetdemo) for a guided demonstration of the application workflow.
+- [Check supported AppNet versions](https://learn.microsoft.com/azure/application-network/supported-versions) before choosing your cluster and tooling versions.
 
 Stay tuned for more updates to AppNet.
