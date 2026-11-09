@@ -7,14 +7,14 @@
 #   envsubst < rayservice.yaml.tmpl | kubectl apply -f -
 #
 # Required variables:
-#   RAY_IMAGE          - Full MCR image ref, e.g. mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0
-#   RAY_VERSION        - Ray version string, e.g. 2.55.1
+#   RAY_IMAGE          - Full MCR image ref, e.g. mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.56.1-cuda13.0
+#   RAY_VERSION        - Matching Ray version string, e.g. 2.56.1
 #   SERVICE_NAME       - Unique name for this RayService, e.g. aurora-serve
 #   APP_NAME           - Ray Serve application name, e.g. aurora
 #   ROUTE_PREFIX       - HTTP route prefix, e.g. /aurora
 #   IMPORT_PATH        - Ray Serve import path, e.g. aurora_serve:app
 #   CONFIGMAP_NAME     - Name of the ConfigMap that holds the Python script(s)
-#   AZURE_STORAGE_ACCOUNT_NAME - Storage account from Module 1 terraform output
+#   AZURE_STORAGE_ACCOUNT_NAME - Storage account prepared for the selected setup
 #
 # Optional variables:
 #   WORKLOAD_ENV       - Extra env_vars lines (indented 10 spaces), or leave empty
