@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="1000" height="500" role="img" aria-labelledby="t d" font-family="'Segoe UI', -apple-system, Helvetica, Arial, sans-serif">
+<title id="t">One contract, many clusters</title>
+<desc id="d">Developers open pull requests. A control cluster on AKS Standard runs Crossplane or kro and a GitOps controller, creates Azure resources through Azure Resource Manager, and writes placements to an Azure Kubernetes Fleet Manager hub. Fleet Manager rolls Kubernetes resources out in stages to workload clusters on AKS Automatic: dev, then staging, then prod, with soak times and approval tasks between stages. Automatic infrastructure upgrades run independently.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8ec5f0"/></marker></defs>
+<rect width="1000" height="500" fill="#0d1b26"/>
+<text x="40" y="58" font-size="30" font-weight="600" fill="#ffffff">One contract, many clusters</text>
+<text x="40" y="88" font-size="16.5" fill="#8ec5f0">The control cluster builds it, Fleet Manager rolls it out, workload clusters run it</text>
+
+<g font-size="11" font-weight="600" letter-spacing="0.8" fill="#8ea3b8">
+<text x="40" y="138">1 · REQUEST</text><text x="260" y="138">2 · BUILD</text><text x="510" y="138">3 · ROLL OUT</text><text x="760" y="138">4 · RUN</text>
+</g>
+
+<rect x="40" y="152" width="180" height="116" rx="8" fill="#1f3d2e" stroke="#4caf7d" stroke-width="1.5"/>
+<text x="58" y="182" font-size="11" font-weight="600" letter-spacing="0.6" fill="#9fd8b8">DEVELOPERS</text>
+<text x="58" y="210" font-size="18" font-weight="600" fill="#ffffff">Pull request</text>
+<text x="58" y="234" font-size="13.5" fill="#a9bccd">Request an environment</text>
+<text x="58" y="252" font-size="13.5" fill="#a9bccd">or ship a change</text>
+
+<rect x="260" y="152" width="210" height="116" rx="8" fill="#14263a" stroke="#4a90c8" stroke-width="1.5"/>
+<text x="278" y="182" font-size="11" font-weight="600" letter-spacing="0.6" fill="#9cc8ec">CONTROL CLUSTER</text>
+<text x="278" y="210" font-size="18" font-weight="600" fill="#ffffff">Crossplane or kro</text>
+<text x="278" y="234" font-size="13.5" fill="#a9bccd">GitOps controller</text>
+<text x="278" y="252" font-size="13.5" fill="#a9bccd">AKS Standard</text>
+
+<rect x="260" y="318" width="210" height="100" rx="8" fill="#1b2430" stroke="#5a6b7d" stroke-width="1.5"/>
+<text x="278" y="348" font-size="11" font-weight="600" letter-spacing="0.6" fill="#b4c2d0">AZURE RESOURCE MANAGER</text>
+<text x="278" y="374" font-size="13.5" fill="#ffffff">Namespaces, identities,</text>
+<text x="278" y="394" font-size="13.5" fill="#ffffff">databases, Key Vault</text>
+
+<rect x="510" y="152" width="200" height="140" rx="8" fill="#123a57" stroke="#8ec5f0" stroke-width="1.5"/>
+<text x="528" y="182" font-size="11" font-weight="600" letter-spacing="0.6" fill="#bfe0f7">FLEET MANAGER HUB</text>
+<text x="528" y="210" font-size="18" font-weight="600" fill="#ffffff">Resource</text>
+<text x="528" y="234" font-size="18" font-weight="600" fill="#ffffff">placement</text>
+<text x="528" y="258" font-size="13.5" fill="#a9bccd">Staged config rollout</text>
+<text x="528" y="276" font-size="13.5" fill="#a9bccd">Runs no workloads</text>
+
+<rect x="760" y="152" width="200" height="300" rx="10" fill="#10241c" stroke="#2f6b4c" stroke-width="1.2"/>
+<text x="778" y="182" font-size="11" font-weight="600" letter-spacing="0.6" fill="#9fd8b8">WORKLOAD CLUSTERS</text>
+<text x="778" y="200" font-size="13.5" fill="#a9bccd">AKS Automatic</text>
+<rect x="778" y="216" width="164" height="50" rx="7" fill="#1f3d2e" stroke="#4caf7d" stroke-width="1.5"/>
+<text x="796" y="247" font-size="16.5" font-weight="600" fill="#ffffff">Dev</text>
+<rect x="778" y="302" width="164" height="50" rx="7" fill="#1f3d2e" stroke="#4caf7d" stroke-width="1.5"/>
+<text x="796" y="333" font-size="16.5" font-weight="600" fill="#ffffff">Staging</text>
+<rect x="778" y="388" width="164" height="50" rx="7" fill="#1f3d2e" stroke="#4caf7d" stroke-width="1.5"/>
+<text x="796" y="419" font-size="16.5" font-weight="600" fill="#ffffff">Prod</text>
+
+<g stroke="#8ec5f0" stroke-width="2" fill="none">
+<path d="M220,210 L256,210" marker-end="url(#a)"/>
+<path d="M470,210 L506,210" marker-end="url(#a)"/>
+<path d="M365,268 L365,314" marker-end="url(#a)"/>
+<path d="M710,222 L735,222 L735,241 L774,241" marker-end="url(#a)"/>
+<path d="M810,266 L810,298" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<path d="M810,352 L810,384" stroke-dasharray="5 4" marker-end="url(#a)"/>
+</g>
+<g font-size="12" fill="#5fd3a8"><text x="824" y="287">soak + approval</text><text x="824" y="373">soak + approval</text></g>
+
+<text x="40" y="466" font-size="13.5" fill="#5fd3a8">Workload identity everywhere: no stored keys for Azure services</text>
+<text x="40" y="487" font-size="12.5" fill="#a9bccd">Fleet stages Kubernetes resources here, not Automatic infrastructure upgrades</text>
+</svg>
