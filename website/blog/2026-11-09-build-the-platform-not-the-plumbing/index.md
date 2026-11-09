@@ -27,7 +27,7 @@ Most platform conversations start with a tool list: Backstage? Argo CD? Flux? Bu
 
 ## Start with the contract
 
-Start with the work your app teams keep repeating or waiting on. Microsoft's [platform engineering guidance](https://learn.microsoft.com/platform-engineering/what-is-platform-engineering) puts developers' needs, self-service, and reducing cognitive load at the center. The contract should capture what those teams need to ship and run their apps without having to understand the plumbing.
+Start with where app teams get stuck: repeated deployment setup, access requests, or unclear ownership. Microsoft's [platform engineering guidance](https://learn.microsoft.com/platform-engineering/what-is-platform-engineering) treats developers as customers and the platform as a product. Use their feedback to choose which problems to solve first, then capture what teams should be able to do in your developer contract.
 
 No matter which team owns it, every app needs the same things before it can ship:
 
@@ -128,9 +128,9 @@ Your platform team adds the most value by turning these building blocks into a d
 
 ## Start smaller than you think
 
-Every tool in the "Bring your own" column is a system your team has to run: upgrade, patch, monitor, and debug. Backstage is a framework you build on and upgrade, not a product you install ([here's what deploying it to AKS looks like](https://paulyu.dev/deploy-backstage-to-aks/)). Writing and debugging Crossplane compositions takes practice too.
+Start with one project and a workflow other teams could reuse, not a platform for the whole business. One AKS Automatic cluster, a pull request template, one Helm chart, and a GitOps extension may be enough. Prove it saves that team work, then reuse it with a second project. Add an API when pull requests become a bottleneck, and a portal when discovery does.
 
-Your first platform can be one AKS Automatic cluster, a pull request template, one Helm chart, and a GitOps extension. That's it. The pull request is your first self-service interface. Add an API when that workflow becomes a bottleneck, and a portal when discovery does.
+Every tool in the "Bring your own" column is a system your team has to run: upgrade, patch, monitor, and debug. Backstage is a framework you build on and upgrade, not a product you install ([here's what deploying it to AKS looks like](https://paulyu.dev/deploy-backstage-to-aks/)). Writing and debugging Crossplane compositions takes practice too.
 
 Already running workloads? You don't need to start over. Apply the contract to new namespaces, and move existing teams onto it the next time they touch their deployment.
 
@@ -206,6 +206,7 @@ Not sure where to start? Pick your most-requested manual task, write down the pr
 
 This post is a starting point for something I want to explore more deeply. I'll follow up here with updates and more hands-on guidance as I go. A few areas I want to dig into:
 
+- **The platform as a product**: proving value with early projects, building business support, and earning further investment
 - **The environment contract**: a self-service API with Crossplane or kro
 - **The golden path**: from laptop to AKS Automatic in one pull request
 - **Diagnose and recover**: finding and fixing issues without a ticket
