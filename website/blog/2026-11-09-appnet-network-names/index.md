@@ -4,7 +4,7 @@ date: 2026-11-09
 description: "Learn how Azure Kubernetes Application Network connects AKS clusters across flat and overlapping pod networks, and why network names do not create reachability."
 authors: [jack-ma, zhewei-hu]
 tags: [application-network, networking, multi-cluster]
-draft: true
+draft: false
 ---
 
 Azure Kubernetes Application Network (AppNet), currently in preview, aims to simplify network connectivity between clusters. In this post, we explore how to connect clusters with overlapping pod address spaces.
