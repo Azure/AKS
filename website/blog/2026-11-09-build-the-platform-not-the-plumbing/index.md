@@ -46,6 +46,8 @@ Think of the contract as a set of promises to your developers. Every piece you a
 
 [AKS Automatic](https://learn.microsoft.com/azure/aks/intro-aks-automatic) preconfigures many of the capabilities in the "On AKS" column, giving you a production-ready starting point with less setup. See the [feature comparison](https://learn.microsoft.com/azure/aks/intro-aks-automatic#aks-automatic-and-standard-feature-comparison) for defaults and optional features.
 
+With availability zones enabled, AKS Automatic also provides [financially backed uptime guarantees](https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services) for the API server and the [system components it runs for you](https://learn.microsoft.com/azure/aks/automatic/aks-automatic-managed-system-node-pools-about#components-of-managed-system-node-pools).
+
 :::
 
 ### A place to run
