@@ -98,8 +98,8 @@ CACHE_FOLDER_PATH=""
 IDENTITY_NAME="dacs-runai-demo-reader"
 GPU_NODE_POOL="gpupool"
 WORKLOAD_IMAGE="${REGISTRY_NAME}.azurecr.io/runai-dacs-vllm/gpu:0.32.0-dacs0.1.0"
-az account set --subscription "$SUBSCRIPTION_ID"
-az aks get-credentials --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME"
+az account set --subscription "$SUBSCRIPTION_ID" || exit 1
+az aks get-credentials --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME" || exit 1
 ```
 
 Set the required `CACHE_FOLDER_PATH` value before running the cache script. Follow [Create an isolated cache](#4-create-an-isolated-cache) to choose and prepare the directory; the script doesn't default to the managed cache root.
