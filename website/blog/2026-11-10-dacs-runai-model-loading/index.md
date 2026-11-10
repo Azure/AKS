@@ -57,6 +57,8 @@ The five warm model loads ranged from **7.59 to 9.48 seconds**, with a **7.80-se
 
 We took the loading duration from vLLM's `Model loading took ... seconds` log. This loader stage includes initialization and GPU weight loading, not just network transfer. We measured readiness separately, from Kubernetes' container `startedAt` timestamp to its Ready-condition timestamp, excluding scheduling and image-pull time. The image was already present on the H100 node. The example uses `--enforce-eager`; different compilation and CUDA-graph settings can change startup behavior.
 
+We measured readiness with a kubelet HTTP probe. This walkthrough uses an exec probe to support loopback-only serving, so remeasure readiness with this manifest.
+
 Every warm pod recorded **zero native backing-store weight reads** and nonzero remote-cache reads, corroborated by cache-server download-byte increases. All seven pods completed the same chat request and returned `4` for "What is 2 + 2? Answer briefly." NVIDIA tooling showed the actual `VLLM::EngineCore` process using H100 memory. The direct-Blob control produced no DACS upload or download traffic.
 
 The smaller readiness improvement matters: accelerating weights doesn't remove tokenizer setup, engine initialization, kernel warmup, or other startup work. The first DACS load also has to retrieve and populate model data; don't expect an empty cache to eliminate the initial Blob read.
@@ -70,6 +72,7 @@ You need:
 - DACS enabled through the managed Azure Container Storage extension, with the controller and NVMe prerequisite DaemonSet ready. Follow the [DACS quickstart](https://learn.microsoft.com/en-us/azure/storage/container-storage/distributed-accelerator-for-cloud-storage-quickstart) through installation and NVMe preparation. Don't install a second controller or disk-setup chart.
 - OIDC and [Microsoft Entra Workload ID enabled on AKS](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#enable-oidc-issuer-and-microsoft-entra-workload-id-on-an-aks-cluster).
 - A private Blob container containing a licensed SafeTensors model under an immutable, versioned prefix. Keep the model in Blob Storage; direct Hugging Face origin access isn't part of DACS.
+- A single-trust-domain cluster containing only trusted workloads. DACS doesn't authenticate cache clients or encrypt cache traffic by default; restrict cache-server network access to trusted pods.
 - Bash, Azure CLI, `kubectl`, Docker, and permissions to create a managed identity, assign a container-scoped reader role, and deploy Kubernetes resources.
 - A container registry your cluster can pull from. Configure [AKS image-pull access](https://learn.microsoft.com/en-us/azure/aks/cluster-container-registry-integration) separately from the application's Blob reader identity.
 - An H100-compatible NVIDIA driver and device plugin. Our test used AKS managed GPU support, driver `580.159.04`, CUDA 13.0, and one allocatable `nvidia.com/gpu` device. Don't install a second device plugin when AKS already manages it.
@@ -91,12 +94,15 @@ MODEL_PREFIX="<immutable-model-prefix>"
 REGISTRY_NAME="<registry-name>"
 CACHE_NAMESPACE="runai-dacs"
 CACHE_NAME="model-cache"
+CACHE_FOLDER_PATH=""
 IDENTITY_NAME="dacs-runai-demo-reader"
 GPU_NODE_POOL="gpupool"
 WORKLOAD_IMAGE="${REGISTRY_NAME}.azurecr.io/runai-dacs-vllm/gpu:0.32.0-dacs0.1.0"
 az account set --subscription "$SUBSCRIPTION_ID"
 az aks get-credentials --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME"
 ```
+
+Set the required `CACHE_FOLDER_PATH` value before running the cache script. Follow [Create an isolated cache](#4-create-an-isolated-cache) to choose and prepare the directory; the script doesn't default to the managed cache root.
 
 Place all checkpoint files, including configuration, tokenizer, shard index, and weights, under the versioned Blob prefix. For model preparation, follow [Upload model files to Blob Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#upload-model-files-to-blob-storage), using your pinned GPT-OSS-20B revision instead of the guide's small model. Downloading from Hugging Face is a preparation step, not a DACS origin integration.
 
@@ -154,7 +160,7 @@ The last command selects the pushed image's immutable digest. In the tested imag
 
 ## 3. Bind the application identity
 
-Use a new namespace and an identity name that doesn't already exist in the resource group. The reader role is scoped to the model container, not the storage account or subscription. Uploading the model requires separate write permission.
+Use a new namespace and an identity name that doesn't already exist in the resource group. The reader role is scoped to the model container, not the storage account or subscription. Uploading the model requires separate write permission. DACS treats the cluster as a single trust domain: Blob RBAC and workload identity don't isolate cached data from other workloads. Use this experiment only in a single-tenant cluster.
 
 ```bash
 # filename: identity.sh
@@ -189,7 +195,9 @@ Role propagation can take several minutes. The pod must select this ServiceAccou
 
 ## 4. Create an isolated cache
 
-Our GPU test used a **new cluster with empty NVMe disks**, so the Cache used the root prepared by the managed extension. Don't reuse this root alongside another Cache or assume a new Kubernetes resource makes old disk data cold. On an existing cluster, use an administrator-approved separate directory, precreated on each eligible NVMe node; custom subdirectories aren't created automatically.
+Our GPU test used a **new cluster with empty NVMe disks**, so the Cache used the root prepared by the managed extension, `/var/lib/ssd/cacheserver`. Use this root only on a new, dedicated test cluster with empty disks and no other Cache. Don't assume a new Kubernetes resource makes old disk data cold.
+
+On an existing cluster, set `CACHE_FOLDER_PATH` to an administrator-approved, empty, dedicated NVMe-backed directory, such as `/var/lib/ssd/cacheserver/runai-dacs-20261110`. Have your cluster administrator create it at the same absolute path on every eligible cache node before you apply the manifest. Custom subdirectories aren't created automatically. Keep this directory unchanged between the cold and warm trials, and don't share it with another Cache.
 
 Verify the controller and disk prerequisites before creating the Cache:
 
@@ -203,6 +211,7 @@ Create three cache servers, one per eligible NVMe node:
 
 ```bash
 # filename: cache.sh
+: "${CACHE_FOLDER_PATH:?Set CACHE_FOLDER_PATH to the precreated cache directory on every eligible cache node.}"
 cat <<EOF | kubectl apply -f -
 apiVersion: storage.azure.com/v1
 kind: Cache
@@ -223,7 +232,7 @@ spec:
   nodeSelectorValue: cpu
   storage:
     hostPath:
-      nodeCacheFolderPath: /var/lib/ssd/cacheserver
+      nodeCacheFolderPath: "$CACHE_FOLDER_PATH"
 EOF
 kubectl wait "cache/$CACHE_NAME" -n "$CACHE_NAMESPACE" --for=condition=Ready --timeout=10m
 CACHE_DISCOVERY_URL=$(kubectl get cache "$CACHE_NAME" -n "$CACHE_NAMESPACE" -o jsonpath='{.status.discoveryURL}')
@@ -237,6 +246,8 @@ Confirm three ready cache servers, one per eligible NVMe node. Record baseline m
 Confirm the GPU node advertises one allocatable `nvidia.com/gpu` device, then deploy a cold vLLM pod. The example pairs Run:ai's read size with the DACS chunk size at **2 MiB**, the documented starting recommendation for GPT-OSS-20B. For another model, consult the [chunk-size guidance](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#optimize-read-performance).
 
 Save this Bash block as `deploy-vllm.sh`. Source it in the same configured shell so the variables from earlier steps remain available.
+
+This local-only test binds vLLM to `127.0.0.1`. The exec readiness probe checks `/health` inside the container, and you run inference through `kubectl exec`. Don't expose this unauthenticated test server through a Service or ingress.
 
 ```bash
 # filename: deploy-vllm.sh
@@ -263,6 +274,8 @@ spec:
       command: ["vllm", "serve"]
       args:
         - "az://$STORAGE_CONTAINER/$MODEL_PREFIX"
+        - "--host"
+        - "127.0.0.1"
         - "--load-format"
         - "runai_streamer"
         - "--served-model-name"
@@ -291,12 +304,14 @@ spec:
         - {name: STORAGE_LOG_LEVEL, value: "INFO"}
         - {name: SI_cacheEnableSyncUpload, value: "true"}
         - {name: SI_cacheMaxUploadBufferSizePerProcessGB, value: "1"}
-      ports:
-        - {containerPort: 8000}
       readinessProbe:
-        httpGet: {path: /health, port: 8000}
+        exec:
+          command:
+            - python3
+            - -c
+            - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2).close()"
         periodSeconds: 2
-        timeoutSeconds: 1
+        timeoutSeconds: 5
       volumeMounts:
         - {name: shm, mountPath: /dev/shm}
   volumes:
@@ -426,7 +441,7 @@ az role assignment delete --ids "$ROLE_ID"
 az identity delete --resource-group "$RESOURCE_GROUP" --name "$IDENTITY_NAME"
 ```
 
-Use these commands only for resources created specifically for the experiment. Keep existing models, storage accounts, node pools, and the managed DACS extension. Deleting Kubernetes resources doesn't necessarily erase cached files from host NVMe; coordinate removal of only the experiment's dedicated cache directories with your cluster administrator.
+Use these commands only for resources created specifically for the experiment. Keep existing models, storage accounts, node pools, and the managed DACS extension. Deleting Kubernetes resources doesn't necessarily erase cached files from host NVMe; coordinate removal of only the experiment's dedicated `CACHE_FOLDER_PATH` directory on each cache node with your cluster administrator.
 
 New GPU and cache node pools continue to incur charges after you delete application pods. If you created both pools exclusively for this experiment, delete those pools too; don't run these commands against shared or preexisting pools:
 
