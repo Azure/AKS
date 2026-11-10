@@ -1,6 +1,6 @@
 ---
 title: "Accelerate Model Loading on AKS with DACS and Run:ai Model Streamer"
-date: "2026-11-06"
+date: "2026-11-10"
 description: "Load GPT-OSS-20B into vLLM on an AKS H100 node with Run:ai Model Streamer and DACS. Configure three NVMe cache servers and verify fresh-pod warm-cache loading and inference."
 authors: ["francis-yu", "hariharan-sethuraman"]
 tags: [acstor, ai, ai-inference]
@@ -118,16 +118,16 @@ Managed GPU support requires the applicable AKS preview prerequisites. Use the [
 
 ## 2. Build the GPU workload image
 
-Save this as `Dockerfile` in an empty build directory. We tested the pinned x86-64 GPU vLLM base below. Keep the application's Torch/CUDA constraints and install Run:ai's Azure backend and DACS native client in that same environment.
+Save this as `Dockerfile` in an empty build directory. The pinned x86-64 GPU vLLM base image already includes Run:ai Model Streamer and its Azure backend at `0.17.0`. The explicit Run:ai requirement in this Dockerfile enforces those tested versions; `dacs-client` adds the DACS native client in the same Python environment. Keep the application's Torch/CUDA constraints.
 
 ```dockerfile
 FROM vllm/vllm-openai@sha256:6ee133356d49ed24cee03dd0cda3d3980279a11c107ce3e752c89e76540f41c9
-# This orphan exporter conflicts with the base SDK pinned by LMCache.
+# Remove an unused exporter whose requirements conflict with this base image's SDK.
 RUN python3 -m pip uninstall -y opentelemetry-exporter-otlp-common
 RUN python3 -m pip install --no-cache-dir "runai-model-streamer[azure]==0.17.0" "dacs-client==0.1.0" && python3 -m pip check
 ```
 
-The exporter removal is specific to this base-image digest's dependency conflict, not a general vLLM recommendation. It doesn't upgrade or remove the telemetry SDK required by LMCache. If you choose another base, resolve its own constraints and require `pip check` to pass.
+This base-image digest has a pre-existing OpenTelemetry dependency conflict: `opentelemetry-exporter-otlp-common==0.66b1` requires `opentelemetry-sdk~=1.45.1`, but the image contains SDK `1.40.0`. This isn't a conflict with DACS. Upgrading the telemetry stack violates LMCache's API and exporter constraints, so this Dockerfile removes only the unused exporter and leaves the SDK unchanged. This workaround is specific to the pinned digest, not a general vLLM recommendation. If you choose another base, resolve its own constraints and require `pip check` to pass.
 
 Build, push, and resolve the library path from the actual image:
 
@@ -308,7 +308,7 @@ Our H100 logs selected the Triton MXFP4 MoE backend and reported 13.03 GiB of mo
 
 The Run:ai URI is `az://<container>/<prefix>`; the account comes from `AZURE_STORAGE_ACCOUNT_NAME`. Don't substitute the native Python client's account-hostname URI format.
 
-Setting cache-enabled to `1` makes a provider-loading failure fail startup rather than silently selecting the non-DACS provider. It doesn't guarantee cache hits or disable DACS's Blob fallback. Confirm the path with counters.
+By default, Run:ai uses an available cache provider and otherwise streams directly from Azure Blob Storage. This walkthrough explicitly sets `RUNAI_STREAMER_EXPERIMENTAL_AZURE_CACHE_ENABLED=1` to require the provider, so initialization fails if the provider cannot load. This setting doesn't guarantee cache hits or disable DACS's Blob fallback. Confirm the read path with counters.
 
 Synchronous population is deliberate here: the native client's default asynchronous upload budget isn't a safe pod-memory limit. Budget host memory, streamer buffers, native population buffers, GPU memory, and `/dev/shm` separately. After establishing correctness, tune asynchronous population and concurrency for your workload.
 
