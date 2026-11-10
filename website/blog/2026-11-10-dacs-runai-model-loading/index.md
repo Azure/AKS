@@ -139,9 +139,9 @@ Build, push, and resolve the library path from the actual image:
 
 ```bash
 # filename: image.sh
-az acr login --name "$REGISTRY_NAME"
-docker build --platform linux/amd64 -t "$WORKLOAD_IMAGE" .
-docker push "$WORKLOAD_IMAGE"
+az acr login --name "$REGISTRY_NAME" || exit 1
+docker build --platform linux/amd64 -t "$WORKLOAD_IMAGE" . || exit 1
+docker push "$WORKLOAD_IMAGE" || exit 1
 DACS_LIBRARY=$(docker run --rm --entrypoint python3 "$WORKLOAD_IMAGE" -c '
 from importlib.metadata import distribution
 from pathlib import Path
@@ -152,11 +152,19 @@ library = distribution("dacs-client").locate_file(
 library = Path(library).resolve()
 assert library.is_file(), library
 print(library)
-')
-WORKLOAD_IMAGE=$(docker image inspect "$WORKLOAD_IMAGE" --format '{{index .RepoDigests 0}}')
+') || exit 1
+IMAGE_DIGEST=$(az acr repository show \
+  --name "$REGISTRY_NAME" \
+  --image "${WORKLOAD_IMAGE#*/}" \
+  --query digest --output tsv) || exit 1
+if [[ ! "$IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+  printf '%s\n' "ACR didn't return a valid image digest for $WORKLOAD_IMAGE." >&2
+  exit 1
+fi
+WORKLOAD_IMAGE="${WORKLOAD_IMAGE%:*}@${IMAGE_DIGEST}"
 ```
 
-The last command selects the pushed image's immutable digest. In the tested image, the library is `/usr/local/lib/python3.12/dist-packages/py_dacs_client/libStorageDirect.so`; resolve it rather than assume that path for another image. Keep the complete installation and sibling native libraries. Run:ai's Azure extra doesn't supply the DACS native client.
+The ACR lookup resolves the exact tag just pushed to the configured registry. After validating the digest, the script replaces the tag with an immutable digest reference while preserving the registry and repository. It doesn't select from the local image's `RepoDigests`, which can include other repositories. In the tested image, the library is `/usr/local/lib/python3.12/dist-packages/py_dacs_client/libStorageDirect.so`; resolve it rather than assume that path for another image. Keep the complete installation and sibling native libraries. Run:ai's Azure extra doesn't supply the DACS native client.
 
 ## 3. Bind the application identity
 
