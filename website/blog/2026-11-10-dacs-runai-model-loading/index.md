@@ -136,7 +136,17 @@ Build, push, and resolve the library path from the actual image:
 az acr login --name "$REGISTRY_NAME"
 docker build --platform linux/amd64 -t "$WORKLOAD_IMAGE" .
 docker push "$WORKLOAD_IMAGE"
-DACS_LIBRARY=$(docker run --rm --entrypoint python3 "$WORKLOAD_IMAGE" -c 'from importlib.metadata import distribution; from pathlib import Path; p=Path(distribution("dacs-client").locate_file("py_dacs_client/libStorageDirect.so")).resolve(); assert p.is_file(), p; print(p)')
+DACS_LIBRARY=$(docker run --rm --entrypoint python3 "$WORKLOAD_IMAGE" -c '
+from importlib.metadata import distribution
+from pathlib import Path
+
+library = distribution("dacs-client").locate_file(
+    "py_dacs_client/libStorageDirect.so"
+)
+library = Path(library).resolve()
+assert library.is_file(), library
+print(library)
+')
 WORKLOAD_IMAGE=$(docker image inspect "$WORKLOAD_IMAGE" --format '{{index .RepoDigests 0}}')
 ```
 
