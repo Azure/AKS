@@ -10,13 +10,13 @@ keywords: ["AKS", "DACS", "Azure Container Storage", "Run:ai Model Streamer", "m
 
 When you add an inference replica, replace a node, or roll out a deployment, your application can spend valuable time loading model weights before it serves its first request. Streaming those weights helps avoid a download-then-load pipeline. Reusing weights already cached in your cluster can reduce repeated reads from object storage.
 
-In our [earlier post about Run:ai Model Streamer and vLLM on AKS](https://blog.aks.azure.com/2026/07/13/runai-streamer-vllm), we explored streaming models directly from Azure Blob Storage. This post adds **distributed accelerator for cloud storage (DACS)**: a distributed, read-through NVMe cache managed through Azure Container Storage. You'll configure Run:ai to use DACS, load a model, and verify that a fresh pod reuses cached weights.
+In our [earlier post about Run:ai Model Streamer and vLLM on AKS](https://blog.aks.azure.com/2026/07/13/runai-streamer-vllm), we explored streaming models directly from Azure Blob Storage. This post adds **distributed accelerator for cloud storage (DACS)**: a distributed, read-through NVMe cache managed through Azure Container Storage. You'll configure Run:ai to use DACS, load a model, and verify that a fresh pod reuses cached weights in your AKS cluster.
 
 <!-- truncate -->
 
 :::caution[Preview and measurement scope]
 
-DACS is in preview. Preview features have no service-level agreement and aren't recommended for production workloads. See the [Microsoft Azure preview terms](https://azure.microsoft.com/support/legal/preview-supplemental-terms/).
+DACS is in public preview. Preview features have no service-level agreement and aren't recommended for production workloads. See the [Microsoft Azure preview terms](https://azure.microsoft.com/support/legal/preview-supplemental-terms/).
 
 We validated this walkthrough with **vLLM model loading and inference on an NVIDIA H100**. The model-loading stage and container-start-to-ready interval are different measurements; neither establishes production latency or an SLA.
 
@@ -25,6 +25,13 @@ We validated this walkthrough with **vLLM model loading and inference on an NVID
 ## Streaming and caching solve different problems
 
 Run:ai Model Streamer reads tensors concurrently and, in a GPU loading workflow, can overlap storage reads with CPU-to-GPU transfers. DACS adds reuse across pods: model chunks remain on the cache nodes' local NVMe disks, even when an application pod restarts or moves.
+
+In this post, **cold** and **warm** describe DACS's cached data for a particular model version:
+
+- **Cold cache:** The model's weight chunks aren't cached when loading begins. Reads retrieve missing chunks from Azure Blob Storage and populate DACS.
+- **Warm cache:** A previous load has populated the cache. A subsequent load, even from a new application pod, can reuse those chunks from the cache nodes' NVMe disks instead of fetching them again from Blob Storage.
+
+A cache can also be partially warm: cached chunks come from DACS, while missing chunks still come from Blob Storage. A warm DACS cache doesn't mean the model is already loaded into GPU memory.
 
 The paths are:
 
@@ -37,31 +44,35 @@ vLLM / Run:ai Azure backend -> DACS native client -> Azure Blob Storage -> H100 
                                                   \-> populate distributed cache
 ```
 
-The DACS controller provisions and reconciles cache servers; it isn't a proxy in this read path. DACS caches model-file data, not inference KV cache or container images. Azure Blob Storage remains the durable source of truth. Cached data is ephemeral and isn't replicated for durability. If chunks are missing or the cache is unavailable, the client can retrieve the data from Blob Storage.
+The DACS controller manages cache servers, keeping them provisioned and configured, but it doesn't sit between the client and the data as a proxy. DACS caches model-file data rather than inference KV cache or container images, while Azure Blob Storage remains the durable source of truth. Because cached data is temporary and isn't replicated for durability, clients can fall back to Blob Storage whenever a chunk is missing or the cache is unavailable.
 
-Consider this pattern when replicas repeatedly load the same model version, such as during scale-out, recovery, or rolling updates. Benefits depend on cache warmth, working-set size, CPU and network capacity, and loader configuration. A cache that hasn't been populated can't eliminate the first Blob read. Concurrent cold readers can independently fetch the same missing chunks.
+This pattern is useful when multiple replicas repeatedly load the same model version, such as during scale-out, recovery, or rolling updates. The benefit depends on how much of the model is already cached, how much data the workloads need, the available CPU and network capacity, and the loader configuration. A cold cache still requires an initial read from Blob Storage, and concurrent readers can each fetch the same missing chunks before those chunks become available in the cache.
 
 ## What we measured
 
-We validated the GPU workflow on November 9, 2026, in an isolated AKS cluster in Australia East. Three `Standard_L16s_v3` workers hosted the cache servers; one `Standard_NC40ads_H100_v5` worker hosted vLLM on an NVIDIA H100 NVL. A separate small system node ran cluster services. We used Kubernetes 1.36.5, the managed DACS extension and native client `0.1.0`, vLLM `0.32.0`, Torch `2.13.0+cu130`, and Run:ai core and Azure backend `0.17.0`.
+We validated the GPU workflow on November 9, 2026, using an isolated AKS cluster in the `Australia East` region. Three `Standard_L16s_v3` nodes ran the cache servers, while a `Standard_NC40ads_H100_v5` node ran vLLM on an NVIDIA H100 NVL GPU. A separate small system node handled cluster services. The cluster used Kubernetes `1.36.5`, the managed DACS extension and native client `0.1.0`, vLLM `0.32.0`, Torch `2.13.0+cu130`, and Run:ai core and Azure backend `0.17.0`.
 
-Each fresh pod served the same GPT-OSS-20B checkpoint, revision `6cee5e81ee83917806bbde320786a8fb61efebee`. Its three SafeTensors shards contain approximately **13.761 GB of weight data**. We verified the source files against full-file SHA-256 values before uploading them to private Blob Storage, checked the uploaded names and sizes, and tested actual token generation on the GPU.
+For each test, we started a fresh pod with the same GPT-OSS-20B checkpoint at revision `6cee5e81ee83917806bbde320786a8fb61efebee`. The checkpoint contains approximately **13.761 GB of model weights** across three SafeTensors shards. Before uploading the files to private Azure Blob Storage, we verified their contents using full-file SHA-256 checksums. We then checked the uploaded file names and sizes and confirmed that the model could generate tokens on the GPU.
 
-| Loading path | Observations | vLLM model-loading stage | Container start to ready |
+| Loading path | Number of runs | vLLM model-loading time | Container start to ready |
 | --- | ---: | ---: | ---: |
-| Direct Blob, DACS disabled | 1 | 17.41 s | 61 s |
-| DACS, initially cold | 1 | 17.51 s | 60 s |
-| DACS, warm cache | 5 | **8.08 s mean** | **50.6 s mean** |
+| Direct Blob Storage, DACS disabled | 1 | 17.41 s | 61 s |
+| DACS with an initially empty cache | 1 | 17.51 s | 60 s |
+| DACS with a populated cache | 5 | **8.08 s mean** | **50.6 s mean** |
 
-The five warm model loads ranged from **7.59 to 9.48 seconds**, with a **7.80-second median**. The single cold observation divided by the warm mean gives a **2.17x time ratio** for the model-loading stage. The direct-Blob control was a single observation too, not a statistical baseline. We retained all five warm samples, including the slower first sample. These results illustrate cache reuse; they aren't a guaranteed speedup for another model or deployment.
+With a warm cache, model-loading times ranged from **7.59 to 9.48 seconds**, with a median of **7.80 seconds**. The cold DACS load took approximately **2.17 times as long as the warm load**. We included all five warm runs, including the slower first run.
 
-We took the loading duration from vLLM's `Model loading took ... seconds` log. This loader stage includes initialization and GPU weight loading, not just network transfer. We measured readiness separately, from Kubernetes' container `startedAt` timestamp to its Ready-condition timestamp, excluding scheduling and image-pull time. The image was already present on the H100 node. The example uses `--enforce-eager`; different compilation and CUDA-graph settings can change startup behavior.
+These results demonstrate the benefit of reusing cached model data in this deployment, but they aren't a performance guarantee. Both the cold-cache test and the direct-Blob control consisted of a single run, so neither provides a statistical baseline for broader comparisons.
 
-We measured readiness with a kubelet HTTP probe. This walkthrough uses an exec probe to support loopback-only serving, so remeasure readiness with this manifest.
+We measured model-loading time using vLLM's `Model loading took ... seconds` log entry. That stage includes initialization and loading weights onto the GPU, rather than measuring network transfer alone. We measured startup readiness separately, from the container's Kubernetes `startedAt` timestamp to the timestamp when it became Ready. This excludes scheduling and image-pull time; the container image was already present on the H100 node.
 
-Every warm pod recorded **zero native backing-store weight reads** and nonzero remote-cache reads, corroborated by cache-server download-byte increases. All seven pods completed the same chat request and returned `4` for "What is 2 + 2? Answer briefly." NVIDIA tooling showed the actual `VLLM::EngineCore` process using H100 memory. The direct-Blob control produced no DACS upload or download traffic.
+Startup configuration also matters. The example uses `--enforce-eager`, and different compilation or CUDA-graph settings can change how long initialization takes. Our tests used a kubelet HTTP readiness probe, while the walkthrough uses an exec probe to support a server that listens only on the pod's loopback interface. Remeasure readiness with the walkthrough manifest before comparing your results with these measurements.
 
-The smaller readiness improvement matters: accelerating weights doesn't remove tokenizer setup, engine initialization, kernel warmup, or other startup work. The first DACS load also has to retrieve and populate model data; don't expect an empty cache to eliminate the initial Blob read.
+The read metrics confirmed that the warm runs used the cache. Every warm pod recorded **zero native backing-store weight reads** and nonzero remote-cache reads, with corresponding increases in the cache servers' download-byte counters. The direct-Blob control generated no DACS upload or download traffic.
+
+We also checked that the model was running on the GPU, not merely loading successfully. All seven pods answered the same chat request, “What is 2 + 2? Answer briefly,” with `4`, and NVIDIA tooling showed the `VLLM::EngineCore` process using H100 GPU memory.
+
+The smaller improvement in overall readiness reflects the work that caching doesn't remove. Tokenizer setup, engine initialization, kernel warmup, and other startup tasks still take time even when model weights load faster. An empty DACS cache must also retrieve and populate the model data, so the first load still requires reads from Blob Storage.
 
 ## Before you start
 
@@ -464,9 +475,9 @@ az aks nodepool delete --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUST
 
 If you created an entirely temporary cluster and supporting Azure resources, remove that dedicated setup through your infrastructure teardown process. Our validation removed its entire task-owned setup and verified that both its resource group and AKS-managed node resource group were gone.
 
-## Take the next step
+## Try it with your model
 
-Run:ai provides the streaming loader; DACS adds a shared cache for repeated model reads. Start with a representative model and an isolated cold/warm experiment, verify checkpoint provenance, GPU inference, and the actual cache path, and then measure the effect on your inference service's startup.
+Ready to see how caching affects your inference service? Use the Run:ai streaming loader with DACS to compare startup with an empty cache and a populated shared cache. Start with a representative model in an isolated test environment, verify where the checkpoint came from, and confirm that inference runs on the GPU and model reads use the expected storage or cache path. Then measure the difference in startup time to see what this approach offers your workload, and share your feedback with the Azure Container Storage product team!
 
 - [DACS overview](https://learn.microsoft.com/en-us/azure/storage/container-storage/distributed-accelerator-for-cloud-storage-overview)
 - [DACS quickstart](https://learn.microsoft.com/en-us/azure/storage/container-storage/distributed-accelerator-for-cloud-storage-quickstart)
