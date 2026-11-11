@@ -34,7 +34,7 @@ The grace period gives you time to act. It doesn't extend Kubernetes version sup
 
 ### What happens if you don't act
 
-A platform-initiated upgrade exists to return an unsupported cluster to support. To make sure it finishes, it doesn't follow the controls that your own upgrades respect:
+A platform-initiated upgrade exists to return an unsupported cluster to a supported state. To make sure it finishes, it doesn't follow the controls that your own upgrades respect:
 
 - It ignores your maintenance window, auto-upgrade channel, and Fleet Manager update runs.
 - It skips the deprecated API check, so workloads that depend on removed APIs can break.
