@@ -52,7 +52,7 @@ After enablement, AKS manages DRANET and networking drivers for that node pool t
 
 A workload references a `ResourceClaimTemplate` from its pod and declares the claim in the container that needs the NIC:
 
-```bash
+```yaml
 spec:
   resourceClaims:
     - name: rdma-nic
