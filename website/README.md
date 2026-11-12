@@ -31,6 +31,20 @@ npm start          # launch local dev server (http://localhost:3000)
 
 Edits hot‑reload. If you add new authors or tags and they do not appear, restart.
 
+### Local search
+
+Search uses [`@cmfcmf/docusaurus-search-local`](https://github.com/cmfcmf/docusaurus-search-local), configured in `docusaurus.config.ts`. Blog content is indexed automatically during each production build. Queries run in the browser without an external search service.
+
+Search doesn't work through `npm start`. Build and serve the site to preview it:
+
+```bash
+npm run build
+npm run test:search
+npm run serve
+```
+
+`test:search` also runs in website CI. It checks searches, result links, and index-size limits. When changing the search UI, check keyboard navigation, mobile layouts, and both color modes.
+
 ---
 
 ## 2. Create / Update an Author (`blog/authors.yml`)

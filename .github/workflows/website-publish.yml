@@ -42,6 +42,8 @@ jobs:
           sed -i 's/<GTAG_ID>/${{ secrets.GTAG_ID }}/g' src/utils/analytics.ts
       - name: Build website
         run: npm run build
+      - name: Check search index
+        run: npm run test:search
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:

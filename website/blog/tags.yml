@@ -342,6 +342,11 @@ performance:
   permalink: /performance
   description: Throughput, latency, scale, and resource efficiency tuning for AKS workloads.
 
+platform-engineering:
+  label: Platform Engineering
+  permalink: /platform-engineering
+  description: Building internal developer platforms on AKS, including golden paths, self-service, and guardrails.
+
 rag:
   label: RAG
   permalink: /rag

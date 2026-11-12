@@ -84,6 +84,16 @@ const config: Config = {
       onBrokenMarkdownLinks: 'warn',
     },
   },
+  plugins: [
+    [
+      require.resolve('@cmfcmf/docusaurus-search-local'),
+      {
+        indexDocs: false,
+        indexBlog: true,
+        indexPages: false,
+      },
+    ],
+  ],
   themes: ['@docusaurus/theme-mermaid'],
   themeConfig: {
     // Replace with your project's social card
