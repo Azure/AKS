@@ -1,6 +1,6 @@
 ---
-title: "DRANET on AKS: From manual orchestration to platform integration for your distributed workloads"
-date: "2026-11-09"
+title: "DRANET on AKS: From manual orchestration to platform integration for your distributed RDMA workloads"
+date: "2026-11-13"
 description: "Explore managed support for DRANET capabilities on AKS, topology-aware RDMA allocation through Kubernetes DRA, and NCCL benchmarks of GPU/NIC alignment."
 authors: ["sachi-desai", "joe-yostos"]
 tags: ["ai", "gpu", "networking", "performance"]
@@ -8,7 +8,7 @@ tags: ["ai", "gpu", "networking", "performance"]
 
 Training and serving large AI models can keep many GPUs exchanging data across servers. That data travels through network interface cards (NICs), and a faster GPU-to-network path means less time waiting for communication. Earlier this year, we published [Optimizing RDMA performance for AI workloads on AKS with DRANET](https://blog.aks.azure.com/2026/04/01/dranet-rdma-optimization-for-ai-on-aks), which covered the self-managed approach to using DRANET and Kubernetes Dynamic Resource Allocation (DRA) for topology-aware scheduling and GPU/NIC alignment in AI training and inferencing. That approach required customers to install and operate the networking components themselves.
 
-This blog post builds on that work with managed support for DRANET, now generally available on Azure Kubernetes Service (AKS). Rather than introducing GPU–NIC alignment as a new capability, the managed integration brings DRANET deployment and lifecycle management into the AKS platform for supported RDMA-capable node pools. Workloads continue to request devices through Kubernetes DRA, including topology-aware requests that help pair GPUs with nearby NICs. Customers retain the Kubernetes-native allocation model while moving DRANET operations from a self-managed deployment to AKS.
+This blog post builds on that work with [managed support for DRANET](https://aka.ms/aks/managed-support-for-dranet), now generally available on Azure Kubernetes Service (AKS). Rather than introducing GPU–NIC alignment as a new capability, the managed integration brings DRANET deployment and lifecycle management into the AKS platform for supported RDMA-capable node pools. Workloads continue to request devices through Kubernetes DRA, including topology-aware requests that help pair GPUs with nearby NICs. Customers retain the Kubernetes-native allocation model while moving DRANET operations from a self-managed deployment to AKS.
 
 <!-- truncate -->
 
