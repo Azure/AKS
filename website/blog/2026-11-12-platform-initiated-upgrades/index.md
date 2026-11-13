@@ -19,6 +19,8 @@ The goal is to keep clusters supported, not necessarily on the newest minor vers
 
 Upstream Kubernetes supports each minor version for about one year. AKS community support covers three generally available minor versions (N, N-1, and N-2) on the dates published in the [AKS Kubernetes release calendar](https://learn.microsoft.com/azure/aks/supported-kubernetes-versions#aks-kubernetes-release-calendar-and-upcoming-versions). Use the AKS dates rather than assuming they match upstream.
 
+Need a longer runway? AKS [long-term support (LTS)](https://learn.microsoft.com/azure/aks/long-term-support) extends the support timeline for eligible versions. For details, see [I need more time on my Kubernetes version](#i-need-more-time-on-my-kubernetes-version-what-are-my-options).
+
 Platform-initiated upgrades begin June 1, 2027. AKS rate-limits them by region, subscription, and version, so a cluster upgrades during or after its planned month, not on a specific day. Until then, upgrade at your own pace.
 
 On June 1, 2027, compare your clusters against these minimum versions:
@@ -28,21 +30,21 @@ On June 1, 2027, compare your clusters against these minimum versions:
 | Community | Kubernetes 1.36 | Upgrade, or enable LTS on an eligible version |
 | Long-term support (LTS) | Kubernetes 1.33 LTS | Upgrade to a supported LTS version |
 
-These minimums move as versions reach end of life. After the initial rollout, each version gets a 60-day grace period after its end-of-life date before its clusters become eligible. For example, Kubernetes 1.36 reaches end of life in June 2027, so clusters still on it are planned for September 2027. The initial rollout doesn't add another 60 days after June 1.
+These minimum supported versions move as versions reach end of life. After the initial rollout, each version gets a 60-day grace period after its end-of-life date before the platform upgrades its clusters. For example, Kubernetes 1.36 reaches end of life in June 2027, so clusters still on it are planned for September 2027, after the grace period. June 1 already falls after the grace period for versions that reached end of life earlier, so the initial rollout doesn't add another 60 days after June 1.
 
-The grace period gives you time to act. It doesn't extend Kubernetes version support, including security fixes. Check the **Platform-initiated upgrade** column in the release calendar for each version's planned month.
+The grace period gives you time to act. It doesn't extend Kubernetes version support, including security fixes. If you rely on the grace period, your clusters are out of support for that whole window and won't receive critical CVE fixes if an incident occurs. Check the **Platform-initiated upgrade** column in the release calendar for each version's planned month.
 
 ### What happens if you don't act
 
-A platform-initiated upgrade exists to return an unsupported cluster to a supported state. To make sure it finishes, it doesn't follow the controls that your own upgrades respect:
+A platform-initiated upgrade exists to return an unsupported cluster to a supported state. To make sure it finishes, it might behave differently than upgrades you run yourself:
 
-- It ignores your maintenance window, auto-upgrade channel, and Fleet Manager update runs.
-- It skips the deprecated API check, so workloads that depend on removed APIs can break.
+- It can run outside your maintenance windows, auto-upgrade channel, and Fleet Manager update runs.
+- It doesn't run the deprecated API check. If your workloads depend on removed APIs, they might break.
 - It tries a normal node drain first, but can override a Pod Disruption Budget (PDB) if the drain fails or times out.
 - It moves one minor version at a time to the lowest supported version in your current support plan. It never enrolls a cluster in LTS or changes your billing tier.
-- It can't be rolled back.
+- It cannot be rolled back.
 
-Workload availability isn't guaranteed on this path. Everything else in this post is about upgrading on your terms first. For eligibility, target-version selection, and execution details, see [Platform-initiated upgrades in AKS](https://learn.microsoft.com/azure/aks/platform-initiated-upgrades).
+We strongly recommend upgrading your clusters before platform-initiated upgrades begin. Because these upgrades prioritize cluster security, they can affect workload availability. Everything else in this post is about upgrading on your terms first. For eligibility, target-version selection, and execution details, see [Platform-initiated upgrades in AKS](https://learn.microsoft.com/azure/aks/platform-initiated-upgrades).
 
 ## Start with your cluster inventory
 
@@ -52,14 +54,17 @@ For a precise list, run this Azure Resource Graph query. It returns each cluster
 
 ```bash
 # Requires the Azure CLI resource-graph extension: az extension add --name resource-graph
-az graph query -q "resources
+QUERY="resources
 | where type =~ 'microsoft.containerservice/managedclusters'
-| project name, resourceGroup, subscriptionId,
+| project id, name, resourceGroup, subscriptionId,
     kubernetesVersion = tostring(properties.kubernetesVersion),
     supportPlan = tostring(properties.supportPlan),
     upgradeChannel = tostring(properties.autoUpgradeProfile.upgradeChannel)
-| order by kubernetesVersion asc" --output table
+| order by id asc"
+az graph query -q "$QUERY" --first 1000 --output json
 ```
+
+Each call returns up to 1,000 clusters (the default is 100). If the response includes a `skip_token`, rerun the command with `--skip-token <token>` and repeat until no token remains, so you don't miss clusters in larger estates.
 
 Compare the results with the release calendar, flag every cluster below the minimums, and assign an owner to each one.
 
@@ -76,7 +81,7 @@ Your approach depends on your operational needs. Most teams fit more than one of
 
 Treat upgrades like a release: development, then test, staging, and production.
 
-[Azure Kubernetes Fleet Manager](https://learn.microsoft.com/azure/kubernetes-fleet/overview) is built for this. Organize your clusters into ordered stages with reusable [update strategies](https://learn.microsoft.com/azure/kubernetes-fleet/update-create-update-strategy). Stages run in order, and the groups inside a stage update in parallel. Pair a strategy with a Fleet [auto-upgrade profile](https://learn.microsoft.com/azure/kubernetes-fleet/update-automation) on the **Stable** channel, and Fleet rolls new Kubernetes versions through your environments as AKS releases them, keeping member clusters in support.
+[Azure Kubernetes Fleet Manager](https://learn.microsoft.com/azure/kubernetes-fleet/overview) is built for this. First, upgrade any unsupported member clusters to a supported version yourself. Fleet auto-upgrade only works on clusters inside the AKS support window, so turning it on doesn't bring an unsupported cluster back into support. Then organize your clusters into ordered stages with reusable [update strategies](https://learn.microsoft.com/azure/kubernetes-fleet/update-create-update-strategy). Stages run in order, and the groups inside a stage update in parallel. Pair a strategy with a Fleet [auto-upgrade profile](https://learn.microsoft.com/azure/kubernetes-fleet/update-automation) on the **Stable** channel, and Fleet rolls new Kubernetes versions through your environments as AKS releases them, keeping member clusters in support.
 
 Build your update strategy around a few habits:
 
@@ -111,7 +116,7 @@ Start by separating the capacity you need from resources you can retire. Invento
 
 For clusters on unsupported Kubernetes versions that you still need, compare an in-place upgrade with migrating to a new, supported cluster:
 
-- **In-place upgrade.** The cluster moves one minor version at a time, so a cluster that's far behind needs several upgrades.
+- **In-place upgrade.** Run `az aks get-upgrades` to see the target versions AKS offers. When you upgrade from an unsupported version yourself, AKS can let you [skip minor versions](https://learn.microsoft.com/azure/aks/upgrade-aks-faq) to reach a supported one, unlike the one-at-a-time platform path. Test the offered path before production.
 - **Blue-green cluster migration.** You need capacity for both clusters during the transition, so it isn't a capacity-free workaround. Fleet [resource placement](https://learn.microsoft.com/azure/kubernetes-fleet/concepts-resource-propagation) makes this easier by pushing the same workloads to multiple clusters based on labels or properties. Remove the old cluster only after a validated cutover, data handling, and recoverability checks, not first to make room for its replacement.
 
 For clusters you'll upgrade, check each of these [quotas and limits](https://learn.microsoft.com/azure/aks/quotas-skus-regions) separately:
