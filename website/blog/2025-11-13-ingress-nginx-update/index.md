@@ -13,6 +13,8 @@ The [Kubernetes SIG Network](https://github.com/kubernetes/community/blob/master
 
 <!--truncate-->
 
+> **Note**: We published this post in November 2025, when the application routing add-on with NGINX needed no immediate action. Since then, upstream Ingress NGINX maintenance ended in March 2026 and the [application routing Gateway API implementation](https://blog.aks.azure.com/2026/06/10/app-routing-gateway-api-ga) became available. If you use the application routing add-on with NGINX or OSS Ingress NGINX, migrate now to the [application routing Gateway API implementation](https://learn.microsoft.com/azure/aks/app-routing-gateway-api) or to [Application Gateway for Containers](https://learn.microsoft.com/azure/application-gateway/for-containers/overview).
+
 ## No immediate action required
 
 Microsoft understands that customers value continuity and clarity around the maintenance and evolution of the components that power their workloads. There is no change or immediate action required today for AKS clusters using the [Application Routing add-on with NGINX](https://learn.microsoft.com/azure/aks/app-routing) to manage Ingress NGINX resources. Microsoft will provide official support for Application Routing add-on Ingress NGINX resources through **November 2026** and only for critical security patches during this period.
