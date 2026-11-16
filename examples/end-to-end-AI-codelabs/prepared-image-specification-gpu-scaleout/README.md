@@ -111,10 +111,10 @@ az provider register --subscription $SUB --namespace Microsoft.ContainerService
 az group create -n $RG -l $LOC --subscription $SUB \
   --tags doNotDelete=true skipAutoDelete=true
 
-# 5. Cluster with a CPU system pool
+# 5. Cluster with a CPU system pool (AKS picks a default Kubernetes version and
+#    VM size for you; pass --kubernetes-version / --node-vm-size to pin them)
 az aks create -g $RG -n $CLUSTER --subscription $SUB --location $LOC \
-  --kubernetes-version 1.35.6 --node-count 2 --node-vm-size Standard_D4s_v5 \
-  --nodepool-name system --network-plugin azure --generate-ssh-keys
+  --node-count 2 --nodepool-name system --network-plugin azure --generate-ssh-keys
 
 az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existing
 ```
