@@ -19,26 +19,26 @@ Container images passed to `--container-images` are pulled with `ctr`, which doe
 
 ```bash
 az aks prepared-image-specification create \
-  -g $RG --subscription $SUB --name img-pis --location $LOC --version v1 \
+  -g $RG --subscription $SUB --name image-prepared-image-specification --location $LOC --version v1 \
   --container-images docker.io/vllm/vllm-openai:v0.11.0
 ```
 
 Grant the cluster identity **Reader** on the PIS (see
 [the grant](README.md#the-pis-read-permission-grant-every-example-needs-this)
-with `<pis-name>` = `img-pis`).
+with `<pis-name>` = `image-prepared-image-specification`).
 
 **Checkpoint:** the version is `Succeeded`:
 
 ```bash
 az aks prepared-image-specification version show -g $RG --subscription $SUB \
-  --pis-name img-pis --name v1 --query "properties.provisioningState" -o tsv
+  --pis-name image-prepared-image-specification --name v1 --query "properties.provisioningState" -o tsv
 ```
 
 ## 2. Attach a GPU pool (this triggers the bake)
 
 ```bash
 PIS_VER_ID=$(az aks prepared-image-specification version show -g $RG \
-  --subscription $SUB --pis-name img-pis --name v1 --query id -o tsv)
+  --subscription $SUB --pis-name image-prepared-image-specification --name v1 --query id -o tsv)
 
 az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --name imgpool --mode User \
@@ -144,7 +144,7 @@ nodes are actually gone before you walk away:
 ```bash
 kubectl delete pod gpu-smoke --ignore-not-found
 az aks nodepool delete -g $RG --cluster-name $CLUSTER -n imgpool --subscription $SUB
-az aks prepared-image-specification delete -g $RG --name img-pis --subscription $SUB --yes
+az aks prepared-image-specification delete -g $RG --name image-prepared-image-specification --subscription $SUB --yes
 ```
 
 (The device plugin DaemonSet is cluster-scoped; it's removed by the whole-RG
@@ -156,7 +156,7 @@ delete in the [top-level README](README.md#clean-up), or
 Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
 AKS 1.35.6, driver 580.159.04 / CUDA 13.0:
 
-- PIS `img-pis` v1 cached the vLLM OpenAI image (9.74 GB). Measured with the
+- PIS `image-prepared-image-specification` v1 cached the vLLM OpenAI image (9.74 GB). Measured with the
   `:latest` image at validation time; the codelab pins `v0.11.0` for
   reproducibility (image size / cache behavior are tag-independent).
 - Bake + first node ready: **42m44s**.

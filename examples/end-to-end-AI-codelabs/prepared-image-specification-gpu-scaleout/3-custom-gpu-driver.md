@@ -71,16 +71,16 @@ jq -n --arg s "$(cat scripts/customize-driver.sh)" \
      executionPoint:"NodeImageBuildTime",postScriptAction:"None"}]' > driver-scripts.json
 
 az aks prepared-image-specification create \
-  -g $RG --subscription $SUB --name driver-pis --location $LOC --version v1 \
+  -g $RG --subscription $SUB --name driver-prepared-image-specification --location $LOC --version v1 \
   --customization-scripts @driver-scripts.json
 ```
 
-Grant the cluster identity **Reader** on `driver-pis` (see
+Grant the cluster identity **Reader** on `driver-prepared-image-specification` (see
 [the grant](README.md#the-pis-read-permission-grant-every-example-needs-this)).
 
 ```bash
 PIS_VER_ID=$(az aks prepared-image-specification version show -g $RG \
-  --subscription $SUB --pis-name driver-pis --name v1 --query id -o tsv)
+  --subscription $SUB --pis-name driver-prepared-image-specification --name v1 --query id -o tsv)
 
 az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --name driverpool --mode User \
@@ -217,7 +217,7 @@ for POOL in imgpool modelpool; do
 done
 # drop --no-wait so you can confirm the (billable) H100 node is actually gone:
 az aks nodepool delete -g $RG --cluster-name $CLUSTER -n driverpool --subscription $SUB
-az aks prepared-image-specification delete -g $RG --name driver-pis --subscription $SUB --yes
+az aks prepared-image-specification delete -g $RG --name driver-prepared-image-specification --subscription $SUB --yes
 ```
 
 > The quickest, most reliable teardown is still the whole-resource-group delete
@@ -230,7 +230,7 @@ az aks prepared-image-specification delete -g $RG --name driver-pis --subscripti
 Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
 AKS 1.35.6, kernel `6.8.0-1073-azure`, containerd 2.3.7:
 
-- PIS `driver-pis` baked NVIDIA `595.91.07` (`.run --dkms`, standard root).
+- PIS `driver-prepared-image-specification` baked NVIDIA `595.91.07` (`.run --dkms`, standard root).
 - Bake + node ready: **26m56s**.
 - On the `--gpu-driver None` node: `nvidia-smi` → H100 NVL `595.91.07`, DKMS
   `installed`, `/opt/azure/aks-gpu/dkms-marker` **absent**, `cleanUpGPUDrivers`

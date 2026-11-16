@@ -75,14 +75,14 @@ jq -n --arg s "$(cat scripts/customize-model.sh)" \
      executionPoint:"NodeImageBuildTime",postScriptAction:"None"}]' > model-scripts.json
 
 az aks prepared-image-specification create \
-  -g $RG --subscription $SUB --name model-pis --location $LOC --version v1 \
+  -g $RG --subscription $SUB --name model-prepared-image-specification --location $LOC --version v1 \
   --container-images docker.io/vllm/vllm-openai:v0.11.0 \
   --customization-scripts @model-scripts.json
 ```
 
 (The vLLM image is cached too, so this node can also *serve* the baked model.)
 
-Grant the cluster identity **Reader** on `model-pis` (see
+Grant the cluster identity **Reader** on `model-prepared-image-specification` (see
 [the grant](README.md#the-pis-read-permission-grant-every-example-needs-this)).
 
 ## 3. Attach a GPU pool with an NVMe-sized Ephemeral OS disk
@@ -92,7 +92,7 @@ cache disk** (the cache on this SKU is ~322 GB, so 400 GB forces NVMe placement)
 
 ```bash
 PIS_VER_ID=$(az aks prepared-image-specification version show -g $RG \
-  --subscription $SUB --pis-name model-pis --name v1 --query id -o tsv)
+  --subscription $SUB --pis-name model-prepared-image-specification --name v1 --query id -o tsv)
 
 az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --name modelpool --mode User \
@@ -204,7 +204,7 @@ node is actually gone before you walk away:
 ```bash
 kubectl delete pod vllm-model --ignore-not-found
 az aks nodepool delete -g $RG --cluster-name $CLUSTER -n modelpool --subscription $SUB
-az aks prepared-image-specification delete -g $RG --name model-pis --subscription $SUB --yes
+az aks prepared-image-specification delete -g $RG --name model-prepared-image-specification --subscription $SUB --yes
 ```
 
 ## Validation status
@@ -212,7 +212,7 @@ az aks prepared-image-specification delete -g $RG --name model-pis --subscriptio
 Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
 AKS 1.35.6, kernel `6.8.0-1073-azure`:
 
-- PIS `model-pis` baked `Qwen/Qwen2.5-7B-Instruct` (~15 GB) + cached the vLLM image.
+- PIS `model-prepared-image-specification` baked `Qwen/Qwen2.5-7B-Instruct` (~15 GB) + cached the vLLM image.
 - Bake + node ready: **38m3s**.
 - `--node-osdisk-type Ephemeral --node-osdisk-size 400` →
   `diffDiskSettings = { option: Local, placement: NvmeDisk }` (OS disk on NVMe,
