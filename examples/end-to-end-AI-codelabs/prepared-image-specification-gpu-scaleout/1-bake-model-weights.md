@@ -176,6 +176,9 @@ spec:
       hostPath: { path: /opt/models, type: Directory }
 YAML
 
+# wait until the container is actually running, otherwise `logs -f` can exit
+# with PodInitializing/ContainerCreating before vLLM prints anything:
+kubectl wait --for=jsonpath='{.status.phase}'=Running pod/vllm-model --timeout=300s
 kubectl logs -f vllm-model | grep -iE "Loading weights took|Model loading took"
 ```
 

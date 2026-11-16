@@ -72,9 +72,16 @@ After these examples you'll be able to:
 
 ## One-time setup
 
-These steps are shared by all three examples. Run them once.
+These steps are shared by all three examples. Run them once. **Run every command
+in these examples from this codelab's directory** — the examples reference files
+with relative paths (`scripts/…`, `manifests/…`).
 
 ```bash
+# 0. Get the codelab files and work from this directory (clone, or if you already
+#    have the repo, just cd into it). The relative paths below depend on this.
+git clone https://github.com/Azure/AKS.git
+cd AKS/examples/end-to-end-AI-codelabs/prepared-image-specification-gpu-scaleout
+
 # 1. Environment used throughout. Set SUB FIRST so the preview is registered in
 #    the SAME subscription the cluster and PIS resources are created in.
 export SUB=<your-subscription-id>
