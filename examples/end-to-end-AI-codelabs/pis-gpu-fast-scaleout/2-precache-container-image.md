@@ -20,7 +20,7 @@ Container images passed to `--container-images` are pulled with `ctr`, which doe
 ```bash
 az aks prepared-image-specification create \
   -g $RG --subscription $SUB --name img-pis --location $LOC --version v1 \
-  --container-images docker.io/vllm/vllm-openai:latest
+  --container-images docker.io/vllm/vllm-openai:v0.11.0
 ```
 
 Grant the cluster identity **Reader** on the PIS (see
@@ -71,9 +71,9 @@ Run a GPU pod straight from the baked image:
 
 ```bash
 kubectl run gpu-smoke --restart=Never \
-  --image=docker.io/vllm/vllm-openai:latest \
+  --image=docker.io/vllm/vllm-openai:v0.11.0 \
   --overrides='{"spec":{"nodeSelector":{"agentpool":"imgpool"},
-    "containers":[{"name":"smi","image":"docker.io/vllm/vllm-openai:latest",
+    "containers":[{"name":"smi","image":"docker.io/vllm/vllm-openai:v0.11.0",
     "command":["nvidia-smi"],"resources":{"limits":{"nvidia.com/gpu":1}}}]}}'
 
 kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/gpu-smoke --timeout=120s
@@ -87,16 +87,18 @@ kubectl describe pod gpu-smoke | grep -iE "Pulled|Pulling"
 | NVIDIA-SMI 580.159.04   Driver Version: 580.159.04   CUDA Version: 13.0 |
 |   0  NVIDIA H100 NVL ...  95830MiB |
 ...
-Successfully pulled image "docker.io/vllm/vllm-openai:latest" in 574ms ... Image size: 9738549569 bytes
+Container image "docker.io/vllm/vllm-openai:v0.11.0" already present on machine
 ```
 
-The 9.74 GB image "pulls" in **574 ms** because every layer is already baked into
-the VHD — only the registry manifest is checked. A cold pull of the same image is
+Because the image is pinned to a fixed tag (not `:latest`), kubelet defaults to
+`imagePullPolicy: IfNotPresent` and finds the 9.74 GB image **already baked into
+the VHD** — so it never contacts the registry. A cold pull of the same image is
 ~130 s.
 
-> **Tip:** the `:latest` tag still forces that manifest round-trip
-> (`imagePullPolicy: Always`). Pin a digest/tag, or set
-> `imagePullPolicy: IfNotPresent`, to skip the registry entirely.
+> **Why pin the tag?** With `:latest`, kubelet defaults to
+> `imagePullPolicy: Always` and still makes a registry manifest round-trip even
+> when the layers are cached (~574 ms observed here). A fixed tag or digest skips
+> the registry entirely — zero network — which is the whole point of caching.
 
 ## 5. Measure scale-out (the real payoff)
 
@@ -133,9 +135,13 @@ az aks prepared-image-specification delete -g $RG --name img-pis --subscription 
 Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
 AKS 1.35.6, driver 580.159.04 / CUDA 13.0:
 
-- PIS `img-pis` v1 cached `docker.io/vllm/vllm-openai:latest` (9.74 GB).
+- PIS `img-pis` v1 cached the vLLM OpenAI image (9.74 GB). Measured with the
+  `:latest` image at validation time; the codelab pins `v0.11.0` for
+  reproducibility (image size / cache behavior are tag-independent).
 - Bake + first node ready: **42m44s**.
-- Image present in containerd; GPU pod "pull" of 9.74 GB completed in **574 ms**
-  (cold pull ≈ 130 s).
+- Image present in containerd. With `:latest` (`imagePullPolicy: Always`) the
+  9.74 GB image "pull" was just a manifest check — **574 ms** (cold pull ≈ 130 s);
+  with the pinned tag kubelet reports `already present on machine` and makes no
+  registry call at all.
 - GPU `nvidia-smi` ran in-pod on the H100 NVL after installing the device plugin.
 - Scale-out 1 → 2: second node `Ready` in **438 s**, zero layer pull.

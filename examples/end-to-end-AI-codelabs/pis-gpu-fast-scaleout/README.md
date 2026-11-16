@@ -59,25 +59,26 @@ simplest and has no customization script.
 These steps are shared by all three examples. Run them once.
 
 ```bash
-# 1. CLI + preview extension
-az extension add --name aks-preview        # or: az extension update --name aks-preview
-az --version                               # confirm az >= 2.85.0
-
-# 2. Register the PIS preview feature, then refresh the resource provider
-az feature register --namespace Microsoft.ContainerService \
-  --name AKSPreparedImageSpecificationPreview
-# wait until "state" == "Registered":
-az feature show --namespace Microsoft.ContainerService \
-  --name AKSPreparedImageSpecificationPreview --query properties.state -o tsv
-az provider register --namespace Microsoft.ContainerService
-
-# 3. Environment used throughout
+# 1. Environment used throughout. Set SUB FIRST so the preview is registered in
+#    the SAME subscription the cluster and PIS resources are created in.
 export SUB=<your-subscription-id>
 export RG=pis-gpu-codelab
 export LOC=westeurope            # a region with H100 quota AND capacity
 export ZONE=3
 export CLUSTER=pis-gpu-codelab
 export GPU_SKU=Standard_NC40ads_H100_v5
+
+# 2. CLI + preview extension
+az extension add --name aks-preview        # or: az extension update --name aks-preview
+az --version                               # confirm az >= 2.85.0
+
+# 3. Register the PIS preview feature in $SUB, then refresh the resource provider
+az feature register --subscription $SUB --namespace Microsoft.ContainerService \
+  --name AKSPreparedImageSpecificationPreview
+# wait until "state" == "Registered":
+az feature show --subscription $SUB --namespace Microsoft.ContainerService \
+  --name AKSPreparedImageSpecificationPreview --query properties.state -o tsv
+az provider register --subscription $SUB --namespace Microsoft.ContainerService
 
 # 4. Resource group (tag it so a shared-sub janitor doesn't reap it mid-bake)
 az group create -n $RG -l $LOC --subscription $SUB \
@@ -109,19 +110,24 @@ az role assignment create --assignee-object-id "$CP_PRINCIPAL" \
 ## Capacity note (read before you pick a region)
 
 GPU **quota is not capacity.** A region can show plenty of quota yet refuse to
-allocate the SKU. Check that the SKU is actually unrestricted for your
-subscription before you commit to a ~30-minute bake:
+allocate the SKU. Run a **restriction (eligibility) check** before you commit to
+a ~30-minute bake:
 
 ```bash
 az vm list-skus -l $LOC --subscription $SUB --size $GPU_SKU \
   --query "[0].{zones:locationInfo[0].zones, restrictions:restrictions}" -o json
 ```
 
-- `restrictions: []` (empty) in a zone → you can allocate there.
 - A `Zone`/`NotAvailableForSubscription` restriction covering every zone → you
-  **cannot** allocate, no matter how much quota you have. Pick another region.
+  **cannot** allocate there, no matter how much quota you have. Pick another region.
+- `restrictions: []` (empty) means the SKU is **eligible** in that zone — but this
+  only reports eligibility, **not** guaranteed physical capacity. An unrestricted
+  zone can still return `AllocationFailed` under contention. Treat an empty result
+  as "worth trying," not a guarantee, and be ready to retry or fall back to another
+  unrestricted zone/region (each pool attach re-runs the bake).
 
-This codelab was validated in **`westeurope` zone 3**, which was unrestricted.
+This codelab was validated in **`westeurope` zone 3**, which was unrestricted and
+had capacity at the time.
 
 ## How PIS works (30-second version)
 
@@ -144,8 +150,10 @@ change a version's contents.
 ## Clean up
 
 ```bash
-# removes the cluster, all GPU pools, PIS resources, and prepared images
-az group delete -n $RG --yes --no-wait
+# removes the cluster, all GPU pools, PIS resources, and prepared images.
+# Target $SUB explicitly so you don't rely on (or accidentally hit) a different
+# CLI default subscription.
+az group delete -n $RG --subscription $SUB --yes --no-wait
 ```
 
 ## Validation status

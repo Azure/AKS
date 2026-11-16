@@ -120,11 +120,17 @@ installing a second driver is the **NVIDIA GPU Operator with
 `driver.enabled=false`** — it uses your baked host driver.
 
 If you also run managed-driver PIS pools (Examples 1–2) in the same cluster,
-exclude their nodes from the Operator's operands first:
+exclude their nodes from the Operator's operands first. Set the label on the
+**node pool** (not individual nodes) so it persists across scale-out and node
+replacement — `az aks nodepool update` propagates it to every current and future
+node in the pool:
 
 ```bash
-kubectl label nodes -l agentpool=imgpool   nvidia.com/gpu.deploy.operands=false --overwrite 2>/dev/null || true
-kubectl label nodes -l agentpool=modelpool nvidia.com/gpu.deploy.operands=false --overwrite 2>/dev/null || true
+for POOL in imgpool modelpool; do
+  az aks nodepool show -g $RG --cluster-name $CLUSTER -n $POOL --subscription $SUB >/dev/null 2>&1 \
+    && az aks nodepool update -g $RG --cluster-name $CLUSTER -n $POOL --subscription $SUB \
+         --labels nvidia.com/gpu.deploy.operands=false
+done
 
 helm repo add nvidia https://nvidia.github.io/gpu-operator 2>/dev/null; helm repo update
 helm install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace \

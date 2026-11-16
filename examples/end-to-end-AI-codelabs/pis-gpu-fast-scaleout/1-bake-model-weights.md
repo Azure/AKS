@@ -59,7 +59,7 @@ jq -n --arg s "$(cat scripts/customize-model.sh)" \
 
 az aks prepared-image-specification create \
   -g $RG --subscription $SUB --name model-pis --location $LOC --version v1 \
-  --container-images docker.io/vllm/vllm-openai:latest \
+  --container-images docker.io/vllm/vllm-openai:v0.11.0 \
   --customization-scripts @model-scripts.json
 ```
 
@@ -134,7 +134,7 @@ spec:
   nodeSelector: { agentpool: modelpool }
   containers:
     - name: vllm
-      image: docker.io/vllm/vllm-openai:latest
+      image: docker.io/vllm/vllm-openai:v0.11.0
       imagePullPolicy: IfNotPresent
       args: ["--model","/models/qwen","--served-model-name","qwen",
              "--gpu-memory-utilization","0.9","--max-model-len","4096"]

@@ -14,7 +14,17 @@ spec:
         - { key: nvidia.com/gpu, operator: Exists, effect: NoSchedule }
         - { key: sku, operator: Equal, value: gpu, effect: NoSchedule }
       priorityClassName: system-node-critical
-      nodeSelector: { accelerator: nvidia }
+      # Run only on the managed-driver pools (Examples 1 and 2). Example 3's
+      # driverpool gets its device plugin from the NVIDIA GPU Operator, so this
+      # standalone plugin must NOT also target it — two plugins competing for the
+      # same GPU on one node makes the pod crash-loop. Scope by agent pool name.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - { key: kubernetes.azure.com/accelerator, operator: In, values: [nvidia] }
+                  - { key: agentpool, operator: In, values: [imgpool, modelpool] }
       containers:
         - name: nvidia-device-plugin-ctr
           image: nvcr.io/nvidia/k8s-device-plugin:v0.17.1
