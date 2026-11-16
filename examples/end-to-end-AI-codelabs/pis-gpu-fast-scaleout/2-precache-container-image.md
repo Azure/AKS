@@ -1,0 +1,141 @@
+# Example 2: Pre-cache a container image
+
+**Goal:** Bake a large GPU inference image into the node image so GPU nodes skip
+the image pull at scale-out. **Time:** ~45 min (mostly the one-time bake).
+
+GPU inference images are big — `vllm/vllm-openai` is ~9.7 GB. On a normal node
+that's a multi-minute pull every time the pool scales out. With PIS the image is
+already in containerd when the node boots.
+
+> Start here if you're new to PIS: this example has **no customization script**,
+> just a cached image.
+
+Complete the [shared one-time setup](README.md#one-time-setup) first.
+
+## 1. Create a PIS that caches the image
+
+Container images passed to `--container-images` are pulled with `ctr`, which does
+**not** default to Docker Hub — always fully-qualify with `docker.io/`.
+
+```bash
+az aks prepared-image-specification create \
+  -g $RG --subscription $SUB --name img-pis --location $LOC --version v1 \
+  --container-images docker.io/vllm/vllm-openai:latest
+```
+
+Grant the cluster identity **Reader** on the PIS (see
+[the grant](README.md#the-pis-read-permission-grant-every-example-needs-this)
+with `<pis-name>` = `img-pis`).
+
+**Checkpoint:** the version is `Succeeded`:
+
+```bash
+az aks prepared-image-specification version show -g $RG --subscription $SUB \
+  --pis-name img-pis --name v1 --query "properties.provisioningState" -o tsv
+```
+
+## 2. Attach a GPU pool (this triggers the bake)
+
+```bash
+PIS_VER_ID=$(az aks prepared-image-specification version show -g $RG \
+  --subscription $SUB --pis-name img-pis --name v1 --query id -o tsv)
+
+az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
+  --name imgpool --mode User \
+  --node-count 1 --node-vm-size $GPU_SKU --zones $ZONE \
+  --prepared-image-specification-id "$PIS_VER_ID"
+```
+
+> **Do not** pass `--labels accelerator=nvidia`. `accelerator` is a reserved node
+> label that AKS sets automatically on GPU nodes; setting it yourself returns
+> `BadRequest: Node label ... accelerator ... is not allowed to be changed`.
+
+The bake takes ~25–40 min. In this run it took **~43 min** (build + node ready).
+
+## 3. Make the node schedulable
+
+A managed-driver PIS pool comes up with the driver, container toolkit, and
+containerd nvidia runtime wired — but **no GPU device plugin**, so the node
+advertises no `nvidia.com/gpu` and is unschedulable. Install the device plugin:
+
+```bash
+kubectl apply -f manifests/nvidia-device-plugin.yaml
+# wait ~30-60s, then:
+kubectl get nodes -l agentpool=imgpool \
+  -o jsonpath='{.items[0].status.allocatable.nvidia\.com/gpu}'   # -> 1
+```
+
+## 4. Prove the image was pre-cached
+
+Run a GPU pod straight from the baked image:
+
+```bash
+kubectl run gpu-smoke --restart=Never \
+  --image=docker.io/vllm/vllm-openai:latest \
+  --overrides='{"spec":{"nodeSelector":{"agentpool":"imgpool"},
+    "containers":[{"name":"smi","image":"docker.io/vllm/vllm-openai:latest",
+    "command":["nvidia-smi"],"resources":{"limits":{"nvidia.com/gpu":1}}}]}}'
+
+kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/gpu-smoke --timeout=120s
+kubectl logs gpu-smoke | grep -E "Driver Version|H100"
+kubectl describe pod gpu-smoke | grep -iE "Pulled|Pulling"
+```
+
+**Checkpoint — what you should see:**
+
+```text
+| NVIDIA-SMI 580.159.04   Driver Version: 580.159.04   CUDA Version: 13.0 |
+|   0  NVIDIA H100 NVL ...  95830MiB |
+...
+Successfully pulled image "docker.io/vllm/vllm-openai:latest" in 574ms ... Image size: 9738549569 bytes
+```
+
+The 9.74 GB image "pulls" in **574 ms** because every layer is already baked into
+the VHD — only the registry manifest is checked. A cold pull of the same image is
+~130 s.
+
+> **Tip:** the `:latest` tag still forces that manifest round-trip
+> (`imagePullPolicy: Always`). Pin a digest/tag, or set
+> `imagePullPolicy: IfNotPresent`, to skip the registry entirely.
+
+## 5. Measure scale-out (the real payoff)
+
+Scale the pool and watch the second node come up with the image already present:
+
+```bash
+time az aks nodepool scale -g $RG --cluster-name $CLUSTER -n imgpool \
+  --subscription $SUB --node-count 2
+kubectl get nodes -l agentpool=imgpool
+```
+
+In this run the second H100 node reached `Ready` in **438 s** with **zero layer
+pull** — the image came from the prepared VHD, not the registry.
+
+## Troubleshoot
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `ResourceMissingPermissionError: .../preparedImageSpecifications/read` | Cluster identity has no rights on the PIS | Grant it **Reader** on the PIS resource; wait 1–2 min |
+| `BadRequest: ... accelerator ... not allowed to be changed` | `accelerator` is a reserved GPU label | Remove it from `--labels`; AKS sets it automatically |
+| Node `Ready` but pods `Pending` on `nvidia.com/gpu` | Managed-driver PIS pool ships no device plugin | `kubectl apply -f manifests/nvidia-device-plugin.yaml` |
+| Image still pulls slowly | Image not fully-qualified, so it wasn't cached | Use `docker.io/<repo>` in `--container-images`; make a new version |
+| Pool attach fails `AllocationFailed` | H100 capacity, not quota | Retry, or move to an unrestricted region/zone (README capacity note) |
+
+## Clean up
+
+```bash
+az aks nodepool delete -g $RG --cluster-name $CLUSTER -n imgpool --subscription $SUB --no-wait
+az aks prepared-image-specification delete -g $RG --name img-pis --subscription $SUB --yes
+```
+
+## Validation status
+
+Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
+AKS 1.35.6, driver 580.159.04 / CUDA 13.0:
+
+- PIS `img-pis` v1 cached `docker.io/vllm/vllm-openai:latest` (9.74 GB).
+- Bake + first node ready: **42m44s**.
+- Image present in containerd; GPU pod "pull" of 9.74 GB completed in **574 ms**
+  (cold pull ≈ 130 s).
+- GPU `nvidia-smi` ran in-pod on the H100 NVL after installing the device plugin.
+- Scale-out 1 → 2: second node `Ready` in **438 s**, zero layer pull.

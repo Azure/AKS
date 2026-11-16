@@ -14,6 +14,7 @@ clear next step.
 |---|---|---:|
 | [Provision GPU inference with Kueue](kueue-gpu-inference-autoscaling/) | Start with zero GPU nodes, submit a three-pod inference workload through Kueue, and watch the AKS cluster autoscaler provision all three GPU nodes before the models serve requests | 45–60 minutes |
 | [AMD GPU on AKS](amd-gpu-on-aks/) | Create an AKS cluster with an AMD `MI300X` GPU node pool, install the AMD GPU Operator, and use Dynamic Resource Allocation (DRA) to share a single GPU between multiple Pods | 45–60 minutes |
+| [Faster GPU scale-out with Prepared Image Specification](pis-gpu-fast-scaleout/) | Bake a container image, model weights, and a pinned GPU driver into the node image with Prepared Image Specification (PIS) so H100 nodes boot ready instead of pulling and downloading gigabytes at scale-out | 45–60 minutes each |
 
 ## Before you begin
 
