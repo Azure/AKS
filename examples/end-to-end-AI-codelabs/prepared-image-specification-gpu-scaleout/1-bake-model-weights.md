@@ -2,8 +2,8 @@
 
 **Goal:** Bake a 15 GB model checkpoint into the node image and have it land on
 the node's fast **local NVMe**, so inference pods load weights from local disk
-instead of downloading them from Hugging Face. **Time:** ~50 min (mostly the
-one-time bake).
+instead of downloading them over the network at startup. **Time:** ~50 min
+(mostly the one-time bake).
 
 Large-model nodes normally download tens of GB of weights at startup. With PIS
 the weights are already on disk when the node boots — but *where* on disk matters

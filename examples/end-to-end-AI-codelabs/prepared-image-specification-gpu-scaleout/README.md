@@ -26,7 +26,7 @@ flowchart LR
 
 | # | Example | What you bake | Why it matters |
 |---|---|---|---|
-| 1 | [Bake model weights](1-bake-model-weights.md) | A 15 GB Qwen2.5-7B checkpoint onto the node's local **NVMe** | The model is on local disk at boot — no Hugging Face download at scale-out |
+| 1 | [Bake model weights](1-bake-model-weights.md) | A 15 GB Qwen2.5-7B checkpoint onto the node's local **NVMe** | The model is on local disk at boot — no model download at scale-out |
 | 2 | [Pre-cache a container image](2-precache-container-image.md) | The `vllm/vllm-openai` inference image | No image pull at scale-out — the slowest part of GPU pod startup |
 | 3 | [Bake a custom GPU driver](3-custom-gpu-driver.md) | A pinned NVIDIA `595.91.07` driver | Pin an exact driver version that survives the AKS node bootstrap |
 
