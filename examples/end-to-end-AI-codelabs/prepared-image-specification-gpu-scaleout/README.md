@@ -58,10 +58,7 @@ After these examples you'll be able to:
 - **Cost:** An H100 node pool is billed while it exists — `Standard_NC40ads_H100_v5`
   is an expensive SKU. **Delete the GPU pool the moment you finish validating an
   example.** The prepared image is built **per node pool** — during preview AKS
-  doesn't share one prepared-image artifact across pools — so attaching a PIS
-  version to *another* pool runs its own ~25–40 min build (and a Kubernetes
-  version change rebuilds it). Within a pool, scale-out reuses the prepared image
-  with no rebuild — that's the payoff.
+  doesn't share one prepared-image artifact across pools.
 - **Cleanup:** Run the cleanup section of each example (it waits so you can
   confirm the node is gone), or delete the whole resource group at the end (see
   [below](#clean-up)).
