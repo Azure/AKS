@@ -57,8 +57,11 @@ After these examples you'll be able to:
   (~25–40 minutes) plus GPU node boot.
 - **Cost:** An H100 node pool is billed while it exists — `Standard_NC40ads_H100_v5`
   is an expensive SKU. **Delete the GPU pool the moment you finish validating an
-  example.** PIS **re-bakes on every pool attach** (no cached VHD during preview),
-  so each attach costs another bake.
+  example.** The prepared image is built **per node pool** — during preview AKS
+  doesn't share one prepared-image artifact across pools — so attaching a PIS
+  version to *another* pool runs its own ~25–40 min build (and a Kubernetes
+  version change rebuilds it). Within a pool, scale-out reuses the prepared image
+  with no rebuild — that's the payoff.
 - **Cleanup:** Run the cleanup section of each example (it waits so you can
   confirm the node is gone), or delete the whole resource group at the end (see
   [below](#clean-up)).
@@ -159,7 +162,7 @@ az vm list-skus -l $LOC --subscription $SUB --size $GPU_SKU \
   only reports eligibility, **not** guaranteed physical capacity. An unrestricted
   zone can still return `AllocationFailed` under contention. Treat an empty result
   as "worth trying," not a guarantee, and be ready to retry or fall back to another
-  unrestricted zone/region (each pool attach re-runs the bake).
+  unrestricted zone/region (re-creating the pool elsewhere runs a fresh bake).
 
 This codelab was validated in **`westeurope` zone 3**, which was unrestricted and
 had capacity at the time.
