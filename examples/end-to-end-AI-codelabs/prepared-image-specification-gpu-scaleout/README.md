@@ -125,7 +125,7 @@ az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existi
 > the feature state reads `Registered` **and** the provider re-registration has
 > finished before creating a PIS; retry for a few minutes if an early call fails.
 
-### The PIS read-permission grant (every example needs this)
+### The PIS read-permission grant
 
 Attaching a PIS to a node pool fails with `ResourceMissingPermissionError` unless
 the **cluster identity** has **Reader** on the PIS resource. This is separate from

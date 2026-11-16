@@ -84,7 +84,7 @@ az aks prepared-image-specification create \
 ```
 
 Grant the cluster identity **Reader** on `driver-prepared-image-specification` (see
-[the grant](README.md#the-pis-read-permission-grant-every-example-needs-this)).
+[the grant](README.md#the-pis-read-permission-grant)).
 
 ```bash
 PIS_VER_ID=$(az aks prepared-image-specification version show -g $RG \

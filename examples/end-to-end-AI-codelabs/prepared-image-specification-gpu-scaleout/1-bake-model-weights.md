@@ -94,7 +94,7 @@ az aks prepared-image-specification create \
 (The vLLM image is cached too, so this node can also *serve* the baked model.)
 
 Grant the cluster identity **Reader** on `model-prepared-image-specification` (see
-[the grant](README.md#the-pis-read-permission-grant-every-example-needs-this)).
+[the grant](README.md#the-pis-read-permission-grant)).
 
 ## 3. Attach a GPU pool with an NVMe-sized Ephemeral OS disk
 

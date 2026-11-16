@@ -24,7 +24,7 @@ az aks prepared-image-specification create \
 ```
 
 Grant the cluster identity **Reader** on the PIS (see
-[the grant](README.md#the-pis-read-permission-grant-every-example-needs-this)
+[the grant](README.md#the-pis-read-permission-grant)
 with `<pis-name>` = `image-prepared-image-specification`).
 
 **Checkpoint:** the version is `Succeeded`:
