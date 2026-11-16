@@ -13,7 +13,7 @@ self-contained and demonstrates one PIS capability on an NVIDIA H100 node pool.
 
 ```mermaid
 flowchart LR
-    PIS["PIS resource\n(image + scripts)"] -->|attach to pool| BAKE[AKS builds a prepared VHD once]
+    PIS["PIS resource<br/>(image + scripts)"] -->|attach to pool| BAKE[AKS builds a prepared VHD once]
     BAKE --> N1[GPU node 1]
     BAKE --> N2[GPU node 2]
     BAKE --> N3[GPU node N]
@@ -61,6 +61,8 @@ After these examples you'll be able to:
 
 ## Prerequisites
 
+- An Azure subscription with `az login` completed and permission to create AKS
+  clusters, node pools, and resource groups.
 - An AKS cluster on a supported Kubernetes version (validated on **1.35.6**).
 - Azure CLI **≥ 2.85.0** and the **`aks-preview`** extension **≥ 21.0.0b5**.
 - The **`AKSPreparedImageSpecificationPreview`** feature flag registered in your
@@ -79,7 +81,7 @@ with relative paths (`scripts/…`, `manifests/…`).
 ```bash
 # 0. Get the codelab files and work from this directory (clone, or if you already
 #    have the repo, just cd into it). The relative paths below depend on this.
-git clone https://github.com/Azure/AKS.git
+git clone --depth 1 https://github.com/Azure/AKS.git
 cd AKS/examples/end-to-end-AI-codelabs/prepared-image-specification-gpu-scaleout
 
 # 1. Environment used throughout. Set SUB FIRST so the preview is registered in
@@ -186,15 +188,18 @@ az group delete -n $RG --subscription $SUB --yes --no-wait
 ```
 
 > `--no-wait` returns **before** deletion finishes. AKS keeps your nodes in a
-> separate node resource group (`MC_<rg>_<cluster>_<region>`) that is normally
-> cascade-deleted with the cluster. Because H100 nodes are expensive, don't
-> assume teardown is done when the command returns — confirm both groups are
-> gone before you close the terminal:
+> separate node resource group (default name `MC_<rg>_<cluster>_<region>`, but
+> read the authoritative value below) that is normally cascade-deleted with the
+> cluster. Because H100 nodes are expensive, don't assume teardown is done when
+> the command returns — confirm both groups are gone before you close the
+> terminal:
 >
 > ```bash
-> az group show -n $RG --subscription $SUB -o none 2>/dev/null && echo "still deleting" || echo "RG gone"
-> az group show -n "MC_${RG}_${CLUSTER}_${LOC}" --subscription $SUB -o none 2>/dev/null \
->   && echo "node RG still present" || echo "node RG gone"
+> # authoritative node RG name (don't assume the MC_ default):
+> MCRG=$(az aks show -g $RG -n $CLUSTER --subscription $SUB --query nodeResourceGroup -o tsv 2>/dev/null)
+> az group show -n $RG --subscription $SUB -o none 2>/dev/null && echo "cluster RG still deleting" || echo "cluster RG gone"
+> [ -n "$MCRG" ] && az group show -n "$MCRG" --subscription $SUB -o none 2>/dev/null \
+>   && echo "node RG $MCRG still present" || echo "node RG gone"
 > ```
 
 ## Validation status

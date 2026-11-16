@@ -32,25 +32,33 @@ baked driver stays intact. This example verifies that end-to-end.
 
 ## Pick a driver version that *builds* on the node's kernel
 
-The node image used here runs kernel **`6.8.0-1073-azure`**. Older driver
-branches (`570.x`, `580.95`) **fail to compile** on it — the Azure kernel
-backported a 4-argument `pci_resize_resource`, and those drivers' conftests only
-know the 3-arg form (`nv-pci.c: too few arguments to function
-'pci_resize_resource'`). **`595.91.07` builds and supports H100 (Hopper).**
+> ⚠️ **Check your kernel before you bake — a mismatch is the expected case, not
+> the exception.** A custom GPU driver is compiled against the running kernel, and
+> AKS patches node images frequently, so a cluster you create today will very
+> likely run a *newer* kernel than the `6.8.0-1073-azure` this example was pinned
+> to — and there is no supported way to pin the exact node-image kernel. The
+> pinned `595.91.07` is **not guaranteed to build** on a different kernel. **Stop
+> and check first:**
+>
+> ```bash
+> kubectl get nodes -o wide   # look at the KERNEL-VERSION column
+> ```
+>
+> If it is **not** `6.8.0-1073-azure`, pick a driver that matches *your* kernel
+> and test it on a throwaway VM with that exact kernel **before** baking (the bake
+> is a ~25-minute feedback loop). The rest of this example still applies — only the
+> driver version string changes.
 
-```bash
-# confirm your node image kernel first (from any existing node)
-kubectl get nodes -o wide   # KERNEL-VERSION column
-```
+Why `595.91.07` and not older branches: `570.x` / `580.95` **fail to compile** on
+`6.8.0-1073-azure` — the Azure kernel backported a 4-argument `pci_resize_resource`
+and those drivers' conftests only know the 3-arg form (`nv-pci.c: too few
+arguments to function 'pci_resize_resource'`). `595.91.07` builds and supports
+H100 (Hopper).
 
-> **This example is pinned to kernel `6.8.0-1073-azure`.** AKS node images are
-> patched often, so if the command above shows a *different* kernel, `595.91.07`
-> is **not guaranteed to build** — you must pick and test a driver that matches
-> your kernel. Test the chosen driver on a throwaway VM with that exact kernel
-> *before* baking (the bake is a ~25-minute feedback loop). A compile-free
-> alternative that sidesteps the conftest wall is Canonical's precompiled
-> modules (`linux-modules-nvidia-595-server-open-<kernel>-azure` +
-> `nvidia-driver-595-server-open`).
+> A compile-free alternative that sidesteps the conftest wall is Canonical's
+> precompiled modules (`linux-modules-nvidia-595-server-open-<kernel>-azure` +
+> `nvidia-driver-595-server-open`) — these are built per kernel ABI, so they dodge
+> the build problem entirely.
 >
 > The bake also needs outbound HTTPS from the build VM to
 > `us.download.nvidia.com` (the `.run` download); an egress-restricted
@@ -210,20 +218,22 @@ Example 2, which is expected.)
 kubectl delete pod gpu-custom --ignore-not-found
 helm uninstall gpu-operator -n gpu-operator 2>/dev/null || true
 kubectl delete ns gpu-operator --ignore-not-found
-# if you ran Examples 1-2, drop the operand-exclusion label you set on them:
-for POOL in imgpool modelpool; do
-  az aks nodepool show -g $RG --cluster-name $CLUSTER -n $POOL --subscription $SUB >/dev/null 2>&1 \
-    && az aks nodepool update -g $RG --cluster-name $CLUSTER -n $POOL --subscription $SUB --labels "" 2>/dev/null
-done
 # drop --no-wait so you can confirm the (billable) H100 node is actually gone:
 az aks nodepool delete -g $RG --cluster-name $CLUSTER -n driverpool --subscription $SUB
 az aks prepared-image-specification delete -g $RG --name driver-prepared-image-specification --subscription $SUB --yes
 ```
 
+> **If you're keeping Examples 1–2's pools** (not deleting the whole RG), also
+> remove the `nvidia.com/gpu.deploy.operands=false` label you set on them, e.g.
+> `kubectl label node -l agentpool=imgpool nvidia.com/gpu.deploy.operands-`
+> (the `key-` suffix deletes a single label reliably; `az aks nodepool update
+> --labels ""` behavior varies by CLI version and would replace the pool's whole
+> label set).
+>
 > The quickest, most reliable teardown is still the whole-resource-group delete
 > in the [top-level README](README.md#clean-up) — it removes the node resource
-> group (`MC_*`), any leftover PIS build VM, the device plugin, and the GPU
-> Operator in one shot.
+> group, any leftover PIS build VM, the device plugin, and the GPU Operator in one
+> shot (and makes the label cleanup moot).
 
 ## Validation status
 

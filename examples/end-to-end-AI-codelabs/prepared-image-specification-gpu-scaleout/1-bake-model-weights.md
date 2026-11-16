@@ -29,6 +29,11 @@ OS disk larger than the cache disk**, AKS places the *entire OS disk* — and
 therefore the baked weights on it — on the NVMe automatically. **No mount script,
 no `fstab` edits.**
 
+An Ephemeral OS disk is local and not persisted: its contents are re-created from
+the prepared VHD on every boot (that's exactly what you want here — the baked
+weights reappear on each node), but anything written at runtime is lost on
+reimage/deallocate. For read-only baked weights this is ideal.
+
 > This differs from some earlier GPU SKUs (e.g. `NC24ads_A100_v4`) that do **not**
 > advertise `NvmeDisk`. On those, a large Ephemeral OS disk is rejected and you
 > must mount the NVMe (`/dev/nvme0n1`) explicitly in a boot-time script. Check
@@ -182,17 +187,18 @@ kubectl wait --for=jsonpath='{.status.phase}'=Running pod/vllm-model --timeout=3
 kubectl logs -f vllm-model | grep -iE "Loading weights took|Model loading took"
 ```
 
-**Checkpoint:**
+**Checkpoint** (your exact numbers will vary; the point is the order of magnitude
+and "zero network"):
 
 ```text
-Loading weights took 15.31 seconds
-Model loading took 14.29 GiB memory and 30.85 seconds
+Loading weights took ~15 seconds
+Model loading took ~14 GiB memory and ~30 seconds
 ```
 
 The 15 GB checkpoint loads from the baked NVMe disk in **~15 s with zero network
-traffic**. (Total time to `/health` is longer, but that extra time is vLLM's
-`torch.compile` / CUDA-graph capture — model-and-framework specific, unrelated to
-PIS.)
+traffic** (we measured 15.31 s). (Total time to `/health` is longer, but that
+extra time is vLLM's `torch.compile` / CUDA-graph capture — model-and-framework
+specific, unrelated to PIS.)
 
 ## Troubleshoot
 
@@ -215,6 +221,10 @@ kubectl delete pod vllm-model --ignore-not-found
 az aks nodepool delete -g $RG --cluster-name $CLUSTER -n modelpool --subscription $SUB
 az aks prepared-image-specification delete -g $RG --name model-prepared-image-specification --subscription $SUB --yes
 ```
+
+(If you applied it, the device-plugin DaemonSet is cluster-scoped — remove it with
+`kubectl delete -f manifests/nvidia-device-plugin.yaml`, or let the whole-RG
+delete in the [top-level README](README.md#clean-up) take it.)
 
 ## Validation status
 
