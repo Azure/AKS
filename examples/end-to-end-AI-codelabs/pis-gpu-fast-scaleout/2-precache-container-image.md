@@ -70,15 +70,27 @@ kubectl get nodes -l agentpool=imgpool \
 Run a GPU pod straight from the baked image:
 
 ```bash
-kubectl run gpu-smoke --restart=Never \
-  --image=docker.io/vllm/vllm-openai:v0.11.0 \
-  --overrides='{"spec":{"nodeSelector":{"agentpool":"imgpool"},
-    "containers":[{"name":"smi","image":"docker.io/vllm/vllm-openai:v0.11.0",
-    "command":["nvidia-smi"],"resources":{"limits":{"nvidia.com/gpu":1}}}]}}'
+kubectl apply -f - <<'YAML'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-smoke
+  labels: { app: gpu-smoke }
+spec:
+  restartPolicy: Never
+  nodeSelector: { agentpool: imgpool }
+  containers:
+    - name: smi
+      image: docker.io/vllm/vllm-openai:v0.11.0
+      command: ["nvidia-smi"]
+      resources:
+        requests: { cpu: 250m, memory: 256Mi }
+        limits: { cpu: 500m, memory: 512Mi, nvidia.com/gpu: 1 }
+YAML
 
 kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/gpu-smoke --timeout=120s
 kubectl logs gpu-smoke | grep -E "Driver Version|H100"
-kubectl describe pod gpu-smoke | grep -iE "Pulled|Pulling"
+kubectl describe pod gpu-smoke | grep -iE "Pulled|Pulling|already present"
 ```
 
 **Checkpoint — what you should see:**
@@ -125,10 +137,19 @@ pull** — the image came from the prepared VHD, not the registry.
 
 ## Clean up
 
+This pool was scaled to **2** nodes in step 5 — both H100 nodes bill until the
+pool is deleted. Don't use `--no-wait` here, so you can confirm the (expensive)
+nodes are actually gone before you walk away:
+
 ```bash
-az aks nodepool delete -g $RG --cluster-name $CLUSTER -n imgpool --subscription $SUB --no-wait
+kubectl delete pod gpu-smoke --ignore-not-found
+az aks nodepool delete -g $RG --cluster-name $CLUSTER -n imgpool --subscription $SUB
 az aks prepared-image-specification delete -g $RG --name img-pis --subscription $SUB --yes
 ```
+
+(The device plugin DaemonSet is cluster-scoped; it's removed by the whole-RG
+delete in the [top-level README](README.md#clean-up), or
+`kubectl delete -f manifests/nvidia-device-plugin.yaml`.)
 
 ## Validation status
 
@@ -145,3 +166,13 @@ AKS 1.35.6, driver 580.159.04 / CUDA 13.0:
   registry call at all.
 - GPU `nvidia-smi` ran in-pod on the H100 NVL after installing the device plugin.
 - Scale-out 1 → 2: second node `Ready` in **438 s**, zero layer pull.
+
+## Next
+
+The examples are independent — try another, or combine them:
+
+- [Example 1: Bake model weights onto NVMe](1-bake-model-weights.md)
+- [Example 3: Bake a custom GPU driver](3-custom-gpu-driver.md)
+- [Back to the codelab overview](README.md)
+
+Don't forget to [clean up](#clean-up) the H100 pool when you're done.

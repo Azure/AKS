@@ -28,8 +28,14 @@ spec:
       containers:
         - name: nvidia-device-plugin-ctr
           image: nvcr.io/nvidia/k8s-device-plugin:v0.17.1
+          # privileged + the kubelet device-plugins hostPath are the standard,
+          # required setup for any Kubernetes device plugin (it registers the
+          # GPU with kubelet over that socket); they are not app-specific risk.
           securityContext:
             privileged: true
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { cpu: 100m, memory: 128Mi }
           volumeMounts:
             - { name: device-plugin, mountPath: /var/lib/kubelet/device-plugins }
       volumes:

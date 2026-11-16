@@ -30,18 +30,34 @@ flowchart LR
 | 2 | [Pre-cache a container image](2-precache-container-image.md) | The `vllm/vllm-openai` inference image | No image pull at scale-out — the slowest part of GPU pod startup |
 | 3 | [Bake a custom GPU driver](3-custom-gpu-driver.md) | A pinned NVIDIA `595.91.07` driver | Pin an exact driver version that survives the AKS node bootstrap |
 
-Do them in any order. If you're new to PIS, start with Example 2 — it's the
-simplest and has no customization script.
+Each example is **independent once you've done the shared
+[one-time setup](#one-time-setup)** below — run them in any order. If you're new
+to PIS, start with Example 2: it's the simplest and has no customization script.
+
+## Learning objectives
+
+After these examples you'll be able to:
+
+- Create a PIS resource and attach a version to a GPU node pool to trigger a bake.
+- Bake large model weights onto fast local NVMe storage and serve them with zero
+  network at scale-out.
+- Pre-cache a large container image so GPU pods start without an image pull.
+- Bake a pinned custom GPU driver that survives the AKS node bootstrap, and make
+  the node schedulable with the NVIDIA GPU Operator.
+- Recognize the PIS trade-off (one-time bake cost vs. repeated fast scale-out)
+  and the H100 capacity/cost caveats.
 
 ## Time and cost
 
 - **Time:** 45–60 minutes per example, most of it the one-time image bake
   (~25–40 minutes) plus GPU node boot.
-- **Cost:** An H100 node pool is billed while it exists. Each example uses one
-  `Standard_NC40ads_H100_v5` node (1× H100 NVL). PIS **re-bakes on every pool
-  attach** (no cached VHD during preview), so each attach costs another bake.
-- **Cleanup:** Run the cleanup section of each example, or delete the whole
-  resource group at the end (see [below](#clean-up)).
+- **Cost:** An H100 node pool is billed while it exists — `Standard_NC40ads_H100_v5`
+  is an expensive SKU. **Delete the GPU pool the moment you finish validating an
+  example.** PIS **re-bakes on every pool attach** (no cached VHD during preview),
+  so each attach costs another bake.
+- **Cleanup:** Run the cleanup section of each example (it waits so you can
+  confirm the node is gone), or delete the whole resource group at the end (see
+  [below](#clean-up)).
 
 ## Prerequisites
 
@@ -91,6 +107,12 @@ az aks create -g $RG -n $CLUSTER --subscription $SUB --location $LOC \
 
 az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existing
 ```
+
+> **Registration can lag.** `az feature register` + `az provider register` can
+> take **10+ minutes** to propagate. Until they do, PIS creates/attaches fail
+> (e.g. `MissingSubscriptionRegistration` or `InvalidResourceType`). Wait until
+> the feature state reads `Registered` **and** the provider re-registration has
+> finished before creating a PIS; retry for a few minutes if an early call fails.
 
 ### The PIS read-permission grant (every example needs this)
 
@@ -150,11 +172,23 @@ change a version's contents.
 ## Clean up
 
 ```bash
-# removes the cluster, all GPU pools, PIS resources, and prepared images.
+# Removes the cluster, all GPU pools, PIS resources, and prepared images.
 # Target $SUB explicitly so you don't rely on (or accidentally hit) a different
 # CLI default subscription.
 az group delete -n $RG --subscription $SUB --yes --no-wait
 ```
+
+> `--no-wait` returns **before** deletion finishes. AKS keeps your nodes in a
+> separate node resource group (`MC_<rg>_<cluster>_<region>`) that is normally
+> cascade-deleted with the cluster. Because H100 nodes are expensive, don't
+> assume teardown is done when the command returns — confirm both groups are
+> gone before you close the terminal:
+>
+> ```bash
+> az group show -n $RG --subscription $SUB -o none 2>/dev/null && echo "still deleting" || echo "RG gone"
+> az group show -n "MC_${RG}_${CLUSTER}_${LOC}" --subscription $SUB -o none 2>/dev/null \
+>   && echo "node RG still present" || echo "node RG gone"
+> ```
 
 ## Validation status
 

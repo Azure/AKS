@@ -43,11 +43,18 @@ know the 3-arg form (`nv-pci.c: too few arguments to function
 kubectl get nodes -o wide   # KERNEL-VERSION column
 ```
 
-> Test the chosen driver on a throwaway VM with the target kernel *before*
-> baking — the bake is a ~25-minute feedback loop. A compile-free alternative is
-> Canonical's precompiled modules
-> (`linux-modules-nvidia-595-server-open-<kernel>-azure` +
-> `nvidia-driver-595-server-open`), which avoid the conftest wall entirely.
+> **This example is pinned to kernel `6.8.0-1073-azure`.** AKS node images are
+> patched often, so if the command above shows a *different* kernel, `595.91.07`
+> is **not guaranteed to build** — you must pick and test a driver that matches
+> your kernel. Test the chosen driver on a throwaway VM with that exact kernel
+> *before* baking (the bake is a ~25-minute feedback loop). A compile-free
+> alternative that sidesteps the conftest wall is Canonical's precompiled
+> modules (`linux-modules-nvidia-595-server-open-<kernel>-azure` +
+> `nvidia-driver-595-server-open`).
+>
+> The bake also needs outbound HTTPS from the build VM to
+> `us.download.nvidia.com` (the `.run` download); an egress-restricted
+> subscription will fail the driver bake.
 
 ## 1. The customization script
 
@@ -89,7 +96,7 @@ The bake took **~27 min** in this run (driver only, no model/image).
 ```bash
 MCRG="MC_${RG}_${CLUSTER}_${LOC}"
 VMSS=$(az vmss list -g $MCRG --subscription $SUB \
-  --query "[?contains(name,'driverpool')].name" -o tsv)
+  --query "[?contains(name,'driverpool') && !starts_with(name,'pis')].name" -o tsv)
 az vmss run-command invoke -g $MCRG -n "$VMSS" --subscription $SUB \
   --command-id RunShellScript --instance-id 0 \
   --scripts 'nvidia-smi --query-gpu=name,driver_version --format=csv,noheader;
@@ -136,7 +143,7 @@ helm repo add nvidia https://nvidia.github.io/gpu-operator 2>/dev/null; helm rep
 helm install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace \
   --set driver.enabled=false \
   --set toolkit.enabled=true \
-  --wait --timeout 10m
+  --wait --timeout 15m
 ```
 
 **Checkpoint:** the operator validators go green and the node advertises a GPU:
@@ -150,11 +157,23 @@ kubectl get nodes -l agentpool=driverpool \
 ## 5. Run a GPU pod on the pinned driver
 
 ```bash
-kubectl run gpu-custom --restart=Never \
-  --image=nvcr.io/nvidia/cuda:12.6.2-base-ubuntu24.04 \
-  --overrides='{"spec":{"nodeSelector":{"agentpool":"driverpool"},
-    "containers":[{"name":"smi","image":"nvcr.io/nvidia/cuda:12.6.2-base-ubuntu24.04",
-    "command":["nvidia-smi"],"resources":{"limits":{"nvidia.com/gpu":1}}}]}}'
+kubectl apply -f - <<'YAML'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-custom
+  labels: { app: gpu-custom }
+spec:
+  restartPolicy: Never
+  nodeSelector: { agentpool: driverpool }
+  containers:
+    - name: smi
+      image: nvcr.io/nvidia/cuda:12.6.2-base-ubuntu24.04
+      command: ["nvidia-smi"]
+      resources:
+        requests: { cpu: 250m, memory: 256Mi }
+        limits: { cpu: 500m, memory: 512Mi, nvidia.com/gpu: 1 }
+YAML
 kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/gpu-custom --timeout=180s
 kubectl logs gpu-custom | grep -E "Driver Version|H100"
 ```
@@ -166,7 +185,10 @@ kubectl logs gpu-custom | grep -E "Driver Version|H100"
 |   0  NVIDIA H100 NVL ...
 ```
 
-The pod runs on your pinned **595.91.07** — not AKS's managed driver.
+The pod runs on your pinned **595.91.07** — not AKS's managed driver. (The CUDA
+version `nvidia-smi` prints is the *driver's* maximum supported CUDA, not the
+toolkit in the container — so it can differ from the managed-driver node in
+Example 2, which is expected.)
 
 > **Note:** your wiki/past runs on older containerd needed a manual
 > `/etc/containerd/conf.d` import fix for the Operator's nvidia runtime. On the
@@ -187,9 +209,21 @@ The pod runs on your pinned **595.91.07** — not AKS's managed driver.
 ```bash
 kubectl delete pod gpu-custom --ignore-not-found
 helm uninstall gpu-operator -n gpu-operator 2>/dev/null || true
-az aks nodepool delete -g $RG --cluster-name $CLUSTER -n driverpool --subscription $SUB --no-wait
+kubectl delete ns gpu-operator --ignore-not-found
+# if you ran Examples 1-2, drop the operand-exclusion label you set on them:
+for POOL in imgpool modelpool; do
+  az aks nodepool show -g $RG --cluster-name $CLUSTER -n $POOL --subscription $SUB >/dev/null 2>&1 \
+    && az aks nodepool update -g $RG --cluster-name $CLUSTER -n $POOL --subscription $SUB --labels "" 2>/dev/null
+done
+# drop --no-wait so you can confirm the (billable) H100 node is actually gone:
+az aks nodepool delete -g $RG --cluster-name $CLUSTER -n driverpool --subscription $SUB
 az aks prepared-image-specification delete -g $RG --name driver-pis --subscription $SUB --yes
 ```
+
+> The quickest, most reliable teardown is still the whole-resource-group delete
+> in the [top-level README](README.md#clean-up) — it removes the node resource
+> group (`MC_*`), any leftover PIS build VM, the device plugin, and the GPU
+> Operator in one shot.
 
 ## Validation status
 
@@ -204,3 +238,13 @@ AKS 1.35.6, kernel `6.8.0-1073-azure`, containerd 2.3.7:
 - GPU Operator `driver.enabled=false` made the node schedulable; a GPU pod ran
   `nvidia-smi` reporting **Driver Version 595.91.07 / CUDA 13.2**.
 - No `/etc/containerd/conf.d` import fix was required on this toolkit/containerd.
+
+## Next
+
+The examples are independent — try another, or combine them:
+
+- [Example 1: Bake model weights onto NVMe](1-bake-model-weights.md)
+- [Example 2: Pre-cache a container image](2-precache-container-image.md)
+- [Back to the codelab overview](README.md)
+
+Don't forget to [clean up](#clean-up) the H100 pool and GPU Operator when you're done.

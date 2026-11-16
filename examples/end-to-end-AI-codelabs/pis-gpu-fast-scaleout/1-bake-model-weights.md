@@ -32,7 +32,17 @@ no `fstab` edits.**
 > This differs from some earlier GPU SKUs (e.g. `NC24ads_A100_v4`) that do **not**
 > advertise `NvmeDisk`. On those, a large Ephemeral OS disk is rejected and you
 > must mount the NVMe (`/dev/nvme0n1`) explicitly in a boot-time script. Check
-> your SKU: `az vm list-skus -l $LOC --size $GPU_SKU --query "[0].capabilities[?name=='SupportedEphemeralOSDiskPlacements']"`
+> your SKU's placements **and its cache size** before choosing the OS-disk size:
+>
+> ```bash
+> az vm list-skus -l $LOC --subscription $SUB --size $GPU_SKU \
+>   --query "[0].capabilities[?name=='SupportedEphemeralOSDiskPlacements' || name=='CachedDiskBytes']"
+> ```
+>
+> You need `NvmeDisk` in the placements, and an OS-disk size **larger than
+> `CachedDiskBytes`** (and the temp disk) to force NVMe placement. On
+> `NC40ads_H100_v5` the cache is ~322 GB, so this codelab uses 400 GB — size
+> above *your* SKU's reported cache, don't assume 400 GB is enough.
 
 ## 1. The customization script
 
@@ -48,6 +58,13 @@ things it gets right that commonly break a bake:
 - `huggingface_hub` 1.x dropped the `[cli]` extra and the `huggingface-cli`
   command, so it uses the current **`hf download`** CLI — with **no trailing
   positional arguments** (those are treated as filenames).
+
+> **Prerequisites for the bake:** the build VM needs outbound HTTPS to
+> `huggingface.co`. `Qwen/Qwen2.5-7B-Instruct` is public; a **gated or private**
+> model requires an `HF_TOKEN` (add `export HF_TOKEN=...` and
+> `--token "$HF_TOKEN"` in the script). Hugging Face rate-limiting can fail a
+> bake late (after ~35 min of work), so prefer a specific model revision for
+> repeatable results.
 
 ## 2. Create the PIS
 
@@ -123,12 +140,16 @@ Make the node schedulable (device plugin, same as Example 2), then run vLLM
 against the baked weights via a `hostPath` mount:
 
 ```bash
+# The shared device-plugin manifest is scoped (by nodeAffinity) to the
+# imgpool/modelpool names used in this codelab; it makes modelpool schedulable.
 kubectl apply -f manifests/nvidia-device-plugin.yaml   # if not already applied
 
 kubectl apply -f - <<'YAML'
 apiVersion: v1
 kind: Pod
-metadata: { name: vllm-model }
+metadata:
+  name: vllm-model
+  labels: { app: vllm-model }
 spec:
   restartPolicy: Never
   nodeSelector: { agentpool: modelpool }
@@ -140,9 +161,12 @@ spec:
              "--gpu-memory-utilization","0.9","--max-model-len","4096"]
       ports: [{ containerPort: 8000 }]
       volumeMounts: [{ name: models, mountPath: /models, readOnly: true }]
-      resources: { limits: { nvidia.com/gpu: 1 } }
+      resources:
+        requests: { cpu: "2", memory: 8Gi }
+        limits: { cpu: "8", memory: 32Gi, nvidia.com/gpu: 1 }
   volumes:
     - name: models
+      # read-only host mount of the baked weights; nothing writes to it
       hostPath: { path: /opt/models, type: Directory }
 YAML
 
@@ -174,9 +198,12 @@ PIS.)
 
 ## Clean up
 
+Don't use `--no-wait` on the pool delete, so you can confirm the (expensive) H100
+node is actually gone before you walk away:
+
 ```bash
 kubectl delete pod vllm-model --ignore-not-found
-az aks nodepool delete -g $RG --cluster-name $CLUSTER -n modelpool --subscription $SUB --no-wait
+az aks nodepool delete -g $RG --cluster-name $CLUSTER -n modelpool --subscription $SUB
 az aks prepared-image-specification delete -g $RG --name model-pis --subscription $SUB --yes
 ```
 
@@ -194,3 +221,13 @@ AKS 1.35.6, kernel `6.8.0-1073-azure`:
   **7.9 GB/s**.
 - vLLM cold weight-load from the baked NVMe disk: **15.31 s**, zero network.
 - The baked vLLM image was `already present on machine` (zero image pull).
+
+## Next
+
+The examples are independent — try another, or combine them:
+
+- [Example 2: Pre-cache a container image](2-precache-container-image.md)
+- [Example 3: Bake a custom GPU driver](3-custom-gpu-driver.md)
+- [Back to the codelab overview](README.md)
+
+Don't forget to [clean up](#clean-up) the H100 pool when you're done.
