@@ -166,31 +166,11 @@ and [Create and manage a PIS](https://learn.microsoft.com/azure/aks/prepared-ima
 ## Clean up
 
 ```bash
-# Capture the authoritative node resource group name BEFORE deleting — once the
-# cluster is gone, az aks show can't return it. (Don't assume the MC_ default.)
-MCRG=$(az aks show -g $RG -n $CLUSTER --subscription $SUB --query nodeResourceGroup -o tsv)
-
 # Removes the cluster, all GPU pools, PIS resources, and prepared images.
 # Target $SUB explicitly so you don't rely on (or accidentally hit) a different
 # CLI default subscription.
 az group delete -n $RG --subscription $SUB --yes --no-wait
 ```
-
-> `--no-wait` returns **before** deletion finishes. The nodes live in the
-> `$MCRG` node resource group (captured above), normally cascade-deleted with the
-> cluster. Because H100 nodes are expensive, don't assume teardown is done when
-> the command returns — confirm both groups are gone before you close the
-> terminal (using the name saved *before* the delete):
->
-> ```bash
-> # az group exists returns a clean true/false (and exits 0), so a lookup error
-> # isn't misread as "gone" the way `az group show || ...` would be:
-> echo "cluster RG exists: $(az group exists -n $RG   --subscription $SUB)"   # expect false when done
-> echo "node RG exists:    $(az group exists -n $MCRG --subscription $SUB)"   # expect false when done
-> ```
->
-> If either prints `true` (or a blank/error), resources may still be billing —
-> re-check rather than assuming teardown finished.
 
 ## Validation status
 
