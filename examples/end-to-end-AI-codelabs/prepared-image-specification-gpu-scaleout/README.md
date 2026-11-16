@@ -71,9 +71,7 @@ After these examples you'll be able to:
 - Azure CLI **≥ 2.85.0** and the **`aks-preview`** extension **≥ 21.0.0b5**.
 - The **`AKSPreparedImageSpecificationPreview`** feature flag registered in your
   subscription (see [the shared setup](#one-time-setup)).
-- **H100 quota *and* capacity** in your target region. Quota alone is not
-  enough — check that the SKU is unrestricted (see
-  [Capacity note](#capacity-note-read-before-you-pick-a-region)).
+- **H100 quota *and* capacity** in your target region.
 - `kubectl` and, for Example 3, Helm 3.
 
 ## One-time setup
@@ -141,28 +139,6 @@ PIS_ID=$(az aks prepared-image-specification show -g $RG --name <pis-name> \
 az role assignment create --assignee-object-id "$CP_PRINCIPAL" \
   --assignee-principal-type ServicePrincipal --role Reader --scope "$PIS_ID"
 ```
-
-## Capacity note (read before you pick a region)
-
-GPU **quota is not capacity.** A region can show plenty of quota yet refuse to
-allocate the SKU. Run a **restriction (eligibility) check** before you commit to
-a ~30-minute bake:
-
-```bash
-az vm list-skus -l $LOC --subscription $SUB --size $GPU_SKU \
-  --query "[0].{zones:locationInfo[0].zones, restrictions:restrictions}" -o json
-```
-
-- A `Zone`/`NotAvailableForSubscription` restriction covering every zone → you
-  **cannot** allocate there, no matter how much quota you have. Pick another region.
-- `restrictions: []` (empty) means the SKU is **eligible** in that zone — but this
-  only reports eligibility, **not** guaranteed physical capacity. An unrestricted
-  zone can still return `AllocationFailed` under contention. Treat an empty result
-  as "worth trying," not a guarantee, and be ready to retry or fall back to another
-  unrestricted zone/region (re-creating the pool elsewhere runs a fresh bake).
-
-This codelab was validated in **`westeurope` zone 3**, which was unrestricted and
-had capacity at the time.
 
 ## How PIS works (30-second version)
 

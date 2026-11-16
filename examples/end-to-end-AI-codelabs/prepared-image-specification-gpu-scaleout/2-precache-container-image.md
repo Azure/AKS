@@ -164,7 +164,7 @@ the prepared VHD, not the registry. In this run the second H100 node reached
 | `BadRequest: ... accelerator ... not allowed to be changed` | `accelerator` is a reserved GPU label | Remove it from `--labels`; AKS sets it automatically |
 | Node `Ready` but pods `Pending` on `nvidia.com/gpu` | Managed-driver PIS pool ships no device plugin | `kubectl apply -f manifests/nvidia-device-plugin.yaml` |
 | Image still pulls slowly | Image not fully-qualified, so it wasn't cached | Use `docker.io/<repo>` in `--container-images`; make a new version |
-| Pool attach fails `AllocationFailed` | H100 capacity, not quota | Retry, or move to an unrestricted region/zone (README capacity note) |
+| Pool attach fails `AllocationFailed` | H100 capacity, not quota | Retry, or move to a region/zone with available H100 capacity |
 
 ## Clean up
 
