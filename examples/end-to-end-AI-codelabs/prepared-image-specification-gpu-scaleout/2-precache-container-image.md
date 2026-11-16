@@ -135,7 +135,10 @@ kind: Pod
 metadata: { name: gpu-smoke-new, labels: { app: gpu-smoke-new } }
 spec:
   restartPolicy: Never
-  nodeName: $NEW
+  # Target the new node via a hostname selector (NOT nodeName): this keeps the
+  # scheduler in the loop, so the pod waits as Pending until the device plugin
+  # has registered nvidia.com/gpu on that node, instead of kubelet rejecting it.
+  nodeSelector: { kubernetes.io/hostname: $NEW }
   containers:
     - name: smi
       image: docker.io/vllm/vllm-openai:v0.11.0
@@ -144,7 +147,7 @@ spec:
         requests: { cpu: 250m, memory: 256Mi }
         limits: { cpu: 500m, memory: 512Mi, nvidia.com/gpu: 1 }
 YAML
-kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/gpu-smoke-new --timeout=120s
+kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/gpu-smoke-new --timeout=180s
 kubectl describe pod gpu-smoke-new | grep -iE "Pulled|Pulling|already present"
 ```
 

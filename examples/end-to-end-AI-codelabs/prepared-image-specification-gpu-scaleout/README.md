@@ -198,9 +198,14 @@ az group delete -n $RG --subscription $SUB --yes --no-wait
 > terminal (using the name saved *before* the delete):
 >
 > ```bash
-> az group show -n $RG   --subscription $SUB -o none 2>/dev/null && echo "cluster RG still deleting" || echo "cluster RG gone"
-> az group show -n $MCRG --subscription $SUB -o none 2>/dev/null && echo "node RG $MCRG still present" || echo "node RG gone"
+> # az group exists returns a clean true/false (and exits 0), so a lookup error
+> # isn't misread as "gone" the way `az group show || ...` would be:
+> echo "cluster RG exists: $(az group exists -n $RG   --subscription $SUB)"   # expect false when done
+> echo "node RG exists:    $(az group exists -n $MCRG --subscription $SUB)"   # expect false when done
 > ```
+>
+> If either prints `true` (or a blank/error), resources may still be billing —
+> re-check rather than assuming teardown finished.
 
 ## Validation status
 

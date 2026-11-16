@@ -33,10 +33,10 @@ spec:
           # GPU with kubelet over that socket); they are not app-specific risk.
           securityContext:
             privileged: true
-          env:
-            # tolerate a brief race if the plugin starts before the GPU runtime
-            # is fully ready, instead of crash-looping
-            - { name: FAIL_ON_INIT_ERROR, value: "false" }
+          # Keep the default FAIL_ON_INIT_ERROR=true: if the plugin ever starts
+          # before the GPU runtime is ready, the container exits and kubelet
+          # restarts it (retrying until the GPU is up). Setting it false would
+          # leave the pod running but wedged, never advertising nvidia.com/gpu.
           resources:
             requests: { cpu: 50m, memory: 64Mi }
             limits: { cpu: 100m, memory: 128Mi }
