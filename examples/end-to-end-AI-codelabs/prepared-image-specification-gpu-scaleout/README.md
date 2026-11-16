@@ -9,6 +9,10 @@ Where the other GPU codelabs in this folder provision nodes and install drivers
 at runtime, this one moves that work to **image-build time**. Each example is
 self-contained and demonstrates one PIS capability on an NVIDIA H100 node pool.
 
+For the official reference, see the AKS docs:
+[Prepared Image Specification overview](https://learn.microsoft.com/azure/aks/prepared-image-specification-overview)
+and [Create and manage a Prepared Image Specification](https://learn.microsoft.com/azure/aks/prepared-image-specification).
+
 ## What you'll build
 
 ```mermaid
@@ -177,6 +181,11 @@ change a version's contents.
 > one-time front-loaded cost (~25–40 min); the payoff is every node that boots
 > from the result. For a pool that never scales, the bake can cost more than it
 > saves.
+
+For the full feature reference — all supported customizations, limitations, and
+the complete CLI surface — see
+[Prepared Image Specification in AKS](https://learn.microsoft.com/azure/aks/prepared-image-specification-overview)
+and [Create and manage a PIS](https://learn.microsoft.com/azure/aks/prepared-image-specification).
 
 ## Clean up
 
