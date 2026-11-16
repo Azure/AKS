@@ -60,11 +60,17 @@ things it gets right that commonly break a bake:
   positional arguments** (those are treated as filenames).
 
 > **Prerequisites for the bake:** the build VM needs outbound HTTPS to
-> `huggingface.co`. `Qwen/Qwen2.5-7B-Instruct` is public; a **gated or private**
-> model requires an `HF_TOKEN` (add `export HF_TOKEN=...` and
-> `--token "$HF_TOKEN"` in the script). Hugging Face rate-limiting can fail a
-> bake late (after ~35 min of work), so prefer a specific model revision for
-> repeatable results.
+> `huggingface.co`. This example uses a **public** model
+> (`Qwen/Qwen2.5-7B-Instruct`) and is intentionally credential-free. Hugging Face
+> rate-limiting can fail a bake late (after ~35 min of work), so pin a specific
+> model revision for repeatable results.
+>
+> **Gated/private models — do not inline a token.** The customization script runs
+> with `set -x` and is serialized verbatim into the PIS resource, so an inline
+> `HF_TOKEN`/`--token` would leak into build logs and the stored spec. If you must
+> pull a gated model, fetch the token at bake time from a secret store (e.g. an
+> IMDS-authenticated call to Key Vault) with tracing disabled around it
+> (`set +x` … `set -x`), and don't persist it to disk or the marker.
 
 ## 2. Create the PIS
 
