@@ -181,25 +181,25 @@ change a version's contents.
 ## Clean up
 
 ```bash
+# Capture the authoritative node resource group name BEFORE deleting — once the
+# cluster is gone, az aks show can't return it. (Don't assume the MC_ default.)
+MCRG=$(az aks show -g $RG -n $CLUSTER --subscription $SUB --query nodeResourceGroup -o tsv)
+
 # Removes the cluster, all GPU pools, PIS resources, and prepared images.
 # Target $SUB explicitly so you don't rely on (or accidentally hit) a different
 # CLI default subscription.
 az group delete -n $RG --subscription $SUB --yes --no-wait
 ```
 
-> `--no-wait` returns **before** deletion finishes. AKS keeps your nodes in a
-> separate node resource group (default name `MC_<rg>_<cluster>_<region>`, but
-> read the authoritative value below) that is normally cascade-deleted with the
+> `--no-wait` returns **before** deletion finishes. The nodes live in the
+> `$MCRG` node resource group (captured above), normally cascade-deleted with the
 > cluster. Because H100 nodes are expensive, don't assume teardown is done when
 > the command returns — confirm both groups are gone before you close the
-> terminal:
+> terminal (using the name saved *before* the delete):
 >
 > ```bash
-> # authoritative node RG name (don't assume the MC_ default):
-> MCRG=$(az aks show -g $RG -n $CLUSTER --subscription $SUB --query nodeResourceGroup -o tsv 2>/dev/null)
-> az group show -n $RG --subscription $SUB -o none 2>/dev/null && echo "cluster RG still deleting" || echo "cluster RG gone"
-> [ -n "$MCRG" ] && az group show -n "$MCRG" --subscription $SUB -o none 2>/dev/null \
->   && echo "node RG $MCRG still present" || echo "node RG gone"
+> az group show -n $RG   --subscription $SUB -o none 2>/dev/null && echo "cluster RG still deleting" || echo "cluster RG gone"
+> az group show -n $MCRG --subscription $SUB -o none 2>/dev/null && echo "node RG $MCRG still present" || echo "node RG gone"
 > ```
 
 ## Validation status

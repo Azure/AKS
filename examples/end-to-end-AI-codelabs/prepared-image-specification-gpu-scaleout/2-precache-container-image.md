@@ -114,16 +114,44 @@ the VHD** — so it never contacts the registry. A cold pull of the same image i
 
 ## 5. Measure scale-out (the real payoff)
 
-Scale the pool and watch the second node come up with the image already present:
+Scale the pool, then **prove zero-pull on the new node specifically** — node
+readiness alone doesn't prove it (an uncached node also reaches `Ready` without
+pulling an image nothing scheduled there yet). Pin a pod to the newly added node
+and inspect its image events:
 
 ```bash
+# record the existing node, scale, then find the one that was added
+OLD=$(kubectl get nodes -l agentpool=imgpool -o name | sort)
 time az aks nodepool scale -g $RG --cluster-name $CLUSTER -n imgpool \
   --subscription $SUB --node-count 2
-kubectl get nodes -l agentpool=imgpool
+kubectl wait --for=condition=Ready $(kubectl get nodes -l agentpool=imgpool -o name) --timeout=600s
+NEW=$(comm -13 <(echo "$OLD") <(kubectl get nodes -l agentpool=imgpool -o name | sort) | sed 's#node/##')
+echo "new node: $NEW"
+
+# schedule a GPU pod ONTO the new node and check how its image resolved
+kubectl apply -f - <<YAML
+apiVersion: v1
+kind: Pod
+metadata: { name: gpu-smoke-new, labels: { app: gpu-smoke-new } }
+spec:
+  restartPolicy: Never
+  nodeName: $NEW
+  containers:
+    - name: smi
+      image: docker.io/vllm/vllm-openai:v0.11.0
+      command: ["nvidia-smi"]
+      resources:
+        requests: { cpu: 250m, memory: 256Mi }
+        limits: { cpu: 500m, memory: 512Mi, nvidia.com/gpu: 1 }
+YAML
+kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/gpu-smoke-new --timeout=120s
+kubectl describe pod gpu-smoke-new | grep -iE "Pulled|Pulling|already present"
 ```
 
-In this run the second H100 node reached `Ready` in **438 s** with **zero layer
-pull** — the image came from the prepared VHD, not the registry.
+**Checkpoint:** the pod on the **new** node reports
+`Container image "...v0.11.0" already present on machine` — the image came from
+the prepared VHD, not the registry. In this run the second H100 node reached
+`Ready` in **438 s** and served the GPU pod with **zero image pull**.
 
 ## Troubleshoot
 
@@ -142,7 +170,7 @@ pool is deleted. Don't use `--no-wait` here, so you can confirm the (expensive)
 nodes are actually gone before you walk away:
 
 ```bash
-kubectl delete pod gpu-smoke --ignore-not-found
+kubectl delete pod gpu-smoke gpu-smoke-new --ignore-not-found
 az aks nodepool delete -g $RG --cluster-name $CLUSTER -n imgpool --subscription $SUB
 az aks prepared-image-specification delete -g $RG --name image-prepared-image-specification --subscription $SUB --yes
 ```
