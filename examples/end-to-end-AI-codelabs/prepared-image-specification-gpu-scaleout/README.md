@@ -114,7 +114,7 @@ az group create -n $RG -l $LOC --subscription $SUB \
 # 5. Cluster with a CPU system pool (AKS picks a default Kubernetes version and
 #    VM size for you; pass --kubernetes-version / --node-vm-size to pin them)
 az aks create -g $RG -n $CLUSTER --subscription $SUB --location $LOC \
-  --node-count 2 --nodepool-name system --network-plugin azure --generate-ssh-keys
+  --node-count 3 --nodepool-name system --network-plugin azure --generate-ssh-keys
 
 az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existing
 ```
