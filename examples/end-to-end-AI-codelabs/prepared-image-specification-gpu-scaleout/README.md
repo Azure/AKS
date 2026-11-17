@@ -65,9 +65,9 @@ After these examples you'll be able to:
   clusters, node pools, and resource groups.
 - An AKS cluster on a supported Kubernetes version (validated on **1.35.6**).
 - Azure CLI **≥ 2.85.0** and the **`aks-preview`** extension **≥ 21.0.0b5**.
-- The **`AKSPreparedImageSpecificationPreview`** and (for the managed GPU stack in
-  Examples 1–2) **`ManagedGPUExperiencePreview`** feature flags registered in your
-  subscription (see [the shared setup](#one-time-setup)).
+- The **`AKSPreparedImageSpecificationPreview`** feature flag registered in your
+  subscription (see [the shared setup](#one-time-setup)). (The managed GPU stack
+  used in Examples 1–2 is GA — no feature flag needed.)
 - **H100 quota *and* capacity** in your target region.
 - `kubectl` and, for Example 3, Helm 3.
 
@@ -96,16 +96,13 @@ export GPU_SKU=Standard_NC40ads_H100_v5
 az extension add --name aks-preview        # or: az extension update --name aks-preview
 az --version                               # confirm az >= 2.85.0
 
-# 3. Register the preview features in $SUB, then refresh the resource provider.
-#    PIS for all examples; ManagedGPUExperiencePreview for the managed GPU stack
-#    used in Examples 1-2.
-for F in AKSPreparedImageSpecificationPreview ManagedGPUExperiencePreview; do
-  az feature register --subscription $SUB --namespace Microsoft.ContainerService --name $F
-done
-# wait until both read "Registered":
-for F in AKSPreparedImageSpecificationPreview ManagedGPUExperiencePreview; do
-  az feature show --subscription $SUB --namespace Microsoft.ContainerService --name $F --query properties.state -o tsv
-done
+# 3. Register the PIS preview feature in $SUB, then refresh the resource provider.
+#    (The managed GPU stack used in Examples 1-2 is GA — no feature flag.)
+az feature register --subscription $SUB --namespace Microsoft.ContainerService \
+  --name AKSPreparedImageSpecificationPreview
+# wait until "state" == "Registered":
+az feature show --subscription $SUB --namespace Microsoft.ContainerService \
+  --name AKSPreparedImageSpecificationPreview --query properties.state -o tsv
 az provider register --subscription $SUB --namespace Microsoft.ContainerService
 
 # 4. Resource group (tag it so a shared-sub janitor doesn't reap it mid-bake)
@@ -126,10 +123,9 @@ az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existi
 > the feature state reads `Registered` **and** the provider re-registration has
 > finished before creating a PIS; retry for a few minutes if an early call fails.
 
-> **Preview on preview.** Examples 1–2 combine two preview features (PIS +
-> managed GPU). Previews are not covered by production SLAs/support, and the
-> combined behavior can change. Don't use this configuration for production
-> workloads.
+> **Preview feature.** PIS is in preview — not covered by production SLAs/support,
+> and behavior can change. Don't use it for production workloads. (The managed GPU
+> stack in Examples 1–2 is GA.)
 
 ### The PIS read-permission grant
 
