@@ -63,6 +63,11 @@ After these examples you'll be able to:
 
 - An Azure subscription with `az login` completed and permission to create AKS
   clusters, node pools, and resource groups.
+- Permission to **create role assignments** on the PIS resource (Owner, or
+  User Access Administrator / Role Based Access Control Administrator at that
+  scope) — the Reader grant below needs `Microsoft.Authorization/roleAssignments/write`,
+  which plain Contributor lacks. If you can't grant roles yourself, have an
+  administrator run the grant step.
 - An AKS cluster on a supported Kubernetes version (validated on **1.35.6**).
 - Azure CLI **≥ 2.85.0** and the **`aks-preview`** extension **≥ 21.0.0b5**.
 - The **`AKSPreparedImageSpecificationPreview`** feature flag registered in your
