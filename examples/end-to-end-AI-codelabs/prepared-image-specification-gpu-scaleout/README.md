@@ -58,9 +58,6 @@ After these examples you'll be able to:
 - **Cost:** An H100 node pool is billed while it exists — `Standard_NC40ads_H100_v5`
   is an expensive SKU. **Delete the GPU pool the moment you finish validating an
   example.** The prepared image is built **per node pool**.
-- **Cleanup:** Run the cleanup section of each example (it waits so you can
-  confirm the node is gone), or delete the whole resource group at the end (see
-  [below](#clean-up)).
 
 ## Prerequisites
 
