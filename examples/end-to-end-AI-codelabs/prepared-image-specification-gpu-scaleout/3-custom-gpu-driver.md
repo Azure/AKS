@@ -51,8 +51,7 @@ H100 (Hopper).
 
 [`scripts/customize-driver.sh`](scripts/customize-driver.sh) installs `595.91.07`
 via the `.run --dkms` installer into the **standard root**, and adds a
-`modules-load.d` entry so the modules reload after a reboot. It does **not** need
-any `rm dkms-marker` workaround — on a current VHD the marker is already absent.
+`modules-load.d` entry so the modules reload after a reboot.
 
 ## 2. Create the PIS and attach a `--gpu-driver None` pool
 
