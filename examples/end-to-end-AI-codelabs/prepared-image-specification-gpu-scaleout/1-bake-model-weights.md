@@ -218,26 +218,27 @@ az aks prepared-image-specification delete -g $RG --name model-prepared-image-sp
 
 ## Validation status
 
-Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
-kernel `6.8.0-1073-azure`:
+Validated end-to-end on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB),
+`westeurope` zone 3, kernel `6.8.0-1073-azure`, with
+`--enable-managed-gpu=true` + `--node-osdisk-type Ephemeral --node-osdisk-size 400`
++ PIS on one pool:
 
-- PIS `model-prepared-image-specification` baked `Qwen/Qwen2.5-7B-Instruct` (~15 GB) + cached the vLLM image.
-- Bake + node ready: **38m3s**.
-- `--node-osdisk-type Ephemeral --node-osdisk-size 400` →
-  `diffDiskSettings = { option: Local, placement: NvmeDisk }` (OS disk on NVMe,
-  **no mount script**).
-- Baked weights present (15 GB, 4 shards); cold buffered read **1.0 GB/s**, warm
-  **7.9 GB/s**.
-- vLLM cold weight-load from the baked NVMe disk: **15.31 s**, zero network.
-- The baked vLLM image was `already present on machine` (zero image pull).
-- `--enable-managed-gpu=true` + PIS makes the node schedulable with **no manual
-  device-plugin install**. Note what was measured separately: the managed GPU
-  device plugin was verified on the image-cache pool (Example 2's shape), and the
-  NVMe placement + 15.31 s weight-load on the model pool *before* the managed flag
-  was added. The exact `--enable-managed-gpu=true` **+** Ephemeral-NVMe
-  combination hasn't been run end-to-end together — the two mechanisms (GPU
-  management vs OS-disk placement) are independent, so treat that specific combo
-  as inferred rather than measured.
+- PIS `model-prepared-image-specification` baked `Qwen/Qwen2.5-7B-Instruct` (~15 GB, pinned
+  revision) + cached the vLLM image. Bake + node ready: **~38–45 min**.
+- Pool `Succeeded` with `managementMode: Managed`; `diffDiskSettings =
+  { option: Local, placement: NvmeDisk }` (OS disk on NVMe, **no mount script**).
+- Node advertised `nvidia.com/gpu: 1` with **no manual device-plugin install**
+  (`dcgm-exporter=enabled` label) — the managed GPU stack.
+- Baked weights present (15 GB, 4 shards); sequential cold read **1.0 GB/s**
+  (all 15 GB), warm **7.7 GB/s**.
+- vLLM cold weight-load from the baked NVMe weights: **~15 s** (15.31 s and
+  15.33 s on repeat runs), zero network. The baked vLLM image was
+  `already present on machine` (zero image pull).
+- **First-load caveat:** the *very first* vLLM load immediately after the node was
+  provisioned took ~10 min (the node/managed stack was still settling; a short
+  `dd` still read 1 GB/s throughout, so it wasn't the disk). A repeat cold load
+  with caches dropped was back to ~15 s. Measure steady-state, and don't be
+  alarmed by a slow first load right after scale-up.
 
 ## Next
 
