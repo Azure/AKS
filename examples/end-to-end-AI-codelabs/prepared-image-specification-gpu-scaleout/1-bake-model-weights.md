@@ -208,9 +208,6 @@ specific, unrelated to PIS.)
 
 ## Clean up
 
-Don't use `--no-wait` on the pool delete, so you can confirm the (expensive) H100
-node is actually gone before you walk away:
-
 ```bash
 kubectl delete pod vllm-model --ignore-not-found
 az aks nodepool delete -g $RG --cluster-name $CLUSTER -n modelpool --subscription $SUB
