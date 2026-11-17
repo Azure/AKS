@@ -45,10 +45,6 @@ az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --prepared-image-specification-id "$PIS_VER_ID"
 ```
 
-> **Do not** pass `--labels accelerator=nvidia`. `accelerator` is a reserved node
-> label that AKS sets automatically on GPU nodes; setting it yourself returns
-> `BadRequest: Node label ... accelerator ... is not allowed to be changed`.
-
 The bake takes ~25–40 min. In this run it took **~43 min** (build + node ready).
 
 ## 3. Make the node schedulable
