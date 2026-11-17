@@ -202,7 +202,7 @@ specific, unrelated to PIS.)
 | `hf download` fails `File not found .../original/*` | Trailing positionals parsed as filenames | Use `hf download REPO --local-dir DIR` only |
 | `VMCannotFitEphemeralOSDisk` | SKU doesn't advertise `NvmeDisk`, or size < cache | Use an NVMe-capable SKU, or mount `/dev/nvme0n1` in a boot script instead |
 | `diffDiskSettings` shows `CacheDisk`, load is slow | OS disk small enough to fit the cache | Increase `--node-osdisk-size` above the cache size to force NVMe |
-| On bake failure, where are the logs? | AKS **deallocates** (not deletes) the build VM | `az vmss start -g <MCRG> -n pismodelpool --instance-ids 0`, then `run-command` to read `/var/lib/waagent/.../pis-script-0/0/std{out,err}` |
+| On bake failure, where are the logs? | AKS **deallocates** (not deletes) the build VM | Find the build VMSS with `az vmss list -g <MCRG> --query "[?starts_with(name,'pis')].name" -o tsv`, `az vmss start` it, then `run-command` to read `/var/lib/waagent/.../pis-script-0/0/std{out,err}` |
 
 ## Clean up
 
@@ -227,8 +227,13 @@ kernel `6.8.0-1073-azure`:
 - vLLM cold weight-load from the baked NVMe disk: **15.31 s**, zero network.
 - The baked vLLM image was `already present on machine` (zero image pull).
 - `--enable-managed-gpu=true` + PIS makes the node schedulable with **no manual
-  device-plugin install** — verified on the image-cache pool (same managed GPU
-  mechanism; the figures above are from the model-pool bake).
+  device-plugin install**. Note what was measured separately: the managed GPU
+  device plugin was verified on the image-cache pool (Example 2's shape), and the
+  NVMe placement + 15.31 s weight-load on the model pool *before* the managed flag
+  was added. The exact `--enable-managed-gpu=true` **+** Ephemeral-NVMe
+  combination hasn't been run end-to-end together — the two mechanisms (GPU
+  management vs OS-disk placement) are independent, so treat that specific combo
+  as inferred rather than measured.
 
 ## Next
 

@@ -156,7 +156,7 @@ the prepared VHD, not the registry. In this run the second H100 node reached
 | Symptom | Cause | Fix |
 |---|---|---|
 | `ResourceMissingPermissionError: .../preparedImageSpecifications/read` | Cluster identity has no rights on the PIS | Grant it **Reader** on the PIS resource; wait 1–2 min |
-| Node `Ready` but pods `Pending` on `nvidia.com/gpu` | Pool not created with `--enable-managed-gpu=true` (no device plugin) | Recreate the pool with the flag, or deploy a device plugin / the NVIDIA GPU Operator yourself |
+| Node `Ready` but pods `Pending` on `nvidia.com/gpu` | Pool not created with `--enable-managed-gpu=true` (no device plugin). Managed GPU is fixed at pool creation — you can't toggle it later | Recreate the pool with the flag (or run the NVIDIA GPU Operator yourself, as in Example 3) |
 | Image still pulls slowly | Image not fully-qualified, so it wasn't cached | Use `docker.io/<repo>` in `--container-images`; make a new version |
 | Pool attach fails `AllocationFailed` | H100 capacity, not quota | Retry, or move to a region/zone with available H100 capacity |
 

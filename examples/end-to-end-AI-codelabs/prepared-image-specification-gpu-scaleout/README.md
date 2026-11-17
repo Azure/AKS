@@ -130,6 +130,11 @@ az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existi
 > the feature state reads `Registered` **and** the provider re-registration has
 > finished before creating a PIS; retry for a few minutes if an early call fails.
 
+> **Preview on preview.** Examples 1–2 combine two preview features (PIS +
+> managed GPU). Previews are not covered by production SLAs/support, and the
+> combined behavior can change. Don't use this configuration for production
+> workloads.
+
 ### The PIS read-permission grant
 
 Attaching a PIS to a node pool fails with `ResourceMissingPermissionError` unless

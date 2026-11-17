@@ -134,11 +134,11 @@ plugin, or containerd nvidia runtime. The supported way to supply those *without
 installing a second driver is the **NVIDIA GPU Operator with
 `driver.enabled=false`** — it uses your baked host driver.
 
-If you also run managed-driver PIS pools (Examples 1–2) in the same cluster,
-exclude their nodes from the Operator's operands first. Set the label on the
+If you also run the Examples 1–2 **managed** GPU pools in the same cluster, keep
+the GPU Operator off them — otherwise its device plugin/toolkit collide with AKS's
+managed GPU stack. Label those pools so the Operator skips them. Set it on the
 **node pool** (not individual nodes) so it persists across scale-out and node
-replacement — `az aks nodepool update` propagates it to every current and future
-node in the pool:
+replacement:
 
 ```bash
 for POOL in imgpool modelpool; do
@@ -153,6 +153,11 @@ helm install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace
   --set toolkit.enabled=true \
   --wait --timeout 15m
 ```
+
+> The label loop above only covers pools that **exist now**. If you create a
+> managed pool *after* installing the Operator, re-run the label on it (or scope
+> the Operator to `driverpool` with a node selector), so the Operator never lands
+> on a managed node.
 
 **Checkpoint:** the operator validators go green and the node advertises a GPU:
 
