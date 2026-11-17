@@ -11,25 +11,6 @@ driver survives a `--gpu-driver None` pool.
 
 Complete the [shared one-time setup](README.md#one-time-setup) first.
 
-## Background: why this used to need a workaround
-
-On a `--gpu-driver None` pool, AKS's bootstrap (CSE) runs `cleanUpGPUDrivers`,
-whose destructive branch (`cleanUpPrebakedGPUDriver`) used to strip a
-pre-baked/custom driver — removing `nvidia-smi`, the DKMS registration, and the
-kernel module. That branch is **gated on a marker file**,
-`/opt/azure/aks-gpu/dkms-marker`, which historically shipped in the VHD because
-AKS pre-baked its own driver.
-
-On **current gen2 VHDs the marker is no longer baked in** (AgentBaker
-[#9694](https://github.com/Azure/AgentBaker/pull/9694)), so on a `--gpu-driver
-None` pool `cleanUpPrebakedGPUDriver` **early-returns and does nothing** — your
-baked driver stays intact. This example verifies that end-to-end.
-
-> **Scope:** this works for a driver installed into the **standard root**
-> (`/usr/bin`, `/lib/x86_64-linux-gnu`, DKMS) as below. A driver under
-> `/usr/local/nvidia` or `/opt/gpu`, or a VHD derived from an old pre-#9694 base
-> that still carries the marker, can still be cleaned up.
-
 ## Pick a driver version that *builds* on the node's kernel
 
 > ⚠️ **Check your kernel before you bake — a mismatch is the expected case, not
