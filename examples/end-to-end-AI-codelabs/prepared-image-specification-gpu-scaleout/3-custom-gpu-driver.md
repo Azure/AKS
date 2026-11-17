@@ -7,7 +7,7 @@ AKS installs and manages a GPU driver for you (the default, and the simplest
 choice). But if you need an *exact* driver version baked into the image — for
 reproducibility, or to match a CUDA stack — you can bake it with PIS. This
 example shows the current behavior on up-to-date node images, where a baked
-driver survives a `--gpu-driver None` pool **with no workaround**.
+driver survives a `--gpu-driver None` pool.
 
 Complete the [shared one-time setup](README.md#one-time-setup) first.
 
