@@ -43,8 +43,14 @@ az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --name imgpool --mode User \
   --node-count 1 --node-vm-size $GPU_SKU --zones $ZONE \
   --enable-managed-gpu=true \
+  --labels nvidia.com/gpu.deploy.operands=false \
   --prepared-image-specification-id "$PIS_VER_ID"
 ```
+
+> The `nvidia.com/gpu.deploy.operands=false` label keeps the NVIDIA GPU Operator
+> (if you also run Example 3 in this cluster) off this managed pool, so AKS's
+> managed device plugin is the only one here. It's harmless when Example 3 isn't
+> used, and it lets the examples run in any order.
 
 `--enable-managed-gpu=true` tells AKS to install and manage the full GPU stack —
 driver, **NVIDIA device plugin**, and DCGM metrics exporter — so you don't deploy

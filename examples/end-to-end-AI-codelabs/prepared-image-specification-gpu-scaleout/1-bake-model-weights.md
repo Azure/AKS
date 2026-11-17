@@ -52,8 +52,8 @@ reimage/deallocate. For read-only baked weights this is ideal.
 ## 1. The customization script
 
 [`scripts/customize-model.sh`](scripts/customize-model.sh) runs at
-`NodeImageBuildTime` and downloads the weights into `/opt/models/qwen`. Three
-things it gets right that commonly break a bake:
+`NodeImageBuildTime` and downloads the weights into `/opt/models/qwen`. Things it
+gets right that commonly break a bake:
 
 - The node image ships `python3` but **not** the `venv` module, so it installs
   `python3-venv` first (otherwise `python3 -m venv` fails with
@@ -63,6 +63,9 @@ things it gets right that commonly break a bake:
 - `huggingface_hub` 1.x dropped the `[cli]` extra and the `huggingface-cli`
   command, so it uses the current **`hf download`** CLI — with **no trailing
   positional arguments** (those are treated as filenames).
+- **Reproducible + lean:** it pins `huggingface_hub` and the model **revision**
+  (`--revision`) so repeat bakes are identical, and deletes the build-only venv +
+  apt metadata at the end so they don't bloat the prepared VHD.
 
 > **Prerequisites for the bake:** the build VM needs outbound HTTPS to
 > `huggingface.co`. This example uses a **public** model
@@ -109,6 +112,7 @@ az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --name modelpool --mode User \
   --node-count 1 --node-vm-size $GPU_SKU --zones $ZONE \
   --enable-managed-gpu=true \
+  --labels nvidia.com/gpu.deploy.operands=false \
   --node-osdisk-type Ephemeral --node-osdisk-size 400 \
   --prepared-image-specification-id "$PIS_VER_ID"
 ```
