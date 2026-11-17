@@ -119,11 +119,13 @@ az aks get-credentials --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME"
 
 Set the required `CACHE_FOLDER_PATH` value before running the cache script. Follow [Create an isolated cache](#4-create-an-isolated-cache) to choose and prepare the directory; the script doesn't default to the managed cache root.
 
-Place all checkpoint files, including configuration, tokenizer, shard index, and weights, under the versioned Blob prefix. Follow [Upload model files to Blob Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#upload-model-files-to-blob-storage), but set `MODEL_ID="openai/gpt-oss-20b"`, `MODEL_REVISION="6cee5e81ee83917806bbde320786a8fb61efebee"`, and `MODEL_DIR="$PWD/models/gpt-oss-20b-$MODEL_REVISION"`. Replace the guide's single-file download command with `hf download "$MODEL_ID" --revision "$MODEL_REVISION" --include "*.json" "*.safetensors" "*.jinja" --local-dir "$MODEL_DIR"` to include all three SafeTensors shards, their index, and the configuration and tokenizer files. Continue with the guide's upload steps using this directory and your configured storage account, container, and immutable model prefix. Downloading from Hugging Face is a preparation step, not a DACS origin integration.
+Place all checkpoint files, including configuration, tokenizer, shard index, and weights, under the versioned Blob prefix. Follow [Upload model files to Blob Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#upload-model-files-to-blob-storage), but set `MODEL_ID="openai/gpt-oss-20b"`, `MODEL_REVISION="6cee5e81ee83917806bbde320786a8fb61efebee"`, and `MODEL_DIR="$PWD/models/gpt-oss-20b-$MODEL_REVISION"`. Replace the guide's single-file download command with `hf download "$MODEL_ID" --revision "$MODEL_REVISION" --include "*.json" "*.safetensors" "*.jinja" --local-dir "$MODEL_DIR"` to include all three SafeTensors shards, their index, and the configuration and tokenizer files. Continue with the guide's upload steps using this directory and your configured storage account, container, and immutable model prefix. Downloading from Hugging Face is a preparation step, not a DACS origin integration.
+
 
 If you're starting with a new test cluster, these commands add two node pools, or groups of machines: three machines with fast local disks to hold cached model data, and one GPU machine to run the model. The final command enables DACS after both pools are created.
 
-These machines incur charges. Use only dedicated, disposable cache disks because DACS setup can format them. Before creating the pools, complete the [managed GPU prerequisites](https://aka.ms/aks/managed-gpu) and the [SSH access prerequisites](https://learn.microsoft.com/azure/aks/manage-ssh-node-access#prerequisites), including installing the required `aks-preview` extension. Register `ManagedGPUExperiencePreview` and `DisableSSHPreview`, wait for both registrations to reach `Registered`, and refresh the `Microsoft.ContainerService` resource provider.
+These machines incur charges. Use only dedicated, disposable cache disks because DACS setup can format them. Before creating the pools, complete the [managed GPU prerequisites](https://aka.ms/aks/managed-gpu) and the [SSH access prerequisites](https://learn.microsoft.com/azure/aks/manage-ssh-node-access#prerequisites), including installing the required `aks-preview` extension. Register `ManagedGPUExperiencePreview` and `DisableSSHPreview`, wait for both registrations to reach `Registered`, and refresh the `Microsoft.ContainerService` resource provider.
+
 
 ```bash
 az aks nodepool add --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
@@ -207,9 +209,10 @@ ROLE_ID=$(az role assignment create \
   --assignee-object-id "$PRINCIPAL_ID" --assignee-principal-type ServicePrincipal \
   --role "Storage Blob Data Reader" \
   --scope "$STORAGE_ID/blobServices/default/containers/$STORAGE_CONTAINER" \
-  --query id --output tsv) || exit 1
+  --query id --output tsv) || exit 1
+
 az identity federated-credential create \
-  --resource-group "$RESOURCE_GROUP" --identity-name "$IDENTITY_NAME" \
+  --audiences api://AzureADTokenExchange --output none || exit 1
   --name runai-reader --issuer "$OIDC_ISSUER" \
   --subject "system:serviceaccount:$CACHE_NAMESPACE:runai-reader" \
   --audiences api://AzureADTokenExchange --output none
@@ -282,8 +285,10 @@ This script creates a Kubernetes pod, a running instance of the model server, on
 
 Save the script as `deploy-vllm.sh`. Run it with `source` as shown after the script, so it can use the settings from your current terminal.
 
-If a pod terminates with Blob authorization errors, inspect its logs and wait for permission propagation, then delete it with `kubectl delete pod "$POD_NAME" -n "$CACHE_NAMESPACE" --wait=true` before sourcing `deploy-vllm.sh` again. The script uses `kubectl create`, so it can't replace an existing failed pod. If a failed attempt read model weights, treat the cache as potentially warm and have your administrator reset only the experiment's dedicated cache before reporting a cold run.
-
+If a pod terminates with Blob authorization errors, inspect its logs and wait for permission propagation, then delete it with `kubectl delete pod "$POD_NAME" -n "$CACHE_NAMESPACE" --wait=true` before sourcing `deploy-vllm.sh` again. The script uses `kubectl create`, so it can't replace an existing failed pod. If a failed attempt read model weights, treat the cache as potentially warm and have your administrator reset only the experiment's dedicated cache before reporting a cold run.
+
+
+
 This example accepts requests only from inside the container by listening on `127.0.0.1`. Kubernetes checks the server's `/health` endpoint from inside that container, and you'll send test requests through `kubectl exec`. Keep the server local: it doesn't require authentication, so don't expose it through a Service or ingress.
 
 ```bash
@@ -368,7 +373,8 @@ kubectl logs "$POD_NAME" -n "$CACHE_NAMESPACE" -c vllm
 kubectl exec "$POD_NAME" -n "$CACHE_NAMESPACE" -c vllm -- nvidia-smi
 ```
 
-The example requests **2 MiB** through both environment variables, but Run:ai `0.17.3` enforces a **5 MiB** minimum for its object-storage read blocks, while `SI_streamingChunkSize` keeps DACS chunks at **2 MiB**. These settings don't produce matching effective sizes. Verify the effective sizes before tuning, and repeat the measurements if you change them. For another model, consult the [chunk-size guidance](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#optimize-read-performance).
+The example requests **2 MiB** through both environment variables, but Run:ai `0.17.3` enforces a **5 MiB** minimum for its object-storage read blocks, while `SI_streamingChunkSize` keeps DACS chunks at **2 MiB**. These settings don't produce matching effective sizes. Verify the effective sizes before tuning, and repeat the measurements if you change them. For another model, consult the [chunk-size guidance](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#optimize-read-performance).
+
 
 Our H100 logs selected the Triton MXFP4 MoE backend and reported 13.03 GiB of model memory. The checkpoint retains its MXFP4 quantization; `--dtype bfloat16` doesn't mean all stored weights become bfloat16. The 80% GPU-memory setting also reserves space for vLLM's KV cache. DACS's model-file cache is separate from that KV cache.
 
@@ -490,9 +496,11 @@ Deleting the application doesn't stop charges for the GPU and cache machines. If
 
 ```bash
 az aks nodepool delete --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
-  --name "$GPU_NODE_POOL"
+  --name "$GPU_NODE_POOL"
+
 az aks nodepool delete --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
-  --name cachepool
+  --name cachepool
+
 ```
 
 If you created an entirely temporary cluster and supporting Azure resources, remove that dedicated setup through your infrastructure teardown process. Our validation removed its entire task-owned setup and verified that both its resource group and AKS-managed node resource group were gone.
