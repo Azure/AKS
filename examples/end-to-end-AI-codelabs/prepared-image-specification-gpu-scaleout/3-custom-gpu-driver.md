@@ -91,10 +91,7 @@ VMSS=$(az vmss list -g $MCRG --subscription $SUB \
 az vmss run-command invoke -g $MCRG -n "$VMSS" --subscription $SUB \
   --command-id RunShellScript --instance-id 0 \
   --scripts 'nvidia-smi --query-gpu=name,driver_version --format=csv,noheader;
-             dkms status | head;
-             ls -la /opt/azure/aks-gpu/dkms-marker 2>&1 | tail -1;
-             grep -iE "cleanUpPrebakedGPUDriver|AKS_GPU_PREBAKE|Removing pre-baked" \
-               /var/log/azure/cluster-provision*.log | tail -5' \
+             dkms status | head' \
   --query "value[0].message" -o tsv
 ```
 
@@ -103,12 +100,10 @@ az vmss run-command invoke -g $MCRG -n "$VMSS" --subscription $SUB \
 ```text
 NVIDIA H100 NVL, 595.91.07
 nvidia/595.91.07, 6.8.0-1073-azure, x86_64: installed
-ls: cannot access '/opt/azure/aks-gpu/dkms-marker': No such file or directory
-# cleanUpGPUDrivers ran but printed NO "Removing pre-baked" / teardown line
 ```
 
-The driver is your pinned `595.91.07`, the marker is absent, and the destructive
-teardown never fired — **no workaround required.**
+The driver is still your pinned `595.91.07` after the node bootstrap — the baked
+driver survived.
 
 ## 4. Make the node schedulable with the GPU Operator (`driver.enabled=false`)
 
