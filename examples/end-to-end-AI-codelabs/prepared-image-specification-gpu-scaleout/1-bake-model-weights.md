@@ -108,6 +108,7 @@ PIS_VER_ID=$(az aks prepared-image-specification version show -g $RG \
 az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --name modelpool --mode User \
   --node-count 1 --node-vm-size $GPU_SKU --zones $ZONE \
+  --enable-managed-gpu=true \
   --node-osdisk-type Ephemeral --node-osdisk-size 400 \
   --prepared-image-specification-id "$PIS_VER_ID"
 ```
@@ -142,14 +143,11 @@ and the cold buffered read is ~1.0 GB/s.
 
 ## 5. Serve the baked model (zero network)
 
-Make the node schedulable (device plugin, same as Example 2), then run vLLM
-against the baked weights via a `hostPath` mount:
+The pool is managed (`--enable-managed-gpu=true`), so the node already advertises
+`nvidia.com/gpu` — no device plugin to install. Run vLLM against the baked weights
+via a `hostPath` mount:
 
 ```bash
-# The shared device-plugin manifest is scoped (by nodeAffinity) to the
-# imgpool/modelpool names used in this codelab; it makes modelpool schedulable.
-kubectl apply -f manifests/nvidia-device-plugin.yaml   # if not already applied
-
 kubectl apply -f - <<'YAML'
 apiVersion: v1
 kind: Pod
@@ -217,7 +215,7 @@ az aks prepared-image-specification delete -g $RG --name model-prepared-image-sp
 ## Validation status
 
 Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
-AKS 1.35.6, kernel `6.8.0-1073-azure`:
+kernel `6.8.0-1073-azure`:
 
 - PIS `model-prepared-image-specification` baked `Qwen/Qwen2.5-7B-Instruct` (~15 GB) + cached the vLLM image.
 - Bake + node ready: **38m3s**.
@@ -228,6 +226,9 @@ AKS 1.35.6, kernel `6.8.0-1073-azure`:
   **7.9 GB/s**.
 - vLLM cold weight-load from the baked NVMe disk: **15.31 s**, zero network.
 - The baked vLLM image was `already present on machine` (zero image pull).
+- `--enable-managed-gpu=true` + PIS makes the node schedulable with **no manual
+  device-plugin install** — verified on the image-cache pool (same managed GPU
+  mechanism; the figures above are from the model-pool bake).
 
 ## Next
 

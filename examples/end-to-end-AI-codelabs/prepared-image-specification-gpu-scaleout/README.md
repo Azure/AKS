@@ -69,7 +69,8 @@ After these examples you'll be able to:
   clusters, node pools, and resource groups.
 - An AKS cluster on a supported Kubernetes version (validated on **1.35.6**).
 - Azure CLI **≥ 2.85.0** and the **`aks-preview`** extension **≥ 21.0.0b5**.
-- The **`AKSPreparedImageSpecificationPreview`** feature flag registered in your
+- The **`AKSPreparedImageSpecificationPreview`** and (for the managed GPU stack in
+  Examples 1–2) **`ManagedGPUExperiencePreview`** feature flags registered in your
   subscription (see [the shared setup](#one-time-setup)).
 - **H100 quota *and* capacity** in your target region.
 - `kubectl` and, for Example 3, Helm 3.
@@ -77,8 +78,8 @@ After these examples you'll be able to:
 ## One-time setup
 
 These steps are shared by all three examples. Run them once. **Run every command
-in these examples from this codelab's directory** — the examples reference files
-with relative paths (`scripts/…`, `manifests/…`).
+in these examples from this codelab's directory** — the examples reference the
+customization scripts with relative paths (`scripts/…`).
 
 ```bash
 # 0. Get the codelab files and work from this directory (clone, or if you already
@@ -99,12 +100,16 @@ export GPU_SKU=Standard_NC40ads_H100_v5
 az extension add --name aks-preview        # or: az extension update --name aks-preview
 az --version                               # confirm az >= 2.85.0
 
-# 3. Register the PIS preview feature in $SUB, then refresh the resource provider
-az feature register --subscription $SUB --namespace Microsoft.ContainerService \
-  --name AKSPreparedImageSpecificationPreview
-# wait until "state" == "Registered":
-az feature show --subscription $SUB --namespace Microsoft.ContainerService \
-  --name AKSPreparedImageSpecificationPreview --query properties.state -o tsv
+# 3. Register the preview features in $SUB, then refresh the resource provider.
+#    PIS for all examples; ManagedGPUExperiencePreview for the managed GPU stack
+#    used in Examples 1-2.
+for F in AKSPreparedImageSpecificationPreview ManagedGPUExperiencePreview; do
+  az feature register --subscription $SUB --namespace Microsoft.ContainerService --name $F
+done
+# wait until both read "Registered":
+for F in AKSPreparedImageSpecificationPreview ManagedGPUExperiencePreview; do
+  az feature show --subscription $SUB --namespace Microsoft.ContainerService --name $F --query properties.state -o tsv
+done
 az provider register --subscription $SUB --namespace Microsoft.ContainerService
 
 # 4. Resource group (tag it so a shared-sub janitor doesn't reap it mid-bake)

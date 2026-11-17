@@ -42,20 +42,20 @@ PIS_VER_ID=$(az aks prepared-image-specification version show -g $RG \
 az aks nodepool add -g $RG --cluster-name $CLUSTER --subscription $SUB \
   --name imgpool --mode User \
   --node-count 1 --node-vm-size $GPU_SKU --zones $ZONE \
+  --enable-managed-gpu=true \
   --prepared-image-specification-id "$PIS_VER_ID"
 ```
 
-The bake takes ~25–40 min. In this run it took **~43 min** (build + node ready).
+`--enable-managed-gpu=true` tells AKS to install and manage the full GPU stack —
+driver, **NVIDIA device plugin**, and DCGM metrics exporter — so you don't deploy
+a device plugin yourself. The bake takes ~25–40 min (build + node ready).
 
-## 3. Make the node schedulable
+## 3. Confirm the node is schedulable
 
-A managed-driver PIS pool comes up with the driver, container toolkit, and
-containerd nvidia runtime wired — but **no GPU device plugin**, so the node
-advertises no `nvidia.com/gpu` and is unschedulable. Install the device plugin:
+Because the pool is managed, AKS has already deployed the device plugin — the node
+advertises `nvidia.com/gpu` with nothing for you to install. Just verify:
 
 ```bash
-kubectl apply -f manifests/nvidia-device-plugin.yaml
-# wait ~30-60s, then:
 kubectl get nodes -l agentpool=imgpool \
   -o jsonpath='{.items[0].status.allocatable.nvidia\.com/gpu}'   # -> 1
 ```
@@ -156,8 +156,7 @@ the prepared VHD, not the registry. In this run the second H100 node reached
 | Symptom | Cause | Fix |
 |---|---|---|
 | `ResourceMissingPermissionError: .../preparedImageSpecifications/read` | Cluster identity has no rights on the PIS | Grant it **Reader** on the PIS resource; wait 1–2 min |
-| `BadRequest: ... accelerator ... not allowed to be changed` | `accelerator` is a reserved GPU label | Remove it from `--labels`; AKS sets it automatically |
-| Node `Ready` but pods `Pending` on `nvidia.com/gpu` | Managed-driver PIS pool ships no device plugin | `kubectl apply -f manifests/nvidia-device-plugin.yaml` |
+| Node `Ready` but pods `Pending` on `nvidia.com/gpu` | Pool not created with `--enable-managed-gpu=true` (no device plugin) | Recreate the pool with the flag, or deploy a device plugin / the NVIDIA GPU Operator yourself |
 | Image still pulls slowly | Image not fully-qualified, so it wasn't cached | Use `docker.io/<repo>` in `--container-images`; make a new version |
 | Pool attach fails `AllocationFailed` | H100 capacity, not quota | Retry, or move to a region/zone with available H100 capacity |
 
@@ -173,14 +172,15 @@ az aks nodepool delete -g $RG --cluster-name $CLUSTER -n imgpool --subscription 
 az aks prepared-image-specification delete -g $RG --name image-prepared-image-specification --subscription $SUB --yes
 ```
 
-(The device plugin DaemonSet is cluster-scoped; it's removed by the whole-RG
-delete in the [top-level README](README.md#clean-up), or
-`kubectl delete -f manifests/nvidia-device-plugin.yaml`.)
-
 ## Validation status
 
 Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
-AKS 1.35.6, driver 580.159.04 / CUDA 13.0:
+driver 580.159.04 / CUDA 13.0:
+
+- `--enable-managed-gpu=true` + PIS: the pool came up `Succeeded` with
+  `managementMode: Managed` / `driverMode: DevicePlugin`, and the node advertised
+  `nvidia.com/gpu: 1` with **no device plugin installed manually** (plus the
+  `kubernetes.azure.com/dcgm-exporter=enabled` managed-stack label).
 
 - PIS `image-prepared-image-specification` v1 cached the vLLM OpenAI image (9.74 GB). Measured with the
   `:latest` image at validation time; the codelab pins `v0.11.0` for
@@ -190,7 +190,8 @@ AKS 1.35.6, driver 580.159.04 / CUDA 13.0:
   9.74 GB image "pull" was just a manifest check — **574 ms** (cold pull ≈ 130 s);
   with the pinned tag kubelet reports `already present on machine` and makes no
   registry call at all.
-- GPU `nvidia-smi` ran in-pod on the H100 NVL after installing the device plugin.
+- GPU `nvidia-smi` ran in-pod on the H100 NVL (managed device plugin, no manual
+  install) and the baked image reported `already present on machine`.
 - Scale-out 1 → 2: second node `Ready` in **438 s**, zero layer pull.
 
 ## Next
