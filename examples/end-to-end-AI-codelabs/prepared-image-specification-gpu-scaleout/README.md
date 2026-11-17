@@ -104,9 +104,8 @@ az feature register --subscription $SUB --namespace Microsoft.ContainerService \
 az feature show --subscription $SUB --namespace Microsoft.ContainerService \
   --name AKSPreparedImageSpecificationPreview --query properties.state -o tsv
 
-# 4. Resource group (tag it so a shared-sub janitor doesn't reap it mid-bake)
-az group create -n $RG -l $LOC --subscription $SUB \
-  --tags doNotDelete=true skipAutoDelete=true
+# 4. Resource group
+az group create -n $RG -l $LOC --subscription $SUB
 
 # 5. Cluster with a CPU system pool (AKS picks a default Kubernetes version and
 #    VM size for you; pass --kubernetes-version / --node-vm-size to pin them)
