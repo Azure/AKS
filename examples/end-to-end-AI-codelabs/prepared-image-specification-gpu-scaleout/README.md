@@ -96,14 +96,13 @@ export GPU_SKU=Standard_NC40ads_H100_v5
 az extension add --name aks-preview        # or: az extension update --name aks-preview
 az --version                               # confirm az >= 2.85.0
 
-# 3. Register the PIS preview feature in $SUB, then refresh the resource provider.
+# 3. Register the PIS preview feature in $SUB.
 #    (The managed GPU stack used in Examples 1-2 is GA — no feature flag.)
 az feature register --subscription $SUB --namespace Microsoft.ContainerService \
   --name AKSPreparedImageSpecificationPreview
 # wait until "state" == "Registered":
 az feature show --subscription $SUB --namespace Microsoft.ContainerService \
   --name AKSPreparedImageSpecificationPreview --query properties.state -o tsv
-az provider register --subscription $SUB --namespace Microsoft.ContainerService
 
 # 4. Resource group (tag it so a shared-sub janitor doesn't reap it mid-bake)
 az group create -n $RG -l $LOC --subscription $SUB \
@@ -117,11 +116,13 @@ az aks create -g $RG -n $CLUSTER --subscription $SUB --location $LOC \
 az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existing
 ```
 
-> **Registration can lag.** `az feature register` + `az provider register` can
-> take **10+ minutes** to propagate. Until they do, PIS creates/attaches fail
-> (e.g. `MissingSubscriptionRegistration` or `InvalidResourceType`). Wait until
-> the feature state reads `Registered` **and** the provider re-registration has
-> finished before creating a PIS; retry for a few minutes if an early call fails.
+> **Registration can lag.** `az feature register` can take **10+ minutes** to
+> propagate. Until it does, PIS creates/attaches fail (e.g.
+> `MissingSubscriptionRegistration` or `InvalidResourceType`). Wait until the
+> feature state reads `Registered` before creating a PIS; retry for a few minutes
+> if an early call fails. (If the first PIS call still errors, a one-time
+> `az provider register --namespace Microsoft.ContainerService` forces the opt-in
+> to propagate.)
 
 > **Preview feature.** PIS is in preview — not covered by production SLAs/support,
 > and behavior can change. Don't use it for production workloads. (The managed GPU
