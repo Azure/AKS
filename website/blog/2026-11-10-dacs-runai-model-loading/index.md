@@ -33,7 +33,7 @@ In this post, **cold** and **warm** describe DACS's cached data for a particular
 
 A cache can also be partially warm: cached chunks come from DACS, while missing chunks still come from Blob Storage. A warm DACS cache doesn't mean the model is already loaded into GPU memory.
 
-The paths are:
+The diagrams show where model data comes from. A **cache hit** means DACS can read the requested data from the cache machines' NVMe disks. A **cache miss** means the data must come from Blob Storage and can then populate the cache:
 
 ```text
 Cache hit:
@@ -50,7 +50,7 @@ This pattern is useful when multiple replicas repeatedly load the same model ver
 
 ## What we measured
 
-We validated the GPU workflow on November 9, 2026, using an isolated AKS cluster in the `Australia East` region. Three `Standard_L16s_v3` nodes ran the cache servers, while a `Standard_NC40ads_H100_v5` node ran vLLM on an NVIDIA H100 NVL GPU. A separate small system node handled cluster services. The cluster used Kubernetes `1.36.5`, the managed DACS extension and native client `0.1.0`, vLLM `0.32.0`, Torch `2.13.0+cu130`, and Run:ai core and Azure backend `0.17.0`.
+We validated the GPU workflow on November 9, 2026, using an isolated AKS cluster in the `Australia East` region. Three `Standard_L16s_v3` nodes ran the cache servers, while a `Standard_NC40ads_H100_v5` node ran vLLM on an NVIDIA H100 NVL GPU. A separate small system node handled cluster services. The cluster used Kubernetes `1.36.5`, the managed DACS extension and native client `0.1.0`, vLLM `0.32.0`, Torch `2.13.0+cu130`, and Run:ai core and Azure backend `0.17.3`.
 
 For each test, we started a fresh pod with the same GPT-OSS-20B checkpoint at revision `6cee5e81ee83917806bbde320786a8fb61efebee`. The checkpoint contains approximately **13.761 GB of model weights** across three SafeTensors shards. Before uploading the files to private Azure Blob Storage, we verified their contents using full-file SHA-256 checksums. We then checked the uploaded file names and sizes and confirmed that the model could generate tokens on the GPU.
 
@@ -92,7 +92,9 @@ Only label cache nodes whose NVMe disks are dedicated to DACS: the managed prere
 
 ## 1. Set the experiment values
 
-Run the commands in one Bash session, with the correct subscription and cluster context selected. Replace these values. Keep the GPT-OSS-20B configuration for this example; another model can require different memory, dtype, or loader settings.
+First, tell the commands which Azure resources to use. Replace the values in angle brackets with your own resource names and IDs, and check that `GPU_NODE_POOL` matches your GPU node pool's name. Run the commands in one Bash terminal, and keep that terminal open: later steps reuse these settings. The final two commands select your Azure subscription and connect `kubectl` to your AKS cluster.
+
+Keep the GPT-OSS-20B configuration for this example. Another model can require different memory, data types, or loading settings. You'll set `CACHE_FOLDER_PATH` after choosing a directory for the cache.
 
 ```bash
 # filename: settings.sh
@@ -119,7 +121,9 @@ Set the required `CACHE_FOLDER_PATH` value before running the cache script. Foll
 
 Place all checkpoint files, including configuration, tokenizer, shard index, and weights, under the versioned Blob prefix. For model preparation, follow [Upload model files to Blob Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#upload-model-files-to-blob-storage), using your pinned GPT-OSS-20B revision instead of the guide's small model. Downloading from Hugging Face is a preparation step, not a DACS origin integration.
 
-For a new test cluster, create the cache and GPU pools before enabling DACS. The pool commands we used were:
+If you're starting with a new test cluster, these commands add two node pools, or groups of machines: three machines with fast local disks to hold cached model data, and one GPU machine to run the model. The final command enables DACS after both pools are created.
+
+These machines incur charges. Use only dedicated, disposable cache disks because DACS setup can format them.
 
 ```bash
 az aks nodepool add --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
@@ -133,22 +137,26 @@ az aks update --resource-group "$RESOURCE_GROUP" --name "$CLUSTER_NAME" \
   --enable-azure-container-storage distributedAccelerator
 ```
 
-Managed GPU support requires the applicable AKS preview prerequisites. Use the [managed GPU guidance](https://aka.ms/aks/managed-gpu) for your subscription. These commands create billable resources. If AKS reports an in-progress addon operation, wait for it to complete before retrying; don't abort another operation just to continue this experiment.
+Managed GPU support requires the applicable AKS preview prerequisites. Use the [managed GPU guidance](https://aka.ms/aks/managed-gpu) for your subscription. If AKS reports an in-progress addon operation, wait for it to complete before retrying; don't abort another operation just to continue this experiment.
 
-## 2. Build the GPU workload image
+## 2. Package the model server and cache client
 
-Save this as `Dockerfile` in an empty build directory. The pinned x86-64 GPU vLLM base image already includes Run:ai Model Streamer and its Azure backend at `0.17.0`. The explicit Run:ai requirement in this Dockerfile enforces those tested versions; `dacs-client` adds the DACS native client in the same Python environment. Keep the application's Torch/CUDA constraints.
+AKS runs the model server from a container image, a package containing the application and its software dependencies. This image recipe starts with the tested GPU version of vLLM and adds the software it needs to read through DACS.
+
+Save the recipe as `Dockerfile` in an empty build directory.
 
 ```dockerfile
 FROM vllm/vllm-openai@sha256:6ee133356d49ed24cee03dd0cda3d3980279a11c107ce3e752c89e76540f41c9
 # Remove an unused exporter whose requirements conflict with this base image's SDK.
 RUN python3 -m pip uninstall -y opentelemetry-exporter-otlp-common
-RUN python3 -m pip install --no-cache-dir "runai-model-streamer[azure]==0.17.0" "dacs-client==0.1.0" && python3 -m pip check
+RUN python3 -m pip install --no-cache-dir "runai-model-streamer[azure]==0.17.3" "dacs-client==0.1.0" && python3 -m pip check
 ```
 
-This base-image digest has a pre-existing OpenTelemetry dependency conflict: `opentelemetry-exporter-otlp-common==0.66b1` requires `opentelemetry-sdk~=1.45.1`, but the image contains SDK `1.40.0`. This isn't a conflict with DACS. Upgrading the telemetry stack violates LMCache's API and exporter constraints, so this Dockerfile removes only the unused exporter and leaves the SDK unchanged. This workaround is specific to the pinned digest, not a general vLLM recommendation. If you choose another base, resolve its own constraints and require `pip check` to pass.
+The pinned x86-64 GPU base image already includes Run:ai Model Streamer and its Azure backend at `0.17.3`. The explicit Run:ai requirement keeps those tested versions, while `dacs-client` installs the DACS native client in the same Python environment. Keep the application's Torch/CUDA constraints.
 
-Build, push, and resolve the library path from the actual image:
+The selected base image also includes an unused OpenTelemetry component with conflicting dependency requirements: `opentelemetry-exporter-otlp-common==0.66b1` requires `opentelemetry-sdk~=1.45.1`, but the image contains SDK `1.40.0`. This conflict isn't caused by DACS. Upgrading the telemetry stack would violate LMCache's API and exporter constraints, so the recipe removes only the unused exporter and leaves the SDK unchanged. This workaround applies to this specific image, not every vLLM installation. If you choose another base image, resolve its dependency conflicts and require `pip check` to pass.
+
+Now build the image and upload it to your Azure Container Registry so AKS can download it. These commands also locate the installed DACS library and record the uploaded image's unique identifier, called a digest. Using that digest ensures later steps refer to the exact image you uploaded.
 
 ```bash
 # filename: image.sh
@@ -179,9 +187,13 @@ WORKLOAD_IMAGE="${WORKLOAD_IMAGE%:*}@${IMAGE_DIGEST}"
 
 The ACR lookup resolves the exact tag just pushed to the configured registry. After validating the digest, the script replaces the tag with an immutable digest reference while preserving the registry and repository. It doesn't select from the local image's `RepoDigests`, which can include other repositories. In the tested image, the library is `/usr/local/lib/python3.12/dist-packages/py_dacs_client/libStorageDirect.so`; resolve it rather than assume that path for another image. Keep the complete installation and sibling native libraries. Run:ai's Azure extra doesn't supply the DACS native client.
 
-## 3. Bind the application identity
+## 3. Give the application permission to read the model
 
-Use a new namespace and an identity name that doesn't already exist in the resource group. The reader role is scoped to the model container, not the storage account or subscription. Uploading the model requires separate write permission. DACS treats the cluster as a single trust domain: Blob RBAC and workload identity don't isolate cached data from other workloads. Use this experiment only in a single-tenant cluster.
+The application needs permission to read your model files from Blob Storage. These commands create an Azure identity and connect it to the application in AKS, so you don't need to put passwords or storage keys in the application. They also create a namespace, a named group of Kubernetes resources, for this experiment.
+
+Use a new namespace and an identity name that doesn't already exist in the resource group. The identity can read only the specified model container, not the whole storage account or subscription. Uploading the model requires separate write permission.
+
+These permissions protect access to Blob Storage; they don't isolate data already stored in DACS from other cache clients. Use this experiment only in a single-tenant cluster containing trusted workloads.
 
 ```bash
 # filename: identity.sh
@@ -212,7 +224,7 @@ metadata:
 EOF
 ```
 
-Role propagation can take several minutes. The pod must select this ServiceAccount and carry `azure.workload.identity/use: "true"`. AKS then injects the identity settings and token. Don't add storage keys, SAS tokens, or client secrets.
+Azure can take several minutes to apply the new permissions. The application's Kubernetes configuration must select the `runai-reader` ServiceAccount and include the label `azure.workload.identity/use: "true"`. These settings let AKS supply the identity settings and authentication token automatically. Don't add storage keys, SAS tokens, or client secrets.
 
 ## 4. Create an isolated cache
 
@@ -220,7 +232,7 @@ Our GPU test used a **new cluster with empty NVMe disks**, so the Cache used the
 
 On an existing cluster, set `CACHE_FOLDER_PATH` to an administrator-approved, empty, dedicated NVMe-backed directory, such as `/var/lib/ssd/cacheserver/runai-dacs-20261110`. Have your cluster administrator create it at the same absolute path on every eligible cache node before you apply the manifest. Custom subdirectories aren't created automatically. Keep this directory unchanged between the cold and warm trials, and don't share it with another Cache.
 
-Verify the controller and disk prerequisites before creating the Cache:
+Before creating the cache, check that the DACS management service and disk-preparation components are ready. The first two commands wait for those components; both must finish successfully before you continue. The last command lists the machines selected to store cached data.
 
 ```bash
 kubectl rollout status deployment/dacs-manager -n kube-system --timeout=10m
@@ -228,7 +240,7 @@ kubectl rollout status daemonset/dacs-prereq -n kube-system --timeout=10m
 kubectl get nodes -l dacs.azure.com/processing-unit=cpu -o wide
 ```
 
-Create three cache servers, one per eligible NVMe node:
+This configuration asks DACS to run three cache servers, one on each eligible NVMe machine. The servers store reusable copies of model data in the directory you prepared. The commands wait for the Cache to report Ready and save its connection address in `CACHE_DISCOVERY_URL` for the application to use later.
 
 ```bash
 # filename: cache.sh
@@ -260,15 +272,17 @@ CACHE_DISCOVERY_URL=$(kubectl get cache "$CACHE_NAME" -n "$CACHE_NAMESPACE" -o j
 kubectl get cache,pods -n "$CACHE_NAMESPACE" -o wide
 ```
 
-Confirm three ready cache servers, one per eligible NVMe node. Record baseline metrics from **every server belonging to this Cache** using the [DACS metrics endpoint procedure](https://learn.microsoft.com/en-us/azure/storage/container-storage/monitor-distributed-accelerator-for-cloud-storage#metrics-endpoint). Include cache size, uploaded bytes, downloaded bytes, pod UIDs, and restart counts. An empty cache resource alone isn't proof that its on-disk data is cold.
+Confirm that the output shows three ready cache servers, one per eligible NVMe machine. Before loading the model, record the starting measurements from **every server belonging to this Cache** using the [DACS metrics endpoint procedure](https://learn.microsoft.com/en-us/azure/storage/container-storage/monitor-distributed-accelerator-for-cloud-storage#metrics-endpoint).
 
-## 5. Load the model into vLLM on the H100
+Include cache size and the running totals of uploaded and downloaded bytes. You'll compare these values with later measurements to see how much data entered and left the cache. Also record each server pod's unique identifier (UID) and restart count, so a server replacement or restart doesn't invalidate the comparison. A new Cache resource alone isn't proof that its on-disk data is cold.
 
-Confirm the GPU node advertises one allocatable `nvidia.com/gpu` device, then deploy a cold vLLM pod. The example pairs Run:ai's read size with the DACS chunk size at **2 MiB**, the documented starting recommendation for GPT-OSS-20B. For another model, consult the [chunk-size guidance](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#optimize-read-performance).
+## 5. Start the model server on the GPU
 
-Save this Bash block as `deploy-vllm.sh`. Source it in the same configured shell so the variables from earlier steps remain available.
+This script creates a Kubernetes pod, a running instance of the model server, on your H100 GPU machine. It tells vLLM where to find the model in Blob Storage and how to read its weights through DACS. Before continuing, confirm that the GPU node reports one available `nvidia.com/gpu` device in its allocatable resources.
 
-This local-only test binds vLLM to `127.0.0.1`. The exec readiness probe checks `/health` inside the container, and you run inference through `kubectl exec`. Don't expose this unauthenticated test server through a Service or ingress.
+Save the script as `deploy-vllm.sh`. Run it with `source` as shown after the script, so it can use the settings from your current terminal.
+
+This example accepts requests only from inside the container by listening on `127.0.0.1`. Kubernetes checks the server's `/health` endpoint from inside that container, and you'll send test requests through `kubectl exec`. Keep the server local: it doesn't require authentication, so don't expose it through a Service or ingress.
 
 ```bash
 # filename: deploy-vllm.sh
@@ -341,6 +355,8 @@ spec:
 EOF
 ```
 
+Now start the first model server. With an empty cache, this load must retrieve model data from Blob Storage. The commands wait until the server reports that it's ready, display its startup messages, and show GPU status.
+
 ```bash
 POD_NAME="cold"
 CACHE_ENABLED="1"
@@ -350,15 +366,17 @@ kubectl logs "$POD_NAME" -n "$CACHE_NAMESPACE" -c vllm
 kubectl exec "$POD_NAME" -n "$CACHE_NAMESPACE" -c vllm -- nvidia-smi
 ```
 
+The example reads and caches model data in matching **2 MiB** chunks, the documented starting recommendation for GPT-OSS-20B. For another model, consult the [chunk-size guidance](https://learn.microsoft.com/en-us/azure/storage/container-storage/use-distributed-accelerator-for-cloud-storage-model-streamer#optimize-read-performance).
+
 Our H100 logs selected the Triton MXFP4 MoE backend and reported 13.03 GiB of model memory. The checkpoint retains its MXFP4 quantization; `--dtype bfloat16` doesn't mean all stored weights become bfloat16. The 80% GPU-memory setting also reserves space for vLLM's KV cache. DACS's model-file cache is separate from that KV cache.
 
 The Run:ai URI is `az://<container>/<prefix>`; the account comes from `AZURE_STORAGE_ACCOUNT_NAME`. Don't substitute the native Python client's account-hostname URI format.
 
 By default, Run:ai uses an available cache provider and otherwise streams directly from Azure Blob Storage. This walkthrough explicitly sets `RUNAI_STREAMER_EXPERIMENTAL_AZURE_CACHE_ENABLED=1` to require the provider, so initialization fails if the provider cannot load. This setting doesn't guarantee cache hits or disable DACS's Blob fallback. Confirm the read path with counters.
 
-Synchronous population is deliberate here: the native client's default asynchronous upload budget isn't a safe pod-memory limit. Budget host memory, streamer buffers, native population buffers, GPU memory, and `/dev/shm` separately. After establishing correctness, tune asynchronous population and concurrency for your workload.
+This example waits for cache uploads to complete rather than allowing uploads to build up in the background. That choice is deliberate: the native client's default asynchronous upload budget isn't a safe pod-memory limit. Budget host memory, streamer buffers, native population buffers, GPU memory, and `/dev/shm` separately. After establishing correctness, tune asynchronous population and concurrency for your workload.
 
-Validate token generation, not just readiness. Save this program as `inference_check.py`:
+A ready server isn't enough to prove the model can answer requests. This small Python program asks "What is 2 + 2?" and checks that the server returns a nonempty answer and generates tokens, the pieces of text a model produces. Save it as `inference_check.py`.
 
 ```python
 import json
@@ -382,30 +400,32 @@ assert result["choices"][0]["message"]["content"].strip(), result
 assert result["usage"]["completion_tokens"] > 0, result
 ```
 
+Run the test inside the model-server container, where the local-only server is reachable. Inspect the returned answer as well as the program's checks; the checks don't verify that the answer is correct.
+
 ```bash
 kubectl exec -i "$POD_NAME" -n "$CACHE_NAMESPACE" -c vllm -- python3 - < inference_check.py
 ```
 
 ## 6. Prove that the next pod uses the cache
 
-Read the cold vLLM pod's logs:
+Check the first server's logs to find its model-loading time and where it read model data:
 
 ```bash
 kubectl logs cold -n "$CACHE_NAMESPACE" -c vllm
 ```
 
-Require successful inference, a vLLM model-loading duration, and nonzero native `ReadChunk` **`RemoteClient`** reads for the cold load. `RemoteClient` describes backing-store weight reads; **`RemoteCache`** describes remote-cache weight reads. `GetProperties` hits describe metadata and don't establish weight-cache reuse.
+Confirm that the model answered the test request successfully and that the logs include a vLLM model-loading duration. For this first load, the native client's `ReadChunk` counters must show nonzero **`RemoteClient`** reads, meaning model weights came from Blob Storage. **`RemoteCache`** reads mean weights came from the shared cache. `GetProperties` hits concern file metadata, not weight data, so they don't prove that cached weights were reused.
 
-Keep the cold service running while you verify cache population:
+Keep the first model server running while you check that DACS has stored the data. The cache servers expose metrics, including counters that track running totals of transferred bytes. Compare these with the starting measurements you recorded:
 
-1. Scrape every selected cache server every 10 seconds, for up to ten minutes.
-2. Require increases in total `cache_server_upload_request_size_bytes_sum` and `cache_server_cache_size_bytes` relative to the baseline.
-3. Require each server's upload-byte counter to stay unchanged for three consecutive intervals after the total increase. Reject missing metrics, counter resets, changed server UIDs, and restarts.
-4. Save a post-population baseline for `cache_server_download_request_size_bytes_sum`.
+1. Read the metrics from every selected cache server every 10 seconds, for up to ten minutes.
+2. Confirm that the total uploaded bytes (`cache_server_upload_request_size_bytes_sum`) and cached data size (`cache_server_cache_size_bytes`) increase from their starting values.
+3. After the total increase, require each server's upload-byte counter to stay unchanged for three consecutive intervals. Don't accept the comparison if metrics are missing, counters reset, server UIDs change, or servers restart.
+4. Record the new starting value for downloaded bytes (`cache_server_download_request_size_bytes_sum`) before testing the next pod.
 
 Stable counters are a readiness signal, not proof that every chunk is cached. If the observation window expires, stop rather than label the cache warm. Check memory pressure, upload errors, eviction, and competing traffic. Larger models might need a longer observation window.
 
-Save the cold result, pod UID, and native counters, then delete the cold application pod to release its GPU. Keep the Cache and its servers running. With only one H100, a second pod requesting the same GPU can't run until the first exits.
+Once the cache-population checks pass, save the first run's inference result and native read counters. The commands that follow save its pod details, including the UID, and logs, then delete only the model-server pod to free the GPU. Keep the Cache and its servers running so they retain the model data. With only one H100, the next model server can't run until the first exits.
 
 ```bash
 kubectl get pod cold -n "$CACHE_NAMESPACE" -o json > cold-pod.json
@@ -413,7 +433,7 @@ kubectl logs cold -n "$CACHE_NAMESPACE" -c vllm > cold.log
 kubectl delete pod cold -n "$CACHE_NAMESPACE" --wait=true
 ```
 
-Create a **new pod** using the same deployment script:
+Start a **new pod** with the same model and settings. This tests whether a fresh application instance can reuse data cached by the first instance. These commands run the same question again and save the new pod's details and logs for comparison.
 
 ```bash
 POD_NAME="warm-1"
@@ -425,7 +445,7 @@ kubectl get pod "$POD_NAME" -n "$CACHE_NAMESPACE" -o json > warm-pod.json
 kubectl logs "$POD_NAME" -n "$CACHE_NAMESPACE" -c vllm > warm.log
 ```
 
-Accept a fully warm vLLM load only when:
+Use these checks to confirm that the new pod loaded its model weights from the cache rather than Blob Storage. Accept a fully warm vLLM load only when:
 
 - The warm pod has a different UID from the cold pod.
 - The same image, model revision, and loading configuration produce successful GPU inference.
@@ -440,13 +460,13 @@ To repeat warm loads, save each pod's evidence, delete that application pod, and
 
 ## Measure the loading stage and readiness separately
 
-Compare vLLM's loader duration in the captured logs:
+Compare the model-loading times recorded by vLLM for the two runs. This command extracts the relevant message from each saved log:
 
 ```bash
 grep "Model loading took" cold.log warm.log
 ```
 
-For startup timing, use each saved pod's container `state.running.startedAt` and the `lastTransitionTime` of its Ready condition. For a serving vLLM pod, wait for **Ready**, not `Succeeded`: the service is supposed to remain running.
+Model loading is only part of startup. To measure how long each server took to become available, compare the container's start time (`state.running.startedAt`) with the time its pod became Ready (`lastTransitionTime` of the Ready condition) in the saved pod details. Wait for **Ready**, not `Succeeded`: a model server is supposed to keep running rather than finish and exit.
 
 The measured warm start-to-ready values were 50-52 seconds. That interval includes more than loading, and its timestamp/probe resolution differs from vLLM's high-resolution loader timer. It doesn't include first-request latency, scheduling, or a fresh image download. Test those boundaries separately for your application.
 
@@ -454,7 +474,7 @@ This experiment validates a single H100 reader and sequential fresh-pod reuse. I
 
 ## Clean up
 
-After collecting evidence, remove the experiment's namespace and dedicated identity, including its role assignment:
+After saving your results, remove the application and cache resources in the experiment's namespace. These commands also remove the Azure identity's Blob read permission and delete the identity. Run them only for the namespace and identity created specifically for this experiment.
 
 ```bash
 kubectl delete namespace "$CACHE_NAMESPACE" --wait=true
@@ -462,9 +482,9 @@ az role assignment delete --ids "$ROLE_ID"
 az identity delete --resource-group "$RESOURCE_GROUP" --name "$IDENTITY_NAME"
 ```
 
-Use these commands only for resources created specifically for the experiment. Keep existing models, storage accounts, node pools, and the managed DACS extension. Deleting Kubernetes resources doesn't necessarily erase cached files from host NVMe; coordinate removal of only the experiment's dedicated `CACHE_FOLDER_PATH` directory on each cache node with your cluster administrator.
+Keep existing models, storage accounts, node pools, and the managed DACS extension. Deleting Kubernetes resources doesn't necessarily erase cached files from the machines' NVMe disks. Coordinate removal of only the experiment's dedicated `CACHE_FOLDER_PATH` directory on each cache machine with your cluster administrator.
 
-New GPU and cache node pools continue to incur charges after you delete application pods. If you created both pools exclusively for this experiment, delete those pools too; don't run these commands against shared or preexisting pools:
+Deleting the application doesn't stop charges for the GPU and cache machines. If you created both node pools only for this experiment, delete them too. Don't run these commands against shared or preexisting node pools.
 
 ```bash
 az aks nodepool delete --resource-group "$RESOURCE_GROUP" --cluster-name "$CLUSTER_NAME" \
