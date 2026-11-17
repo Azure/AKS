@@ -237,16 +237,18 @@ Validated end-to-end on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB),
 - Baked weights present (15 GB, 4 shards). The baked vLLM image was
   `already present on machine` — **zero image pull** — and there was **no Hugging
   Face download** (the PIS network-elimination win, which is unconditional).
-- Weight-load time was **not** constant:
-  - **First load on the freshly provisioned node: ~637 s (~10 min)** (shard 1 ~4 s,
-    then ~124 s, ~166 s for later shards).
+- Weight-load time was **not** constant, and the first-load cost is **reproducible**:
+  - **First load on a freshly provisioned node: ~10–16 min** — measured **637 s**
+    and **987 s** on two separate fresh nodes (shard 1 ~4 s, later shards 100–200 s each).
   - **Repeat cold load on the same node (caches dropped): ~15 s** (15.31 s / 15.33 s).
-  We did **not** fully root-cause the first-load cost, and we're not claiming a
-  storage speedup from it — dropping page cache doesn't reset first-touch fetching
-  of the OS-disk backing, so the repeat number can't stand in for a
-  freshly-scaled-out node's first load. Treat the ~15 s as a best case and measure
-  first-load latency in your own region/SKU. (This matches the AKS cold-start
-  analysis in the PIS blog under `website/blog/`.)
+  The first-load cost is **what a freshly-scaled-out node actually pays** (the first
+  pod lands on a brand-new node), so treat it as the realistic number, not the
+  ~15 s repeat. We did **not** fully root-cause it and are **not** claiming a storage
+  speedup — dropping page cache doesn't reset first-touch fetching of the OS-disk
+  backing, so the repeat can't stand in for a fresh node. The unconditional PIS win
+  here is the **network elimination** (no model download, no image pull); measure
+  first-load latency in your own region/SKU. (Matches the AKS cold-start analysis in
+  the PIS blog under `website/blog/`.)
 
 ## Next
 
