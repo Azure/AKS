@@ -39,10 +39,6 @@ install=standard-root .run --dkms
 workaround=none
 MARKER
 
-# Evidence for the codelab validation block.
-/usr/bin/nvidia-smi -L || true
-ls -la /opt/azure/aks-gpu/dkms-marker 2>&1 || echo "dkms-marker ABSENT (expected on post-#9694 VHD)"
-
 # Keep the prepared VHD lean: drop the installer and apt metadata.
 rm -f "/tmp/${RUN}"
 rm -rf /var/lib/apt/lists/*
