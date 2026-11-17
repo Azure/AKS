@@ -103,15 +103,9 @@ kubectl describe pod gpu-smoke | grep -iE "Pulled|Pulling|already present"
 Container image "docker.io/vllm/vllm-openai:v0.11.0" already present on machine
 ```
 
-Because the image is pinned to a fixed tag (not `:latest`), kubelet defaults to
-`imagePullPolicy: IfNotPresent` and finds the 9.74 GB image **already baked into
-the VHD** — so it never contacts the registry. A cold pull of the same image is
-~130 s.
-
-> **Why pin the tag?** With `:latest`, kubelet defaults to
-> `imagePullPolicy: Always` and still makes a registry manifest round-trip even
-> when the layers are cached (~574 ms observed here). A fixed tag or digest skips
-> the registry entirely — zero network — which is the whole point of caching.
+The 9.74 GB image is **already baked into the VHD**, so the pod starts without
+pulling it — a cold pull of the same image is ~130 s. (Pin a fixed tag rather than
+`:latest` so kubelet uses `IfNotPresent` and skips the registry entirely.)
 
 ## 5. Measure scale-out (the real payoff)
 
