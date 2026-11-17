@@ -140,11 +140,6 @@ az vmss run-command invoke -g $MCRG -n "$VMSS" --subscription $SUB \
 **Checkpoint:** `/opt/models/qwen` is ~15 GB with all four safetensors shards,
 and the cold buffered read is ~1.0 GB/s.
 
-> **Note on measuring disk speed:** use a *buffered* read (as above). A single
-> `dd ... iflag=direct bs=1M` stream reports a misleadingly low number
-> (~26 MB/s here) because it defeats read-ahead — it is not what the model loader
-> experiences.
-
 ## 5. Serve the baked model (zero network)
 
 Make the node schedulable (device plugin, same as Example 2), then run vLLM
