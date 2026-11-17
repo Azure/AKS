@@ -119,7 +119,10 @@ and inspect its image events:
 OLD=$(kubectl get nodes -l agentpool=imgpool -o name | sort)
 time az aks nodepool scale -g $RG --cluster-name $CLUSTER -n imgpool \
   --subscription $SUB --node-count 2
-kubectl wait --for=condition=Ready $(kubectl get nodes -l agentpool=imgpool -o name) --timeout=600s
+# wait until the SECOND node object actually registers (the VMSS scale races ahead
+# of the kube node registering — don't compute the diff too early), then wait Ready
+while [ "$(kubectl get nodes -l agentpool=imgpool --no-headers 2>/dev/null | wc -l)" -lt 2 ]; do sleep 10; done
+kubectl wait --for=condition=Ready node -l agentpool=imgpool --timeout=600s
 NEW=$(comm -13 <(echo "$OLD") <(kubectl get nodes -l agentpool=imgpool -o name | sort) | sed 's#node/##')
 echo "new node: $NEW"
 
