@@ -214,10 +214,6 @@ az aks nodepool delete -g $RG --cluster-name $CLUSTER -n modelpool --subscriptio
 az aks prepared-image-specification delete -g $RG --name model-prepared-image-specification --subscription $SUB --yes
 ```
 
-(If you applied it, the device-plugin DaemonSet is cluster-scoped — remove it with
-`kubectl delete -f manifests/nvidia-device-plugin.yaml`, or let the whole-RG
-delete in the [top-level README](README.md#clean-up) take it.)
-
 ## Validation status
 
 Validated on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB), `westeurope` zone 3,
