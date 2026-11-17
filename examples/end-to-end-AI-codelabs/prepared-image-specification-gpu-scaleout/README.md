@@ -115,18 +115,6 @@ az aks create -g $RG -n $CLUSTER --subscription $SUB --location $LOC \
 az aks get-credentials -g $RG -n $CLUSTER --subscription $SUB --overwrite-existing
 ```
 
-> **Registration can lag.** `az feature register` can take **10+ minutes** to
-> propagate. Until it does, PIS creates/attaches fail (e.g.
-> `MissingSubscriptionRegistration` or `InvalidResourceType`). Wait until the
-> feature state reads `Registered` before creating a PIS; retry for a few minutes
-> if an early call fails. (If the first PIS call still errors, a one-time
-> `az provider register --namespace Microsoft.ContainerService` forces the opt-in
-> to propagate.)
-
-> **Preview feature.** PIS is in preview — not covered by production SLAs/support,
-> and behavior can change. Don't use it for production workloads. (The managed GPU
-> stack in Examples 1–2 is GA.)
-
 ### The PIS read-permission grant
 
 Attaching a PIS to a node pool fails with `ResourceMissingPermissionError` unless
