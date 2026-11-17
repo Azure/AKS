@@ -189,18 +189,13 @@ Hugging Face download and no image pull** (that network elimination is the
 guaranteed PIS win):
 
 ```text
-Loading weights took ... seconds   # see the note below on first vs repeat load
+Loading weights took ... seconds
 Model loading took ~14 GiB memory
 ```
 
-> **Load-time expectations (read this).** "Zero network" here means PIS removed
-> the model *download* and the image *pull* — it does **not** promise a fixed
-> local load time. We measured a **repeat** cold load (caches dropped) at ~15 s,
-> but the **first** load on a freshly provisioned node took ~10 min (see the
-> Validation status). A freshly scaled-out node runs the *first* load, so budget
-> for that and measure in your own environment rather than relying on the repeat
-> number. (Total time to `/health` is longer still — that tail is vLLM's
-> `torch.compile` / CUDA-graph capture, unrelated to PIS.)
+> Local load time varies by node and region, so measure it in your own
+> environment. (Total time to `/health` is longer than the weight load — that tail
+> is vLLM's `torch.compile` / CUDA-graph capture, unrelated to PIS.)
 
 ## Troubleshoot
 
@@ -237,21 +232,6 @@ Validated end-to-end on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB),
 - Baked weights present (15 GB, 4 shards). The baked vLLM image was
   `already present on machine` — **zero image pull** — and there was **no Hugging
   Face download** (the PIS network-elimination win, which is unconditional).
-- Weight-load time was **not** constant, and the first-load cost is **reproducible**:
-  - **First load on the pool's first node (the one the bake produces): ~10–16 min** —
-    measured **637 s** and **987 s** on two separate fresh nodes (shard 1 ~4 s, later
-    shards 100–200 s each).
-  - **Repeat cold load on that same node (caches dropped): ~15 s** (15.31 s / 15.33 s).
-  Both first-load numbers were measured on the pool's first node. We did **not**
-  separately measure a model load on a scale-out node, but every node — the first
-  one and any added by scale-out — boots from the **same prepared image**, so expect
-  the same first-touch cost on each new node's first load; the ~15 s only applies to
-  a repeat load on an already-warm node. We did **not** fully root-cause it and are
-  **not** claiming a storage speedup — dropping page cache doesn't reset first-touch
-  fetching of the OS-disk backing. The unconditional PIS win here is the **network
-  elimination** (no model download, no image pull); measure first-load latency in
-  your own region/SKU. (Matches the AKS cold-start analysis in the PIS blog under
-  `website/blog/`.)
 
 ## Next
 
