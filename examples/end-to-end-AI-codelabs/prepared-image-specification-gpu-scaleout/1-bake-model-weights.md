@@ -15,10 +15,10 @@ Complete the [shared one-time setup](README.md#one-time-setup) first.
 
 A GPU node has more than one disk, and they are **not** equally fast:
 
-| Device | Role | Cold sequential read |
+| Device | Role | Relative speed |
 |---|---|---|
-| OS disk on the **CacheDisk** | default ephemeral/managed OS disk | host-cache-bound (hundreds of MB/s at best, far less uncached) |
-| Local **NVMe** | `Standard_NC40ads_H100_v5` ships ~3.5 TB of it | **~1.0 GB/s cold, ~7.9 GB/s warm** |
+| OS disk on the **CacheDisk** | default ephemeral/managed OS disk | host-cache-bound — slow for large uncached reads |
+| Local **NVMe** | `Standard_NC40ads_H100_v5` ships ~3.5 TB of it | the fast local device you want the weights on |
 
 If the baked weights sit on the slow OS disk, a cold read can erase the benefit
 of skipping the download. You want them on the **NVMe**.
@@ -130,20 +130,16 @@ az vmss show -g $MCRG -n "$VMSS" --subscription $SUB \
 # expected: { "option": "Local", "placement": "NvmeDisk" }
 ```
 
-## 4. Confirm the weights are present and fast
+## 4. Confirm the weights are present
 
 ```bash
 az vmss run-command invoke -g $MCRG -n "$VMSS" --subscription $SUB \
   --command-id RunShellScript --instance-id 0 \
-  --scripts 'du -sh /opt/models/qwen; ls /opt/models/qwen | head;
-             F=$(ls /opt/models/qwen/*.safetensors | head -1);
-             sync; echo 3 > /proc/sys/vm/drop_caches;
-             dd if="$F" of=/dev/null bs=8M 2>&1 | tail -1' \
+  --scripts 'du -sh /opt/models/qwen; ls /opt/models/qwen | head' \
   --query "value[0].message" -o tsv
 ```
 
-**Checkpoint:** `/opt/models/qwen` is ~15 GB with all four safetensors shards,
-and the cold buffered read is ~1.0 GB/s.
+**Checkpoint:** `/opt/models/qwen` is ~15 GB with all four safetensors shards.
 
 ## 5. Serve the baked model (zero network)
 
