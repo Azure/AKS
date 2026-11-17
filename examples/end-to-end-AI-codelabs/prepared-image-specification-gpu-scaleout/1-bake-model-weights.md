@@ -238,17 +238,20 @@ Validated end-to-end on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB),
   `already present on machine` — **zero image pull** — and there was **no Hugging
   Face download** (the PIS network-elimination win, which is unconditional).
 - Weight-load time was **not** constant, and the first-load cost is **reproducible**:
-  - **First load on a freshly provisioned node: ~10–16 min** — measured **637 s**
-    and **987 s** on two separate fresh nodes (shard 1 ~4 s, later shards 100–200 s each).
-  - **Repeat cold load on the same node (caches dropped): ~15 s** (15.31 s / 15.33 s).
-  The first-load cost is **what a freshly-scaled-out node actually pays** (the first
-  pod lands on a brand-new node), so treat it as the realistic number, not the
-  ~15 s repeat. We did **not** fully root-cause it and are **not** claiming a storage
-  speedup — dropping page cache doesn't reset first-touch fetching of the OS-disk
-  backing, so the repeat can't stand in for a fresh node. The unconditional PIS win
-  here is the **network elimination** (no model download, no image pull); measure
-  first-load latency in your own region/SKU. (Matches the AKS cold-start analysis in
-  the PIS blog under `website/blog/`.)
+  - **First load on the pool's first node (the one the bake produces): ~10–16 min** —
+    measured **637 s** and **987 s** on two separate fresh nodes (shard 1 ~4 s, later
+    shards 100–200 s each).
+  - **Repeat cold load on that same node (caches dropped): ~15 s** (15.31 s / 15.33 s).
+  Both first-load numbers were measured on the pool's first node. We did **not**
+  separately measure a model load on a scale-out node, but every node — the first
+  one and any added by scale-out — boots from the **same prepared image**, so expect
+  the same first-touch cost on each new node's first load; the ~15 s only applies to
+  a repeat load on an already-warm node. We did **not** fully root-cause it and are
+  **not** claiming a storage speedup — dropping page cache doesn't reset first-touch
+  fetching of the OS-disk backing. The unconditional PIS win here is the **network
+  elimination** (no model download, no image pull); measure first-load latency in
+  your own region/SKU. (Matches the AKS cold-start analysis in the PIS blog under
+  `website/blog/`.)
 
 ## Next
 
