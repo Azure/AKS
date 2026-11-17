@@ -225,9 +225,8 @@ AKS 1.35.6, kernel `6.8.0-1073-azure`, containerd 2.3.7:
 
 - PIS `driver-prepared-image-specification` baked NVIDIA `595.91.07` (`.run --dkms`, standard root).
 - Bake + node ready: **26m56s**.
-- On the `--gpu-driver None` node: `nvidia-smi` → H100 NVL `595.91.07`, DKMS
-  `installed`, `/opt/azure/aks-gpu/dkms-marker` **absent**, `cleanUpGPUDrivers`
-  ran with no teardown — **no workaround**.
+- On the `--gpu-driver None` node the baked driver survived the bootstrap:
+  `nvidia-smi` → H100 NVL `595.91.07`, DKMS `installed`.
 - GPU Operator `driver.enabled=false` made the node schedulable; a GPU pod ran
   `nvidia-smi` reporting **Driver Version 595.91.07 / CUDA 13.2**.
 - No `/etc/containerd/conf.d` import fix was required on this toolkit/containerd.
