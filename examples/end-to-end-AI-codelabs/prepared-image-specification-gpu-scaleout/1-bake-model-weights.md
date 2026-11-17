@@ -184,18 +184,23 @@ kubectl wait --for=jsonpath='{.status.phase}'=Running pod/vllm-model --timeout=3
 kubectl logs -f vllm-model | grep -iE "Loading weights took|Model loading took"
 ```
 
-**Checkpoint** (your exact numbers will vary; the point is the order of magnitude
-and "zero network"):
+**Checkpoint** — vLLM loads the weights from the local baked copy, with **no
+Hugging Face download and no image pull** (that network elimination is the
+guaranteed PIS win):
 
 ```text
-Loading weights took ~15 seconds
-Model loading took ~14 GiB memory and ~30 seconds
+Loading weights took ... seconds   # see the note below on first vs repeat load
+Model loading took ~14 GiB memory
 ```
 
-The 15 GB checkpoint loads from the baked NVMe disk in **~15 s with zero network
-traffic** (we measured 15.31 s). (Total time to `/health` is longer, but that
-extra time is vLLM's `torch.compile` / CUDA-graph capture — model-and-framework
-specific, unrelated to PIS.)
+> **Load-time expectations (read this).** "Zero network" here means PIS removed
+> the model *download* and the image *pull* — it does **not** promise a fixed
+> local load time. We measured a **repeat** cold load (caches dropped) at ~15 s,
+> but the **first** load on a freshly provisioned node took ~10 min (see the
+> Validation status). A freshly scaled-out node runs the *first* load, so budget
+> for that and measure in your own environment rather than relying on the repeat
+> number. (Total time to `/health` is longer still — that tail is vLLM's
+> `torch.compile` / CUDA-graph capture, unrelated to PIS.)
 
 ## Troubleshoot
 
@@ -229,16 +234,19 @@ Validated end-to-end on `Standard_NC40ads_H100_v5` (H100 NVL 94 GB),
   { option: Local, placement: NvmeDisk }` (OS disk on NVMe, **no mount script**).
 - Node advertised `nvidia.com/gpu: 1` with **no manual device-plugin install**
   (`dcgm-exporter=enabled` label) — the managed GPU stack.
-- Baked weights present (15 GB, 4 shards); sequential cold read **1.0 GB/s**
-  (all 15 GB), warm **7.7 GB/s**.
-- vLLM cold weight-load from the baked NVMe weights: **~15 s** (15.31 s and
-  15.33 s on repeat runs), zero network. The baked vLLM image was
-  `already present on machine` (zero image pull).
-- **First-load caveat:** the *very first* vLLM load immediately after the node was
-  provisioned took ~10 min (the node/managed stack was still settling; a short
-  `dd` still read 1 GB/s throughout, so it wasn't the disk). A repeat cold load
-  with caches dropped was back to ~15 s. Measure steady-state, and don't be
-  alarmed by a slow first load right after scale-up.
+- Baked weights present (15 GB, 4 shards). The baked vLLM image was
+  `already present on machine` — **zero image pull** — and there was **no Hugging
+  Face download** (the PIS network-elimination win, which is unconditional).
+- Weight-load time was **not** constant:
+  - **First load on the freshly provisioned node: ~637 s (~10 min)** (shard 1 ~4 s,
+    then ~124 s, ~166 s for later shards).
+  - **Repeat cold load on the same node (caches dropped): ~15 s** (15.31 s / 15.33 s).
+  We did **not** fully root-cause the first-load cost, and we're not claiming a
+  storage speedup from it — dropping page cache doesn't reset first-touch fetching
+  of the OS-disk backing, so the repeat number can't stand in for a
+  freshly-scaled-out node's first load. Treat the ~15 s as a best case and measure
+  first-load latency in your own region/SKU. (This matches the AKS cold-start
+  analysis in the PIS blog under `website/blog/`.)
 
 ## Next
 

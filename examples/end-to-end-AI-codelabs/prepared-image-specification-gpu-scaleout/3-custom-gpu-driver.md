@@ -46,8 +46,10 @@ baked driver stays intact. This example verifies that end-to-end.
 >
 > If it is **not** `6.8.0-1073-azure`, pick a driver that matches *your* kernel
 > and test it on a throwaway VM with that exact kernel **before** baking (the bake
-> is a ~25-minute feedback loop). The rest of this example still applies — only the
-> driver version string changes.
+> is a ~25-minute feedback loop). The rest of this example still applies, but you
+> must update **`DRIVER_VERSION`, its download URL, and `DRIVER_SHA256` together**
+> in the script — it verifies the checksum under `set -e`, so a stale
+> `DRIVER_SHA256` aborts the bake before the new driver installs.
 
 Why `595.91.07` and not older branches: `570.x` / `580.95` **fail to compile** on
 `6.8.0-1073-azure` — the Azure kernel backported a 4-argument `pci_resize_resource`
