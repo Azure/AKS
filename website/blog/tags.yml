@@ -387,6 +387,11 @@ troubleshooting:
   permalink: /troubleshooting
   description: Systematic diagnosis of cluster, networking, performance, and application issues.
 
+upgrades:
+  label: Upgrades
+  permalink: /upgrades
+  description: Kubernetes version and node OS upgrades, upgrade strategies, and validation guidance for AKS.
+
 virtual-machine-node-pools:
   label: Virtual Machine Node Pools
   permalink: /virtual-machine-node-pools
