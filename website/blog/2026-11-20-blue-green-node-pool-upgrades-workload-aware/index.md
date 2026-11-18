@@ -86,7 +86,7 @@ spec:
 Confirm placement before upgrading:
 
 ```bash
-kubectl get pods -l app=<your-app-label> -o wide
+kubectl get pods -l app=your-app-label -o wide
 kubectl get nodes -l workload-tier=bluegreen
 ```
 
