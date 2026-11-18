@@ -59,6 +59,37 @@ Start with the workloads that need hosting-environment validation and rapid fall
 
 Use node labels with a `nodeSelector` or required node affinity to place those workloads on the selected pool. A matching taint and toleration can keep unrelated workloads without that toleration off the pool. A toleration alone doesn't direct a workload there. Confirm actual placement before upgrading so the workloads you intend to validate are inside the boundary.
 
+Label and taint the pool so only workloads with a matching toleration land there:
+
+```bash
+az aks nodepool update \
+  --resource-group "$RESOURCE_GROUP" \
+  --cluster-name "$CLUSTER_NAME" \
+  --name bluegreen \
+  --labels workload-tier=bluegreen \
+  --node-taints workload-tier=bluegreen:NoSchedule
+```
+
+Then target that label with the workload's `nodeSelector`, and add a matching toleration so it can schedule on the tainted pool:
+
+```yaml
+spec:
+  nodeSelector:
+    workload-tier: bluegreen
+  tolerations:
+  - key: workload-tier
+    operator: Equal
+    value: bluegreen
+    effect: NoSchedule
+```
+
+Confirm placement before upgrading:
+
+```bash
+kubectl get pods -l app=<your-app-label> -o wide
+kubectl get nodes -l workload-tier=bluegreen
+```
+
 Choose drain batches based on how much disruption the applications can handle, and honor their PodDisruptionBudgets. Smaller batches change the pace of migration, not the requirement for enough capacity to temporarily double the selected pool.
 
 :::tip
@@ -116,7 +147,21 @@ For meaningful validation, add checks that match your application:
 
 :::
 
-If validation passes, let the final soak complete and AKS removes the old blue nodes. If validation fails during the final soak period, follow the documented [abort and rollback procedure](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade#roll-back-a-blue-green-upgrade) before the old nodes are removed. This fallback is time-bound; once the final soak expires and the blue nodes are deleted, that rollback path is no longer available.
+If validation passes, let the final soak complete and AKS removes the old blue nodes. If validation fails during the final soak period, abort the operation and roll back the pool before the old nodes are removed:
+
+```bash
+az aks nodepool operation-abort \
+  --resource-group "$RESOURCE_GROUP" \
+  --cluster-name "$CLUSTER_NAME" \
+  --name bluegreen
+
+az aks nodepool rollback \
+  --resource-group "$RESOURCE_GROUP" \
+  --cluster-name "$CLUSTER_NAME" \
+  --name bluegreen
+```
+
+See the [abort and rollback procedure](https://learn.microsoft.com/azure/aks/blue-green-node-pool-upgrade#roll-back-a-blue-green-upgrade) for details. This fallback is time-bound; once the final soak expires and the blue nodes are deleted, that rollback path is no longer available.
 
 ## When this pattern works well
 
