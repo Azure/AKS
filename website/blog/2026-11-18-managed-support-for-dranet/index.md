@@ -1,6 +1,6 @@
 ---
 title: "DRANET on AKS: From manual orchestration to platform integration for your distributed RDMA workloads"
-date: "2026-11-13"
+date: "2026-11-18"
 description: "Explore managed support for DRANET capabilities on AKS, topology-aware RDMA allocation through Kubernetes DRA, and NCCL benchmarks of GPU/NIC alignment."
 authors: ["sachi-desai", "joe-yostos"]
 tags: ["ai", "gpu", "networking", "performance"]
@@ -45,14 +45,15 @@ az aks nodepool update \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
   --name $RDMA_POOL \
-  --enable-managed-dranet=true
+  --enable-managed-dranet
 ```
 
 After enablement, AKS manages DRANET and networking drivers for that node pool to discover eligible RDMA devices and makes them available through DRA.
 
 A workload references a `ResourceClaimTemplate` from its pod and declares the claim in the container that needs the NIC:
 
-```yaml
+```yaml
+
 spec:
   resourceClaims:
     - name: rdma-nic
