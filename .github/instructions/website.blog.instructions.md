@@ -209,6 +209,20 @@ Use for:
 - Prerequisites
 - Key takeaways
 
+### Docusaurus Admonitions
+
+Use Docusaurus admonition blocks for callouts. Put custom titles in square brackets immediately after any admonition type, such as `:::note[Title]`, `:::warning[Title]`, or `:::caution[Title]`. Without brackets, Docusaurus renders the opening line as literal text instead of a callout.
+
+```md
+:::caution[Plan network-name changes]
+
+Callout text.
+
+:::
+```
+
+For the default title, write only the admonition type, such as `:::caution`.
+
 ### Lists
 
 **Unordered (bullets)**:
