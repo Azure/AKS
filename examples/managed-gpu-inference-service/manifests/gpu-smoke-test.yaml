@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-validation-node
+  namespace: managed-gpu-inference
+  labels:
+    app.kubernetes.io/name: gpu-validation
+    app.kubernetes.io/part-of: managed-gpu-inference-service
+    aks.azure.com/example: managed-gpu-inference-service
+spec:
+  restartPolicy: Never
+  automountServiceAccountToken: false
+  enableServiceLinks: false
+  nodeSelector:
+    kubernetes.io/hostname: NODE_NAME
+  tolerations:
+    - key: sku
+      operator: Equal
+      value: gpu
+      effect: NoSchedule
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: cuda-check
+      image: vllm/vllm-openai:v0.28.0
+      command:
+        - python3
+        - -c
+        - |
+          import torch
+          tensor = torch.zeros(8, device="cuda")
+          print(f"CUDA_OK device={torch.cuda.get_device_name(0)!r} values={tensor.tolist()}")
+      resources:
+        requests:
+          cpu: 250m
+          memory: 1Gi
+          nvidia.com/gpu: "1"
+        limits:
+          cpu: "2"
+          memory: 4Gi
+          nvidia.com/gpu: "1"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
