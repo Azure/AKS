@@ -25,7 +25,7 @@ Managed system node pools have been generally available since June and are the d
 
 :::caution
 
-Migration is in preview and is one-way: you can't revert to non-managed system node pools. 
+Migration is in preview and is one-way: you can't revert to non-managed system node pools.
 
 :::
 
@@ -90,7 +90,9 @@ You can now exclude specific namespaces from Deployment Safeguards and baseline 
 
 If your workloads use managed NGINX ingress, there's also a migration deadline to plan for.
 
-:::caution Microsoft NGINX security patch support ends in November 2026
+:::caution
+
+Microsoft NGINX security patch support ends in November 2026
 
 Upstream Ingress NGINX maintenance ended in March 2026. Microsoft's extended support for **critical security patches for the application routing add-on's NGINX Ingress resources ends in November 2026**. This deadline applies to the ingress-nginx-based add-on. See the [official retirement and migration guidance](https://learn.microsoft.com/azure/aks/app-routing-nginx-to-gateway-api-migration#why-migrate).
 
