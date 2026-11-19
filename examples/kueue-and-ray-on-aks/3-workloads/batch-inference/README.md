@@ -12,13 +12,13 @@ Uses a single GPU worker. Predictions are uploaded to
 
 - Example 2 (LLM training) completed successfully — the training job uploads
   the LoRA adapter and writes `lora/latest.txt` for auto-discovery.
-- `AZURE_STORAGE_ACCOUNT_NAME` from Module 1 terraform output.
+- Managed operators, identity, and `AZURE_STORAGE_ACCOUNT_NAME` from [Module 1 managed setup](../../1-infrastructure/managed/).
 
 ## Quick start
 
 ```bash
-# Set the storage account (from Module 1)
-export AZURE_STORAGE_ACCOUNT_NAME=$(terraform -chdir=../../1-infrastructure/terraform output -raw storage_account_name)
+# Use the storage account prepared for the managed target.
+export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
 
 # Source defaults
 source env.example
@@ -62,7 +62,7 @@ head -1 /tmp/predictions.jsonl | python3 -m json.tool
 
 | Variable | Default | Description |
 |---|---|---|
-| `AZURE_STORAGE_ACCOUNT_NAME` | (required) | Storage account from Module 1 |
+| `AZURE_STORAGE_ACCOUNT_NAME` | (required) | Storage account from the selected managed setup. |
 | `JOB_NAME` | `batch-inference-<timestamp>` | Unique RayJob name |
 | `QUEUE_NAME` | `default` | Kueue LocalQueue |
 | `LLM_DATA_CONTAINER` | `llm-pipeline` | Blob container with viggo test data |

@@ -221,6 +221,20 @@ def run_training(data_dir: str, num_workers: int = 4) -> str:
     return lora_path
 
 
+def _adapter_directory(checkpoint: Path):
+    """Return a complete nested/direct adapter, not a rank-local RNG checkpoint."""
+    for candidate in (checkpoint / "checkpoint", checkpoint):
+        config = candidate / "adapter_config.json"
+        weights = (candidate / "adapter_model.safetensors", candidate / "adapter_model.bin")
+        if (
+            config.is_file()
+            and config.stat().st_size > 0
+            and any(path.is_file() and path.stat().st_size > 0 for path in weights)
+        ):
+            return candidate
+    return None
+
+
 def _retrieve_checkpoint_from_workers(saves_dir: str) -> str:
     """Find the LoRA checkpoint on a GPU worker and copy it to the head node."""
 
@@ -245,6 +259,10 @@ def _retrieve_checkpoint_from_workers(saves_dir: str) -> str:
         if not ckpt_dirs:
             return None
         latest_ckpt = max(ckpt_dirs, key=lambda d: d.stat().st_mtime)
+        # Nonzero ranks can report checkpoints containing only rng_state_*.pth.
+        # Continue to another worker instead of publishing one as an adapter.
+        if _adapter_directory(latest_ckpt) is None:
+            return None
         files = {}
         for f in latest_ckpt.rglob("*"):
             if f.is_file():
@@ -279,12 +297,11 @@ def _retrieve_checkpoint_from_workers(saves_dir: str) -> str:
             print(
                 f"  Retrieved checkpoint ({total_mb:.1f} MB) from worker to head: {local_path}"
             )
-            adapter_path = os.path.join(local_path, "checkpoint")
-            if os.path.isdir(adapter_path):
-                return adapter_path
-            return local_path
+            adapter_path = _adapter_directory(Path(local_path))
+            if adapter_path is not None:
+                return str(adapter_path)
 
-    raise FileNotFoundError("No checkpoint found on any GPU worker node")
+    raise FileNotFoundError("No complete LoRA adapter found in any GPU worker checkpoint")
 
 
 def _retrieve_file_from_workers(file_path: str) -> None:
@@ -326,6 +343,9 @@ def upload_lora_to_azure(
 
     Returns (dynamic_lora_loading_path, lora_id).
     """
+    if _adapter_directory(Path(lora_path)) != Path(lora_path):
+        raise ValueError(f"Refusing to upload an incomplete LoRA adapter directory: {lora_path}")
+
     from azure.identity import DefaultAzureCredential
     from azure.storage.blob import ContainerClient
 

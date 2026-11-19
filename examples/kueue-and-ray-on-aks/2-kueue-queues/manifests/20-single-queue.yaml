@@ -1,13 +1,13 @@
-# Single ClusterQueue + LocalQueue — admission backpressure demo
+# Optional single queue using the customer-owned default/gpu placement flavors.
+# Prefer 15-managed-queue.yaml.tmpl with existing managed ResourceFlavors when
+# they meet your policy. All examples use managed Kueue and managed KubeRay.
 #
-# This configuration creates one queue that covers both GPU and CPU resources.
-# Quotas are sized to admit one Module 3 workload at a time; a second
-# submission stays Pending until the first completes or is deleted.
+# This configuration creates one queue covering GPU and CPU resources. Quota
+# isn't a one-Job concurrency limit: every workload that fits can be admitted.
 #
-# Quotas below are sized for the DEFAULT Module 1 GPU node
-# (Standard_ND96amsr_A100_v4: 96 vCPU / 1.8 TiB / 8 GPU). If you provisioned
-# a smaller GPU SKU (e.g. Standard_NC24ads_A100_v4: 24 vCPU / 220 GiB / 1 GPU),
-# scale nominalQuota down to match — see the inline comments on each resource.
+# Quotas illustrate an eight-GPU pool; Module 1 doesn't create one automatically.
+# Size them for your actual pools (for example ND96amsr_A100_v4 versus a smaller
+# NC24ads_A100_v4 pool) and workload policy.
 # Kueue admits based on declared quota, NOT actual node capacity, so an
 # over-declared quota silently lets workloads admit and then stay Pending at
 # the k8s scheduler level (no node has the requested capacity).
