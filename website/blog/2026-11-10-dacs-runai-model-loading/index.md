@@ -210,11 +210,11 @@ ROLE_ID=$(az role assignment create \
   --query id --output tsv) || exit 1
 
 az identity federated-credential create \
+  --name runai-reader --identity-name "$IDENTITY_NAME" --resource-group "$RESOURCE_GROUP" \
+  --issuer "$OIDC_ISSUER" \
+  --subject "system:serviceaccount:$CACHE_NAMESPACE:runai-reader" \
   --audiences api://AzureADTokenExchange --output none || exit 1
 
-  --name runai-reader --issuer "$OIDC_ISSUER" \
-  --subject "system:serviceaccount:$CACHE_NAMESPACE:runai-reader" \
-  --audiences api://AzureADTokenExchange --output none
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ServiceAccount
