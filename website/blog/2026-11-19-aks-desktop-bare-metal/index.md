@@ -58,6 +58,7 @@ The Map view is one example. It brings Kubernetes resources together visually, g
 
 Connecting is only the beginning. With AKS desktop, you can explore workloads on your AKS on bare metal cluster, deploy an application into a [Project](https://learn.microsoft.com/azure/aks/aks-desktop-projects), and use the [AI Assistant](https://learn.microsoft.com/azure/aks/aks-desktop-deploy-ai-assistant) to begin troubleshooting.
 
+<!-- markdownlint-disable MD033 -->
 <iframe
   width="100%"
   height="400"
@@ -68,6 +69,7 @@ Connecting is only the beginning. With AKS desktop, you can explore workloads on
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
   allowFullScreen
 ></iframe>
+<!-- markdownlint-enable MD033 -->
 
 [Watch the companion walkthrough on YouTube](https://youtu.be/2zKa0Ec4CXo).
 
