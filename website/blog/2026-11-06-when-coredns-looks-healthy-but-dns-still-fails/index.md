@@ -31,11 +31,17 @@ A pod sends DNS queries to the kube-dns Service ClusterIP, for example `10.0.0.1
 2. The kernel's connection tracker, conntrack, records this decision:
 
    ```text
-   original: PodA:34567 -> 10.0.0.10:53      <- lookup key
-   reply:    10.244.1.5:53 -> PodA:34567     <- NAT result
+   original: 10.244.2.8:34567 -> 10.0.0.10:53      <- lookup key
+   reply:    10.244.1.5:53 -> 10.244.2.8:34567     <- NAT result
    ```
 
-3. Later packets that match the same 5-tuple (protocol, source IP, source port, destination IP, destination port) reuse this entry. **The NAT rules are not evaluated again.** Each matching packet also resets the entry's timeout.
+3. Conntrack identifies the entry by its 5-tuple: protocol, source IP, source port, destination IP, and destination port. In this example, with PodA at `10.244.2.8`, the 5-tuple is:
+
+   ```text
+   (UDP, 10.244.2.8, 34567, 10.0.0.10, 53)
+   ```
+
+   Any later packet with exactly this 5-tuple reuses the entry and goes straight to `10.244.1.5`. **The NAT rules are not evaluated again.** Each matching packet also resets the entry's timeout. A packet from a different source port, such as `34568`, has a different 5-tuple and gets its own entry.
 
 One detail matters for everything that follows: **conntrack looks entries up by the original 5-tuple, which contains the ClusterIP, not the pod IP.**
 
