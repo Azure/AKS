@@ -11,8 +11,8 @@ jobs:
     name: Check for spelling errors
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: codespell-project/actions-codespell@master
+      - uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2.8.0
+      - uses: codespell-project/actions-codespell@e3258cca84ce02b0bb36a3d41f2c18f719a0cc1a # v2.4.3
         with:
           check_filenames: true
           skip: ./.git,*.yml,*.yaml,./.github/workflows/codespell.yml,.git,*.png,*.jpg,*.svg,*.sum,./vhd-notes/*,*.ics,./website/package-lock.json
