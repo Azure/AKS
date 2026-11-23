@@ -1,28 +1,24 @@
 # Module 3 — Workloads
 
-Four example workloads demonstrating Ray on AKS with Kueue admission control.
-Use the managed Kueue cluster and queue configuration from
-[Module 2](../2-kueue-queues/). Its CPU autoscale demo needs no Ray dependencies.
-The existing [Module 1](../1-infrastructure/) Terraform lab is a separate
-self-managed alternative for the Ray examples; don't layer the managed extension
-over that Helm-installed controller.
+Four Ray workloads use the managed KubeRay and Kueue setup from
+[Module 1](../1-infrastructure/managed/) and the customer-owned queues from
+[Module 2](../2-kueue-queues/). The separate CPU autoscale demo needs no Ray
+dependencies. Complete the selected workload's checks before submission.
 
 ## Prerequisites
 
-- For Ray examples: an AKS cluster with KubeRay, Kueue, storage, datasets, and
-  authorized workload identity. Prepare them separately for the managed path,
-  or deliberately use the self-managed Module 1 alternative.
-- For Ray examples: Module 2's `ray` namespace, `ray-workload` ServiceAccount,
-  customer-owned ResourceFlavors, and one queue configuration
-  (`20-single-queue.yaml` or `30-team-queues.yaml`).
+- For Ray examples: an AKS cluster with managed KubeRay and Kueue, storage,
+  datasets, and authorized workload identity prepared in Module 1.
+- For Ray examples: Module 2's `ray` namespace and `ray-workload` ServiceAccount,
+  verified managed placement flavors, and one queue policy. Start with
+  [`15-managed-queue.yaml.tmpl`](../2-kueue-queues/#use-managed-ray-placement-flavors).
+  Use the optional customer-owned flavors/policies only when the managed ones
+  don't meet your requirements.
 - For the CPU autoscale example: follow its own prerequisites; Ray, storage,
   identity, and the Ray queues aren't required.
 - `envsubst` available for Ray templates (`gettext` package on most Linux distros,
   `brew install gettext` on macOS).
-- `kubectl` configured to the target cluster:
-  ```bash
-  az aks get-credentials --resource-group <rg> --name <cluster>
-  ```
+- `kubectl` using the private kubeconfig prepared in Module 1.
 
 ## Manifest template system
 
@@ -45,19 +41,19 @@ workload-specific pip packages, env vars, and resource counts.
 > demonstrates the cluster-autoscaler ProvisioningRequest path rather than a Ray
 > runtime, so it doesn't use the template system described here.
 
-### Standard fields (all workloads)
+### Shared fields
 
 | Field | Value | Reason |
 |-------|-------|--------|
-| `suspend: true` | required | Kueue gates admission |
-| `shutdownAfterJobFinishes: true` | required | Kueue tracks completion |
-| `ttlSecondsAfterFinished` | `300` | Consistent cleanup |
+| `suspend: true` | RayJob only | Kueue gates batch admission. |
+| `shutdownAfterJobFinishes: true` | RayJob only | Stop the batch Ray cluster after completion. |
+| `ttlSecondsAfterFinished` | `300`, RayJob only | Remove completed batch resources. |
 | Head `num-cpus: "0"` | RayJob only | Tasks land on GPU workers only (RayService sets `"4"`) |
 | Code mount | ConfigMap → `/home/ray/scripts` | Scripts injected at runtime |
 | Workload deps | `runtimeEnvYAML.pip` | Never baked into image |
 | `serviceAccountName` | `ray-workload` | Workload identity from Module 1 |
 | `azure.workload.identity/use` | `"true"` | Required for Azure SDK auth |
-| Ray image | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0` | Module 1 pin |
+| Ray image | `mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.56.1-cuda13.0` | GPU workload runtime default, separate from the managed operator version. |
 
 ### Key design choice: RayService is not Kueue-admitted
 
@@ -69,7 +65,7 @@ directly by KubeRay.
 ## Examples
 
 ### 1. aurora-finetune/ — Aurora weather model fine-tune
-Fine-tunes Microsoft Aurora on WeatherBench2 Hurricane-Ida data uploaded by
+Fine-tunes Microsoft Aurora on the regional WeatherBench2 data prepared in
 Module 1. Produces a LoRA adapter in Azure Blob (`aurora/checkpoints/<run-id>/`).
 
 - **1 worker × 1 A100 GPU**
@@ -109,8 +105,8 @@ Ray Serve. Loads the LoRA adapter from blob storage on startup.
 
 ### 5. cas-batch-job/ — provision capacity on demand (cluster autoscaler)
 A plain Kubernetes batch Job (no Ray) that demonstrates the **ProvisioningRequest
-→ cluster autoscaler** path. Where the examples above admit against a fixed quota
-on an existing GPU node, this one drives the AKS cluster autoscaler to grow an
+→ cluster autoscaler** path. Where the Ray batch examples admit against fixed
+quota, this one drives the AKS cluster autoscaler to grow an
 autoscaling CPU pool *before* the Job is admitted — capacity provisioned
 just-in-time.
 
@@ -131,16 +127,31 @@ just-in-time.
 | Reads from blob | `aurora/data/` (init/truth) | `llm-pipeline/data/` (train.jsonl) | `llm-pipeline/data/` + `lora/` | `aurora/checkpoints/` (adapter) | — |
 | Writes to blob | `aurora/checkpoints/` | `llm-pipeline/lora/` | `llm-pipeline/inference/` | — | — |
 
+## Runtime compatibility
+
+Use the pinned Ray 2.56.1 CUDA image with its matching `RAY_VERSION`. The older
+2.55.1 image contains protobuf 7, while its Serve controller still uses the
+removed `FieldDescriptor.label` API. Ray 2.56.1 fixes that compatibility issue.
+Changing only application `runtime_env` dependencies doesn't fix a controller
+running in the base image. The checked-in workloads remain GPU examples.
+
+## Submitter compatibility
+
+The three RayJob templates provide a pod-local `python` wrapper for the MCR
+image's `python3`. KubeRay 1.7's generated submitter health check needs that
+unversioned executable. A small init container writes the wrapper to an
+`emptyDir`, mounted read-only only in the submitter. The runtime image, generated
+health/submission commands, and managed operator settings aren't replaced.
+RayService has no batch submitter and doesn't need this wrapper.
+
 ## Quick start
 
-For a managed cluster, set `AZURE_STORAGE_ACCOUNT_NAME` and the other example
-variables from your separately prepared storage and datasets before sourcing
-`env.example`. Its defaults preserve supplied values. Skip the Terraform-output
-command below; it applies only to the self-managed Module 1 lab.
+Use the private kubeconfig and storage account from Module 1 before sourcing
+each workload's defaults. The defaults preserve supplied values:
 
 ```bash
-# Self-managed Terraform lab only: get its storage account
-export AZURE_STORAGE_ACCOUNT_NAME=$(terraform -chdir=../1-infrastructure/terraform output -raw storage_account_name)
+source ../1-infrastructure/managed/.managed/managed.env
+export AZURE_STORAGE_ACCOUNT_NAME="<prepared-storage-account>"
 
 # Run Example 1 (aurora fine-tune)
 cd aurora-finetune

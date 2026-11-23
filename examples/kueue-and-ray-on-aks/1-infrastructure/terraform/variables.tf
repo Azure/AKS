@@ -210,7 +210,7 @@ variable "gpu_monitoring_sku_name" {
 variable "ray_image" {
   description = "Default Ray image used by all Module 3 workload examples. Exported as an output so manifest templates can reference it via envsubst."
   type        = string
-  default     = "mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.55.1-cuda13.0"
+  default     = "mcr.microsoft.com/aks/ai-runtime/ray:py3.12-ray2.56.1-cuda13.0"
 }
 
 # ---------------------------------------------------------------------------
