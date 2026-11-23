@@ -4,7 +4,6 @@ date: "2026-11-10"
 description: "Load GPT-OSS-20B into vLLM on an AKS H100 node with Run:ai Model Streamer and DACS. Configure three NVMe cache servers and verify fresh-pod warm-cache loading and inference."
 authors: ["francis-yu", "hariharan-sethuraman"]
 tags: [acstor, ai, ai-inference]
-draft: true
 keywords: ["AKS", "DACS", "Azure Container Storage", "Run:ai Model Streamer", "model loading"]
 ---
 
