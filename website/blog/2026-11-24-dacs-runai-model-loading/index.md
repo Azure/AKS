@@ -1,6 +1,6 @@
 ---
 title: "Accelerate Model Loading on AKS with DACS and Run:ai Model Streamer"
-date: "2026-11-10"
+date: "2026-11-24"
 description: "Load GPT-OSS-20B into vLLM on an AKS H100 node with Run:ai Model Streamer and DACS. Configure three NVMe cache servers and verify fresh-pod warm-cache loading and inference."
 authors: ["francis-yu", "hariharan-sethuraman"]
 tags: [acstor, ai, ai-inference]
