@@ -19,7 +19,7 @@ This is the problem motivating our work on the Kata v2 runtime. We want less tim
 
 ## Keeping the isolation boundary, reducing the overhead
 
-Pod sandboxing on AKS uses Kata Containers to run each sandboxed pod in a lightweight microVM with its own guest kernel. Applications continue to use familiar Kubernetes deployment workflows, but the workload runs with a kernel that is isolated from both the host and other sandboxed pods.
+[Pod sandboxing on AKS](https://learn.microsoft.com/azure/aks/concepts-pod-sandboxing) uses Kata Containers to run each sandboxed pod in a lightweight microVM with its own guest kernel. Applications continue to use familiar Kubernetes deployment workflows, but the workload runs with a kernel that is isolated from both the host and other sandboxed pods.
 
 Creating that isolated environment takes time and resources. Before a coding agent can execute generated code or run tests in its workspace, the host-side runtime must prepare the VM, boot the guest kernel, and initialize the Kata agent that manages containers inside the guest.
 
@@ -27,7 +27,7 @@ These costs fall into two categories: initialization work performed whenever a n
 
 The runtime improvements build on the upstream Rust implementation. The new Rust-based runtime and deferred paging deliver 29% lower pod memory usage compared to the previous Golang implementation, leaving more node memory available for applications.
 
-Configured RuntimeClass memory overhead also drops from 600Mi to 32Mi. Kubernetes uses this setting to account for the resource overhead of the Kata VM and associated runtime components during scheduling. A smaller overhead allowance makes more cluster capacity available to workloads.
+Configured [RuntimeClass memory overhead](https://learn.microsoft.com/azure/aks/considerations-pod-sandboxing#runtimeclass-memory-overhead) also drops from 600Mi to 32Mi. Kubernetes uses this setting to account for the resource overhead of the Kata VM and associated runtime components during scheduling. A smaller overhead allowance makes more cluster capacity available to workloads.
 
 For agent platforms and hosted coding services, lower sandbox overhead means more node memory available for build tools, dependencies, test execution, and higher session density per node.
 
@@ -44,13 +44,13 @@ Cold start:   Boot guest -> Initialize Kata agent -> Start application -> Ready
 Template:     Restore prepared guest              -> Start application -> Ready
 ```
 
-In our measurements, creating a sandbox from a preinitialized VM template delivered up to 42% lower startup latency compared to a standard Kata VM launch. For agentic workloads that create workspaces on demand, that translates directly into less time spent preparing the execution environment before work can begin. To create a template and use it for new sandboxed pods, follow the setup guide.
+In our measurements, creating a sandbox from a preinitialized VM template delivered up to 42% lower startup latency compared to a standard Kata VM launch. For agentic workloads that create workspaces on demand, that translates directly into less time spent preparing the execution environment before work can begin. To create a template and use it for new sandboxed pods, follow the [setup guide](https://learn.microsoft.com/azure/aks/use-pod-sandboxing?pivots=kata-vm-isolation-v2-preview#create-sandboxed-pods-from-a-paused-preinitialized-template-vm-kata-vm-isolation-v2-preview).
 
 This process prepares the guest environment, not the application itself. In our example, the workspace still requires repository checkout, dependency installation, and initialization of build and test tooling. Resuming a previously initialized coding session requires preserving and restoring application state. This is where the Agent Sandbox and Pod snapshot cluster extensions come in.
 
 ## Using Kata v2 runtime in the Agent Sandbox cluster extension and Pod snapshot cluster extension
 
-The Agent Sandbox cluster extension, based on the open-source agent-sandbox project, manages AI agent execution environments through a declarative Sandbox resource. You describe the container image, runtime, and resource requirements, and the extension controller creates and manages the sandbox pod. The Pod snapshot cluster extension captures the runtime state of a sandboxed pod and stores it in Azure Blob storage. A new pod can then restore that state and resume processes quickly. For example, AI agents can resume a session with its in-memory context intact; an application with a costly initialization can start from a snapshotted warm state instead of cold-starting.
+The [Agent Sandbox cluster extension](https://learn.microsoft.com/azure/aks/agent-sandbox-cluster-extension?pivots=sandbox-kata), based on the open-source [agent-sandbox project](https://github.com/kubernetes-sigs/agent-sandbox), manages AI agent execution environments through a declarative Sandbox resource. You describe the container image, runtime, and resource requirements, and the extension controller creates and manages the sandbox pod. The [Pod snapshot cluster extension](https://learn.microsoft.com/azure/aks/pod-snapshot-cluster-extension?pivots=sandbox-kata) captures the runtime state of a sandboxed pod and stores it in Azure Blob storage. A new pod can then restore that state and resume processes quickly. For example, AI agents can resume a session with its in-memory context intact; an application with a costly initialization can start from a snapshotted warm state instead of cold-starting.
 
 Both extensions support the Kata v2 runtime. The Agent Sandbox cluster extension runs each Sandbox with the Kata v2 runtime, so every agent gets its own VM-isolated pod. The Pod snapshot cluster extension captures and restores the state of those Kata v2 pods. Together, they combine VM-backed isolation with fast, memory-intact resumes.
 
@@ -62,8 +62,8 @@ One area of focus is Azure Disk integration with virtio-blk, which provides sand
 
 ## Try the Kata v2 runtime (public preview)
 
-To get started, follow the Kata v2 preview setup and migration guidance. Begin with a representative workload to validate storage, resource allocation, and runtime compatibility before expanding adoption across your environment.
+To get started, follow the [Kata v2 preview setup and migration guidance](https://learn.microsoft.com/azure/aks/use-pod-sandboxing?pivots=kata-vm-isolation-v2-preview#use-kata-vm-isolation-v2-preview). Begin with a representative workload to validate storage, resource allocation, and runtime compatibility before expanding adoption across your environment.
 
-We're actively evolving pod sandboxing in AKS and welcome feedback from early adopters. Your experience with the Kata v2 preview will help shape future investments in workload isolation, performance, and support for agentic workloads.
+We're actively evolving pod sandboxing in AKS and welcome [feedback from early adopters](https://github.com/Azure/AKS/issues). Your experience with the Kata v2 preview will help shape future investments in workload isolation, performance, and support for agentic workloads.
 
 Stay tuned for the next posts in our Agents on AKS series, where we’ll build on this foundation with agent sandbox management, pod snapshot and restore, and the infrastructure and tooling for running agent sessions on AKS.
