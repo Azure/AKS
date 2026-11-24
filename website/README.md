@@ -117,7 +117,7 @@ Example: `2025-02-28-end-to-end-tls-encryption-with-aks-app-routing-and-afd/`
 
 Folder naming tips:
 
-- Date must match the `date:` in front matter (controls chronology)
+- The folder date supplies the publication date. There's no need to include `date` in front matter.
 - Slug: concise, lowercase, hyphenated, avoid filler words
 
 ---
@@ -131,7 +131,6 @@ Common fields:
 ```yaml
 ---
 title: "Clear, Human-Readable Title (Use Title Case)"
-date: "2025-09-20" # YYYY-MM-DD (UTC)
 description: "1–2 sentence summary for previews & SEO."
 authors: ["paul-yu", "brian-redmond"]
 tags:
@@ -140,7 +139,6 @@ tags:
   - azure-front-door
 image: ./hero.png # optional hero/social card
 hide_table_of_contents: false # optional, true for very short posts
-draft: false # optional draft flag (see section 10)
 keywords: ["AKS", "Kubernetes", "Azure"]
 ---
 ```
@@ -264,13 +262,13 @@ tags:
 
 ## 10. Drafts vs Published Posts
 
-Options:
+Obtaining two PR approvals is required before merging and merging to `master` means publish. Keep unfinished posts in PRs until ready.
 
-1. Future `date:` (some pipelines hide future posts)
-2. `draft: true` (requires site config support)
-3. Keep locally until ready, then commit
+Omit `draft` from front matter. Docusaurus defaults it to `false`, so no metadata toggle is needed before merging.
 
-Indicate in the PR description if a post is a draft.
+Future folder dates do not delay publication. Do not use `date` front matter to schedule posts.
+
+Mark the PR as a draft while the post is unfinished.
 
 ---
 
@@ -279,7 +277,9 @@ Indicate in the PR description if a post is a draft.
 Before opening / merging:
 
 - [ ] Folder named `YYYY-MM-DD-slug/` with `index.md`
-- [ ] Front matter: title, date, description, authors, tags
+- [ ] Front matter: title, description, authors, tags
+- [ ] New posts omit `date` and use the intended publication date in the folder name
+- [ ] Omit `draft`. Keep unfinished posts in PRs, not on `master`.
 - [ ] Authors present in `authors.yml`
 - [ ] Tags validated / added to `tags.yml` if new
 - [ ] Images optimized (no oversized raw screenshots)
@@ -288,6 +288,8 @@ Before opening / merging:
 - [ ] Admonitions appropriate & minimal
 - [ ] Spell check / lint pass
 - [ ] Links resolve (no obvious 404s)
+
+For existing published posts, leave `date` overrides and folder names unchanged when making unrelated edits, so published dates and URLs stay stable.
 
 Optional:
 
@@ -301,7 +303,6 @@ Optional:
 ```markdown
 ---
 title: "Optimizing Node Throughput on AKS"
-date: "2025-09-20"
 description: "Practical tuning techniques to squeeze more network and CPU throughput from AKS worker nodes."
 authors: ["paul-yu"]
 tags:

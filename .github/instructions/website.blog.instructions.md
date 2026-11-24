@@ -8,352 +8,86 @@ applyTo: website/blog/**/index.md
 > **Module Context**: See `website/AGENTS.md` for architecture and workflows.  
 > **Repo Standards**: See `.github/copilot-instructions.md` for general conventions.
 
+## Editorial Purpose
+
+The AKS engineering blog shares the engineering and product thinking behind AKS. Help technical readers understand **why we did it this way**, **why it matters to them**, and **how to reach us about it**. A post should add insight beyond product documentation or a release announcement.
+
+Write for developers building and running applications on AKS, platform engineers, and Kubernetes practitioners. Start with their problem or a technical constraint, not a feature list.
+
+### Complement Documentation and Announcements
+
+- **Documentation**: Link to maintained Microsoft Learn and upstream documentation rather than repeating setup, reference, or troubleshooting instructions.
+- **Walkthroughs**: Include steps when they demonstrate integration choices, an experiment, or a result that existing documentation does not explain.
+- **Announcements**: Availability alone is not enough. Add engineering insight or a specific question readers can help answer. Otherwise, recommend the established announcement channel or release notes.
+
+### Sources and Reader Feedback
+
+- Ground claims in sources. Don't invent engineering decisions, customer stories, or results. Include test conditions and limitations with measurements.
+- Cite sources for adapted text, diagrams, and code, and respect their licenses.
+- Keep internal links, confidential details, and customer-identifying information out.
+- Close with a useful next step and verified public feedback route. Ask a specific question when seeking feedback.
+
+### Agent Workflow for Writing and Review
+
+1. Establish the reader, problem, and single takeaway. Use supplied context and ask only for material gaps.
+2. Read the source material and existing documentation. Identify the post's contribution beyond those sources.
+3. Choose a structure and supporting examples that serve that contribution.
+4. Review editorial fit, accuracy, reader impact, and feedback route before formatting. Report actionable findings with their location and reader impact.
+5. Preserve the author's voice. Do not rewrite the full post unless requested.
+
+Review the post's contribution, not its conformity to a template. Don't require implementation steps or a fixed length when the engineering takeaway is clear.
+
 ## Front Matter (Required)
 
-Every blog post MUST include:
+Required fields:
 
 ```yaml
 ---
 title: "Descriptive Post Title"
-date: YYYY-MM-DD
-description: "SEO-optimized summary (150-160 characters)"
+description: "A unique summary of what readers will learn."
 authors: [author-key]  # From blog/authors.yml
 tags: [tag1, tag2]     # From blog/tags.yml
-draft: false            # Optional: set to true to hide from production
 ---
 ```
 
-**Validation Checklist**:
-
-- [ ] `title`: Clear, descriptive, under 60 chars
-- [ ] `date`: Valid format, can be future-dated for future publishing
-- [ ] `description`: 150-160 chars, includes keywords
-- [ ] `authors`: Valid keys from `blog/authors.yml`
-- [ ] `tags`: Valid keys from `blog/tags.yml`
-
-### Blog Post Date
-
-The publish date is determined by the **folder name** (e.g., `2025-12-19-my-post/index.md`). Docusaurus extracts the date from folder/filename patterns like `YYYY-MM-DD-slug` or `YYYY/MM/DD/slug`. If you specify a `date` in front matter, it **overrides** the folder-derived date.
-
-**Important**: Unlike Jekyll, Docusaurus does **NOT** hide future-dated posts. All posts are published immediately when deployed, regardless of date. To prevent premature publishing:
-
-- Use `draft: true` in front matter to exclude from production builds (visible only in dev)
-- Use `unlisted: true` to hide from listings but keep accessible via direct link
-- Alternatively, keep the post in a separate branch until ready
-
-**Before merging**: If PR review takes longer than expected and the folder date becomes stale, update the folder name (or add a `date` override in front matter) to reflect the actual publish date. Posts should show the date readers will see them, not when they were originally drafted.
-
-## Content Structure
-
-### Required Pattern
-
-```markdown
----
-title: "..."
-date: YYYY-MM-DD
-description: "..."
-authors: [...]
-tags: [...]
----
-
-[Opening paragraph: Hook the reader, set context, preview content]
-
-<!-- truncate -->
-
-![Hero Image](./hero-image.png)
-
-## Section 1: Problem/Context
-[Describe the challenge or background...]
-
-## Section 2: Solution/Details
-[Explain the approach or feature...]
-
-## Section 3: Implementation
-[Step-by-step guide or examples...]
-
-## Conclusion
-[Summarize key takeaways...]
-```
-
-### Critical Elements
-
-1. **Truncation marker**: `<!-- truncate -->` after 2-3 intro paragraphs (shows on listing page)
-2. **Hero image**: Use `./hero-image.png` for same-directory assets
-3. **Heading hierarchy**: H2 (`##`) for major sections, H3 (`###`) for subsections
-4. **Alt text**: All images MUST have descriptive alt text
-
-## Writing Style
-
-### Target Audience
-
-- **Primary**: AKS users, Kubernetes practitioners, platform engineers
-- **Level**: Intermediate to advanced technical knowledge
-- **Expectation**: Practical, actionable content with examples
-
-### Tone Guidelines
-
-- ✅ Follows the Microsoft Style Guide
-- ✅ Professional yet approachable
-- ✅ Direct and concise
-- ✅ Technical but accessible
-- ❌ No marketing fluff or buzzwords
-- ❌ No unexplained jargon
-- ❌ No passive voice (prefer active)
-
-### Content Requirements
-
-- **Length**: 800-1500 words (longer acceptable if high-value)
-- **Paragraphs**: 3-4 sentences max per paragraph
-- **Lists**: Use bullets/numbers liberally to break up text
-- **Examples**: Include code snippets, commands, or diagrams
-- **Links**: External references to docs, GitHub, or related posts
-- **Originality**: Must be original content (cite sources if adapted)
-
-## Formatting Patterns
-
-### Headings
-
-```markdown
-## Major Section (H2)
-
-### Subsection (H3)
-
-#### Detail Point (H4 - use sparingly)
-```
-
-**Rules**:
-
-- Title (H1) auto-generated from front matter
-- Use H2 for main sections
-- Use H3 for subsections
-- Avoid H4+ (indicates over-complexity)
-
-### Code Blocks
-
-**Always specify language**:
-
-````markdown
-```bash
-kubectl get pods -n production
-```
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: example
-```
-
-```typescript
-export function handleRequest(): void {
-  // Implementation
-}
-```
-````
-
-**Best Practices**:
-
-- Include comments for complex code
-- Show realistic examples (not `foo`/`bar`)
-- Keep snippets under 30 lines (link to gists for longer)
-
-### Links
-
-```markdown
-✅ [Azure Kubernetes Service documentation](https://learn.microsoft.com/azure/aks)
-✅ See the [AKS roadmap](https://github.com/orgs/Azure/projects/685) for planned features.
-
-❌ Click [here](https://example.com) for more info.
-❌ Check out https://example.com
-```
-
-**Rules**:
-
-- Descriptive link text (not "click here" or "this link")
-- No bare URLs (always use `[text](url)` syntax)
-- Prefer Microsoft Learn for Azure docs
-
-### Images
-
-```markdown
-![Descriptive alt text explaining the image](./image-filename.png)
-```
-
-**Requirements**:
-
-- Images in same directory as `index.md`
-- Use relative paths: `./image.png`
-- Descriptive alt text (accessibility + SEO)
-- Optimize before commit (compress PNGs/JPGs)
-- Max 500KB per image
-
-### Emphasis
-
-```markdown
-**Important term or concept** (bold - use sparingly)
-*Subtle emphasis* (italic - rare)
-`code or technical term` (inline code)
-```
-
-### Blockquotes
-
-```markdown
-> **Note**: Important callout for readers to understand before proceeding.
-
-> **Warning**: This action cannot be undone.
-```
-
-Use for:
-
-- Important notes or warnings
-- Prerequisites
-- Key takeaways
-
-### Lists
-
-**Unordered (bullets)**:
-
-```markdown
-- First item
-- Second item
-  - Nested item
-  - Another nested item
-- Third item
-```
-
-**Ordered (numbers)**:
-
-```markdown
-1. First step
-2. Second step
-3. Third step
-```
-
-**Checklists**:
-
-```markdown
-- [ ] Incomplete task
-- [x] Completed task
-```
-
-## SEO Best Practices
-
-### Description Field
-
-- **Length**: 150-160 characters (strict)
-- **Include**: Primary keyword(s)
-- **Avoid**: Duplicate meta descriptions across posts
-- **Example**: "Learn how to optimize AKS cluster performance with node pools, autoscaling, and resource management best practices."
-
-### Keywords
-
-- Use naturally in title, description, headings
-- Include variations (e.g., "Kubernetes" + "K8s")
-- Focus on user intent (what they're searching for)
-
-### Internal Linking
-
-Link to other blog posts when relevant:
-
-```markdown
-See our previous post on [AKS networking fundamentals](/2024/01/15/aks-networking-basics).
-```
-
-## Common Mistakes to Avoid
-
-❌ **Future-dated posts without `draft: true`**: Docusaurus publishes all posts immediately—use `draft: true` to hold back unready content
-❌ **Stale dates from long PR reviews**: Update the folder name or add `date` front matter before merging if the original date is now in the past
-❌ **Missing truncate marker**: Full post shows on listing page  
-❌ **Bare URLs**: Always use `[text](url)` syntax  
-❌ **Locale based URLs**: Use generic links (no `/en-us/`)  
-❌ **Generic alt text**: Use descriptive alt text for images  
-❌ **Invalid author/tag keys**: Must exist in `authors.yml`/`tags.yml`  
-❌ **No code language**: Specify language for syntax highlighting  
-❌ **Huge images**: Compress before commit  
-❌ **Broken links**: Test all links before publishing
+- **Title**: Write a concise, descriptive title that accurately reflects the post. Avoid keyword stuffing.
+- **Description**: Write a unique, relevant summary explaining what readers will learn. Use search terms naturally, without padding to a character target.
+- Use author and tag keys defined in `blog/authors.yml` and `blog/tags.yml`.
+- Optional: `image` for the social card and `keywords` for relevant search terms.
+
+### Publication
+
+- For new posts, omit `date` and use `blog/YYYY-MM-DD-slug/index.md`. The folder supplies the publication date. Update it before merging if review has made the date stale.
+- Merging to `master` means publish. Keep unfinished posts in PRs and omit `draft`; Docusaurus defaults it to `false`.
+- Future dates do not delay publication. `unlisted: true` hides a post from listings, not public access.
+- Leave existing `date` overrides and folder names unchanged during unrelated edits to preserve published dates and URLs.
+
+## Structure and Style
+
+- Explain the problem, approach, trade-offs, and reader impact in an order that suits the story. These are not mandatory headings.
+- Follow the repository's [Microsoft Style Guide](../copilot-instructions.md#part-2-microsoft-style-guide). Use a direct, technical, approachable voice, active sentences, and short paragraphs. Avoid hype and unexplained jargon.
+- Keep the post focused. Include enough context and evidence to support the takeaway, without repetition or filler.
+- Add `<!-- truncate -->` after the opening paragraph for listing previews.
+- The title comes from front matter. Use sentence-style H2 and H3 headings in the body, with H4 sparingly.
+- Use [Docusaurus admonitions](https://docusaurus.io/docs/markdown-features/admonitions) for notes, tips, and warnings instead of blockquote callouts. Leave blank lines around their content.
+- Posts use [MDX syntax](https://docusaurus.io/docs/markdown-features), including `.md` files. Put literal placeholders such as `<resource-group>` and expressions containing braces in code spans or fenced code blocks so they aren't parsed as JSX.
+- Use descriptive Markdown links, not bare URLs or "click here."
+- Remove locale segments such as `/en-us/` from Microsoft Learn URLs: use `https://learn.microsoft.com/azure/aks/...`.
+- When linking to existing blog posts, use their actual published URLs in root-relative form (for example, `/2026/11/09/build-the-platform-not-the-plumbing`), not full `https://blog.aks.azure.com/...` URLs. Don't infer URLs from folder names.
+- A hero image is optional. When using images, keep them beside `index.md`, reference them with relative paths such as `./hero.png`, add descriptive alt text, and compress each image to under 500KB before committing.
+
+### Technical Examples
+
+- Include code, diagrams, or measurements only where they explain or help reproduce the engineering work.
+- Label fenced code blocks with a language. Use realistic, focused examples and link to longer samples when they interrupt the flow.
+- For runnable steps, include prerequisites, versions, permissions, expected results, and cleanup for resources created.
+- Distinguish Microsoft-managed capabilities from self-managed components and link to applicable support guidance.
 
 ## Pre-Publish Checklist
 
-Before submitting a blog post:
-
-- [ ] Content follows the Microsoft Style Guide
-- [ ] Front matter complete and validated
-- [ ] `<!-- truncate -->` after intro (2-3 paragraphs)
-- [ ] All images have descriptive alt text
-- [ ] All code blocks have language specified
-- [ ] All links use descriptive text (no "click here")
-- [ ] SEO description is 150-160 chars
-- [ ] Spell-check and grammar-check complete
-- [ ] Preview with `npm start` in `website/`
+- [ ] Editorial and source checks above are complete
+- [ ] Front matter, folder date, author keys, and tag keys are correct
+- [ ] Links and images resolve
+- [ ] Spelling, grammar, and formatting are checked
+- [ ] Preview with `npm start` in `website/` and check rendered admonitions, code blocks, images, and heading links
 - [ ] Build test with `npm run build`
-- [ ] Images compressed (under 500KB each)
-- [ ] Author keys exist in `blog/authors.yml`
-- [ ] Tag keys exist in `blog/tags.yml`
-
-## Examples
-
-### Good Post Structure
-
-```markdown
----
-title: "Optimizing AKS Network Performance with CNI Plugins"
-date: 2025-10-04
-description: "Compare Azure CNI and Kubenet for AKS networking to optimize performance, security, and cost for your workloads."
-authors: [paul-yu]
-tags: [aks, networking, performance, cni]
----
-
-Choosing the right Container Network Interface (CNI) plugin is critical for AKS cluster performance. This guide compares Azure CNI and Kubenet to help you make informed decisions.
-
-<!-- truncate -->
-
-![CNI Architecture Comparison](./cni-comparison.png)
-
-## Understanding CNI Options
-
-Azure Kubernetes Service supports two primary CNI plugins...
-
-### Azure CNI
-
-Azure CNI assigns Azure VNet IPs directly to pods...
-
-### Kubenet
-
-Kubenet uses bridge networking with NAT...
-
-## Performance Comparison
-
-| Metric | Azure CNI | Kubenet |
-|--------|-----------|---------|
-| Latency | Lower | Higher |
-| IP Usage | High | Low |
-
-## Implementation Guide
-
-### Step 1: Plan IP Address Space
-
-```bash
-# Calculate required IPs
-NODES=10
-MAX_PODS_PER_NODE=30
-REQUIRED_IPS=$((NODES * MAX_PODS_PER_NODE))
-echo "Need subnet with /${REQUIRED_IPS} IPs"
-```
-
-### Step 2: Create Cluster
-
-```bash
-az aks create \
-  --resource-group myRG \
-  --name myCluster \
-  --network-plugin azure \
-  --vnet-subnet-id $SUBNET_ID
-```
-
-## Conclusion
-
-Azure CNI offers better performance but higher IP consumption. Choose based on your network topology and scale requirements.
-```
----
-**Questions?** Contact brian.redmond@microsoft.com  
-**Module Guide**: See `website/AGENTS.md`

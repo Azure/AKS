@@ -97,7 +97,7 @@ See `.github/instructions/website.blog.instructions.md` for content guidelines a
 **Quick steps**:
 
 1. Create `blog/YYYY-MM-DD-slug/index.md`
-2. Add front matter: `title`, `date`, `description`, `authors`, `tags`
+2. Add front matter: `title`, `description`, `authors`, `tags`. Do not add `date`; the folder name supplies the publication date. Omit `draft` and keep unfinished posts in PRs. Merging to `master` means publish.
 3. Add `<!-- truncate -->` after intro paragraphs
 4. Place images in same directory (`./image.png`)
 5. Preview: `npm start`
@@ -352,8 +352,8 @@ npm run build
 - RSS feed: `build/rss.xml` (standard RSS format with post summaries)
 - Atom feed: `build/atom.xml` (alternative feed format)
 - RSS alias: `build/feed.xml` (copies `rss.xml` for backward compatibility)
-- Generated from post front matter: `title`, `date`, `description`, `authors`
-- Posts with `draft: true` excluded from feeds
+- Generated from post front matter (`title`, `description`, `authors`) and the folder-derived publication date
+- Legacy posts with `draft: true` are excluded from feeds. Do not add this flag to new posts; keep unfinished content in PRs.
 
 **Feed Testing**:
 
@@ -459,7 +459,7 @@ keywords: ["AKS", "Kubernetes", "networking"]  # Optional: for niche searches
 
 **Check**:
 
-- [ ] Date not in future (or explicitly allowed for scheduled posts)
+- [ ] Post merged into `master` and website deployment succeeded
 - [ ] No `draft: true` in front matter
 - [ ] Author key exists in `blog/authors.yml`
 - [ ] Tag keys exist in `blog/tags.yml`
@@ -496,8 +496,8 @@ file build/rss.xml build/atom.xml build/feed.xml
 ```
 
 If feeds are invalid, check:
-- [ ] All posts have `date:` in front matter
-- [ ] `date` format is valid: `YYYY-MM-DD`
+- [ ] Post folders use the publication date: `YYYY-MM-DD-slug`
+- [ ] No `date` field in blog post front matter
 - [ ] No `draft: true` posts in feeds (only published posts)
 
 ### Analytics not working
@@ -542,6 +542,8 @@ Follow `.github/instructions/website.blog.instructions.md` for content requireme
 **Technical validation**:
 
 - ✅ Use `blog/YYYY-MM-DD-slug/index.md` structure
+- ✅ Do not add `date` in front matter. Preserve existing published dates and URLs when making unrelated edits.
+- ✅ Omit `draft` and keep unfinished posts in PRs. Merging to `master` means publish.
 - ✅ All author/tag keys exist in `blog/authors.yml` and `blog/tags.yml`
 - ✅ Test locally: `npm start`
 - ✅ Validate: `npm run build` (must succeed)
