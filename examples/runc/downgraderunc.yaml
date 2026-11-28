@@ -17,7 +17,7 @@ spec:
       hostPID: true
       hostNetwork: true
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       containers:
         - name: nsenter
           image: alpine
@@ -74,3 +74,4 @@ spec:
                 echo "rebooting node"
                 reboot
               done
+
