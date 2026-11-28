@@ -17,7 +17,7 @@ spec:
       hostPID: true
       hostNetwork: true
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       containers:
         - name: snat-exemption
           image: mcr.microsoft.com/azure-policy/alpine:prod_20200505.1
@@ -64,3 +64,4 @@ spec:
                 fi
                 sleep 60
               done
+
